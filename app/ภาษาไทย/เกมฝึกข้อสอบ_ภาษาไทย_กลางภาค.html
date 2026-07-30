@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>เกมฝึกข้อสอบ — ภาษาไทย ม.6 กลางภาค</title>
+<style>
+  :root{
+    --bg:#0d1117; --bg2:#161b22; --card:#1c2230;
+    --line:#2a3242; --text:#e6edf3; --dim:#9aa6b2;
+    --gold:#e3b341; --green:#3fb950; --red:#f85149; --blue:#58a6ff;
+    --accent:#a371f7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  body{
+    font-family:"Segoe UI","Sarabun",system-ui,sans-serif;
+    background:radial-gradient(1200px 600px at 50% -10%,#1b2233,#0d1117 60%);
+    color:var(--text);min-height:100vh;padding:16px;line-height:1.6;
+  }
+  .wrap{max-width:680px;margin:0 auto}
+  header{text-align:center;padding:14px 0 8px}
+  h1{font-size:1.4rem;font-weight:700;letter-spacing:.3px}
+  h1 .cross{color:var(--gold)}
+  .sub{color:var(--dim);font-size:.85rem;margin-top:4px}
+  .filterbar{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin:14px 0 6px}
+  .fchip{background:var(--bg2);border:1px solid var(--line);color:var(--dim);
+    border-radius:999px;padding:5px 12px;font-size:.8rem;cursor:pointer;
+    font-family:inherit;transition:.15s}
+  .fchip:hover{border-color:var(--accent);color:var(--text)}
+  .fchip.on{background:var(--accent);color:#1a1030;border-color:var(--accent);font-weight:700}
+  .fchip.focus5{border-color:var(--gold);color:var(--gold)}
+  .fchip.focus5.on{background:var(--gold);color:#2a1f06}
+  .bar{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:14px 0;font-size:.85rem}
+  .chip{background:var(--bg2);border:1px solid var(--line);border-radius:999px;
+    padding:6px 14px;display:flex;align-items:center;gap:6px}
+  .chip b{font-size:1rem}
+  .chip.score b{color:var(--gold)} .chip.streak b{color:var(--accent)}
+  .chip.prog b{color:var(--blue)}
+  .progress{height:6px;background:var(--bg2);border-radius:999px;overflow:hidden;margin:6px 0 16px}
+  .progress>div{height:100%;background:linear-gradient(90deg,var(--blue),var(--accent));width:0;transition:width .4s}
+  .card{background:linear-gradient(180deg,var(--card),#171d28);
+    border:1px solid var(--line);border-radius:18px;padding:20px 18px;
+    box-shadow:0 10px 30px rgba(0,0,0,.35)}
+  .tag{display:inline-block;font-size:.72rem;color:var(--dim);
+    background:var(--bg);border:1px solid var(--line);border-radius:6px;
+    padding:2px 8px;margin-bottom:12px}
+  .q{font-size:1.12rem;font-weight:600;margin-bottom:16px}
+  .opts{display:flex;flex-direction:column;gap:10px}
+  .opt{text-align:left;background:var(--bg2);border:1.5px solid var(--line);
+    color:var(--text);border-radius:12px;padding:13px 15px;font-size:1rem;
+    cursor:pointer;transition:.15s;display:flex;gap:10px;align-items:flex-start}
+  .opt:hover:not(:disabled){border-color:var(--blue);transform:translateY(-1px)}
+  .opt:disabled{cursor:default}
+  .opt .k{font-weight:700;color:var(--dim);min-width:18px}
+  .opt.correct{border-color:var(--green);background:rgba(63,185,80,.13)}
+  .opt.wrong{border-color:var(--red);background:rgba(248,81,73,.13)}
+  .opt.correct .k{color:var(--green)} .opt.wrong .k{color:var(--red)}
+  .fb{margin-top:16px;border-radius:12px;padding:14px;font-size:.95rem;display:none}
+  .fb.show{display:block;animation:pop .25s}
+  .fb.ok{background:rgba(63,185,80,.1);border:1px solid rgba(63,185,80,.4)}
+  .fb.no{background:rgba(248,81,73,.1);border:1px solid rgba(248,81,73,.4)}
+  .fb .head{font-weight:700;margin-bottom:6px}
+  .fb.ok .head{color:var(--green)} .fb.no .head{color:var(--red)}
+  .fb .ref{color:var(--dim);font-size:.8rem;margin-top:8px;font-style:italic}
+  @keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .hintbtn{margin-top:14px;background:transparent;border:1px dashed var(--line);
+    color:var(--gold);border-radius:10px;padding:8px 14px;cursor:pointer;font-size:.85rem}
+  .hint{margin-top:10px;color:var(--gold);font-size:.88rem;display:none}
+  .hint.show{display:block}
+  .next{margin-top:18px;width:100%;background:linear-gradient(90deg,var(--blue),var(--accent));
+    border:none;color:#fff;font-weight:700;font-size:1rem;border-radius:12px;
+    padding:14px;cursor:pointer;display:none}
+  .next.show{display:block}
+  .end{text-align:center}
+  .end .big{font-size:2.6rem;font-weight:800;color:var(--gold);margin:8px 0}
+  .end .msg{color:var(--dim);margin:10px 0 20px}
+  .restart{background:var(--green);border:none;color:#06210d;font-weight:700;
+    border-radius:12px;padding:13px 26px;cursor:pointer;font-size:1rem}
+  footer{text-align:center;color:var(--dim);font-size:.72rem;margin-top:18px;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1><span class="cross">๛</span> เกมฝึกข้อสอบ — ภาษาไทย ม.6 กลางภาค</h1>
+    <div class="sub">เทอม 1/2569 · 3 เรื่อง: พื้นฐานวรรณคดี · ขุนช้างขุนแผน · สามัคคีเภทคำฉันท์</div>
+  </header>
+
+  <div class="filterbar" id="filterbar"></div>
+
+  <div class="bar">
+    <div class="chip score">คะแนน <b id="score">0</b></div>
+    <div class="chip streak">สตรีค <b id="streak">0</b>🔥</div>
+    <div class="chip prog">ข้อ <b id="qnum">1</b>/<span id="qtot">0</span></div>
+  </div>
+  <div class="progress"><div id="pbar"></div></div>
+
+  <div id="stage"></div>
+
+  <footer>
+    ตอบเองก่อนเปิดเฉลย — ทุกข้อมีคำอธิบาย · ⚠️ = จุดที่ตำราอาจต่างกัน ตรวจกับสไลด์อาจารย์<br>
+    สร้างจาก "แนวข้อสอบกลางภาค ม.6" + เนื้อหามาตรฐาน ม.6
+  </footer>
+</div>
+
+<script>
+/* ====== คลังคำถาม  r = เรื่อง(ใช้กรอง) · tag เรื่องคน · h ใบ้ ====== */
+const BANK = [
+ /* ===== ① ความรู้เบื้องต้นวรรณกรรม/วรรณคดี ===== */
+ {q:"ข้อใดคือความต่างของ 'วรรณกรรม' กับ 'วรรณคดี'",
+  o:["เหมือนกันทุกอย่าง","วรรณคดี = วรรณกรรมที่ได้รับยกย่องว่ามีคุณค่าทางวรรณศิลป์","วรรณคดีคือร้อยกรองเท่านั้น","วรรณกรรมต้องเป็นของหลวง"],
+  a:1,e:"วรรณกรรม = งานเขียนทุกชนิด; วรรณคดี = วรรณกรรมที่ได้รับยกย่องว่าแต่งดี มีคุณค่าทางวรรณศิลป์",r:"① พื้นฐาน"},
+
+ {q:"'วรรณคดีสโมสร' ตั้งขึ้นในรัชกาลใด",
+  o:["ร.4","ร.5","ร.6","ร.7"],
+  a:2,e:"วรรณคดีสโมสรตั้งสมัย ร.6 (พ.ศ. 2457) เพื่อวางเกณฑ์ตัดสินหนังสือดี",r:"① พื้นฐาน"},
+
+ {q:"ตามมติวรรณคดีสโมสร 'ยอดของกลอนเสภา' คือเรื่องใด",
+  o:["พระอภัยมณี","อิเหนา","เสภาเรื่องขุนช้างขุนแผน","ลิลิตพระลอ"],
+  a:2,e:"ยอดของกลอนเสภา = เสภาเรื่องขุนช้างขุนแผน",r:"① พื้นฐาน"},
+
+ {q:"'ยอดของบทละครรำ' คือเรื่องใด ใครพระราชนิพนธ์",
+  o:["อิเหนา – ร.2","รามเกียรติ์ – ร.1","หัวใจนักรบ – ร.6","สังข์ทอง – ร.2"],
+  a:0,e:"ยอดของบทละครรำ = อิเหนา พระราชนิพนธ์ ร.2",r:"① พื้นฐาน"},
+
+ {q:"'ยอดของลิลิต' คือเรื่องใด",
+  o:["ลิลิตตะเลงพ่าย","ลิลิตพระลอ","ลิลิตโองการแช่งน้ำ","ลิลิตยวนพ่าย"],
+  a:1,e:"ยอดของลิลิต = ลิลิตพระลอ",r:"① พื้นฐาน"},
+
+ {q:"'ยอดของกลอนนิทาน' คือเรื่องใด ใครแต่ง",
+  o:["พระอภัยมณี – สุนทรภู่","อิเหนา – ร.2","สามก๊ก – เจ้าพระยาพระคลัง(หน)","ขุนช้างขุนแผน – ครูแจ้ง"],
+  a:0,e:"ยอดของกลอนนิทาน = พระอภัยมณี ของสุนทรภู่",r:"① พื้นฐาน"},
+
+ {q:"รสวรรณคดีไทยที่เป็น 'บทชมโฉม/ชมความงาม' คือรสใด",
+  o:["นารีปราโมทย์","เสาวรจนีย์","พิโรธวาทัง","สัลลาปังคพิสัย"],
+  a:1,e:"เสาวรจนีย์ = บทชมโฉม ชมความงามของคน สถานที่ ธรรมชาติ",r:"① พื้นฐาน"},
+
+ {q:"บทคร่ำครวญ ร่ำไห้ เศร้าโศก จัดเป็นรสใด",
+  o:["สัลลาปังคพิสัย","พิโรธวาทัง","เสาวรจนีย์","นารีปราโมทย์"],
+  a:0,e:"สัลลาปังคพิสัย = บทโศกเศร้า คร่ำครวญ ร่ำไห้",r:"① พื้นฐาน"},
+
+ {q:"บทเกี้ยวพาราสี โอ้โลม จัดเป็นรสใด",
+  o:["เสาวรจนีย์","นารีปราโมทย์","พิโรธวาทัง","สัลลาปังคพิสัย"],
+  a:1,e:"นารีปราโมทย์ = บทเกี้ยว/โอ้โลม แสดงความรักใคร่",r:"① พื้นฐาน"},
+
+ {q:"บทแสดงความโกรธ ตัดพ้อ ต่อว่า จัดเป็นรสใด",
+  o:["พิโรธวาทัง","สัลลาปังคพิสัย","เสาวรจนีย์","นารีปราโมทย์"],
+  a:0,e:"พิโรธวาทัง = บทโกรธเคือง ตัดพ้อ",r:"① พื้นฐาน"},
+
+ {q:"การเขียนแบบ 'ยกตัวอย่าง/นิทานประกอบ' ให้เข้าใจง่าย เรียกโวหารใด",
+  o:["บรรยายโวหาร","พรรณนาโวหาร","สาธกโวหาร","เทศนาโวหาร"],
+  a:2,e:"สาธกโวหาร = ยกตัวอย่าง/นิทาน/เรื่องประกอบให้เข้าใจง่ายขึ้น",r:"① พื้นฐาน"},
+
+ {q:"โวหารที่มุ่ง 'สั่งสอน ชี้แจง โน้มน้าวให้เชื่อ' คือ",
+  o:["อุปมาโวหาร","เทศนาโวหาร","บรรยายโวหาร","พรรณนาโวหาร"],
+  a:1,e:"เทศนาโวหาร = สั่งสอน ชี้แจง โน้มน้าวให้เชื่อ/คล้อยตาม",r:"① พื้นฐาน"},
+
+ {q:"โวหารที่ 'เล่าเรื่อง/อธิบายตามลำดับ เน้นข้อเท็จจริง' คือ",
+  o:["บรรยายโวหาร","พรรณนาโวหาร","สาธกโวหาร","อุปมาโวหาร"],
+  a:0,e:"บรรยายโวหาร = เล่าเรื่อง/อธิบายตามลำดับเหตุการณ์ กระชับ เน้นข้อเท็จจริง",r:"① พื้นฐาน"},
+
+ {q:"'คลื่นซัดหาดทรายดังซู่ ๆ' ใช้ภาพพจน์ชนิดใด",
+  o:["อุปมา","อุปลักษณ์","สัทพจน์","อติพจน์"],
+  a:2,e:"'ซู่ ๆ' = เลียนเสียงธรรมชาติ → สัทพจน์ (Onomatopoeia)",r:"① พื้นฐาน"},
+
+ {q:"ข้อใดเป็น 'อุปลักษณ์' (Metaphor)",
+  o:["ใจดำเหมือนถ่าน","เธอคือดวงใจของฉัน","ขาวราวกับสำลี","เร็วดุจสายฟ้า"],
+  a:1,e:"อุปลักษณ์ = เปรียบตรงว่า 'เป็น/คือ' ไม่มีคำเชื่อม; ข้ออื่นมี เหมือน/ราว/ดุจ = อุปมา",r:"① พื้นฐาน"},
+
+ {q:"'ลมหนาวกระซิบเบา ๆ ข้างหู' ใช้ภาพพจน์ชนิดใด",
+  o:["อติพจน์","นามนัย","บุคคลวัต (บุคลาธิษฐาน)","อุปมา"],
+  a:2,e:"ลม 'กระซิบ' = สมมุติสิ่งไม่มีชีวิตให้ทำกิริยาเหมือนคน → บุคคลวัต (Personification)",r:"① พื้นฐาน"},
+
+ {q:"'รอเธอมาพันปีก็ยอม' ใช้ภาพพจน์ชนิดใด",
+  o:["อุปมา","อติพจน์ (กล่าวเกินจริง)","นามนัย","สัทพจน์"],
+  a:1,e:"'รอพันปี' = กล่าวเกินจริงเพื่อเน้นอารมณ์ → อติพจน์/อธิพจน์ (Hyperbole)",r:"① พื้นฐาน"},
+
+ {q:"'มงกุฎ' ใช้แทน 'กษัตริย์' เป็นภาพพจน์ชนิดใด",
+  o:["นามนัย","อุปมา","บุคคลวัต","สัทพจน์"],
+  a:0,e:"นามนัย (Metonymy) = ใช้คำที่เป็นส่วนหนึ่ง/สัญลักษณ์แทนของทั้งหมด เช่น มงกุฎ→กษัตริย์",r:"① พื้นฐาน"},
+
+ {q:"'การสรรคำ' ในวรรณศิลป์หมายถึงข้อใด",
+  o:["การเลือกใช้คำให้เหมาะกับเนื้อหา/อารมณ์/เสียง","การแต่งเรื่องให้ยาว","การคัดลายมือ","การท่องจำบทกวี"],
+  a:0,e:"การสรรคำ (Diction) = เลือกใช้คำให้ไพเราะ เหมาะกับเนื้อหา อารมณ์ และฉันทลักษณ์",r:"① พื้นฐาน"},
+
+ {q:"'ขาวเหมือนหิมะ' เป็นภาพพจน์ชนิดใด",
+  o:["อุปมา","อุปลักษณ์","นามนัย","อติพจน์"],
+  a:0,e:"มีคำเชื่อม 'เหมือน' → อุปมา (Simile)",r:"① พื้นฐาน"},
+
+ /* ===== ② ขุนช้างขุนแผน ตอนขุนช้างถวายฎีกา ===== */
+ {q:"'ขุนช้างขุนแผน' แต่งด้วยคำประพันธ์ชนิดใด",
+  o:["ลิลิต","คำฉันท์","กลอนเสภา","โคลงสี่สุภาพ"],
+  a:2,e:"ขุนช้างขุนแผน = กลอนเสภา (ขับประกอบกรับ)",r:"② ขุนช้างฯ"},
+
+ {q:"เค้าเรื่องขุนช้างขุนแผนเกิดในสมัยใด",
+  o:["สุโขทัย","อยุธยา","ธนบุรี","รัตนโกสินทร์"],
+  a:1,e:"เค้าเรื่องสมัยอยุธยา รัชสมัยสมเด็จพระพันวษา",r:"② ขุนช้างฯ"},
+
+ {tag:"⭐ เรื่องคน",h:"กวีสมัย ร.3–ร.4 ⚠️ บางตำราว่าไม่ปรากฏผู้แต่งแน่ชัด",
+  q:"ตอน 'ขุนช้างถวายฎีกา' เชื่อว่าเป็นสำนวนของกวีผู้ใด",
+  o:["สุนทรภู่","ครูแจ้ง","ร.2","กรมพระยาดำรงราชานุภาพ"],
+  a:1,e:"ตอนขุนช้างถวายฎีกา = สำนวน 'ครูแจ้ง' ⚠️ บางตำราระบุว่าไม่ปรากฏผู้แต่งแน่ชัด — ตรวจกับอาจารย์",r:"② ขุนช้างฯ"},
+
+ {tag:"⭐ เรื่องคน",h:"ชื่อตัว 'พลายงาม' + บรรดาศักดิ์ในราชการ",
+  q:"'พลายงาม' มีบรรดาศักดิ์/ชื่อในราชการว่าอย่างไร",
+  o:["ขุนแผนแสนสะท้าน","จมื่นไวยวรนาถ","หมื่นหาญ","พระยาเดโช"],
+  a:1,e:"พลายงาม (ลูกขุนแผน-วันทอง) รับราชการเป็น 'จมื่นไวยวรนาถ' (จมื่นไวย)",r:"② ขุนช้างฯ"},
+
+ {tag:"⭐ เรื่องคน",h:"คนที่เสียวันทองไปเลยไปร้องทุกข์",
+  q:"ใครเป็นผู้ 'ถวายฎีกา' ต่อสมเด็จพระพันวษา",
+  o:["ขุนแผน","พลายงาม","ขุนช้าง","นางวันทอง"],
+  a:2,e:"ขุนช้างเป็นผู้ถวายฎีกา (ร้องทุกข์ต่อกษัตริย์) หลังถูกพลายงามลักพาวันทองไป",r:"② ขุนช้างฯ"},
+
+ {q:"สาเหตุที่ขุนช้างถวายฎีกาคือข้อใด",
+  o:["ถูกขุนแผนทำร้าย","พลายงามลักพานางวันทองไปจากเรือนตน","ถูกริบราชบาตร","ต้องการเลื่อนยศ"],
+  a:1,e:"เพราะจมื่นไวย (พลายงาม) ลอบเข้าเรือนพานางวันทอง (แม่) หนีไป",r:"② ขุนช้างฯ"},
+
+ {q:"สมเด็จพระพันวษาให้นางวันทองทำสิ่งใดก่อนพิพากษา",
+  o:["ให้ออกบวช","ให้เลือกว่าจะอยู่กับใคร (ขุนช้าง/ขุนแผน/พลายงาม)","ให้ไปอยู่วัง","ให้กลับไปอยู่กับขุนช้าง"],
+  a:1,e:"พระพันวษาให้วันทองเลือกระหว่างขุนช้าง ขุนแผน และพลายงาม",r:"② ขุนช้างฯ"},
+
+ {q:"เหตุที่นางวันทองถูกสั่งประหารคือข้อใด",
+  o:["ลอบหนีออกนอกเมือง","ลังเลเลือกไม่ได้ ถูกหาว่าเป็น 'หญิงสองใจ'","ดูหมิ่นกษัตริย์","ใช้คาถาอาคม"],
+  a:1,e:"วันทองลังเล เลือกไม่ได้ พระพันวษากริ้วหาว่าเป็น 'หญิงสองใจ' จึงสั่งประหาร",r:"② ขุนช้างฯ"},
+
+ {tag:"⭐ เรื่องคน",h:"กษัตริย์อยุธยาในเรื่อง",
+  q:"ใครเป็นผู้สั่งประหารนางวันทอง",
+  o:["ขุนช้าง","ขุนแผน","สมเด็จพระพันวษา","พลายงาม"],
+  a:2,e:"สมเด็จพระพันวษา (กษัตริย์อยุธยา) เป็นผู้สั่งประหารวันทอง",r:"② ขุนช้างฯ"},
+
+ {q:"สำนวน 'วันทองสองใจ' หมายถึงข้อใด",
+  o:["หญิงที่ซื่อสัตย์มาก","หญิงที่รักหลายคน/ตัดสินใจไม่เด็ดขาด","หญิงที่ยากจน","ชายเจ้าชู้"],
+  a:1,e:"วันทองสองใจ = หญิงที่มีใจรักหลายคน/ตัดสินใจไม่เด็ดขาด (สำนวนเกิดจากเรื่องนี้)",r:"② ขุนช้างฯ"},
+
+ {q:"ของวิเศษคู่กายขุนแผนข้อใดถูกต้อง",
+  o:["กุมารทอง–ดาบฟ้าฟื้น–ม้าสีหมอก","พระขรรค์–ช้างเผือก–แหวนวิเศษ","ธนูศิลป์–เรือสุพรรณหงส์","ตรีเพชร–คันศร–ราชสีห์"],
+  a:0,e:"ขุนแผนมี กุมารทอง · ดาบฟ้าฟื้น · ม้าสีหมอก",r:"② ขุนช้างฯ"},
+
+ {tag:"⭐ เรื่องคน",h:"ชื่อเดิมของนางวันทอง",
+  q:"นางวันทองมีอีกชื่อหนึ่งว่าอย่างไร",
+  o:["ศรีมาลา","สร้อยฟ้า","พิมพิลาไลย","ลาวทอง"],
+  a:2,e:"วันทอง อีกชื่อคือ 'พิมพิลาไลย' (สร้อยฟ้า/ศรีมาลา = เมียพลายงาม)",r:"② ขุนช้างฯ"},
+
+ {q:"ค่านิยมเด่นที่เป็นเหตุให้วันทองถูกตัดสินคือข้อใด",
+  o:["สังคมหญิงเป็นใหญ่","สังคมชายเป็นใหญ่ (ผู้หญิงต้องมีผัวเดียว)","เสรีภาพในการเลือกคู่","ความเสมอภาคทางเพศ"],
+  a:1,e:"สังคมชายเป็นใหญ่ (ปิตาธิปไตย) — ผู้หญิงต้องมีผัวเดียว การมีหลายผัวถือว่าผิด",r:"② ขุนช้างฯ"},
+
+ {q:"คุณค่าด้านสังคมของเรื่องนี้คือข้อใด",
+  o:["สอนการทำสงคราม","สะท้อนวิถีชีวิต ความเชื่อ และชะตากรรมผู้หญิงสมัยอยุธยา","สอนการค้าขาย","บันทึกพงศาวดารจีน"],
+  a:1,e:"สะท้อนวิถีชีวิต ความเชื่อ กฎหมาย และชะตากรรมของผู้หญิงในสังคมชายเป็นใหญ่",r:"② ขุนช้างฯ"},
+
+ {q:"ความเชื่อใดที่สะท้อนเด่นในเรื่องขุนช้างขุนแผน",
+  o:["ไสยศาสตร์/คาถาอาคม","ลัทธิบูชาไฟ","เทวนิยมแบบกรีก","วิทยาศาสตร์สมัยใหม่"],
+  a:0,e:"ไสยศาสตร์–คาถาอาคม (กุมารทอง ดาบฟ้าฟื้น ฤกษ์ยาม โหราศาสตร์)",r:"② ขุนช้างฯ"},
+
+ /* ===== ③ สามัคคีเภทคำฉันท์ ===== */
+ {tag:"⭐ เรื่องคน",h:"กวีสมัย ร.6 แต่ง พ.ศ. 2457",
+  q:"ใครเป็นผู้แต่ง 'สามัคคีเภทคำฉันท์'",
+  o:["เจ้าพระยาพระคลัง(หน)","นายชิต บุรทัต","สุนทรภู่","กรมพระปรมานุชิตชิโนรส"],
+  a:1,e:"นายชิต บุรทัต (กวีสมัย ร.6) แต่งเมื่อ พ.ศ. 2457",r:"③ สามัคคีเภท"},
+
+ {q:"'สามัคคีเภทคำฉันท์' แต่งด้วยคำประพันธ์ประเภทใด",
+  o:["กลอนเสภา","ลิลิต","คำฉันท์ (ฉันท์+กาพย์)","กลอนสุภาพ"],
+  a:2,e:"คำฉันท์ — ประชุมฉันท์และกาพย์หลายชนิดให้เข้ากับอารมณ์",r:"③ สามัคคีเภท"},
+
+ {q:"เค้าเรื่องสามัคคีเภทคำฉันท์นำมาจากคัมภีร์ใด",
+  o:["รามายณะ","มหาภารตะ","มหาปรินิพพานสูตร","ไตรภูมิพระร่วง"],
+  a:2,e:"ดัดแปลงจากมหาปรินิพพานสูตร + อรรถกถาสุมังคลวิลาสินี",r:"③ สามัคคีเภท"},
+
+ {q:"จุดมุ่งหมายหลักของเรื่องคือข้อใด",
+  o:["สอนการค้า","ชี้โทษของการแตกความสามัคคี","ชมความงามธรรมชาติ","สรรเสริญกษัตริย์"],
+  a:1,e:"ชี้ให้เห็นโทษของการแตกความสามัคคี → ปลุกใจให้รักสามัคคี (ชาตินิยมสมัย ร.6)",r:"③ สามัคคีเภท"},
+
+ {tag:"⭐ เรื่องคน",h:"กษัตริย์ฝ่ายรุก ครองเมืองราชคฤห์",
+  q:"กษัตริย์ผู้ต้องการตีแคว้นวัชชีคือใคร ครองแคว้นใด",
+  o:["พระเจ้าอชาตศัตรู – มคธ","พระเจ้าพิมพิสาร – โกศล","พระเจ้าปเสนทิ – กาสี","พระเจ้าจัณฑปัชโชต – อวันตี"],
+  a:0,e:"พระเจ้าอชาตศัตรู แห่งแคว้นมคธ (เมืองราชคฤห์)",r:"③ สามัคคีเภท"},
+
+ {tag:"⭐ เรื่องคน",h:"ปุโรหิตฝ่ายมคธ ผู้ยอมถูกเฆี่ยนเพื่อแฝงตัว",
+  q:"ใครเป็นผู้วางอุบายเป็น 'ไส้ศึก' ทำลายความสามัคคี",
+  o:["พระเจ้าอชาตศัตรู","วัสสการพราหมณ์","กษัตริย์ลิจฉวี","พระพุทธเจ้า"],
+  a:1,e:"วัสสการพราหมณ์ (ปุโรหิตฝ่ายมคธ) ยอมถูกลงโทษเฆี่ยน+เนรเทศ เพื่อแฝงตัวเป็นไส้ศึก",r:"③ สามัคคีเภท"},
+
+ {tag:"⭐ เรื่องคน",h:"เหล่ากษัตริย์ปกครองแคว้นวัชชี เมืองเวสาลี",
+  q:"เหล่ากษัตริย์ผู้ปกครองแคว้นวัชชีเรียกว่าอะไร",
+  o:["ลิจฉวี","ศากยะ","มัลละ","โกลิยะ"],
+  a:0,e:"กษัตริย์ลิจฉวี แห่งแคว้นวัชชี (เมืองเวสาลี)",r:"③ สามัคคีเภท"},
+
+ {q:"ธรรมที่ทำให้แคว้นวัชชีเข้มแข็ง ตีไม่แตก คือธรรมใด",
+  o:["อิทธิบาท 4","พรหมวิหาร 4","อปริหานิยธรรม 7","ฆราวาสธรรม 4"],
+  a:2,e:"อปริหานิยธรรม 7 = ธรรมไม่เป็นที่ตั้งแห่งความเสื่อม (เช่น หมั่นประชุม พร้อมเพรียงกัน)",r:"③ สามัคคีเภท"},
+
+ {tag:"⭐ เรื่องคน",h:"ผู้ตรัสธรรมให้กษัตริย์ลิจฉวี",
+  q:"ใครเป็นผู้ตรัส 'อปริหานิยธรรม 7' แก่กษัตริย์ลิจฉวี",
+  o:["วัสสการพราหมณ์","พระพุทธเจ้า","พระเจ้าอชาตศัตรู","พระอานนท์"],
+  a:1,e:"พระพุทธเจ้าทรงตรัสอปริหานิยธรรม 7 แก่กษัตริย์ลิจฉวี",r:"③ สามัคคีเภท"},
+
+ {q:"วัสสการพราหมณ์ใช้เวลานานเท่าใดในการยุยงให้แตกสามัคคี",
+  o:["1 ปี","3 ปี","7 ปี","10 ปี"],
+  a:1,e:"ใช้เวลา 3 ปี ค่อย ๆ ยุให้กษัตริย์ลิจฉวีระแวงและแตกแยกกัน",r:"③ สามัคคีเภท"},
+
+ {q:"กลอุบายของวัสสการพราหมณ์ในแคว้นวัชชีคือข้อใด",
+  o:["วางยาพิษกษัตริย์","เป็นครูสอนราชกุมาร แล้วยุให้ระแวงแตกแยกกัน","ลอบเผาเมือง","ติดสินบนทหาร"],
+  a:1,e:"แฝงตัวเป็นครูสอนราชกุมาร เรียกคุยทีละคน แล้วปล่อยข่าวให้เข้าใจผิด ระแวงกัน",r:"③ สามัคคีเภท"},
+
+ {q:"ผลลัพธ์ของเรื่องและคติที่ได้คือข้อใด",
+  o:["วัชชีชนะเพราะสามัคคี","วัชชีแตกพ่ายเพราะแตกสามัคคี — สอนว่าความสามัคคีคือพลัง","สองแคว้นเป็นมิตรกัน","อชาตศัตรูออกบวช"],
+  a:1,e:"วัชชีแตกพ่าย เสียเมืองง่ายเพราะแตกสามัคคี — คติ: ความสามัคคีคือพลัง",r:"③ สามัคคีเภท"},
+
+ {q:"ข้อใดคือ 'อปริหานิยธรรม' ข้อหนึ่ง",
+  o:["หมั่นประชุมกันเนืองนิตย์","กินอยู่อย่างประหยัด","ฝึกฝนการรบ","สะสมทรัพย์"],
+  a:0,e:"ข้อ 1 ของอปริหานิยธรรม 7 = หมั่นประชุมกันเนืองนิตย์ และพร้อมเพรียงกัน",r:"③ สามัคคีเภท"},
+
+ {q:"คุณค่าด้านวรรณศิลป์เด่นของสามัคคีเภทคำฉันท์คือข้อใด",
+  o:["เลือกใช้ฉันท์หลายชนิดให้เข้ากับอารมณ์ เป็นแบบเรียนฉันทลักษณ์","ใช้ภาษาตลาดล้วน ๆ","ไม่มีสัมผัส","เขียนเป็นร้อยแก้วทั้งเรื่อง"],
+  a:0,e:"เลือกใช้ฉันท์/กาพย์หลายชนิดให้เหมาะกับอารมณ์ (ดุดันในบทรบ อ่อนหวานในบทพรรณนา)",r:"③ สามัคคีเภท"},
+];
+
+/* ====== shuffle-bag ====== */
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+/* ====== ตัวกรองเรื่อง ====== */
+function topicOf(it){
+  const r=(it.r||'');
+  if(/①/.test(r))return '1';
+  if(/②/.test(r))return '2';
+  if(/③/.test(r))return '3';
+  return 'อื่นๆ';
+}
+const FILTERS=[
+  {key:'all',label:'ทั้งหมด',test:()=>true},
+  {key:'people',label:'⭐ เรื่องคน/ชื่อ',cls:'focus5',test:it=>/เรื่องคน/.test(it.tag||'')},
+  {key:'1',label:'① พื้นฐานวรรณคดี',test:it=>topicOf(it)==='1'},
+  {key:'2',label:'② ขุนช้างขุนแผน',test:it=>topicOf(it)==='2'},
+  {key:'3',label:'③ สามัคคีเภท',test:it=>topicOf(it)==='3'},
+];
+let curFilter='all';
+let pool=[...BANK.keys()];
+let bag=shuffle([...pool]);
+let idx=0,score=0,streak=0,answered=false;
+const KEYS=["ก","ข","ค","ง"];
+const $=id=>document.getElementById(id);
+
+function buildFilterBar(){
+  const fb=$("filterbar"); fb.innerHTML='';
+  FILTERS.forEach(f=>{
+    const n=BANK.filter(f.test).length;
+    if(n===0)return;
+    const b=document.createElement('button');
+    b.className='fchip'+(f.cls?' '+f.cls:'')+(f.key===curFilter?' on':'');
+    b.textContent=f.label+' ('+n+')';
+    b.addEventListener('click',()=>applyFilter(f.key));
+    fb.appendChild(b);
+  });
+}
+function applyFilter(key){
+  curFilter=key;
+  const f=FILTERS.find(x=>x.key===key);
+  pool=[...BANK.keys()].filter(i=>f.test(BANK[i]));
+  bag=shuffle([...pool]);
+  idx=0;score=0;streak=0;
+  $("score").textContent=0;$("streak").textContent=0;
+  $("qtot").textContent=bag.length;
+  buildFilterBar();
+  render();
+}
+buildFilterBar();
+$("qtot").textContent=bag.length;
+
+function render(){
+  const stage=$("stage");
+  if(idx>=bag.length){return end();}
+  const item=BANK[bag[idx]];
+  const order=shuffle(item.o.map((t,i)=>({t,i})));
+  const correctPos=order.findIndex(x=>x.i===item.a);
+  answered=false;
+  $("qnum").textContent=idx+1;
+  $("pbar").style.width=((idx)/bag.length*100)+"%";
+  let html=`<div class="card">
+    <div class="tag">ข้อ ${idx+1} · ${item.r||"ปรนัย"}${item.tag?" · "+item.tag:""}</div>
+    <div class="q">${item.q}</div>
+    <div class="opts">`;
+  order.forEach((op,i)=>{
+    html+=`<button class="opt" data-i="${i}"><span class="k">${KEYS[i]}.</span><span>${op.t}</span></button>`;
+  });
+  html+=`</div>
+    <button class="hintbtn" id="hintbtn">💡 ขอคำใบ้</button>
+    <div class="hint" id="hint">${makeHint(item)}</div>
+    <div class="fb" id="fb"></div>
+    <button class="next" id="next">ข้อถัดไป →</button>
+  </div>`;
+  stage.innerHTML=html;
+  stage.querySelectorAll(".opt").forEach(b=>{
+    b.addEventListener("click",()=>choose(b,correctPos,order,item));
+  });
+  $("hintbtn").addEventListener("click",()=>{$("hint").classList.add("show");$("hintbtn").style.display="none"});
+  $("next").addEventListener("click",()=>{idx++;render();});
+}
+
+function makeHint(item){
+  if(item.h) return "คำใบ้: "+item.h;
+  const ans=item.o[item.a].trim();
+  return "คำใบ้: คำตอบขึ้นต้นด้วย “<b>"+ans.charAt(0)+"</b>”";
+}
+
+function choose(btn,correctPos,order,item){
+  if(answered)return;answered=true;
+  const chosen=+btn.dataset.i;
+  const opts=document.querySelectorAll(".opt");
+  opts.forEach((b,i)=>{
+    b.disabled=true;
+    if(i===correctPos)b.classList.add("correct");
+    if(i===chosen&&chosen!==correctPos)b.classList.add("wrong");
+  });
+  const fb=$("fb");
+  if(chosen===correctPos){
+    score++;streak++;
+    fb.className="fb ok show";
+    fb.innerHTML=`<div class="head">✓ ถูกต้อง!</div><div>${item.e}</div><div class="ref">📖 ${item.r}</div>`;
+  }else{
+    streak=0;
+    fb.className="fb no show";
+    fb.innerHTML=`<div class="head">✗ ยังไม่ถูก</div><div>คำตอบที่ถูกคือ <b>${KEYS[correctPos]}. ${order[correctPos].t}</b><br>${item.e}</div><div class="ref">📖 ${item.r}</div>`;
+  }
+  $("score").textContent=score;
+  $("streak").textContent=streak;
+  $("hintbtn").style.display="none";
+  $("next").classList.add("show");
+  $("next").textContent = (idx+1>=bag.length)?"ดูผลคะแนน 🎉":"ข้อถัดไป →";
+}
+
+function end(){
+  $("pbar").style.width="100%";
+  const pct=Math.round(score/bag.length*100);
+  let msg,emoji;
+  if(pct>=90){msg="เก่งมาก! พร้อมสอบสุด ๆ";emoji="🏆";}
+  else if(pct>=70){msg="ดีมาก! ทบทวนข้อที่พลาดอีกนิด";emoji="🌟";}
+  else if(pct>=50){msg="พอใช้ — เปิด Fact Sheet ทวนหัวข้อที่ยังไม่แม่น";emoji="📚";}
+  else{msg="สู้ ๆ! อ่าน Fact_Sheet_ภาษาไทย_กลางภาค.md แล้วเล่นใหม่";emoji="💪";}
+  $("stage").innerHTML=`<div class="card end">
+    <div style="font-size:3rem">${emoji}</div>
+    <div class="big">${score}/${bag.length}</div>
+    <div>คิดเป็น ${pct}%</div>
+    <div class="msg">${msg}</div>
+    <button class="restart" id="restart">🔄 เล่นอีกครั้ง</button>
+  </div>`;
+  $("restart").addEventListener("click",()=>{
+    bag=shuffle([...pool]);idx=0;score=0;streak=0;
+    $("score").textContent=0;$("streak").textContent=0;
+    render();
+  });
+}
+
+render();
+</script>
+<!--KIT-UI v2.4 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<script>
+/* =============================================================================
+   _kit/ui-controls.js  —  KIT UI  v1.0
+   แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
+     🌙/☀️  โหมดมืด / สว่าง   (จำค่าไว้ใน localStorage)
+     A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
+     ✏️  ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
+     🧮  เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
+
+   ── วิธีใช้ ────────────────────────────────────────────────────────────────
+   ห้ามแก้โค้ดนี้ในไฟล์ widget!  แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
+       pwsh -File _kit/apply-ui.ps1
+   สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
+   (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
+
+   !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
+      เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
+
+   ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
+   ใส่แอตทริบิวต์ที่ tag body:  data-tools="pen,calc"  = บังคับเปิด
+                              data-tools="none"      = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
+   ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
+              หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
+   ============================================================================= */
+(function(){
+if(window.__KITUI__) return; window.__KITUI__='2.4';
+
+/* ---------- helper ---------- */
+const D=document, R=D.documentElement;
+const get=k=>{try{return localStorage.getItem('kitui-'+k)}catch(e){return null}};
+const set=(k,v)=>{try{localStorage.setItem('kitui-'+k,v)}catch(e){}};
+const el=(t,c,h)=>{const e=D.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
+
+/* =============================================================================
+   1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
+   ============================================================================= */
+const CSS=`
+/* ===== DARK TOKENS (คู่กับ _kit/design-tokens.css) ===== */
+:root[data-theme="dark"]{
+  --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
+  --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
+  --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
+  --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
+  --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
+}
+:root[data-theme="dark"] body{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f172a}
+:root[data-theme="dark"] body[data-subject="physics"]{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f1220}
+:root[data-theme="dark"] body[data-subject="bio"]{--accent:#4ade80;--accent-head:#bbf7d0;--accent-ink:#86efac;--accent-soft:#0f2a1a;--accent-bd:#256b41;--accent-chip:#14532d;--accent-ghost:#15803d;--bg:#0d1912}
+:root[data-theme="dark"] body[data-subject="chem"]{--accent:#fb923c;--accent-head:#fed7aa;--accent-ink:#fdba74;--accent-soft:#2b1a0c;--accent-bd:#8a3d12;--accent-chip:#6d2c10;--accent-ghost:#c2410c;--bg:#1a130c}
+:root[data-theme="dark"] body[data-subject="christ"]{--accent:#a78bfa;--accent-head:#ddd6fe;--accent-ink:#c4b5fd;--accent-soft:#241a3d;--accent-bd:#5b21b6;--accent-chip:#4c1d95;--accent-ghost:#6d28d9;--bg:#16121f}
+:root[data-theme="dark"] body[data-subject="islam"]{--accent:#2dd4bf;--accent-head:#99f6e4;--accent-ink:#5eead4;--accent-soft:#0d2b28;--accent-bd:#12615a;--accent-chip:#134e4a;--accent-ghost:#0f766e;--bg:#0c1917}
+:root[data-theme="dark"] body[data-subject="history"]{--accent:#fbbf24;--accent-head:#fde68a;--accent-ink:#fcd34d;--accent-soft:#2a1f0a;--accent-bd:#8a4b0c;--accent-chip:#6d3a0a;--accent-ghost:#b45309;--bg:#191509}
+:root[data-theme="dark"] body[data-subject="math"]{--accent:#38bdf8;--accent-head:#bae6fd;--accent-ink:#7dd3fc;--accent-soft:#0c2434;--accent-bd:#0b5a80;--accent-chip:#0c4a6e;--accent-ghost:#0369a1;--bg:#0b1620}
+:root[data-theme="dark"] body[data-subject="eng"]{--accent:#f472b6;--accent-head:#fbcfe8;--accent-ink:#f9a8d4;--accent-soft:#2e1122;--accent-bd:#8d1748;--accent-chip:#731839;--accent-ghost:#be185d;--bg:#1c0f16}
+:root[data-theme="dark"] body[data-subject="thai"]{--accent:#f87171;--accent-head:#fecaca;--accent-ink:#fca5a5;--accent-soft:#2d1414;--accent-bd:#8d2020;--accent-chip:#7f1d1d;--accent-ghost:#b91c1c;--bg:#1a0f0f}
+:root[data-theme="dark"] img,:root[data-theme="dark"] .svg-box{filter:brightness(.92)}
+/* ช่องกรอก/ดรอปดาวน์ที่ widget เก่ากำหนดพื้นขาวตายตัวไว้ */
+:root[data-theme="dark"] select,:root[data-theme="dark"] textarea,
+:root[data-theme="dark"] input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=color])
+{background-color:var(--soft);color:var(--ink);border-color:var(--line)}
+
+/* ===== แถบเครื่องมือลอย ===== */
+#kitui-bar{position:fixed;right:10px;bottom:10px;z-index:99990;display:flex;gap:6px;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
+#kitui-bar button{border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;
+  font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
+  align-items:center;justify-content:center;font-weight:700}
+#kitui-bar button:hover{background:var(--soft)}
+#kitui-bar button:active{transform:scale(.93)}
+#kitui-bar button.on{background:var(--accent);color:#fff}
+#kitui-bar .kitui-sep{width:1px;height:22px;background:var(--line);flex:0 0 1px}
+#kitui-bar .kitui-fs{font-size:11px;color:var(--muted);min-width:34px;text-align:center;font-weight:700}
+#kitui-bar.hidden > *:not(#kitui-grip){display:none}
+#kitui-grip{font-size:17px}
+
+/* ===== แผงลอย (ที่ทด / เครื่องคิดเลข) ===== */
+.kitui-sheet{position:fixed;left:0;right:0;bottom:0;z-index:99991;background:var(--card);
+  border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
+  display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
+  height:52vh;max-height:92vh;min-height:180px}
+.kitui-sheet.open{display:flex}
+.kitui-sheet.full{height:100vh;border-radius:0}
+.kitui-head{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--line);
+  flex-wrap:wrap;touch-action:none;cursor:ns-resize}
+.kitui-head b{font-size:.9rem;color:var(--accent-ink);margin-right:2px;white-space:nowrap}
+.kitui-head button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;
+  padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
+.kitui-head button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.kitui-head .kitui-spacer{flex:1}
+.kitui-sw{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;min-height:0}
+.kitui-sw.on{border-color:var(--ink);transform:scale(1.12)}
+.kitui-padwrap{flex:1;position:relative;overflow:hidden;background:var(--soft)}
+.kitui-padwrap canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+:root[data-theme="dark"] .kitui-padwrap{background:#0c1220}
+
+/* ===== เครื่องคิดเลข ===== */
+#kitui-calc{height:auto;max-height:90vh}
+.kitui-disp{padding:8px 12px;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);
+  border-bottom:1px solid var(--line)}
+.kitui-disp .ex{font-size:.95rem;color:var(--muted);min-height:1.3em;word-break:break-all}
+.kitui-disp .rs{font-size:1.6rem;font-weight:700;color:var(--accent-ink);word-break:break-all}
+.kitui-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:7px}
+.kitui-keys button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:9px;
+  font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
+.kitui-keys button:active{transform:scale(.95)}
+.kitui-keys button.fn{font-size:.8rem;color:var(--accent-ink)}
+.kitui-keys button.op{background:var(--accent-soft);color:var(--accent-ink)}
+.kitui-keys button.eq{background:var(--accent);color:#fff;grid-row:span 2}
+.kitui-keys button.del{background:var(--hot-bg);color:var(--hot-ink)}
+.kitui-keys button.w3{grid-column:span 3}
+@media(max-width:420px){.kitui-keys button{font-size:.88rem;min-height:40px}.kitui-keys button.fn{font-size:.72rem}}
+@media(min-width:760px){
+  .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
+  .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
+  #kitui-pad{width:560px}
+}
+@media print{#kitui-bar,.kitui-sheet{display:none!important}}
+`;
+const st=el('style'); st.id='kitui-style'; st.textContent=CSS; D.head.appendChild(st);
+
+/* -----------------------------------------------------------------------------
+   1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
+   widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
+   พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
+   แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
+   เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
+----------------------------------------------------------------------------- */
+/* สีพาสเทลสว่าง -> สีเข้มที่ยังคง "เฉดเดิม" ไว้ (เขียว=ถูก / แดง=ผิด ต้องยังแยกออก)
+   ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
+function darken(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
+  const l0=(mx+mn)/2;
+  const s0 = d===0 ? 0 : d/(1-Math.abs(2*l0-1));
+  const s = d===0 ? 0 : Math.min(.5, Math.max(.3, s0));
+  const l = d===0 ? .13 : .17;                       /* เทา/ขาวให้เข้มกว่าสีนิดหน่อย */
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+function darkFix(){
+  const out=[], seen=new Set();
+  const take=r=>{
+    if(!r.style || !r.selectorText) return;
+    if(r.selectorText.indexOf('kitui')>-1) return;               /* ของเราเองใช้ token อยู่แล้ว */
+    const bg=r.style.backgroundColor;
+    if(!bg || bg.indexOf('var(')>-1) return;
+    const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
+    if(!m) return;
+    if(m[4]!==undefined && +m[4]<0.6) return;                    /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
+    const cr=+m[1], cg=+m[2], cb=+m[3];
+    if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return;       /* ไม่สว่างพอ ไม่ต้องยุ่ง */
+    const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
+    const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
+    let css='background-color:'+repl;
+    /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
+    const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
+    out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
+  };
+  /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
+        ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
+  const visit=rules=>{
+    for(let i=0;i<rules.length;i++){
+      const r=rules[i];
+      if(r.selectorText) take(r);
+      if(r.cssRules && r.cssRules.length) visit(r.cssRules);     /* @media / @supports / nesting */
+    }
+  };
+  for(let i=0;i<D.styleSheets.length;i++){
+    let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; }   /* ข้ามชีตข้ามโดเมน */
+    if(rr) visit(rr);
+  }
+  if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
+  return out.length;
+}
+try{ window.__KITUI_DARKFIX__=darkFix(); }catch(e){ window.__KITUI_DARKFIX__='err:'+e.message; }
+
+/* darkFix ข้างบนซ่อมได้เฉพาะสีที่เขียนตายตัวในไฟล์ CSS
+   แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
+   ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
+   จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
+const rgbOf=c=>{const m=c&&c.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null;};
+const lumOf=v=>v?(0.2126*v[0]+0.7152*v[1]+0.0722*v[2])/255:null;
+/* ตรงข้ามกับ darken(): ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
+   (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
+function lighten(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  if(d<0.04) return 'var(--ink)';                    /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
+  let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
+  const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
+  const s=Math.min(.92,Math.max(.55,s0)), l=.72;
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+const SKIP={CANVAS:1,IMG:1,VIDEO:1,SVG:1,IFRAME:1,PICTURE:1,OBJECT:1};
+const OBS_OPT={childList:true,subtree:true,attributes:true,attributeFilter:['class','style']};
+let patched=[], obs=null;
+function elementFix(){
+  /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
+        ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
+  if(obs) obs.disconnect();
+  try{ elementFixCore(); } finally { if(obs) obs.observe(D.body,OBS_OPT); }
+}
+function elementFixCore(){
+  /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
+     ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
+     จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
+  if(R.getAttribute('data-theme')!=='dark'){
+    patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
+    patched=[];
+    return;
+  }
+  /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
+     ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
+  /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
+  const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
+  for(let i=0;i<all.length;i++){
+    const e=all[i];
+    if(e.id&&e.id.indexOf('kitui')===0) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(SKIP[e.tagName]) continue;                      /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
+    const s=getComputedStyle(e);
+    const bg=rgbOf(s.backgroundColor);
+    if(!bg || bg[3]<0.6) continue;                     /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
+    if(lumOf(bg)<0.72) continue;                       /* เข้มพออยู่แล้ว */
+    /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
+    e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
+    const fg=rgbOf(s.color);
+    if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important');  /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
+    patched.push(e);
+  }
+  /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
+     ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
+  const bgCache=new Map();
+  const effBg=n=>{
+    for(let p=n;p;p=p.parentElement){
+      if(bgCache.has(p)) return bgCache.get(p);
+      const b=rgbOf(getComputedStyle(p).backgroundColor);
+      if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
+    }
+    return null;
+  };
+  for(let i=2;i<all.length;i++){
+    const e=all[i];
+    if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(e.style.color) continue;                         /* จัดการไปแล้วในรอบแรก */
+    if(!e.textContent || !e.textContent.trim()) continue;
+    const fg=rgbOf(getComputedStyle(e).color);
+    if(!fg || lumOf(fg)>=0.45) continue;                 /* ตัวอักษรสว่างอยู่แล้ว */
+    const bg=effBg(e);
+    if(!bg || lumOf(bg)>=0.5) continue;                  /* พื้นยังสว่าง อ่านออกอยู่ */
+    e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
+    patched.push(e);
+  }
+}
+let efT=0;
+const scheduleFix=()=>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
+try{
+  obs=new MutationObserver(scheduleFix);
+  obs.observe(D.body,OBS_OPT);
+}catch(e){}
+
+/* =============================================================================
+   2) ธีม + ขนาดตัวอักษร
+   ============================================================================= */
+const FS=[.85,1,1.15,1.3,1.5], FSNAME=['เล็กสุด','เล็ก','ปกติ','ใหญ่','ใหญ่สุด'];
+let fsIdx=parseInt(get('fs')); if(isNaN(fsIdx)||fsIdx<0||fsIdx>4) fsIdx=1;
+let theme=get('theme') || (matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+
+function applyTheme(){
+  R.setAttribute('data-theme',theme);
+  R.style.colorScheme = theme==='dark'?'dark':'light';   /* ให้ select/input เป็นสีเข้มด้วย */
+  const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
+  set('theme',theme);
+  clearTimeout(efT);                                   /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
+  if(typeof elementFix==='function') elementFix();
+  if(typeof draw==='function' && pad) draw();          /* วาดที่ทดใหม่ เส้นดำ<->ขาวตามธีม */
+}
+function applyFS(){
+  R.style.fontSize=(16*FS[fsIdx])+'px';
+  const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
+  set('fs',fsIdx);
+}
+
+/* =============================================================================
+   3) แถบเครื่องมือ
+   ============================================================================= */
+const subj=(D.body.getAttribute('data-subject')||'').toLowerCase();
+/* หลาย widget ไม่ได้ใส่ data-subject ที่ <body> → เดาจากโฟลเดอร์ที่ไฟล์อยู่ด้วย */
+const inPath=/\/(physics|math|chemist)\//i.test(decodeURIComponent(location.pathname));
+const tAttr=D.body.getAttribute('data-tools');
+const wantTools = tAttr!=null ? tAttr.toLowerCase()
+                : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
+const hasPen  = wantTools.includes('pen');
+const hasCalc = wantTools.includes('calc');
+
+const bar=el('div'); bar.id='kitui-bar';
+bar.innerHTML =
+  `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
+  `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button>`+
+  `<span class="kitui-sep"></span>`+
+  `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
+  `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
+  `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
+  (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
+  (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
+D.body.appendChild(bar);
+
+D.getElementById('kitui-theme').onclick=()=>{theme=theme==='dark'?'light':'dark';applyTheme();};
+D.getElementById('kitui-fsup').onclick=()=>{if(fsIdx<4){fsIdx++;applyFS();}};
+D.getElementById('kitui-fsdown').onclick=()=>{if(fsIdx>0){fsIdx--;applyFS();}};
+D.getElementById('kitui-grip').onclick=()=>bar.classList.toggle('hidden');
+applyTheme(); applyFS();
+
+/* ปิดแผงด้วยปุ่ม Esc */
+D.addEventListener('keydown',e=>{ if(e.key==='Escape') D.querySelectorAll('.kitui-sheet.open').forEach(s=>s.classList.remove('open')); });
+
+/* ลากหัวแผงเพื่อปรับความสูง */
+function makeResizable(sheet){
+  const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
+  head.addEventListener('pointerdown',e=>{
+    if(e.target.closest('button'))return;
+    drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect().height;head.setPointerCapture(e.pointerId);
+  });
+  head.addEventListener('pointermove',e=>{
+    if(!drag)return;
+    const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
+    sheet.classList.remove('full'); sheet.style.height=h+'px';
+    if(sheet.id==='kitui-pad') fitPad();
+  });
+  head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
+}
+
+/* =============================================================================
+   4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ  หลายหน้า  เซฟอัตโนมัติ
+   ============================================================================= */
+let pad,padCv,padCx,pages=[[]],pg=0,undone=[],histo=[];
+let tool='pen',color='#111827',width=2.4,penSeen=0;
+const COLORS=['#111827','#2563eb','#dc2626','#16a34a','#f59e0b'];
+const PADKEY='pad-'+location.pathname.split('/').pop();
+
+function buildPad(){
+  pad=el('div','kitui-sheet'); pad.id='kitui-pad';
+  pad.innerHTML=
+   `<div class="kitui-head">
+      <b>✏️ ที่ทด</b>
+      <button data-t="pen" class="on">🖊️</button>
+      <button data-t="hl">🖍️</button>
+      <button data-t="er">🧽</button>
+      ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
+      <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
+      <span class="kitui-spacer"></span>
+      <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
+      <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
+      <button id="kitui-pgadd">+ หน้า</button>
+      <button id="kitui-clear">ล้างหน้านี้</button>
+      <button id="kitui-full">⛶</button>
+      <button id="kitui-padclose">✕</button>
+    </div>
+    <div class="kitui-padwrap"><canvas></canvas></div>`;
+  D.body.appendChild(pad);
+  padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
+  makeResizable(pad);
+
+  pad.querySelector('.kitui-head').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
+  });
+  D.getElementById('kitui-undo').onclick=()=>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop(); draw(); save(); } };
+  D.getElementById('kitui-redo').onclick=()=>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop(); draw(); save(); } };
+  D.getElementById('kitui-clear').onclick=()=>{ snap(); pages[pg]=[]; draw(); save(); };
+  D.getElementById('kitui-pgadd').onclick=()=>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw(); save(); };
+  D.getElementById('kitui-pgprev').onclick=()=>{ if(pg>0){pg--;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-pgnext').onclick=()=>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-full').onclick=()=>{ pad.classList.toggle('full'); pad.style.height=''; fitPad(); };
+  D.getElementById('kitui-padclose').onclick=()=>pad.classList.remove('open');
+
+  /* ---- วาด ---- */
+  let cur=null;
+  padCv.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='pen') penSeen=Date.now();
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;   /* กันฝ่ามือแตะตอนใช้สไตลัส */
+    const p=pt(e);
+    if(tool==='er'){ snap(); erase(p); return; }
+    snap();
+    cur={c:color,w:width,hl:tool==='hl',pts:[p]};
+    pages[pg].push(cur); draw();
+    try{ padCv.setPointerCapture(e.pointerId); }catch(x){}  /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
+  });
+  padCv.addEventListener('pointermove',e=>{
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;
+    if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
+    if(!cur||!e.buttons)return;
+    /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
+    let evs=[e];
+    if(e.getCoalescedEvents){ const c=e.getCoalescedEvents(); if(c&&c.length) evs=c; }
+    evs.forEach(ev=>cur.pts.push(pt(ev)));
+    draw();
+  });
+  const end=()=>{ if(cur){cur=null;save();} };
+  padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
+  padCv.addEventListener('pointerleave',end);
+
+  addEventListener('resize',()=>{ if(pad.classList.contains('open')) fitPad(); });
+  load(); fitPad();
+}
+function pt(e){
+  const r=padCv.getBoundingClientRect();
+  return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
+          p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5};   /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
+}
+function snap(){ histo.push(pages[pg].slice()); if(histo.length>60)histo.shift(); undone=[]; }
+function erase(p){
+  const r=padCv.getBoundingClientRect(), rad=18/r.width;
+  const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
+  if(keep.length!==pages[pg].length){ pages[pg]=keep; draw(); save(); }
+}
+function fitPad(){
+  const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
+  const dpr=Math.min(devicePixelRatio||1,2.5);
+  padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
+  draw();
+}
+function draw(){
+  const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
+  padCx.clearRect(0,0,W,H);
+  /* เส้นตารางจาง ๆ ให้เขียนตรง */
+  const dark=R.getAttribute('data-theme')==='dark';
+  padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
+  for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath();padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke();}
+  padCx.lineCap='round'; padCx.lineJoin='round';
+  pages[pg].forEach(s=>{
+    padCx.globalAlpha=s.hl?0.32:1;
+    padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
+    for(let i=1;i<s.pts.length;i++){
+      const a=s.pts[i-1],b=s.pts[i];
+      padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
+      padCx.beginPath(); padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke();
+    }
+    if(s.pts.length===1){ /* จุดเดียว */
+      padCx.fillStyle=padCx.strokeStyle; padCx.beginPath();
+      padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill();
+    }
+  });
+  padCx.globalAlpha=1;
+  const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
+}
+function save(){ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
+function load(){
+  try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
+}
+
+if(hasPen){
+  buildPad();
+  D.getElementById('kitui-penbtn').onclick=()=>{
+    const o=pad.classList.toggle('open');
+    D.getElementById('kitui-penbtn').classList.toggle('on',o);
+    if(o) fitPad();
+  };
+}
+
+/* =============================================================================
+   5) เครื่องคิดเลขวิทยาศาสตร์  (tokenizer → shunting-yard → RPN  ไม่ใช้ eval)
+   ============================================================================= */
+const FN={sin:1,cos:1,tan:1,asin:1,acos:1,atan:1,ln:1,log:1,sqrt:1,abs:1,exp:1};
+const PREC={'+':1,'-':1,'*':2,'/':2,'^':4,'u-':3};
+function tokenize(s){
+  s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
+  const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!()])/g; let m;
+  while((m=re.exec(s))) out.push(m[1]);
+  return out;
+}
+function toRPN(tk){
+  const out=[],op=[]; let prev=null;
+  for(let t of tk){
+    if(t==='**')t='^';
+    if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
+    else if(t==='PI'){ out.push(Math.PI); }
+    else if(t==='e'||t==='E'){ out.push(Math.E); }
+    else if(t==='ANS'){ out.push(ANS); }
+    else if(FN[t]){ op.push(t); }
+    else if(t==='('){ op.push(t); }
+    else if(t===')'){
+      while(op.length&&op[op.length-1]!=='(') out.push(op.pop());
+      if(!op.length) throw 0; op.pop();
+      if(op.length&&FN[op[op.length-1]]) out.push(op.pop());
+    }
+    else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
+    else if('+-*/^'.includes(t)){
+      let o=t;
+      const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
+      if(t==='-'&&unary) o='u-';
+      else if(t==='+'&&unary){ prev=t; continue; }
+      while(op.length){
+        const top=op[op.length-1];
+        if(top==='('||FN[top])break;
+        const rightAssoc=(o==='^'||o==='u-');
+        if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop()); else break;
+      }
+      op.push(o);
+    }
+    else throw 0;
+    prev=t;
+  }
+  while(op.length){ const o=op.pop(); if(o==='(')throw 0; out.push(o); }
+  return out;
+}
+function evalRPN(rpn,deg){
+  const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
+  const pop=()=>{ if(!st.length)throw 0; return st.pop(); };
+  for(const t of rpn){
+    if(typeof t==='number'){ st.push(t); continue; }
+    if(t==='fact'){ const n=pop(); if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
+    if(t==='pct'){ st.push(pop()/100); continue; }
+    if(t==='u-'){ st.push(-pop()); continue; }
+    if(FN[t]){
+      const a=pop();
+      st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
+             : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
+             : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
+             : t==='abs'?Math.abs(a) : Math.exp(a) );
+      continue;
+    }
+    const b=pop(),a=pop();
+    st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
+  }
+  if(st.length!==1) throw 0;
+  return st[0];
+}
+function calc(src,deg){ return evalRPN(toRPN(tokenize(src)),deg); }
+
+let ANS=0, expr='', calcSheet, isDeg=true;
+const KEYS=[
+ ['DEG','deg','fn'],['(','(',''],[')',')',''],['⌫','del','del'],['AC','ac','del'],
+ ['sin','sin(','fn'],['cos','cos(','fn'],['tan','tan(','fn'],['π','π','fn'],['÷','÷','op'],
+ ['sin⁻¹','asin(','fn'],['cos⁻¹','acos(','fn'],['tan⁻¹','atan(','fn'],['e','e','fn'],['×','×','op'],
+ ['ln','ln(','fn'],['log','log(','fn'],['√','√(','fn'],['xʸ','^','fn'],['−','−','op'],
+ ['7','7',''],['8','8',''],['9','9',''],['x!','!','fn'],['+','+','op'],
+ ['4','4',''],['5','5',''],['6','6',''],['%','%','fn'],['ANS','ANS','fn'],
+ ['1','1',''],['2','2',''],['3','3',''],['.','.',''],['=','eq','eq'],
+ ['0','0','w3'],['x²','^2','fn']
+];
+function buildCalc(){
+  calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
+  calcSheet.innerHTML=
+   `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
+      <button id="kitui-calcclose">✕</button></div>
+    <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
+    <div class="kitui-keys" id="kitui-keys">
+      ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
+    </div>`;
+  D.body.appendChild(calcSheet);
+  D.getElementById('kitui-calcclose').onclick=()=>calcSheet.classList.remove('open');
+  const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
+  const show=()=>{ ex.textContent=expr||' ';
+    try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
+    catch(e){ rs.style.opacity=.35; }
+  };
+  D.getElementById('kitui-keys').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
+    if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
+    if(k==='del'){ expr=expr.slice(0,-1); show(); return; }
+    if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show(); return; }
+    if(k==='eq'){
+      rs.style.opacity=1;
+      try{
+        const v=calc(expr,isDeg);
+        if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
+        if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
+        ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
+      }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
+      return;
+    }
+    expr+=k; show();
+  });
+}
+function fmt(v){
+  if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
+  if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
+  return String(Math.round(v*1e10)/1e10);
+}
+if(hasCalc){
+  buildCalc();
+  D.getElementById('kitui-calcbtn').onclick=()=>{
+    const o=calcSheet.classList.toggle('open');
+    D.getElementById('kitui-calcbtn').classList.toggle('on',o);
+  };
+}
+})();
+
+</script>
+<!--/KIT-UI-->
+</body>
+</html>

@@ -1,0 +1,1892 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chem Editor - Skeletal + Lewis</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        header {
+            background: #1e293b;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid #334155;
+            z-index: 10;
+            flex-wrap: wrap;
+        }
+        header h1 { font-size: 16px; font-weight: 600; color: #38bdf8; white-space: nowrap; }
+
+        .btn {
+            background: #334155;
+            border: 1px solid #475569;
+            color: #e2e8f0;
+            padding: 5px 11px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+        .btn:hover { background: #475569; }
+        .btn.active { background: #0ea5e9; border-color: #0ea5e9; color: #fff; }
+
+        .toolbar { display: flex; gap: 4px; flex-wrap: wrap; }
+        .bond-sel { display: flex; gap: 3px; padding-left: 8px; border-left: 1px solid #475569; }
+        .bond-sel .btn.active { background: #8b5cf6; border-color: #8b5cf6; }
+
+        .view-toggle {
+            display: flex;
+            gap: 0;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid #475569;
+            margin-left: 6px;
+        }
+        .view-toggle .vt-btn {
+            background: #334155;
+            border: none;
+            color: #94a3b8;
+            padding: 5px 14px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .view-toggle .vt-btn:hover { background: #475569; color: #e2e8f0; }
+        .view-toggle .vt-btn.active-skel { background: #0d9488; color: #fff; }
+        .view-toggle .vt-btn.active-lewis { background: #dc2626; color: #fff; }
+
+        .actions { margin-left: auto; display: flex; gap: 4px; }
+        .actions .danger:hover { background: #991b1b; border-color: #dc2626; }
+
+        .main-area { display: flex; flex: 1; overflow: hidden; }
+
+        .sidebar {
+            width: 220px;
+            background: #1e293b;
+            border-right: 1px solid #334155;
+            padding: 10px;
+            overflow-y: auto;
+        }
+        .sidebar h3 {
+            font-size: 11px;
+            color: #94a3b8;
+            margin: 12px 0 6px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .sidebar h3:first-child { margin-top: 0; }
+
+        .atom-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4px;
+        }
+        .atom-btn {
+            aspect-ratio: 1;
+            border: 2px solid #475569;
+            border-radius: 8px;
+            background: #334155;
+            color: #e2e8f0;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.15s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+        }
+        .atom-btn:hover { border-color: #0ea5e9; background: #1e3a5f; }
+        .atom-btn.active { border-color: #0ea5e9; background: #0c4a6e; }
+        .atom-btn .sym { font-size: 14px; }
+        .atom-btn .val { font-size: 8px; color: #94a3b8; }
+
+        .template-list { display: flex; flex-direction: column; gap: 3px; }
+        .tmpl-btn {
+            background: #334155;
+            border: 1px solid #475569;
+            color: #e2e8f0;
+            padding: 6px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+            text-align: left;
+            transition: all 0.15s;
+        }
+        .tmpl-btn:hover { background: #475569; }
+        .tmpl-btn.ring { border-left: 3px solid #f472b6; }
+        .tmpl-btn.mol { border-left: 3px solid #fbbf24; }
+        .tmpl-btn.poly { border-left: 3px solid #a78bfa; }
+
+        .canvas-container { flex: 1; position: relative; overflow: hidden; }
+        canvas { display: block; cursor: crosshair; }
+
+        .view-badge {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            pointer-events: none;
+            z-index: 5;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+        .view-badge.skel { background: rgba(13,148,136,0.85); color: #fff; }
+        .view-badge.lewis { background: rgba(220,38,38,0.85); color: #fff; }
+
+        .hint {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(30,41,59,0.92);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 11px;
+            color: #94a3b8;
+            pointer-events: none;
+            border: 1px solid #334155;
+        }
+
+        .info-panel {
+            width: 270px;
+            background: #1e293b;
+            border-left: 1px solid #334155;
+            padding: 12px;
+            overflow-y: auto;
+        }
+        .info-panel h3 {
+            font-size: 11px;
+            color: #94a3b8;
+            margin: 12px 0 6px 0;
+            text-transform: uppercase;
+        }
+        .info-panel h3:first-child { margin-top: 0; }
+
+        .info-card {
+            background: #334155;
+            border-radius: 8px;
+            padding: 8px 10px;
+            margin-bottom: 6px;
+        }
+        .info-card .label { font-size: 10px; color: #94a3b8; margin-bottom: 2px; }
+        .info-card .value { font-size: 13px; font-weight: 600; }
+
+        .explanation-box {
+            background: #1a1a2e;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 8px 10px;
+            margin-bottom: 8px;
+            font-size: 10px;
+            line-height: 1.6;
+            color: #cbd5e1;
+        }
+        .explanation-box strong { color: #38bdf8; }
+        .explanation-box.lewis-exp { display: none; }
+        .explanation-box.skel-exp { display: block; }
+
+        .func-group-tag {
+            display: inline-block;
+            background: #422006;
+            border: 1px solid #78350f;
+            color: #fbbf24;
+            font-size: 10px;
+            padding: 2px 7px;
+            border-radius: 10px;
+            margin: 2px;
+        }
+
+        .warning-item {
+            background: #451a03;
+            border: 1px solid #92400e;
+            border-radius: 6px;
+            padding: 5px 8px;
+            font-size: 10px;
+            color: #fbbf24;
+            display: flex;
+            align-items: flex-start;
+            gap: 5px;
+            margin-bottom: 4px;
+        }
+        .valid-item {
+            background: #052e16;
+            border: 1px solid #166534;
+            border-radius: 6px;
+            padding: 5px 8px;
+            font-size: 10px;
+            color: #4ade80;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .atom-detail {
+            background: linear-gradient(135deg, #1e3a5f, #1e293b);
+            border: 1px solid #0ea5e9;
+            border-radius: 8px;
+            padding: 8px 10px;
+            margin-bottom: 6px;
+        }
+        .atom-detail .ad-label { font-size: 9px; color: #7dd3fc; margin-bottom: 1px; }
+        .atom-detail .ad-value { font-size: 12px; font-weight: 600; }
+
+        .legend {
+            background: #334155;
+            border-radius: 8px;
+            padding: 8px 10px;
+            margin-bottom: 6px;
+        }
+        .legend-item { display: flex; align-items: center; gap: 6px; font-size: 10px; margin-bottom: 3px; }
+        .legend-item:last-child { margin-bottom: 0; }
+        .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+        .legend-line { width: 20px; height: 2px; flex-shrink: 0; }
+
+        .tab-bar { display: flex; gap: 0; margin-bottom: 6px; border-bottom: 2px solid #334155; }
+        .tab-btn { flex: 1; background: none; border: none; color: #64748b; padding: 6px 4px; font-size: 11px; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.15s; }
+        .tab-btn:hover { color: #e2e8f0; }
+        .tab-btn.active { color: #e2e8f0; border-bottom-color: #8b5cf6; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Chem Editor</h1>
+
+        <div class="view-toggle">
+            <button class="vt-btn active-skel" id="vt-skel" onclick="setView('skeletal')">Skeletal</button>
+            <button class="vt-btn" id="vt-lewis" onclick="setView('lewis')">Lewis</button>
+        </div>
+
+        <div class="toolbar">
+            <button class="btn active" id="mode-draw" onclick="setMode('draw')">/ วาดเส้น</button>
+            <button class="btn" id="mode-hetero" onclick="setMode('hetero')">A อะตอม</button>
+            <button class="btn" id="mode-select" onclick="setMode('select')">&#8598; เลือก</button>
+            <button class="btn" id="mode-erase" onclick="setMode('erase')">&#10005; ลบ</button>
+        </div>
+        <div class="bond-sel">
+            <button class="btn active" id="bond-1" onclick="setBond(1)">&#8212;</button>
+            <button class="btn" id="bond-2" onclick="setBond(2)">&#9552;</button>
+            <button class="btn" id="bond-3" onclick="setBond(3)">&#8801;</button>
+            <button class="btn" id="bond-w" onclick="setBond('wedge')">&#9650;</button>
+            <button class="btn" id="bond-d" onclick="setBond('dash')">&#9661;</button>
+        </div>
+        <div class="actions">
+            <button class="btn" onclick="undo()">&#8617; ย้อน</button>
+            <button class="btn danger" onclick="clearAll()">&#128465; ล้าง</button>
+        </div>
+    </header>
+
+    <div class="main-area">
+        <div class="sidebar">
+            <h3>อะตอม</h3>
+            <div class="atom-grid" id="atom-grid"></div>
+
+            <h3>วงแหวน</h3>
+            <div class="template-list">
+                <button class="tmpl-btn ring" onclick="addRing(3)">&#9651; Cyclopropane (3)</button>
+                <button class="tmpl-btn ring" onclick="addRing(4)">&#9723; Cyclobutane (4)</button>
+                <button class="tmpl-btn ring" onclick="addRing(5)">&#11039; Cyclopentane (5)</button>
+                <button class="tmpl-btn ring" onclick="addRing(6)">&#11042; Cyclohexane (6)</button>
+                <button class="tmpl-btn ring" onclick="addRing(6, true)">&#11042; Benzene</button>
+                <button class="tmpl-btn ring" onclick="addRing(5, false, true)">&#11039; Furan (O)</button>
+                <button class="tmpl-btn ring" onclick="addRing(6, true, false, 'naph')">&#11042;&#11042; Naphthalene</button>
+            </div>
+
+            <h3>โมเลกุลตัวอย่าง</h3>
+            <div class="template-list">
+                <button class="tmpl-btn mol" onclick="addMol('water')">H&#8322;O</button>
+                <button class="tmpl-btn mol" onclick="addMol('methane')">Methane CH&#8324;</button>
+                <button class="tmpl-btn mol" onclick="addMol('ethanol')">Ethanol</button>
+                <button class="tmpl-btn mol" onclick="addMol('acetic_acid')">Acetic Acid</button>
+                <button class="tmpl-btn mol" onclick="addMol('acetone')">Acetone</button>
+                <button class="tmpl-btn mol" onclick="addMol('butane')">Butane</button>
+                <button class="tmpl-btn mol" onclick="addMol('hexane')">Hexane</button>
+                <button class="tmpl-btn mol" onclick="addMol('co2')">CO&#8322;</button>
+                <button class="tmpl-btn mol" onclick="addMol('ammonia')">Ammonia NH&#8323;</button>
+                <button class="tmpl-btn mol" onclick="addMol('aspirin')">Aspirin</button>
+                <button class="tmpl-btn mol" onclick="addMol('caffeine')">Caffeine</button>
+            </div>
+
+            <h3>หมู่ฟังก์ชัน (เลือกอะตอมก่อน)</h3>
+            <div class="template-list">
+                <button class="tmpl-btn mol" onclick="addFG('oh')">-OH Hydroxyl</button>
+                <button class="tmpl-btn mol" onclick="addFG('cooh')">-COOH Carboxyl</button>
+                <button class="tmpl-btn mol" onclick="addFG('nh2')">-NH&#8322; Amine</button>
+                <button class="tmpl-btn mol" onclick="addFG('cho')">-CHO Aldehyde</button>
+                <button class="tmpl-btn mol" onclick="addFG('co')">C=O Ketone</button>
+            </div>
+        </div>
+
+        <div class="canvas-container" id="canvas-container">
+            <canvas id="canvas"></canvas>
+            <div class="view-badge skel" id="view-badge">SKELETAL</div>
+            <div class="hint" id="hint">คลิกแล้วลากเพื่อวาดพันธะ (จุดหักมุม = C)</div>
+        </div>
+
+        <div class="info-panel">
+            <div class="tab-bar">
+                <button class="tab-btn active" onclick="switchTab('info')">ข้อมูล</button>
+                <button class="tab-btn" onclick="switchTab('valid')">ตรวจสอบ</button>
+                <button class="tab-btn" onclick="switchTab('help')">คำอธิบาย</button>
+            </div>
+
+            <div class="tab-content active" id="tab-info">
+                <div class="info-card">
+                    <div class="label">สูตรโมเลกุล (Molecular Formula)</div>
+                    <div class="value" id="mol-formula">-</div>
+                </div>
+                <div class="info-card">
+                    <div class="label">มวลโมเลกุล (g/mol)</div>
+                    <div class="value" id="mol-mass">-</div>
+                </div>
+                <div class="info-card">
+                    <div class="label">Degree of Unsaturation (DoU)</div>
+                    <div class="value" id="mol-dou">-</div>
+                </div>
+                <div class="info-card">
+                    <div class="label">จำนวนอะตอม / พันธะ</div>
+                    <div class="value" id="mol-counts">0 / 0</div>
+                </div>
+
+                <h3>หมู่ฟังก์ชันที่ตรวจพบ</h3>
+                <div id="func-groups"><div style="font-size:11px;color:#64748b;">-</div></div>
+
+                <h3 id="sel-header" style="display:none;">อะตอมที่เลือก</h3>
+                <div id="sel-info"></div>
+            </div>
+
+            <div class="tab-content" id="tab-valid">
+                <div id="valid-list"><div style="font-size:11px;color:#64748b;">ยังไม่มีอะตอม</div></div>
+            </div>
+
+            <div class="tab-content" id="tab-help">
+                <div class="explanation-box skel-exp" id="exp-skel">
+                    <strong>Skeletal Formula</strong> (สูตรโครงร่าง):<br>
+                    &#8226; <strong>จุดหักมุม / ปลายเส้น</strong> = C<br>
+                    &#8226; H ที่ติด C <strong>ไม่ต้องเขียน</strong><br>
+                    &#8226; เฮเทอโรอะตอม (O, N, S...) <strong>ต้องเขียน</strong><br>
+                    &#8226; เส้นคู่ = พันธะคู่, เส้นสาม = พันธะสาม<br>
+                    &#8226; &#9650; Wedge = พันธะชี้หน้า, &#9661; Dash = พันธะชี้หลัง
+                </div>
+                <div class="explanation-box lewis-exp" id="exp-lewis">
+                    <strong>Lewis Structure</strong> (โครงสร้างลิวอิส):<br>
+                    &#8226; แสดงอะตอม<strong>ทุกตัว</strong>เป็นวงกลมพร้อมสัญลักษณ์<br>
+                    &#8226; แสดง H ทุกตัว (implicit H กลายเป็น explicit)<br>
+                    &#8226; แสดง<strong>เวเลนซ์</strong> (จำนวนพันธะ/เวเลนซ์สูงสุด)<br>
+                    &#8226; &#128308; แดง = เกินเวเลนซ์ / &#128992; ส้ม = ยังไม่ครบ<br>
+                    &#8226; แสดง<strong>อิเล็กตรอนคู่โดดเดี่ยว</strong> (lone pair) เป็นจุดคู่
+                </div>
+
+                <h3>สัญลักษณ์</h3>
+                <div class="legend">
+                    <div class="legend-item"><div class="legend-line" style="background:#94a3b8;"></div> พันธะเดี่ยว</div>
+                    <div class="legend-item"><div class="legend-line" style="background:#60a5fa;height:4px;"></div> พันธะคู่</div>
+                    <div class="legend-item"><div class="legend-line" style="background:#c084fc;height:6px;"></div> พันธะสาม</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#4ade80;"></div> Carbon (C)</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#f87171;"></div> Oxygen (O)</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#60a5fa;"></div> Nitrogen (N)</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#facc15;"></div> Sulfur (S)</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#22d3ee;"></div> Halogen</div>
+                </div>
+
+                <h3>Keyboard Shortcuts</h3>
+                <div class="legend">
+                    <div class="legend-item" style="font-size:10px;"><code style="color:#38bdf8;">V</code> สลับ Skeletal/Lewis</div>
+                    <div class="legend-item" style="font-size:10px;"><code style="color:#38bdf8;">D/A/S/E</code> โหมดวาด/อะตอม/เลือก/ลบ</div>
+                    <div class="legend-item" style="font-size:10px;"><code style="color:#38bdf8;">1/2/3</code> พันธะเดี่ยว/คู่/สาม</div>
+                    <div class="legend-item" style="font-size:10px;"><code style="color:#38bdf8;">Ctrl+Z</code> ย้อน</div>
+                    <div class="legend-item" style="font-size:10px;"><code style="color:#38bdf8;">DblClick เส้น</code> สลับ 1/2/3</div>
+                    <div class="legend-item" style="font-size:10px;"><code style="color:#38bdf8;">Del</code> ลบอะตอมที่เลือก</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // ========== CONFIG ==========
+    const BOND_LEN = 50;
+    const BOND_ANGLE = Math.PI / 6;
+    const SNAP_DIST = 15;
+
+    const ATOMS = {
+        C:  { sym: 'C',  name: 'Carbon',      val: 4, color: '#4ade80', mass: 12.011 },
+        H:  { sym: 'H',  name: 'Hydrogen',    val: 1, color: '#e2e8f0', mass: 1.008 },
+        O:  { sym: 'O',  name: 'Oxygen',      val: 2, color: '#f87171', mass: 15.999 },
+        N:  { sym: 'N',  name: 'Nitrogen',    val: 3, color: '#60a5fa', mass: 14.007 },
+        S:  { sym: 'S',  name: 'Sulfur',      val: 2, color: '#facc15', mass: 32.06 },
+        P:  { sym: 'P',  name: 'Phosphorus',  val: 5, color: '#c084fc', mass: 30.974 },
+        F:  { sym: 'F',  name: 'Fluorine',    val: 1, color: '#34d399', mass: 18.998 },
+        Cl: { sym: 'Cl', name: 'Chlorine',    val: 1, color: '#22d3ee', mass: 35.45 },
+        Br: { sym: 'Br', name: 'Bromine',     val: 1, color: '#fb923c', mass: 79.904 },
+        I:  { sym: 'I',  name: 'Iodine',      val: 1, color: '#a78bfa', mass: 126.90 },
+        Na: { sym: 'Na', name: 'Sodium',      val: 1, color: '#fbbf24', mass: 22.990 },
+        K:  { sym: 'K',  name: 'Potassium',   val: 1, color: '#e879f9', mass: 39.098 },
+        Si: { sym: 'Si', name: 'Silicon',     val: 4, color: '#a8a29e', mass: 28.085 },
+    };
+
+    // ========== STATE ==========
+    let verts = [];
+    let edges = [];
+    let hist = [];
+    let nid = 1;
+
+    let viewMode = 'skeletal'; // 'skeletal' | 'lewis'
+    let mode = 'draw';
+    let bondOrder = 1;
+    let bondStereo = null;
+    let selAtomType = 'O';
+
+    let hovV = null, selV = null, drawStart = null, dragV = null;
+    let dragOff = { x: 0, y: 0 };
+    let mx = 0, my = 0;
+
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const cont = document.getElementById('canvas-container');
+
+    // ========== VIEW TOGGLE ==========
+    function setView(v) {
+        viewMode = v;
+        document.getElementById('vt-skel').className = 'vt-btn' + (v === 'skeletal' ? ' active-skel' : '');
+        document.getElementById('vt-lewis').className = 'vt-btn' + (v === 'lewis' ? ' active-lewis' : '');
+        const badge = document.getElementById('view-badge');
+        badge.textContent = v === 'skeletal' ? 'SKELETAL' : 'LEWIS';
+        badge.className = 'view-badge ' + (v === 'skeletal' ? 'skel' : 'lewis');
+        document.getElementById('exp-skel').style.display = v === 'skeletal' ? 'block' : 'none';
+        document.getElementById('exp-lewis').style.display = v === 'lewis' ? 'block' : 'none';
+        render();
+    }
+
+    // ========== RESIZE ==========
+    function resize() {
+        canvas.width = cont.clientWidth;
+        canvas.height = cont.clientHeight;
+        render();
+    }
+    window.addEventListener('resize', resize);
+
+    // ========== SIDEBAR GRID ==========
+    function buildAtomGrid() {
+        const grid = document.getElementById('atom-grid');
+        grid.innerHTML = '';
+        for (const key in ATOMS) {
+            const a = ATOMS[key];
+            const btn = document.createElement('button');
+            btn.className = 'atom-btn' + (key === selAtomType ? ' active' : '');
+            btn.innerHTML = `<span class="sym" style="color:${a.color}">${a.sym}</span><span class="val">v=${a.val}</span>`;
+            btn.onclick = () => {
+                selAtomType = key;
+                setMode('hetero');
+                document.querySelectorAll('.atom-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            };
+            grid.appendChild(btn);
+        }
+    }
+
+    // ========== MODE / BOND ==========
+    function setMode(m) {
+        mode = m;
+        drawStart = null;
+        document.querySelectorAll('.toolbar .btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('mode-' + m).classList.add('active');
+        const hints = {
+            draw: 'คลิกลากวาดพันธะ (จุดหักมุม = C)',
+            hetero: `คลิกวาง ${selAtomType} / คลิกจุดเดิมเพื่อเปลี่ยนธาตุ`,
+            select: 'คลิกลากเลื่อนอะตอม',
+            erase: 'คลิกจุด/เส้นเพื่อลบ'
+        };
+        document.getElementById('hint').textContent = hints[m];
+        canvas.style.cursor = m === 'select' ? 'default' : m === 'erase' ? 'pointer' : 'crosshair';
+        render();
+    }
+
+    function setBond(t) {
+        if (t === 'wedge' || t === 'dash') { bondStereo = t; bondOrder = 1; }
+        else { bondOrder = t; bondStereo = null; }
+        document.querySelectorAll('.bond-sel .btn').forEach(b => b.classList.remove('active'));
+        const id = t === 'wedge' ? 'bond-w' : t === 'dash' ? 'bond-d' : 'bond-' + t;
+        document.getElementById(id).classList.add('active');
+    }
+
+    // ========== TABS ==========
+    function switchTab(name) {
+        document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', ['info','valid','help'][i] === name));
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.getElementById('tab-' + name).classList.add('active');
+    }
+
+    // ========== HISTORY ==========
+    function saveHist() {
+        hist.push({ v: verts.map(v => ({ ...v })), e: edges.map(e => ({ ...e })) });
+        if (hist.length > 50) hist.shift();
+    }
+    function undo() {
+        if (!hist.length) return;
+        const s = hist.pop();
+        verts = s.v; edges = s.e;
+        updateInfo(); render();
+    }
+    function clearAll() {
+        if (!verts.length) return;
+        saveHist(); verts = []; edges = [];
+        updateInfo(); render();
+    }
+
+    // ========== HELPERS ==========
+    function vAt(x, y) {
+        for (let i = verts.length - 1; i >= 0; i--) {
+            const v = verts[i], dx = v.x - x, dy = v.y - y;
+            if (dx * dx + dy * dy < SNAP_DIST * SNAP_DIST) return v;
+        }
+        return null;
+    }
+    function eAt(x, y) {
+        for (const e of edges) {
+            const v1 = verts.find(v => v.id === e.from), v2 = verts.find(v => v.id === e.to);
+            if (!v1 || !v2) continue;
+            if (psd(x, y, v1.x, v1.y, v2.x, v2.y) < 8) return e;
+        }
+        return null;
+    }
+    function psd(px, py, x1, y1, x2, y2) {
+        const dx = x2-x1, dy = y2-y1, l2 = dx*dx+dy*dy;
+        if (l2===0) return Math.hypot(px-x1, py-y1);
+        const t = Math.max(0, Math.min(1, ((px-x1)*dx+(py-y1)*dy)/l2));
+        return Math.hypot(px-(x1+t*dx), py-(y1+t*dy));
+    }
+    function bondCnt(vid) {
+        let s = 0;
+        for (const e of edges) { if (e.from === vid || e.to === vid) s += e.order; }
+        return s;
+    }
+    function getVal(v) { return ATOMS[v.type] ? ATOMS[v.type].val : 4; }
+    function implH(v) { return Math.max(0, getVal(v) - bondCnt(v.id)); }
+    function lonePairs(v) {
+        const info = ATOMS[v.type];
+        if (!info || v.type === 'C' || v.type === 'H') return 0;
+        const totalElectrons = { O: 6, N: 5, S: 6, P: 5, F: 7, Cl: 7, Br: 7, I: 7 };
+        const te = totalElectrons[v.type] || 0;
+        const bonding = bondCnt(v.id) + implH(v);
+        return Math.max(0, Math.floor((te - bonding) / 2));
+    }
+
+    function addV(x, y, type) { const id = nid++; verts.push({ id, x, y, type: type || 'C' }); return id; }
+    function addE(from, to, order, stereo) {
+        const ex = edges.find(e => (e.from===from && e.to===to) || (e.from===to && e.to===from));
+        if (ex) { ex.order = order; ex.stereo = stereo || null; return; }
+        edges.push({ from, to, order: order||1, stereo: stereo||null });
+    }
+    function snapA(x1, y1, x2, y2) {
+        const dx = x2-x1, dy = y2-y1, d = Math.hypot(dx, dy);
+        const a = Math.atan2(dy, dx);
+        const sa = Math.round(a / BOND_ANGLE) * BOND_ANGLE;
+        const l = Math.max(BOND_LEN*0.5, Math.min(d, BOND_LEN*1.5));
+        return { x: x1 + l*Math.cos(sa), y: y1 + l*Math.sin(sa) };
+    }
+
+    // ========== CANVAS EVENTS ==========
+    canvas.addEventListener('mousedown', (e) => {
+        const r = canvas.getBoundingClientRect();
+        const x = e.clientX - r.left, y = e.clientY - r.top;
+        const v = vAt(x, y);
+
+        if (mode === 'draw') {
+            if (v) drawStart = v;
+            else { drawStart = { id: null, x, y, type: 'C', _pending: true }; }
+        } else if (mode === 'hetero') {
+            saveHist();
+            if (v) v.type = selAtomType;
+            else addV(x, y, selAtomType);
+            updateInfo(); render();
+        } else if (mode === 'select') {
+            if (v) { dragV = v; dragOff.x = v.x-x; dragOff.y = v.y-y; selV = v; }
+            else selV = null;
+            updateSelInfo(); render();
+        } else if (mode === 'erase') {
+            if (v) {
+                saveHist();
+                edges = edges.filter(ed => ed.from !== v.id && ed.to !== v.id);
+                verts = verts.filter(vt => vt.id !== v.id);
+                updateInfo(); render();
+            } else {
+                const ed = eAt(x, y);
+                if (ed) { saveHist(); edges = edges.filter(ee => ee !== ed); updateInfo(); render(); }
+            }
+        }
+    });
+
+    canvas.addEventListener('mousemove', (e) => {
+        const r = canvas.getBoundingClientRect();
+        mx = e.clientX - r.left; my = e.clientY - r.top;
+        hovV = vAt(mx, my);
+        if (dragV) { dragV.x = mx + dragOff.x; dragV.y = my + dragOff.y; render(); return; }
+        render();
+        if (mode === 'draw' && drawStart) {
+            const tgt = hovV || snapA(drawStart.x, drawStart.y, mx, my);
+            ctx.beginPath(); ctx.moveTo(drawStart.x, drawStart.y); ctx.lineTo(tgt.x, tgt.y);
+            ctx.strokeStyle = 'rgba(56,189,248,0.5)'; ctx.lineWidth = 2;
+            ctx.setLineDash([6,4]); ctx.stroke(); ctx.setLineDash([]);
+        }
+    });
+
+    canvas.addEventListener('mouseup', (e) => {
+        if (dragV) { dragV = null; updateInfo(); return; }
+        if (mode === 'draw' && drawStart) {
+            const r = canvas.getBoundingClientRect();
+            const x = e.clientX - r.left, y = e.clientY - r.top;
+            let endV = vAt(x, y);
+
+            // If released on same spot as start (no drag), don't create anything
+            if (drawStart._pending) {
+                const dist = Math.hypot(x - drawStart.x, y - drawStart.y);
+                if (dist < SNAP_DIST || (endV && endV.x === drawStart.x && endV.y === drawStart.y)) {
+                    drawStart = null; return;
+                }
+                // Actually create the start vertex now
+                saveHist();
+                const startId = addV(drawStart.x, drawStart.y, 'C');
+                drawStart = verts.find(v => v.id === startId);
+            } else {
+                if (endV && endV.id === drawStart.id) { drawStart = null; return; }
+                saveHist();
+            }
+
+            if (!endV || endV.id === drawStart.id) {
+                const sn = snapA(drawStart.x, drawStart.y, x, y);
+                endV = vAt(sn.x, sn.y);
+                if (!endV) endV = verts.find(v => v.id === addV(sn.x, sn.y, 'C'));
+            }
+            addE(drawStart.id, endV.id, bondOrder, bondStereo);
+            drawStart = null;
+            updateInfo(); render();
+        }
+    });
+
+    canvas.addEventListener('dblclick', (e) => {
+        const r = canvas.getBoundingClientRect();
+        const ed = eAt(e.clientX - r.left, e.clientY - r.top);
+        if (ed) { saveHist(); ed.order = ed.order >= 3 ? 1 : ed.order + 1; ed.stereo = null; updateInfo(); render(); }
+    });
+
+    // ========== RENDER ==========
+    function render() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawGrid();
+        if (viewMode === 'skeletal') renderSkeletal();
+        else renderLewis();
+    }
+
+    function drawGrid() {
+        ctx.strokeStyle = '#1e293b'; ctx.lineWidth = 1;
+        for (let x = 0; x < canvas.width; x += 30) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,canvas.height); ctx.stroke(); }
+        for (let y = 0; y < canvas.height; y += 30) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(canvas.width,y); ctx.stroke(); }
+    }
+
+    // ===== SKELETAL RENDER =====
+    function renderSkeletal() {
+        for (const e of edges) {
+            const v1 = verts.find(v => v.id === e.from), v2 = verts.find(v => v.id === e.to);
+            if (v1 && v2) drawEdgeSkel(v1, v2, e);
+        }
+        for (const v of verts) drawVertSkel(v);
+    }
+
+    function drawEdgeSkel(v1, v2, e) {
+        const dx = v2.x-v1.x, dy = v2.y-v1.y, len = Math.hypot(dx,dy);
+        if (!len) return;
+        const nx = -dy/len, ny = dx/len;
+
+        if (e.stereo === 'wedge') {
+            ctx.beginPath(); ctx.moveTo(v1.x,v1.y);
+            ctx.lineTo(v2.x+nx*6,v2.y+ny*6); ctx.lineTo(v2.x-nx*6,v2.y-ny*6);
+            ctx.closePath(); ctx.fillStyle = '#94a3b8'; ctx.fill(); return;
+        }
+        if (e.stereo === 'dash') {
+            ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 2;
+            for (let i = 0; i < 8; i++) {
+                const t = i/7, cx = v1.x+dx*t, cy = v1.y+dy*t, w = 1+t*5;
+                ctx.beginPath(); ctx.moveTo(cx+nx*w,cy+ny*w); ctx.lineTo(cx-nx*w,cy-ny*w); ctx.stroke();
+            }
+            return;
+        }
+        const off = 3.5;
+        if (e.order === 1) {
+            ctx.beginPath(); ctx.moveTo(v1.x,v1.y); ctx.lineTo(v2.x,v2.y);
+            ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 2; ctx.stroke();
+        } else if (e.order === 2) {
+            ctx.strokeStyle = '#60a5fa'; ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(v1.x+nx*off,v1.y+ny*off); ctx.lineTo(v2.x+nx*off,v2.y+ny*off); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(v1.x-nx*off,v1.y-ny*off); ctx.lineTo(v2.x-nx*off,v2.y-ny*off); ctx.stroke();
+        } else {
+            ctx.strokeStyle = '#c084fc'; ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(v1.x,v1.y); ctx.lineTo(v2.x,v2.y); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(v1.x+nx*off*1.5,v1.y+ny*off*1.5); ctx.lineTo(v2.x+nx*off*1.5,v2.y+ny*off*1.5); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(v1.x-nx*off*1.5,v1.y-ny*off*1.5); ctx.lineTo(v2.x-nx*off*1.5,v2.y-ny*off*1.5); ctx.stroke();
+        }
+    }
+
+    function drawVertSkel(v) {
+        const isHov = hovV && hovV.id === v.id;
+        const isSel = selV && selV.id === v.id;
+        const isC = v.type === 'C';
+        const info = ATOMS[v.type];
+
+        if (isSel) {
+            ctx.beginPath(); ctx.arc(v.x,v.y,16,0,Math.PI*2);
+            ctx.strokeStyle = '#0ea5e9'; ctx.lineWidth = 2; ctx.stroke();
+        }
+
+        if (!isC) {
+            ctx.beginPath(); ctx.arc(v.x,v.y,14,0,Math.PI*2);
+            ctx.fillStyle = '#0f172a'; ctx.fill();
+            ctx.strokeStyle = info.color; ctx.lineWidth = 2; ctx.stroke();
+            ctx.font = 'bold 13px Segoe UI'; ctx.fillStyle = info.color;
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillText(info.sym, v.x, v.y);
+
+            // Show implicit H next to hetero
+            const iH = implH(v);
+            if (iH > 0) {
+                const lbl = iH === 1 ? 'H' : 'H' + iH;
+                const dir = getHDir(v);
+                ctx.font = '11px Segoe UI'; ctx.fillStyle = '#64748b';
+                ctx.fillText(lbl, v.x + dir.x * 20, v.y + dir.y * 20);
+            }
+        } else {
+            if (isHov) {
+                ctx.beginPath(); ctx.arc(v.x,v.y,6,0,Math.PI*2);
+                ctx.fillStyle = 'rgba(56,189,248,0.3)'; ctx.fill();
+            }
+        }
+    }
+
+    // ===== LEWIS RENDER =====
+    function renderLewis() {
+        // Draw edges first
+        for (const e of edges) {
+            const v1 = verts.find(v => v.id === e.from), v2 = verts.find(v => v.id === e.to);
+            if (v1 && v2) drawEdgeLewis(v1, v2, e);
+        }
+
+        // Draw explicit H bonds + atoms
+        const hPositions = [];
+        for (const v of verts) {
+            const positions = getHPositions(v);
+            for (const hp of positions) {
+                // Draw bond to H
+                ctx.beginPath(); ctx.moveTo(v.x, v.y); ctx.lineTo(hp.x, hp.y);
+                ctx.strokeStyle = '#475569'; ctx.lineWidth = 1.5; ctx.stroke();
+                hPositions.push(hp);
+            }
+        }
+
+        // Draw H circles
+        for (const hp of hPositions) {
+            drawAtomCircle(hp.x, hp.y, 'H', false, false, 14);
+        }
+
+        // Draw main atoms
+        for (const v of verts) {
+            const bc = bondCnt(v.id);
+            const maxV = getVal(v);
+            const isOver = bc > maxV;
+            const isUnder = bc > 0 && bc < maxV && implH(v) === 0;
+            drawAtomCircle(v.x, v.y, v.type, isOver, isUnder, 20);
+
+            // Valence indicator
+            const iH = implH(v);
+            const totalBonds = bc + iH;
+            ctx.font = '9px Segoe UI';
+            ctx.fillStyle = isOver ? '#fca5a5' : '#64748b';
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillText(`${bc}/${maxV}`, v.x, v.y + 28);
+
+            // Lone pairs
+            if (viewMode === 'lewis') drawLonePairs(v);
+
+            // Selection ring
+            if (selV && selV.id === v.id) {
+                ctx.beginPath(); ctx.arc(v.x,v.y,24,0,Math.PI*2);
+                ctx.strokeStyle = '#0ea5e9'; ctx.lineWidth = 2; ctx.stroke();
+            }
+        }
+    }
+
+    function drawEdgeLewis(v1, v2, e) {
+        const dx = v2.x-v1.x, dy = v2.y-v1.y, len = Math.hypot(dx,dy);
+        if (!len) return;
+        const ux = dx/len, uy = dy/len;
+        const nx = -uy, ny = ux;
+        // Shorten line to not overlap circles
+        const shrink = 18;
+        const sx = v1.x + ux*shrink, sy = v1.y + uy*shrink;
+        const ex = v2.x - ux*shrink, ey = v2.y - uy*shrink;
+
+        if (e.stereo === 'wedge') {
+            ctx.beginPath(); ctx.moveTo(sx,sy);
+            ctx.lineTo(ex+nx*5,ey+ny*5); ctx.lineTo(ex-nx*5,ey-ny*5);
+            ctx.closePath(); ctx.fillStyle = '#94a3b8'; ctx.fill(); return;
+        }
+        if (e.stereo === 'dash') {
+            ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 2;
+            for (let i = 0; i < 7; i++) {
+                const t = i/6, cx2 = sx+(ex-sx)*t, cy2 = sy+(ey-sy)*t, w = 1+t*4;
+                ctx.beginPath(); ctx.moveTo(cx2+nx*w,cy2+ny*w); ctx.lineTo(cx2-nx*w,cy2-ny*w); ctx.stroke();
+            }
+            return;
+        }
+
+        const off = 4;
+        const bc1 = bondCnt(v1.id) > getVal(v1);
+        const bc2 = bondCnt(v2.id) > getVal(v2);
+        const isErr = bc1 || bc2;
+        const clr = isErr ? '#ef4444' : '#94a3b8';
+
+        if (e.order === 1) {
+            ctx.beginPath(); ctx.moveTo(sx,sy); ctx.lineTo(ex,ey);
+            ctx.strokeStyle = clr; ctx.lineWidth = 2; ctx.stroke();
+        } else if (e.order === 2) {
+            ctx.strokeStyle = isErr ? '#ef4444' : '#60a5fa'; ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(sx+nx*off,sy+ny*off); ctx.lineTo(ex+nx*off,ey+ny*off); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(sx-nx*off,sy-ny*off); ctx.lineTo(ex-nx*off,ey-ny*off); ctx.stroke();
+        } else {
+            ctx.strokeStyle = isErr ? '#ef4444' : '#c084fc'; ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(sx,sy); ctx.lineTo(ex,ey); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(sx+nx*off*1.5,sy+ny*off*1.5); ctx.lineTo(ex+nx*off*1.5,ey+ny*off*1.5); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(sx-nx*off*1.5,sy-ny*off*1.5); ctx.lineTo(ex-nx*off*1.5,ey-ny*off*1.5); ctx.stroke();
+        }
+    }
+
+    function drawAtomCircle(x, y, type, isOver, isUnder, radius) {
+        const info = ATOMS[type] || ATOMS['C'];
+        const isHov = hovV && Math.hypot(hovV.x - x, hovV.y - y) < 5;
+
+        if (isOver) {
+            ctx.beginPath(); ctx.arc(x,y,radius+5,0,Math.PI*2);
+            ctx.fillStyle = 'rgba(239,68,68,0.15)'; ctx.fill();
+            ctx.strokeStyle = '#ef4444'; ctx.lineWidth = 2;
+            ctx.setLineDash([3,3]); ctx.stroke(); ctx.setLineDash([]);
+        }
+
+        ctx.beginPath(); ctx.arc(x,y,radius,0,Math.PI*2);
+        const grad = ctx.createRadialGradient(x-3,y-3,2,x,y,radius);
+        const baseCol = isOver ? '#ef4444' : info.color;
+        grad.addColorStop(0, lighten(baseCol, 40));
+        grad.addColorStop(1, baseCol);
+        ctx.fillStyle = grad; ctx.fill();
+        ctx.strokeStyle = isOver ? '#ef4444' : isUnder ? '#f59e0b' : '#fff';
+        ctx.lineWidth = isOver ? 2.5 : 1.5; ctx.stroke();
+
+        ctx.fillStyle = isOver ? '#fff' : '#1e293b';
+        ctx.font = `bold ${radius < 16 ? 10 : 13}px Segoe UI`;
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(info.sym, x, y);
+    }
+
+    function drawLonePairs(v) {
+        const lp = lonePairs(v);
+        if (lp <= 0) return;
+        const neighbors = edges.filter(e => e.from === v.id || e.to === v.id);
+        const angles = neighbors.map(e => {
+            const other = verts.find(vt => vt.id === (e.from === v.id ? e.to : e.from));
+            return other ? Math.atan2(other.y - v.y, other.x - v.x) : 0;
+        });
+        // Also account for implicit H directions
+        const hPos = getHPositions(v);
+        for (const hp of hPos) angles.push(Math.atan2(hp.y - v.y, hp.x - v.x));
+
+        const freeAngles = getFreeAngles(angles, lp);
+        const dist = 28;
+        const dotDist = 4;
+
+        ctx.fillStyle = '#fbbf24';
+        for (const a of freeAngles) {
+            const cx = v.x + dist * Math.cos(a);
+            const cy = v.y + dist * Math.sin(a);
+            const px = -Math.sin(a) * dotDist;
+            const py = Math.cos(a) * dotDist;
+            ctx.beginPath(); ctx.arc(cx + px, cy + py, 2, 0, Math.PI*2); ctx.fill();
+            ctx.beginPath(); ctx.arc(cx - px, cy - py, 2, 0, Math.PI*2); ctx.fill();
+        }
+    }
+
+    function getFreeAngles(usedAngles, count) {
+        if (usedAngles.length === 0) {
+            const result = [];
+            for (let i = 0; i < count; i++) result.push((Math.PI * 2 * i) / count);
+            return result;
+        }
+        const sorted = [...usedAngles].sort((a,b) => a - b);
+        const gaps = [];
+        for (let i = 0; i < sorted.length; i++) {
+            const next = i + 1 < sorted.length ? sorted[i+1] : sorted[0] + Math.PI * 2;
+            gaps.push({ mid: (sorted[i] + next) / 2, size: next - sorted[i] });
+        }
+        gaps.sort((a,b) => b.size - a.size);
+        return gaps.slice(0, count).map(g => g.mid);
+    }
+
+    function getHPositions(v) {
+        const iH = implH(v);
+        if (iH <= 0) return [];
+        const neighbors = edges.filter(e => e.from === v.id || e.to === v.id);
+        const usedAngles = neighbors.map(e => {
+            const other = verts.find(vt => vt.id === (e.from === v.id ? e.to : e.from));
+            return other ? Math.atan2(other.y - v.y, other.x - v.x) : 0;
+        });
+
+        const freeAngles = [];
+        if (usedAngles.length === 0) {
+            const starts = [Math.PI, 0, -Math.PI/2, Math.PI/2];
+            for (let i = 0; i < iH; i++) freeAngles.push(starts[i % 4]);
+        } else {
+            const sorted = [...usedAngles].sort((a,b) => a - b);
+            const gaps = [];
+            for (let i = 0; i < sorted.length; i++) {
+                const next = i + 1 < sorted.length ? sorted[i+1] : sorted[0] + Math.PI * 2;
+                gaps.push({ start: sorted[i], end: next, size: next - sorted[i] });
+            }
+            gaps.sort((a,b) => b.size - a.size);
+
+            let placed = 0;
+            for (const gap of gaps) {
+                if (placed >= iH) break;
+                const canFit = Math.min(iH - placed, Math.max(1, Math.floor(gap.size / (Math.PI/3))));
+                for (let i = 0; i < canFit; i++) {
+                    freeAngles.push(gap.start + gap.size * (i + 1) / (canFit + 1));
+                    placed++;
+                }
+            }
+        }
+
+        const dist = 35;
+        return freeAngles.slice(0, iH).map(a => ({
+            x: v.x + dist * Math.cos(a),
+            y: v.y + dist * Math.sin(a)
+        }));
+    }
+
+    function getHDir(v) {
+        const neighbors = edges.filter(e => e.from === v.id || e.to === v.id);
+        if (neighbors.length === 0) return { x: 1, y: 0 };
+        let sx = 0, sy = 0;
+        for (const e of neighbors) {
+            const o = verts.find(vt => vt.id === (e.from === v.id ? e.to : e.from));
+            if (o) { sx += o.x - v.x; sy += o.y - v.y; }
+        }
+        const m = Math.hypot(sx, sy);
+        return m > 0 ? { x: -sx/m, y: -sy/m } : { x: 1, y: 0 };
+    }
+
+    function lighten(hex, pct) {
+        let r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+        r = Math.min(255, r + Math.round((255-r)*pct/100));
+        g = Math.min(255, g + Math.round((255-g)*pct/100));
+        b = Math.min(255, b + Math.round((255-b)*pct/100));
+        return `rgb(${r},${g},${b})`;
+    }
+
+    // ========== INFO ==========
+    function updateInfo() {
+        if (!verts.length) {
+            document.getElementById('mol-formula').textContent = '-';
+            document.getElementById('mol-mass').textContent = '-';
+            document.getElementById('mol-dou').textContent = '-';
+            document.getElementById('mol-counts').textContent = '0 / 0';
+            document.getElementById('func-groups').innerHTML = '<div style="font-size:11px;color:#64748b;">-</div>';
+            document.getElementById('valid-list').innerHTML = '<div style="font-size:11px;color:#64748b;">ยังไม่มีอะตอม</div>';
+            return;
+        }
+
+        const counts = {};
+        let mass = 0, totH = 0;
+        for (const v of verts) {
+            counts[v.type] = (counts[v.type] || 0) + 1;
+            mass += (ATOMS[v.type] || ATOMS['C']).mass;
+            const ih = implH(v); totH += ih; mass += ih * 1.008;
+        }
+        if (totH > 0) counts['H'] = (counts['H'] || 0) + totH;
+
+        const order = ['C','H','N','O','S','P','F','Cl','Br','I','Na','K','Si'];
+        let formula = '';
+        for (const s of order) { if (counts[s]) formula += s + (counts[s] > 1 ? counts[s] : ''); }
+
+        document.getElementById('mol-formula').textContent = formula || '-';
+        document.getElementById('mol-mass').textContent = mass.toFixed(3);
+        document.getElementById('mol-counts').textContent = `${verts.length} อะตอม / ${edges.length} พันธะ (+${totH} implicit H)`;
+
+        const nC = counts['C']||0, nH = counts['H']||0, nN = counts['N']||0;
+        const nHal = (counts['F']||0)+(counts['Cl']||0)+(counts['Br']||0)+(counts['I']||0);
+        const dou = (2*nC+2+nN-nH-nHal)/2;
+        document.getElementById('mol-dou').textContent = isNaN(dou) ? '-' : dou.toFixed(0) + (dou >= 4 ? ' (aromatic?)' : '');
+
+        detectFG();
+        validate();
+        updateSelInfo();
+    }
+
+    function updateSelInfo() {
+        const info = document.getElementById('sel-info');
+        const header = document.getElementById('sel-header');
+        if (!selV) { header.style.display = 'none'; info.innerHTML = ''; return; }
+        header.style.display = '';
+        const v = selV;
+        const ih = implH(v), bc = bondCnt(v.id);
+        const lp = lonePairs(v);
+        const neighbors = edges.filter(e => e.from === v.id || e.to === v.id).map(e => {
+            const o = verts.find(vt => vt.id === (e.from === v.id ? e.to : e.from));
+            return o ? `${o.type}(${e.order === 1 ? '-' : e.order === 2 ? '=' : '#'})` : '';
+        });
+
+        info.innerHTML = `
+            <div class="atom-detail"><div class="ad-label">ธาตุ</div><div class="ad-value">${v.type} (${(ATOMS[v.type]||{}).name||'?'})</div></div>
+            <div class="atom-detail"><div class="ad-label">พันธะ / เวเลนซ์</div><div class="ad-value">${bc} / ${getVal(v)}</div></div>
+            <div class="atom-detail"><div class="ad-label">Implicit H / Lone Pairs</div><div class="ad-value">${ih} H / ${lp} lone pair${lp!==1?'s':''}</div></div>
+            <div class="atom-detail"><div class="ad-label">เพื่อนบ้าน</div><div class="ad-value" style="font-size:10px;">${neighbors.join(', ') || '-'}</div></div>
+        `;
+    }
+
+    function validate() {
+        const vl = document.getElementById('valid-list');
+        vl.innerHTML = '';
+        if (!verts.length) { vl.innerHTML = '<div style="font-size:11px;color:#64748b;">ยังไม่มีอะตอม</div>'; return; }
+
+        let hasError = false;
+        for (const v of verts) {
+            const bc = bondCnt(v.id), maxV = getVal(v);
+            if (bc > maxV) {
+                vl.innerHTML += `<div class="warning-item"><span>&#9888;</span><span>${v.type}#${v.id}: พันธะ ${bc} > เวเลนซ์ ${maxV}</span></div>`;
+                hasError = true;
+            }
+        }
+        if (!hasError) {
+            const allOk = verts.every(v => {
+                const bc = bondCnt(v.id);
+                return bc + implH(v) === getVal(v) || bc === 0;
+            });
+            if (allOk && verts.length > 0) {
+                vl.innerHTML = `<div class="valid-item"><span>&#9989;</span><span>โครงสร้างถูกต้องตามกฎเวเลนซ์</span></div>`;
+            }
+        }
+    }
+
+    function detectFG() {
+        const groups = [];
+        for (const v of verts) {
+            if (v.type === 'O') {
+                const oe = edges.filter(e => e.from === v.id || e.to === v.id);
+                if (oe.length === 1 && oe[0].order === 1) {
+                    const other = verts.find(vt => vt.id === (oe[0].from === v.id ? oe[0].to : oe[0].from));
+                    if (other && other.type === 'C') {
+                        const ce = edges.filter(e => e.from === other.id || e.to === other.id);
+                        const dblO = ce.some(e => {
+                            if (e.order !== 2) return false;
+                            const p = verts.find(vt => vt.id === (e.from === other.id ? e.to : e.from));
+                            return p && p.type === 'O';
+                        });
+                        if (dblO) { if (!groups.includes('Carboxylic Acid (-COOH)')) groups.push('Carboxylic Acid (-COOH)'); }
+                        else { if (!groups.includes('Alcohol (-OH)')) groups.push('Alcohol (-OH)'); }
+                    }
+                } else if (oe.length === 1 && oe[0].order === 2) {
+                    const other = verts.find(vt => vt.id === (oe[0].from === v.id ? oe[0].to : oe[0].from));
+                    if (other && other.type === 'C') {
+                        const ce = edges.filter(e => e.from === other.id || e.to === other.id);
+                        const sglO = ce.some(e => { if (e.order!==1) return false; const p = verts.find(vt => vt.id === (e.from===other.id?e.to:e.from)); return p && p.type === 'O'; });
+                        if (!sglO) {
+                            const cNbC = ce.filter(e => { const p = verts.find(vt => vt.id === (e.from===other.id?e.to:e.from)); return p && p.type === 'C'; }).length;
+                            if (cNbC >= 2) { if (!groups.includes('Ketone (C=O)')) groups.push('Ketone (C=O)'); }
+                            else if (implH(other) >= 1) { if (!groups.includes('Aldehyde (-CHO)')) groups.push('Aldehyde (-CHO)'); }
+                            else { if (!groups.includes('Carbonyl (C=O)')) groups.push('Carbonyl (C=O)'); }
+                        }
+                    }
+                } else if (oe.length === 2) {
+                    const nbs = oe.map(e => verts.find(vt => vt.id === (e.from === v.id ? e.to : e.from)));
+                    if (nbs.every(n => n && n.type === 'C') && oe.every(e => e.order === 1)) {
+                        if (!groups.includes('Ether (C-O-C)')) groups.push('Ether (C-O-C)');
+                    }
+                }
+            }
+            if (v.type === 'N') {
+                const ih = implH(v);
+                if (ih >= 2 && !groups.includes('Amine (-NH2)')) groups.push('Amine (-NH2)');
+                else if (ih === 1 && !groups.includes('Sec. Amine (-NH-)')) groups.push('Sec. Amine (-NH-)');
+            }
+        }
+        const dblCC = edges.some(e => { if (e.order!==2) return false; const a=verts.find(v=>v.id===e.from),b=verts.find(v=>v.id===e.to); return a&&b&&a.type==='C'&&b.type==='C'; });
+        if (dblCC) groups.push('Alkene (C=C)');
+        const triCC = edges.some(e => { if (e.order!==3) return false; const a=verts.find(v=>v.id===e.from),b=verts.find(v=>v.id===e.to); return a&&b&&a.type==='C'&&b.type==='C'; });
+        if (triCC) groups.push('Alkyne (C≡C)');
+        const hasHal = verts.some(v => ['F','Cl','Br','I'].includes(v.type));
+        if (hasHal) groups.push('Halide (C-X)');
+
+        const fg = document.getElementById('func-groups');
+        if (!groups.length) {
+            fg.innerHTML = verts.length > 0
+                ? '<div class="func-group-tag" style="background:#052e16;border-color:#166534;color:#4ade80;">Alkane</div>'
+                : '<div style="font-size:11px;color:#64748b;">-</div>';
+        } else {
+            fg.innerHTML = groups.map(g => `<div class="func-group-tag">${g}</div>`).join('');
+        }
+    }
+
+    // ========== TEMPLATES ==========
+    function addRing(n, aro, furan, special) {
+        saveHist();
+        const cx = canvas.width/2, cy = canvas.height/2;
+        if (special === 'naph') { buildNaph(cx, cy); updateInfo(); render(); return; }
+        const r = 40 + n*5, ids = [];
+        for (let i = 0; i < n; i++) {
+            const a = (Math.PI*2*i)/n - Math.PI/2;
+            ids.push(addV(cx+r*Math.cos(a), cy+r*Math.sin(a), furan && i===0 ? 'O' : 'C'));
+        }
+        for (let i = 0; i < n; i++) addE(ids[i], ids[(i+1)%n], aro ? (i%2===0 ? 2 : 1) : 1);
+        updateInfo(); render();
+    }
+
+    function buildNaph(cx, cy) {
+        const r = 45, off = r*Math.sqrt(3), ids1 = [], ids2 = [];
+        for (let i=0;i<6;i++){const a=(Math.PI*2*i)/6-Math.PI/2;ids1.push(addV(cx-off/2+r*Math.cos(a),cy+r*Math.sin(a),'C'));}
+        for (let i=0;i<6;i++) addE(ids1[i],ids1[(i+1)%6],i%2===0?2:1);
+        for (let i=0;i<6;i++){
+            const a=(Math.PI*2*i)/6-Math.PI/2,vx=cx+off/2+r*Math.cos(a),vy=cy+r*Math.sin(a);
+            const ex = vAt(vx,vy);
+            ids2.push(ex ? ex.id : addV(vx,vy,'C'));
+        }
+        for (let i=0;i<6;i++){
+            const ex = edges.find(e=>(e.from===ids2[i]&&e.to===ids2[(i+1)%6])||(e.from===ids2[(i+1)%6]&&e.to===ids2[i]));
+            if (!ex) addE(ids2[i],ids2[(i+1)%6],i%2===0?1:2);
+        }
+    }
+
+    function addMol(name) {
+        saveHist();
+        const cx = canvas.width/2, cy = canvas.height/2;
+        const B = {
+            water: () => { const o=addV(cx,cy,'O'),h1=addV(cx-45,cy-35,'H'),h2=addV(cx+45,cy-35,'H'); addE(o,h1,1);addE(o,h2,1); },
+            methane: () => { const c=addV(cx,cy,'C'); [[-40,-40],[40,-40],[40,40],[-40,40]].forEach(([dx,dy])=>{const h=addV(cx+dx,cy+dy,'H');addE(c,h,1);}); },
+            co2: () => { const c=addV(cx,cy,'C'),o1=addV(cx-60,cy,'O'),o2=addV(cx+60,cy,'O'); addE(c,o1,2);addE(c,o2,2); },
+            ammonia: () => { const n=addV(cx,cy,'N'); [[-45,35],[45,35],[0,-50]].forEach(([dx,dy])=>{const h=addV(cx+dx,cy+dy,'H');addE(n,h,1);}); },
+            ethanol: () => {
+                const c1=addV(cx-50,cy,'C'),c2=addV(cx,cy-30,'C'),o=addV(cx+50,cy,'O');
+                addE(c1,c2,1);addE(c2,o,1);
+            },
+            acetic_acid: () => {
+                const c1=addV(cx-50,cy,'C'),c2=addV(cx+10,cy-30,'C'),o1=addV(cx+60,cy+20,'O'),o2=addV(cx+10,cy-80,'O');
+                addE(c1,c2,1);addE(c2,o1,1);addE(c2,o2,2);
+            },
+            acetone: () => {
+                const c1=addV(cx-50,cy,'C'),c2=addV(cx,cy-30,'C'),c3=addV(cx+50,cy,'C'),o=addV(cx,cy-80,'O');
+                addE(c1,c2,1);addE(c2,c3,1);addE(c2,o,2);
+            },
+            butane: () => {
+                const ids=[];
+                for(let i=0;i<4;i++) ids.push(addV(cx-75+i*50, cy+(i%2===0?-20:20),'C'));
+                for(let i=0;i<3;i++) addE(ids[i],ids[i+1],1);
+            },
+            hexane: () => {
+                const ids=[];
+                for(let i=0;i<6;i++) ids.push(addV(cx-125+i*50, cy+(i%2===0?-20:20),'C'));
+                for(let i=0;i<5;i++) addE(ids[i],ids[i+1],1);
+            },
+            aspirin: () => {
+                const r=45,ri=[];
+                for(let i=0;i<6;i++){const a=(Math.PI*2*i)/6-Math.PI/2;ri.push(addV(cx+r*Math.cos(a),cy+r*Math.sin(a),'C'));}
+                for(let i=0;i<6;i++) addE(ri[i],ri[(i+1)%6],i%2===0?2:1);
+                const cc=addV(cx+r+40,cy-30,'C'),co1=addV(cx+r+80,cy-60,'O'),co2=addV(cx+r+40,cy+20,'O');
+                addE(ri[1],cc,1);addE(cc,co1,2);addE(cc,co2,1);
+                const eo=addV(cx-r-20,cy-40,'O'),ec=addV(cx-r-60,cy-10,'C'),eo2=addV(cx-r-100,cy-40,'O'),em=addV(cx-r-60,cy+40,'C');
+                addE(ri[5],eo,1);addE(eo,ec,1);addE(ec,eo2,2);addE(ec,em,1);
+            },
+            caffeine: () => {
+                const r1=40,ox=cx-30,oy=cy;
+                const n1=addV(ox,oy-r1,'N'),c2=addV(ox+r1*0.95,oy-r1*0.31,'C'),n3=addV(ox+r1*0.59,oy+r1*0.81,'N'),c4=addV(ox-r1*0.59,oy+r1*0.81,'C'),c5=addV(ox-r1*0.95,oy-r1*0.31,'C');
+                addE(n1,c2,1);addE(c2,n3,2);addE(n3,c4,1);addE(c4,c5,2);addE(c5,n1,1);
+                const ox2=cx+30,c6=addV(ox2,oy-r1,'C'),n7=addV(ox2+r1*0.87,oy-r1*0.5,'N'),c8=addV(ox2+r1*0.87,oy+r1*0.5,'C'),n9=addV(ox2,oy+r1,'N');
+                addE(c5,c6,1);addE(c6,n7,2);addE(n7,c8,1);addE(c8,n9,1);addE(n9,c4,1);
+                const o1=addV(ox2+r1*0.87+30,oy+r1*0.5+20,'O');addE(c8,o1,2);
+                const o2=addV(ox-r1*0.95-30,oy-r1*0.31-20,'O');addE(c5,o2,2);
+                const m1=addV(ox,oy-r1-40,'C');addE(n1,m1,1);
+                const m2=addV(ox2,oy+r1+40,'C');addE(n9,m2,1);
+                const m3=addV(ox2+r1*0.87+35,oy-r1*0.5-20,'C');addE(n7,m3,1);
+            }
+        };
+        if (B[name]) B[name]();
+        updateInfo(); render();
+    }
+
+    function addFG(type) {
+        if (!selV) { alert('เลือกอะตอมก่อน (โหมด Select + คลิกอะตอม)'); return; }
+        saveHist();
+        const v = selV;
+        const nb = edges.filter(e => e.from === v.id || e.to === v.id);
+        let angle = Math.PI/4;
+        if (nb.length > 0) {
+            let s = 0;
+            for (const e of nb) { const o = verts.find(vt => vt.id === (e.from === v.id ? e.to : e.from)); if (o) s += Math.atan2(o.y-v.y,o.x-v.x); }
+            angle = s/nb.length + Math.PI;
+        }
+        const d = BOND_LEN;
+        if (type === 'oh') { const o=addV(v.x+d*Math.cos(angle),v.y+d*Math.sin(angle),'O'); addE(v.id,o,1); }
+        else if (type === 'cooh') {
+            const c=addV(v.x+d*Math.cos(angle),v.y+d*Math.sin(angle),'C'); addE(v.id,c,1);
+            const o1=addV(v.x+d*Math.cos(angle)+d*Math.cos(angle-Math.PI/3),v.y+d*Math.sin(angle)+d*Math.sin(angle-Math.PI/3),'O'); addE(c,o1,2);
+            const o2=addV(v.x+d*Math.cos(angle)+d*Math.cos(angle+Math.PI/3),v.y+d*Math.sin(angle)+d*Math.sin(angle+Math.PI/3),'O'); addE(c,o2,1);
+        } else if (type === 'nh2') { const n=addV(v.x+d*Math.cos(angle),v.y+d*Math.sin(angle),'N'); addE(v.id,n,1); }
+        else if (type === 'cho') {
+            const c=addV(v.x+d*Math.cos(angle),v.y+d*Math.sin(angle),'C'); addE(v.id,c,1);
+            const o=addV(v.x+d*Math.cos(angle)+d*Math.cos(angle-Math.PI/2),v.y+d*Math.sin(angle)+d*Math.sin(angle-Math.PI/2),'O'); addE(c,o,2);
+        } else if (type === 'co') { const o=addV(v.x+d*Math.cos(angle),v.y+d*Math.sin(angle),'O'); addE(v.id,o,2); }
+        updateInfo(); render();
+    }
+
+    // ========== KEYBOARD ==========
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'z' && (e.ctrlKey || e.metaKey)) { undo(); e.preventDefault(); }
+        if (e.key === '1') setBond(1);
+        if (e.key === '2') setBond(2);
+        if (e.key === '3') setBond(3);
+        if (e.key === 'd') setMode('draw');
+        if (e.key === 'a') setMode('hetero');
+        if (e.key === 's' && !e.ctrlKey) setMode('select');
+        if (e.key === 'e') setMode('erase');
+        if (e.key === 'v') setView(viewMode === 'skeletal' ? 'lewis' : 'skeletal');
+        if (e.key === 'Delete' && selV && mode === 'select') {
+            saveHist();
+            edges = edges.filter(ed => ed.from !== selV.id && ed.to !== selV.id);
+            verts = verts.filter(v => v.id !== selV.id);
+            selV = null; updateInfo(); render();
+        }
+    });
+
+    // ========== INIT ==========
+    buildAtomGrid();
+    resize();
+    updateInfo();
+    </script>
+<!--KIT-UI v2.4 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<script>
+/* =============================================================================
+   _kit/ui-controls.js  —  KIT UI  v1.0
+   แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
+     🌙/☀️  โหมดมืด / สว่าง   (จำค่าไว้ใน localStorage)
+     A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
+     ✏️  ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
+     🧮  เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
+
+   ── วิธีใช้ ────────────────────────────────────────────────────────────────
+   ห้ามแก้โค้ดนี้ในไฟล์ widget!  แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
+       pwsh -File _kit/apply-ui.ps1
+   สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
+   (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
+
+   !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
+      เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
+
+   ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
+   ใส่แอตทริบิวต์ที่ tag body:  data-tools="pen,calc"  = บังคับเปิด
+                              data-tools="none"      = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
+   ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
+              หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
+   ============================================================================= */
+(function(){
+if(window.__KITUI__) return; window.__KITUI__='2.4';
+
+/* ---------- helper ---------- */
+const D=document, R=D.documentElement;
+const get=k=>{try{return localStorage.getItem('kitui-'+k)}catch(e){return null}};
+const set=(k,v)=>{try{localStorage.setItem('kitui-'+k,v)}catch(e){}};
+const el=(t,c,h)=>{const e=D.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
+
+/* =============================================================================
+   1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
+   ============================================================================= */
+const CSS=`
+/* ===== DARK TOKENS (คู่กับ _kit/design-tokens.css) ===== */
+:root[data-theme="dark"]{
+  --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
+  --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
+  --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
+  --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
+  --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
+}
+:root[data-theme="dark"] body{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f172a}
+:root[data-theme="dark"] body[data-subject="physics"]{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f1220}
+:root[data-theme="dark"] body[data-subject="bio"]{--accent:#4ade80;--accent-head:#bbf7d0;--accent-ink:#86efac;--accent-soft:#0f2a1a;--accent-bd:#256b41;--accent-chip:#14532d;--accent-ghost:#15803d;--bg:#0d1912}
+:root[data-theme="dark"] body[data-subject="chem"]{--accent:#fb923c;--accent-head:#fed7aa;--accent-ink:#fdba74;--accent-soft:#2b1a0c;--accent-bd:#8a3d12;--accent-chip:#6d2c10;--accent-ghost:#c2410c;--bg:#1a130c}
+:root[data-theme="dark"] body[data-subject="christ"]{--accent:#a78bfa;--accent-head:#ddd6fe;--accent-ink:#c4b5fd;--accent-soft:#241a3d;--accent-bd:#5b21b6;--accent-chip:#4c1d95;--accent-ghost:#6d28d9;--bg:#16121f}
+:root[data-theme="dark"] body[data-subject="islam"]{--accent:#2dd4bf;--accent-head:#99f6e4;--accent-ink:#5eead4;--accent-soft:#0d2b28;--accent-bd:#12615a;--accent-chip:#134e4a;--accent-ghost:#0f766e;--bg:#0c1917}
+:root[data-theme="dark"] body[data-subject="history"]{--accent:#fbbf24;--accent-head:#fde68a;--accent-ink:#fcd34d;--accent-soft:#2a1f0a;--accent-bd:#8a4b0c;--accent-chip:#6d3a0a;--accent-ghost:#b45309;--bg:#191509}
+:root[data-theme="dark"] body[data-subject="math"]{--accent:#38bdf8;--accent-head:#bae6fd;--accent-ink:#7dd3fc;--accent-soft:#0c2434;--accent-bd:#0b5a80;--accent-chip:#0c4a6e;--accent-ghost:#0369a1;--bg:#0b1620}
+:root[data-theme="dark"] body[data-subject="eng"]{--accent:#f472b6;--accent-head:#fbcfe8;--accent-ink:#f9a8d4;--accent-soft:#2e1122;--accent-bd:#8d1748;--accent-chip:#731839;--accent-ghost:#be185d;--bg:#1c0f16}
+:root[data-theme="dark"] body[data-subject="thai"]{--accent:#f87171;--accent-head:#fecaca;--accent-ink:#fca5a5;--accent-soft:#2d1414;--accent-bd:#8d2020;--accent-chip:#7f1d1d;--accent-ghost:#b91c1c;--bg:#1a0f0f}
+:root[data-theme="dark"] img,:root[data-theme="dark"] .svg-box{filter:brightness(.92)}
+/* ช่องกรอก/ดรอปดาวน์ที่ widget เก่ากำหนดพื้นขาวตายตัวไว้ */
+:root[data-theme="dark"] select,:root[data-theme="dark"] textarea,
+:root[data-theme="dark"] input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=color])
+{background-color:var(--soft);color:var(--ink);border-color:var(--line)}
+
+/* ===== แถบเครื่องมือลอย ===== */
+#kitui-bar{position:fixed;right:10px;bottom:10px;z-index:99990;display:flex;gap:6px;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
+#kitui-bar button{border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;
+  font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
+  align-items:center;justify-content:center;font-weight:700}
+#kitui-bar button:hover{background:var(--soft)}
+#kitui-bar button:active{transform:scale(.93)}
+#kitui-bar button.on{background:var(--accent);color:#fff}
+#kitui-bar .kitui-sep{width:1px;height:22px;background:var(--line);flex:0 0 1px}
+#kitui-bar .kitui-fs{font-size:11px;color:var(--muted);min-width:34px;text-align:center;font-weight:700}
+#kitui-bar.hidden > *:not(#kitui-grip){display:none}
+#kitui-grip{font-size:17px}
+
+/* ===== แผงลอย (ที่ทด / เครื่องคิดเลข) ===== */
+.kitui-sheet{position:fixed;left:0;right:0;bottom:0;z-index:99991;background:var(--card);
+  border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
+  display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
+  height:52vh;max-height:92vh;min-height:180px}
+.kitui-sheet.open{display:flex}
+.kitui-sheet.full{height:100vh;border-radius:0}
+.kitui-head{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--line);
+  flex-wrap:wrap;touch-action:none;cursor:ns-resize}
+.kitui-head b{font-size:.9rem;color:var(--accent-ink);margin-right:2px;white-space:nowrap}
+.kitui-head button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;
+  padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
+.kitui-head button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.kitui-head .kitui-spacer{flex:1}
+.kitui-sw{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;min-height:0}
+.kitui-sw.on{border-color:var(--ink);transform:scale(1.12)}
+.kitui-padwrap{flex:1;position:relative;overflow:hidden;background:var(--soft)}
+.kitui-padwrap canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+:root[data-theme="dark"] .kitui-padwrap{background:#0c1220}
+
+/* ===== เครื่องคิดเลข ===== */
+#kitui-calc{height:auto;max-height:90vh}
+.kitui-disp{padding:8px 12px;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);
+  border-bottom:1px solid var(--line)}
+.kitui-disp .ex{font-size:.95rem;color:var(--muted);min-height:1.3em;word-break:break-all}
+.kitui-disp .rs{font-size:1.6rem;font-weight:700;color:var(--accent-ink);word-break:break-all}
+.kitui-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:7px}
+.kitui-keys button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:9px;
+  font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
+.kitui-keys button:active{transform:scale(.95)}
+.kitui-keys button.fn{font-size:.8rem;color:var(--accent-ink)}
+.kitui-keys button.op{background:var(--accent-soft);color:var(--accent-ink)}
+.kitui-keys button.eq{background:var(--accent);color:#fff;grid-row:span 2}
+.kitui-keys button.del{background:var(--hot-bg);color:var(--hot-ink)}
+.kitui-keys button.w3{grid-column:span 3}
+@media(max-width:420px){.kitui-keys button{font-size:.88rem;min-height:40px}.kitui-keys button.fn{font-size:.72rem}}
+@media(min-width:760px){
+  .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
+  .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
+  #kitui-pad{width:560px}
+}
+@media print{#kitui-bar,.kitui-sheet{display:none!important}}
+`;
+const st=el('style'); st.id='kitui-style'; st.textContent=CSS; D.head.appendChild(st);
+
+/* -----------------------------------------------------------------------------
+   1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
+   widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
+   พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
+   แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
+   เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
+----------------------------------------------------------------------------- */
+/* สีพาสเทลสว่าง -> สีเข้มที่ยังคง "เฉดเดิม" ไว้ (เขียว=ถูก / แดง=ผิด ต้องยังแยกออก)
+   ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
+function darken(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
+  const l0=(mx+mn)/2;
+  const s0 = d===0 ? 0 : d/(1-Math.abs(2*l0-1));
+  const s = d===0 ? 0 : Math.min(.5, Math.max(.3, s0));
+  const l = d===0 ? .13 : .17;                       /* เทา/ขาวให้เข้มกว่าสีนิดหน่อย */
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+function darkFix(){
+  const out=[], seen=new Set();
+  const take=r=>{
+    if(!r.style || !r.selectorText) return;
+    if(r.selectorText.indexOf('kitui')>-1) return;               /* ของเราเองใช้ token อยู่แล้ว */
+    const bg=r.style.backgroundColor;
+    if(!bg || bg.indexOf('var(')>-1) return;
+    const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
+    if(!m) return;
+    if(m[4]!==undefined && +m[4]<0.6) return;                    /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
+    const cr=+m[1], cg=+m[2], cb=+m[3];
+    if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return;       /* ไม่สว่างพอ ไม่ต้องยุ่ง */
+    const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
+    const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
+    let css='background-color:'+repl;
+    /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
+    const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
+    out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
+  };
+  /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
+        ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
+  const visit=rules=>{
+    for(let i=0;i<rules.length;i++){
+      const r=rules[i];
+      if(r.selectorText) take(r);
+      if(r.cssRules && r.cssRules.length) visit(r.cssRules);     /* @media / @supports / nesting */
+    }
+  };
+  for(let i=0;i<D.styleSheets.length;i++){
+    let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; }   /* ข้ามชีตข้ามโดเมน */
+    if(rr) visit(rr);
+  }
+  if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
+  return out.length;
+}
+try{ window.__KITUI_DARKFIX__=darkFix(); }catch(e){ window.__KITUI_DARKFIX__='err:'+e.message; }
+
+/* darkFix ข้างบนซ่อมได้เฉพาะสีที่เขียนตายตัวในไฟล์ CSS
+   แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
+   ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
+   จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
+const rgbOf=c=>{const m=c&&c.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null;};
+const lumOf=v=>v?(0.2126*v[0]+0.7152*v[1]+0.0722*v[2])/255:null;
+/* ตรงข้ามกับ darken(): ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
+   (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
+function lighten(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  if(d<0.04) return 'var(--ink)';                    /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
+  let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
+  const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
+  const s=Math.min(.92,Math.max(.55,s0)), l=.72;
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+const SKIP={CANVAS:1,IMG:1,VIDEO:1,SVG:1,IFRAME:1,PICTURE:1,OBJECT:1};
+const OBS_OPT={childList:true,subtree:true,attributes:true,attributeFilter:['class','style']};
+let patched=[], obs=null;
+function elementFix(){
+  /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
+        ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
+  if(obs) obs.disconnect();
+  try{ elementFixCore(); } finally { if(obs) obs.observe(D.body,OBS_OPT); }
+}
+function elementFixCore(){
+  /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
+     ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
+     จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
+  if(R.getAttribute('data-theme')!=='dark'){
+    patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
+    patched=[];
+    return;
+  }
+  /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
+     ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
+  /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
+  const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
+  for(let i=0;i<all.length;i++){
+    const e=all[i];
+    if(e.id&&e.id.indexOf('kitui')===0) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(SKIP[e.tagName]) continue;                      /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
+    const s=getComputedStyle(e);
+    const bg=rgbOf(s.backgroundColor);
+    if(!bg || bg[3]<0.6) continue;                     /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
+    if(lumOf(bg)<0.72) continue;                       /* เข้มพออยู่แล้ว */
+    /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
+    e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
+    const fg=rgbOf(s.color);
+    if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important');  /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
+    patched.push(e);
+  }
+  /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
+     ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
+  const bgCache=new Map();
+  const effBg=n=>{
+    for(let p=n;p;p=p.parentElement){
+      if(bgCache.has(p)) return bgCache.get(p);
+      const b=rgbOf(getComputedStyle(p).backgroundColor);
+      if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
+    }
+    return null;
+  };
+  for(let i=2;i<all.length;i++){
+    const e=all[i];
+    if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(e.style.color) continue;                         /* จัดการไปแล้วในรอบแรก */
+    if(!e.textContent || !e.textContent.trim()) continue;
+    const fg=rgbOf(getComputedStyle(e).color);
+    if(!fg || lumOf(fg)>=0.45) continue;                 /* ตัวอักษรสว่างอยู่แล้ว */
+    const bg=effBg(e);
+    if(!bg || lumOf(bg)>=0.5) continue;                  /* พื้นยังสว่าง อ่านออกอยู่ */
+    e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
+    patched.push(e);
+  }
+}
+let efT=0;
+const scheduleFix=()=>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
+try{
+  obs=new MutationObserver(scheduleFix);
+  obs.observe(D.body,OBS_OPT);
+}catch(e){}
+
+/* =============================================================================
+   2) ธีม + ขนาดตัวอักษร
+   ============================================================================= */
+const FS=[.85,1,1.15,1.3,1.5], FSNAME=['เล็กสุด','เล็ก','ปกติ','ใหญ่','ใหญ่สุด'];
+let fsIdx=parseInt(get('fs')); if(isNaN(fsIdx)||fsIdx<0||fsIdx>4) fsIdx=1;
+let theme=get('theme') || (matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+
+function applyTheme(){
+  R.setAttribute('data-theme',theme);
+  R.style.colorScheme = theme==='dark'?'dark':'light';   /* ให้ select/input เป็นสีเข้มด้วย */
+  const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
+  set('theme',theme);
+  clearTimeout(efT);                                   /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
+  if(typeof elementFix==='function') elementFix();
+  if(typeof draw==='function' && pad) draw();          /* วาดที่ทดใหม่ เส้นดำ<->ขาวตามธีม */
+}
+function applyFS(){
+  R.style.fontSize=(16*FS[fsIdx])+'px';
+  const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
+  set('fs',fsIdx);
+}
+
+/* =============================================================================
+   3) แถบเครื่องมือ
+   ============================================================================= */
+const subj=(D.body.getAttribute('data-subject')||'').toLowerCase();
+/* หลาย widget ไม่ได้ใส่ data-subject ที่ <body> → เดาจากโฟลเดอร์ที่ไฟล์อยู่ด้วย */
+const inPath=/\/(physics|math|chemist)\//i.test(decodeURIComponent(location.pathname));
+const tAttr=D.body.getAttribute('data-tools');
+const wantTools = tAttr!=null ? tAttr.toLowerCase()
+                : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
+const hasPen  = wantTools.includes('pen');
+const hasCalc = wantTools.includes('calc');
+
+const bar=el('div'); bar.id='kitui-bar';
+bar.innerHTML =
+  `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
+  `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button>`+
+  `<span class="kitui-sep"></span>`+
+  `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
+  `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
+  `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
+  (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
+  (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
+D.body.appendChild(bar);
+
+D.getElementById('kitui-theme').onclick=()=>{theme=theme==='dark'?'light':'dark';applyTheme();};
+D.getElementById('kitui-fsup').onclick=()=>{if(fsIdx<4){fsIdx++;applyFS();}};
+D.getElementById('kitui-fsdown').onclick=()=>{if(fsIdx>0){fsIdx--;applyFS();}};
+D.getElementById('kitui-grip').onclick=()=>bar.classList.toggle('hidden');
+applyTheme(); applyFS();
+
+/* ปิดแผงด้วยปุ่ม Esc */
+D.addEventListener('keydown',e=>{ if(e.key==='Escape') D.querySelectorAll('.kitui-sheet.open').forEach(s=>s.classList.remove('open')); });
+
+/* ลากหัวแผงเพื่อปรับความสูง */
+function makeResizable(sheet){
+  const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
+  head.addEventListener('pointerdown',e=>{
+    if(e.target.closest('button'))return;
+    drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect().height;head.setPointerCapture(e.pointerId);
+  });
+  head.addEventListener('pointermove',e=>{
+    if(!drag)return;
+    const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
+    sheet.classList.remove('full'); sheet.style.height=h+'px';
+    if(sheet.id==='kitui-pad') fitPad();
+  });
+  head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
+}
+
+/* =============================================================================
+   4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ  หลายหน้า  เซฟอัตโนมัติ
+   ============================================================================= */
+let pad,padCv,padCx,pages=[[]],pg=0,undone=[],histo=[];
+let tool='pen',color='#111827',width=2.4,penSeen=0;
+const COLORS=['#111827','#2563eb','#dc2626','#16a34a','#f59e0b'];
+const PADKEY='pad-'+location.pathname.split('/').pop();
+
+function buildPad(){
+  pad=el('div','kitui-sheet'); pad.id='kitui-pad';
+  pad.innerHTML=
+   `<div class="kitui-head">
+      <b>✏️ ที่ทด</b>
+      <button data-t="pen" class="on">🖊️</button>
+      <button data-t="hl">🖍️</button>
+      <button data-t="er">🧽</button>
+      ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
+      <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
+      <span class="kitui-spacer"></span>
+      <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
+      <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
+      <button id="kitui-pgadd">+ หน้า</button>
+      <button id="kitui-clear">ล้างหน้านี้</button>
+      <button id="kitui-full">⛶</button>
+      <button id="kitui-padclose">✕</button>
+    </div>
+    <div class="kitui-padwrap"><canvas></canvas></div>`;
+  D.body.appendChild(pad);
+  padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
+  makeResizable(pad);
+
+  pad.querySelector('.kitui-head').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
+  });
+  D.getElementById('kitui-undo').onclick=()=>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop(); draw(); save(); } };
+  D.getElementById('kitui-redo').onclick=()=>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop(); draw(); save(); } };
+  D.getElementById('kitui-clear').onclick=()=>{ snap(); pages[pg]=[]; draw(); save(); };
+  D.getElementById('kitui-pgadd').onclick=()=>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw(); save(); };
+  D.getElementById('kitui-pgprev').onclick=()=>{ if(pg>0){pg--;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-pgnext').onclick=()=>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-full').onclick=()=>{ pad.classList.toggle('full'); pad.style.height=''; fitPad(); };
+  D.getElementById('kitui-padclose').onclick=()=>pad.classList.remove('open');
+
+  /* ---- วาด ---- */
+  let cur=null;
+  padCv.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='pen') penSeen=Date.now();
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;   /* กันฝ่ามือแตะตอนใช้สไตลัส */
+    const p=pt(e);
+    if(tool==='er'){ snap(); erase(p); return; }
+    snap();
+    cur={c:color,w:width,hl:tool==='hl',pts:[p]};
+    pages[pg].push(cur); draw();
+    try{ padCv.setPointerCapture(e.pointerId); }catch(x){}  /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
+  });
+  padCv.addEventListener('pointermove',e=>{
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;
+    if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
+    if(!cur||!e.buttons)return;
+    /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
+    let evs=[e];
+    if(e.getCoalescedEvents){ const c=e.getCoalescedEvents(); if(c&&c.length) evs=c; }
+    evs.forEach(ev=>cur.pts.push(pt(ev)));
+    draw();
+  });
+  const end=()=>{ if(cur){cur=null;save();} };
+  padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
+  padCv.addEventListener('pointerleave',end);
+
+  addEventListener('resize',()=>{ if(pad.classList.contains('open')) fitPad(); });
+  load(); fitPad();
+}
+function pt(e){
+  const r=padCv.getBoundingClientRect();
+  return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
+          p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5};   /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
+}
+function snap(){ histo.push(pages[pg].slice()); if(histo.length>60)histo.shift(); undone=[]; }
+function erase(p){
+  const r=padCv.getBoundingClientRect(), rad=18/r.width;
+  const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
+  if(keep.length!==pages[pg].length){ pages[pg]=keep; draw(); save(); }
+}
+function fitPad(){
+  const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
+  const dpr=Math.min(devicePixelRatio||1,2.5);
+  padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
+  draw();
+}
+function draw(){
+  const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
+  padCx.clearRect(0,0,W,H);
+  /* เส้นตารางจาง ๆ ให้เขียนตรง */
+  const dark=R.getAttribute('data-theme')==='dark';
+  padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
+  for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath();padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke();}
+  padCx.lineCap='round'; padCx.lineJoin='round';
+  pages[pg].forEach(s=>{
+    padCx.globalAlpha=s.hl?0.32:1;
+    padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
+    for(let i=1;i<s.pts.length;i++){
+      const a=s.pts[i-1],b=s.pts[i];
+      padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
+      padCx.beginPath(); padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke();
+    }
+    if(s.pts.length===1){ /* จุดเดียว */
+      padCx.fillStyle=padCx.strokeStyle; padCx.beginPath();
+      padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill();
+    }
+  });
+  padCx.globalAlpha=1;
+  const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
+}
+function save(){ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
+function load(){
+  try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
+}
+
+if(hasPen){
+  buildPad();
+  D.getElementById('kitui-penbtn').onclick=()=>{
+    const o=pad.classList.toggle('open');
+    D.getElementById('kitui-penbtn').classList.toggle('on',o);
+    if(o) fitPad();
+  };
+}
+
+/* =============================================================================
+   5) เครื่องคิดเลขวิทยาศาสตร์  (tokenizer → shunting-yard → RPN  ไม่ใช้ eval)
+   ============================================================================= */
+const FN={sin:1,cos:1,tan:1,asin:1,acos:1,atan:1,ln:1,log:1,sqrt:1,abs:1,exp:1};
+const PREC={'+':1,'-':1,'*':2,'/':2,'^':4,'u-':3};
+function tokenize(s){
+  s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
+  const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!()])/g; let m;
+  while((m=re.exec(s))) out.push(m[1]);
+  return out;
+}
+function toRPN(tk){
+  const out=[],op=[]; let prev=null;
+  for(let t of tk){
+    if(t==='**')t='^';
+    if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
+    else if(t==='PI'){ out.push(Math.PI); }
+    else if(t==='e'||t==='E'){ out.push(Math.E); }
+    else if(t==='ANS'){ out.push(ANS); }
+    else if(FN[t]){ op.push(t); }
+    else if(t==='('){ op.push(t); }
+    else if(t===')'){
+      while(op.length&&op[op.length-1]!=='(') out.push(op.pop());
+      if(!op.length) throw 0; op.pop();
+      if(op.length&&FN[op[op.length-1]]) out.push(op.pop());
+    }
+    else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
+    else if('+-*/^'.includes(t)){
+      let o=t;
+      const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
+      if(t==='-'&&unary) o='u-';
+      else if(t==='+'&&unary){ prev=t; continue; }
+      while(op.length){
+        const top=op[op.length-1];
+        if(top==='('||FN[top])break;
+        const rightAssoc=(o==='^'||o==='u-');
+        if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop()); else break;
+      }
+      op.push(o);
+    }
+    else throw 0;
+    prev=t;
+  }
+  while(op.length){ const o=op.pop(); if(o==='(')throw 0; out.push(o); }
+  return out;
+}
+function evalRPN(rpn,deg){
+  const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
+  const pop=()=>{ if(!st.length)throw 0; return st.pop(); };
+  for(const t of rpn){
+    if(typeof t==='number'){ st.push(t); continue; }
+    if(t==='fact'){ const n=pop(); if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
+    if(t==='pct'){ st.push(pop()/100); continue; }
+    if(t==='u-'){ st.push(-pop()); continue; }
+    if(FN[t]){
+      const a=pop();
+      st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
+             : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
+             : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
+             : t==='abs'?Math.abs(a) : Math.exp(a) );
+      continue;
+    }
+    const b=pop(),a=pop();
+    st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
+  }
+  if(st.length!==1) throw 0;
+  return st[0];
+}
+function calc(src,deg){ return evalRPN(toRPN(tokenize(src)),deg); }
+
+let ANS=0, expr='', calcSheet, isDeg=true;
+const KEYS=[
+ ['DEG','deg','fn'],['(','(',''],[')',')',''],['⌫','del','del'],['AC','ac','del'],
+ ['sin','sin(','fn'],['cos','cos(','fn'],['tan','tan(','fn'],['π','π','fn'],['÷','÷','op'],
+ ['sin⁻¹','asin(','fn'],['cos⁻¹','acos(','fn'],['tan⁻¹','atan(','fn'],['e','e','fn'],['×','×','op'],
+ ['ln','ln(','fn'],['log','log(','fn'],['√','√(','fn'],['xʸ','^','fn'],['−','−','op'],
+ ['7','7',''],['8','8',''],['9','9',''],['x!','!','fn'],['+','+','op'],
+ ['4','4',''],['5','5',''],['6','6',''],['%','%','fn'],['ANS','ANS','fn'],
+ ['1','1',''],['2','2',''],['3','3',''],['.','.',''],['=','eq','eq'],
+ ['0','0','w3'],['x²','^2','fn']
+];
+function buildCalc(){
+  calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
+  calcSheet.innerHTML=
+   `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
+      <button id="kitui-calcclose">✕</button></div>
+    <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
+    <div class="kitui-keys" id="kitui-keys">
+      ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
+    </div>`;
+  D.body.appendChild(calcSheet);
+  D.getElementById('kitui-calcclose').onclick=()=>calcSheet.classList.remove('open');
+  const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
+  const show=()=>{ ex.textContent=expr||' ';
+    try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
+    catch(e){ rs.style.opacity=.35; }
+  };
+  D.getElementById('kitui-keys').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
+    if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
+    if(k==='del'){ expr=expr.slice(0,-1); show(); return; }
+    if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show(); return; }
+    if(k==='eq'){
+      rs.style.opacity=1;
+      try{
+        const v=calc(expr,isDeg);
+        if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
+        if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
+        ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
+      }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
+      return;
+    }
+    expr+=k; show();
+  });
+}
+function fmt(v){
+  if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
+  if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
+  return String(Math.round(v*1e10)/1e10);
+}
+if(hasCalc){
+  buildCalc();
+  D.getElementById('kitui-calcbtn').onclick=()=>{
+    const o=calcSheet.classList.toggle('open');
+    D.getElementById('kitui-calcbtn').classList.toggle('on',o);
+  };
+}
+})();
+
+</script>
+<!--/KIT-UI-->
+</body>
+</html>

@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>โมดูล 0 — ภาพรวมระบบประสาท + วิวัฒนาการ | ชีววิทยา ม.6</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-0:#070912; --bg-1:#0c0f24; --ink:#f2f4ff; --muted:#9aa2cf;
+    --accent:#5cc8ff; --accent2:#ffd166; --good:#5ee6a8; --bad:#ff7b9c;
+    --violet:#7c5cff; --nerve:#ff6fae; --nerved:#7c5cff;
+    --line:rgba(255,255,255,.09); --surface-2:rgba(255,255,255,.06);
+    --glass:linear-gradient(180deg,rgba(40,46,90,.50),rgba(16,20,46,.55));
+    --glass-2:linear-gradient(180deg,rgba(52,58,108,.55),rgba(24,28,62,.62));
+    --shadow:0 22px 55px -24px rgba(0,0,0,.78); --ring:0 0 0 1px rgba(255,255,255,.06);
+    --grad-btn:linear-gradient(135deg,#33a6e6,#6a4cff);
+    --grad-text:linear-gradient(120deg,#ffffff,#bcd4ff 45%,#b6a4ff);
+    --ease:cubic-bezier(.2,.7,.3,1);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;color:var(--ink);line-height:1.65;padding:0 18px 8px;
+    font-family:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+    background:
+      radial-gradient(820px 520px at 8% -12%,rgba(92,120,255,.20),transparent 55%),
+      radial-gradient(720px 520px at 98% -6%,rgba(124,92,255,.22),transparent 52%),
+      radial-gradient(760px 680px at 55% 122%,rgba(40,110,210,.16),transparent 55%),
+      var(--bg-0);
+    background-attachment:fixed}
+  body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);
+    background-size:44px 44px;
+    -webkit-mask-image:radial-gradient(circle at 50% 26%,#000,transparent 92%);
+    mask-image:radial-gradient(circle at 50% 26%,#000,transparent 92%)}
+  .wrap{max-width:940px;margin:0 auto}
+  ::selection{background:rgba(92,200,255,.35)}
+  .topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:12px 0 10px;margin-bottom:6px;
+    background:linear-gradient(180deg,rgba(7,9,18,.92),rgba(7,9,18,.5) 70%,transparent);
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+  .nav-back{display:inline-flex;align-items:center;gap:7px;text-decoration:none;color:var(--ink);
+    background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:12px;padding:9px 14px;font-size:.92rem;font-weight:600;
+    transition:transform .18s var(--ease),background .18s,border-color .18s}
+  .nav-back:hover{background:rgba(92,200,255,.14);border-color:rgba(92,200,255,.5);transform:translateX(-2px)}
+  .nav-prog{font-size:.82rem;color:var(--muted)}
+  .nav-prog b{color:var(--accent2)}
+  header.hero{position:relative;overflow:hidden;background:var(--glass-2);
+    backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);
+    border:1px solid var(--line);border-radius:24px;padding:26px 26px 22px;margin-bottom:18px;
+    box-shadow:var(--shadow),var(--ring),inset 0 1px 0 rgba(255,255,255,.08)}
+  header.hero::after{content:'';position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(640px 220px at 102% -10%,rgba(124,92,255,.28),transparent 60%)}
+  .tag{display:inline-block;font-size:.8rem;color:#1a1205;background:linear-gradient(135deg,#ffd166,#ff9f6b);
+    padding:4px 14px;border-radius:999px;font-weight:700;letter-spacing:.2px;box-shadow:0 8px 20px -8px rgba(255,180,80,.6)}
+  h1{font-size:1.7rem;line-height:1.25;margin:.6rem 0 .3rem;font-weight:800;letter-spacing:-.01em;
+    background:var(--grad-text);-webkit-background-clip:text;background-clip:text;color:transparent}
+  h2{font-size:1.22rem;margin:0 0 .5rem;color:#bfe3ff;font-weight:700;letter-spacing:-.005em}
+  p.lead{color:var(--muted);margin:.2rem 0 0}
+  p{margin:.3rem 0 0}
+  section.card{position:relative;background:var(--glass);
+    backdrop-filter:blur(14px) saturate(135%);-webkit-backdrop-filter:blur(14px) saturate(135%);
+    border:1px solid var(--line);border-radius:20px;padding:22px;margin-bottom:18px;
+    box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.05);animation:rise .55s var(--ease) both}
+  @keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  button{font-family:inherit;cursor:pointer}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:8px}
+  .pill-row{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+  .pill{background:rgba(255,255,255,.05);color:var(--ink);border:1px solid var(--line);
+    border-radius:13px;padding:10px 14px;font-size:.95rem;font-weight:600;
+    transition:transform .18s var(--ease),border-color .18s,background .18s;flex:1 1 auto;min-width:120px}
+  .pill:hover{border-color:rgba(92,200,255,.55);background:rgba(92,200,255,.10);transform:translateY(-2px);
+    box-shadow:0 10px 22px -14px rgba(92,200,255,.8)}
+  .pill.active{background:linear-gradient(135deg,#5cc8ff,#7c5cff);color:#06122a;border-color:transparent;
+    box-shadow:0 10px 24px -12px rgba(92,140,255,.8)}
+  /* flow demo */
+  .flow{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .node{flex:1 1 140px;background:var(--surface-2);border:1px solid var(--line);
+    border-radius:14px;padding:14px;text-align:center;transition:.25s var(--ease);position:relative}
+  .node .emoji{font-size:1.8rem;display:block}
+  .node small{color:var(--muted);display:block;margin-top:4px}
+  .node.lit{border-color:transparent;background:linear-gradient(135deg,rgba(92,200,255,.25),rgba(124,92,255,.22));
+    box-shadow:0 0 0 1px rgba(92,200,255,.6),0 0 28px rgba(92,200,255,.35);transform:translateY(-3px)}
+  .arrow{align-self:center;color:var(--muted);font-size:1.5rem}
+  /* explorer */
+  .explorer{display:grid;grid-template-columns:1fr;gap:16px}
+  @media(min-width:680px){.explorer{grid-template-columns:1.05fr .95fr}}
+  .stage{background:linear-gradient(180deg,#0c1026,#090c1e);border:1px solid var(--line);border-radius:16px;padding:8px;
+    box-shadow:var(--ring),inset 0 1px 0 rgba(255,255,255,.04)}
+  .stage svg{width:100%;height:auto;display:block}
+  .info{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:16px;padding:14px}
+  .info h3{margin:.1rem 0 .5rem;font-size:1.15rem}
+  .info .sci{color:var(--muted);font-weight:400;font-size:.9rem}
+  .kv{display:flex;gap:8px;margin:7px 0;font-size:.95rem}
+  .kv .k{color:var(--muted);min-width:120px;flex:0 0 120px}
+  .kv .v{font-weight:600}
+  .badge{display:inline-block;padding:2px 9px;border-radius:8px;font-size:.85rem;font-weight:700}
+  .b-vent{background:rgba(255,111,174,.16);color:var(--nerve);border:1px solid rgba(255,111,174,.3)}
+  .b-dors{background:rgba(124,92,255,.18);color:#b7a6ff;border:1px solid rgba(124,92,255,.35)}
+  .meter{margin-top:12px}
+  .meter label{font-size:.85rem;color:var(--muted)}
+  .bar{height:12px;background:rgba(255,255,255,.06);border-radius:8px;overflow:hidden;margin-top:4px}
+  .bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent2),var(--good));
+    width:20%;transition:width .4s}
+  .note{background:linear-gradient(180deg,rgba(255,209,102,.08),rgba(255,209,102,.02));border-left:3px solid var(--accent2);
+    border-radius:12px;padding:12px 16px;margin-top:16px;color:var(--muted);font-size:.92rem}
+  .note b{color:var(--ink)}
+  /* trend summary */
+  .trend{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+  .trend .t{flex:1 1 220px;background:rgba(255,255,255,.04);border:1px solid var(--line);
+    border-radius:14px;padding:14px}
+  .trend .t b{color:var(--accent)}
+  /* quiz */
+  .q{margin:14px 0;padding:16px;background:rgba(255,255,255,.035);border-radius:14px;border:1px solid var(--line)}
+  .q .opts{display:grid;gap:9px;margin-top:12px}
+  .opt{text-align:left;background:rgba(8,11,28,.6);border:1px solid var(--line);color:var(--ink);
+    border-radius:12px;padding:12px 14px;font-size:.95rem;transition:transform .14s var(--ease),border-color .14s,background .14s}
+  .opt:hover{border-color:rgba(92,200,255,.55);background:rgba(92,200,255,.08);transform:translateX(3px)}
+  .opt.correct{border-color:var(--good);background:linear-gradient(180deg,rgba(94,230,168,.18),rgba(94,230,168,.06))}
+  .opt.wrong{border-color:var(--bad);background:linear-gradient(180deg,rgba(255,123,156,.18),rgba(255,123,156,.06))}
+  .hintbtn{margin-top:12px;background:transparent;border:1px dashed rgba(255,209,102,.5);
+    color:var(--accent2);border-radius:10px;padding:8px 13px;font-size:.88rem;transition:.15s var(--ease)}
+  .hintbtn:hover{background:rgba(255,209,102,.1)}
+  .hint{margin-top:8px;font-size:.92rem;color:var(--muted);display:none;
+    background:rgba(255,255,255,.04);border-radius:10px;padding:10px 13px}
+  .hint.show{display:block;animation:rise .35s var(--ease) both}
+  .verdict{margin-top:10px;font-weight:600;font-size:.95rem}
+  footer{color:var(--muted);text-align:center;font-size:.85rem;margin:10px 0 22px}
+  .score{font-weight:700;color:var(--accent2)}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <a class="nav-back" href="index.html">← หน้ารวมบทเรียน</a>
+    <span class="nav-prog">โมดูล <b>0</b> / 9</span>
+  </div>
+
+  <header class="hero">
+    <span class="tag">ชีววิทยา ม.6 · Unit 18 · โมดูล 0</span>
+    <h1>ระบบประสาทคืออะไร และวิวัฒนาการมาอย่างไร</h1>
+    <p class="lead">เปิดบทด้วยภาพใหญ่ก่อนลงรายละเอียด — ลองกดเล่นแต่ละส่วนได้เลย ไม่ต้องอ่านยาว ๆ ก่อน</p>
+  </header>
+
+  <!-- ===== ส่วนที่ 1: หลักการพื้นฐาน ===== -->
+  <section class="card">
+    <h2>1 · ระบบประสาทมีไว้ทำอะไร?</h2>
+    <p>สิ่งมีชีวิตต้องเอาตัวรอด → ต้อง <b>รับรู้สิ่งรอบตัว</b> แล้ว <b>ตอบสนอง</b> ให้ทัน
+       หัวใจของระบบประสาทคือวงจร 3 ขั้นนี้ ลองกดปุ่มเพื่อดูสัญญาณวิ่ง</p>
+    <div class="flow" id="flow">
+      <div class="node" data-i="0"><span class="emoji">🔥</span><b>สิ่งเร้า</b><small>(Stimulus) เช่น ของร้อน</small></div>
+      <div class="arrow">→</div>
+      <div class="node" data-i="1"><span class="emoji">👆</span><b>หน่วยรับความรู้สึก</b><small>(Receptor) ผิวหนัง ตา หู</small></div>
+      <div class="arrow">→</div>
+      <div class="node" data-i="2"><span class="emoji">🧠</span><b>ศูนย์ประมวลผล</b><small>(สมอง/ไขสันหลัง)</small></div>
+      <div class="arrow">→</div>
+      <div class="node" data-i="3"><span class="emoji">💪</span><b>หน่วยตอบสนอง</b><small>(Effector) กล้ามเนื้อ ต่อม</small></div>
+    </div>
+    <div class="pill-row">
+      <button class="pill" id="playFlow">▶ ส่งสัญญาณ "แตะของร้อน → ชักมือหนี"</button>
+    </div>
+    <div class="note">💡 <b>จำคำนี้ไว้:</b> รับสิ่งเร้า → ส่งกระแสประสาท → ประมวลผล → สั่งตอบสนอง
+      ทั้งบทที่ 18 คือรายละเอียดของ 4 ช่องนี้ในมนุษย์นั่นเอง</div>
+  </section>
+
+  <!-- ===== ส่วนที่ 2: ตัวสำรวจวิวัฒนาการ ===== -->
+  <section class="card">
+    <h2>2 · วิวัฒนาการระบบประสาทในสัตว์</h2>
+    <p>เลือกสัตว์จากซ้ายไปขวา (ง่าย → ซับซ้อน) แล้วดูว่าระบบประสาทเปลี่ยนไปอย่างไร
+       สังเกต 2 อย่าง: <b>รวมศูนย์ขึ้นไหม</b> และ <b>เส้นประสาทอยู่ด้านไหนของลำตัว</b></p>
+    <div class="pill-row" id="orgPills"></div>
+
+    <div class="explorer">
+      <div class="stage" id="stage"></div>
+      <div class="info" id="info"></div>
+    </div>
+
+    <div class="note" id="liveNote"></div>
+  </section>
+
+  <!-- ===== ส่วนที่ 3: สรุปแนวโน้ม ===== -->
+  <section class="card">
+    <h2>3 · แนวโน้มวิวัฒนาการที่ต้องจับให้ได้</h2>
+    <div class="trend">
+      <div class="t"><b>① การรวมศูนย์ (Cephalization)</b><br>
+        จากร่างแหกระจายทั่วตัว → มีปมประสาท → มีสมองชัดเจนที่ส่วนหัว
+        ยิ่งวิวัฒนาการสูง ยิ่งรวมศูนย์การควบคุมไว้ที่หัว</div>
+      <div class="t"><b>② ตำแหน่งเส้นประสาทหลัก</b><br>
+        สัตว์ไม่มีกระดูกสันหลัง → เส้นประสาทอยู่ <span class="badge b-vent">ด้านท้อง (ventral)</span><br>
+        สัตว์มีกระดูกสันหลัง (คอร์เดต) → ย้ายมาอยู่ <span class="badge b-dors">ด้านหลัง (dorsal)</span></div>
+      <div class="t"><b>③ แยกเป็นระบบ CNS + PNS</b><br>
+        สัตว์ชั้นสูงมี <b>ระบบประสาทกลาง</b> (สมอง+ไขสันหลัง) แยกจาก
+        <b>ระบบประสาทรอบนอก</b> (เส้นประสาททั่วร่าง) ชัดเจน</div>
+    </div>
+  </section>
+
+  <!-- ===== ส่วนที่ 4: แบบทดสอบ ===== -->
+  <section class="card">
+    <h2>4 · ลองวัดความเข้าใจ <span class="score" id="score"></span></h2>
+    <div id="quiz"></div>
+  </section>
+
+  <footer>โมดูล 0 จาก 9 · ถัดไป → โมดูล 1: เซลล์ประสาท (นิวรอน)</footer>
+</div>
+
+<script>
+/* ============ ส่วนที่ 1: flow demo ============ */
+const flowNodes=[...document.querySelectorAll('#flow .node')];
+document.getElementById('playFlow').addEventListener('click',async function(){
+  this.disabled=true;
+  flowNodes.forEach(n=>n.classList.remove('lit'));
+  for(const n of flowNodes){
+    n.classList.add('lit');
+    await new Promise(r=>setTimeout(r,520));
+  }
+  await new Promise(r=>setTimeout(r,500));
+  flowNodes.forEach(n=>n.classList.remove('lit'));
+  this.disabled=false;
+});
+
+/* ============ ส่วนที่ 2: explorer data ============ */
+const organisms=[
+  {
+    name:'ไฮดรา / แมงกะพรุน', sci:'(Cnidaria)',
+    type:'ร่างแหประสาท (Nerve net)',
+    center:'ไม่มีศูนย์กลาง — เซลล์ประสาทเชื่อมกันเป็นตาข่ายทั่วตัว',
+    pos:'none', posText:'ยังไม่มีเส้นประสาทหลัก',
+    ceph:15,
+    note:'กระตุ้นจุดใดจุดหนึ่ง สัญญาณกระจายไปทุกทิศ ตอบสนองช้าและไม่เจาะจง',
+    svg:netSVG
+  },
+  {
+    name:'พลานาเรีย', sci:'(Platyhelminthes)',
+    type:'แบบขั้นบันได (Ladder type)',
+    center:'เริ่มมีปมประสาท (ganglia) คู่ที่หัว = "สมองอย่างง่าย"',
+    pos:'ventral', posText:'เส้นประสาท 2 เส้นทอดยาวด้านท้อง มีแขนงเชื่อมเป็นขั้นบันได',
+    ceph:40,
+    note:'มี cephalization ครั้งแรก — เริ่มรวมการควบคุมไว้ที่หัว และตอบสนองมีทิศทางขึ้น',
+    svg:ladderSVG
+  },
+  {
+    name:'ไส้เดือนดิน', sci:'(Annelida)',
+    type:'CNS + เส้นประสาทด้านท้อง',
+    center:'มีปมสมอง (brain) ที่หัว + ปมประสาทประจำปล้อง',
+    pos:'ventral', posText:'เส้นประสาทใหญ่ทึบ (ventral solid nerve cord) อยู่ด้านท้อง',
+    ceph:60,
+    note:'CNS ชัดเจนขึ้น มีปมประสาทประจำแต่ละปล้องช่วยควบคุมเฉพาะที่',
+    svg:wormSVG
+  },
+  {
+    name:'แมลง', sci:'(Arthropoda)',
+    type:'CNS + เส้นประสาทด้านท้อง',
+    center:'สมองพัฒนาดี + ปมประสาทตามปล้องลำตัว',
+    pos:'ventral', posText:'ventral solid nerve cord ด้านท้อง เหมือนกลุ่มไม่มีกระดูกสันหลัง',
+    ceph:72,
+    note:'ปมประสาทแต่ละปล้องสั่งงานได้กึ่งอิสระ ทำให้ขยับขาหลายคู่พร้อมกันได้ไว',
+    svg:insectSVG
+  },
+  {
+    name:'ปลา / สัตว์มีกระดูกสันหลัง', sci:'(Chordata)',
+    type:'CNS + เส้นประสาทด้านหลัง',
+    center:'สมองซับซ้อน + ไขสันหลัง แยก CNS / PNS ชัดเจน',
+    pos:'dorsal', posText:'เปลี่ยนมาเป็น dorsal nerve cord (ไขสันหลัง) อยู่ด้านหลัง — จุดต่างสำคัญ!',
+    ceph:95,
+    note:'นี่คือกลุ่มของมนุษย์ — เส้นประสาทย้ายมาอยู่ด้านหลัง และสมองแบ่งหลายส่วนทำหน้าที่ต่างกัน',
+    svg:vertSVG
+  }
+];
+
+/* ---- SVG builders (schematic) ---- */
+function frame(inner){
+  return `<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+}
+function netSVG(){
+  let pts=[[80,70],[120,55],[160,80],[200,60],[240,90],[100,110],[150,130],[210,120],[170,100],[130,95]];
+  let lines='';
+  const link=[[0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,9],[9,2],[6,7],[7,4],[2,9],[1,9],[8,3],[8,2],[8,7]];
+  link.forEach(([a,b])=>lines+=`<line x1="${pts[a][0]}" y1="${pts[a][1]}" x2="${pts[b][0]}" y2="${pts[b][1]}" stroke="#ff6fae" stroke-width="1.6" opacity=".7"/>`);
+  let dots=pts.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="4.5" fill="#ffd166"/>`).join('');
+  return frame(`<ellipse cx="160" cy="95" rx="120" ry="62" fill="#161a3a" stroke="#3a3f6b"/>${lines}${dots}
+    <text x="160" y="180" fill="#a3a9d4" font-size="11" text-anchor="middle">เซลล์ประสาทกระจายเป็นตาข่าย ไม่มีศูนย์กลาง</text>`);
+}
+function ladderSVG(){
+  let rungs='';
+  for(let i=0;i<6;i++){let x=90+i*32;rungs+=`<line x1="${x}" y1="78" x2="${x}" y2="118" stroke="#ff6fae" stroke-width="2"/>`;}
+  return frame(`<path d="M70 60 Q40 98 70 136 L260 132 Q285 98 260 64 Z" fill="#161a3a" stroke="#3a3f6b"/>
+    <circle cx="78" cy="78" r="7" fill="#ffd166"/><circle cx="78" cy="118" r="7" fill="#ffd166"/>
+    <text x="60" y="50" fill="#ffd166" font-size="10">ปมประสาท (สมอง)</text>
+    <line x1="78" y1="78" x2="262" y2="78" stroke="#ff6fae" stroke-width="3"/>
+    <line x1="78" y1="118" x2="262" y2="118" stroke="#ff6fae" stroke-width="3"/>${rungs}
+    <text x="160" y="160" fill="#a3a9d4" font-size="11" text-anchor="middle">2 เส้นด้านท้อง + ขั้นเชื่อม = บันได</text>`);
+}
+function wormSVG(){
+  let seg='',gang='';
+  for(let i=0;i<6;i++){let x=70+i*36;seg+=`<line x1="${x}" y1="60" x2="${x}" y2="140" stroke="#2a2f55" stroke-width="1.5"/>`;
+    gang+=`<circle cx="${x+18}" cy="128" r="5" fill="#ff6fae"/>`;}
+  return frame(`<rect x="60" y="60" width="200" height="80" rx="40" fill="#161a3a" stroke="#3a3f6b"/>${seg}
+    <ellipse cx="70" cy="100" rx="16" ry="22" fill="#1d2247" stroke="#3a3f6b"/>
+    <circle cx="70" cy="92" r="7" fill="#ffd166"/><text x="46" y="50" fill="#ffd166" font-size="10">สมอง</text>
+    <line x1="78" y1="128" x2="256" y2="128" stroke="#ff6fae" stroke-width="3.5"/>${gang}
+    <text x="160" y="168" fill="#ff6fae" font-size="11" text-anchor="middle">เส้นประสาทด้านท้อง (ventral) + ปมประจำปล้อง</text>`);
+}
+function insectSVG(){
+  let gang='';for(let i=0;i<4;i++){let x=130+i*32;gang+=`<circle cx="${x}" cy="120" r="5" fill="#ff6fae"/>`;}
+  return frame(`<ellipse cx="95" cy="95" rx="26" ry="22" fill="#1d2247" stroke="#3a3f6b"/>
+    <ellipse cx="150" cy="100" rx="22" ry="18" fill="#161a3a" stroke="#3a3f6b"/>
+    <rect x="168" y="86" width="92" height="34" rx="16" fill="#161a3a" stroke="#3a3f6b"/>
+    <circle cx="95" cy="88" r="9" fill="#ffd166"/><text x="72" y="62" fill="#ffd166" font-size="10">สมอง</text>
+    <line x1="95" y1="100" x2="250" y2="120" stroke="#ff6fae" stroke-width="3.5"/>${gang}
+    <text x="160" y="165" fill="#ff6fae" font-size="11" text-anchor="middle">สมองดี + เส้นประสาทด้านท้อง มีปมตามปล้อง</text>`);
+}
+function vertSVG(){
+  return frame(`<path d="M60 110 Q150 70 250 90 L268 100 Q260 116 250 120 Q150 132 70 122 Z" fill="#161a3a" stroke="#3a3f6b"/>
+    <path d="M250 90 l24 6 -10 12 -14 -8 Z" fill="#1d2247" stroke="#3a3f6b"/>
+    <ellipse cx="252" cy="98" rx="13" ry="11" fill="#1d2247" stroke="#7c5cff"/>
+    <circle cx="252" cy="96" r="7" fill="#b7a6ff"/><text x="226" y="74" fill="#b7a6ff" font-size="10">สมอง</text>
+    <path d="M70 92 Q150 78 244 92" stroke="#7c5cff" stroke-width="4" fill="none"/>
+    <text x="150" y="150" fill="#b7a6ff" font-size="11" text-anchor="middle">ไขสันหลังอยู่ด้านหลัง (dorsal) — ต่างจากกลุ่มก่อนหน้า</text>`);
+}
+
+/* ---- render ---- */
+const pillBox=document.getElementById('orgPills');
+const stage=document.getElementById('stage');
+const info=document.getElementById('info');
+const liveNote=document.getElementById('liveNote');
+
+organisms.forEach((o,i)=>{
+  const b=document.createElement('button');
+  b.className='pill'; b.textContent=(i+1)+'. '+o.name;
+  b.addEventListener('click',()=>select(i));
+  pillBox.appendChild(b);
+});
+function select(i){
+  [...pillBox.children].forEach((c,j)=>c.classList.toggle('active',j===i));
+  const o=organisms[i];
+  stage.innerHTML=o.svg();
+  const posBadge = o.pos==='dorsal'
+      ? '<span class="badge b-dors">ด้านหลัง (dorsal)</span>'
+      : (o.pos==='ventral' ? '<span class="badge b-vent">ด้านท้อง (ventral)</span>' : '<span class="badge" style="background:#2a2f55;color:#a3a9d4">—</span>');
+  info.innerHTML=`
+    <h3>${o.name} <span class="sci">${o.sci}</span></h3>
+    <div class="kv"><span class="k">ชนิดระบบประสาท</span><span class="v">${o.type}</span></div>
+    <div class="kv"><span class="k">การรวมศูนย์</span><span class="v">${o.center}</span></div>
+    <div class="kv"><span class="k">ตำแหน่งเส้นประสาท</span><span class="v">${posBadge}</span></div>
+    <div class="kv"><span class="k"></span><span class="v" style="font-weight:400;color:var(--muted)">${o.posText}</span></div>
+    <div class="meter"><label>ระดับการรวมศูนย์ (cephalization)</label>
+      <div class="bar"><i style="width:${o.ceph}%"></i></div></div>`;
+  liveNote.innerHTML='💡 '+o.note;
+}
+select(0);
+
+/* ============ ส่วนที่ 4: quiz ============ */
+const questions=[
+  {
+    q:'ข้อใดเรียงลำดับวงจรการทำงานของระบบประสาทได้ถูกต้อง?',
+    opts:[
+      'สิ่งเร้า → หน่วยตอบสนอง → ประมวลผล → หน่วยรับความรู้สึก',
+      'สิ่งเร้า → หน่วยรับความรู้สึก → ประมวลผล → หน่วยตอบสนอง',
+      'หน่วยตอบสนอง → สิ่งเร้า → หน่วยรับความรู้สึก → ประมวลผล'
+    ],
+    ans:1,
+    hints:['นึกถึงตอน "แตะของร้อนแล้วชักมือหนี" อะไรเกิดก่อนกัน',
+           'ต้อง "รับรู้" ก่อนถึงจะ "ประมวล" แล้วค่อย "สั่งตอบสนอง"']
+  },
+  {
+    q:'ไฮดรามีระบบประสาทแบบใด และมีศูนย์กลางหรือไม่?',
+    opts:[
+      'แบบขั้นบันได มีสมองชัดเจน',
+      'ร่างแหประสาท (nerve net) ไม่มีศูนย์กลาง',
+      'CNS + ไขสันหลังด้านหลัง'
+    ],
+    ans:1,
+    hints:['ไฮดราเป็นสัตว์กลุ่มแรกสุดในตัวสำรวจ ลองกดดูภาพอีกที',
+           'เซลล์เชื่อมกันเป็นตาข่ายทั่วตัว กระตุ้นที่ไหนสัญญาณก็กระจายไปหมด']
+  },
+  {
+    q:'จุดต่างสำคัญของสัตว์มีกระดูกสันหลัง (คอร์เดต) เทียบกับไส้เดือนและแมลงคืออะไร?',
+    opts:[
+      'เส้นประสาทหลักย้ายจากด้านท้อง (ventral) มาอยู่ด้านหลัง (dorsal)',
+      'ไม่มีสมอง',
+      'เปลี่ยนกลับไปเป็นร่างแหประสาท'
+    ],
+    ans:0,
+    hints:['ดูที่สี badge "ด้านท้อง" กับ "ด้านหลัง" ในตัวสำรวจ',
+           'ไส้เดือน/แมลง = ventral, ปลาและคน = dorsal nerve cord (ไขสันหลัง)']
+  },
+  {
+    q:'"Cephalization" หมายถึงแนวโน้มใดในวิวัฒนาการระบบประสาท?',
+    opts:[
+      'การกระจายเซลล์ประสาทให้ทั่วตัวมากขึ้น',
+      'การรวมศูนย์ควบคุมไว้ที่ส่วนหัว (เกิดสมอง)',
+      'การลดจำนวนเซลล์ประสาทลง'
+    ],
+    ans:1,
+    hints:['ราก cephal- แปลว่า "หัว"',
+           'จากไม่มีศูนย์ → มีปมประสาทที่หัว → มีสมองชัดเจน นั่นคือการรวมศูนย์ที่หัว']
+  }
+];
+
+const quizBox=document.getElementById('quiz');
+let answered=new Array(questions.length).fill(false);
+questions.forEach((item,qi)=>{
+  const div=document.createElement('div'); div.className='q';
+  let optsHtml=item.opts.map((t,oi)=>`<button class="opt" data-q="${qi}" data-o="${oi}">${t}</button>`).join('');
+  div.innerHTML=`<b>ข้อ ${qi+1}.</b> ${item.q}
+    <div class="opts">${optsHtml}</div>
+    <button class="hintbtn" data-q="${qi}">💡 ขอคำใบ้</button>
+    <div class="hint" id="hint-${qi}"></div>
+    <div class="verdict" id="verdict-${qi}"></div>`;
+  quizBox.appendChild(div);
+});
+
+let hintLevel={};
+quizBox.addEventListener('click',e=>{
+  if(e.target.classList.contains('opt')){
+    const qi=+e.target.dataset.q, oi=+e.target.dataset.o;
+    if(answered[qi]) return;
+    const correct=questions[qi].ans;
+    const group=quizBox.querySelectorAll(`.opt[data-q="${qi}"]`);
+    if(oi===correct){
+      e.target.classList.add('correct'); answered[qi]=true;
+      document.getElementById('verdict-'+qi).textContent='✅ ถูกต้อง! เก่งมาก';
+      document.getElementById('verdict-'+qi).style.color='var(--good)';
+      group.forEach(g=>g.disabled=true);
+    }else{
+      e.target.classList.add('wrong');
+      document.getElementById('verdict-'+qi).textContent='ยังไม่ใช่ ลองกดดูคำใบ้แล้วลองใหม่นะ 🙂';
+      document.getElementById('verdict-'+qi).style.color='var(--bad)';
+    }
+    updateScore();
+  }
+  if(e.target.classList.contains('hintbtn')){
+    const qi=+e.target.dataset.q;
+    hintLevel[qi]=(hintLevel[qi]||0);
+    const hints=questions[qi].hints;
+    const box=document.getElementById('hint-'+qi);
+    if(hintLevel[qi]<hints.length){
+      hintLevel[qi]++;
+      box.classList.add('show');
+      box.innerHTML=hints.slice(0,hintLevel[qi]).map((h,i)=>`<div>นัยที่ ${i+1}: ${h}</div>`).join('');
+      if(hintLevel[qi]>=hints.length) e.target.textContent='💡 (ใบ้หมดแล้ว)';
+      else e.target.textContent='💡 ขอคำใบ้เพิ่ม';
+    }
+  }
+});
+function updateScore(){
+  const n=answered.filter(Boolean).length;
+  document.getElementById('score').textContent=`(${n}/${questions.length})`;
+  if(n===questions.length) document.getElementById('score').textContent+=' 🎉 ครบแล้ว พร้อมไปโมดูล 1!';
+}
+updateScore();
+</script>
+<!--KIT-UI v2.4 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<script>
+/* =============================================================================
+   _kit/ui-controls.js  —  KIT UI  v1.0
+   แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
+     🌙/☀️  โหมดมืด / สว่าง   (จำค่าไว้ใน localStorage)
+     A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
+     ✏️  ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
+     🧮  เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
+
+   ── วิธีใช้ ────────────────────────────────────────────────────────────────
+   ห้ามแก้โค้ดนี้ในไฟล์ widget!  แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
+       pwsh -File _kit/apply-ui.ps1
+   สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
+   (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
+
+   !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
+      เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
+
+   ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
+   ใส่แอตทริบิวต์ที่ tag body:  data-tools="pen,calc"  = บังคับเปิด
+                              data-tools="none"      = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
+   ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
+              หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
+   ============================================================================= */
+(function(){
+if(window.__KITUI__) return; window.__KITUI__='2.4';
+
+/* ---------- helper ---------- */
+const D=document, R=D.documentElement;
+const get=k=>{try{return localStorage.getItem('kitui-'+k)}catch(e){return null}};
+const set=(k,v)=>{try{localStorage.setItem('kitui-'+k,v)}catch(e){}};
+const el=(t,c,h)=>{const e=D.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
+
+/* =============================================================================
+   1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
+   ============================================================================= */
+const CSS=`
+/* ===== DARK TOKENS (คู่กับ _kit/design-tokens.css) ===== */
+:root[data-theme="dark"]{
+  --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
+  --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
+  --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
+  --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
+  --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
+}
+:root[data-theme="dark"] body{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f172a}
+:root[data-theme="dark"] body[data-subject="physics"]{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f1220}
+:root[data-theme="dark"] body[data-subject="bio"]{--accent:#4ade80;--accent-head:#bbf7d0;--accent-ink:#86efac;--accent-soft:#0f2a1a;--accent-bd:#256b41;--accent-chip:#14532d;--accent-ghost:#15803d;--bg:#0d1912}
+:root[data-theme="dark"] body[data-subject="chem"]{--accent:#fb923c;--accent-head:#fed7aa;--accent-ink:#fdba74;--accent-soft:#2b1a0c;--accent-bd:#8a3d12;--accent-chip:#6d2c10;--accent-ghost:#c2410c;--bg:#1a130c}
+:root[data-theme="dark"] body[data-subject="christ"]{--accent:#a78bfa;--accent-head:#ddd6fe;--accent-ink:#c4b5fd;--accent-soft:#241a3d;--accent-bd:#5b21b6;--accent-chip:#4c1d95;--accent-ghost:#6d28d9;--bg:#16121f}
+:root[data-theme="dark"] body[data-subject="islam"]{--accent:#2dd4bf;--accent-head:#99f6e4;--accent-ink:#5eead4;--accent-soft:#0d2b28;--accent-bd:#12615a;--accent-chip:#134e4a;--accent-ghost:#0f766e;--bg:#0c1917}
+:root[data-theme="dark"] body[data-subject="history"]{--accent:#fbbf24;--accent-head:#fde68a;--accent-ink:#fcd34d;--accent-soft:#2a1f0a;--accent-bd:#8a4b0c;--accent-chip:#6d3a0a;--accent-ghost:#b45309;--bg:#191509}
+:root[data-theme="dark"] body[data-subject="math"]{--accent:#38bdf8;--accent-head:#bae6fd;--accent-ink:#7dd3fc;--accent-soft:#0c2434;--accent-bd:#0b5a80;--accent-chip:#0c4a6e;--accent-ghost:#0369a1;--bg:#0b1620}
+:root[data-theme="dark"] body[data-subject="eng"]{--accent:#f472b6;--accent-head:#fbcfe8;--accent-ink:#f9a8d4;--accent-soft:#2e1122;--accent-bd:#8d1748;--accent-chip:#731839;--accent-ghost:#be185d;--bg:#1c0f16}
+:root[data-theme="dark"] body[data-subject="thai"]{--accent:#f87171;--accent-head:#fecaca;--accent-ink:#fca5a5;--accent-soft:#2d1414;--accent-bd:#8d2020;--accent-chip:#7f1d1d;--accent-ghost:#b91c1c;--bg:#1a0f0f}
+:root[data-theme="dark"] img,:root[data-theme="dark"] .svg-box{filter:brightness(.92)}
+/* ช่องกรอก/ดรอปดาวน์ที่ widget เก่ากำหนดพื้นขาวตายตัวไว้ */
+:root[data-theme="dark"] select,:root[data-theme="dark"] textarea,
+:root[data-theme="dark"] input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=color])
+{background-color:var(--soft);color:var(--ink);border-color:var(--line)}
+
+/* ===== แถบเครื่องมือลอย ===== */
+#kitui-bar{position:fixed;right:10px;bottom:10px;z-index:99990;display:flex;gap:6px;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
+#kitui-bar button{border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;
+  font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
+  align-items:center;justify-content:center;font-weight:700}
+#kitui-bar button:hover{background:var(--soft)}
+#kitui-bar button:active{transform:scale(.93)}
+#kitui-bar button.on{background:var(--accent);color:#fff}
+#kitui-bar .kitui-sep{width:1px;height:22px;background:var(--line);flex:0 0 1px}
+#kitui-bar .kitui-fs{font-size:11px;color:var(--muted);min-width:34px;text-align:center;font-weight:700}
+#kitui-bar.hidden > *:not(#kitui-grip){display:none}
+#kitui-grip{font-size:17px}
+
+/* ===== แผงลอย (ที่ทด / เครื่องคิดเลข) ===== */
+.kitui-sheet{position:fixed;left:0;right:0;bottom:0;z-index:99991;background:var(--card);
+  border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
+  display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
+  height:52vh;max-height:92vh;min-height:180px}
+.kitui-sheet.open{display:flex}
+.kitui-sheet.full{height:100vh;border-radius:0}
+.kitui-head{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--line);
+  flex-wrap:wrap;touch-action:none;cursor:ns-resize}
+.kitui-head b{font-size:.9rem;color:var(--accent-ink);margin-right:2px;white-space:nowrap}
+.kitui-head button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;
+  padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
+.kitui-head button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.kitui-head .kitui-spacer{flex:1}
+.kitui-sw{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;min-height:0}
+.kitui-sw.on{border-color:var(--ink);transform:scale(1.12)}
+.kitui-padwrap{flex:1;position:relative;overflow:hidden;background:var(--soft)}
+.kitui-padwrap canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+:root[data-theme="dark"] .kitui-padwrap{background:#0c1220}
+
+/* ===== เครื่องคิดเลข ===== */
+#kitui-calc{height:auto;max-height:90vh}
+.kitui-disp{padding:8px 12px;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);
+  border-bottom:1px solid var(--line)}
+.kitui-disp .ex{font-size:.95rem;color:var(--muted);min-height:1.3em;word-break:break-all}
+.kitui-disp .rs{font-size:1.6rem;font-weight:700;color:var(--accent-ink);word-break:break-all}
+.kitui-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:7px}
+.kitui-keys button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:9px;
+  font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
+.kitui-keys button:active{transform:scale(.95)}
+.kitui-keys button.fn{font-size:.8rem;color:var(--accent-ink)}
+.kitui-keys button.op{background:var(--accent-soft);color:var(--accent-ink)}
+.kitui-keys button.eq{background:var(--accent);color:#fff;grid-row:span 2}
+.kitui-keys button.del{background:var(--hot-bg);color:var(--hot-ink)}
+.kitui-keys button.w3{grid-column:span 3}
+@media(max-width:420px){.kitui-keys button{font-size:.88rem;min-height:40px}.kitui-keys button.fn{font-size:.72rem}}
+@media(min-width:760px){
+  .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
+  .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
+  #kitui-pad{width:560px}
+}
+@media print{#kitui-bar,.kitui-sheet{display:none!important}}
+`;
+const st=el('style'); st.id='kitui-style'; st.textContent=CSS; D.head.appendChild(st);
+
+/* -----------------------------------------------------------------------------
+   1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
+   widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
+   พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
+   แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
+   เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
+----------------------------------------------------------------------------- */
+/* สีพาสเทลสว่าง -> สีเข้มที่ยังคง "เฉดเดิม" ไว้ (เขียว=ถูก / แดง=ผิด ต้องยังแยกออก)
+   ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
+function darken(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
+  const l0=(mx+mn)/2;
+  const s0 = d===0 ? 0 : d/(1-Math.abs(2*l0-1));
+  const s = d===0 ? 0 : Math.min(.5, Math.max(.3, s0));
+  const l = d===0 ? .13 : .17;                       /* เทา/ขาวให้เข้มกว่าสีนิดหน่อย */
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+function darkFix(){
+  const out=[], seen=new Set();
+  const take=r=>{
+    if(!r.style || !r.selectorText) return;
+    if(r.selectorText.indexOf('kitui')>-1) return;               /* ของเราเองใช้ token อยู่แล้ว */
+    const bg=r.style.backgroundColor;
+    if(!bg || bg.indexOf('var(')>-1) return;
+    const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
+    if(!m) return;
+    if(m[4]!==undefined && +m[4]<0.6) return;                    /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
+    const cr=+m[1], cg=+m[2], cb=+m[3];
+    if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return;       /* ไม่สว่างพอ ไม่ต้องยุ่ง */
+    const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
+    const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
+    let css='background-color:'+repl;
+    /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
+    const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
+    out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
+  };
+  /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
+        ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
+  const visit=rules=>{
+    for(let i=0;i<rules.length;i++){
+      const r=rules[i];
+      if(r.selectorText) take(r);
+      if(r.cssRules && r.cssRules.length) visit(r.cssRules);     /* @media / @supports / nesting */
+    }
+  };
+  for(let i=0;i<D.styleSheets.length;i++){
+    let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; }   /* ข้ามชีตข้ามโดเมน */
+    if(rr) visit(rr);
+  }
+  if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
+  return out.length;
+}
+try{ window.__KITUI_DARKFIX__=darkFix(); }catch(e){ window.__KITUI_DARKFIX__='err:'+e.message; }
+
+/* darkFix ข้างบนซ่อมได้เฉพาะสีที่เขียนตายตัวในไฟล์ CSS
+   แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
+   ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
+   จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
+const rgbOf=c=>{const m=c&&c.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null;};
+const lumOf=v=>v?(0.2126*v[0]+0.7152*v[1]+0.0722*v[2])/255:null;
+/* ตรงข้ามกับ darken(): ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
+   (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
+function lighten(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  if(d<0.04) return 'var(--ink)';                    /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
+  let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
+  const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
+  const s=Math.min(.92,Math.max(.55,s0)), l=.72;
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+const SKIP={CANVAS:1,IMG:1,VIDEO:1,SVG:1,IFRAME:1,PICTURE:1,OBJECT:1};
+const OBS_OPT={childList:true,subtree:true,attributes:true,attributeFilter:['class','style']};
+let patched=[], obs=null;
+function elementFix(){
+  /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
+        ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
+  if(obs) obs.disconnect();
+  try{ elementFixCore(); } finally { if(obs) obs.observe(D.body,OBS_OPT); }
+}
+function elementFixCore(){
+  /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
+     ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
+     จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
+  if(R.getAttribute('data-theme')!=='dark'){
+    patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
+    patched=[];
+    return;
+  }
+  /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
+     ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
+  /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
+  const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
+  for(let i=0;i<all.length;i++){
+    const e=all[i];
+    if(e.id&&e.id.indexOf('kitui')===0) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(SKIP[e.tagName]) continue;                      /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
+    const s=getComputedStyle(e);
+    const bg=rgbOf(s.backgroundColor);
+    if(!bg || bg[3]<0.6) continue;                     /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
+    if(lumOf(bg)<0.72) continue;                       /* เข้มพออยู่แล้ว */
+    /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
+    e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
+    const fg=rgbOf(s.color);
+    if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important');  /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
+    patched.push(e);
+  }
+  /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
+     ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
+  const bgCache=new Map();
+  const effBg=n=>{
+    for(let p=n;p;p=p.parentElement){
+      if(bgCache.has(p)) return bgCache.get(p);
+      const b=rgbOf(getComputedStyle(p).backgroundColor);
+      if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
+    }
+    return null;
+  };
+  for(let i=2;i<all.length;i++){
+    const e=all[i];
+    if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(e.style.color) continue;                         /* จัดการไปแล้วในรอบแรก */
+    if(!e.textContent || !e.textContent.trim()) continue;
+    const fg=rgbOf(getComputedStyle(e).color);
+    if(!fg || lumOf(fg)>=0.45) continue;                 /* ตัวอักษรสว่างอยู่แล้ว */
+    const bg=effBg(e);
+    if(!bg || lumOf(bg)>=0.5) continue;                  /* พื้นยังสว่าง อ่านออกอยู่ */
+    e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
+    patched.push(e);
+  }
+}
+let efT=0;
+const scheduleFix=()=>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
+try{
+  obs=new MutationObserver(scheduleFix);
+  obs.observe(D.body,OBS_OPT);
+}catch(e){}
+
+/* =============================================================================
+   2) ธีม + ขนาดตัวอักษร
+   ============================================================================= */
+const FS=[.85,1,1.15,1.3,1.5], FSNAME=['เล็กสุด','เล็ก','ปกติ','ใหญ่','ใหญ่สุด'];
+let fsIdx=parseInt(get('fs')); if(isNaN(fsIdx)||fsIdx<0||fsIdx>4) fsIdx=1;
+let theme=get('theme') || (matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+
+function applyTheme(){
+  R.setAttribute('data-theme',theme);
+  R.style.colorScheme = theme==='dark'?'dark':'light';   /* ให้ select/input เป็นสีเข้มด้วย */
+  const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
+  set('theme',theme);
+  clearTimeout(efT);                                   /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
+  if(typeof elementFix==='function') elementFix();
+  if(typeof draw==='function' && pad) draw();          /* วาดที่ทดใหม่ เส้นดำ<->ขาวตามธีม */
+}
+function applyFS(){
+  R.style.fontSize=(16*FS[fsIdx])+'px';
+  const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
+  set('fs',fsIdx);
+}
+
+/* =============================================================================
+   3) แถบเครื่องมือ
+   ============================================================================= */
+const subj=(D.body.getAttribute('data-subject')||'').toLowerCase();
+/* หลาย widget ไม่ได้ใส่ data-subject ที่ <body> → เดาจากโฟลเดอร์ที่ไฟล์อยู่ด้วย */
+const inPath=/\/(physics|math|chemist)\//i.test(decodeURIComponent(location.pathname));
+const tAttr=D.body.getAttribute('data-tools');
+const wantTools = tAttr!=null ? tAttr.toLowerCase()
+                : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
+const hasPen  = wantTools.includes('pen');
+const hasCalc = wantTools.includes('calc');
+
+const bar=el('div'); bar.id='kitui-bar';
+bar.innerHTML =
+  `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
+  `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button>`+
+  `<span class="kitui-sep"></span>`+
+  `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
+  `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
+  `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
+  (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
+  (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
+D.body.appendChild(bar);
+
+D.getElementById('kitui-theme').onclick=()=>{theme=theme==='dark'?'light':'dark';applyTheme();};
+D.getElementById('kitui-fsup').onclick=()=>{if(fsIdx<4){fsIdx++;applyFS();}};
+D.getElementById('kitui-fsdown').onclick=()=>{if(fsIdx>0){fsIdx--;applyFS();}};
+D.getElementById('kitui-grip').onclick=()=>bar.classList.toggle('hidden');
+applyTheme(); applyFS();
+
+/* ปิดแผงด้วยปุ่ม Esc */
+D.addEventListener('keydown',e=>{ if(e.key==='Escape') D.querySelectorAll('.kitui-sheet.open').forEach(s=>s.classList.remove('open')); });
+
+/* ลากหัวแผงเพื่อปรับความสูง */
+function makeResizable(sheet){
+  const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
+  head.addEventListener('pointerdown',e=>{
+    if(e.target.closest('button'))return;
+    drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect().height;head.setPointerCapture(e.pointerId);
+  });
+  head.addEventListener('pointermove',e=>{
+    if(!drag)return;
+    const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
+    sheet.classList.remove('full'); sheet.style.height=h+'px';
+    if(sheet.id==='kitui-pad') fitPad();
+  });
+  head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
+}
+
+/* =============================================================================
+   4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ  หลายหน้า  เซฟอัตโนมัติ
+   ============================================================================= */
+let pad,padCv,padCx,pages=[[]],pg=0,undone=[],histo=[];
+let tool='pen',color='#111827',width=2.4,penSeen=0;
+const COLORS=['#111827','#2563eb','#dc2626','#16a34a','#f59e0b'];
+const PADKEY='pad-'+location.pathname.split('/').pop();
+
+function buildPad(){
+  pad=el('div','kitui-sheet'); pad.id='kitui-pad';
+  pad.innerHTML=
+   `<div class="kitui-head">
+      <b>✏️ ที่ทด</b>
+      <button data-t="pen" class="on">🖊️</button>
+      <button data-t="hl">🖍️</button>
+      <button data-t="er">🧽</button>
+      ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
+      <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
+      <span class="kitui-spacer"></span>
+      <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
+      <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
+      <button id="kitui-pgadd">+ หน้า</button>
+      <button id="kitui-clear">ล้างหน้านี้</button>
+      <button id="kitui-full">⛶</button>
+      <button id="kitui-padclose">✕</button>
+    </div>
+    <div class="kitui-padwrap"><canvas></canvas></div>`;
+  D.body.appendChild(pad);
+  padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
+  makeResizable(pad);
+
+  pad.querySelector('.kitui-head').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
+  });
+  D.getElementById('kitui-undo').onclick=()=>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop(); draw(); save(); } };
+  D.getElementById('kitui-redo').onclick=()=>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop(); draw(); save(); } };
+  D.getElementById('kitui-clear').onclick=()=>{ snap(); pages[pg]=[]; draw(); save(); };
+  D.getElementById('kitui-pgadd').onclick=()=>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw(); save(); };
+  D.getElementById('kitui-pgprev').onclick=()=>{ if(pg>0){pg--;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-pgnext').onclick=()=>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-full').onclick=()=>{ pad.classList.toggle('full'); pad.style.height=''; fitPad(); };
+  D.getElementById('kitui-padclose').onclick=()=>pad.classList.remove('open');
+
+  /* ---- วาด ---- */
+  let cur=null;
+  padCv.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='pen') penSeen=Date.now();
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;   /* กันฝ่ามือแตะตอนใช้สไตลัส */
+    const p=pt(e);
+    if(tool==='er'){ snap(); erase(p); return; }
+    snap();
+    cur={c:color,w:width,hl:tool==='hl',pts:[p]};
+    pages[pg].push(cur); draw();
+    try{ padCv.setPointerCapture(e.pointerId); }catch(x){}  /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
+  });
+  padCv.addEventListener('pointermove',e=>{
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;
+    if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
+    if(!cur||!e.buttons)return;
+    /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
+    let evs=[e];
+    if(e.getCoalescedEvents){ const c=e.getCoalescedEvents(); if(c&&c.length) evs=c; }
+    evs.forEach(ev=>cur.pts.push(pt(ev)));
+    draw();
+  });
+  const end=()=>{ if(cur){cur=null;save();} };
+  padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
+  padCv.addEventListener('pointerleave',end);
+
+  addEventListener('resize',()=>{ if(pad.classList.contains('open')) fitPad(); });
+  load(); fitPad();
+}
+function pt(e){
+  const r=padCv.getBoundingClientRect();
+  return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
+          p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5};   /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
+}
+function snap(){ histo.push(pages[pg].slice()); if(histo.length>60)histo.shift(); undone=[]; }
+function erase(p){
+  const r=padCv.getBoundingClientRect(), rad=18/r.width;
+  const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
+  if(keep.length!==pages[pg].length){ pages[pg]=keep; draw(); save(); }
+}
+function fitPad(){
+  const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
+  const dpr=Math.min(devicePixelRatio||1,2.5);
+  padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
+  draw();
+}
+function draw(){
+  const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
+  padCx.clearRect(0,0,W,H);
+  /* เส้นตารางจาง ๆ ให้เขียนตรง */
+  const dark=R.getAttribute('data-theme')==='dark';
+  padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
+  for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath();padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke();}
+  padCx.lineCap='round'; padCx.lineJoin='round';
+  pages[pg].forEach(s=>{
+    padCx.globalAlpha=s.hl?0.32:1;
+    padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
+    for(let i=1;i<s.pts.length;i++){
+      const a=s.pts[i-1],b=s.pts[i];
+      padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
+      padCx.beginPath(); padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke();
+    }
+    if(s.pts.length===1){ /* จุดเดียว */
+      padCx.fillStyle=padCx.strokeStyle; padCx.beginPath();
+      padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill();
+    }
+  });
+  padCx.globalAlpha=1;
+  const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
+}
+function save(){ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
+function load(){
+  try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
+}
+
+if(hasPen){
+  buildPad();
+  D.getElementById('kitui-penbtn').onclick=()=>{
+    const o=pad.classList.toggle('open');
+    D.getElementById('kitui-penbtn').classList.toggle('on',o);
+    if(o) fitPad();
+  };
+}
+
+/* =============================================================================
+   5) เครื่องคิดเลขวิทยาศาสตร์  (tokenizer → shunting-yard → RPN  ไม่ใช้ eval)
+   ============================================================================= */
+const FN={sin:1,cos:1,tan:1,asin:1,acos:1,atan:1,ln:1,log:1,sqrt:1,abs:1,exp:1};
+const PREC={'+':1,'-':1,'*':2,'/':2,'^':4,'u-':3};
+function tokenize(s){
+  s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
+  const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!()])/g; let m;
+  while((m=re.exec(s))) out.push(m[1]);
+  return out;
+}
+function toRPN(tk){
+  const out=[],op=[]; let prev=null;
+  for(let t of tk){
+    if(t==='**')t='^';
+    if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
+    else if(t==='PI'){ out.push(Math.PI); }
+    else if(t==='e'||t==='E'){ out.push(Math.E); }
+    else if(t==='ANS'){ out.push(ANS); }
+    else if(FN[t]){ op.push(t); }
+    else if(t==='('){ op.push(t); }
+    else if(t===')'){
+      while(op.length&&op[op.length-1]!=='(') out.push(op.pop());
+      if(!op.length) throw 0; op.pop();
+      if(op.length&&FN[op[op.length-1]]) out.push(op.pop());
+    }
+    else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
+    else if('+-*/^'.includes(t)){
+      let o=t;
+      const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
+      if(t==='-'&&unary) o='u-';
+      else if(t==='+'&&unary){ prev=t; continue; }
+      while(op.length){
+        const top=op[op.length-1];
+        if(top==='('||FN[top])break;
+        const rightAssoc=(o==='^'||o==='u-');
+        if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop()); else break;
+      }
+      op.push(o);
+    }
+    else throw 0;
+    prev=t;
+  }
+  while(op.length){ const o=op.pop(); if(o==='(')throw 0; out.push(o); }
+  return out;
+}
+function evalRPN(rpn,deg){
+  const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
+  const pop=()=>{ if(!st.length)throw 0; return st.pop(); };
+  for(const t of rpn){
+    if(typeof t==='number'){ st.push(t); continue; }
+    if(t==='fact'){ const n=pop(); if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
+    if(t==='pct'){ st.push(pop()/100); continue; }
+    if(t==='u-'){ st.push(-pop()); continue; }
+    if(FN[t]){
+      const a=pop();
+      st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
+             : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
+             : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
+             : t==='abs'?Math.abs(a) : Math.exp(a) );
+      continue;
+    }
+    const b=pop(),a=pop();
+    st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
+  }
+  if(st.length!==1) throw 0;
+  return st[0];
+}
+function calc(src,deg){ return evalRPN(toRPN(tokenize(src)),deg); }
+
+let ANS=0, expr='', calcSheet, isDeg=true;
+const KEYS=[
+ ['DEG','deg','fn'],['(','(',''],[')',')',''],['⌫','del','del'],['AC','ac','del'],
+ ['sin','sin(','fn'],['cos','cos(','fn'],['tan','tan(','fn'],['π','π','fn'],['÷','÷','op'],
+ ['sin⁻¹','asin(','fn'],['cos⁻¹','acos(','fn'],['tan⁻¹','atan(','fn'],['e','e','fn'],['×','×','op'],
+ ['ln','ln(','fn'],['log','log(','fn'],['√','√(','fn'],['xʸ','^','fn'],['−','−','op'],
+ ['7','7',''],['8','8',''],['9','9',''],['x!','!','fn'],['+','+','op'],
+ ['4','4',''],['5','5',''],['6','6',''],['%','%','fn'],['ANS','ANS','fn'],
+ ['1','1',''],['2','2',''],['3','3',''],['.','.',''],['=','eq','eq'],
+ ['0','0','w3'],['x²','^2','fn']
+];
+function buildCalc(){
+  calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
+  calcSheet.innerHTML=
+   `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
+      <button id="kitui-calcclose">✕</button></div>
+    <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
+    <div class="kitui-keys" id="kitui-keys">
+      ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
+    </div>`;
+  D.body.appendChild(calcSheet);
+  D.getElementById('kitui-calcclose').onclick=()=>calcSheet.classList.remove('open');
+  const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
+  const show=()=>{ ex.textContent=expr||' ';
+    try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
+    catch(e){ rs.style.opacity=.35; }
+  };
+  D.getElementById('kitui-keys').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
+    if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
+    if(k==='del'){ expr=expr.slice(0,-1); show(); return; }
+    if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show(); return; }
+    if(k==='eq'){
+      rs.style.opacity=1;
+      try{
+        const v=calc(expr,isDeg);
+        if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
+        if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
+        ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
+      }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
+      return;
+    }
+    expr+=k; show();
+  });
+}
+function fmt(v){
+  if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
+  if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
+  return String(Math.round(v*1e10)/1e10);
+}
+if(hasCalc){
+  buildCalc();
+  D.getElementById('kitui-calcbtn').onclick=()=>{
+    const o=calcSheet.classList.toggle('open');
+    D.getElementById('kitui-calcbtn').classList.toggle('on',o);
+  };
+}
+})();
+
+</script>
+<!--/KIT-UI-->
+</body>
+</html>

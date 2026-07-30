@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>สรุปเต็ม — ตัวแปรสุ่มและการแจกแจงความน่าจะเป็น</title>
+<style>
+  :root{
+    --bg:#0f1320; --bg2:#161c2e; --card:#1c2440; --card2:#222c4f;
+    --txt:#e8ecf8; --muted:#8b96b8; --line:#2c3760;
+    --acc:#5b8cff; --acc2:#7aa2ff; --good:#36d399; --bad:#ff6b81;
+    --warn:#ffce5b; --gold:#ffd36e; --pur:#b48cff;
+    --shadow:0 10px 40px rgba(0,0,0,.45);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Segoe UI','Sukhumvit Set','Noto Sans Thai',system-ui,sans-serif;
+    background:radial-gradient(1200px 700px at 85% -10%,#1d2746 0,var(--bg) 55%);
+    color:var(--txt); line-height:1.7; padding-bottom:60px;
+  }
+  code{background:#0c1120;padding:1px 6px;border-radius:6px;color:var(--gold);font-size:.92em;
+    font-family:'Consolas','SFMono-Regular',monospace;white-space:nowrap}
+  sup,sub{font-size:.72em}
+  b{color:var(--acc2)}
+  .layout{display:flex;max-width:1180px;margin:0 auto;gap:26px;padding:0 18px}
+
+  /* ---- TOC ---- */
+  aside{position:sticky;top:0;height:100vh;width:235px;flex:none;padding:22px 0;overflow-y:auto;
+    display:flex;flex-direction:column}
+  aside .brand{font-size:.82rem;color:var(--muted);margin-bottom:14px;line-height:1.4;
+    padding:0 12px;border-left:3px solid var(--acc)}
+  aside a{display:block;color:var(--muted);text-decoration:none;font-size:.84rem;
+    padding:7px 12px;border-radius:9px;border-left:3px solid transparent;transition:.13s}
+  aside a:hover{color:var(--txt);background:var(--bg2)}
+  aside a.active{color:var(--acc2);background:var(--bg2);border-left-color:var(--acc);font-weight:600}
+  aside a.sub{font-size:.78rem;padding-left:24px;color:#7177a0}
+  .links{margin-top:auto;padding:12px;font-size:.74rem;color:var(--muted);border-top:1px solid var(--line)}
+  .links a{display:inline;color:var(--acc2);padding:0}
+
+  /* ---- content ---- */
+  main{flex:1;min-width:0;padding:26px 0 40px}
+  .hero{background:linear-gradient(135deg,var(--card),var(--card2));border:1px solid var(--line);
+    border-radius:18px;padding:24px 26px;box-shadow:var(--shadow);margin-bottom:22px}
+  .hero h1{font-size:1.45rem;line-height:1.35;margin-bottom:8px}
+  .hero h1 .em{color:var(--acc2)}
+  .hero p{color:var(--muted);font-size:.88rem}
+  .srcs{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .src{font-size:.74rem;background:var(--bg2);border:1px solid var(--line);border-radius:9px;
+    padding:6px 11px;color:var(--muted)}
+  .src b{color:var(--gold)}
+
+  section{background:linear-gradient(135deg,var(--card),var(--card2));border:1px solid var(--line);
+    border-radius:18px;padding:24px 26px;box-shadow:var(--shadow);margin-bottom:20px;scroll-margin-top:18px}
+  h2{font-size:1.22rem;margin-bottom:14px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  h2 .pill{font-size:.64rem;background:var(--bg2);border:1px solid var(--line);color:var(--acc2);
+    padding:3px 9px;border-radius:99px;font-weight:400}
+  h2 .src-tag{font-size:.64rem;color:var(--muted);font-weight:400}
+  h3{font-size:1.02rem;margin:18px 0 9px;color:var(--acc2)}
+  p{margin:9px 0}
+  ul,ol{margin:9px 0 9px 22px}
+  li{margin:5px 0}
+
+  table{width:100%;border-collapse:collapse;margin:13px 0;font-size:.86rem;display:block;overflow-x:auto}
+  th,td{border:1px solid var(--line);padding:8px 11px;text-align:center;white-space:nowrap}
+  th{background:var(--bg2);color:var(--acc2);font-weight:600}
+  td:first-child,th:first-child{text-align:left}
+  tr:nth-child(even) td{background:rgba(255,255,255,.018)}
+
+  /* callouts */
+  .box{border-radius:13px;padding:14px 17px;margin:14px 0;border:1px solid;font-size:.92rem}
+  .core{background:rgba(180,140,255,.09);border-color:#4a3a78}
+  .core::before{content:"🔑 แก่นแท้";display:block;color:var(--pur);font-weight:700;font-size:.82rem;margin-bottom:4px}
+  .trap{background:rgba(255,107,129,.09);border-color:#6b2330}
+  .trap::before{content:"⚠️ กับดัก";display:block;color:var(--bad);font-weight:700;font-size:.82rem;margin-bottom:4px}
+  .tip{background:rgba(255,206,91,.08);border-color:#5a4a1e}
+  .tip::before{content:"💡 เทคนิค";display:block;color:var(--warn);font-weight:700;font-size:.82rem;margin-bottom:4px}
+  .ex{background:rgba(91,140,255,.07);border-color:#2f447a}
+  .ex .lbl{color:var(--acc2);font-weight:700;font-size:.84rem;margin-bottom:6px;display:block}
+
+  /* formula */
+  .fml{background:#0c1120;border:1px solid var(--line);border-radius:12px;padding:15px 18px;margin:13px 0;
+    text-align:center;font-size:1.05rem;color:#fff;overflow-x:auto}
+  .fml.key{border-color:var(--good);box-shadow:0 0 0 1px rgba(54,211,153,.25) inset}
+  .fml .frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 3px}
+  .fml .frac span:first-child{border-bottom:1.5px solid #fff;padding:0 6px}
+  .fml .frac span:last-child{padding:0 6px}
+  .fml em{color:var(--gold);font-style:normal}
+  .fml .lbl{display:block;font-size:.72rem;color:var(--muted);margin-top:6px}
+
+  .step{margin:10px 0;padding-left:14px;border-left:2px solid var(--line)}
+  .step b{color:var(--good)}
+  .ans{color:var(--good);font-weight:700}
+
+  .cheat{background:#0c1120;border:1px solid var(--good);border-radius:13px;padding:16px 18px;
+    font-family:'Consolas',monospace;font-size:.84rem;line-height:1.9;color:#cfe;overflow-x:auto;white-space:pre}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .mapbox{background:#0c1120;border:1px solid var(--line);border-radius:12px;padding:14px;
+    font-family:'Consolas',monospace;font-size:.74rem;line-height:1.7;color:#bcd;overflow-x:auto;white-space:pre}
+
+  .top{position:fixed;right:18px;bottom:18px;width:46px;height:46px;border-radius:50%;
+    background:var(--acc);color:#fff;border:none;font-size:1.2rem;cursor:pointer;box-shadow:var(--shadow);
+    opacity:0;pointer-events:none;transition:.2s;z-index:50}
+  .top.show{opacity:1;pointer-events:auto}
+  .menubtn{display:none}
+
+  @media(max-width:880px){
+    aside{display:none}
+    .grid2{grid-template-columns:1fr}
+    .hero h1{font-size:1.25rem}
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <aside id="toc">
+    <div class="brand">📘 ตัวแปรสุ่มและ<br>การแจกแจงความน่าจะเป็น<br><span style="font-size:.92em">ม.6 · Main math</span></div>
+    <a href="#overview">🧭 ภาพรวม / แก่นแท้</a>
+    <a href="#s11">1.1 ตัวแปรสุ่มคืออะไร</a>
+    <a href="#s12">1.2 การแจกแจง (ตาราง/กราฟ)</a>
+    <a href="#evar">📐 ค่าคาดหมาย · ความแปรปรวน</a>
+    <a href="#unif">เอกรูป (Uniform)</a>
+    <a href="#binom">⭐ ทวินาม (Binomial)</a>
+    <a href="#rules">กฎ E และ Var</a>
+    <a href="#exam">🎯 ข้อสอบจริง</a>
+    <a href="#traps">🪤 รวมกับดัก</a>
+    <a href="#cheat">🧪 สูตรรวบยอด</a>
+    <div class="links">
+      ดูคู่กับ:<br>
+      📝 <a href="ข้อสอบฝึก_เฉลย.md">ข้อสอบฝึก_เฉลย.md</a><br>
+      🎲 <a href="เกมฝึกข้อสอบ.html">เกมฝึกข้อสอบ.html</a>
+    </div>
+  </aside>
+
+  <main>
+    <div class="hero">
+      <h1>📘 สรุปเต็ม — <span class="em">ตัวแปรสุ่มและการแจกแจงความน่าจะเป็น</span></h1>
+      <p>Random Variables &amp; Probability Distributions · เน้น <b>วิธีทำ + สูตร + แก่นแท้</b> · ทุกหัวข้ออ้างอิงเลขหน้าจากชีตจริง · ตัวเลขทุกตัวตรวจด้วยโปรแกรมแล้ว ✅</p>
+      <div class="srcs">
+        <div class="src"><b>[A]</b> ตัวแปรสุ่มและการแจกแจงฯ.pdf</div>
+        <div class="src"><b>[B]</b> การแจกแจงแบบไม่ต่อเนื่อง.pdf (เอกรูป+ทวินาม)</div>
+        <div class="src"><b>[C]</b> ค่าคาดหวังและความแปรปรวน.pdf</div>
+      </div>
+    </div>
+
+    <!-- ========== OVERVIEW ========== -->
+    <section id="overview">
+      <h2>🧭 ภาพรวม “แก่นแท้” ของทั้งบท</h2>
+      <p>บทนี้คือการ <b>เปลี่ยนผลการทดลองสุ่มให้เป็นตัวเลข แล้วศึกษาว่าตัวเลขนั้นกระจายตัวยังไง</b></p>
+      <div class="mapbox">การทดลองสุ่ม → ปริภูมิตัวอย่าง S → [ฟังก์ชัน X] → ตัวเลข → ความน่าจะเป็นของแต่ละตัวเลข
+   (โยนเหรียญ)      {HHH,...}                  {0,1,2,3}      ตาราง/กราฟแจกแจง
+                                                   │
+                    ┌──────────────────────────────┼────────────────────────┐
+                แจกแจงทั่วไป              แจกแจงเอกรูป              แจกแจงทวินาม
+              (นับความถี่เอง)         (ทุกค่าเท่ากัน = 1/n)     (สำเร็จ/ไม่สำเร็จ n ครั้ง)
+                                                   │
+                                  วัด "จุดกลาง" และ "การกระจาย"
+                          μ = ค่าคาดหมาย   σ² = ความแปรปรวน   σ = ส่วนเบี่ยงเบนฯ</div>
+      <p><b>3 คำถามที่บททั้งหมดตอบ:</b></p>
+      <ol>
+        <li>ค่าที่เป็นไปได้คืออะไร แต่ละค่ามีโอกาสเท่าไหร่? → <b>การแจกแจง</b></li>
+        <li>โดยเฉลี่ยจะได้เท่าไหร่? → <b>ค่าคาดหมาย μ</b> (เกมได้/เสีย, กำไร/ขาดทุน ใช้ตัวนี้)</li>
+        <li>ผลลัพธ์เหวี่ยงจากค่าเฉลี่ยมากแค่ไหน? → <b>ความแปรปรวน σ² / ส่วนเบี่ยงเบน σ</b></li>
+      </ol>
+    </section>
+
+    <!-- ========== 1.1 ========== -->
+    <section id="s11">
+      <h2>1.1 ตัวแปรสุ่ม คืออะไร <span class="src-tag">[A p.1–3]</span></h2>
+      <div class="box core">ตัวแปรสุ่ม (random variable) = <b>ฟังก์ชัน</b> จากปริภูมิตัวอย่าง <code>S</code> → ไปยังเซตของ<b>จำนวนจริง</b><br>
+        มันไม่ใช่ “ตัวแปร” ธรรมดา แต่เป็น <b>กฎแปลงผลลัพธ์ให้เป็นเลข</b> เช่น “หัว‑ก้อย” → “จำนวนหัว”</div>
+
+      <h3>สัญลักษณ์ที่ต้องแม่น (คนพลาดบ่อย)</h3>
+      <table>
+        <tr><th>สัญลักษณ์</th><th>อ่านว่า</th><th>ตัวอย่าง</th></tr>
+        <tr><td><b>ตัวพิมพ์ใหญ่</b> <code>X,Y,Z</code></td><td>ตัวแปรสุ่ม (กฎ)</td><td>X = จำนวนหัว</td></tr>
+        <tr><td><b>ตัวพิมพ์เล็ก</b> <code>x,y,z</code></td><td>ค่าของตัวแปรสุ่ม (เลขที่ออกจริง)</td><td>x = 0,1,2,3</td></tr>
+        <tr><td><code>X = x</code></td><td>เหตุการณ์ที่ตัวแปรสุ่มมีค่า x</td><td>X=2 คือ “ได้หัว 2 ครั้ง”</td></tr>
+        <tr><td><code>P(X = x)</code></td><td>ความน่าจะเป็นของเหตุการณ์นั้น</td><td>P(X=2)</td></tr>
+      </table>
+
+      <div class="box ex">
+        <span class="lbl">🔑 ตัวอย่างฐาน — โยนเหรียญเที่ยงตรง 3 ครั้ง [A p.1–2]</span>
+        <code>S = {HHH,HHT,HTH,HTT,THH,THT,TTH,TTT}</code>, <code>n(S)=8</code>, ให้ X = จำนวนหัว
+        <table>
+          <tr><th>ผลลัพธ์</th><td>HHH</td><td>HHT</td><td>HTH</td><td>THH</td><td>HTT</td><td>THT</td><td>TTH</td><td>TTT</td></tr>
+          <tr><th>X (จำนวนหัว)</th><td>3</td><td>2</td><td>2</td><td>2</td><td>1</td><td>1</td><td>1</td><td>0</td></tr>
+        </table>
+        นับความถี่ → การแจกแจง:
+        <table>
+          <tr><th>x</th><td>0</td><td>1</td><td>2</td><td>3</td></tr>
+          <tr><th>P(X=x)</th><td>1/8</td><td>3/8</td><td>3/8</td><td>1/8</td></tr>
+        </table>
+      </div>
+
+      <h3>ชนิดของตัวแปรสุ่ม</h3>
+      <table>
+        <tr><th>ชนิด</th><th>นิยาม</th><th>ตัวอย่าง</th></tr>
+        <tr><td><b>ไม่ต่อเนื่อง</b> (discrete)</td><td>ค่าที่เป็นไปได้ <b>นับได้</b> (เซตจำกัด <b>หรืออนันต์</b> ก็ได้)</td><td>จำนวนข้อถูก, จำนวนคน, แต้มลูกเต๋า</td></tr>
+        <tr><td><b>ต่อเนื่อง</b> (continuous)</td><td>ค่าที่เป็นไปได้เป็น <b>ช่วง</b> (สับเซตของ ℝ)</td><td>ความสูง, น้ำหนัก, เวลา, อุณหภูมิ</td></tr>
+      </table>
+      <div class="box trap">“จำนวนครั้งที่โยนเหรียญจนกว่าจะออกหัว” = {1,2,3,…} เป็นเซต<b>อนันต์</b> แต่ยังนับได้ → ยัง discrete<br>
+        หลักจำ: <b>นับ (count) = ไม่ต่อเนื่อง / วัด (measure) = ต่อเนื่อง</b></div>
+    </section>
+
+    <!-- ========== 1.2 ========== -->
+    <section id="s12">
+      <h2>1.2 การแจกแจงความน่าจะเป็น (ตาราง/กราฟ) <span class="src-tag">[A p.4–9]</span></h2>
+      <p>นิยาม: เอาความน่าจะเป็นของ <b>ทุกค่า</b> ที่เป็นไปได้มาแสดงเป็น <b>ตาราง</b> หรือ <b>กราฟ</b></p>
+      <div class="box core">กฎเหล็ก 2 ข้อ (เช็คคำตอบทุกครั้ง):<br>
+        1. <code>0 ≤ P(X=x) ≤ 1</code> ทุกค่า<br>
+        2. <b>ผลรวมทุกช่อง = 1</b> → <code>Σ P(X=x) = 1</code> · ถ้าบวกไม่ได้ 1 = ทำผิด</div>
+
+      <div class="box ex">
+        <span class="lbl">🔑 ตัวอย่าง 1 — ผลบวกแต้มลูกเต๋า 2 ลูก [A p.4–5]</span>
+        <code>n(S)=36</code>, Y = ผลบวกแต้ม (2 ถึง 12) · นับคู่ (a,b) ที่บวกได้ y
+        <table>
+          <tr><th>y</th><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td><b>7</b></td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td></tr>
+          <tr><th>P(Y=y)</th><td>1/36</td><td>2/36</td><td>3/36</td><td>4/36</td><td>5/36</td><td><b>6/36</b></td><td>5/36</td><td>4/36</td><td>3/36</td><td>2/36</td><td>1/36</td></tr>
+        </table>
+        กราฟ = ทรง <b>สามเหลี่ยม</b> ยอดที่ y=7 (รวม 36/36 = 1 ✓)
+      </div>
+
+      <div class="box ex">
+        <span class="lbl">🔑 ตัวอย่าง 2 — ตารางความถี่ → ความน่าจะเป็น [A p.5]</span>
+        พนักงาน 50 คน, X = จำนวนรถ
+        <table>
+          <tr><th>จำนวนรถ x</th><td>0</td><td>1</td><td>2</td><td>3</td><td>รวม</td></tr>
+          <tr><th>ความถี่</th><td>8</td><td>12</td><td>25</td><td>5</td><td>50</td></tr>
+          <tr><th>P = ความถี่/50</th><td>0.16</td><td>0.24</td><td>0.50</td><td>0.10</td><td>1.00 ✓</td></tr>
+        </table>
+        <div class="box core" style="margin:8px 0 0"><code>P(X=x) = ความถี่ของ x ÷ ความถี่รวม</code> — หัวใจของการแปลงตารางความถี่เป็นการแจกแจง</div>
+      </div>
+    </section>
+
+    <!-- ========== E / VAR ========== -->
+    <section id="evar">
+      <h2>📐 ค่าคาดหมาย · ความแปรปรวน · SD <span class="pill">⭐ ออกสอบเยอะ</span> <span class="src-tag">[A p.10]</span></h2>
+
+      <h3>สูตรหลัก 3 ตัว (ท่องให้ขึ้นใจ)</h3>
+      <div class="fml">μ<sub>X</sub> = E(X) = <em>Σ</em> x<sub>i</sub> · P(X=x<sub>i</sub>)<span class="lbl">ค่าคาดหมาย / ค่าเฉลี่ย — ค่าเฉลี่ยถ่วงน้ำหนัก</span></div>
+      <div class="fml">σ<sub>X</sub><sup>2</sup> = <em>Σ</em> (x<sub>i</sub> − μ<sub>X</sub>)<sup>2</sup> · P(X=x<sub>i</sub>)<span class="lbl">ความแปรปรวน — เฉลี่ยของ (ระยะห่างจากค่าเฉลี่ย)²</span></div>
+      <div class="fml">σ<sub>X</sub> = √ σ<sub>X</sub><sup>2</sup><span class="lbl">ส่วนเบี่ยงเบนมาตรฐาน — ทำหน่วยให้กลับมาเท่าตัวแปรเดิม</span></div>
+
+      <div class="box tip">สูตรลัดความแปรปรวน (เร็วกว่ามาก ใช้สอบ) [C p.4]:
+        <div class="fml key" style="margin:8px 0 0">σ<sub>X</sub><sup>2</sup> = E(X<sup>2</sup>) − [E(X)]<sup>2</sup> &nbsp;&nbsp; โดย E(X<sup>2</sup>) = <em>Σ</em> x<sub>i</sub><sup>2</sup> · P(X=x<sub>i</sub>)</div>
+        ไม่ต้องหา (xᵢ−μ)² ทีละช่อง — หา Σx²P กับ μ แล้วลบกำลังสอง จบ</div>
+
+      <div class="box ex">
+        <span class="lbl">🔑 ตัวอย่างเต็มวงจร — จำนวนพี่น้องพนักงาน 50 คน [A p.10–11]</span>
+        ความถี่: 0→6, 1→14, 2→15, 3→7, 4→8
+        <div class="step"><b>ขั้น 1</b> ตารางแจกแจง:
+          <table>
+            <tr><th>x</th><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+            <tr><th>P(X=x)</th><td>0.12</td><td>0.28</td><td>0.30</td><td>0.14</td><td>0.16</td></tr>
+          </table></div>
+        <div class="step"><b>ขั้น 2 — ค่าคาดหมาย</b> μ = Σx·P<br>
+          = 0(.12)+1(.28)+2(.30)+3(.14)+4(.16) = 0.28+0.60+0.42+0.64 = <span class="ans">1.94 คน</span></div>
+        <div class="step"><b>ขั้น 3 — ความแปรปรวน</b> (สูตรลัด)<br>
+          E(X²) = 0+1(.28)+4(.30)+9(.14)+16(.16) = 0.28+1.20+1.26+2.56 = 5.30<br>
+          σ² = 5.30 − (1.94)² = 5.30 − 3.7636 = <span class="ans">1.5364 คน²</span></div>
+        <div class="step"><b>ขั้น 4 — SD</b><br>
+          σ = √1.5364 ≈ <span class="ans">1.24 คน</span></div>
+      </div>
+      <div class="box trap"><b>หน่วย:</b> ค่าคาดหมาย &amp; SD ใช้หน่วยเดิม (คน) แต่ความแปรปรวนเป็น <b>หน่วยกำลังสอง</b> (คน²) — ข้อสอบหักคะแนนตรงนี้</div>
+
+      <div class="box ex">
+        <span class="lbl">🎰 ตัวอย่างเกมได้/เสีย — วงล้อเลข 1–9 [A p.12–13]</span>
+        เลขคู่ → ได้ 100 บาท, ค่าตั๋ว 50 บาท · เลขคู่ {2,4,6,8} → P(คู่)=4/9, P(คี่)=5/9<br>
+        กำไรสุทธิ: คู่ → +50, คี่ → −50<br>
+        E(X) = 50·(4/9) + (−50)·(5/9) = (200−250)/9 = <span class="ans">−50/9 ≈ −5.56 บาท</span><br>
+        แปลผล: เล่นนาน ๆ <b>ขาดทุนเฉลี่ยครั้งละ ~5.56 บาท</b> → ไม่ควรเล่น
+      </div>
+      <div class="box core">โจทย์ “เกม/ประกัน/ลงทุน”: หา <code>E(กำไรสุทธิ)</code> แล้วดูเครื่องหมาย<br>
+        <code>E &gt; 0</code> ได้เปรียบ/กำไร · <code>E = 0</code> เท่าทุน · <code>E &lt; 0</code> เสียเปรียบ/ขาดทุน</div>
+    </section>
+
+    <!-- ========== UNIFORM ========== -->
+    <section id="unif">
+      <h2>1.2.1 การแจกแจงเอกรูปไม่ต่อเนื่อง (Discrete Uniform) <span class="src-tag">[B p.1–5]</span></h2>
+      <div class="fml key">P(X=x<sub>i</sub>) = <span class="frac"><span>1</span><span>n</span></span> &nbsp;ทุก i<span class="lbl">เมื่อ “ทุกค่ามีโอกาสเท่ากันหมด”</span></div>
+      <div class="box core">“ยุติธรรมเท่ากันทุกหน้า” เช่น ลูกเต๋าเที่ยงตรง 1 ลูก → แต่ละแต้ม = 1/6</div>
+      <div class="box trap">“เอกรูป” ดูที่ <b>ความน่าจะเป็นเท่ากัน</b> ไม่ใช่ค่าของตัวแปรเท่ากัน · ระวังเมื่อหลายผลลัพธ์รวมเป็นค่าเดียว เช่น “จำนวนก้อยใน 10 ครั้ง” → <code>P(0)=(½)¹⁰</code> ≠ <code>P(5)=C(10,5)(½)¹⁰</code> → ไม่เอกรูป</div>
+      <div class="box ex">
+        <span class="lbl">🔑 ตัวอย่าง — สลาก 4 ใบ {20,50,100,500} บาท [B p.2]</span>
+        แต่ละใบโอกาส 1/4 → เอกรูป ✓<br>
+        E(X) = (20+50+100+500)/4 = 670/4 = <span class="ans">167.5 บาท</span><br>
+        ถ้าค่าตั๋ว 150 → 167.5 − 150 = +17.5 → <b>ได้เปรียบ</b>
+      </div>
+      <div class="box tip">ลัดเอกรูป: <code>E(X) = ค่าเฉลี่ยเลขคณิตธรรมดาของทุกค่า</code> (เพราะถ่วงน้ำหนักเท่ากันหมด)</div>
+    </section>
+
+    <!-- ========== BINOMIAL ========== -->
+    <section id="binom">
+      <h2>1.2.2 การแจกแจงทวินาม (Binomial) <span class="pill">⭐⭐ หัวใจของบท</span> <span class="src-tag">[B p.6–12]</span></h2>
+      <h3>เงื่อนไข 3 ข้อ จึงเรียก “ทวินาม”</h3>
+      <ol>
+        <li>ทดลองสุ่ม <b>n ครั้ง อิสระต่อกัน</b> (ครั้งก่อนไม่กระทบครั้งหลัง)</li>
+        <li>แต่ละครั้งมีผลแค่ <b>2 แบบ</b>: สำเร็จ / ไม่สำเร็จ</li>
+        <li>ความน่าจะเป็นสำเร็จ <b>คงที่ = p</b> ทุกครั้ง (ไม่สำเร็จ = 1−p), <code>0&lt;p&lt;1</code></li>
+      </ol>
+      <p>เขียนย่อ <code>X ~ B(n, p)</code> · แก่นแท้: “ทำซ้ำเหตุการณ์เบอร์นูลลี n ครั้ง แล้วนับจำนวนครั้งที่สำเร็จ”</p>
+
+      <h3>ทฤษฎีบท — สูตรทวินาม 3 ตัว</h3>
+      <div class="fml key">P(X=x) = <span style="vertical-align:middle">(<span class="frac"><span>n</span><span>x</span></span>)</span> p<sup>x</sup> (1−p)<sup>n−x</sup> &nbsp;,&nbsp; x = 0,1,2,…,n</div>
+      <div class="grid2">
+        <div class="fml key">μ<sub>X</sub> = np</div>
+        <div class="fml key">σ<sub>X</sub><sup>2</sup> = np(1−p)</div>
+      </div>
+      <div class="box core">
+        • <code>pˣ</code> = สำเร็จ x ครั้ง · <code>(1−p)ⁿ⁻ˣ</code> = ไม่สำเร็จที่เหลือ · <code>C(n,x)</code> = เลือกว่าครั้งไหนสำเร็จได้กี่แบบ<br>
+        • <code>μ=np</code> ตรงสามัญสำนึก: โยนเหรียญ 10 ครั้ง p=½ → เฉลี่ยได้หัว 5 ครั้ง<br>
+        • ✅ ผลรวม: <code>Σ P(X=x) = [p+(1−p)]ⁿ = 1ⁿ = 1</code> (ทฤษฎีบททวินาม)
+      </div>
+
+      <div class="box ex">
+        <span class="lbl">🔑 ตัวอย่าง 1 — X ~ B(5, 0.2) [B p.7]</span>
+        <table>
+          <tr><th>ถาม</th><th>วิธีคิด</th><th>ผล</th></tr>
+          <tr><td>P(X=2)</td><td>C(5,2)(0.2)²(0.8)³ = 10(0.04)(0.512)</td><td class="ans">0.2048</td></tr>
+          <tr><td>P(X=3)</td><td>C(5,3)(0.2)³(0.8)² = 10(0.008)(0.64)</td><td class="ans">0.0512</td></tr>
+          <tr><td>P(X≥3)</td><td>0.0512 + 0.0064 + 0.00032</td><td class="ans">0.05792</td></tr>
+          <tr><td>P(X≤2)</td><td>1 − P(X≥3) = 1 − 0.05792</td><td class="ans">0.94208</td></tr>
+        </table>
+      </div>
+      <div class="box tip">เจอ “อย่างน้อย / ไม่เกิน / มากกว่า” → ใช้ <b>ส่วนเติมเต็ม</b> <code>P(X≥k)=1−P(X≤k−1)</code> แทนการบวกหลายพจน์</div>
+
+      <div class="box ex">
+        <span class="lbl">🔑 ตัวอย่าง 2 — ลูกเต๋าขึ้นแต้ม 4, ทอด 5 ครั้ง [B p.8–10]</span>
+        สำเร็จ = “ขึ้นแต้ม 4” → p=1/6, n=5 → X~B(5, 1/6)<br>
+        P(X=5) = (1/6)⁵ = 1/7776 ≈ <span class="ans">0.000129</span><br>
+        μ = np = 5(1/6) = <span class="ans">5/6 ≈ 0.83</span> · σ² = np(1−p) = 5(1/6)(5/6) = <span class="ans">25/36 ≈ 0.69</span>
+      </div>
+      <div class="box trap"><b>กับดักนิยาม “สำเร็จ”:</b> โจทย์ [B p.12] “P(ก้อย)=0.6 ให้ X=จำนวนหัว” → สำเร็จคือ <b>หัว</b> ดังนั้น <code>p=P(หัว)=1−0.6=0.4</code> ไม่ใช่ 0.6 — อ่านให้ขาดว่าตัวแปรนับ “อะไร”</div>
+    </section>
+
+    <!-- ========== RULES ========== -->
+    <section id="rules">
+      <h2>📋 กฎพีชคณิตของ E และ Var <span class="src-tag">[C p.1, p.8]</span></h2>
+      <h3>กฎค่าคาดหมาย E</h3>
+      <table>
+        <tr><th>กฎ</th><th>สูตร</th><th>ตัวอย่าง</th></tr>
+        <tr><td>ค่าคงที่</td><td><code>E(a) = a</code></td><td>E(5)=5</td></tr>
+        <tr><td>คูณค่าคงที่</td><td><code>E(aXᵏ) = a·E(Xᵏ)</code></td><td>E(3X)=3E(X)</td></tr>
+        <tr><td>ฟังก์ชันของ X</td><td><code>E[g(X)] = Σ g(xᵢ)·P(xᵢ)</code></td><td>E(3X+2)=Σ(3xᵢ+2)P</td></tr>
+        <tr><td>บวก/ลบ &amp; เชิงเส้น</td><td><code>E(aX+b) = a·E(X) + b</code></td><td>E(y±z)=E(y)±E(z)</td></tr>
+      </table>
+      <div class="box ex">
+        <span class="lbl">🔑 ให้ E(X)=3, E(X²)=25 [C p.2–3]</span>
+        ก) E(2X+4) = 2E(X)+4 = 2(3)+4 = <span class="ans">10</span><br>
+        ข) E[X−E(X)]² = E(X²) − [E(X)]² = 25 − 9 = <span class="ans">16</span> ← นี่คือ <b>ความแปรปรวน</b> นั่นเอง
+      </div>
+
+      <h3>กฎความแปรปรวน Var</h3>
+      <table>
+        <tr><th>กฎ</th><th>สูตร</th><th>เหตุผล (แก่น)</th></tr>
+        <tr><td>ค่าคงที่</td><td><code>Var(a)=0</code></td><td>ค่าคงที่ไม่กระจาย</td></tr>
+        <tr><td>คูณค่าคงที่</td><td><code>Var(aX)=a²·Var(X)</code></td><td>ขยาย a เท่า → กระจาย a² เท่า</td></tr>
+        <tr><td>บวกค่าคงที่</td><td><code>Var(aX+b)=a²·Var(X)</code></td><td><b>+b เลื่อนตำแหน่ง ไม่เพิ่มการกระจาย</b></td></tr>
+      </table>
+      <div class="box trap"><b>จุดพลาดคลาสสิก:</b> บวกค่าคงที่ b <b>ไม่กระทบ</b>ความแปรปรวน (+b หาย) แต่ <b>กระทบ</b>ค่าคาดหมาย (+b ติดมา) — สองสูตรนี้คนละพฤติกรรม</div>
+      <div class="box ex">
+        <span class="lbl">🔑 ให้ Var(X)=10 [C p.9]</span>
+        ก) Var(2X+1) = 2²·Var(X) = 4(10) = <span class="ans">40</span> · ข) Var(3X+4) = 3²·Var(X) = 9(10) = <span class="ans">90</span>
+      </div>
+      <div class="box ex">
+        <span class="lbl">🔑 ไฮเปอร์จีออเมตริก — เลือก 3 คนจากชาย 4 หญิง 3, X=จำนวนชาย [C p.5–7]</span>
+        <code>P(X=k)=C(4,k)C(3,3−k)/C(7,3)</code>, C(7,3)=35
+        <table>
+          <tr><th>x</th><td>0</td><td>1</td><td>2</td><td>3</td></tr>
+          <tr><th>P</th><td>1/35</td><td>12/35</td><td>18/35</td><td>4/35</td></tr>
+        </table>
+        μ = 60/35 ≈ 1.71 · E(X²)=120/35 ≈ 3.43 · σ² = 3.43 − 1.71² ≈ <span class="ans">0.51</span><br>
+        <span style="color:var(--muted);font-size:.88em">หมายเหตุ: หยิบ <b>ไม่ใส่คืน</b> → ไม่ใช่ทวินาม (p เปลี่ยน) ใช้ E,Var จากตารางตรง</span>
+      </div>
+    </section>
+
+    <!-- ========== EXAM ========== -->
+    <section id="exam">
+      <h2>🎯 ข้อสอบจริง (คณิต1 เม.ย.64) <span class="src-tag">[A p.16]</span></h2>
+      <p>สลาก 9 ใบ {1..9} หยิบพร้อมกัน 2 ใบ จ่าย 90 บาท · ผลคูณ <b>คู่</b> → ได้ 180 · ผลคูณ <b>คี่</b> → ไม่ได้อะไร</p>
+      <div class="box ex">
+        <span class="lbl">วิธีทำ (แก่น = หา P ของเหตุการณ์ก่อน)</span>
+        <div class="step">ผลคูณ <b>คี่</b> ก็ต่อเมื่อ <b>ทั้งสองใบคี่</b> → เลขคี่ {1,3,5,7,9} มี 5 ตัว</div>
+        <div class="step">P(คี่) = C(5,2)/C(9,2) = 10/36 = 5/18 → P(คู่) = 13/18</div>
+        <div class="step">กำไรสุทธิ: คู่ → +90, คี่ → −90<br>
+          E = 90·(13/18) − 90·(5/18) = 90·(8/18) = 90·(4/9) = <span class="ans">+40</span></div>
+        <div class="step"><b>ตอบ ข้อ 2: โดยเฉลี่ยได้กำไรครั้งละ 40 บาท</b> ✓</div>
+      </div>
+    </section>
+
+    <!-- ========== TRAPS ========== -->
+    <section id="traps">
+      <h2>🪤 รวมจุดออกสอบบ่อย + กับดัก</h2>
+      <table>
+        <tr><th>#</th><th>กับดัก</th><th>กันพลาด</th></tr>
+        <tr><td>1</td><td>สับสน X (ใหญ่=กฎ) กับ x (เล็ก=ค่า)</td><td>ใหญ่=ฟังก์ชัน, เล็ก=ตัวเลขที่ออก</td></tr>
+        <tr><td>2</td><td>discrete vs continuous</td><td><b>นับ=ไม่ต่อเนื่อง / วัด=ต่อเนื่อง</b>; อนันต์แต่นับได้ยัง discrete</td></tr>
+        <tr><td>3</td><td>ลืมเช็ค ΣP=1</td><td>บวกทุกช่องต้องได้ 1 เสมอ</td></tr>
+        <tr><td>4</td><td>หน่วยความแปรปรวน</td><td>μ,σ หน่วยเดิม / σ² หน่วย²</td></tr>
+        <tr><td>5</td><td>“เอกรูป” = ความน่าจะเป็นเท่า ไม่ใช่ค่าเท่า</td><td>ระวังค่าซ้ำที่รวม P กัน</td></tr>
+        <tr><td>6</td><td>นิยาม “สำเร็จ” p ผิดข้าง</td><td>ดูว่าตัวแปรนับ “อะไร” แล้ว p = P(สิ่งนั้น)</td></tr>
+        <tr><td>7</td><td>“อย่างน้อย/ไม่เกิน” บวกผิด</td><td>ใช้ส่วนเติมเต็ม 1−P(...)</td></tr>
+        <tr><td>8</td><td>Var(aX+b): เผลอใส่ +b</td><td><b>+b หายในความแปรปรวน</b> แต่ติดในค่าคาดหมาย</td></tr>
+        <tr><td>9</td><td>หยิบไม่ใส่คืน → ใช้ทวินาม</td><td>ไม่ใส่คืน = p เปลี่ยน → ไม่ใช่ทวินาม ใช้ตารางตรง</td></tr>
+        <tr><td>10</td><td>โจทย์เกม/ประกัน ตอบผิดทิศ</td><td>หา E(กำไรสุทธิ) แล้วดูเครื่องหมาย +/0/−</td></tr>
+      </table>
+    </section>
+
+    <!-- ========== CHEAT ========== -->
+    <section id="cheat">
+      <h2>🧪 สูตรรวบยอด (Cheat box)</h2>
+      <div class="cheat">ค่าคาดหมาย      μ = E(X)   = Σ xᵢ·P(X=xᵢ)
+ความแปรปรวน     σ² = Σ(xᵢ−μ)²·P  =  E(X²) − μ²        [สูตรลัด]
+ส่วนเบี่ยงเบนฯ   σ  = √σ²
+
+เชิงเส้น         E(aX+b) = aE(X)+b      Var(aX+b) = a²·Var(X)
+
+เอกรูป (n ค่า)   P = 1/n        E = ค่าเฉลี่ยเลขคณิตของทุกค่า
+ทวินาม B(n,p)   P(X=x)=C(n,x)pˣ(1−p)ⁿ⁻ˣ
+                μ = np         σ² = np(1−p)      σ = √(np(1−p))</div>
+      <p style="color:var(--muted);font-size:.84rem;margin-top:14px">
+        🖍️ ไฟล์ [C] มีลายมือเขียนทับ สแกนออกมาเป็นตัวอักษรมั่ว — ตัดทิ้งและคำนวณใหม่ ตัวเลขทุกตัวตรวจด้วย Python แล้ว ✅
+      </p>
+    </section>
+
+  </main>
+</div>
+
+<button class="top" id="topBtn" title="ขึ้นบนสุด">↑</button>
+
+<script>
+  // active TOC highlight + back-to-top
+  const links=[...document.querySelectorAll('#toc a[href^="#"]')];
+  const secs=links.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  const topBtn=document.getElementById('topBtn');
+  function onScroll(){
+    let idx=0;
+    secs.forEach((s,i)=>{ if(s.getBoundingClientRect().top<=120) idx=i; });
+    links.forEach(a=>a.classList.remove('active'));
+    if(links[idx])links[idx].classList.add('active');
+    topBtn.classList.toggle('show', window.scrollY>400);
+  }
+  document.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+  topBtn.onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
+</script>
+<!--KIT-UI v2.4 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<script>
+/* =============================================================================
+   _kit/ui-controls.js  —  KIT UI  v1.0
+   แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
+     🌙/☀️  โหมดมืด / สว่าง   (จำค่าไว้ใน localStorage)
+     A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
+     ✏️  ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
+     🧮  เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
+
+   ── วิธีใช้ ────────────────────────────────────────────────────────────────
+   ห้ามแก้โค้ดนี้ในไฟล์ widget!  แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
+       pwsh -File _kit/apply-ui.ps1
+   สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
+   (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
+
+   !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
+      เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
+
+   ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
+   ใส่แอตทริบิวต์ที่ tag body:  data-tools="pen,calc"  = บังคับเปิด
+                              data-tools="none"      = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
+   ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
+              หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
+   ============================================================================= */
+(function(){
+if(window.__KITUI__) return; window.__KITUI__='2.4';
+
+/* ---------- helper ---------- */
+const D=document, R=D.documentElement;
+const get=k=>{try{return localStorage.getItem('kitui-'+k)}catch(e){return null}};
+const set=(k,v)=>{try{localStorage.setItem('kitui-'+k,v)}catch(e){}};
+const el=(t,c,h)=>{const e=D.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
+
+/* =============================================================================
+   1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
+   ============================================================================= */
+const CSS=`
+/* ===== DARK TOKENS (คู่กับ _kit/design-tokens.css) ===== */
+:root[data-theme="dark"]{
+  --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
+  --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
+  --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
+  --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
+  --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
+}
+:root[data-theme="dark"] body{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f172a}
+:root[data-theme="dark"] body[data-subject="physics"]{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f1220}
+:root[data-theme="dark"] body[data-subject="bio"]{--accent:#4ade80;--accent-head:#bbf7d0;--accent-ink:#86efac;--accent-soft:#0f2a1a;--accent-bd:#256b41;--accent-chip:#14532d;--accent-ghost:#15803d;--bg:#0d1912}
+:root[data-theme="dark"] body[data-subject="chem"]{--accent:#fb923c;--accent-head:#fed7aa;--accent-ink:#fdba74;--accent-soft:#2b1a0c;--accent-bd:#8a3d12;--accent-chip:#6d2c10;--accent-ghost:#c2410c;--bg:#1a130c}
+:root[data-theme="dark"] body[data-subject="christ"]{--accent:#a78bfa;--accent-head:#ddd6fe;--accent-ink:#c4b5fd;--accent-soft:#241a3d;--accent-bd:#5b21b6;--accent-chip:#4c1d95;--accent-ghost:#6d28d9;--bg:#16121f}
+:root[data-theme="dark"] body[data-subject="islam"]{--accent:#2dd4bf;--accent-head:#99f6e4;--accent-ink:#5eead4;--accent-soft:#0d2b28;--accent-bd:#12615a;--accent-chip:#134e4a;--accent-ghost:#0f766e;--bg:#0c1917}
+:root[data-theme="dark"] body[data-subject="history"]{--accent:#fbbf24;--accent-head:#fde68a;--accent-ink:#fcd34d;--accent-soft:#2a1f0a;--accent-bd:#8a4b0c;--accent-chip:#6d3a0a;--accent-ghost:#b45309;--bg:#191509}
+:root[data-theme="dark"] body[data-subject="math"]{--accent:#38bdf8;--accent-head:#bae6fd;--accent-ink:#7dd3fc;--accent-soft:#0c2434;--accent-bd:#0b5a80;--accent-chip:#0c4a6e;--accent-ghost:#0369a1;--bg:#0b1620}
+:root[data-theme="dark"] body[data-subject="eng"]{--accent:#f472b6;--accent-head:#fbcfe8;--accent-ink:#f9a8d4;--accent-soft:#2e1122;--accent-bd:#8d1748;--accent-chip:#731839;--accent-ghost:#be185d;--bg:#1c0f16}
+:root[data-theme="dark"] body[data-subject="thai"]{--accent:#f87171;--accent-head:#fecaca;--accent-ink:#fca5a5;--accent-soft:#2d1414;--accent-bd:#8d2020;--accent-chip:#7f1d1d;--accent-ghost:#b91c1c;--bg:#1a0f0f}
+:root[data-theme="dark"] img,:root[data-theme="dark"] .svg-box{filter:brightness(.92)}
+/* ช่องกรอก/ดรอปดาวน์ที่ widget เก่ากำหนดพื้นขาวตายตัวไว้ */
+:root[data-theme="dark"] select,:root[data-theme="dark"] textarea,
+:root[data-theme="dark"] input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=color])
+{background-color:var(--soft);color:var(--ink);border-color:var(--line)}
+
+/* ===== แถบเครื่องมือลอย ===== */
+#kitui-bar{position:fixed;right:10px;bottom:10px;z-index:99990;display:flex;gap:6px;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
+#kitui-bar button{border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;
+  font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
+  align-items:center;justify-content:center;font-weight:700}
+#kitui-bar button:hover{background:var(--soft)}
+#kitui-bar button:active{transform:scale(.93)}
+#kitui-bar button.on{background:var(--accent);color:#fff}
+#kitui-bar .kitui-sep{width:1px;height:22px;background:var(--line);flex:0 0 1px}
+#kitui-bar .kitui-fs{font-size:11px;color:var(--muted);min-width:34px;text-align:center;font-weight:700}
+#kitui-bar.hidden > *:not(#kitui-grip){display:none}
+#kitui-grip{font-size:17px}
+
+/* ===== แผงลอย (ที่ทด / เครื่องคิดเลข) ===== */
+.kitui-sheet{position:fixed;left:0;right:0;bottom:0;z-index:99991;background:var(--card);
+  border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
+  display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
+  height:52vh;max-height:92vh;min-height:180px}
+.kitui-sheet.open{display:flex}
+.kitui-sheet.full{height:100vh;border-radius:0}
+.kitui-head{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--line);
+  flex-wrap:wrap;touch-action:none;cursor:ns-resize}
+.kitui-head b{font-size:.9rem;color:var(--accent-ink);margin-right:2px;white-space:nowrap}
+.kitui-head button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;
+  padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
+.kitui-head button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.kitui-head .kitui-spacer{flex:1}
+.kitui-sw{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;min-height:0}
+.kitui-sw.on{border-color:var(--ink);transform:scale(1.12)}
+.kitui-padwrap{flex:1;position:relative;overflow:hidden;background:var(--soft)}
+.kitui-padwrap canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+:root[data-theme="dark"] .kitui-padwrap{background:#0c1220}
+
+/* ===== เครื่องคิดเลข ===== */
+#kitui-calc{height:auto;max-height:90vh}
+.kitui-disp{padding:8px 12px;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);
+  border-bottom:1px solid var(--line)}
+.kitui-disp .ex{font-size:.95rem;color:var(--muted);min-height:1.3em;word-break:break-all}
+.kitui-disp .rs{font-size:1.6rem;font-weight:700;color:var(--accent-ink);word-break:break-all}
+.kitui-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:7px}
+.kitui-keys button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:9px;
+  font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
+.kitui-keys button:active{transform:scale(.95)}
+.kitui-keys button.fn{font-size:.8rem;color:var(--accent-ink)}
+.kitui-keys button.op{background:var(--accent-soft);color:var(--accent-ink)}
+.kitui-keys button.eq{background:var(--accent);color:#fff;grid-row:span 2}
+.kitui-keys button.del{background:var(--hot-bg);color:var(--hot-ink)}
+.kitui-keys button.w3{grid-column:span 3}
+@media(max-width:420px){.kitui-keys button{font-size:.88rem;min-height:40px}.kitui-keys button.fn{font-size:.72rem}}
+@media(min-width:760px){
+  .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
+  .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
+  #kitui-pad{width:560px}
+}
+@media print{#kitui-bar,.kitui-sheet{display:none!important}}
+`;
+const st=el('style'); st.id='kitui-style'; st.textContent=CSS; D.head.appendChild(st);
+
+/* -----------------------------------------------------------------------------
+   1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
+   widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
+   พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
+   แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
+   เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
+----------------------------------------------------------------------------- */
+/* สีพาสเทลสว่าง -> สีเข้มที่ยังคง "เฉดเดิม" ไว้ (เขียว=ถูก / แดง=ผิด ต้องยังแยกออก)
+   ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
+function darken(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
+  const l0=(mx+mn)/2;
+  const s0 = d===0 ? 0 : d/(1-Math.abs(2*l0-1));
+  const s = d===0 ? 0 : Math.min(.5, Math.max(.3, s0));
+  const l = d===0 ? .13 : .17;                       /* เทา/ขาวให้เข้มกว่าสีนิดหน่อย */
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+function darkFix(){
+  const out=[], seen=new Set();
+  const take=r=>{
+    if(!r.style || !r.selectorText) return;
+    if(r.selectorText.indexOf('kitui')>-1) return;               /* ของเราเองใช้ token อยู่แล้ว */
+    const bg=r.style.backgroundColor;
+    if(!bg || bg.indexOf('var(')>-1) return;
+    const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
+    if(!m) return;
+    if(m[4]!==undefined && +m[4]<0.6) return;                    /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
+    const cr=+m[1], cg=+m[2], cb=+m[3];
+    if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return;       /* ไม่สว่างพอ ไม่ต้องยุ่ง */
+    const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
+    const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
+    let css='background-color:'+repl;
+    /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
+    const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
+    out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
+  };
+  /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
+        ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
+  const visit=rules=>{
+    for(let i=0;i<rules.length;i++){
+      const r=rules[i];
+      if(r.selectorText) take(r);
+      if(r.cssRules && r.cssRules.length) visit(r.cssRules);     /* @media / @supports / nesting */
+    }
+  };
+  for(let i=0;i<D.styleSheets.length;i++){
+    let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; }   /* ข้ามชีตข้ามโดเมน */
+    if(rr) visit(rr);
+  }
+  if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
+  return out.length;
+}
+try{ window.__KITUI_DARKFIX__=darkFix(); }catch(e){ window.__KITUI_DARKFIX__='err:'+e.message; }
+
+/* darkFix ข้างบนซ่อมได้เฉพาะสีที่เขียนตายตัวในไฟล์ CSS
+   แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
+   ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
+   จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
+const rgbOf=c=>{const m=c&&c.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null;};
+const lumOf=v=>v?(0.2126*v[0]+0.7152*v[1]+0.0722*v[2])/255:null;
+/* ตรงข้ามกับ darken(): ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
+   (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
+function lighten(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  if(d<0.04) return 'var(--ink)';                    /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
+  let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
+  const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
+  const s=Math.min(.92,Math.max(.55,s0)), l=.72;
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+const SKIP={CANVAS:1,IMG:1,VIDEO:1,SVG:1,IFRAME:1,PICTURE:1,OBJECT:1};
+const OBS_OPT={childList:true,subtree:true,attributes:true,attributeFilter:['class','style']};
+let patched=[], obs=null;
+function elementFix(){
+  /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
+        ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
+  if(obs) obs.disconnect();
+  try{ elementFixCore(); } finally { if(obs) obs.observe(D.body,OBS_OPT); }
+}
+function elementFixCore(){
+  /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
+     ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
+     จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
+  if(R.getAttribute('data-theme')!=='dark'){
+    patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
+    patched=[];
+    return;
+  }
+  /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
+     ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
+  /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
+  const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
+  for(let i=0;i<all.length;i++){
+    const e=all[i];
+    if(e.id&&e.id.indexOf('kitui')===0) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(SKIP[e.tagName]) continue;                      /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
+    const s=getComputedStyle(e);
+    const bg=rgbOf(s.backgroundColor);
+    if(!bg || bg[3]<0.6) continue;                     /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
+    if(lumOf(bg)<0.72) continue;                       /* เข้มพออยู่แล้ว */
+    /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
+    e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
+    const fg=rgbOf(s.color);
+    if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important');  /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
+    patched.push(e);
+  }
+  /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
+     ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
+  const bgCache=new Map();
+  const effBg=n=>{
+    for(let p=n;p;p=p.parentElement){
+      if(bgCache.has(p)) return bgCache.get(p);
+      const b=rgbOf(getComputedStyle(p).backgroundColor);
+      if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
+    }
+    return null;
+  };
+  for(let i=2;i<all.length;i++){
+    const e=all[i];
+    if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(e.style.color) continue;                         /* จัดการไปแล้วในรอบแรก */
+    if(!e.textContent || !e.textContent.trim()) continue;
+    const fg=rgbOf(getComputedStyle(e).color);
+    if(!fg || lumOf(fg)>=0.45) continue;                 /* ตัวอักษรสว่างอยู่แล้ว */
+    const bg=effBg(e);
+    if(!bg || lumOf(bg)>=0.5) continue;                  /* พื้นยังสว่าง อ่านออกอยู่ */
+    e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
+    patched.push(e);
+  }
+}
+let efT=0;
+const scheduleFix=()=>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
+try{
+  obs=new MutationObserver(scheduleFix);
+  obs.observe(D.body,OBS_OPT);
+}catch(e){}
+
+/* =============================================================================
+   2) ธีม + ขนาดตัวอักษร
+   ============================================================================= */
+const FS=[.85,1,1.15,1.3,1.5], FSNAME=['เล็กสุด','เล็ก','ปกติ','ใหญ่','ใหญ่สุด'];
+let fsIdx=parseInt(get('fs')); if(isNaN(fsIdx)||fsIdx<0||fsIdx>4) fsIdx=1;
+let theme=get('theme') || (matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+
+function applyTheme(){
+  R.setAttribute('data-theme',theme);
+  R.style.colorScheme = theme==='dark'?'dark':'light';   /* ให้ select/input เป็นสีเข้มด้วย */
+  const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
+  set('theme',theme);
+  clearTimeout(efT);                                   /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
+  if(typeof elementFix==='function') elementFix();
+  if(typeof draw==='function' && pad) draw();          /* วาดที่ทดใหม่ เส้นดำ<->ขาวตามธีม */
+}
+function applyFS(){
+  R.style.fontSize=(16*FS[fsIdx])+'px';
+  const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
+  set('fs',fsIdx);
+}
+
+/* =============================================================================
+   3) แถบเครื่องมือ
+   ============================================================================= */
+const subj=(D.body.getAttribute('data-subject')||'').toLowerCase();
+/* หลาย widget ไม่ได้ใส่ data-subject ที่ <body> → เดาจากโฟลเดอร์ที่ไฟล์อยู่ด้วย */
+const inPath=/\/(physics|math|chemist)\//i.test(decodeURIComponent(location.pathname));
+const tAttr=D.body.getAttribute('data-tools');
+const wantTools = tAttr!=null ? tAttr.toLowerCase()
+                : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
+const hasPen  = wantTools.includes('pen');
+const hasCalc = wantTools.includes('calc');
+
+const bar=el('div'); bar.id='kitui-bar';
+bar.innerHTML =
+  `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
+  `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button>`+
+  `<span class="kitui-sep"></span>`+
+  `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
+  `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
+  `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
+  (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
+  (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
+D.body.appendChild(bar);
+
+D.getElementById('kitui-theme').onclick=()=>{theme=theme==='dark'?'light':'dark';applyTheme();};
+D.getElementById('kitui-fsup').onclick=()=>{if(fsIdx<4){fsIdx++;applyFS();}};
+D.getElementById('kitui-fsdown').onclick=()=>{if(fsIdx>0){fsIdx--;applyFS();}};
+D.getElementById('kitui-grip').onclick=()=>bar.classList.toggle('hidden');
+applyTheme(); applyFS();
+
+/* ปิดแผงด้วยปุ่ม Esc */
+D.addEventListener('keydown',e=>{ if(e.key==='Escape') D.querySelectorAll('.kitui-sheet.open').forEach(s=>s.classList.remove('open')); });
+
+/* ลากหัวแผงเพื่อปรับความสูง */
+function makeResizable(sheet){
+  const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
+  head.addEventListener('pointerdown',e=>{
+    if(e.target.closest('button'))return;
+    drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect().height;head.setPointerCapture(e.pointerId);
+  });
+  head.addEventListener('pointermove',e=>{
+    if(!drag)return;
+    const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
+    sheet.classList.remove('full'); sheet.style.height=h+'px';
+    if(sheet.id==='kitui-pad') fitPad();
+  });
+  head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
+}
+
+/* =============================================================================
+   4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ  หลายหน้า  เซฟอัตโนมัติ
+   ============================================================================= */
+let pad,padCv,padCx,pages=[[]],pg=0,undone=[],histo=[];
+let tool='pen',color='#111827',width=2.4,penSeen=0;
+const COLORS=['#111827','#2563eb','#dc2626','#16a34a','#f59e0b'];
+const PADKEY='pad-'+location.pathname.split('/').pop();
+
+function buildPad(){
+  pad=el('div','kitui-sheet'); pad.id='kitui-pad';
+  pad.innerHTML=
+   `<div class="kitui-head">
+      <b>✏️ ที่ทด</b>
+      <button data-t="pen" class="on">🖊️</button>
+      <button data-t="hl">🖍️</button>
+      <button data-t="er">🧽</button>
+      ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
+      <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
+      <span class="kitui-spacer"></span>
+      <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
+      <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
+      <button id="kitui-pgadd">+ หน้า</button>
+      <button id="kitui-clear">ล้างหน้านี้</button>
+      <button id="kitui-full">⛶</button>
+      <button id="kitui-padclose">✕</button>
+    </div>
+    <div class="kitui-padwrap"><canvas></canvas></div>`;
+  D.body.appendChild(pad);
+  padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
+  makeResizable(pad);
+
+  pad.querySelector('.kitui-head').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
+  });
+  D.getElementById('kitui-undo').onclick=()=>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop(); draw(); save(); } };
+  D.getElementById('kitui-redo').onclick=()=>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop(); draw(); save(); } };
+  D.getElementById('kitui-clear').onclick=()=>{ snap(); pages[pg]=[]; draw(); save(); };
+  D.getElementById('kitui-pgadd').onclick=()=>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw(); save(); };
+  D.getElementById('kitui-pgprev').onclick=()=>{ if(pg>0){pg--;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-pgnext').onclick=()=>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-full').onclick=()=>{ pad.classList.toggle('full'); pad.style.height=''; fitPad(); };
+  D.getElementById('kitui-padclose').onclick=()=>pad.classList.remove('open');
+
+  /* ---- วาด ---- */
+  let cur=null;
+  padCv.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='pen') penSeen=Date.now();
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;   /* กันฝ่ามือแตะตอนใช้สไตลัส */
+    const p=pt(e);
+    if(tool==='er'){ snap(); erase(p); return; }
+    snap();
+    cur={c:color,w:width,hl:tool==='hl',pts:[p]};
+    pages[pg].push(cur); draw();
+    try{ padCv.setPointerCapture(e.pointerId); }catch(x){}  /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
+  });
+  padCv.addEventListener('pointermove',e=>{
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;
+    if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
+    if(!cur||!e.buttons)return;
+    /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
+    let evs=[e];
+    if(e.getCoalescedEvents){ const c=e.getCoalescedEvents(); if(c&&c.length) evs=c; }
+    evs.forEach(ev=>cur.pts.push(pt(ev)));
+    draw();
+  });
+  const end=()=>{ if(cur){cur=null;save();} };
+  padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
+  padCv.addEventListener('pointerleave',end);
+
+  addEventListener('resize',()=>{ if(pad.classList.contains('open')) fitPad(); });
+  load(); fitPad();
+}
+function pt(e){
+  const r=padCv.getBoundingClientRect();
+  return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
+          p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5};   /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
+}
+function snap(){ histo.push(pages[pg].slice()); if(histo.length>60)histo.shift(); undone=[]; }
+function erase(p){
+  const r=padCv.getBoundingClientRect(), rad=18/r.width;
+  const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
+  if(keep.length!==pages[pg].length){ pages[pg]=keep; draw(); save(); }
+}
+function fitPad(){
+  const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
+  const dpr=Math.min(devicePixelRatio||1,2.5);
+  padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
+  draw();
+}
+function draw(){
+  const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
+  padCx.clearRect(0,0,W,H);
+  /* เส้นตารางจาง ๆ ให้เขียนตรง */
+  const dark=R.getAttribute('data-theme')==='dark';
+  padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
+  for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath();padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke();}
+  padCx.lineCap='round'; padCx.lineJoin='round';
+  pages[pg].forEach(s=>{
+    padCx.globalAlpha=s.hl?0.32:1;
+    padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
+    for(let i=1;i<s.pts.length;i++){
+      const a=s.pts[i-1],b=s.pts[i];
+      padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
+      padCx.beginPath(); padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke();
+    }
+    if(s.pts.length===1){ /* จุดเดียว */
+      padCx.fillStyle=padCx.strokeStyle; padCx.beginPath();
+      padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill();
+    }
+  });
+  padCx.globalAlpha=1;
+  const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
+}
+function save(){ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
+function load(){
+  try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
+}
+
+if(hasPen){
+  buildPad();
+  D.getElementById('kitui-penbtn').onclick=()=>{
+    const o=pad.classList.toggle('open');
+    D.getElementById('kitui-penbtn').classList.toggle('on',o);
+    if(o) fitPad();
+  };
+}
+
+/* =============================================================================
+   5) เครื่องคิดเลขวิทยาศาสตร์  (tokenizer → shunting-yard → RPN  ไม่ใช้ eval)
+   ============================================================================= */
+const FN={sin:1,cos:1,tan:1,asin:1,acos:1,atan:1,ln:1,log:1,sqrt:1,abs:1,exp:1};
+const PREC={'+':1,'-':1,'*':2,'/':2,'^':4,'u-':3};
+function tokenize(s){
+  s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
+  const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!()])/g; let m;
+  while((m=re.exec(s))) out.push(m[1]);
+  return out;
+}
+function toRPN(tk){
+  const out=[],op=[]; let prev=null;
+  for(let t of tk){
+    if(t==='**')t='^';
+    if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
+    else if(t==='PI'){ out.push(Math.PI); }
+    else if(t==='e'||t==='E'){ out.push(Math.E); }
+    else if(t==='ANS'){ out.push(ANS); }
+    else if(FN[t]){ op.push(t); }
+    else if(t==='('){ op.push(t); }
+    else if(t===')'){
+      while(op.length&&op[op.length-1]!=='(') out.push(op.pop());
+      if(!op.length) throw 0; op.pop();
+      if(op.length&&FN[op[op.length-1]]) out.push(op.pop());
+    }
+    else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
+    else if('+-*/^'.includes(t)){
+      let o=t;
+      const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
+      if(t==='-'&&unary) o='u-';
+      else if(t==='+'&&unary){ prev=t; continue; }
+      while(op.length){
+        const top=op[op.length-1];
+        if(top==='('||FN[top])break;
+        const rightAssoc=(o==='^'||o==='u-');
+        if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop()); else break;
+      }
+      op.push(o);
+    }
+    else throw 0;
+    prev=t;
+  }
+  while(op.length){ const o=op.pop(); if(o==='(')throw 0; out.push(o); }
+  return out;
+}
+function evalRPN(rpn,deg){
+  const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
+  const pop=()=>{ if(!st.length)throw 0; return st.pop(); };
+  for(const t of rpn){
+    if(typeof t==='number'){ st.push(t); continue; }
+    if(t==='fact'){ const n=pop(); if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
+    if(t==='pct'){ st.push(pop()/100); continue; }
+    if(t==='u-'){ st.push(-pop()); continue; }
+    if(FN[t]){
+      const a=pop();
+      st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
+             : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
+             : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
+             : t==='abs'?Math.abs(a) : Math.exp(a) );
+      continue;
+    }
+    const b=pop(),a=pop();
+    st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
+  }
+  if(st.length!==1) throw 0;
+  return st[0];
+}
+function calc(src,deg){ return evalRPN(toRPN(tokenize(src)),deg); }
+
+let ANS=0, expr='', calcSheet, isDeg=true;
+const KEYS=[
+ ['DEG','deg','fn'],['(','(',''],[')',')',''],['⌫','del','del'],['AC','ac','del'],
+ ['sin','sin(','fn'],['cos','cos(','fn'],['tan','tan(','fn'],['π','π','fn'],['÷','÷','op'],
+ ['sin⁻¹','asin(','fn'],['cos⁻¹','acos(','fn'],['tan⁻¹','atan(','fn'],['e','e','fn'],['×','×','op'],
+ ['ln','ln(','fn'],['log','log(','fn'],['√','√(','fn'],['xʸ','^','fn'],['−','−','op'],
+ ['7','7',''],['8','8',''],['9','9',''],['x!','!','fn'],['+','+','op'],
+ ['4','4',''],['5','5',''],['6','6',''],['%','%','fn'],['ANS','ANS','fn'],
+ ['1','1',''],['2','2',''],['3','3',''],['.','.',''],['=','eq','eq'],
+ ['0','0','w3'],['x²','^2','fn']
+];
+function buildCalc(){
+  calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
+  calcSheet.innerHTML=
+   `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
+      <button id="kitui-calcclose">✕</button></div>
+    <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
+    <div class="kitui-keys" id="kitui-keys">
+      ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
+    </div>`;
+  D.body.appendChild(calcSheet);
+  D.getElementById('kitui-calcclose').onclick=()=>calcSheet.classList.remove('open');
+  const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
+  const show=()=>{ ex.textContent=expr||' ';
+    try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
+    catch(e){ rs.style.opacity=.35; }
+  };
+  D.getElementById('kitui-keys').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
+    if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
+    if(k==='del'){ expr=expr.slice(0,-1); show(); return; }
+    if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show(); return; }
+    if(k==='eq'){
+      rs.style.opacity=1;
+      try{
+        const v=calc(expr,isDeg);
+        if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
+        if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
+        ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
+      }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
+      return;
+    }
+    expr+=k; show();
+  });
+}
+function fmt(v){
+  if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
+  if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
+  return String(Math.round(v*1e10)/1e10);
+}
+if(hasCalc){
+  buildCalc();
+  D.getElementById('kitui-calcbtn').onclick=()=>{
+    const o=calcSheet.classList.toggle('open');
+    D.getElementById('kitui-calcbtn').classList.toggle('on',o);
+  };
+}
+})();
+
+</script>
+<!--/KIT-UI-->
+</body>
+</html>

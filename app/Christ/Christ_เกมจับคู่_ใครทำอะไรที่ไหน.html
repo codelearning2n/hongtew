@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>เกมจับคู่ ใครทำอะไรที่ไหน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b1120; --surface:#131c2e; --card:#1c2740; --card2:#243352;
+    --text:#e6edf7; --muted:#9fb0c9; --border:#2b3a57;
+    --accent:#fbbf24; --accent2:#38bdf8; --pink:#f472b6;
+    --ok:#34d399; --bad:#f87171;
+    --radius:16px; --shadow:0 8px 24px rgba(0,0,0,.35);
+    --font:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background:
+      radial-gradient(1200px 600px at 10% -10%, rgba(56,189,248,.12), transparent),
+      radial-gradient(1000px 500px at 100% 0%, rgba(244,114,182,.10), transparent),
+      var(--bg);
+    color:var(--text);
+    font-family:var(--font);
+    min-height:100vh;
+    -webkit-tap-highlight-color:transparent;
+  }
+  #app{ max-width:960px; margin:0 auto; padding:14px 14px 40px; }
+
+  header.appbar{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+    padding:14px 18px; box-shadow:var(--shadow); margin-bottom:16px;
+    position:sticky; top:8px; z-index:20;
+  }
+  header.appbar h1{
+    font-size:clamp(1.05rem, 2.4vw, 1.4rem); margin:0; font-weight:800;
+    background:linear-gradient(90deg, var(--accent), var(--pink));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    letter-spacing:.2px;
+  }
+  .icon-btn{
+    background:var(--card); border:1px solid var(--border); color:var(--text);
+    border-radius:12px; padding:8px 12px; font-size:1.1rem; cursor:pointer; line-height:1;
+    transition:transform .15s, background .15s;
+  }
+  .icon-btn:hover{ background:var(--card2); }
+  .icon-btn:active{ transform:scale(.94); }
+
+  .screen{ display:none; }
+  .screen.active{ display:block; animation:fadein .25s ease; }
+  @keyframes fadein{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+
+  /* ---------- HOME ---------- */
+  .home-intro{ text-align:center; margin:6px 0 22px; }
+  .home-intro h2{ margin:0 0 6px; font-size:1.3rem; }
+  .home-intro p{ margin:0; color:var(--muted); font-size:.95rem; }
+
+  .cat-grid{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(230px,1fr));
+    gap:14px;
+  }
+  .cat-card{
+    background:linear-gradient(160deg, var(--card), var(--card2));
+    border:1px solid var(--border); border-radius:var(--radius);
+    padding:18px 16px; text-align:left; cursor:pointer; color:var(--text);
+    box-shadow:var(--shadow); font-family:var(--font);
+    transition:transform .15s, border-color .15s, box-shadow .15s;
+    display:flex; flex-direction:column; gap:6px;
+  }
+  .cat-card:hover{ transform:translateY(-3px); border-color:var(--accent2); }
+  .cat-card:active{ transform:scale(.98); }
+  .cat-card .emoji{ font-size:1.7rem; }
+  .cat-card .name{ font-weight:700; font-size:1.02rem; line-height:1.3; }
+  .cat-card .count{ color:var(--muted); font-size:.85rem; }
+  .cat-card.all-cat{
+    background:linear-gradient(160deg, rgba(251,191,36,.18), rgba(244,114,182,.14));
+    border-color:var(--accent);
+  }
+
+  /* ---------- HUD ---------- */
+  .hud{
+    display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px;
+  }
+  .chip{
+    background:var(--surface); border:1px solid var(--border); border-radius:999px;
+    padding:8px 14px; font-size:.85rem; color:var(--muted); display:flex; gap:6px; align-items:center;
+    white-space:nowrap;
+  }
+  .chip b{ color:var(--text); font-weight:700; }
+  .progress-wrap{
+    flex:1 1 100%; background:var(--surface); border:1px solid var(--border); border-radius:999px;
+    height:10px; overflow:hidden; margin-top:2px;
+  }
+  .progress-bar{
+    height:100%; width:0%; border-radius:999px;
+    background:linear-gradient(90deg, var(--accent2), var(--ok));
+    transition:width .3s ease;
+  }
+
+  /* ---------- BOARD ---------- */
+  .board{ display:flex; gap:12px; align-items:flex-start; }
+  .col{ flex:1 1 50%; min-width:0; display:flex; flex-direction:column; gap:10px; }
+  .col-label{
+    font-size:.8rem; color:var(--muted); font-weight:700; text-align:center;
+    padding-bottom:2px; letter-spacing:.3px;
+  }
+  .card{
+    background:var(--card); border:2px solid var(--border); border-radius:var(--radius);
+    color:var(--text); font-family:var(--font); font-size:.92rem; line-height:1.35;
+    padding:12px 12px; text-align:center; cursor:pointer; width:100%;
+    box-shadow:var(--shadow); transition:transform .15s, box-shadow .15s, background .15s, border-color .15s, opacity .2s;
+    word-break:break-word;
+  }
+  .card:hover:not(.matched){ transform:translateY(-2px); border-color:var(--accent2); }
+  .card:active:not(.matched){ transform:scale(.97); }
+  .card.selected{
+    border-color:var(--accent2); background:var(--card2);
+    box-shadow:0 0 0 3px rgba(56,189,248,.35), var(--shadow);
+    transform:translateY(-2px);
+  }
+  .card.correct{
+    border-color:var(--ok);
+    background:linear-gradient(135deg, rgba(52,211,153,.30), var(--card2));
+    box-shadow:0 0 0 3px rgba(52,211,153,.5), var(--shadow);
+    animation:pop .4s ease;
+  }
+  .card.matched{ opacity:.45; pointer-events:none; filter:grayscale(.2); }
+  .card.wrong{
+    border-color:var(--bad);
+    background:linear-gradient(135deg, rgba(248,113,113,.22), var(--card2));
+    animation:shake .45s ease;
+  }
+  @keyframes shake{
+    10%,90%{transform:translateX(-2px)} 20%,80%{transform:translateX(4px)}
+    30%,50%,70%{transform:translateX(-8px)} 40%,60%{transform:translateX(8px)}
+  }
+  @keyframes pop{ 0%{transform:scale(1)} 50%{transform:scale(1.07)} 100%{transform:scale(1)} }
+
+  /* ---------- SUMMARY ---------- */
+  .summary-box{
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+    padding:28px 20px; text-align:center; box-shadow:var(--shadow); max-width:520px; margin:20px auto 0;
+  }
+  .summary-box .big-emoji{ font-size:2.6rem; margin-bottom:6px; }
+  .summary-box h2{ margin:0 0 10px; font-size:1.25rem; }
+  .summary-msg{ color:var(--text); font-size:1rem; margin-bottom:18px; line-height:1.5; }
+  .summary-stats{
+    display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-bottom:22px;
+  }
+  .stat{
+    background:var(--card); border:1px solid var(--border); border-radius:12px;
+    padding:10px 16px; min-width:90px;
+  }
+  .stat .v{ font-size:1.3rem; font-weight:800; color:var(--accent); }
+  .stat .l{ font-size:.78rem; color:var(--muted); margin-top:2px; }
+  .summary-actions{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
+
+  .btn{
+    font-family:var(--font); font-weight:700; font-size:.92rem; cursor:pointer;
+    border-radius:12px; padding:11px 18px; border:1px solid var(--border);
+    background:var(--card2); color:var(--text); transition:transform .15s, background .15s, border-color .15s;
+  }
+  .btn:hover{ transform:translateY(-2px); }
+  .btn:active{ transform:scale(.96); }
+  .btn.primary{
+    background:linear-gradient(90deg, var(--accent2), var(--ok)); color:#08141f; border-color:transparent;
+  }
+  .btn.accent{
+    background:linear-gradient(90deg, var(--accent), var(--pink)); color:#241305; border-color:transparent;
+  }
+
+  footer.note{ text-align:center; color:var(--muted); font-size:.78rem; margin-top:28px; opacity:.75; }
+
+  @media (max-width:480px){
+    .card{ font-size:.85rem; padding:10px 8px; }
+    .cat-card{ padding:14px 12px; }
+    .chip{ font-size:.78rem; padding:7px 11px; }
+    header.appbar{ padding:11px 14px; }
+    .board{ gap:8px; }
+    .col{ gap:8px; }
+  }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <header class="appbar">
+    <h1>⛪ เกมจับคู่ ใครทำอะไรที่ไหน</h1>
+    <button class="icon-btn" id="homeBtn" title="กลับหน้าหลัก">🏠</button>
+  </header>
+
+  <!-- HOME SCREEN -->
+  <section class="screen active" id="screen-home">
+    <div class="home-intro">
+      <h2>เลือกหมวดที่อยากฝึก 📚</h2>
+      <p>แตะการ์ดฝั่งซ้าย (บุคคล) แล้วแตะการ์ดฝั่งขวา (ผลงาน/เหตุการณ์) ให้ตรงกัน</p>
+    </div>
+    <div class="cat-grid" id="catGrid"></div>
+  </section>
+
+  <!-- GAME SCREEN -->
+  <section class="screen" id="screen-game">
+    <div class="hud">
+      <span class="chip">หมวด: <b id="hudCategory">-</b></span>
+      <span class="chip">คู่ที่จับแล้ว: <b id="hudMatched">0/0</b></span>
+      <span class="chip">ผิด: <b id="hudMistakes">0</b> ครั้ง</span>
+      <span class="chip">เวลา: <b id="hudTime">00:00</b></span>
+      <span class="chip">คะแนน: <b id="hudScore">0</b></span>
+      <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+    </div>
+    <div class="board">
+      <div class="col">
+        <div class="col-label">👤 บุคคล</div>
+        <div id="colLeft"></div>
+      </div>
+      <div class="col">
+        <div class="col-label">📌 ผลงาน / เหตุการณ์</div>
+        <div id="colRight"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUMMARY SCREEN -->
+  <section class="screen" id="screen-summary">
+    <div class="summary-box">
+      <div class="big-emoji" id="summaryEmoji">🎉</div>
+      <h2>จบรอบแล้ว!</h2>
+      <div class="summary-msg" id="summaryMsg"></div>
+      <div class="summary-stats">
+        <div class="stat"><div class="v" id="sumScore">0</div><div class="l">คะแนนรวม</div></div>
+        <div class="stat"><div class="v" id="sumMistakes">0</div><div class="l">ผิดกี่ครั้ง</div></div>
+        <div class="stat"><div class="v" id="sumTime">00:00</div><div class="l">เวลาที่ใช้</div></div>
+      </div>
+      <div class="summary-actions">
+        <button class="btn primary" id="nextRoundBtn">รอบถัดไป ➡️</button>
+        <button class="btn accent" id="restartCatBtn" style="display:none;">เล่นหมวดนี้อีกรอบ (สุ่มใหม่) 🔄</button>
+        <button class="btn" id="replayRoundBtn">เล่นซ้ำรอบนี้ 🔁</button>
+        <button class="btn" id="otherCatBtn">เล่นหมวดอื่น 🏠</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="note">อ.สอง Satit UP · คริสต์ศาสนา ม.6 · เกมฝึกจำ ใครทำอะไรที่ไหน</footer>
+</div>
+
+<script>
+/* ============ DATA ============ */
+const categories = [
+  {
+    name: 'โป๊ปในประวัติศาสตร์',
+    emoji: '🕊️',
+    pairs: [
+      { p:'Gregory I (เกรกอรีที่ 1)', d:'บัญญัติศัพท์ "Cardinal" (จาก cardo = บานพับประตู)' },
+      { p:'Nicholas II (1059)', d:'กำหนดให้เฉพาะคาร์ดินัลเลือกโป๊ปได้' },
+      { p:'Urban II (1091)', d:'สังคายนา Benevento — ให้โรยเถ้าแก่ทุกคน (Ash Wednesday)' },
+      { p:'สังคายนาลาเตรันครั้งที่ 3 (1179)', d:'กติกาเสียง 2 ใน 3 ในการเลือกโป๊ป' },
+      { p:'Gregory X', d:'ตั้งห้องปิดกุญแจ "Conclave" ให้เลือกโป๊ปเร็วขึ้น' },
+      { p:'Clement IV (1265)', d:'แหวนชาวประมง (Ring of the Fisherman) วงแรก' },
+      { p:'Julius II (1506)', d:'เชิญ Swiss Guard ครั้งแรก + เริ่มสร้างมหาวิหารเซนต์ปีเตอร์' },
+      { p:'Urban VIII (1626)', d:'มหาวิหารเซนต์ปีเตอร์สร้างเสร็จ' },
+      { p:'Alexander VII', d:'ให้ Bernini ออกแบบจัตุรัสเซนต์ปีเตอร์ + ส่งมิชชันนารีชุดแรกมาอยุธยา (1662)' },
+      { p:'Pius XI (1929)', d:'ลงนามสนธิสัญญาลาเตรัน (Lateran Treaty) กับมุสโสลินี' },
+      { p:'Paul VI (1970)', d:'คาร์ดินัลเกิน 80 ปีหมดสิทธิเลือกโป๊ป' },
+      { p:'Nicholas V → Sixtus IV', d:'ก่อตั้ง/สร้างห้องสมุดวาติกัน (Vatican Apostolic Library, 1475)' }
+    ]
+  },
+  {
+    name: 'ศิลปินกับผลงาน',
+    emoji: '🎨',
+    pairs: [
+      { p:'Michelangelo', d:'The Creation of Adam (เพดานซิสทีน)' },
+      { p:'Michelangelo', d:'The Last Judgement (ผนังหน้าพระแท่นซิสทีน)' },
+      { p:'Michelangelo', d:'Pietà — ประติมากรรมหินอ่อน (มหาวิหารเซนต์ปีเตอร์)' },
+      { p:'Raphael', d:'The School of Athens (วังวาติกัน)' },
+      { p:'Raphael', d:'Transfiguration (พิพิธภัณฑ์วาติกัน)' },
+      { p:'Perugino', d:'The Delivery of the Keys — พระเยซูมอบกุญแจแก่เปโตร (ซิสทีน)' },
+      { p:'Caravaggio', d:'The Entombment of Christ (พิพิธภัณฑ์วาติกัน)' },
+      { p:'Bernini', d:'ออกแบบจัตุรัสเซนต์ปีเตอร์ + ซุ้ม Baldachin' },
+      { p:'Arnolfo di Cambio', d:'รูปปั้นทองแดง St. Peter ในมหาวิหาร' }
+    ]
+  },
+  {
+    name: 'ไทย–วาติกัน',
+    emoji: '🇹🇭',
+    pairs: [
+      { p:'Pope Alexander VII × สมเด็จพระนารายณ์ (1662)', d:'ส่งมิชชันนารีชุดแรกมากรุงศรีอยุธยา' },
+      { p:'เจ้าพระยาโกษาธิบดี (ปาน) (1688)', d:'นำคณะทูตพระนารายณ์ไปกรุงโรม' },
+      { p:'ร.5 (1897)', d:'เสด็จวาติกัน พบ Pope Leo XIII — เยือนระดับประมุขครั้งแรก' },
+      { p:'จอมพล ป. พิบูลสงคราม (1955)', d:'พบ Pope Pius XII — เยือนระดับรัฐบาลครั้งแรก' },
+      { p:'ร.9 (1960)', d:'เสด็จวาติกัน พบ Pope John XXIII' },
+      { p:'ยิ่งลักษณ์ ชินวัตร (2013)', d:'พบ Pope Francis — เยือนระดับรัฐบาลครั้งที่ 2' },
+      { p:'พระคาร์ดินัล มีชัย กิจบุญชู (1983)', d:'คาร์ดินัลไทยคนแรก (สถาปนาโดย John Paul II)' },
+      { p:'พระคาร์ดินัล เกรียงศักดิ์ โกวิทวาณิช (2015)', d:'คาร์ดินัลไทยองค์ที่ 2 (โดย Pope Francis)' },
+      { p:'มงซินญอร์ ดร.วิษณุ ธัญญอนันต์', d:'คนไทยที่ได้สัญชาติวาติกัน (นักการทูตวาติกัน)' }
+    ]
+  },
+  {
+    name: 'โป๊ปยุคใหม่ + บุคคลฝ่ายโลก',
+    emoji: '👑',
+    pairs: [
+      { p:'John Paul II (องค์ที่ 264)', d:'ชาวโปแลนด์ — เป็นนักบุญปี 2014, ตั้งคาร์ดินัลไทยคนแรก' },
+      { p:'Benedict XVI (องค์ที่ 265)', d:'ชาวเยอรมัน — สละตำแหน่ง 28 ก.พ. 2013' },
+      { p:'Francis (องค์ที่ 266)', d:'ชาวอาร์เจนตินา — โป๊ปลาตินอเมริกาคนแรก' },
+      { p:'Leo XIV (องค์ที่ 267)', d:'ชาวอเมริกันคนแรก — องค์ปัจจุบัน (2025–)' },
+      { p:'นักบุญเปโตร (St. Peter)', d:'โป๊ปองค์แรก — ถูกตรึงกางเขนกลับหัว ฝังใต้มหาวิหารเซนต์ปีเตอร์' },
+      { p:'เบนิโต มุสโสลินี', d:'ลงนาม Lateran Treaty ฝ่ายอิตาลี (1929) → เกิดรัฐวาติกัน' },
+      { p:'พระเจ้าเฮนรีที่ 8 (Henry VIII, 1534)', d:'แยกนิกายแองกลิกัน (Church of England)' },
+      { p:'พระนางเฮเลน (มารดาคอนสแตนติน)', d:'สร้างโบสถ์พระคูหาศักดิ์สิทธิ์บนเนินโกลโกธา (ค.ศ. 325)' },
+      { p:'พวกอีทรัสคัน (Etruscans)', d:'ตั้งชื่อเมือง "Vaticum" — ที่มาชื่อ Vatican' }
+    ]
+  },
+  {
+    name: 'บุคคลในเทศกาล (บท 11)',
+    emoji: '✝️',
+    pairs: [
+      { p:'อิสยาห์ (Isaiah)', d:'ประกาศกผู้พยากรณ์การมาบังเกิดของพระเยซู (อ่านใน Advent)' },
+      { p:'ยอห์นผู้ให้บัพติสมา (John the Baptist)', d:'ให้ศีลล้างบาปพระเยซูที่แม่น้ำจอร์แดน (Epiphany ครั้งที่ 1)' },
+      { p:'นักบุญนิโคลัส (St. Nicholas)', d:'หย่อนทอง 3 ก้อนลงปล่องไฟ — ที่มาถุงเท้าคริสต์มาส' },
+      { p:'โหราจารย์ (Magi)', d:'ตามดาวมาถวายของขวัญพระกุมาร — Three Kings\' Day (6 ม.ค.)' },
+      { p:'มารีย์ชาวมักดาลา', d:'พบอุโมงค์ว่างเช้าวันอีสเตอร์ — คนแรกที่รู้ข่าวคืนพระชนม์' },
+      { p:'ยูดาส อิสคาริโอท', d:'ทรยศพระเยซู (ทำนายใน Last Supper)' },
+      { p:'วิลเลียม แบรดฟอร์ด (Bradford)', d:'จัด Thanksgiving ครั้งแรกที่พลีมัธ (1621)' },
+      { p:'อับราฮัม ลินคอล์น', d:'ประกาศ Thanksgiving เป็นวันหยุดราชการ (1863)' },
+      { p:'หัวหน้าเผ่าแมสซาซอยท์ (Massasoit)', d:'อินเดียนแดงผู้สอนพิลกริมล่าสัตว์/ปลูกข้าวโพด' }
+    ]
+  }
+];
+
+/* ============ STATE ============ */
+const state = {
+  currentCategoryKey: null,
+  categoryLabel: '',
+  playlist: [],
+  roundIndex: 0,
+  currentRoundPairs: [],
+  matchedCount: 0,
+  mistakes: 0,
+  score: 0,
+  seconds: 0,
+  timerHandle: null,
+  selectedLeft: null,
+  selectedRight: null,
+  locked: false
+};
+
+/* ============ ELEMENTS ============ */
+const screens = {
+  home: document.getElementById('screen-home'),
+  game: document.getElementById('screen-game'),
+  summary: document.getElementById('screen-summary')
+};
+const catGrid = document.getElementById('catGrid');
+const colLeft = document.getElementById('colLeft');
+const colRight = document.getElementById('colRight');
+const hudCategory = document.getElementById('hudCategory');
+const hudMatched = document.getElementById('hudMatched');
+const hudMistakes = document.getElementById('hudMistakes');
+const hudTime = document.getElementById('hudTime');
+const hudScore = document.getElementById('hudScore');
+const progressBar = document.getElementById('progressBar');
+
+const summaryEmoji = document.getElementById('summaryEmoji');
+const summaryMsg = document.getElementById('summaryMsg');
+const sumScore = document.getElementById('sumScore');
+const sumMistakes = document.getElementById('sumMistakes');
+const sumTime = document.getElementById('sumTime');
+const nextRoundBtn = document.getElementById('nextRoundBtn');
+const restartCatBtn = document.getElementById('restartCatBtn');
+const replayRoundBtn = document.getElementById('replayRoundBtn');
+const otherCatBtn = document.getElementById('otherCatBtn');
+
+/* ============ UTIL ============ */
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+function chunk(arr, size){
+  const out = [];
+  for(let i=0;i<arr.length;i+=size) out.push(arr.slice(i, i+size));
+  return out;
+}
+function formatTime(sec){
+  const m = Math.floor(sec/60).toString().padStart(2,'0');
+  const s = Math.floor(sec%60).toString().padStart(2,'0');
+  return m+':'+s;
+}
+function showScreen(name){
+  Object.values(screens).forEach(s=>s.classList.remove('active'));
+  screens[name].classList.add('active');
+}
+
+/* ============ HOME RENDER ============ */
+function renderHome(){
+  catGrid.innerHTML = '';
+  categories.forEach((cat, idx)=>{
+    const btn = document.createElement('button');
+    btn.className = 'cat-card';
+    btn.type = 'button';
+    btn.innerHTML =
+      '<div class="emoji">'+cat.emoji+'</div>'+
+      '<div class="name">'+cat.name+'</div>'+
+      '<div class="count">'+cat.pairs.length+' คู่</div>';
+    btn.addEventListener('click', ()=>startCategory(idx));
+    catGrid.appendChild(btn);
+  });
+  const allBtn = document.createElement('button');
+  allBtn.className = 'cat-card all-cat';
+  const totalPairs = categories.reduce((sum,c)=>sum+c.pairs.length, 0);
+  allBtn.innerHTML =
+    '<div class="emoji">🎲</div>'+
+    '<div class="name">รวมทุกหมวด (สุ่ม)</div>'+
+    '<div class="count">'+totalPairs+' คู่ · หลายรอบ</div>';
+  allBtn.addEventListener('click', ()=>startCategory('all'));
+  catGrid.appendChild(allBtn);
+}
+
+/* ============ GAME FLOW ============ */
+function buildPlaylist(pairsList){
+  const withUid = pairsList.map((pr, i)=>({ p: pr.p, d: pr.d, uid: 'u'+i+'_'+Math.random().toString(36).slice(2,8) }));
+  const shuffled = shuffle(withUid);
+  return chunk(shuffled, 6);
+}
+
+function startCategory(key){
+  state.currentCategoryKey = key;
+  let pairsList, label;
+  if(key === 'all'){
+    pairsList = categories.flatMap(c=>c.pairs);
+    label = 'รวมทุกหมวด (สุ่ม)';
+  } else {
+    pairsList = categories[key].pairs;
+    label = categories[key].name;
+  }
+  state.categoryLabel = label;
+  state.playlist = buildPlaylist(pairsList);
+  state.roundIndex = 0;
+  state.score = 0;
+  loadRound();
+}
+
+function loadRound(){
+  state.currentRoundPairs = state.playlist[state.roundIndex];
+  state.matchedCount = 0;
+  state.mistakes = 0;
+  state.seconds = 0;
+  state.selectedLeft = null;
+  state.selectedRight = null;
+  state.locked = false;
+  renderBoard();
+  updateHUD();
+  startTimer();
+  showScreen('game');
+}
+
+function renderBoard(){
+  colLeft.innerHTML = '';
+  colRight.innerHTML = '';
+  const leftOrder = shuffle(state.currentRoundPairs);
+  const rightOrder = shuffle(state.currentRoundPairs);
+
+  leftOrder.forEach(pair=>{
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'card';
+    btn.textContent = pair.p;
+    btn.dataset.match = pair.p;
+    btn.dataset.uid = pair.uid;
+    btn.addEventListener('click', ()=>handleCardClick(btn,'left'));
+    colLeft.appendChild(btn);
+  });
+
+  rightOrder.forEach(pair=>{
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'card';
+    btn.textContent = pair.d;
+    btn.dataset.match = pair.p;
+    btn.dataset.uid = pair.uid;
+    btn.addEventListener('click', ()=>handleCardClick(btn,'right'));
+    colRight.appendChild(btn);
+  });
+}
+
+function handleCardClick(btn, side){
+  if(state.locked) return;
+  if(btn.classList.contains('matched')) return;
+
+  if(side === 'left'){
+    if(state.selectedLeft === btn){
+      btn.classList.remove('selected');
+      state.selectedLeft = null;
+      return;
+    }
+    if(state.selectedLeft) state.selectedLeft.classList.remove('selected');
+    state.selectedLeft = btn;
+    btn.classList.add('selected');
+  } else {
+    if(state.selectedRight === btn){
+      btn.classList.remove('selected');
+      state.selectedRight = null;
+      return;
+    }
+    if(state.selectedRight) state.selectedRight.classList.remove('selected');
+    state.selectedRight = btn;
+    btn.classList.add('selected');
+  }
+
+  if(state.selectedLeft && state.selectedRight){
+    evaluateMatch();
+  }
+}
+
+function evaluateMatch(){
+  const L = state.selectedLeft;
+  const R = state.selectedRight;
+  const isMatch = L.dataset.match === R.dataset.match;
+
+  if(isMatch){
+    state.locked = true;
+    L.classList.remove('selected');
+    R.classList.remove('selected');
+    L.classList.add('correct');
+    R.classList.add('correct');
+    state.matchedCount++;
+    state.score += 10;
+    state.selectedLeft = null;
+    state.selectedRight = null;
+    updateHUD();
+
+    setTimeout(()=>{
+      L.classList.add('matched');
+      R.classList.add('matched');
+      state.locked = false;
+      if(state.matchedCount === state.currentRoundPairs.length){
+        setTimeout(endRound, 350);
+      }
+    }, 400);
+  } else {
+    state.locked = true;
+    L.classList.add('wrong');
+    R.classList.add('wrong');
+    state.mistakes++;
+    updateHUD();
+
+    setTimeout(()=>{
+      L.classList.remove('selected','wrong');
+      R.classList.remove('selected','wrong');
+      state.selectedLeft = null;
+      state.selectedRight = null;
+      state.locked = false;
+    }, 550);
+  }
+}
+
+function updateHUD(){
+  const roundInfo = state.playlist.length > 1
+    ? ' (รอบ '+(state.roundIndex+1)+'/'+state.playlist.length+')'
+    : '';
+  hudCategory.textContent = state.categoryLabel + roundInfo;
+  hudMatched.textContent = state.matchedCount + '/' + state.currentRoundPairs.length;
+  hudMistakes.textContent = state.mistakes;
+  hudScore.textContent = state.score;
+  hudTime.textContent = formatTime(state.seconds);
+  const pct = state.currentRoundPairs.length
+    ? Math.round((state.matchedCount / state.currentRoundPairs.length) * 100)
+    : 0;
+  progressBar.style.width = pct + '%';
+}
+
+function startTimer(){
+  stopTimer();
+  state.timerHandle = setInterval(()=>{
+    state.seconds++;
+    hudTime.textContent = formatTime(state.seconds);
+  }, 1000);
+}
+function stopTimer(){
+  if(state.timerHandle){
+    clearInterval(state.timerHandle);
+    state.timerHandle = null;
+  }
+}
+
+function getEncouragement(mistakes, total){
+  if(mistakes === 0){
+    return { emoji:'🏆', text:'สุดยอด! จับคู่ถูกหมดโดยไม่พลาดเลยสักครั้ง เก่งมากๆ!' };
+  }
+  const ratio = mistakes / total;
+  if(ratio <= 0.34){
+    return { emoji:'🎉', text:'เก่งมาก! แม่นยำมากแล้ว ลองอีกนิดเดียวจะสมบูรณ์แบบ!' };
+  }
+  if(ratio <= 0.75){
+    return { emoji:'👏', text:'ทำได้ดี! จำได้เยอะแล้วนะ ฝึกอีกหน่อยชัวร์!' };
+  }
+  return { emoji:'🌱', text:'ไม่เป็นไรนะ ลองอีกครั้ง เดี๋ยวก็จำได้เอง ทุกคนเริ่มจากผิดทั้งนั้น สู้ๆ!' };
+}
+
+function endRound(){
+  stopTimer();
+  const total = state.currentRoundPairs.length;
+  const enc = getEncouragement(state.mistakes, total);
+
+  summaryEmoji.textContent = enc.emoji;
+  summaryMsg.textContent = enc.text;
+  sumScore.textContent = state.score;
+  sumMistakes.textContent = state.mistakes;
+  sumTime.textContent = formatTime(state.seconds);
+
+  const hasNext = state.roundIndex + 1 < state.playlist.length;
+  nextRoundBtn.style.display = hasNext ? 'inline-flex' : 'none';
+  restartCatBtn.style.display = hasNext ? 'none' : 'inline-flex';
+
+  showScreen('summary');
+}
+
+/* ============ BUTTON EVENTS ============ */
+document.getElementById('homeBtn').addEventListener('click', ()=>{
+  stopTimer();
+  showScreen('home');
+});
+nextRoundBtn.addEventListener('click', ()=>{
+  state.roundIndex++;
+  loadRound();
+});
+replayRoundBtn.addEventListener('click', ()=>{
+  loadRound();
+});
+restartCatBtn.addEventListener('click', ()=>{
+  startCategory(state.currentCategoryKey);
+});
+otherCatBtn.addEventListener('click', ()=>{
+  stopTimer();
+  showScreen('home');
+});
+
+/* ============ INIT ============ */
+renderHome();
+</script>
+<!--KIT-UI v2.4 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<script>
+/* =============================================================================
+   _kit/ui-controls.js  —  KIT UI  v1.0
+   แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
+     🌙/☀️  โหมดมืด / สว่าง   (จำค่าไว้ใน localStorage)
+     A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
+     ✏️  ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
+     🧮  เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
+
+   ── วิธีใช้ ────────────────────────────────────────────────────────────────
+   ห้ามแก้โค้ดนี้ในไฟล์ widget!  แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
+       pwsh -File _kit/apply-ui.ps1
+   สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
+   (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
+
+   !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
+      เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
+
+   ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
+   ใส่แอตทริบิวต์ที่ tag body:  data-tools="pen,calc"  = บังคับเปิด
+                              data-tools="none"      = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
+   ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
+              หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
+   ============================================================================= */
+(function(){
+if(window.__KITUI__) return; window.__KITUI__='2.4';
+
+/* ---------- helper ---------- */
+const D=document, R=D.documentElement;
+const get=k=>{try{return localStorage.getItem('kitui-'+k)}catch(e){return null}};
+const set=(k,v)=>{try{localStorage.setItem('kitui-'+k,v)}catch(e){}};
+const el=(t,c,h)=>{const e=D.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
+
+/* =============================================================================
+   1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
+   ============================================================================= */
+const CSS=`
+/* ===== DARK TOKENS (คู่กับ _kit/design-tokens.css) ===== */
+:root[data-theme="dark"]{
+  --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
+  --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
+  --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
+  --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
+  --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
+}
+:root[data-theme="dark"] body{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f172a}
+:root[data-theme="dark"] body[data-subject="physics"]{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f1220}
+:root[data-theme="dark"] body[data-subject="bio"]{--accent:#4ade80;--accent-head:#bbf7d0;--accent-ink:#86efac;--accent-soft:#0f2a1a;--accent-bd:#256b41;--accent-chip:#14532d;--accent-ghost:#15803d;--bg:#0d1912}
+:root[data-theme="dark"] body[data-subject="chem"]{--accent:#fb923c;--accent-head:#fed7aa;--accent-ink:#fdba74;--accent-soft:#2b1a0c;--accent-bd:#8a3d12;--accent-chip:#6d2c10;--accent-ghost:#c2410c;--bg:#1a130c}
+:root[data-theme="dark"] body[data-subject="christ"]{--accent:#a78bfa;--accent-head:#ddd6fe;--accent-ink:#c4b5fd;--accent-soft:#241a3d;--accent-bd:#5b21b6;--accent-chip:#4c1d95;--accent-ghost:#6d28d9;--bg:#16121f}
+:root[data-theme="dark"] body[data-subject="islam"]{--accent:#2dd4bf;--accent-head:#99f6e4;--accent-ink:#5eead4;--accent-soft:#0d2b28;--accent-bd:#12615a;--accent-chip:#134e4a;--accent-ghost:#0f766e;--bg:#0c1917}
+:root[data-theme="dark"] body[data-subject="history"]{--accent:#fbbf24;--accent-head:#fde68a;--accent-ink:#fcd34d;--accent-soft:#2a1f0a;--accent-bd:#8a4b0c;--accent-chip:#6d3a0a;--accent-ghost:#b45309;--bg:#191509}
+:root[data-theme="dark"] body[data-subject="math"]{--accent:#38bdf8;--accent-head:#bae6fd;--accent-ink:#7dd3fc;--accent-soft:#0c2434;--accent-bd:#0b5a80;--accent-chip:#0c4a6e;--accent-ghost:#0369a1;--bg:#0b1620}
+:root[data-theme="dark"] body[data-subject="eng"]{--accent:#f472b6;--accent-head:#fbcfe8;--accent-ink:#f9a8d4;--accent-soft:#2e1122;--accent-bd:#8d1748;--accent-chip:#731839;--accent-ghost:#be185d;--bg:#1c0f16}
+:root[data-theme="dark"] body[data-subject="thai"]{--accent:#f87171;--accent-head:#fecaca;--accent-ink:#fca5a5;--accent-soft:#2d1414;--accent-bd:#8d2020;--accent-chip:#7f1d1d;--accent-ghost:#b91c1c;--bg:#1a0f0f}
+:root[data-theme="dark"] img,:root[data-theme="dark"] .svg-box{filter:brightness(.92)}
+/* ช่องกรอก/ดรอปดาวน์ที่ widget เก่ากำหนดพื้นขาวตายตัวไว้ */
+:root[data-theme="dark"] select,:root[data-theme="dark"] textarea,
+:root[data-theme="dark"] input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=color])
+{background-color:var(--soft);color:var(--ink);border-color:var(--line)}
+
+/* ===== แถบเครื่องมือลอย ===== */
+#kitui-bar{position:fixed;right:10px;bottom:10px;z-index:99990;display:flex;gap:6px;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
+#kitui-bar button{border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;
+  font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
+  align-items:center;justify-content:center;font-weight:700}
+#kitui-bar button:hover{background:var(--soft)}
+#kitui-bar button:active{transform:scale(.93)}
+#kitui-bar button.on{background:var(--accent);color:#fff}
+#kitui-bar .kitui-sep{width:1px;height:22px;background:var(--line);flex:0 0 1px}
+#kitui-bar .kitui-fs{font-size:11px;color:var(--muted);min-width:34px;text-align:center;font-weight:700}
+#kitui-bar.hidden > *:not(#kitui-grip){display:none}
+#kitui-grip{font-size:17px}
+
+/* ===== แผงลอย (ที่ทด / เครื่องคิดเลข) ===== */
+.kitui-sheet{position:fixed;left:0;right:0;bottom:0;z-index:99991;background:var(--card);
+  border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
+  display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
+  height:52vh;max-height:92vh;min-height:180px}
+.kitui-sheet.open{display:flex}
+.kitui-sheet.full{height:100vh;border-radius:0}
+.kitui-head{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--line);
+  flex-wrap:wrap;touch-action:none;cursor:ns-resize}
+.kitui-head b{font-size:.9rem;color:var(--accent-ink);margin-right:2px;white-space:nowrap}
+.kitui-head button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;
+  padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
+.kitui-head button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.kitui-head .kitui-spacer{flex:1}
+.kitui-sw{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;min-height:0}
+.kitui-sw.on{border-color:var(--ink);transform:scale(1.12)}
+.kitui-padwrap{flex:1;position:relative;overflow:hidden;background:var(--soft)}
+.kitui-padwrap canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+:root[data-theme="dark"] .kitui-padwrap{background:#0c1220}
+
+/* ===== เครื่องคิดเลข ===== */
+#kitui-calc{height:auto;max-height:90vh}
+.kitui-disp{padding:8px 12px;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);
+  border-bottom:1px solid var(--line)}
+.kitui-disp .ex{font-size:.95rem;color:var(--muted);min-height:1.3em;word-break:break-all}
+.kitui-disp .rs{font-size:1.6rem;font-weight:700;color:var(--accent-ink);word-break:break-all}
+.kitui-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:7px}
+.kitui-keys button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:9px;
+  font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
+.kitui-keys button:active{transform:scale(.95)}
+.kitui-keys button.fn{font-size:.8rem;color:var(--accent-ink)}
+.kitui-keys button.op{background:var(--accent-soft);color:var(--accent-ink)}
+.kitui-keys button.eq{background:var(--accent);color:#fff;grid-row:span 2}
+.kitui-keys button.del{background:var(--hot-bg);color:var(--hot-ink)}
+.kitui-keys button.w3{grid-column:span 3}
+@media(max-width:420px){.kitui-keys button{font-size:.88rem;min-height:40px}.kitui-keys button.fn{font-size:.72rem}}
+@media(min-width:760px){
+  .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
+  .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
+  #kitui-pad{width:560px}
+}
+@media print{#kitui-bar,.kitui-sheet{display:none!important}}
+`;
+const st=el('style'); st.id='kitui-style'; st.textContent=CSS; D.head.appendChild(st);
+
+/* -----------------------------------------------------------------------------
+   1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
+   widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
+   พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
+   แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
+   เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
+----------------------------------------------------------------------------- */
+/* สีพาสเทลสว่าง -> สีเข้มที่ยังคง "เฉดเดิม" ไว้ (เขียว=ถูก / แดง=ผิด ต้องยังแยกออก)
+   ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
+function darken(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
+  const l0=(mx+mn)/2;
+  const s0 = d===0 ? 0 : d/(1-Math.abs(2*l0-1));
+  const s = d===0 ? 0 : Math.min(.5, Math.max(.3, s0));
+  const l = d===0 ? .13 : .17;                       /* เทา/ขาวให้เข้มกว่าสีนิดหน่อย */
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+function darkFix(){
+  const out=[], seen=new Set();
+  const take=r=>{
+    if(!r.style || !r.selectorText) return;
+    if(r.selectorText.indexOf('kitui')>-1) return;               /* ของเราเองใช้ token อยู่แล้ว */
+    const bg=r.style.backgroundColor;
+    if(!bg || bg.indexOf('var(')>-1) return;
+    const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
+    if(!m) return;
+    if(m[4]!==undefined && +m[4]<0.6) return;                    /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
+    const cr=+m[1], cg=+m[2], cb=+m[3];
+    if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return;       /* ไม่สว่างพอ ไม่ต้องยุ่ง */
+    const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
+    const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
+    let css='background-color:'+repl;
+    /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
+    const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
+    out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
+  };
+  /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
+        ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
+  const visit=rules=>{
+    for(let i=0;i<rules.length;i++){
+      const r=rules[i];
+      if(r.selectorText) take(r);
+      if(r.cssRules && r.cssRules.length) visit(r.cssRules);     /* @media / @supports / nesting */
+    }
+  };
+  for(let i=0;i<D.styleSheets.length;i++){
+    let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; }   /* ข้ามชีตข้ามโดเมน */
+    if(rr) visit(rr);
+  }
+  if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
+  return out.length;
+}
+try{ window.__KITUI_DARKFIX__=darkFix(); }catch(e){ window.__KITUI_DARKFIX__='err:'+e.message; }
+
+/* darkFix ข้างบนซ่อมได้เฉพาะสีที่เขียนตายตัวในไฟล์ CSS
+   แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
+   ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
+   จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
+const rgbOf=c=>{const m=c&&c.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null;};
+const lumOf=v=>v?(0.2126*v[0]+0.7152*v[1]+0.0722*v[2])/255:null;
+/* ตรงข้ามกับ darken(): ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
+   (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
+function lighten(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  if(d<0.04) return 'var(--ink)';                    /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
+  let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
+  const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
+  const s=Math.min(.92,Math.max(.55,s0)), l=.72;
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+const SKIP={CANVAS:1,IMG:1,VIDEO:1,SVG:1,IFRAME:1,PICTURE:1,OBJECT:1};
+const OBS_OPT={childList:true,subtree:true,attributes:true,attributeFilter:['class','style']};
+let patched=[], obs=null;
+function elementFix(){
+  /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
+        ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
+  if(obs) obs.disconnect();
+  try{ elementFixCore(); } finally { if(obs) obs.observe(D.body,OBS_OPT); }
+}
+function elementFixCore(){
+  /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
+     ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
+     จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
+  if(R.getAttribute('data-theme')!=='dark'){
+    patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
+    patched=[];
+    return;
+  }
+  /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
+     ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
+  /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
+  const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
+  for(let i=0;i<all.length;i++){
+    const e=all[i];
+    if(e.id&&e.id.indexOf('kitui')===0) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(SKIP[e.tagName]) continue;                      /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
+    const s=getComputedStyle(e);
+    const bg=rgbOf(s.backgroundColor);
+    if(!bg || bg[3]<0.6) continue;                     /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
+    if(lumOf(bg)<0.72) continue;                       /* เข้มพออยู่แล้ว */
+    /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
+    e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
+    const fg=rgbOf(s.color);
+    if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important');  /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
+    patched.push(e);
+  }
+  /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
+     ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
+  const bgCache=new Map();
+  const effBg=n=>{
+    for(let p=n;p;p=p.parentElement){
+      if(bgCache.has(p)) return bgCache.get(p);
+      const b=rgbOf(getComputedStyle(p).backgroundColor);
+      if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
+    }
+    return null;
+  };
+  for(let i=2;i<all.length;i++){
+    const e=all[i];
+    if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(e.style.color) continue;                         /* จัดการไปแล้วในรอบแรก */
+    if(!e.textContent || !e.textContent.trim()) continue;
+    const fg=rgbOf(getComputedStyle(e).color);
+    if(!fg || lumOf(fg)>=0.45) continue;                 /* ตัวอักษรสว่างอยู่แล้ว */
+    const bg=effBg(e);
+    if(!bg || lumOf(bg)>=0.5) continue;                  /* พื้นยังสว่าง อ่านออกอยู่ */
+    e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
+    patched.push(e);
+  }
+}
+let efT=0;
+const scheduleFix=()=>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
+try{
+  obs=new MutationObserver(scheduleFix);
+  obs.observe(D.body,OBS_OPT);
+}catch(e){}
+
+/* =============================================================================
+   2) ธีม + ขนาดตัวอักษร
+   ============================================================================= */
+const FS=[.85,1,1.15,1.3,1.5], FSNAME=['เล็กสุด','เล็ก','ปกติ','ใหญ่','ใหญ่สุด'];
+let fsIdx=parseInt(get('fs')); if(isNaN(fsIdx)||fsIdx<0||fsIdx>4) fsIdx=1;
+let theme=get('theme') || (matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+
+function applyTheme(){
+  R.setAttribute('data-theme',theme);
+  R.style.colorScheme = theme==='dark'?'dark':'light';   /* ให้ select/input เป็นสีเข้มด้วย */
+  const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
+  set('theme',theme);
+  clearTimeout(efT);                                   /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
+  if(typeof elementFix==='function') elementFix();
+  if(typeof draw==='function' && pad) draw();          /* วาดที่ทดใหม่ เส้นดำ<->ขาวตามธีม */
+}
+function applyFS(){
+  R.style.fontSize=(16*FS[fsIdx])+'px';
+  const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
+  set('fs',fsIdx);
+}
+
+/* =============================================================================
+   3) แถบเครื่องมือ
+   ============================================================================= */
+const subj=(D.body.getAttribute('data-subject')||'').toLowerCase();
+/* หลาย widget ไม่ได้ใส่ data-subject ที่ <body> → เดาจากโฟลเดอร์ที่ไฟล์อยู่ด้วย */
+const inPath=/\/(physics|math|chemist)\//i.test(decodeURIComponent(location.pathname));
+const tAttr=D.body.getAttribute('data-tools');
+const wantTools = tAttr!=null ? tAttr.toLowerCase()
+                : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
+const hasPen  = wantTools.includes('pen');
+const hasCalc = wantTools.includes('calc');
+
+const bar=el('div'); bar.id='kitui-bar';
+bar.innerHTML =
+  `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
+  `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button>`+
+  `<span class="kitui-sep"></span>`+
+  `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
+  `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
+  `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
+  (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
+  (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
+D.body.appendChild(bar);
+
+D.getElementById('kitui-theme').onclick=()=>{theme=theme==='dark'?'light':'dark';applyTheme();};
+D.getElementById('kitui-fsup').onclick=()=>{if(fsIdx<4){fsIdx++;applyFS();}};
+D.getElementById('kitui-fsdown').onclick=()=>{if(fsIdx>0){fsIdx--;applyFS();}};
+D.getElementById('kitui-grip').onclick=()=>bar.classList.toggle('hidden');
+applyTheme(); applyFS();
+
+/* ปิดแผงด้วยปุ่ม Esc */
+D.addEventListener('keydown',e=>{ if(e.key==='Escape') D.querySelectorAll('.kitui-sheet.open').forEach(s=>s.classList.remove('open')); });
+
+/* ลากหัวแผงเพื่อปรับความสูง */
+function makeResizable(sheet){
+  const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
+  head.addEventListener('pointerdown',e=>{
+    if(e.target.closest('button'))return;
+    drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect().height;head.setPointerCapture(e.pointerId);
+  });
+  head.addEventListener('pointermove',e=>{
+    if(!drag)return;
+    const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
+    sheet.classList.remove('full'); sheet.style.height=h+'px';
+    if(sheet.id==='kitui-pad') fitPad();
+  });
+  head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
+}
+
+/* =============================================================================
+   4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ  หลายหน้า  เซฟอัตโนมัติ
+   ============================================================================= */
+let pad,padCv,padCx,pages=[[]],pg=0,undone=[],histo=[];
+let tool='pen',color='#111827',width=2.4,penSeen=0;
+const COLORS=['#111827','#2563eb','#dc2626','#16a34a','#f59e0b'];
+const PADKEY='pad-'+location.pathname.split('/').pop();
+
+function buildPad(){
+  pad=el('div','kitui-sheet'); pad.id='kitui-pad';
+  pad.innerHTML=
+   `<div class="kitui-head">
+      <b>✏️ ที่ทด</b>
+      <button data-t="pen" class="on">🖊️</button>
+      <button data-t="hl">🖍️</button>
+      <button data-t="er">🧽</button>
+      ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
+      <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
+      <span class="kitui-spacer"></span>
+      <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
+      <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
+      <button id="kitui-pgadd">+ หน้า</button>
+      <button id="kitui-clear">ล้างหน้านี้</button>
+      <button id="kitui-full">⛶</button>
+      <button id="kitui-padclose">✕</button>
+    </div>
+    <div class="kitui-padwrap"><canvas></canvas></div>`;
+  D.body.appendChild(pad);
+  padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
+  makeResizable(pad);
+
+  pad.querySelector('.kitui-head').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
+  });
+  D.getElementById('kitui-undo').onclick=()=>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop(); draw(); save(); } };
+  D.getElementById('kitui-redo').onclick=()=>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop(); draw(); save(); } };
+  D.getElementById('kitui-clear').onclick=()=>{ snap(); pages[pg]=[]; draw(); save(); };
+  D.getElementById('kitui-pgadd').onclick=()=>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw(); save(); };
+  D.getElementById('kitui-pgprev').onclick=()=>{ if(pg>0){pg--;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-pgnext').onclick=()=>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-full').onclick=()=>{ pad.classList.toggle('full'); pad.style.height=''; fitPad(); };
+  D.getElementById('kitui-padclose').onclick=()=>pad.classList.remove('open');
+
+  /* ---- วาด ---- */
+  let cur=null;
+  padCv.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='pen') penSeen=Date.now();
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;   /* กันฝ่ามือแตะตอนใช้สไตลัส */
+    const p=pt(e);
+    if(tool==='er'){ snap(); erase(p); return; }
+    snap();
+    cur={c:color,w:width,hl:tool==='hl',pts:[p]};
+    pages[pg].push(cur); draw();
+    try{ padCv.setPointerCapture(e.pointerId); }catch(x){}  /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
+  });
+  padCv.addEventListener('pointermove',e=>{
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;
+    if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
+    if(!cur||!e.buttons)return;
+    /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
+    let evs=[e];
+    if(e.getCoalescedEvents){ const c=e.getCoalescedEvents(); if(c&&c.length) evs=c; }
+    evs.forEach(ev=>cur.pts.push(pt(ev)));
+    draw();
+  });
+  const end=()=>{ if(cur){cur=null;save();} };
+  padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
+  padCv.addEventListener('pointerleave',end);
+
+  addEventListener('resize',()=>{ if(pad.classList.contains('open')) fitPad(); });
+  load(); fitPad();
+}
+function pt(e){
+  const r=padCv.getBoundingClientRect();
+  return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
+          p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5};   /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
+}
+function snap(){ histo.push(pages[pg].slice()); if(histo.length>60)histo.shift(); undone=[]; }
+function erase(p){
+  const r=padCv.getBoundingClientRect(), rad=18/r.width;
+  const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
+  if(keep.length!==pages[pg].length){ pages[pg]=keep; draw(); save(); }
+}
+function fitPad(){
+  const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
+  const dpr=Math.min(devicePixelRatio||1,2.5);
+  padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
+  draw();
+}
+function draw(){
+  const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
+  padCx.clearRect(0,0,W,H);
+  /* เส้นตารางจาง ๆ ให้เขียนตรง */
+  const dark=R.getAttribute('data-theme')==='dark';
+  padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
+  for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath();padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke();}
+  padCx.lineCap='round'; padCx.lineJoin='round';
+  pages[pg].forEach(s=>{
+    padCx.globalAlpha=s.hl?0.32:1;
+    padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
+    for(let i=1;i<s.pts.length;i++){
+      const a=s.pts[i-1],b=s.pts[i];
+      padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
+      padCx.beginPath(); padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke();
+    }
+    if(s.pts.length===1){ /* จุดเดียว */
+      padCx.fillStyle=padCx.strokeStyle; padCx.beginPath();
+      padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill();
+    }
+  });
+  padCx.globalAlpha=1;
+  const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
+}
+function save(){ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
+function load(){
+  try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
+}
+
+if(hasPen){
+  buildPad();
+  D.getElementById('kitui-penbtn').onclick=()=>{
+    const o=pad.classList.toggle('open');
+    D.getElementById('kitui-penbtn').classList.toggle('on',o);
+    if(o) fitPad();
+  };
+}
+
+/* =============================================================================
+   5) เครื่องคิดเลขวิทยาศาสตร์  (tokenizer → shunting-yard → RPN  ไม่ใช้ eval)
+   ============================================================================= */
+const FN={sin:1,cos:1,tan:1,asin:1,acos:1,atan:1,ln:1,log:1,sqrt:1,abs:1,exp:1};
+const PREC={'+':1,'-':1,'*':2,'/':2,'^':4,'u-':3};
+function tokenize(s){
+  s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
+  const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!()])/g; let m;
+  while((m=re.exec(s))) out.push(m[1]);
+  return out;
+}
+function toRPN(tk){
+  const out=[],op=[]; let prev=null;
+  for(let t of tk){
+    if(t==='**')t='^';
+    if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
+    else if(t==='PI'){ out.push(Math.PI); }
+    else if(t==='e'||t==='E'){ out.push(Math.E); }
+    else if(t==='ANS'){ out.push(ANS); }
+    else if(FN[t]){ op.push(t); }
+    else if(t==='('){ op.push(t); }
+    else if(t===')'){
+      while(op.length&&op[op.length-1]!=='(') out.push(op.pop());
+      if(!op.length) throw 0; op.pop();
+      if(op.length&&FN[op[op.length-1]]) out.push(op.pop());
+    }
+    else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
+    else if('+-*/^'.includes(t)){
+      let o=t;
+      const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
+      if(t==='-'&&unary) o='u-';
+      else if(t==='+'&&unary){ prev=t; continue; }
+      while(op.length){
+        const top=op[op.length-1];
+        if(top==='('||FN[top])break;
+        const rightAssoc=(o==='^'||o==='u-');
+        if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop()); else break;
+      }
+      op.push(o);
+    }
+    else throw 0;
+    prev=t;
+  }
+  while(op.length){ const o=op.pop(); if(o==='(')throw 0; out.push(o); }
+  return out;
+}
+function evalRPN(rpn,deg){
+  const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
+  const pop=()=>{ if(!st.length)throw 0; return st.pop(); };
+  for(const t of rpn){
+    if(typeof t==='number'){ st.push(t); continue; }
+    if(t==='fact'){ const n=pop(); if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
+    if(t==='pct'){ st.push(pop()/100); continue; }
+    if(t==='u-'){ st.push(-pop()); continue; }
+    if(FN[t]){
+      const a=pop();
+      st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
+             : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
+             : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
+             : t==='abs'?Math.abs(a) : Math.exp(a) );
+      continue;
+    }
+    const b=pop(),a=pop();
+    st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
+  }
+  if(st.length!==1) throw 0;
+  return st[0];
+}
+function calc(src,deg){ return evalRPN(toRPN(tokenize(src)),deg); }
+
+let ANS=0, expr='', calcSheet, isDeg=true;
+const KEYS=[
+ ['DEG','deg','fn'],['(','(',''],[')',')',''],['⌫','del','del'],['AC','ac','del'],
+ ['sin','sin(','fn'],['cos','cos(','fn'],['tan','tan(','fn'],['π','π','fn'],['÷','÷','op'],
+ ['sin⁻¹','asin(','fn'],['cos⁻¹','acos(','fn'],['tan⁻¹','atan(','fn'],['e','e','fn'],['×','×','op'],
+ ['ln','ln(','fn'],['log','log(','fn'],['√','√(','fn'],['xʸ','^','fn'],['−','−','op'],
+ ['7','7',''],['8','8',''],['9','9',''],['x!','!','fn'],['+','+','op'],
+ ['4','4',''],['5','5',''],['6','6',''],['%','%','fn'],['ANS','ANS','fn'],
+ ['1','1',''],['2','2',''],['3','3',''],['.','.',''],['=','eq','eq'],
+ ['0','0','w3'],['x²','^2','fn']
+];
+function buildCalc(){
+  calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
+  calcSheet.innerHTML=
+   `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
+      <button id="kitui-calcclose">✕</button></div>
+    <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
+    <div class="kitui-keys" id="kitui-keys">
+      ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
+    </div>`;
+  D.body.appendChild(calcSheet);
+  D.getElementById('kitui-calcclose').onclick=()=>calcSheet.classList.remove('open');
+  const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
+  const show=()=>{ ex.textContent=expr||' ';
+    try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
+    catch(e){ rs.style.opacity=.35; }
+  };
+  D.getElementById('kitui-keys').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
+    if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
+    if(k==='del'){ expr=expr.slice(0,-1); show(); return; }
+    if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show(); return; }
+    if(k==='eq'){
+      rs.style.opacity=1;
+      try{
+        const v=calc(expr,isDeg);
+        if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
+        if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
+        ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
+      }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
+      return;
+    }
+    expr+=k; show();
+  });
+}
+function fmt(v){
+  if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
+  if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
+  return String(Math.round(v*1e10)/1e10);
+}
+if(hasCalc){
+  buildCalc();
+  D.getElementById('kitui-calcbtn').onclick=()=>{
+    const o=calcSheet.classList.toggle('open');
+    D.getElementById('kitui-calcbtn').classList.toggle('on',o);
+  };
+}
+})();
+
+</script>
+<!--/KIT-UI-->
+</body>
+</html>

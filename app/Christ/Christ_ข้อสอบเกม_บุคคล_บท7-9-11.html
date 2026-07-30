@@ -1,0 +1,2054 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ข้อสอบเกม — ใครทำอะไรที่ไหน (คริสต์ บท 7·8·9·11)</title>
+<style>
+:root{
+  --bg:#0f1220; --card:#1a1f35; --card2:#232a4a; --ink:#eef1ff; --dim:#9aa3c7;
+  --gold:#f5c542; --green:#3ddc84; --red:#ff5d73; --blue:#5b8cff; --purple:#b07cff;
+  --radius:16px;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+body{
+  margin:0; background:var(--bg); color:var(--ink); min-height:100vh;
+  font-family:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
+  background-image:radial-gradient(circle at 20% 0%, #232a4a55 0%, transparent 50%),radial-gradient(circle at 90% 90%, #40245555 0%, transparent 45%);
+}
+.wrap{max-width:640px; margin:0 auto; padding:16px 14px 60px;}
+h1{font-size:1.25rem; margin:8px 0 2px; text-align:center;}
+.sub{color:var(--dim); text-align:center; font-size:.85rem; margin-bottom:14px;}
+.chips{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin:10px 0 16px;}
+.chip{
+  border:1.5px solid #39406b; background:var(--card); color:var(--ink);
+  border-radius:999px; padding:8px 14px; font-size:.9rem; cursor:pointer; font-family:inherit;
+}
+.chip.on{border-color:var(--gold); background:#f5c54222; color:var(--gold); font-weight:700;}
+.btn{
+  display:block; width:100%; border:none; border-radius:var(--radius);
+  padding:14px; font-size:1.05rem; font-weight:700; cursor:pointer; font-family:inherit;
+  background:linear-gradient(135deg,var(--gold),#ffa53d); color:#231a00; margin-top:10px;
+}
+.btn.ghost{background:var(--card); color:var(--ink); border:1.5px solid #39406b; font-weight:600;}
+.bar{height:8px; background:#2a3155; border-radius:99px; overflow:hidden; margin:6px 0 14px;}
+.bar>i{display:block; height:100%; width:0%; background:linear-gradient(90deg,var(--blue),var(--purple)); transition:width .3s;}
+.hud{display:flex; justify-content:space-between; align-items:center; font-size:.85rem; color:var(--dim); margin-top:6px;}
+.hud b{color:var(--gold); font-size:1rem;}
+.card{background:var(--card); border:1px solid #2b3157; border-radius:var(--radius); padding:16px; margin-bottom:12px;}
+.badge{display:inline-block; font-size:.75rem; padding:3px 10px; border-radius:99px; background:#2a3155; color:var(--dim); margin-bottom:8px;}
+.q{font-size:1.1rem; font-weight:700; line-height:1.55; margin-bottom:14px;}
+.choice{
+  display:block; width:100%; text-align:left; margin:8px 0; padding:12px 14px;
+  background:var(--card2); border:1.5px solid #39406b; color:var(--ink);
+  border-radius:12px; font-size:1rem; cursor:pointer; font-family:inherit; line-height:1.4;
+  transition:transform .06s;
+}
+.choice:active{transform:scale(.985);}
+.choice.correct{border-color:var(--green); background:#3ddc8422; font-weight:700;}
+.choice.wrong{border-color:var(--red); background:#ff5d7322;}
+.choice:disabled{cursor:default; opacity:.92;}
+.hintbtn{
+  border:1.5px dashed var(--gold); background:transparent; color:var(--gold);
+  border-radius:99px; padding:8px 16px; font-size:.9rem; cursor:pointer; font-family:inherit; margin-top:4px;
+}
+.hintbtn:disabled{opacity:.4; cursor:default;}
+.hintbox{
+  background:#f5c54212; border-left:3px solid var(--gold); border-radius:8px;
+  padding:10px 12px; margin-top:8px; font-size:.92rem; color:#ffe9ad; display:none; line-height:1.5;
+}
+.ex{
+  display:none; margin-top:12px; padding:12px 14px; border-radius:12px; font-size:.95rem; line-height:1.6;
+  background:#12162a; border:1px solid #2b3157;
+}
+.ex.good{border-color:var(--green);}
+.ex.bad{border-color:var(--red);}
+.ex .vd{font-weight:800; font-size:1.05rem;}
+.center{text-align:center;}
+.big{font-size:2.4rem; font-weight:800; color:var(--gold); margin:6px 0;}
+.stat{display:flex; justify-content:space-between; padding:8px 4px; border-bottom:1px dashed #2b3157; font-size:.92rem;}
+.wrongitem{background:#12162a; border-left:3px solid var(--red); border-radius:8px; padding:10px 12px; margin:8px 0; font-size:.9rem; line-height:1.55;}
+.wrongitem b{color:var(--green);}
+.streak{color:var(--purple); font-weight:700;}
+.note{font-size:.8rem; color:var(--dim); margin-top:10px; line-height:1.5;}
+.qimg{background:#12162a; border:1px solid #2b3157; border-radius:12px; padding:10px 12px; margin-bottom:12px; text-align:center; display:none;}
+.qimg svg{max-width:100%; height:auto; max-height:185px;}
+/* open-book */
+#obBtn{position:fixed; right:14px; bottom:16px; z-index:40; border:none; border-radius:999px;
+  padding:12px 18px; font-size:1rem; font-weight:700; font-family:inherit; cursor:pointer;
+  background:linear-gradient(135deg,var(--green),#2bb673); color:#08351d; box-shadow:0 6px 20px #0008;}
+#obOverlay{position:fixed; inset:0; background:#0009; z-index:50; display:none;}
+#obPanel{position:fixed; top:0; right:0; height:100%; width:min(480px,92vw); z-index:51;
+  background:var(--card); border-left:1px solid #2b3157; transform:translateX(100%);
+  transition:transform .28s ease; display:flex; flex-direction:column; box-shadow:-8px 0 30px #0009;}
+#obPanel.open{transform:translateX(0);}
+.obHead{display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid #2b3157; flex:0 0 auto;}
+.obHead b{font-size:1.05rem;}
+.obClose{border:none; background:var(--card2); color:var(--ink); border-radius:999px; width:34px; height:34px; font-size:1.1rem; cursor:pointer;}
+.obSearch{margin:10px 16px 4px; width:calc(100% - 32px); box-sizing:border-box; padding:10px 12px;
+  border-radius:10px; border:1.5px solid #39406b; background:var(--card2); color:var(--ink); font-family:inherit; font-size:.95rem;}
+.obBody{overflow-y:auto; padding:6px 16px 40px; flex:1 1 auto; -webkit-overflow-scrolling:touch;}
+.obBody details{border:1px solid #2b3157; border-radius:10px; margin:8px 0; background:#12162a; overflow:hidden;}
+.obBody summary{cursor:pointer; padding:11px 13px; font-weight:700; font-size:.98rem; list-style:none; color:var(--gold);}
+.obBody summary::-webkit-details-marker{display:none;}
+.obBody summary::before{content:'▸ '; color:var(--dim);}
+.obBody details[open] summary::before{content:'▾ ';}
+.obBody .obc{padding:2px 13px 12px; font-size:.9rem; line-height:1.65; color:#dfe4ff;}
+.obBody .obc b{color:#ffe9ad;}
+.obBody .obc u{text-decoration-color:var(--blue);}
+.obBody table{border-collapse:collapse; width:100%; margin:6px 0; font-size:.85rem;}
+.obBody td,.obBody th{border:1px solid #2b3157; padding:4px 7px; text-align:left; vertical-align:top;}
+.obBody th{background:#1c2340; color:var(--gold);}
+.obBody .hi{background:#3ddc8433; padding:0 2px; border-radius:3px;}
+.obHint{font-size:.78rem; color:var(--dim); margin:2px 16px 8px;}
+#quiz,#result{display:none;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>⛪ ข้อสอบเกม — ใครทำอะไรที่ไหน</h1>
+  <div class="sub">ศาสนาคริสต์ บท 7 สมณศักดิ์ · บท 8 Conclave · บท 9 วาติกัน · บท 11 เทศกาล<br>บุคคลสำคัญ + ถามจากรูป 🖼️ + ศัพท์/ความรู้รอบบท · ตอบเองก่อน ติดค่อยกด 💡 คำใบ้</div>
+
+  <div id="menu">
+    <div class="card" id="resumeCard" style="display:none; border:2px solid var(--green);">
+      <div style="font-weight:700; margin-bottom:4px;">💾 พบข้อสอบที่ทำค้างไว้</div>
+      <div class="note" id="resumeInfo" style="margin-top:0;"></div>
+      <button class="btn" onclick="resumeQuiz()">↩️ ทำต่อจากที่ค้างไว้</button>
+      <button class="btn" style="background:#64748b; margin-top:8px;" onclick="discardSave()">🗑️ ทิ้ง แล้วเริ่มรอบใหม่</button>
+    </div>
+    <div class="card">
+      <div style="font-weight:700; margin-bottom:8px;">เลือกหมวด (เลือกได้หลายหมวด)</div>
+      <div class="chips" id="catChips"></div>
+      <div class="note">คะแนน: ตอบถูกไม่ใช้คำใบ้ = 2 แต้ม · ใช้คำใบ้แล้วถูก = 1 แต้ม · ผิด = 0 แต้ม<br>คำถามและตัวเลือกสลับลำดับใหม่ทุกรอบ<br>💾 <b>บันทึกอัตโนมัติทุกข้อ</b> — คอมดับ/ปิดหน้าไป เปิดใหม่ทำต่อได้เลย</div>
+      <button class="btn" onclick="startQuiz()">▶ เริ่มทำข้อสอบ (ตามหมวดที่เลือก)</button>
+    </div>
+    <div class="card" style="border:2px solid #fbbf24;">
+      <div style="font-weight:700; margin-bottom:4px;">🎯 โหมดจำลองข้อสอบจริง (แนว อ.สอง)</div>
+      <div class="note" style="margin-top:0;">สุ่ม <b>40 ข้อ</b> ตามสัดส่วนที่ออกสอบจริง: 🎄 <b>วันสำคัญ/สัญลักษณ์ 50%</b> · 👑 <b>คนสำคัญ 30%</b> · 🖼️ <b>ทั่วไป/รูป 20%</b> (ไม่สนหมวดที่เลือกด้านบน)</div>
+      <button class="btn" style="background:linear-gradient(90deg,#f59e0b,#fbbf24);color:#3a2a05;" onclick="examSim()">🎯 เริ่มโหมดจำลองข้อสอบ</button>
+    </div>
+  </div>
+
+  <div id="quiz">
+    <div class="bar"><i id="prog"></i></div>
+    <div class="hud">
+      <span>ข้อ <b id="qNum">1</b><span id="qTotal"></span></span>
+      <span class="streak" id="streak"></span>
+      <span>คะแนน <b id="score">0</b></span>
+    </div>
+    <div class="card" style="margin-top:10px;">
+      <span class="badge" id="qCat"></span>
+      <div class="qimg" id="qImg"></div>
+      <div class="q" id="qText"></div>
+      <div id="choices"></div>
+      <button class="hintbtn" id="hintBtn" onclick="useHint()">💡 ขอคำใบ้ (เหลือ 2)</button>
+      <div class="hintbox" id="hint1"></div>
+      <div class="hintbox" id="hint2"></div>
+      <div class="ex" id="exBox"></div>
+      <button class="btn" id="nextBtn" style="display:none;" onclick="nextQ()">ข้อต่อไป ➜</button>
+    </div>
+  </div>
+
+  <div id="result">
+    <div class="card center">
+      <div style="font-size:1.1rem;">🏁 จบแล้ว!</div>
+      <div class="big" id="finalScore"></div>
+      <div id="grade" style="font-size:1.05rem; margin-bottom:8px;"></div>
+      <div id="catStats"></div>
+    </div>
+    <div class="card" id="wrongCard">
+      <div style="font-weight:700; margin-bottom:6px;">❌ ข้อที่พลาด — ทวนตรงนี้เลย</div>
+      <div id="wrongList"></div>
+    </div>
+    <button class="btn" onclick="location.reload()">🔄 เล่นใหม่</button>
+  </div>
+</div>
+
+<button id="obBtn" onclick="openBook(true)">📖 เปิดหนังสือ</button>
+<div id="obOverlay" onclick="openBook(false)"></div>
+<div id="obPanel" aria-label="สรุปเปิดหนังสือ">
+  <div class="obHead"><b>📖 สรุปเปิดหนังสือ (Open Book)</b><button class="obClose" onclick="openBook(false)">✕</button></div>
+  <input class="obSearch" id="obSearch" placeholder="🔍 พิมพ์คำค้น เช่น หมอบรัดเลย์, Edict, Ichthys..." oninput="obFilter(this.value)">
+  <div class="obHint">เปิดค้างระหว่างทำข้อสอบได้ — แตะหัวข้อเพื่อกาง/พับ</div>
+  <div class="obBody" id="obBody">
+
+  <details open><summary>🙏 บท 10 — โป๊ปเยือนไทย & ไทยเยือนวาติกัน</summary><div class="obc">
+  <b>ไทยเยือนวาติกัน:</b> ร.5 พบ <b>Leo XIII</b> (1897, เยือนระดับประมุขครั้งแรก) · ร.9 พบ <b>John XXIII</b> (1960).<br>
+  <b>สถาปนาความสัมพันธ์ทางการทูต:</b> <b>28 เม.ย. 1969</b>.<br>
+  <b>โป๊ปเยือนไทย 2 องค์:</b><br>
+  • <b>John Paul II (1984)</b> = องค์แรกในประวัติศาสตร์ · 10 พ.ค. เข้าเฝ้าสังฆราชที่ <u>วัดราชบพิธ</u> · 11 พ.ค. ร.9 ต้อนรับที่ <u>พระที่นั่งจักรีมหาปราสาท</u> + อัสสัมชัญบางรัก.<br>
+  • <b>Francis (2019)</b> = องค์ที่ 2 · ถึง <u>สนามบินดอนเมือง</u> · มิสซากลางแจ้งที่ <u>สนามศุภชลาศัย</u> · พบเยาวชนที่อัสสัมชัญบางรัก · พบนักบวชที่สามพราน นครปฐม.
+  </div></details>
+
+  <details><summary>🕊️ บท 12 — การเผยแผ่ / ไทม์ไลน์</summary><div class="obc">
+  เกิดในเอเชีย(ตะวันออกกลาง) สืบจากยิว → แพร่สู่โรม/ยุโรป.<br>
+  <table><tr><th>ปี</th><th>เหตุการณ์</th></tr>
+  <tr><td>ศต.1</td><td><b>เปาโล + เปโตร</b> นำคริสต์เข้าโรม/ยุโรป</td></tr>
+  <tr><td>312</td><td>สงคราม <b>สะพานมิลเวียน</b> — คอนสแตนตินใส่เครื่องหมายพระคริสต์บนโล่ ชนะ <b>Maxentius</b>; ธง <b>Labarum</b></td></tr>
+  <tr><td><b>313</b></td><td><b>Edict of Milan (Constantine I)</b> = คริสต์ถูกกฎหมาย; เป็นจักรพรรดิองค์แรกที่นับถือคริสต์</td></tr>
+  <tr><td>324/330</td><td>ตั้ง <b>Constantinople</b> ("เมืองของคอนสแตนติน") = ศูนย์ออร์โธดอกซ์</td></tr>
+  <tr><td><b>394</b></td><td><b>Theodosius I</b> = คริสต์เป็นศาสนาประจำจักรวรรดิ</td></tr>
+  <tr><td><b>1054</b></td><td><b>Great Schism</b> → คาทอลิก(โรม) / ออร์โธดอกซ์(คอนสแตนติโนเปิล)</td></tr>
+  <tr><td>ศต.16</td><td><b>Reformation</b> → โปรเตสแตนต์ (เหตุ: ขายใบไถ่บาป Indulgence + แปลไบเบิล + ค้านโป๊ป)</td></tr>
+  <tr><td>1618–48</td><td><b>สงคราม 30 ปี</b> → สนธิสัญญา <b>เวสต์ฟาเลีย (1648)</b></td></tr></table>
+  <b>3 กลุ่มโปรเตสแตนต์หลัก:</b> Lutheran (<b>Martin Luther</b>, เยอรมัน, ถูกขับ 1521) · Reformed (<b>Zwingli</b> + <b>Calvin</b>@เจนีวา) · Anglican (<b>Henry VIII</b>, ตั้ง <b>Thomas Cranmer</b> 1533).<br>
+  <b>นิกายย่อยอื่น:</b> Presbyterian (<b>John Knox</b>) · Methodist (<b>John Wesley</b>) · Quaker (<b>George Fox</b>→<b>William Penn</b>@เพนซิลเวเนีย) · Jehovah's Witnesses (<b>Charles Russell</b>) · Mormon (<b>Joseph Smith</b>+Book of Mormon).<br>
+  สงคราม 30 ปี เริ่มที่ <b>โบฮีเมีย (เช็ก)</b> กบฏต่อ Ferdinand II.
+  </div></details>
+
+  <details><summary>📊 บท 13 — จำนวนผู้นับถือ</summary><div class="obc">
+  <b>ระดับโลก:</b> <b>Catholic 50–52%</b> (1.3–1.4 พันล้าน) &gt; <b>Protestant 38–40%</b> (0.9–1 พันล้าน) &gt; <b>Orthodox 10–11%</b> (250–270 ล้าน).<br>
+  รวมคริสต์ ~<b>2,600 ล้าน = 31–33%</b> ของประชากรโลก.<br>
+  ทวีปที่ส่วนใหญ่เป็นคริสต์: ยุโรป, อเมริกาเหนือ-ใต้, ออสเตรเลีย-โอเชียเนีย · <b>แอฟริกา = 45%</b> · <b>เอเชีย = ส่วนน้อย</b>.<br>
+  <b>ในไทย:</b> 2011 = 409,110 คน (0.7%) · 2015 = <b>814,508 คน (1.27%)</b>.<br>
+  ⚠️ ในไทย <b>โปรเตสแตนต์ (444,372) &gt; คาทอลิก (369,636)</b> — กลับด้านกับระดับโลก!
+  </div></details>
+
+  <details><summary>⛪🇹🇭 บท 14 — คริสต์ในไทย</summary><div class="obc">
+  <b>คาทอลิก:</b> เข้าไทยครั้งแรก <b>1567 สมัยพระมหาธรรมราชา</b> (อยุธยา) โดย <b>คณะโดมินิกัน</b> → ฟรังซิสกัน/เยซูอิต. สมัย <b>พระนารายณ์</b> สัมพันธ์ดีกับฝรั่งเศส (Louis XIV) ตั้งเซมินารี. <b>ร.4</b> เปิดเสรีศาสนา · <b>ร.5</b> รับรองมิสซังเป็นนิติบุคคล. รร.อัสสัมชัญบางรัก (1877), รพ.เซนต์หลุยส์.<br>
+  <b>โปรเตสแตนต์:</b> เข้าไทยครั้งแรก <b>1828</b> (<b>Gützlaff</b> เยอรมัน + <b>Tomlin</b> อังกฤษ).<br>
+  ⭐ <b>หมอบรัดเลย์ (Dan Beach Bradley)</b> — คณะเพรสไบทีเรียน อเมริกัน, ถึงไทย <b>1835 สมัย ร.3</b> = <b>บิดาการพิมพ์ไทย</b> (หนังสือพิมพ์แรก <b>บางกอกรีคอเดอ</b> 2387) + ผ่าตัด/ปลูกฝีครั้งแรก. <b>Dr. House</b> ใช้อีเทอร์เป็นยาสลบคนแรก. รร.กรุงเทพคริสเตียน, รพ.แมคคอร์มิค.<br>
+  <b>องค์กรที่กรมการศาสนารับรอง = 5</b> (คาทอลิก 1 + โปรเตสแตนต์ 4).
+  </div></details>
+
+  <details><summary>✝️ สัญลักษณ์ & ธรรมเนียม</summary><div class="obc">
+  <b>Sign of the Cross:</b> ตามหลัก <b>ตรีเอกภาพ (Trinity)</b>; แตะ 4 จุด (หน้าผาก–ท้อง–ไหล่–ไหล่). <b>คาทอลิก: ซ้าย→ขวา</b> / <b>ออร์โธดอกซ์: ขวา→ซ้าย</b>.<br>
+  <b>Ave Maria (Hail Mary):</b> มาจากคำทักทายของทูตสวรรค์ <b>กาเบรียล</b>; 2 ช่วง = สรรเสริญ + วอนขอ.<br>
+  <b>INRI</b> = <b>Iesus Nazarenus Rex Iudaeorum</b> = "เยซูชาวนาซาเร็ธ กษัตริย์ของชาวยิว"; <b>ปีลาต</b> สั่งเขียน 3 ภาษา (ฮีบรู/กรีก/ละติน).<br>
+  <b>Amen</b> — จากฮีบรู = "ขอให้เป็นดังนั้น/สัจจะ"; อยู่ใน 3 ศาสนา (ยูดาย/คริสต์/อิสลาม "อามีน").<br>
+  <b>Ichthys (ΙΧΘΥΣ = ปลา):</b> สัญลักษณ์ลับยุคถูกล่า (ค.ศ.100–313); 5 อักษร = <b>I</b>ēsous <b>Ch</b>ristos <b>Th</b>eou <b>Y</b>ios <b>S</b>ōtēr = "พระเยซูคริสต์ พระบุตรของพระเจ้า พระผู้ช่วยให้รอด".
+  </div></details>
+
+  <details><summary>👑 บท 7 — สมณศักดิ์ (ทวนของเดิม)</summary><div class="obc">
+  <b>ลำดับ:</b> Pope → Cardinal → Archbishop → Bishop → Priest → Deacon → Laity.<br>
+  Bishop→diocese · Priest→parish · Archbishop→archdiocese · Abbot→monastery.<br>
+  สี: Pope ขาว(รองเท้าแดง) · Cardinal <b>แดง</b> · Bishop <b>ม่วง</b>. Cardinal จาก <b>cardo=บานพับ</b>. Monsignor=กิตติมศักดิ์.<br>
+  เครื่องหมาย: <b>Tiara</b> 3 ชั้น (โป๊ป) · <b>Mitra</b> (บิชอปขึ้นไป) · <b>Pallium</b> (โป๊ปมอบ Archbishop) · <b>Biretta/Galero</b> (คาร์ดินัล) · <b>Zucchetto</b>. โป๊ปปัจจุบัน <b>Leo XIV</b> (267, สหรัฐฯ). คาร์ดินัลไทยคนแรก <b>มีชัย กิจบุญชู</b> (1983).
+  </div></details>
+
+  <details><summary>🕯️ บท 8 — Conclave (ทวนของเดิม)</summary><div class="obc">
+  โป๊ปสิ้น→<b>Sede Vacante</b> (Camerlengo ทุบแหวนชาวประมง) → <b>Conclave</b> (cum clave=ห้องปิดกุญแจ) ที่ <b>Sistine Chapel</b> → <b>Extra omnes</b> (ทุกคนออกไป) → ลงคะแนนหน้าภาพ <b>The Last Judgement</b> ต้องได้ <b>2/3</b> → ควันดำ=ยังไม่ได้ / <b>ควันขาว=ได้แล้ว</b> → <b>Habemus Papam</b> → Coronation สวม Tiara.<br>
+  ผู้ดำเนินการ 9 องค์: <b>Scrutineers</b>(นับ)/<b>Infirmarii</b>(เก็บบัตรผู้ป่วย)/<b>Revisers</b>(ตรวจซ้ำ). <b>Papabile</b>=ตัวเก็ง. บัตรเขียน <b>Eligo in Summum Pontificem</b>. กฎ 1059 <b>Nicholas II</b> (เฉพาะคาร์ดินัล) · 1179 <b>Alexander III</b> (2/3) · 1970 <b>Paul VI</b> (≤80 ปี).
+  </div></details>
+
+  <details><summary>🏛️ บท 9 — วาติกัน (ทวนของเดิม)</summary><div class="obc">
+  <b>Holy See = สันตะสำนัก</b>; <b>0.49 ตร.กม.</b> เล็กสุดในโลก; ล้อมด้วยอิตาลี (3 ประเทศ enclave: Lesotho/San Marino/Vatican). ริมแม่น้ำ <b>ไทเบอร์</b>.<br>
+  <b>Lateran Treaty 1929</b> (<b>Mussolini</b> × <b>Pius XI</b>) → เกิดรัฐวาติกัน. ปกครอง = Elective Monarchy + Theocracy. ภาษา = <b>อิตาเลียน + ละติน</b>. UNESCO <b>1984 ทั้งประเทศ</b>. <b>Swiss Guard</b> (1506, Julius II, ≥174ซม., คาทอลิก). <b>Roman Curia</b> = มือขวาโป๊ป. <b>Vatican II (1962–65)</b> เปิดใช้ภาษาท้องถิ่น. รับรอง <b>ไต้หวัน</b>. โดมเซนต์ปีเตอร์ 136.57 ม. <b>Urbi et Orbi</b> = แด่โรมและโลก.<br>
+  ศิลปะ: Michelangelo (Creation of Adam, Last Judgement, Pietà) · Raphael (School of Athens) · <b>Perugino</b> (Delivery of the Keys) · Bernini (จัตุรัส) · Caravaggio.
+  </div></details>
+
+  <details><summary>🎄 บท 11 — เทศกาล (ทวนของเดิม)</summary><div class="obc">
+  <b>Advent</b> (Adventus=การมาถึง) รอ <b>Parousia</b> (เสด็จมาครั้ง 2); สีม่วง, เทียนชมพู=สัปดาห์ 3 (Joy).<br>
+  คริสต์มาส: คาทอลิก+โปรเตสแตนต์ 25 ธ.ค. / ออร์โธดอกซ์ 7 ม.ค. / อาร์เมเนีย 6 ม.ค.<br>
+  <b>Lent (Quadragesima=40)</b> เริ่ม <b>Ash Wednesday</b> (เถ้าจากใบลานปีก่อน).<br>
+  <b>Holy Week:</b> Palm Sunday → Maundy Thursday (Last Supper, ล้างเท้า) → <b>Good Friday</b> (ตรึงกางเขน, ไม่มีมิสซา, เดินรูป 14 ภาค) → Holy Saturday (Easter Vigil, Paschal Candle) → <b>Easter</b> (Resurrection).<br>
+  <b>Pascha</b>=passing over · <b>Alleluia</b>=สรรเสริญพระเจ้า · <b>Epiphany</b> (6 ม.ค.) 3 การสำแดง (baptism/คานา/Magi). Thanksgiving = พฤหัสที่ 4 พ.ย.
+  </div></details>
+
+  </div>
+</div>
+
+<script>
+// ================= QUESTION BANK =================
+// c: category | q: question | ch: 5 choices (uniform format, no giveaway) | a: correct index | h: [hint1,hint2] | ex: explanation
+const CATS = {
+  P:'👑 โป๊ปในประวัติศาสตร์', S:'🗝️ นักบุญเปโตร', T:'🇹🇭 ไทย–วาติกัน',
+  A:'🎨 ศิลปิน & ผลงาน', W:'⛪ บุคคลฝ่ายโลก', F:'🎄 เทศกาล (บท 11)', C:'🕯️ Conclave',
+  G:'🖼️ ถามจากรูป', H:'⚖️ สมณศักดิ์ & ศัพท์', V:'🏛️ วาติกันรอบรู้',
+  K:'🙏 โป๊ปเยือนไทย (บท 10)', D:'🕊️ การเผยแผ่ (บท 12)', N:'📊 สถิติผู้นับถือ (บท 13)',
+  Y:'⛪🇹🇭 คริสต์ในไทย (บท 14)', R:'✝️ สัญลักษณ์ & ธรรมเนียม'
+};
+// น้ำหนักตามแนวข้อสอบ อ.สอง: วันสำคัญ/เทศกาล/สัญลักษณ์ ~50% · คนสำคัญ ~30% · ทั่วไป/ที่ตั้ง/รูป ~20%
+const BUCKETS = { days:['F','R'], ppl:['P','S','A','H','C','W'], gen:['T','G','V','K','D','N','Y'] };
+const EXAM_TOTAL = 40;
+const BANK = [
+// ---------- 👑 โป๊ป ----------
+{c:'P', q:'โป๊ปองค์ใดเป็นผู้บัญญัติศัพท์ "Cardinal" ในกฎหมายศาสนจักร (จากคำละติน cardo = บานพับประตู)?',
+ ch:['Gregory I','Gregory X','Nicholas II','Urban II','Clement IV'], a:0,
+ h:['เป็นโป๊ปยุคแรก ๆ ครองตำแหน่งช่วง ค.ศ. 590–604','พระนามลงท้ายด้วย "ที่ 1" — องค์แรกของพระนามนี้'],
+ ex:'Gregory I (ค.ศ. 590–604) บัญญัติศัพท์ Cardinal จาก cardo (บานพับประตู) — ระวังสับสนกับ Gregory X ที่ตั้งห้อง Conclave'},
+{c:'P', q:'โป๊ปองค์ใดกำหนดในปี ค.ศ. 1059 ว่า "เฉพาะคาร์ดินัลเท่านั้น" ที่มีสิทธิเลือกโป๊ป?',
+ ch:['Nicholas II','Nicholas V','Alexander III','Gregory X','Julius II'], a:0,
+ h:['จุดประสงค์คือกันกษัตริย์และฝ่ายโลกแทรกแซงการเลือกโป๊ป','พระนามเดียวกับโป๊ปผู้ริเริ่มห้องสมุดวาติกัน แต่องค์นี้คือ "ที่ 2"'],
+ ex:'Nicholas II ออกกฎปี 1059 ให้เฉพาะคาร์ดินัลเลือกโป๊ป — คู่จำ: 1059 = Nicholas II'},
+{c:'P', q:'สังคายนา Benevento (ค.ศ. 1091) ที่กำหนดให้โรยเถ้าแก่ "ทุกคน" ในวันพุธรับเถ้า เกิดขึ้นในสมัยโป๊ปองค์ใด?',
+ ch:['Urban II','Urban VIII','Alexander III','Gregory I','Pius IX'], a:0,
+ h:['เกิดปี 1091 ยุคกลางตอนกลาง','พระนามเดียวกับโป๊ปสมัยที่เซนต์ปีเตอร์สร้างเสร็จ แต่องค์นี้คือ "ที่ 2"'],
+ ex:'Urban II — สังคายนา Benevento 1091 ให้โรยเถ้าทุกคนในวัน Ash Wednesday'},
+{c:'P', q:'กติกาเสียง "2 ใน 3" ในการเลือกโป๊ป กำหนดขึ้นในสังคายนาลาเตรันครั้งที่ 3 (ค.ศ. 1179) ตรงกับสมัยโป๊ปองค์ใด?',
+ ch:['Alexander III','Alexander VII','Nicholas II','Paul VI','Gregory X'], a:0,
+ h:['ปี 1179 — หลังกฎ "เฉพาะคาร์ดินัล" ราว 120 ปี','พระนามเดียวกับโป๊ปที่ให้ Bernini ออกแบบจัตุรัส แต่องค์นี้คือ "ที่ 3"'],
+ ex:'Alexander III / สังคายนาลาเตรันครั้งที่ 3 (1179) = กติกา 2 ใน 3 + คาร์ดินัลเลือกเองได้ไม่ต้องมีสัตยาบัน'},
+{c:'P', q:'โป๊ปองค์ใดริเริ่มระบบ "ห้องปิดกุญแจ" เพื่อบีบให้เลือกโป๊ปเร็วขึ้น จนเป็นที่มาของคำว่า Conclave?',
+ ch:['Gregory X','Gregory I','Nicholas II','Clement IV','Urban II'], a:0,
+ h:['ราวศตวรรษที่ 13 และระบบนี้ใช้มาถึงปัจจุบัน','พระนามเดียวกับผู้บัญญัติศัพท์ Cardinal แต่องค์นี้คือ "ที่ 10"'],
+ ex:'Gregory X ตั้งห้องปิดกุญแจ (con + clavis = ด้วยกุญแจ) — ที่มาของ Conclave'},
+{c:'P', q:'แหวนชาวประมง (Ring of the Fisherman) วงแรกปรากฏในสมัยโป๊ปองค์ใด (ค.ศ. 1265)?',
+ ch:['Clement IV','Gregory X','Julius II','Nicholas V','Urban VIII'], a:0,
+ h:['ปี 1265 ยุคเดียวกับช่วงกำเนิด Conclave','พระนามขึ้นต้นด้วย C ลงท้าย "ที่ 4"'],
+ ex:'Clement IV (1265) = แหวนชาวประมงวงแรก — แหวนนี้จะถูก Camerlengo ทุบเมื่อโป๊ปสิ้นพระชนม์'},
+{c:'P', q:'โป๊ปองค์ใดเป็นผู้ "ริเริ่ม" ก่อตั้งห้องสมุดวาติกัน (Vatican Apostolic Library)?',
+ ch:['Nicholas V','Sixtus IV','Nicholas II','Julius II','Gregory X'], a:0,
+ h:['ราวปี 1475 — อีกองค์หนึ่งเป็นผู้สร้างเสร็จ','พระนามเดียวกับโป๊ปกฎปี 1059 แต่องค์นี้คือ "ที่ 5"'],
+ ex:'Nicholas V ริเริ่ม → Sixtus IV สร้างเสร็จ (1475) — จำเป็นคู่'},
+{c:'P', q:'ห้องสมุดวาติกันสร้างเสร็จสมบูรณ์ในสมัยโป๊ปองค์ใด?',
+ ch:['Sixtus IV','Nicholas V','Julius II','Urban VIII','Alexander VII'], a:0,
+ h:['ค.ศ. 1475','ชื่อของท่านพ้องกับชื่อโบสถ์น้อยที่ใช้เลือกโป๊ป (Sistine)'],
+ ex:'Sixtus IV สร้างห้องสมุดวาติกันเสร็จ — และชื่อ Sistine Chapel ก็มาจากพระนามท่าน'},
+{c:'P', q:'โป๊ปองค์ใดเชิญทหารรักษาพระองค์ Swiss Guard เข้าประจำการครั้งแรก (22 ม.ค. 1506)?',
+ ch:['Julius II','Urban VIII','Alexander VII','Pius XI','Sixtus IV'], a:0,
+ h:['ปีเดียวกันนี้ท่านยังสั่งเริ่มสร้างมหาวิหารเซนต์ปีเตอร์หลังใหม่ด้วย','พระนามขึ้นต้นด้วย J'],
+ ex:'Julius II ปี 1506 ทำ 2 อย่าง: เชิญ Swiss Guard + เริ่มสร้างเซนต์ปีเตอร์หลังใหม่'},
+{c:'P', q:'มหาวิหารเซนต์ปีเตอร์หลังใหม่ "สร้างเสร็จ" (ค.ศ. 1626 ใช้เวลา ~120 ปี) ในสมัยโป๊ปองค์ใด?',
+ ch:['Urban VIII','Urban II','Julius II','Alexander VII','Pius XI'], a:0,
+ h:['เริ่มสร้าง 1506 สมัย Julius II — องค์นี้คือตอนจบ','พระนามเดียวกับโป๊ปสังคายนา Benevento แต่องค์นี้คือ "ที่ 8"'],
+ ex:'Urban VIII (1626) — เซนต์ปีเตอร์สร้างเสร็จ รวมเวลา ~120 ปี'},
+{c:'P', q:'โป๊ปองค์ใดมอบหมายให้ Bernini ออกแบบจัตุรัสเซนต์ปีเตอร์ใหม่ (1656–67)?',
+ ch:['Alexander VII','Alexander III','Urban VIII','Julius II','Clement IV'], a:0,
+ h:['องค์เดียวกันนี้ส่งมิชชันนารีชุดแรกมากรุงศรีอยุธยา (1662)','พระนามเดียวกับโป๊ปกติกา 2 ใน 3 แต่องค์นี้คือ "ที่ 7"'],
+ ex:'Alexander VII = ให้ Bernini ทำจัตุรัส + ส่งมิชชันนารีชุดแรกมาอยุธยาสมัยพระนารายณ์'},
+{c:'P', q:'โป๊ปองค์ใดลงนามสนธิสัญญาลาเตรัน (Lateran Treaty) ปี 1929 ฝ่ายศาสนจักร ทำให้เกิดนครรัฐวาติกัน?',
+ ch:['Pius XI','Pius XII','Pius IX','John XXIII','Leo XIII'], a:0,
+ h:['ลงนามคู่กับมุสโสลินี 11 ก.พ. 1929','ไม่ใช่องค์ที่พบจอมพล ป. — องค์นี้เลขน้อยกว่า 1 (ที่ 11)'],
+ ex:'Pius XI (⚠️ สไลด์ต้นทางพิมพ์ผิดเป็น XII) ลงนาม Lateran Treaty 1929 กับมุสโสลินี → เกิดรัฐวาติกัน'},
+{c:'P', q:'สังคายนาวาติกันครั้งที่ 2 (Vatican II, 1962–65) "เริ่มเปิดประชุม" ในสมัยโป๊ปองค์ใด?',
+ ch:['John XXIII','Paul VI','Pius XII','John Paul II','Benedict XVI'], a:0,
+ h:['สังคายนานี้ทำให้เลิกบังคับภาษาละติน ใช้ภาษาท้องถิ่นในมิสซาได้','องค์เดียวกับที่ ร.9 เสด็จเข้าพบปี 1960'],
+ ex:'เริ่มสมัย John XXIII (1962) และไปจบสมัย Paul VI (1965)'},
+{c:'P', q:'กฎ "คาร์ดินัลอายุเกิน 80 ปี หมดสิทธิเลือกโป๊ป" (ค.ศ. 1970) ออกโดยโป๊ปองค์ใด?',
+ ch:['Paul VI','John XXIII','John Paul II','Pius XI','Gregory X'], a:0,
+ h:['เป็นโป๊ปช่วงปิดสังคายนาวาติกันครั้งที่ 2','พระนามเดียวกับอัครสาวกคนสำคัญ + "ที่ 6"'],
+ ex:'Paul VI (1970): คาร์ดินัล >80 ปี หมดสิทธิเลือก/รับเลือก — คู่จำ: Paul VI = 80'},
+{c:'P', q:'โป๊ปองค์ที่ 264 ชาวโปแลนด์ ผู้ครองตำแหน่ง 1978–2005 และได้เป็นนักบุญปี 2014 คือ?',
+ ch:['John Paul II','Benedict XVI','John XXIII','Paul VI','Leo XIV'], a:0,
+ h:['เป็นผู้สถาปนาคาร์ดินัลไทยคนแรกด้วย','พระนามควบสองพระนาม'],
+ ex:'John Paul II ชาวโปแลนด์ องค์ที่ 264 (⚠️ สไลด์พิมพ์ปีผิดเป็น 1978–2013 — ที่ถูกคือ 2005)'},
+{c:'P', q:'โป๊ปองค์ใดประกาศ "สละตำแหน่ง" เอง เมื่อ 28 ก.พ. 2013?',
+ ch:['Benedict XVI','Francis','John Paul II','Leo XIV','Paul VI'], a:0,
+ h:['ชาวเยอรมัน และเป็นโป๊ปองค์แรกของศตวรรษที่ 21','องค์ที่ 265'],
+ ex:'Benedict XVI (องค์ 265, เยอรมัน) สละตำแหน่ง 28 ก.พ. 2013 → Conclave เลือก Francis'},
+{c:'P', q:'โป๊ปชาวลาตินอเมริกา "คนแรก" ในประวัติศาสตร์ คือองค์ใด?',
+ ch:['Francis','Leo XIV','Benedict XVI','John Paul II','Pius XII'], a:0,
+ h:['ชาวอาร์เจนตินา องค์ที่ 266 (2013–2025)','พระนามเดียวกับนักบุญแห่งอัสซีซี'],
+ ex:'Francis ชาวอาร์เจนตินา — ลาตินอเมริกาคนแรก องค์ที่ 266'},
+{c:'P', q:'ก่อนได้รับเลือกเป็นโป๊ป Francis มีชื่อเดิมว่าอะไร?',
+ ch:['Jorge Mario Bergoglio','Justin Welby','Romano Guardini','Arnolfo di Cambio','Michai Kitbunchu'], a:0,
+ h:['เป็นคาร์ดินัลชาวอาร์เจนตินามาก่อน','ชื่อสเปน ขึ้นต้นด้วย Jorge'],
+ ex:'Cardinal Jorge Mario Bergoglio → Pope Francis (2013)'},
+{c:'P', q:'โป๊ปองค์ที่ 267 (องค์ปัจจุบัน ตั้งแต่ 2025) ผู้เป็นชาวอเมริกัน (สหรัฐฯ) คนแรก คือ?',
+ ch:['Leo XIV','Leo XIII','Francis','Benedict XVI','John Paul II'], a:0,
+ h:['พระนามเดียวกับโป๊ปที่ ร.5 เข้าพบปี 1897 แต่เลขถัดไปหนึ่ง','เลข "ที่ 14"'],
+ ex:'Leo XIV องค์ที่ 267 ชาวสหรัฐฯ คนแรก (2025–) — อย่าสับสนกับ Leo XIII ยุค ร.5'},
+{c:'P', q:'โป๊ปองค์ใดเป็นผู้สถาปนา "คาร์ดินัลไทยคนแรก" (ปี 1983)?',
+ ch:['John Paul II','Francis','Paul VI','Benedict XVI','Pius XII'], a:0,
+ h:['สถาปนา ณ มหาวิหารเซนต์ปีเตอร์ 2 ก.พ. 1983','โป๊ปชาวโปแลนด์ องค์ที่ 264'],
+ ex:'John Paul II สถาปนาพระคาร์ดินัล มีชัย กิจบุญชู เป็นคาร์ดินัลไทยคนแรก (1983)'},
+// ---------- 🗝️ เปโตร ----------
+{c:'S', q:'ใครคือ "โป๊ปองค์แรก" ของศาสนจักรคาทอลิก?',
+ ch:['นักบุญเปโตร','นักบุญอันดรูว์','ยอห์นผู้ให้บัพติสมา','นักบุญนิโคลัส','โจเซฟ'], a:0,
+ h:['เป็นหัวหน้าอัครสาวก 12 และได้รับมอบกุญแจอาณาจักรสวรรค์','เดิมเป็นชาวประมง ชื่อเดิมขึ้นต้นด้วย ซ'],
+ ex:'นักบุญเปโตร (St. Peter) = โป๊ปองค์แรก เผยแผ่ถึงโรม มรณสักขีที่นั่น'},
+{c:'S', q:'ชื่อเดิมของนักบุญเปโตร ก่อนพระเยซูเปลี่ยนชื่อให้ คือ?',
+ ch:['ซีโมน','อันดรูว์','ยูดาส','โจเซฟ','นิโคลัส'], a:0,
+ h:['พระเยซูเปลี่ยนชื่อเป็น Peter ที่แปลว่า "หิน"','ขึ้นต้นด้วย ซ'],
+ ex:'ซีโมน (Simon) → เปโตร (Peter = หิน/Rock)'},
+{c:'S', q:'ใครเป็นผู้ชักชวนเปโตรให้มาติดตามพระเยซู?',
+ ch:['อันดรูว์','ซีโมน','ยอห์นผู้ให้บัพติสมา','ยูดาส อิสคาริโอท','โจเซฟ'], a:0,
+ h:['เป็นญาติสนิทที่สุดของเปโตรเอง','คือน้องชายของเปโตร'],
+ ex:'อันดรูว์ (Andrew) น้องชาย เป็นคนชวนเปโตรมาตามพระเยซู'},
+{c:'S', q:'นักบุญเปโตรเกิดที่เมืองใด?',
+ ch:['เบทไซดา','คาเปอร์นาอุม','เยรูซาเล็ม','โรม','แคนเทอร์เบอรี'], a:0,
+ h:['เมืองริมทะเลสาบกาลิลี','ภายหลังท่านย้ายไปอยู่คาเปอร์นาอุม — เมืองเกิดคืออีกเมือง'],
+ ex:'เกิดที่เบทไซดา (Bethsaida) ริมทะเลสาบกาลิลี → ย้ายไปคาเปอร์นาอุม'},
+{c:'S', q:'คำว่า "Peter" (เปโตร) มีความหมายว่าอะไร?',
+ ch:['หิน','กุญแจ','ชาวประมง','บานพับประตู','ผู้เลี้ยงแกะ'], a:0,
+ h:['เกี่ยวกับความมั่นคง เป็นรากฐาน','มธ. 16:18 — "บนศิลานี้ เราจะสร้างคริสตจักรของเรา"'],
+ ex:'Peter = หิน/ศิลา (Rock) — ระวังตัวลวง: บานพับประตู = cardo (ที่มาของ Cardinal)'},
+{c:'S', q:'นักบุญเปโตรถูกตรึงกางเขนเป็นมรณสักขีที่เมืองใด?',
+ ch:['กรุงโรม','เยรูซาเล็ม','เบทไซดา','คาเปอร์นาอุม','พลีมัธ'], a:0,
+ h:['ท่านเดินทางไปเผยแผ่ศาสนาจนถึงเมืองนี้','เมืองหลวงของจักรวรรดิในยุคนั้น'],
+ ex:'เปโตรถูกตรึงกางเขนกลับหัวที่กรุงโรม และฝังใต้มหาวิหารเซนต์ปีเตอร์'},
+{c:'S', q:'เหตุใดเปโตรจึงขอถูกตรึงกางเขนแบบ "กลับหัว"?',
+ ch:['เห็นว่าตนไม่สมควรตายแบบเดียวกับพระอาจารย์','ต้องการให้ทหารโรมันสับสน','เป็นคำสั่งของจักรพรรดิ','เป็นธรรมเนียมของชาวประมง','เพื่อให้มองเห็นกรุงโรมเป็นครั้งสุดท้าย'], a:0,
+ h:['เป็นการถ่อมตนของเปโตรเอง','เกี่ยวกับความเคารพต่อพระเยซู'],
+ ex:'เปโตรขอเอง เพราะเห็นว่าตนไม่สมควรตายในแบบเดียวกับพระเยซูผู้เป็นอาจารย์'},
+{c:'S', q:'ร่างของนักบุญเปโตรฝังอยู่ใต้สถานที่ใด?',
+ ch:['มหาวิหารเซนต์ปีเตอร์','โบสถ์น้อยซิสทีน','โบสถ์พระคูหาศักดิ์สิทธิ์','วังวาติกัน (Apostolic Palace)','อาสนวิหารแคนเทอร์เบอรี'], a:0,
+ h:['สถานที่นี้ตั้งชื่อตามท่านเอง','Julius II สั่งสร้างหลังใหม่ทับที่เดิมปี 1506'],
+ ex:'ฝังใต้มหาวิหารเซนต์ปีเตอร์ (St. Peter’s Basilica) — เหตุผลที่มหาวิหารสร้างตรงนั้น'},
+{c:'S', q:'รูปปั้นนักบุญเปโตรมักทำเป็นมือถือสิ่งใด อันเป็นสัญลักษณ์ประจำตัว?',
+ ch:['กุญแจ','แหวน','ไม้เท้า','คบเพลิง','ม้วนคัมภีร์'], a:0,
+ h:['สิ่งที่พระเยซูมอบให้ตาม มธ. 16','ของสิ่งนี้ "ไข" อาณาจักรสวรรค์ได้'],
+ ex:'กุญแจอาณาจักรสวรรค์ — พระเยซูมอบแก่เปโตร (ภาพ The Delivery of the Keys ของ Perugino ก็คือฉากนี้)'},
+{c:'S', q:'ใครเป็นผู้มอบ "กุญแจอาณาจักรสวรรค์" ให้แก่เปโตร?',
+ ch:['พระเยซู','ยอห์นผู้ให้บัพติสมา','อันดรูว์','อิสยาห์','โจเซฟ'], a:0,
+ h:['เหตุการณ์นี้จารึกไว้ในโดมมหาวิหารเซนต์ปีเตอร์ (มธ. 16:18)','ผู้เป็นพระอาจารย์ของเปโตร'],
+ ex:'พระเยซูมอบกุญแจ + ตั้งเปโตรเป็นศิลารากฐานของศาสนจักร (มธ. 16:18)'},
+// ---------- 🇹🇭 ไทย–วาติกัน ----------
+{c:'T', q:'มิชชันนารีคาทอลิกชุดแรกเดินทางมาถึงกรุงศรีอยุธยา (ค.ศ. 1662) ตรงกับรัชสมัยของกษัตริย์พระองค์ใด?',
+ ch:['สมเด็จพระนารายณ์มหาราช','รัชกาลที่ 4','รัชกาลที่ 5','รัชกาลที่ 7','รัชกาลที่ 9'], a:0,
+ h:['ยุคกรุงศรีอยุธยา ไม่ใช่รัตนโกสินทร์','กษัตริย์ผู้ส่งคณะทูตไปฝรั่งเศส/โรมในเวลาต่อมา'],
+ ex:'ค.ศ. 1662 สมัยสมเด็จพระนารายณ์ — โป๊ป Alexander VII เป็นผู้ส่ง = จุดก่อตั้งคริสต์ศาสนาในไทย'},
+{c:'T', q:'โป๊ปองค์ใดเป็นผู้ส่งมิชชันนารีชุดแรกมากรุงศรีอยุธยา?',
+ ch:['Alexander VII','Leo XIII','Pius IX','Pius XI','John XXIII'], a:0,
+ h:['องค์เดียวกับที่ให้ Bernini ออกแบบจัตุรัสเซนต์ปีเตอร์','พระนามเดียวกับโป๊ปกติกา 2 ใน 3 แต่เลข "ที่ 7"'],
+ ex:'Alexander VII (1662) ส่งมิชชันนารีชุดแรกมาอยุธยา สมัยพระนารายณ์'},
+{c:'T', q:'ใครเป็นผู้นำคณะทูตของสมเด็จพระนารายณ์เดินทางไปกรุงโรม (ค.ศ. 1688)?',
+ ch:['เจ้าพระยาโกษาธิบดี (ปาน)','จอมพล ป. พิบูลสงคราม','มงซินญอร์ วิษณุ ธัญญอนันต์','พระคาร์ดินัล มีชัย กิจบุญชู','พระคาร์ดินัล เกรียงศักดิ์ โกวิทวาณิช'], a:0,
+ h:['เป็นขุนนางสมัยอยุธยา','คนเดียวกับราชทูตผู้มีชื่อเสียงที่ไปฝรั่งเศส'],
+ ex:'เจ้าพระยาโกษาธิบดี (ปาน) นำคณะทูตไปโรม ค.ศ. 1688'},
+{c:'T', q:'รัชกาลที่ 4 ทรงมีพระราชสาส์นติดต่อกับโป๊ปองค์ใด (ช่วง 1851–61)?',
+ ch:['Pius IX','Pius XI','Pius XII','Leo XIII','Gregory X'], a:0,
+ h:['ตระกูลพระนาม Pius แต่เลขน้อยสุดในตัวเลือก','เลข "ที่ 9"'],
+ ex:'ร.4 ↔ Pius IX — จำง่าย: ร.4 เลขน้อย คู่กับ Pius เลขน้อย (IX)'},
+{c:'T', q:'รัชกาลที่ 5 เสด็จเยือนวาติกันปี 1897 (การเยือนระดับ "ประมุข" ครั้งแรก) — ทรงเข้าพบโป๊ปองค์ใด?',
+ ch:['Leo XIII','Leo XIV','Pius IX','Pius XI','John XXIII'], a:0,
+ h:['พระนามเดียวกับโป๊ปองค์ปัจจุบัน แต่เลขก่อนหน้าหนึ่ง','เลข "ที่ 13"'],
+ ex:'ร.5 (1897) พบ Leo XIII = การเยือนระดับประมุขครั้งแรกของไทย'},
+{c:'T', q:'รัชกาลที่ 7 เสด็จกรุงโรมปี 1934 — ทรงเข้าพบโป๊ปองค์ใด?',
+ ch:['Pius XI','Pius XII','Pius IX','Leo XIII','Paul VI'], a:0,
+ h:['องค์เดียวกับผู้ลงนาม Lateran Treaty ปี 1929','เลข "ที่ 11"'],
+ ex:'ร.7 (1934) พบ Pius XI — โป๊ปองค์เดียวกับที่เซ็นสนธิสัญญาลาเตรันกับมุสโสลินี'},
+{c:'T', q:'ใครคือผู้เยือนวาติกัน "ระดับรัฐบาล" คนแรกของไทย (ค.ศ. 1955)?',
+ ch:['จอมพล ป. พิบูลสงคราม','ยิ่งลักษณ์ ชินวัตร','เจ้าพระยาโกษาธิบดี (ปาน)','พระคาร์ดินัล มีชัย กิจบุญชู','มงซินญอร์ วิษณุ ธัญญอนันต์'], a:0,
+ h:['เป็นนายกรัฐมนตรีของไทยในเวลานั้น','ยศทหารนำหน้าชื่อ'],
+ ex:'จอมพล ป. พิบูลสงคราม (1955) พบ Pius XII = เยือนระดับรัฐบาลครั้งแรก (ครั้งที่ 2 คือยิ่งลักษณ์ 2013 — ห่าง 58 ปี)'},
+{c:'T', q:'จอมพล ป. พิบูลสงคราม เข้าพบโป๊ปองค์ใดในปี 1955?',
+ ch:['Pius XII','Pius XI','John XXIII','Leo XIII','Francis'], a:0,
+ h:['ตระกูลพระนาม Pius','เลข "ที่ 12" — คนละองค์กับผู้เซ็น Lateran Treaty'],
+ ex:'จอมพล ป. พบ Pius XII (1955) — ⚠️ อย่าสลับกับ Pius XI (Lateran Treaty / ร.7)'},
+{c:'T', q:'รัชกาลที่ 9 เสด็จเยือนวาติกันปี 1960 — ทรงเข้าพบโป๊ปองค์ใด?',
+ ch:['John XXIII','Paul VI','Pius XII','John Paul II','Francis'], a:0,
+ h:['โป๊ปองค์เดียวกับผู้เปิดสังคายนาวาติกันครั้งที่ 2 (1962)','พระนามยอห์น เลข "ที่ 23"'],
+ ex:'ร.9 (1960) พบ John XXIII — สองปีก่อนเปิด Vatican II'},
+{c:'T', q:'ยิ่งลักษณ์ ชินวัตร เข้าพบโป๊ปองค์ใด เมื่อ 12 ก.ย. 2013?',
+ ch:['Francis','Benedict XVI','John Paul II','Leo XIV','John XXIII'], a:0,
+ h:['เป็นการเยือนระดับรัฐบาลครั้งที่ 2 ของไทย (ห่างครั้งแรก 58 ปี)','โป๊ปที่เพิ่งรับตำแหน่งในปีเดียวกันนั้นเอง'],
+ ex:'ยิ่งลักษณ์ (2013) พบ Francis ผู้เพิ่งเป็นโป๊ปหลัง Benedict XVI สละตำแหน่ง'},
+{c:'T', q:'"คาร์ดินัลไทยคนแรก" ผู้ได้รับสถาปนาปี 1983 คือใคร?',
+ ch:['พระคาร์ดินัล ไมเคิล มีชัย กิจบุญชู','พระคาร์ดินัล เกรียงศักดิ์ โกวิทวาณิช','มงซินญอร์ วิษณุ ธัญญอนันต์','เจ้าพระยาโกษาธิบดี (ปาน)','จอมพล ป. พิบูลสงคราม'], a:0,
+ h:['สถาปนาโดย John Paul II ณ มหาวิหารเซนต์ปีเตอร์ (2 ก.พ. 1983)','ท่านได้เข้าร่วม Conclave ปี 2005 ด้วย'],
+ ex:'พระคาร์ดินัล ไมเคิล มีชัย กิจบุญชู = คาร์ดินัลไทยคนแรก (1983, โดย John Paul II)'},
+{c:'T', q:'คาร์ดินัลไทย "องค์ที่ 2" ผู้ได้รับสถาปนาปี 2015 คือใคร?',
+ ch:['พระคาร์ดินัล เกรียงศักดิ์ โกวิทวาณิช','พระคาร์ดินัล ไมเคิล มีชัย กิจบุญชู','มงซินญอร์ วิษณุ ธัญญอนันต์','เจ้าพระยาโกษาธิบดี (ปาน)','จอมพล ป. พิบูลสงคราม'], a:0,
+ h:['สถาปนาโดยโป๊ป Francis (14 ก.พ. 2015)','นามสกุล โกวิทวาณิช'],
+ ex:'พระคาร์ดินัล เกรียงศักดิ์ โกวิทวาณิช = คาร์ดินัลไทยองค์ที่ 2 (2015, โดย Francis)'},
+{c:'T', q:'ใครสถาปนาพระคาร์ดินัล เกรียงศักดิ์ โกวิทวาณิช (2015)?',
+ ch:['Francis','John Paul II','Benedict XVI','Paul VI','Leo XIV'], a:0,
+ h:['โป๊ปองค์ที่ 266','โป๊ปชาวอาร์เจนตินา'],
+ ex:'Francis สถาปนาคาร์ดินัลเกรียงศักดิ์ 14 ก.พ. 2015 — ส่วนคาร์ดินัลมีชัยคือ John Paul II'},
+{c:'T', q:'คนไทยผู้ได้รับ "สัญชาติวาติกัน" ในฐานะนักการทูตของวาติกัน คือใคร?',
+ ch:['มงซินญอร์ ดร.วิษณุ ธัญญอนันต์','พระคาร์ดินัล มีชัย กิจบุญชู','พระคาร์ดินัล เกรียงศักดิ์ โกวิทวาณิช','เจ้าพระยาโกษาธิบดี (ปาน)','ยิ่งลักษณ์ ชินวัตร'], a:0,
+ h:['ยศนำหน้าคือ "มงซินญอร์" ไม่ใช่คาร์ดินัล','ชื่อจริงเป็นชื่อเทพในศาสนาฮินดู'],
+ ex:'มงซินญอร์ ดร.วิษณุ ธัญญอนันต์ — คนไทยที่ได้สัญชาติวาติกัน (นักการทูตวาติกัน)'},
+{c:'T', q:'คาร์ดินัลไทยคนใดได้เข้าร่วมการเลือกโป๊ป (Conclave) ปี 2005?',
+ ch:['พระคาร์ดินัล ไมเคิล มีชัย กิจบุญชู','พระคาร์ดินัล เกรียงศักดิ์ โกวิทวาณิช','มงซินญอร์ วิษณุ ธัญญอนันต์','เจ้าพระยาโกษาธิบดี (ปาน)','จอมพล ป. พิบูลสงคราม'], a:0,
+ h:['Conclave 2005 คือครั้งที่เลือก Benedict XVI','คาร์ดินัลไทย "คนแรก"'],
+ ex:'คาร์ดินัลมีชัย ร่วม Conclave 2005 (ตอนนั้นอายุยังไม่เกิน 80 ตามกฎ Paul VI)'},
+// ---------- 🎨 ศิลปิน ----------
+{c:'A', q:'ภาพ "The Creation of Adam" บนเพดานโบสถ์น้อยซิสทีน เป็นผลงานของใคร?',
+ ch:['Michelangelo','Raphael','Bernini','Perugino','Caravaggio'], a:0,
+ h:['ศิลปินคนเดียวกับผู้สลัก Pietà','วาดเพดานซิสทีนทั้งผืน + The Last Judgement'],
+ ex:'Michelangelo — เพดานซิสทีน (The Creation of Adam, The Fall of Man) + ผนัง The Last Judgement'},
+{c:'A', q:'ภาพ "The Last Judgement" บนผนังหน้าพระแท่นของซิสทีน เป็นผลงานของใคร?',
+ ch:['Michelangelo','Perugino','Raphael','Caravaggio','Arnolfo di Cambio'], a:0,
+ h:['คาร์ดินัลชูบัตรสาบานหน้าภาพนี้ตอน Conclave','คนเดียวกับที่วาดเพดานซิสทีน'],
+ ex:'Michelangelo วาด The Last Judgement — จุดที่คาร์ดินัลสาบานตนตอนลงคะแนน Conclave'},
+{c:'A', q:'ประติมากรรมหินอ่อน "Pietà" (แม่พระรับร่างพระเยซู) เป็นผลงานของใคร?',
+ ch:['Michelangelo','Bernini','Arnolfo di Cambio','Raphael','Perugino'], a:0,
+ h:['จัดแสดงในมหาวิหารเซนต์ปีเตอร์','ใช้วิธี "สลัก" หินอ่อน ไม่ใช่ปั้น — ศิลปินคนเดียวกับเพดานซิสทีน'],
+ ex:'Pietà = Michelangelo (สลักหินอ่อน) อยู่ในมหาวิหารเซนต์ปีเตอร์'},
+{c:'A', q:'ภาพ "The School of Athens" ในวังวาติกัน เป็นผลงานของใคร?',
+ ch:['Raphael','Michelangelo','Perugino','Caravaggio','Bernini'], a:0,
+ h:['ศิลปินคนเดียวกับภาพ Transfiguration','ชื่อเดียวกับเต่านินจาสีแดง 🐢'],
+ ex:'Raphael — The School of Athens (วังวาติกัน/Apostolic Palace) + Transfiguration'},
+{c:'A', q:'ภาพ "Transfiguration" (พระเยซูจำแลงพระกาย) ในพิพิธภัณฑ์วาติกัน เป็นผลงานของใคร?',
+ ch:['Raphael','Michelangelo','Caravaggio','Perugino','Arnolfo di Cambio'], a:0,
+ h:['คนเดียวกับ The School of Athens','ไม่ใช่คนวาดซิสทีน'],
+ ex:'Raphael — Transfiguration (พิพิธภัณฑ์วาติกัน)'},
+{c:'A', q:'ภาพ "The Delivery of the Keys" (พระเยซูมอบกุญแจแก่เปโตร) บนผนังทิศเหนือของซิสทีน เป็นผลงานของใคร?',
+ ch:['Perugino','Michelangelo','Raphael','Bernini','Caravaggio'], a:0,
+ h:['⚠️ ข้อนี้คนชอบตอบผิดเป็นคนวาดเพดาน','ศิลปินชื่อขึ้นต้นด้วย P ชาวอิตาเลียนยุคก่อน Michelangelo'],
+ ex:'Perugino — จุดหลอกประจำ! ภาพนี้อยู่ในซิสทีนก็จริง แต่ไม่ใช่ผลงาน Michelangelo'},
+{c:'A', q:'ภาพ "The Entombment of Christ" (ชะลอร่างพระเยซูจากกางเขน) เป็นผลงานของจิตรกรบาโรกคนใด?',
+ ch:['Caravaggio','Bernini','Michelangelo','Raphael','Perugino'], a:0,
+ h:['จิตรกรศตวรรษที่ 17 สไตล์แสงเงาจัด','อยู่ในพิพิธภัณฑ์วาติกัน — ชื่อขึ้นต้นด้วย C'],
+ ex:'Caravaggio (บาโรก ศตวรรษ 17) — The Entombment of Christ ในพิพิธภัณฑ์วาติกัน'},
+{c:'A', q:'สถาปนิกบาโรกผู้ออกแบบ "จัตุรัสเซนต์ปีเตอร์" และซุ้ม Baldachin เหนือแท่นบูชาเอก คือใคร?',
+ ch:['Bernini','Michelangelo','Raphael','Arnolfo di Cambio','Perugino'], a:0,
+ h:['ทำงานให้โป๊ป Alexander VII (1656–67)','ยังออกแบบธรรมาสน์นักบุญเปโตรด้วย'],
+ ex:'Bernini — จัตุรัสเซนต์ปีเตอร์ + Baldachin + ธรรมาสน์นักบุญเปโตร'},
+{c:'A', q:'รูปปั้นทองแดงนักบุญเปโตร ในมหาวิหารเซนต์ปีเตอร์ เป็นผลงานของใคร?',
+ ch:['Arnolfo di Cambio','Bernini','Michelangelo','Perugino','Caravaggio'], a:0,
+ h:['ไม่ใช่ 4 ศิลปินดังที่ทุกคนนึกถึงก่อน','ชื่อขึ้นต้นด้วย Arnolfo'],
+ ex:'Arnolfo di Cambio — รูปปั้นทองแดง St. Peter (มือถือกุญแจ) ในมหาวิหาร'},
+{c:'A', q:'ตอนลงคะแนนใน Conclave คาร์ดินัลแต่ละท่านต้องชูบัตรและกล่าวคำสาบานต่อหน้าภาพใด?',
+ ch:['The Last Judgement','The Creation of Adam','The Delivery of the Keys','The School of Athens','Transfiguration'], a:0,
+ h:['ภาพนี้อยู่บนผนังหน้าพระแท่นของซิสทีน','ธีมภาพคือ "การพิพากษา" — เหมาะกับการสาบาน'],
+ ex:'สาบานหน้า The Last Judgement ของ Michelangelo — สื่อว่าพระเจ้ากำลังพิพากษาการตัดสินใจ'},
+{c:'A', q:'ภาพ "The Creation of Adam" อยู่ที่ตำแหน่งใด?',
+ ch:['เพดานโบสถ์น้อยซิสทีน','ผนังหน้าพระแท่นซิสทีน','โดมมหาวิหารเซนต์ปีเตอร์','วังวาติกัน','พิพิธภัณฑ์วาติกัน'], a:0,
+ h:['ต้องแหงนหน้ามอง','ที่เดียวกับ The Fall of Man'],
+ ex:'เพดานซิสทีน — ส่วน The Last Judgement คือผนังหน้าพระแท่น (อย่าสลับตำแหน่ง)'},
+{c:'A', q:'ประติมากรรม "Pietà" จัดแสดงอยู่ที่ใด?',
+ ch:['มหาวิหารเซนต์ปีเตอร์','โบสถ์น้อยซิสทีน','พิพิธภัณฑ์วาติกัน','วังวาติกัน','จัตุรัสเซนต์ปีเตอร์'], a:0,
+ h:['ที่เดียวกับที่ฝังร่างนักบุญเปโตร','มหาวิหารใหญ่ที่สุดของวาติกัน'],
+ ex:'Pietà อยู่ในมหาวิหารเซนต์ปีเตอร์'},
+// ---------- ⛪ ฝ่ายโลก ----------
+{c:'W', q:'ใครลงนามสนธิสัญญาลาเตรัน (1929) ในฝ่ายอิตาลี ยกดินแดนให้เกิดนครรัฐวาติกัน?',
+ ch:['เบนิโต มุสโสลินี','พระเจ้าเฮนรีที่ 8','จักรพรรดิคอนสแตนติน','จักรพรรดิเฮเดรียน','จักรพรรดิคาลิกูลา'], a:0,
+ h:['ผู้นำอิตาลียุคฟาสซิสต์','ลงนามคู่กับโป๊ป Pius XI วันที่ 11 ก.พ. 1929'],
+ ex:'มุสโสลินี × Pius XI ลงนาม Lateran Treaty 1929 → วาติกันเป็นรัฐเอกราช'},
+{c:'W', q:'กษัตริย์อังกฤษพระองค์ใดแยกตั้ง "นิกายแองกลิกัน" (Church of England) ด้วย Act of Supremacy ปี 1534?',
+ ch:['พระเจ้าเฮนรีที่ 8','พระนางเอลิซาเบธที่ 1','จักรพรรดิคอนสแตนติน','เบนิโต มุสโสลินี','จักรพรรดิเฮเดรียน'], a:0,
+ h:['สาเหตุคือโป๊ปไม่อนุญาตให้หย่า','กษัตริย์ที่มีมเหสี 6 พระองค์'],
+ ex:'Henry VIII (1534) — หย่ากับแคเธอรินแห่งอารากอนไม่ได้ จึงแยกนิกายแองกลิกัน'},
+{c:'W', q:'พระเจ้าเฮนรีที่ 8 ต้องการหย่าขาดจากมเหสีพระองค์ใด จนเป็นชนวนแยกนิกาย?',
+ ch:['แคเธอรินแห่งอารากอน','พระนางเอลิซาเบธที่ 1','พระนางเฮเลน','มารีย์ชาวมักดาลา','พระแม่มารีย์'], a:0,
+ h:['เจ้าหญิงจากสเปน','ชื่อขึ้นต้นด้วย แ-ค'],
+ ex:'แคเธอรินแห่งอารากอน — โป๊ปไม่อนุมัติการหย่า → Henry VIII แยก Church of England'},
+{c:'W', q:'ผู้นำอังกฤษที่แยกจากโรม "รอบสอง" ปี 1558 (Elizabethan Settlement) คือ?',
+ ch:['พระนางเอลิซาเบธที่ 1','พระเจ้าเฮนรีที่ 8','แคเธอรินแห่งอารากอน','จักรพรรดิคอนสแตนติน','เบนิโต มุสโสลินี'], a:0,
+ h:['เป็นสตรี ครองราชย์ต่อจากยุคที่อังกฤษกลับไปเป็นคาทอลิกช่วงสั้น ๆ','พระธิดาของ Henry VIII'],
+ ex:'เอลิซาเบธที่ 1 (1558) แยกจากโรมรอบสอง → Elizabethan Settlement'},
+{c:'W', q:'ตามสไลด์ อาร์ชบิชอปแห่งแคนเทอร์เบอรี (ประมุขแองกลิกัน) คือใคร?',
+ ch:['Justin Welby','Jorge Mario Bergoglio','Romano Guardini','Arnolfo di Cambio','William Bradford'], a:0,
+ h:['ตำแหน่งนี้แต่งตั้งโดยกษัตริย์อังกฤษ (นายกฯ เสนอ 2 ชื่อ เลือก 1)','ชื่อขึ้นต้นด้วย Justin'],
+ ex:'Justin Welby — Archbishop of Canterbury ตามสไลด์ (แต่งตั้งโดยกษัตริย์อังกฤษ)'},
+{c:'W', q:'ประมุขนิกายแองกลิกัน (Archbishop of Canterbury) ได้รับการแต่งตั้งโดยใคร?',
+ ch:['กษัตริย์อังกฤษ','โป๊ปแห่งโรม','ที่ประชุมคาร์ดินัล','รัฐสภาอังกฤษ','อาร์ชบิชอปคนก่อน'], a:0,
+ h:['นี่คือจุดต่างสำคัญจากคาทอลิก','นายกรัฐมนตรีเสนอ 2 ชื่อ ให้ผู้นี้เลือก 1'],
+ ex:'กษัตริย์อังกฤษแต่งตั้ง (นายกฯ เสนอ 2 ชื่อ) — สะท้อนว่าแองกลิกันมีกษัตริย์เป็นประมุขสูงสุด'},
+{c:'W', q:'ใครเป็นผู้สร้าง "โบสถ์พระคูหาศักดิ์สิทธิ์" (Church of the Holy Sepulchre) บนเนินโกลโกธา (ค.ศ. 325)?',
+ ch:['พระนางเฮเลน','จักรพรรดิคอนสแตนติน','จักรพรรดิเฮเดรียน','แคเธอรินแห่งอารากอน','เบนิโต มุสโสลินี'], a:0,
+ h:['⚠️ หลายคนตอบผิดเป็นจักรพรรดิ — ผู้สร้างคือ "พระมารดา" ผู้ไปแสวงบุญ','สตรีผู้เดินทางไปเยรูซาเล็มด้วยตนเอง'],
+ ex:'พระนางเฮเลน (มารดาของคอนสแตนติน) แสวงบุญและสร้างโบสถ์นี้บนโกลโกธา/คัลวารี ค.ศ. 325'},
+{c:'W', q:'จักรพรรดิโรมันพระองค์ใด "กลับใจเป็นคริสต์" คู่กับพระมารดาผู้สร้างโบสถ์พระคูหาศักดิ์สิทธิ์?',
+ ch:['คอนสแตนติน','เฮเดรียน','คาลิกูลา','เนโร','ออกัสตัส'], a:0,
+ h:['พระมารดาคือพระนางเฮเลน','ชื่อเดียวกับเมืองหลวงเก่า "คอนสแตนติโนเปิล"'],
+ ex:'จักรพรรดิคอนสแตนติน + พระนางเฮเลน (มารดา) — ผู้เปลี่ยนสถานะคริสต์ในจักรวรรดิ'},
+{c:'W', q:'จักรพรรดิพระองค์ใดสร้างวิหารเทพอาโฟรไดต์ "ทับ" ที่ฝังพระศพพระเยซู (ค.ศ. 135) เพื่อพยายามทำลายศาสนาคริสต์?',
+ ch:['เฮเดรียน','คาลิกูลา','คอนสแตนติน','เนโร','ออกัสตัส'], a:0,
+ h:['เกิดก่อนยุคคอนสแตนติน ~190 ปี','จักรพรรดิองค์เดียวกับที่สร้างกำแพงกั้นเกาะบริเตน'],
+ ex:'เฮเดรียน (ค.ศ. 135) สร้างวิหารอาโฟรไดต์ทับ — ต่อมาเฮเลนมาสร้างโบสถ์พระคูหาฯ ตรงนั้น'},
+{c:'W', q:'ชนกลุ่มใดเป็นผู้ตั้งชื่อ "Vaticum" ริมแม่น้ำไทเบอร์ อันเป็นที่มาของชื่อ Vatican?',
+ ch:['ชาวอีทรัสคัน','ชาวโรมัน','ชาวกรีก','ชาวอียิปต์','ชาวเปอร์เซีย'], a:0,
+ h:['อารยธรรมเก่าแก่ในอิตาลี "ก่อน" โรมรุ่งเรือง','ชื่อขึ้นต้นด้วย อี'],
+ ex:'พวกอีทรัสคัน (Etruscans) ตั้งชื่อ Vaticum → Vatican (เนินฝั่งตะวันตกแม่น้ำไทเบอร์)'},
+{c:'W', q:'จักรพรรดิพระองค์ใดสร้าง "สนามกีฬาโรมัน" บนบริเวณที่ตั้งของวาติกันในปัจจุบัน?',
+ ch:['คาลิกูลา','เฮเดรียน','คอนสแตนติน','เนโร','ออกัสตัส'], a:0,
+ h:['จักรพรรดิยุคแรก ๆ ของโรม ชื่อเสียงด้านความเพี้ยน','ชื่อขึ้นต้นด้วย คา-ลิ'],
+ ex:'จักรพรรดิ Caligula สร้างสนามกีฬาโรมัน (Circus) ตรงที่ตั้งวาติกันปัจจุบัน'},
+{c:'W', q:'นครรัฐวาติกันตั้งอยู่ริมฝั่งแม่น้ำสายใด?',
+ ch:['ไทเบอร์','จอร์แดน','ไนล์','เทมส์','ยูเฟรทีส'], a:0,
+ h:['แม่น้ำสายหลักของกรุงโรม','ชาวอีทรัสคันตั้งชื่อ Vaticum ริมแม่น้ำสายนี้'],
+ ex:'แม่น้ำไทเบอร์ (Tiber) — วาติกันอยู่เนินฝั่งตะวันตกของแม่น้ำ'},
+// ---------- 🎄 เทศกาล ----------
+{c:'F', q:'ประกาศก (Prophet) ผู้พยากรณ์การมาบังเกิดของพระเยซู ซึ่งบทอ่านของเทศกาล Advent มักอ้างถึง คือใคร?',
+ ch:['อิสยาห์','ยอห์นผู้ให้บัพติสมา','โจเซฟ','ยูดาส อิสคาริโอท','นักบุญนิโคลัส'], a:0,
+ h:['ประกาศกในพันธสัญญาเดิม (อสย. 9:6, 40:3–5)','ชื่อขึ้นต้นด้วย อิ'],
+ ex:'อิสยาห์ (Isaiah) — ประกาศกผู้พยากรณ์การประสูติ อ่านช่วง Advent'},
+{c:'F', q:'ใครเป็นผู้ให้ศีลล้างบาป (บัพติสมา) แก่พระเยซู ที่แม่น้ำจอร์แดน?',
+ ch:['ยอห์นผู้ให้บัพติสมา','อิสยาห์','อันดรูว์','นักบุญเปโตร','โจเซฟ'], a:0,
+ h:['ผู้ทำหน้าที่ "เตรียมทางรับเสด็จ"','ฉายาของท่านบอกหน้าที่นี้ตรง ๆ'],
+ ex:'ยอห์นผู้ให้บัพติสมา (John the Baptist) — เหตุการณ์นี้คือการสำแดงครั้งที่ 1 ใน Epiphany'},
+{c:'F', q:'นักบุญที่แอบหย่อนทองคำ 3 ก้อนลงปล่องไฟจนตกใส่ "ถุงเท้า" ของสามสาวยากจน — ที่มาของถุงเท้าคริสต์มาส คือใคร?',
+ ch:['นักบุญนิโคลัส','นักบุญเปโตร','ยอห์นผู้ให้บัพติสมา','โจเซฟ','อิสยาห์'], a:0,
+ h:['ท่านคือต้นแบบของ "ซานตาคลอส"','ชื่อเดียวกับโป๊ปผู้ออกกฎปี 1059'],
+ ex:'นักบุญนิโคลัส (St. Nicholas) — ที่มาของถุงเท้าคริสต์มาสและซานตาคลอส'},
+{c:'F', q:'กลุ่มบุคคลใดที่ตามดวงดาวจากทิศตะวันออก มาถวายของขวัญแด่พระกุมารเยซู?',
+ ch:['โหราจารย์ (Magi)','คณะพิลกริม','อัครสาวกสิบสอง','ทหาร Swiss Guard','คณะคาร์ดินัล'], a:0,
+ h:['เป็นที่มาของธรรมเนียม "ของขวัญคริสต์มาส"','ฉลองใน Three Kings’ Day / Epiphany วันที่ 6 ม.ค.'],
+ ex:'โหราจารย์/นักปราชญ์ (Magi) — ที่มาของขวัญคริสต์มาส + วัน Epiphany 6 ม.ค.'},
+{c:'F', q:'ใครคือคนกลุ่มแรกที่พบว่า "อุโมงค์ฝังพระศพว่างเปล่า" ในเช้าวันอีสเตอร์?',
+ ch:['มารีย์ชาวมักดาลา (กับหญิงอื่น)','พระแม่มารีย์','นักบุญเปโตร','ยอห์นผู้ให้บัพติสมา','โหราจารย์'], a:0,
+ h:['เป็นสตรีที่ตามพระเยซูมาตั้งแต่แคว้นกาลิลี','ชื่อเมืองต่อท้ายชื่อ: "ชาวมักดาลา"'],
+ ex:'มารีย์ชาวมักดาลา (Mary Magdalene) กับหญิงอื่น — ผู้รู้ข่าวการคืนพระชนม์กลุ่มแรก'},
+{c:'F', q:'อัครสาวกคนใด "ทรยศ" พระเยซู ตามที่ทรงทำนายไว้ในการเลี้ยงอาหารค่ำมื้อสุดท้าย (Last Supper)?',
+ ch:['ยูดาส อิสคาริโอท','นักบุญเปโตร','อันดรูว์','โจเซฟ','ยอห์นผู้ให้บัพติสมา'], a:0,
+ h:['เหตุการณ์ Last Supper อยู่ในวันพฤหัสศักดิ์สิทธิ์ (Maundy Thursday)','นามสกุลของเขาคือ อิสคาริโอท'],
+ ex:'ยูดาส อิสคาริโอท (Judas Iscariot) — ผู้ทรยศพระเยซู'},
+{c:'F', q:'เรือที่พาพิลกริม/พิวริแตน 102 คน จากพลีมัธ (อังกฤษ) ไปถึงแมสซาชูเซตส์ ปี ค.ศ. 1620 ชื่อว่าอะไร?',
+ ch:['Mayflower','Santa Maria','Victoria','Endeavour','Beagle'], a:0,
+ h:['ชื่อเรือแปลว่า "ดอกไม้เดือนพฤษภาคม"','ขึ้นต้นด้วย M'],
+ ex:'เรือ Mayflower (1620) — พิลกริม 102 คน จากพลีมัธถึงแมสซาชูเซตส์'},
+{c:'F', q:'หัวหน้าเผ่าอินเดียนแดงผู้สอนชาวพิลกริมให้ล่าสัตว์และปลูกข้าวโพด คือใคร?',
+ ch:['แมสซาซอยท์','วิลเลียม แบรดฟอร์ด','อับราฮัม ลินคอล์น','โรมาโน กวาร์ดินี','จัสติน เวลบี'], a:0,
+ h:['ชื่อคล้ายกับชื่อรัฐที่พิลกริมขึ้นฝั่ง','ขึ้นต้นด้วย แมส-'],
+ ex:'หัวหน้าเผ่าแมสซาซอยท์ (Massasoit) — ช่วยพิลกริมรอดฤดูหนาว จึงเกิด Thanksgiving'},
+{c:'F', q:'ผู้ว่าการอาณานิคมที่จัดงาน "Thanksgiving ครั้งแรก" (ฤดูใบไม้ร่วง 1621, กิน 3 วัน) คือใคร?',
+ ch:['วิลเลียม แบรดฟอร์ด','อับราฮัม ลินคอล์น','แมสซาซอยท์','จอร์จ วอชิงตัน','โทมัส เจฟเฟอร์สัน'], a:0,
+ h:['เป็น "ผู้ว่าการ" อาณานิคมพลีมัธ ไม่ใช่ประธานาธิบดี','นามสกุลขึ้นต้นด้วย B'],
+ ex:'ผู้ว่าการวิลเลียม แบรดฟอร์ด (William Bradford) จัด Thanksgiving แรกปี 1621 ที่พลีมัธ'},
+{c:'F', q:'ประธานาธิบดีสหรัฐฯ คนใด ประกาศให้ Thanksgiving เป็น "วันหยุดราชการ" ในปี ค.ศ. 1863?',
+ ch:['อับราฮัม ลินคอล์น','วิลเลียม แบรดฟอร์ด','จอร์จ วอชิงตัน','โทมัส เจฟเฟอร์สัน','ธีโอดอร์ รูสเวลต์'], a:0,
+ h:['ปี 1863 อยู่กลางสงครามกลางเมืองอเมริกา','ประธานาธิบดีผู้เลิกทาส'],
+ ex:'ลินคอล์น (1863) ประกาศ Thanksgiving เป็นวันหยุดราชการ — คู่จำ: Bradford 1621 จัดครั้งแรก / Lincoln 1863 วันหยุด'},
+{c:'F', q:'นักเทววิทยาชาวอิตาเลียน เจ้าของคำคมเรื่อง "การล้างเท้า" ว่าคือความสุภาพถ่อมตนที่แท้ คือใคร?',
+ ch:['Romano Guardini','Jorge Mario Bergoglio','Justin Welby','Arnolfo di Cambio','William Bradford'], a:0,
+ h:['การล้างเท้าเป็นพิธีของวันพฤหัสศักดิ์สิทธิ์ (Maundy Thursday)','ชื่อขึ้นต้นด้วย Romano'],
+ ex:'Romano Guardini — นักเทววิทยาอิตาเลียน คำคมเรื่องการล้างเท้า = ความสุภาพแท้'},
+{c:'F', q:'ใครคือ "คู่หมั้น" ของพระแม่มารีย์ ซึ่งเป็นบุคคลสำคัญในการเตรียมรับเสด็จ (Advent)?',
+ ch:['โจเซฟ','ยอห์นผู้ให้บัพติสมา','ยูดาส อิสคาริโอท','อันดรูว์','ซีโมน'], a:0,
+ h:['อาชีพช่างไม้','ชื่อขึ้นต้นด้วย โจ'],
+ ex:'โจเซฟ (Joseph) คู่หมั้นของมารีย์ — ครอบครัวศักดิ์สิทธิ์ในเรื่องราวคริสต์มาส'},
+{c:'F', q:'คำว่า Advent มาจากภาษาละติน "Adventus" แปลว่าอะไร?',
+ ch:['การมาถึง','การรอคอย','แสงสว่าง','การเตรียมพร้อม','ความหวัง'], a:0,
+ h:['เกี่ยวกับการ "เสด็จมา" ของพระเยซู','ภาษาอังกฤษคือ coming / arrival'],
+ ex:'Adventus = การมาถึง — ฉลองการเสด็จมาครั้งแรก + รอคอยการเสด็จมาครั้งที่ 2 (Parousia)'},
+{c:'F', q:'"Parousia" (ปารูเซีย) หมายถึงเหตุการณ์ใด?',
+ ch:['การเสด็จกลับมาครั้งที่ 2 ของพระคริสต์','การประสูติของพระเยซู','การคืนพระชนม์','การเสด็จขึ้นสวรรค์','การรับบัพติสมา'], a:0,
+ h:['เป็นสิ่งที่เทศกาล Advent "รอคอย" ควบคู่กับการฉลองการประสูติ','คราวนี้เสด็จมาในฐานะกษัตริย์ผู้พิพากษา'],
+ ex:'Parousia (กรีก) = การเสด็จกลับมาครั้งที่ 2 ในฐานะกษัตริย์ผู้พิพากษา'},
+{c:'F', q:'สีประจำเทศกาล Advent และมหาพรต (Lent) คือสีใด?',
+ ch:['ม่วง','แดง','เขียว','ขาว','ทอง'], a:0,
+ h:['สีเดียวกับสีประจำตำแหน่งบิชอป','สื่อการสำนึกผิดกลับใจ + สีของกษัตริย์'],
+ ex:'สีม่วง = สำนึกผิดกลับใจ + รอคอยพระคริสตกษัตริย์ — ใช้ทั้ง Advent และ Lent (และแทนสีดำในพิธีผู้ล่วงลับ)'},
+{c:'F', q:'เทียนสีกุหลาบ (ชมพู) ของพวงมาลัย Advent จุดในสัปดาห์ที่เท่าใด และสื่อถึงธีมใด?',
+ ch:['สัปดาห์ที่ 3 — ความชื่นชมยินดี','สัปดาห์ที่ 1 — ความหวัง','สัปดาห์ที่ 2 — ความรัก','สัปดาห์ที่ 4 — สันติสุข','คืนคริสต์มาสอีฟ — การบังเกิด'], a:0,
+ h:['จุดเมื่อเดินทางมาถึง "ครึ่งทาง" ของเทศกาลแล้ว','ธีม 4 สัปดาห์คือ Hope · Love · Joy · Peace — เทียนชมพูตรงกับธีมที่สาม'],
+ ex:'เทียนชมพู = สัปดาห์ที่ 3 = Joy (อาทิตย์แห่งความชื่นชมยินดี) — อีก 3 เล่มเป็นสีม่วง'},
+{c:'F', q:'นิกายออร์โธดอกซ์ (ปฏิทินเดิม) ฉลองคริสต์มาสในวันใด?',
+ ch:['7 มกราคม','25 ธันวาคม','6 มกราคม','1 มกราคม','24 ธันวาคม'], a:0,
+ h:['ไม่ตรงกับคาทอลิก/โปรเตสแตนต์','อยู่ในเดือนมกราคม แต่ไม่ใช่วันเดียวกับอาร์เมเนีย (6 ม.ค.)'],
+ ex:'ออร์โธดอกซ์ = 7 ม.ค. / อาร์เมเนีย = 6 ม.ค. / คาทอลิก+โปรเตสแตนต์ = 25 ธ.ค.'},
+{c:'F', q:'เทศกาลมหาพรต (Lent) มีชื่อภาษาละตินว่า "Quadragesima" ซึ่งแปลว่าอะไร?',
+ ch:['ที่สี่สิบ','การอดอาหาร','ฤดูใบไม้ผลิ','ความทุกข์ทรมาน','การกลับใจ'], a:0,
+ h:['ตรงกับจำนวนวันของเทศกาลพอดี','เลขเดียวกับจำนวนวันที่พระเยซูอดอาหารในถิ่นทุรกันดาร'],
+ ex:'Quadragesima = "ที่สี่สิบ" — Lent ยาว 40 วัน เริ่ม Ash Wednesday (นับแบบหักวันอาทิตย์ออก)'},
+{c:'F', q:'ขี้เถ้าที่ใช้เจิมหน้าผากในวันพุธรับเถ้า (Ash Wednesday) ทำมาจากอะไร?',
+ ch:['ใบลานของวันอาทิตย์ใบลานปีก่อน นำมาเผา','ไม้กางเขนเก่าที่ชำรุด','กำยานจากพิธีมิสซา','เทียนปัสกาของปีก่อน','กิ่งมะกอกจากสวนเกทเสมนี'], a:0,
+ h:['วัตถุดิบวนกลับมาจากวันสำคัญอีกวันหนึ่งของปีก่อน','ใบไม้แห่งชัยชนะ → กลายเป็นเถ้าแห่งการสำนึกบาป'],
+ ex:'ใบลานจาก Palm Sunday ปีก่อนถูกเผาเป็นเถ้า — "มนุษย์เอ๋ย จงระลึกว่าท่านเป็นเถ้าธุลี และจะกลับเป็นเถ้าธุลีอีก"'},
+{c:'F', q:'วันใดในสัปดาห์ศักดิ์สิทธิ์ (Holy Week) ที่ "ไม่มีพิธีมิสซา" ทั้งวัน?',
+ ch:['วันศุกร์ศักดิ์สิทธิ์ (Good Friday)','วันอาทิตย์ใบลาน (Palm Sunday)','วันพฤหัสศักดิ์สิทธิ์ (Maundy Thursday)','วันอาทิตย์อีสเตอร์ (Easter Sunday)','วันพุธรับเถ้า (Ash Wednesday)'], a:0,
+ h:['วันที่ระลึกการสิ้นพระชนม์บนกางเขน','มีพิธีนมัสการกางเขน (Veneration of the Cross) แทน'],
+ ex:'Good Friday ไม่มีมิสซา — มีพิธีนมัสการกางเขน + เดินรูป 14 ภาค; พระสงฆ์หมอบราบหน้าพระแท่นว่างเปล่า'},
+{c:'F', q:'การ "เดินรูป" ระลึกเส้นทางแบกกางเขน (Stations of the Cross / Via Crucis) มีทั้งหมดกี่ภาค?',
+ ch:['14 ภาค','12 ภาค','10 ภาค','7 ภาค','40 ภาค'], a:0,
+ h:['เท่ากับจำนวนจุดจริงบนถนน Via Dolorosa ในเยรูซาเล็ม','มากกว่า 12 แต่ไม่ถึง 15'],
+ ex:'14 ภาค — ตามจุดบนถนน Via Dolorosa เส้นทางพระทรมานในเยรูซาเล็ม'},
+{c:'F', q:'คำว่า "Pascha" (ปัสกา) มาจากภาษาฮีบรู แปลว่าอะไร?',
+ ch:['การข้าม/ผ่านไป','การคืนชีพ','การปลดปล่อย','แกะของพระเจ้า','ความรอด'], a:0,
+ h:['เชื่อมโยงกับเหตุการณ์อพยพออกจากอียิปต์ของชาวยิว','ภาษาอังกฤษคือ passing over'],
+ ex:'Pascha = "การข้ามผ่านไป" (passing over) — ตรงกับปัสกายิว (14 เดือนนิซาน) ระลึกการพ้นจากทาสในอียิปต์'},
+{c:'F', q:'คำว่า "อัลเลลูยา (Alleluia)" ที่ร้องในวันอีสเตอร์ มีความหมายว่าอะไร?',
+ ch:['จงสรรเสริญพระเจ้า','พระเจ้าสถิตกับเรา','ขอทรงพระเมตตา','สันติสุขจงมีแด่ท่าน','พระองค์ทรงเป็นขึ้นแล้ว'], a:0,
+ h:['เป็นคำอุทานแสดงความยินดีที่พระคริสต์มีชัยเหนือบาปและความตาย','เป็นการ "ยกย่อง" พระเจ้าโดยตรง'],
+ ex:'Alleluia = จงสรรเสริญพระเจ้า — แทนความยินดีที่พระคริสต์ชนะบาปและความตาย'},
+{c:'F', q:'วัน Epiphany (6 ม.ค.) ฉลอง "การสำแดง 3 ครั้ง" ของพระเยซู — ข้อใดคืออัศจรรย์ "ครั้งแรก"?',
+ ch:['เปลี่ยนน้ำเป็นเหล้าองุ่นที่หมู่บ้านคานา','รักษาคนตาบอดให้มองเห็น','เดินบนผิวน้ำทะเลสาบ','เลี้ยงคนห้าพันด้วยขนมปังห้าก้อน','ปลุกลาซารัสจากความตาย'], a:0,
+ h:['เกิดขึ้นในงานแต่งงานที่แคว้นกาลิลี','พระแม่มารีย์เป็นผู้ทูลขอ'],
+ ex:'อัศจรรย์แรก: น้ำ→เหล้าองุ่นที่คานา; อีก 2 การสำแดงคือ รับบัพติสมาจากยอห์น + โหราจารย์ Magi ตามดาวมาเข้าเฝ้า'},
+{c:'F', q:'วัน Thanksgiving ของสหรัฐอเมริกา ตรงกับวันใด?',
+ ch:['วันพฤหัสบดีที่ 4 ของเดือนพฤศจิกายน','วันจันทร์ที่ 2 ของเดือนตุลาคม','วันพฤหัสบดีสุดท้ายของเดือนตุลาคม','วันศุกร์ที่ 4 ของเดือนพฤศจิกายน','วันที่ 25 พฤศจิกายน'], a:0,
+ h:['ตัวเลือกที่เป็นเดือนตุลาคมคือของแคนาดา','อยู่ในเดือนพฤศจิกายน'],
+ ex:'สหรัฐฯ = พฤหัสที่ 4 ของ พ.ย. / แคนาดา = จันทร์ที่ 2 ของ ต.ค.'},
+{c:'F', q:'เหตุใดคริสตชนจึงนมัสการพระเจ้าใน "วันอาทิตย์"?',
+ ch:['เป็นวันที่พระเยซูคืนพระชนม์','เป็นวันที่พระเจ้าสร้างโลกเสร็จ','เป็นวันประสูติของพระเยซู','เป็นวันสะบาโตของชาวยิว','เป็นวันที่โมเสสรับบัญญัติสิบประการ'], a:0,
+ h:['เหตุการณ์นี้เกิด "วันที่ 3" หลังการสิ้นพระชนม์','เหตุการณ์เดียวกับที่ฉลองในวันอีสเตอร์'],
+ ex:'วันอาทิตย์ = วันคืนพระชนม์ — คาทอลิกเรียกพิธีว่า Sunday Mass, โปรเตสแตนต์เรียก Sunday Service'},
+{c:'F', q:'วันพฤหัสศักดิ์สิทธิ์ (Maundy Thursday) ระลึกถึงเหตุการณ์ใดเป็นหลัก?',
+ ch:['อาหารมื้อสุดท้าย + การตั้งศีลมหาสนิท','การตรึงกางเขน','การคืนพระชนม์','การเสด็จเข้ากรุงเยรูซาเล็ม','การรับบัพติสมาที่แม่น้ำจอร์แดน'], a:0,
+ h:['มีพิธีล้างเท้า (Washing of Feet) ในวันนี้ด้วย','"นี่เป็นกายของเรา... นี่เป็นโลหิตของเรา"'],
+ ex:'Maundy Thursday = Last Supper + ตั้งศีลมหาสนิท + ล้างเท้า + เสกน้ำมันศักดิ์สิทธิ์ 3 ชนิด'},
+// ---------- 🕯️ Conclave ----------
+{c:'C', q:'ผู้ดำรงตำแหน่งใดมีหน้าที่ "ทุบแหวนชาวประมง" เมื่อโป๊ปสิ้นพระชนม์?',
+ ch:['Camerlengo','Scrutineer','Infirmarii','Reviser','Papabile'], a:0,
+ h:['เป็นผู้บริหารงานชั่วคราวช่วง Sede Vacante (ตำแหน่งว่าง)','ชื่อตำแหน่งขึ้นต้นด้วย C'],
+ ex:'Camerlengo — ทุบแหวนชาวประมง + ดูแลช่วง Sede Vacante ก่อนได้โป๊ปใหม่'},
+{c:'C', q:'คำเรียกคาร์ดินัลที่ถูกจับตาว่า "มีแววได้เป็นโป๊ป" คือคำใด?',
+ ch:['Papabile','Camerlengo','Scrutineer','Infirmarii','Habemus Papam'], a:0,
+ h:['เป็นคำภาษาอิตาเลียน','แปลทำนองว่า "เป็นโป๊ปได้"'],
+ ex:'Papabile — คาร์ดินัลตัวเต็งที่สื่อ/ผู้คนคาดว่าอาจได้รับเลือกเป็นโป๊ป'},
+{c:'C', q:'ประโยคที่ประกาศจากระเบียงมหาวิหารเซนต์ปีเตอร์ เพื่อบอกชาวโลกว่า "เราได้โป๊ปองค์ใหม่แล้ว" คือ?',
+ ch:['Habemus Papam','Extra omnes','Sede Vacante','Anno Domini','Urbi et Orbi'], a:0,
+ h:['ประกาศหลังควันสีขาวลอยขึ้นจากปล่องซิสทีน','ภาษาละติน ขึ้นต้นด้วย H'],
+ ex:'"Habemus Papam!" (เรามีโป๊ปแล้ว) — ประกาศหลังเลือกสำเร็จ'},
+{c:'C', q:'ควันสีใดที่ลอยจากปล่องโบสถ์น้อยซิสทีน เป็นสัญญาณว่า "เลือกโป๊ปองค์ใหม่สำเร็จแล้ว"?',
+ ch:['สีขาว','สีดำ','สีเทา','สีแดง','สีทอง'], a:0,
+ h:['อีกสีหนึ่งแปลว่ายังเลือกไม่ได้ ต้องลงคะแนนต่อ','สีแห่งความบริสุทธิ์'],
+ ex:'ควันขาว = ได้โป๊ปแล้ว / ควันดำ = ยังไม่ได้ (เผาบัตรลงคะแนนผสมสารเคมี)'},
+{c:'C', q:'คำสั่งภาษาละติน "Extra omnes!" ที่ประกาศก่อนปิดประตูซิสทีนเพื่อเริ่ม Conclave หมายความว่าอย่างไร?',
+ ch:['ทุกคนที่ไม่เกี่ยวข้อง จงออกไป','เราได้โป๊ปองค์ใหม่แล้ว','ตำแหน่งโป๊ปว่างลง','จงปิดประตูและสวดภาวนา','การลงคะแนนเริ่มต้นแล้ว'], a:0,
+ h:['ประกาศเพื่อ "เคลียร์คน" ออกจากโบสถ์','เหลือไว้เฉพาะคาร์ดินัลผู้มีสิทธิเลือก'],
+ ex:'Extra omnes = "ทุกคน(ที่ไม่เกี่ยว)ออกไป" — จากนั้นปิดประตูซิสทีน เริ่มการเลือกแบบปิดลับ'},
+{c:'C', q:'ช่วงเวลาที่ตำแหน่งโป๊ป "ว่างลง" (โป๊ปสิ้นพระชนม์/สละตำแหน่ง จนกว่าจะได้องค์ใหม่) เรียกว่าอะไร?',
+ ch:['Sede Vacante','Habemus Papam','Extra omnes','Conclave','Papabile'], a:0,
+ h:['ภาษาละติน แปลว่า "บัลลังก์ว่าง"','ช่วงนี้ Camerlengo เป็นผู้ดูแลกิจการ'],
+ ex:'Sede Vacante = ช่วงตำแหน่งว่าง — Camerlengo บริหารชั่วคราว ห้ามตัดสินใจเรื่องใหญ่'},
+// ---------- ⚖️ สมณศักดิ์ & ศัพท์ ----------
+{c:'H', q:'ลำดับสมณศักดิ์คาทอลิกจาก "สูงสุด → ต่ำสุด" ข้อใดถูกต้อง?',
+ ch:['Pope → Cardinal → Archbishop → Bishop → Priest','Pope → Archbishop → Cardinal → Bishop → Priest','Pope → Bishop → Cardinal → Archbishop → Priest','Cardinal → Pope → Archbishop → Bishop → Priest','Pope → Cardinal → Bishop → Archbishop → Priest'], a:0,
+ h:['Cardinal คือ "ที่ปรึกษาโป๊ป" จึงอยู่ติดโป๊ปที่สุด','Arch- แปลว่า "หัวหน้า" จึงต้องมาก่อนตำแหน่งที่ไม่มี Arch-'],
+ ex:'Pope → Cardinal → Archbishop → Bishop → Priest → Deacon → Laity (ฆราวาส)'},
+{c:'H', q:'Bishop (มุขนายก) เป็นประมุขปกครองหน่วยใด?',
+ ch:['Diocese (สังฆมณฑล)','Parish (เขตวัด)','Archdiocese (อัครสังฆมณฑล)','Monastery (อาราม)','Curia (สำนักบริหารกลาง)'], a:0,
+ h:['1 หน่วยนี้ประกอบด้วยหลายวัด (parish)','ไม่ใช่หน่วยขนาดใหญ่พิเศษ — อันนั้นเป็นของ Archbishop'],
+ ex:'Bishop ดูแล 1 diocese / Archbishop ดูแล archdiocese / Priest ดูแล 1 parish'},
+{c:'H', q:'Priest (บาทหลวง) ดูแลรับผิดชอบหน่วยใด?',
+ ch:['Parish (วัด 1 แห่ง)','Diocese (สังฆมณฑล)','Archdiocese (อัครสังฆมณฑล)','Monastery (อาราม)','ศาสนจักรทั้งประเทศ'], a:0,
+ h:['หน่วยเล็กที่สุดในโครงสร้างการปกครอง','คนไทยเรียกท่านว่า "คุณพ่อ" (Father)'],
+ ex:'Priest ดูแล 1 parish และประกอบพิธีมิสซา (administers Mass)'},
+{c:'H', q:'Deacon (สังฆานุกร) มีหน้าที่หลักคืออะไร?',
+ ch:['ช่วยบาทหลวงในพิธีมิสซา','ปกครองเขตวัดหนึ่งแห่ง','ร่วมเลือกพระสันตะปาปา','เป็นที่ปรึกษาของบิชอป','ดูแลอารามนักพรต'], a:0,
+ h:['อยู่ลำดับรองสุดท้าย เหนือฆราวาสขั้นเดียว','ทำงานเคียงข้าง Priest ในโบสถ์'],
+ ex:'Deacon = aid the Priest for Mass — ผู้ช่วยบาทหลวงในพิธีมิสซา'},
+{c:'H', q:'"Monsignor" (มงซินญอร์) จัดเป็นตำแหน่งประเภทใด?',
+ ch:['สมณศักดิ์กิตติมศักดิ์','ขั้นปกครองเหนือ Bishop','ผู้ช่วยของ Deacon','หัวหน้าอารามนักพรต','ตำแหน่งทางทหารของวาติกัน'], a:0,
+ h:['ไม่ใช่ขั้นในสายการปกครอง','คนไทยผู้ถือตำแหน่งนี้คือ ดร.วิษณุ ธัญญอนันต์'],
+ ex:'Monsignor = honorary title (ตำแหน่งกิตติมศักดิ์) — ไม่ใช่ขั้นปกครอง'},
+{c:'H', q:'Abbot (อธิการอาราม) เป็นหัวหน้าของสถานที่ใด?',
+ ch:['Monastery (อาราม)','Parish (เขตวัด)','Diocese (สังฆมณฑล)','Basilica (มหาวิหาร)','Chapel (โบสถ์น้อย)'], a:0,
+ h:['เป็นสายนักพรต (Monks) ไม่ใช่สายปกครองวัด','ตำแหน่งฝ่ายหญิงเรียกว่า Abbess'],
+ ex:'Abbot/Abbess = หัวหน้า monastery — สายนักพรต: Abbot → Monastery → Monks'},
+{c:'H', q:'คำว่า "Cardinal" มาจากภาษาละติน "cardo" ซึ่งแปลว่าอะไร?',
+ ch:['บานพับประตู','กุญแจ','หัวใจ','เสาหลัก','ผ้าคลุมสีแดง'], a:0,
+ h:['เกี่ยวกับการ "ย้าย" บาทหลวงจากที่หนึ่งไปประจำอีกที่หนึ่ง','ศัพท์อังกฤษที่เกี่ยวข้องคือ incardinated'],
+ ex:'cardo = บานพับประตู — ย้ายตำแหน่งเปรียบเหมือนถอดบานพับจากประตูเดิมไปติดบานใหม่ (incardinated); บัญญัติสมัย Gregory I'},
+{c:'H', q:'สีประจำตำแหน่งของ Cardinal คือสีใด?',
+ ch:['แดงเลือดนก','ม่วง','ขาว','ดำ','เขียว'], a:0,
+ h:['สีเดียวกับหมวก biretta ที่ได้รับมอบตอนสถาปนา','ภาษาอังกฤษเรียกเฉดนี้ว่า scarlet'],
+ ex:'Cardinal = แดงเลือดนก (scarlet) / Bishop = ม่วง / Pope = ชุดขาว'},
+{c:'H', q:'สีประจำตำแหน่งของ Bishop คือสีใด?',
+ ch:['ม่วง','แดงเลือดนก','ขาว','ดำ','ทอง'], a:0,
+ h:['สีเดียวกับสีเทศกาล Advent และมหาพรต','ไม่ใช่สีของคาร์ดินัล'],
+ ex:'Bishop = สีม่วง (purple)'},
+{c:'H', q:'ประเทศไทยแบ่งเขตปกครองคาทอลิกออกเป็นกี่สังฆมณฑล?',
+ ch:['10 (2 อัครสังฆมณฑล + 8 สังฆมณฑล)','8 (2 อัครสังฆมณฑล + 6 สังฆมณฑล)','12 (4 อัครสังฆมณฑล + 8 สังฆมณฑล)','4 (2 อัครสังฆมณฑล + 2 สังฆมณฑล)','16 (2 อัครสังฆมณฑล + 14 สังฆมณฑล)'], a:0,
+ h:['มี Archbishop 2 รูป และ Bishop 8 รูป','เอาสองจำนวนนั้นบวกกัน'],
+ ex:'ไทยมี 10 สังฆมณฑล = 2 อัครสังฆมณฑล + 8 สังฆมณฑล'},
+{c:'H', q:'ผู้ได้รับเลือกเป็นโป๊ปต้องได้คะแนนเสียงอย่างน้อยเท่าใดของผู้ลงคะแนน?',
+ ch:['2 ใน 3','เกินครึ่งหนึ่ง','3 ใน 4','เอกฉันท์ทั้งหมด','1 ใน 3'], a:0,
+ h:['เป็นกติกาตั้งแต่สังคายนาลาเตรันครั้งที่ 3 (ค.ศ. 1179)','ถ้าไม่ถึงเกณฑ์ → เผาบัตร ควันดำ ลงคะแนนใหม่'],
+ ex:'ต้องได้ 2 ใน 3 — กำหนดปี 1179 สมัย Alexander III; ไม่ถึงก็ลงคะแนนรอบใหม่'},
+{c:'H', q:'คาร์ดินัลกลุ่มที่ "ตรวจนับคะแนน ขานชื่อ และเจาะบัตรร้อยด้าย" ใน Conclave เรียกว่าอะไร?',
+ ch:['Scrutineers','Infirmarii','Revisers','Camerlengo','Papabile'], a:0,
+ h:['จับฉลากมา 3 องค์ จากผู้ดำเนินการทั้งหมด 9 องค์','รากศัพท์เดียวกับ scrutiny = การตรวจสอบอย่างละเอียด'],
+ ex:'Scrutineers (3) นับคะแนน / Infirmarii (3) เก็บบัตรจากผู้ป่วย / Revisers (3) ตรวจซ้ำ'},
+{c:'H', q:'คาร์ดินัล 3 องค์ที่ทำหน้าที่ "เก็บบัตรลงคะแนนจากคาร์ดินัลที่ป่วยจนลุกจากเตียงไม่ได้" เรียกว่าอะไร?',
+ ch:['Infirmarii','Scrutineers','Revisers','Consistory','Camerlengo'], a:0,
+ h:['รากศัพท์เดียวกับ infirmary = ห้องพยาบาล','ไม่ใช่กลุ่มผู้ตรวจนับหรือผู้ตรวจซ้ำ'],
+ ex:'Infirmarii — ตามไปเก็บบัตรจากคาร์ดินัลที่ป่วย เพื่อให้ทุกเสียงถูกนับ'},
+{c:'H', q:'ข้อความละติน "Eligo in Summum Pontificem" ที่พิมพ์บนบัตรลงคะแนน แปลว่าอะไร?',
+ ch:['ข้าพเจ้าเลือก (ผู้นี้) เป็นพระสันตะปาปา','เรามีพระสันตะปาปาแล้ว','ทุกคนจงออกไป','ตำแหน่งพระสันตะปาปาว่างลงแล้ว','ขอพระจิตทรงนำการเลือกตั้ง'], a:0,
+ h:['เขียนไว้เหนือช่องที่คาร์ดินัลจะเขียนชื่อผู้ที่ตนเลือก','Eligo = I elect'],
+ ex:'Eligo in Summum Pontificem = "ข้าพเจ้าเลือก...เป็นพระสันตะปาปา" — Scrutineers เจาะเข็มร้อยด้ายตรงคำ Eligo'},
+{c:'H', q:'มงกุฎ Tiara 3 ชั้นของโป๊ป สื่อถึง 3 สถานะใด?',
+ ch:['ประมุขศาสนจักร + บิชอปแห่งโรม + ประมุขรัฐวาติกัน','พระบิดา + พระบุตร + พระจิต','ความเชื่อ + ความหวัง + ความรัก','ผู้เผยพระวจนะ + ปุโรหิต + กษัตริย์','ยุโรป + เอเชีย + แอฟริกา'], a:0,
+ h:['ทั้งสามล้วนเป็น "ตำแหน่ง" ของโป๊ปเอง ไม่ใช่หลักธรรม','หนึ่งในสามเกี่ยวข้องกับกรุงโรมโดยตรง'],
+ ex:'Tiara 3 ชั้น = (1) ประมุขศาสนจักรคาทอลิก (2) บิชอปแห่งโรม (3) ประมุขรัฐวาติกัน'},
+{c:'H', q:'โป๊ปจะสวม Mozzetta สีแดงทับชุดขาว เมื่อให้การต้อนรับบุคคลระดับใด?',
+ ch:['ประมุขของรัฐ (กษัตริย์/ประธานาธิบดี)','หัวหน้ารัฐบาล (นายกรัฐมนตรี)','คณะพระคาร์ดินัล','นักแสวงบุญทั่วไป','เอกอัครราชทูตต่างประเทศ'], a:0,
+ h:['เพื่อแสดงอำนาจในฐานะ "ประมุขนครรัฐวาติกัน" ให้สมฐานะแขก','ถ้าแขกเป็นระดับนายกฯ ทรงชุดขาวปกติ'],
+ ex:'Mozzetta แดง (Choir Dress) = รับ Head of State; ถ้ารับ Head of Government ใช้ชุดขาวปกติ'},
+// ---------- 🏛️ วาติกันรอบรู้ ----------
+{c:'V', q:'นครรัฐวาติกันมีพื้นที่ประมาณเท่าใด?',
+ ch:['0.49 ตร.กม.','4.9 ตร.กม.','49 ตร.กม.','0.049 ตร.กม.','14.9 ตร.กม.'], a:0,
+ h:['เป็นประเทศที่เล็กที่สุดในโลก ทั้งพื้นที่และประชากร','ไม่ถึงครึ่งตารางกิโลเมตร'],
+ ex:'~0.49 ตร.กม. (44 เฮกตาร์) — เล็กที่สุดในโลก; ประชากรราว 800–900 คน'},
+{c:'V', q:'ข้อใดคือ 3 ประเทศที่ถูก "ล้อมรอบด้วยประเทศเดียว" ทั้งหมด?',
+ ch:['เลโซโท · ซานมารีโน · วาติกัน','โมนาโก · ซานมารีโน · วาติกัน','เลโซโท · โมนาโก · วาติกัน','อันดอร์รา · ซานมารีโน · วาติกัน','เลโซโท · ลิกเตนสไตน์ · วาติกัน'], a:0,
+ h:['หนึ่งประเทศอยู่กลางแอฟริกาใต้ อีกสองอยู่ในอิตาลี','โมนาโกไม่เข้าเกณฑ์เพราะติดทะเล'],
+ ex:'Lesotho (ล้อมด้วยแอฟริกาใต้), San Marino และ Vatican (ล้อมด้วยอิตาลี)'},
+{c:'V', q:'ภาษาทางการ 2 ภาษาของนครรัฐวาติกันคือข้อใด?',
+ ch:['อิตาเลียน + ละติน','อิตาเลียน + อังกฤษ','ละติน + กรีก','อิตาเลียน + ฝรั่งเศส','ละติน + อังกฤษ'], a:0,
+ h:['ภาษาหนึ่งใช้พูดทั่วไป อีกภาษาใช้ในพิธีกรรม/เอกสารราชการ','ภาษาพิธีกรรมนั้นถือเป็น "ภาษาใกล้ตาย"'],
+ ex:'Italian (สื่อสารทั่วไป) + Latin (ศาสนา/พิธีกรรม/เอกสารราชการ)'},
+{c:'V', q:'ชื่อภาษาการทูตไทยของ "Holy See" คือข้อใด?',
+ ch:['สันตะสำนัก','สำนักพระสันตะปาปา','นครศักดิ์สิทธิ์','ศาสนจักรโรมัน','รัฐสันตะปาปา'], a:0,
+ h:['ขึ้นต้นด้วยคำว่า "สันตะ"','ไม่ใช่ "รัฐสันตะปาปา" — นั่นคือ Papal State ชื่อเก่า'],
+ ex:'Holy See = สันตะสำนัก — วาติกันชอบใช้ชื่อนี้เพราะสื่อความหมายทางศาสนามากกว่า'},
+{c:'V', q:'ดินแดนที่โป๊ปเคยมีอำนาจปกครองเต็มรูปแบบ ก่อนถูกรวมเข้ากับอิตาลี เรียกว่าอะไร?',
+ ch:['Papal State','Holy Roman Empire','Kingdom of Italy','Byzantine Empire','Roman Republic'], a:0,
+ h:['เป็นชื่อ "เก่า" ก่อนจะเหลือแค่วาติกันในปัจจุบัน','แปลตรงตัวว่า "รัฐของพระสันตะปาปา"'],
+ ex:'Papal State (รัฐสันตะปาปา) — ถูกริดรอนช่วงรวมชาติอิตาลี เหลือเพียงวาติกันหลัง Lateran Treaty 1929'},
+{c:'V', q:'รูปแบบการปกครองของนครรัฐวาติกันคือแบบใด?',
+ ch:['ราชาธิปไตยจากการเลือกตั้ง + เทวาธิปไตย','ประชาธิปไตยแบบรัฐสภา','สาธารณรัฐประธานาธิบดี','ราชาธิปไตยสืบสายเลือด','สหพันธรัฐ'], a:0,
+ h:['ประมุขมีอำนาจเต็ม (สมบูรณาญาสิทธิ์) แต่ "มาจากการเลือก"','ถือว่าพระเจ้าเป็นประมุขสูงสุด โดยโป๊ปได้รับการทรงนำ'],
+ ex:'Elective Monarchy + Theocracy — โป๊ปอำนาจเต็มแต่มาจากการเลือกใน Conclave; พระเจ้าเป็นประมุขสูงสุด'},
+{c:'V', q:'วาติกันได้รับขึ้นทะเบียนมรดกโลก UNESCO ในปีใด และมีจุดพิเศษอย่างไร?',
+ ch:['1984 — ทั้งประเทศเป็นมรดกโลก','1984 — เฉพาะมหาวิหารเซนต์ปีเตอร์','1960 — ทั้งประเทศเป็นมรดกโลก','1929 — เฉพาะโบสถ์น้อยซิสทีน','1975 — เฉพาะพิพิธภัณฑ์วาติกัน'], a:0,
+ h:['เป็นประเทศเดียวในโลกที่ได้สถานะแบบนี้','ปีเดียวกับชื่อนิยายดังของ George Orwell'],
+ ex:'ปี 1984 — ประเทศเดียวในโลกที่ "ทั้งอาณาเขต" เป็นมรดกโลก (ปี 1960 คือขึ้นทะเบียนเขตคุ้มครองพิเศษยามสงคราม)'},
+{c:'V', q:'ข้อใด "ไม่ใช่" ผลของสนธิสัญญาลาเตรัน (Lateran Treaty 1929)?',
+ ch:['โป๊ปได้อำนาจปกครองกรุงโรมทั้งเมือง','อิตาลียกดินแดนให้เป็นรัฐเอกราชชื่อ Vatican','ประมุขวาติกันต้องเป็นกลางทางการเมืองและสงคราม','โป๊ปยอมรับสถานะรัฐของประเทศอิตาลี','อิตาลีจ่ายเงินชดเชยให้ศาสนจักร'], a:0,
+ h:['ผลจริงมี 3 ข้อ: ยกดินแดน+เงินชดเชย / เป็นกลาง / รับรองซึ่งกันและกัน','ข้อที่ "เกินจริง" คือข้อที่ทำให้โป๊ปได้อำนาจมากขึ้นกว่าความเป็นจริง'],
+ ex:'โป๊ปไม่ได้ปกครองโรม — ได้เฉพาะวาติกัน 0.49 ตร.กม.; อีก 4 ตัวเลือกคือผลจริงของสนธิสัญญา'},
+{c:'V', q:'ข้อใด "ไม่ใช่" คุณสมบัติของผู้สมัครทหารรักษาพระองค์ Swiss Guard?',
+ ch:['ต้องผ่านการบวชเป็นบาทหลวงมาก่อน','มีสัญชาติ/เชื้อชาติสวิส','สูงอย่างน้อย 174 ซม.','นับถือนิกายโรมันคาทอลิก','อายุไม่เกิน 30 ปี'], a:0,
+ h:['เขาเป็น "ทหาร" ไม่ใช่นักบวช','คุณสมบัติจริง: สวิส + คาทอลิก + สูงพอ + อายุน้อย'],
+ ex:'ไม่ต้องบวช! คุณสมบัติจริง: สวิส, ≥174 ซม., ≤30 ปี, คาทอลิก, ประจำการ 2–25 ปี'},
+{c:'V', q:'พระราชวังฤดูร้อนของพระสันตะปาปา ริมทะเลสาบ Albano (นอกกรุงโรม) ชื่อว่าอะไร?',
+ ch:['Castel Gandolfo','Castel Sant’Angelo','Palazzo Venezia','Villa Borghese','Palazzo Quirinale'], a:0,
+ h:['อยู่นอกวาติกันและนอกกรุงโรม','ชื่อขึ้นต้นด้วย Castel Gan-'],
+ ex:'Castel Gandolfo — พระราชวังฤดูร้อนของโป๊ป ริมทะเลสาบ Albano'},
+{c:'V', q:'"Roman Curia" (โรมันคูเรีย) ถูกเปรียบเป็นอะไรของโป๊ป?',
+ ch:['มือขวา — สำนักบริหารส่วนกลางที่วาติกัน','มือซ้าย — สภาบิชอปท้องถิ่น','ดวงตา — หน่วยข่าวกรอง','ปาก — สำนักข่าววาติกัน','โล่ — กองกำลังคุ้มกัน'], a:0,
+ h:['โป๊ปใช้อำนาจปกครองศาสนจักร "ผ่าน" องค์กรนี้','อีกฝั่งที่เป็น "มือซ้าย" คือสภาบิชอปท้องถิ่นทั่วโลก'],
+ ex:'Roman Curia = "มือขวา" (บริหารกลาง: สำนักเลขาธิการรัฐ, 9 สมณกระทรวง, ศาล ฯลฯ); สภาบิชอปท้องถิ่น = "มือซ้าย"'},
+{c:'V', q:'ผลสำคัญของสังคายนาวาติกันครั้งที่ 2 (Vatican II, 1962–65) ต่อพิธีมิสซาคืออะไร?',
+ ch:['เปิดให้ใช้ภาษาท้องถิ่นแทนการบังคับใช้ละติน','บังคับใช้ภาษาละตินเข้มงวดขึ้น','ยกเลิกพิธีมิสซาในวันธรรมดา','อนุญาตให้ฆราวาสเป็นผู้ประกอบพิธี','รวมนิกายกับออร์โธดอกซ์อีกครั้ง'], a:0,
+ h:['ก่อนหน้านั้นทั่วโลกใช้ละตินภาษาเดียวในพิธี','เป้าหมายคือให้คริสตชนเข้าใจและมีส่วนร่วมมากขึ้น'],
+ ex:'หลัง Vatican II มิสซาใช้ภาษาท้องถิ่นได้ — เริ่มเปิดประชุมสมัย John XXIII จบสมัย Paul VI'},
+{c:'V', q:'วาติกันรับรองสถานะรัฐของดินแดนใด จนขัดแย้งกับนโยบายจีนเดียวของจีน?',
+ ch:['ไต้หวัน','ฮ่องกง','ทิเบต','มาเก๊า','สิงคโปร์'], a:0,
+ h:['เป็นเกาะที่มีรัฐบาลปกครองตนเอง','เมืองหลวงคือไทเป'],
+ ex:'วาติกันรับรองไต้หวัน (Taiwan) → ขัดกับ One-China Policy'},
+{c:'V', q:'โดมของมหาวิหารเซนต์ปีเตอร์สูงประมาณเท่าใด?',
+ ch:['136.57 เมตร','96.5 เมตร','186 เมตร','75 เมตร','226 เมตร'], a:0,
+ h:['สูงเกิน 100 เมตร แต่ไม่ถึง 150','ตัวเลขเรียงจำง่าย: หนึ่ง-สาม-หก'],
+ ex:'โดมสูง 136.57 ม. — ใต้มหาวิหารฝังนักบุญเปโตร + โป๊ปกว่า 90 องค์'},
+{c:'V', q:'"Urbi et Orbi" ที่โป๊ปประกาศจากเฉลียงมหาวิหารในวันอีสเตอร์และคริสต์มาส แปลว่าอะไร?',
+ ch:['แด่กรุงโรมและแด่โลก','เรามีพระสันตะปาปาแล้ว','สันติสุขจงมีแด่ท่าน','จงสรรเสริญพระเจ้า','พระเจ้าสถิตกับเรา'], a:0,
+ h:['Urbi = เมือง (โรม) / Orbi = โลก','เป็นการ "อวยพร" ไม่ใช่การประกาศผลเลือกโป๊ป'],
+ ex:'Urbi et Orbi = แด่โรมและแด่โลก — พรของโป๊ปในวันอีสเตอร์/คริสต์มาส (เฉลียงเดียวกับที่ประกาศ Habemus Papam)'},
+// ---------- 🖼️ ถามจากรูป ----------
+{c:'G', q:'จากรูป: มงกุฎ 3 ชั้นนี้เรียกว่าอะไร?',
+ img:'<svg viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg"><ellipse cx="110" cy="124" rx="52" ry="9" fill="#c9a227"/><path d="M64 122 Q64 42 110 20 Q156 42 156 122 Z" fill="#f3e9c9" stroke="#c9a227" stroke-width="3"/><path d="M68 100 Q110 112 152 100" fill="none" stroke="#c9a227" stroke-width="6"/><path d="M74 72 Q110 84 146 72" fill="none" stroke="#c9a227" stroke-width="6"/><path d="M84 46 Q110 56 136 46" fill="none" stroke="#c9a227" stroke-width="6"/><rect x="108" y="2" width="4" height="16" fill="#c9a227"/><rect x="102" y="7" width="16" height="4" fill="#c9a227"/></svg>',
+ ch:['Tiara','Mitra','Biretta','Galero','Zucchetto'], a:0,
+ h:['ใช้สวมในพิธีสมณาภิเษกรับตำแหน่ง (Coronation) ของโป๊ปเท่านั้น','3 ชั้น = 3 สถานะของผู้สวม'],
+ ex:'Tiara (ไตรมงกุฎ) — 3 ชั้น = ประมุขศาสนจักร + บิชอปแห่งโรม + ประมุขรัฐวาติกัน'},
+{c:'G', q:'จากรูป: หมวกทรงสูงยอดแหลมนี้เรียกว่าอะไร?',
+ img:'<svg viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg"><rect x="84" y="96" width="18" height="36" fill="#e8e3d0"/><rect x="118" y="96" width="18" height="36" fill="#e8e3d0"/><path d="M62 118 L62 80 L110 14 L158 80 L158 118 Z" fill="#fdfaf0" stroke="#c9a227" stroke-width="3"/><rect x="104" y="16" width="12" height="102" fill="#c9a227"/><rect x="62" y="92" width="96" height="12" fill="#c9a227"/></svg>',
+ ch:['Mitra','Tiara','Biretta','Galero','Zucchetto'], a:0,
+ h:['ใช้ได้ตั้งแต่ระดับบิชอปขึ้นไป ในพิธีสำคัญ','มี 2 ทรง: Roman (~30 ซม.) และ Gothic (~20 ซม.)'],
+ ex:'Mitra (Mitre) — หมวกพิธีของบิชอปขึ้นไป; ข้อห้าม: ไม่สวมต่อหน้าศีลมหาสนิท'},
+{c:'G', q:'จากรูป: หมวกทรงสี่เหลี่ยมสันสามแฉกสีแดงนี้เรียกว่าอะไร?',
+ img:'<svg viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg"><circle cx="110" cy="36" r="8" fill="#7a1518"/><path d="M60 68 L110 78 L160 68 L160 100 Q110 116 60 100 Z" fill="#b3282d"/><path d="M110 42 L60 68 L110 78 L160 68 Z" fill="#8f1f24"/><path d="M110 42 L84 62 L110 70 Z" fill="#a82830"/><path d="M110 42 L136 62 L110 70 Z" fill="#a82830"/></svg>',
+ ch:['Biretta','Galero','Mitra','Tiara','Zucchetto'], a:0,
+ h:['สีแดง = ของคาร์ดินัล มอบให้ในพิธี Public Consistory','ชื่อขึ้นต้นด้วยตัว B'],
+ ex:'Biretta — หมวกสี่เหลี่ยมสันสามแฉก; โป๊ปมอบ biretta แดงตอนสถาปนาคาร์ดินัล'},
+{c:'G', q:'จากรูป: หมวกปีกกว้างมีพู่ห้อยสองข้างนี้ (ปัจจุบันเลิกสวมจริงแล้ว) เรียกว่าอะไร?',
+ img:'<svg viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg"><ellipse cx="110" cy="58" rx="78" ry="16" fill="#b3282d"/><path d="M76 52 Q110 24 144 52 Q110 66 76 52Z" fill="#9c2227"/><path d="M40 62 q-10 20 -14 44" stroke="#b3282d" stroke-width="3" fill="none"/><path d="M180 62 q10 20 14 44" stroke="#b3282d" stroke-width="3" fill="none"/><g fill="#b3282d"><circle cx="26" cy="96" r="4"/><circle cx="20" cy="110" r="4"/><circle cx="32" cy="110" r="4"/><circle cx="194" cy="96" r="4"/><circle cx="188" cy="110" r="4"/><circle cx="200" cy="110" r="4"/></g></svg>',
+ ch:['Galero','Biretta','Mitra','Zucchetto','Tiara'], a:0,
+ h:['เป็นเครื่องหมายเก่าแก่ของคาร์ดินัล','ปัจจุบันยังเห็นได้ในตราประจำตำแหน่ง (coat of arms)'],
+ ex:'Galero — หมวกปีกกว้างมีพู่ของคาร์ดินัล เลิกสวมจริงแล้ว เหลือในตราสัญลักษณ์'},
+{c:'G', q:'จากรูป: หมวกทรงกลมเล็กแนบศีรษะนี้เรียกว่าอะไร?',
+ img:'<svg viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg"><path d="M58 92 Q110 34 162 92 Q110 108 58 92Z" fill="#fdfdfa" stroke="#cfcfc6" stroke-width="2"/><path d="M108 38 q2 -8 6 -10" stroke="#cfcfc6" stroke-width="3" fill="none"/></svg>',
+ ch:['Zucchetto','Biretta','Galero','Mitra','Tiara'], a:0,
+ h:['อีกชื่อหนึ่งคือ Skull-cap','สีบอกตำแหน่ง: ขาว=โป๊ป แดง=คาร์ดินัล ม่วง=บิชอป'],
+ ex:'Zucchetto (Skull-cap) — สีขาวของโป๊ป, แดงของคาร์ดินัล, ม่วงของบิชอป'},
+{c:'G', q:'จากรูป: แถบผ้าขนสัตว์สีขาวปักกางเขนดำ คล้องรอบไหล่ เรียกว่าอะไร?',
+ img:'<svg viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg"><circle cx="110" cy="18" r="12" fill="#e8c39e"/><path d="M62 132 L78 40 Q110 26 142 40 L158 132 Z" fill="#d8dbe8"/><path d="M84 44 Q110 62 136 44" fill="none" stroke="#fff" stroke-width="12"/><rect x="103" y="56" width="14" height="66" fill="#fff"/><g fill="#222"><rect x="106" y="66" width="8" height="3"/><rect x="108.5" y="63.5" width="3" height="8"/><rect x="106" y="92" width="8" height="3"/><rect x="108.5" y="89.5" width="3" height="8"/><rect x="88" y="42" width="8" height="3"/><rect x="90.5" y="39.5" width="3" height="8"/><rect x="124" y="42" width="8" height="3"/><rect x="126.5" y="39.5" width="3" height="8"/></g></svg>',
+ ch:['Pallium','Fascia','Cassock','Mozzetta','Rochet'], a:0,
+ h:['พระสันตะปาปาเป็นผู้มอบให้','เป็นเครื่องหมายประจำตำแหน่ง Archbishop'],
+ ex:'Pallium — แถบผ้าขนสัตว์ขาว โป๊ปมอบให้อัครสังฆราช (Archbishop) — จุดสอบประจำ!'},
+{c:'G', q:'จากรูป: รองเท้าสีแดงคู่นี้เป็นเครื่องแต่งกายประจำตำแหน่งใด?',
+ img:'<svg viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg"><path d="M28 96 q2 -22 26 -22 q18 0 24 12 q22 0 26 10 l0 8 q0 8 -10 8 l-56 0 q-10 0 -10 -16z" fill="#9e1b1b"/><rect x="28" y="106" width="76" height="6" rx="3" fill="#5c0f0f"/><path d="M116 96 q2 -22 26 -22 q18 0 24 12 q22 0 26 10 l0 8 q0 8 -10 8 l-56 0 q-10 0 -10 -16z" fill="#9e1b1b"/><rect x="116" y="106" width="76" height="6" rx="3" fill="#5c0f0f"/></svg>',
+ ch:['Pope','Cardinal','Archbishop','Bishop','Deacon'], a:0,
+ h:['ชุดของท่านเป็นสีขาวทั้งชุด — นี่คือข้อยกเว้นสีเดียว','ประมุขสูงสุดของศาสนจักรคาทอลิก'],
+ ex:'Papal Shoes สีแดง — ข้อยกเว้นเดียวจากชุดขาวล้วนของโป๊ป'},
+{c:'G', q:'จากรูป: ธงครึ่งเหลือง–ครึ่งขาว มีกุญแจไขว้ คือธงของอะไร?',
+ img:'<svg viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg"><rect x="8" y="16" width="6" height="118" fill="#8a8fa8"/><rect x="14" y="20" width="96" height="70" fill="#f7d54c"/><rect x="110" y="20" width="96" height="70" fill="#fdfdfa"/><g stroke-width="6" stroke-linecap="round"><line x1="140" y1="76" x2="176" y2="44" stroke="#caa53d"/><line x1="176" y1="76" x2="140" y2="44" stroke="#b9bcc9"/></g><circle cx="140" cy="78" r="6" fill="none" stroke="#caa53d" stroke-width="4"/><circle cx="176" cy="78" r="6" fill="none" stroke="#b9bcc9" stroke-width="4"/><path d="M148 42 Q158 24 168 42 Z" fill="#e9e4d4" stroke="#caa53d" stroke-width="2"/></svg>',
+ ch:['นครรัฐวาติกัน','ประเทศอิตาลี','สาธารณรัฐซานมารีโน','ประเทศมอลตา','ราชรัฐโมนาโก'], a:0,
+ h:['กุญแจไขว้มาจาก "กุญแจอาณาจักรสวรรค์" ของนักบุญเปโตร','ประเทศที่เล็กที่สุดในโลก'],
+ ex:'ธงนครรัฐวาติกัน — กุญแจไขว้ (กุญแจสวรรค์ของเปโตร) + มงกุฎ Tiara บนพื้นเหลือง–ขาว'},
+{c:'G', q:'จากรูป: ปล่องไฟที่คนทั้งโลกจับตาระหว่างการเลือกโป๊ป อยู่บนหลังคาอาคารใด?',
+ img:'<svg viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg"><path d="M20 122 L110 66 L200 122 Z" fill="#7c6249"/><rect x="128" y="60" width="20" height="46" fill="#9a6a45"/><rect x="124" y="54" width="28" height="8" fill="#7c5333"/><circle cx="138" cy="42" r="9" fill="#f5f5f0" opacity=".95"/><circle cx="146" cy="29" r="11" fill="#f0f0ea" opacity=".85"/><circle cx="136" cy="14" r="13" fill="#ecece6" opacity=".7"/></svg>',
+ ch:['โบสถ์น้อยซิสทีน','มหาวิหารเซนต์ปีเตอร์','วังวาติกัน','พิพิธภัณฑ์วาติกัน','Castel Gandolfo'], a:0,
+ h:['อาคารเดียวกับที่จัดประชุม Conclave','เพดานอาคารนี้วาดโดย Michelangelo'],
+ ex:'ปล่องไฟบนโบสถ์น้อยซิสทีน — ควันดำ = ยังไม่ได้โป๊ป / ควันขาว = ได้แล้ว (ส่งสัญญาณวันละ 2 ครั้ง)'},
+{c:'G', q:'จากรูป: สองมือที่เอื้อมเข้าหากันนี้ มาจากภาพจริงชื่ออะไร?',
+ img:'<svg viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg"><path d="M0 62 Q45 54 70 60 L84 64 L98 61 q7 -1 7 4 q0 4 -6 5 l-14 3 L70 82 Q40 90 0 88 Z" fill="#e8c39e"/><path d="M220 54 Q180 46 150 56 l-22 8 q-8 3 -6 8 q2 4 9 2 l21 -6 L172 76 Q192 80 220 92 Z" fill="#f2d3ae"/></svg>',
+ ch:['The Creation of Adam','The Last Judgement','The Delivery of the Keys','Transfiguration','The School of Athens'], a:0,
+ h:['อยู่บนเพดานโบสถ์น้อยซิสทีน','มือของพระเจ้ากำลังจะแตะมือของมนุษย์คนแรก'],
+ ex:'The Creation of Adam ของ Michelangelo — จุดเด่นคือปลายนิ้วสองมือที่เกือบแตะกัน (เพดานซิสทีน)'},
+{c:'G', q:'จากรูป: จัตุรัสที่มีแนวเสาโค้งโอบสองข้างและเสาสูงตรงกลาง คือสถานที่ใด?',
+ img:'<svg viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg"><circle cx="110" cy="34" r="16" fill="#d8d2c0"/><rect x="86" y="44" width="48" height="22" fill="#cfc8b4"/><rect x="80" y="50" width="60" height="4" fill="#b8b09a"/><path d="M20 110 Q110 70 200 110" fill="none" stroke="#cfc8b4" stroke-width="10" stroke-dasharray="4 5"/><path d="M32 124 Q110 86 188 124" fill="none" stroke="#cfc8b4" stroke-width="10" stroke-dasharray="4 5"/><rect x="106" y="84" width="8" height="34" fill="#c9a227"/><path d="M106 84 L110 74 L114 84 Z" fill="#c9a227"/></svg>',
+ ch:['จัตุรัสเซนต์ปีเตอร์','โบสถ์น้อยซิสทีน','สวนวาติกัน','โคลอสเซียม','จัตุรัสนาโวนา'], a:0,
+ h:['ออกแบบใหม่โดย Bernini (1656–67) สไตล์บาโรก','ประชาชนมารอฟังผลควันขาว และรับพร Urbi et Orbi ที่นี่'],
+ ex:'จัตุรัสเซนต์ปีเตอร์ — Bernini ออกแบบสมัย Alexander VII; แนวเสาโค้งเปรียบเหมือน "อ้อมแขนโอบกอด"'},
+{c:'G', q:'จากรูป: เสาหินสูงกลางจัตุรัสเซนต์ปีเตอร์ (สูง 25.5 ม.) นำมาจากประเทศใด?',
+ img:'<svg viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg"><rect x="88" y="114" width="44" height="14" fill="#8d8d99"/><rect x="96" y="104" width="28" height="10" fill="#9d9daa"/><path d="M102 104 L106 28 L114 28 L118 104 Z" fill="#c46a5a"/><path d="M105 28 L110 14 L115 28 Z" fill="#c46a5a"/><rect x="108" y="2" width="4" height="10" fill="#c9a227"/><rect x="105" y="4" width="10" height="4" fill="#c9a227"/></svg>',
+ ch:['อียิปต์','อิตาลี','กรีซ','ตุรกี','ฝรั่งเศส'], a:0,
+ h:['ทำจากหินแกรนิตสีแดง','ดินแดนแห่งฟาโรห์ ต้นตำรับเสาแบบนี้'],
+ ex:'เสาโอเบลิสก์ (Obelisk) หินแกรนิตแดงจากอียิปต์ สูง 25.5 ม. — ตั้งกลางจัตุรัสเซนต์ปีเตอร์'},
+{c:'G', q:'จากรูป: ทหารเครื่องแบบลายน้ำเงิน–ทอง–แดง ถือหอกยาว คือหน่วยทหารใด?',
+ img:'<svg viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg"><line x1="152" y1="8" x2="152" y2="132" stroke="#6b4a2f" stroke-width="4"/><path d="M152 8 L168 24 L152 32 Z" fill="#b9bcc9"/><circle cx="100" cy="34" r="13" fill="#e8c39e"/><path d="M84 30 Q100 14 116 30 L112 34 L88 34 Z" fill="#3a3f55"/><path d="M96 16 q4 -10 10 -12" stroke="#c22b2b" stroke-width="5" fill="none"/><path d="M78 52 Q100 44 122 52 L126 96 L74 96 Z" fill="#27407c"/><g stroke-width="6"><line x1="88" y1="50" x2="86" y2="96" stroke="#f7d54c"/><line x1="100" y1="48" x2="100" y2="96" stroke="#c22b2b"/><line x1="112" y1="50" x2="114" y2="96" stroke="#f7d54c"/></g><path d="M74 96 h52 l-4 34 h-14 l-4 -20 l-4 20 h-14 Z" fill="#27407c"/><line x1="86" y1="100" x2="84" y2="128" stroke="#f7d54c" stroke-width="5"/><line x1="112" y1="100" x2="114" y2="128" stroke="#c22b2b" stroke-width="5"/></svg>',
+ ch:['Swiss Guard','Praetorian Guard','Royal Guard','Roman Legion','National Gendarmerie'], a:0,
+ h:['กองกำลังรักษาพระองค์ของโป๊ป ประจำการตั้งแต่ ค.ศ. 1506 (สมัย Julius II)','ผู้สมัครต้องเป็นชาวสวิส คาทอลิก สูง ≥174 ซม.'],
+ ex:'Swiss Guard — เครื่องแบบเรเนสซองส์สามสี อาวุธหลักคือหอก (pike); กองทัพเล็กที่สุด/มีสีสันที่สุดในโลก'},
+{c:'G', q:'จากรูป: พวงมาลัยที่มีเทียนม่วง 3 เล่ม + ชมพู 1 เล่ม ใช้ในเทศกาลใด?',
+ img:'<svg viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg"><ellipse cx="110" cy="102" rx="80" ry="22" fill="none" stroke="#2e7d32" stroke-width="16"/><ellipse cx="110" cy="102" rx="80" ry="22" fill="none" stroke="#1b5e20" stroke-width="6" stroke-dasharray="6 8"/><rect x="46" y="58" width="12" height="38" fill="#6a3fa0"/><rect x="86" y="50" width="12" height="44" fill="#6a3fa0"/><rect x="126" y="50" width="12" height="44" fill="#e57fa3"/><rect x="164" y="58" width="12" height="38" fill="#6a3fa0"/><g fill="#f7b32b"><ellipse cx="52" cy="50" rx="4" ry="7"/><ellipse cx="92" cy="42" rx="4" ry="7"/><ellipse cx="132" cy="42" rx="4" ry="7"/><ellipse cx="170" cy="50" rx="4" ry="7"/></g></svg>',
+ ch:['Advent','Lent','Eastertide','Epiphany','Christmastide'], a:0,
+ h:['เทศกาล "เตรียมรับเสด็จ" 4 สัปดาห์ก่อนคริสต์มาส','จุดเทียนเพิ่มทีละเล่มทุกวันอาทิตย์ — เล่มชมพูคือสัปดาห์ที่ 3'],
+ ex:'Advent wreath — ม่วง 3 + ชมพู 1 (สัปดาห์ที่ 3 = Joy); บางแห่งเพิ่มเทียนขาวกลาง = พระเยซู'},
+{c:'G', q:'จากรูป: ธรรมเนียมแขวนถุงเท้าในคืนคริสต์มาส มีที่มาจากใคร?',
+ img:'<svg viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg"><circle cx="110" cy="10" r="4" fill="#8a8fa8"/><line x1="110" y1="12" x2="110" y2="22" stroke="#8a8fa8" stroke-width="3"/><rect x="88" y="22" width="44" height="18" rx="6" fill="#fdfdfa"/><path d="M92 40 L92 88 Q92 114 68 114 Q48 114 48 96 Q48 84 60 80 L60 40 Z" fill="#c22b2b" transform="translate(28 0)"/><g fill="#f7d54c"><circle cx="105" cy="58" r="4"/><circle cx="112" cy="72" r="4"/><circle cx="103" cy="86" r="4"/></g></svg>',
+ ch:['นักบุญนิโคลัส','นักบุญเปโตร','โหราจารย์ (Magi)','ยอห์นผู้ให้บัพติสมา','นักบุญวาเลนไทน์'], a:0,
+ h:['ท่านแอบหย่อนทองคำ 3 ก้อนลงปล่องไฟ ช่วยสามสาวยากจน','ท่านคือต้นแบบของซานตาคลอส'],
+ ex:'St. Nicholas — ทองตกใส่ถุงเท้าที่ตากไว้ริมเตาผิง → ธรรมเนียมถุงเท้าคริสต์มาส + ต้นแบบซานตา'},
+{c:'G', q:'จากรูป: "รูปทรงวงกลม" ของพวงมาลัยคริสต์มาส สื่อถึงอะไร?',
+ img:'<svg viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg"><circle cx="110" cy="80" r="42" fill="none" stroke="#2e7d32" stroke-width="18"/><circle cx="110" cy="80" r="42" fill="none" stroke="#1b5e20" stroke-width="6" stroke-dasharray="5 7"/><g fill="#c22b2b"><circle cx="82" cy="56" r="4"/><circle cx="140" cy="64" r="4"/><circle cx="90" cy="108" r="4"/><circle cx="134" cy="102" r="4"/><circle cx="70" cy="86" r="4"/></g><rect x="100" y="26" width="20" height="14" rx="3" fill="#a01c1c"/><path d="M100 32 l-16 -8 v16 Z M120 32 l16 -8 v16 Z" fill="#c22b2b"/><path d="M104 40 q-8 12 -14 8 M116 40 q8 12 14 8" stroke="#a01c1c" stroke-width="5" fill="none"/></svg>',
+ ch:['มงกุฎหนามของพระเยซู','รัศมีของทูตสวรรค์','ดวงอาทิตย์ในฤดูหนาว','ความสามัคคีของอัครสาวก','โลกที่พระเจ้าทรงสร้าง'], a:0,
+ h:['เกี่ยวข้องกับพระทรมานของพระเยซู','สิ่งที่ทหารโรมันสวมให้พระองค์ก่อนตรึงกางเขน'],
+ ex:'วงกลม = มงกุฎหนาม / ใบเขียว = ชีวิตนิรันดร์ / โบแดง = ความรื่นเริง / ต้นฮอลลี่ไล่สิ่งชั่วร้าย'},
+{c:'G', q:'จากรูป: ต้นคริสต์มาสมีรากที่มาจากเรื่องราวใด?',
+ img:'<svg viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg"><rect x="102" y="112" width="16" height="18" fill="#6b4a2f"/><path d="M110 10 L138 46 L124 46 L148 82 L132 82 L156 116 L64 116 L88 82 L72 82 L96 46 L82 46 Z" fill="#2e7d32"/><path d="M110 2 l3.5 7 7.5 1 -5.5 5.5 1.5 8 -7 -4 -7 4 1.5 -8 -5.5 -5.5 7.5 -1 Z" fill="#f7d54c"/><g fill="#c22b2b"><circle cx="104" cy="54" r="5"/><circle cx="126" cy="76" r="5"/><circle cx="92" cy="98" r="5"/><circle cx="134" cy="106" r="5"/><circle cx="112" cy="90" r="5"/></g></svg>',
+ ch:['ต้นไม้ในสวนสวรรค์ (อาดัม–เอวา)','พุ่มไม้ลุกไหม้ของโมเสส','ต้นมะเดื่อที่พระเยซูสาป','ต้นมะกอกแห่งสวนเกทเสมนี','ไม้กระเบื้องเรือของโนอาห์'], a:0,
+ h:['มาจากละครหน้าวัดสมัยศตวรรษที่ 11 เรื่อง "บาปกำเนิด"','ของที่เคยแขวนบนต้นคือแอปเปิล'],
+ ex:'ต้นคริสต์มาส = ต้นไม้ในสวนสวรรค์ (บาปกำเนิดอาดัม–เอวา); แขวนแอปเปิล/ขนมปัง → กลายเป็นของขวัญ'},
+{c:'G', q:'จากรูป: ลูกไก่เจาะเปลือกไข่ออกมา — ไข่อีสเตอร์สื่อความหมายใด?',
+ img:'<svg viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg"><circle cx="110" cy="66" r="22" fill="#f7d54c"/><circle cx="103" cy="62" r="3" fill="#333"/><circle cx="117" cy="62" r="3" fill="#333"/><path d="M105 72 L110 79 L115 72 Z" fill="#f08c00"/><path d="M66 92 L76 80 L86 92 L96 80 L106 92 L116 80 L126 92 L136 80 L146 92 L154 82 Q160 128 110 132 Q60 128 66 92 Z" fill="#fdf3d8" stroke="#e8d9ae" stroke-width="2"/></svg>',
+ ch:['ชีวิตใหม่ — พระคริสต์ออกจากอุโมงค์','ความอุดมสมบูรณ์ของฤดูเก็บเกี่ยว','ความบริสุทธิ์ของพระแม่มารีย์','ของขวัญจากโหราจารย์','ศีลมหาสนิทมื้อแรก'], a:0,
+ h:['เทียบกับเหตุการณ์เช้าวันอาทิตย์อีสเตอร์','อุโมงค์ฝังพระศพที่ว่างเปล่า'],
+ ex:'ไข่อีสเตอร์ = ชีวิตใหม่ — ลูกไก่เจาะเปลือกออกมา เหมือนพระคริสต์ออกจากอุโมงค์'},
+{c:'G', q:'จากรูป: ดอกลิลลี่สีขาวเป็นดอกไม้ประจำเทศกาลใด?',
+ img:'<svg viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg"><path d="M110 70 q-2 40 -6 60" stroke="#2e7d32" stroke-width="5" fill="none"/><path d="M107 100 q-18 -2 -26 10 q16 6 26 -4Z" fill="#2e7d32"/><g fill="#fdfdfa" stroke="#e4e2d6" stroke-width="2"><path d="M110 66 Q84 44 66 52 Q74 76 104 74 Z"/><path d="M110 66 Q136 44 154 52 Q146 76 116 74 Z"/><path d="M110 68 Q96 34 110 18 Q124 34 110 68 Z"/></g><g stroke="#e3b23c" stroke-width="3"><line x1="110" y1="66" x2="102" y2="46"/><line x1="110" y1="66" x2="110" y2="42"/><line x1="110" y1="66" x2="118" y2="46"/></g><g fill="#e3b23c"><circle cx="102" cy="44" r="3"/><circle cx="110" cy="40" r="3"/><circle cx="118" cy="44" r="3"/></g></svg>',
+ ch:['อีสเตอร์','คริสต์มาส','Advent','มหาพรต (Lent)','Epiphany'], a:0,
+ h:['เทศกาลฉลองการคืนพระชนม์','สีขาว = ความบริสุทธิ์'],
+ ex:'Easter lily (ดอกพลับพลึงขาว) = ดอกไม้ประจำวันอีสเตอร์'},
+{c:'G', q:'จากรูป: ดอกไม้สีแดงชนิดนี้ (Poinsettia) เป็นดอกไม้ประจำเทศกาลใด?',
+ img:'<svg viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg"><g fill="#2e7d32"><path d="M110 70 L60 44 L96 40 Z"/><path d="M110 70 L160 44 L124 40 Z"/><path d="M110 70 L54 92 L92 102 Z"/><path d="M110 70 L166 92 L128 102 Z"/></g><g fill="#c22b2b"><path d="M110 70 L70 60 L100 46 Z"/><path d="M110 70 L150 60 L120 46 Z"/><path d="M110 70 L74 96 L104 98 Z"/><path d="M110 70 L146 96 L116 98 Z"/><path d="M110 70 L96 32 L124 32 Z"/><path d="M110 70 L86 112 L134 112 Z"/></g><g fill="#f7d54c"><circle cx="104" cy="68" r="4"/><circle cx="116" cy="68" r="4"/><circle cx="110" cy="76" r="4"/></g></svg>',
+ ch:['คริสต์มาส','อีสเตอร์','Advent','มหาพรต (Lent)','Thanksgiving'], a:0,
+ h:['เทศกาลช่วงปลายเดือนธันวาคม','อยู่ชุดเดียวกับต้นสน ถุงเท้า และพวงมาลัย'],
+ ex:'Poinsettia = ดอกไม้ประจำเทศกาลคริสต์มาส'},
+{c:'G', q:'จากรูป: ใบไม้ชนิดนี้ถูกโบกต้อนรับพระเยซูเสด็จเข้ากรุงเยรูซาเล็ม — ตรงกับวันใด?',
+ img:'<svg viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg"><path d="M40 120 Q110 90 180 24" stroke="#4a7c2f" stroke-width="5" fill="none"/><g stroke="#3f9142" stroke-width="4" fill="none"><path d="M70 108 q-6 -22 -20 -30"/><path d="M70 108 q22 -8 28 -22"/><path d="M96 94 q-4 -24 -16 -34"/><path d="M96 94 q24 -10 30 -26"/><path d="M124 76 q-2 -24 -12 -36"/><path d="M124 76 q24 -12 28 -28"/><path d="M150 56 q0 -22 -8 -34"/><path d="M150 56 q22 -14 24 -30"/></g></svg>',
+ ch:['วันอาทิตย์ใบลาน (Palm Sunday)','วันพุธรับเถ้า (Ash Wednesday)','วันพฤหัสศักดิ์สิทธิ์ (Maundy Thursday)','วันศุกร์ศักดิ์สิทธิ์ (Good Friday)','วันอาทิตย์อีสเตอร์ (Easter Sunday)'], a:0,
+ h:['วันแรกของสัปดาห์ศักดิ์สิทธิ์ (Holy Week)','ประชาชนโห่ร้อง "โฮซันนา แก่บุตรของดาวิด"'],
+ ex:'Palm Sunday — ใบลาน/ใบปาล์ม = ชัยชนะ; พระเยซูประทับลูกลาเสด็จเข้าเยรูซาเล็ม; ใบลานปีนี้ → เถ้าปีหน้า'},
+{c:'G', q:'จากรูป: เทียนขนาดใหญ่มีกางเขน อักษร Α–Ω และหมุด 5 จุด เรียกว่าอะไร?',
+ img:'<svg viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg"><rect x="94" y="30" width="32" height="100" rx="4" fill="#fdfaf0" stroke="#e4ddc4" stroke-width="2"/><ellipse cx="110" cy="20" rx="5" ry="9" fill="#f7b32b"/><line x1="110" y1="24" x2="110" y2="32" stroke="#6b4a2f" stroke-width="3"/><g stroke="#c22b2b" stroke-width="5"><line x1="110" y1="54" x2="110" y2="92"/><line x1="96" y1="72" x2="124" y2="72"/></g><g fill="#c9a227"><circle cx="110" cy="72" r="4"/><circle cx="110" cy="58" r="4"/><circle cx="110" cy="88" r="4"/><circle cx="99" cy="72" r="4"/><circle cx="121" cy="72" r="4"/></g><text x="110" y="48" text-anchor="middle" font-size="14" fill="#8a6d1f" font-family="serif">&#913;</text><text x="110" y="114" text-anchor="middle" font-size="14" fill="#8a6d1f" font-family="serif">&#937;</text></svg>',
+ ch:['เทียนปัสกา (Paschal Candle)','เทียน Advent','เทียนศีลล้างบาป','เทียนมิสซาเที่ยงคืน','เทียนถวายพระแม่มารีย์'], a:0,
+ h:['เสกในพิธีตื่นเฝ้าคืนวันเสาร์ศักดิ์สิทธิ์ (Easter Vigil)','หมุดกำยาน 5 เม็ด = บาดแผลทั้ง 5 ของพระเยซู'],
+ ex:'Paschal Candle = พระคริสต์ผู้คืนพระชนม์; Α–Ω = ปฐมและอวสาน; กำยาน 5 เม็ดรูปกางเขน = บาดแผลทั้ง 5'},
+{c:'G', q:'จากรูป: ไก่งวงอบทั้งตัวเป็นอาหารหลักของเทศกาลใด?',
+ img:'<svg viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg"><ellipse cx="110" cy="118" rx="86" ry="14" fill="#d8d2c0"/><ellipse cx="110" cy="84" rx="52" ry="34" fill="#a3622d"/><ellipse cx="96" cy="72" rx="30" ry="20" fill="#b8743c"/><path d="M152 66 q16 -10 18 -22 q6 12 -2 24 Z" fill="#a3622d"/><circle cx="172" cy="42" r="7" fill="#f3e2c0"/><path d="M60 64 q-14 -12 -14 -24 q12 2 20 16 Z" fill="#a3622d"/><circle cx="44" cy="38" r="7" fill="#f3e2c0"/></svg>',
+ ch:['Thanksgiving','คริสต์มาส','อีสเตอร์','Epiphany','ปัสกาของชาวยิว'], a:0,
+ h:['ฉลองในสหรัฐฯ (พฤหัสที่ 4 ของ พ.ย.) และแคนาดา','เพื่อนร่วมโต๊ะคือพายฟักทองและซอสแครนเบอร์รี'],
+ ex:'Thanksgiving — ไก่งวงอบยัดไส้ + พายฟักทอง + ซอสแครนเบอร์รี + ขนมปังข้าวโพด'},
+{c:'G', q:'จากรูป: แหวนทองของโป๊ปที่สลักรูปชายกำลังเหวี่ยงแหจับปลา — ชายในภาพสลักคือใคร?',
+ img:'<svg viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg"><path d="M110 132 a38 38 0 1 1 0.1 0" fill="none" stroke="#c9a227" stroke-width="12"/><ellipse cx="110" cy="50" rx="44" ry="30" fill="#e9dfa8" stroke="#c9a227" stroke-width="5"/><path d="M82 66 q10 -18 16 -20 l4 6 q-8 6 -12 18 Z" fill="#7a5a1e"/><circle cx="102" cy="38" r="5" fill="#7a5a1e"/><path d="M110 42 q22 2 26 20 M110 42 q14 8 12 24 M110 42 q4 12 -2 24" stroke="#7a5a1e" stroke-width="2.5" fill="none"/><path d="M76 70 q34 8 66 -4" stroke="#7a5a1e" stroke-width="3" fill="none"/></svg>',
+ ch:['นักบุญเปโตร','นักบุญอันดรูว์','พระเยซู','ยอห์นผู้ให้บัพติสมา','นักบุญนิโคลัส'], a:0,
+ h:['อดีตชาวประมงผู้กลายเป็นโป๊ปองค์แรก','พระเยซูตรัสเรียกท่านให้เป็น "ผู้จับคนดั่งจับปลา"'],
+ ex:'แหวนชาวประมง (Ring of the Fisherman) สลักรูปนักบุญเปโตรเหวี่ยงแห + พระนามโป๊ปองค์ปัจจุบัน; Camerlengo ทุบทิ้งเมื่อโป๊ปสิ้นพระชนม์'},
+{c:'G', q:'จากรูป: ผอบเงินกะไหล่ทองใบนี้ ใช้ทำอะไรในการประชุม Conclave?',
+ img:'<svg viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg"><rect x="58" y="124" width="104" height="8" rx="4" fill="#8a8fa8"/><rect x="104" y="102" width="12" height="22" fill="#b9bcc9"/><path d="M86 52 q-4 42 24 52 q28 -10 24 -52 Z" fill="#b9bcc9" stroke="#8a8fa8" stroke-width="3"/><path d="M82 46 h56 v8 h-56 Z" fill="#c9a227"/><path d="M96 32 h28 l4 10 h-36 Z" fill="#b9bcc9"/><circle cx="110" cy="28" r="5" fill="#c9a227"/><rect x="128" y="4" width="26" height="16" rx="2" fill="#fdfaf0" transform="rotate(18 141 12)"/></svg>',
+ ch:['รับบัตรลงคะแนนเลือกโป๊ป','เก็บเถ้าของบัตรที่เผาแล้ว','ใส่น้ำมันเจิมโป๊ปองค์ใหม่','เก็บรักษาแหวนชาวประมง','ใส่กำยานสำหรับพิธีมิสซา'], a:0,
+ h:['คาร์ดินัลชูบัตร กล่าวคำสาบานหน้าภาพ The Last Judgement แล้วหย่อนลงในนี้','Scrutineers จะเขย่าและนับบัตรจากในนี้'],
+ ex:'ผอบ (urn) — จุดหย่อนบัตรลงคะแนน; Scrutineers เขย่า นับจำนวน แล้วขานชื่อทีละใบ'},
+// ---------- 🙏 โป๊ปเยือนไทย (บท 10) ----------
+{c:'K', q:'พระสันตะปาปาองค์แรกในประวัติศาสตร์ที่เสด็จเยือนประเทศไทย คือองค์ใด?',
+ ch:['John Paul II','Francis','John XXIII','Leo XIII','Benedict XVI'], a:0,
+ h:['เสด็จเยือนปี ค.ศ. 1984','โป๊ปชาวโปแลนด์ องค์ที่ 264'],
+ ex:'John Paul II เสด็จเยือนไทยปี 1984 = โป๊ปองค์แรกที่มาไทย (องค์ที่ 2 คือ Francis 2019)'},
+{c:'K', q:'พระสันตะปาปา John Paul II เสด็จเยือนประเทศไทยในปีใด?',
+ ch:['1984','1960','1969','2019','1897'], a:0,
+ h:['ตรงกับ พ.ศ. 2527','ก่อนที่ Francis จะมาเยือน 35 ปี'],
+ ex:'ค.ศ. 1984 (พ.ศ. 2527) — John Paul II เสด็จเยือนไทยครั้งประวัติศาสตร์ (10–11 พ.ค.)'},
+{c:'K', q:'ในหลวง ร.9 และพระบรมวงศานุวงศ์ ทรงต้อนรับพระสันตะปาปา John Paul II ณ สถานที่ใด (11 พ.ค. 1984)?',
+ ch:['พระที่นั่งจักรีมหาปราสาท','วัดราชบพิธสถิตมหาสีมาราม','อาสนวิหารอัสสัมชัญ บางรัก','ตึกสันติไมตรี ทำเนียบรัฐบาล','สนามศุภชลาศัย'], a:0,
+ h:['เป็นพระที่นั่งในพระบรมมหาราชวัง','ชื่อขึ้นต้นด้วย "จักรี"'],
+ ex:'ต้อนรับ ณ พระที่นั่งจักรีมหาปราสาท 11 พ.ค. 1984'},
+{c:'K', q:'พระสันตะปาปา John Paul II เข้าเฝ้าสมเด็จพระสังฆราชของไทย ณ วัดใด (10 พ.ค. 1984)?',
+ ch:['วัดราชบพิธสถิตมหาสีมาราม','วัดพระศรีรัตนศาสดาราม','วัดนักบุญเปโตร','อาสนวิหารอัสสัมชัญ','วัดสัมพันธวงศาราม'], a:0,
+ h:['เป็นวัดที่ประทับของสมเด็จพระสังฆราช','ชื่อขึ้นต้นด้วย "ราชบพิธ"'],
+ ex:'เข้าเฝ้าสมเด็จพระสังฆราชที่วัดราชบพิธสถิตมหาสีมาราม 10 พ.ค. 1984'},
+{c:'K', q:'พระสันตะปาปาองค์ที่ 2 ที่เสด็จเยือนประเทศไทย (ปี 2019) คือองค์ใด?',
+ ch:['Francis','John Paul II','Benedict XVI','Leo XIV','John XXIII'], a:0,
+ h:['โป๊ปชาวอาร์เจนตินา องค์ที่ 266','เสด็จถึงไทยที่สนามบินดอนเมือง'],
+ ex:'Francis เสด็จเยือนไทยปี 2019 (พ.ศ. 2562) = องค์ที่ 2 ในประวัติศาสตร์'},
+{c:'K', q:'พระสันตะปาปา Francis เสด็จเยือนประเทศไทยในปีใด?',
+ ch:['2019','1984','2013','1969','1960'], a:0,
+ h:['ตรงกับ พ.ศ. 2562','35 ปีหลัง John Paul II'],
+ ex:'ค.ศ. 2019 (พ.ศ. 2562) — Francis เสด็จเยือนไทย'},
+{c:'K', q:'พระสันตะปาปา Francis ทรงประกอบพิธีมิสซากลางแจ้ง ณ สนามใดในกรุงเทพฯ (2019)?',
+ ch:['สนามศุภชลาศัย','สนามราชมังคลากีฬาสถาน','สนามหลวง','ท้องสนามหลวง','สนามกีฬาไทย-ญี่ปุ่น'], a:0,
+ h:['เป็นสนามกีฬาแห่งชาติเก่าแก่ย่านปทุมวัน','ชื่อขึ้นต้นด้วย "ศุภ"'],
+ ex:'Francis ประกอบมิสซากลางแจ้งที่สนามศุภชลาศัย (สนามกีฬาแห่งชาติ) ปี 2019'},
+{c:'K', q:'ไทยกับวาติกันสถาปนาความสัมพันธ์ทางการทูตอย่างเป็นทางการ เมื่อวันใด?',
+ ch:['28 เมษายน ค.ศ. 1969','11 พฤษภาคม ค.ศ. 1984','1 มิถุนายน ค.ศ. 1955','12 กันยายน ค.ศ. 2013','23 พฤศจิกายน ค.ศ. 2019'], a:0,
+ h:['อยู่ระหว่างการเยือนของ ร.9 (1960) กับการมาของ John Paul II (1984)','ปี ค.ศ. 1969'],
+ ex:'28 เม.ย. 1969 — ไทยกับวาติกันสถาปนาความสัมพันธ์ทางการทูตอย่างเป็นทางการ'},
+{c:'K', q:'พระสันตะปาปา Francis เสด็จถึงประเทศไทยที่สนามบินใด (2019)?',
+ ch:['ดอนเมือง','สุวรรณภูมิ','อู่ตะเภา','เชียงใหม่','หาดใหญ่'], a:0,
+ h:['เป็นสนามบินเก่าแก่ทางเหนือของกรุงเทพฯ','ไม่ใช่สนามบินหลักปัจจุบัน'],
+ ex:'Francis เสด็จถึงไทยที่สนามบินดอนเมือง ปี 2019'},
+{c:'K', q:'พระสันตะปาปา Francis ทรงพบปะนักบวชคาทอลิกที่วัดนักบุญเปโตร และสักการสถานบุญราศีนิโคลาส บุญเกิด กฤษบำรุง ณ อำเภอใด?',
+ ch:['สามพราน นครปฐม','บางรัก กรุงเทพฯ','เมือง เชียงใหม่','ศรีราชา ชลบุรี','เมือง นครราชสีมา'], a:0,
+ h:['เป็นแหล่งบ้านเณรใหญ่/วิทยาลัยแสงธรรมด้วย','อยู่จังหวัดนครปฐม'],
+ ex:'สามพราน นครปฐม — Francis พบนักบวชที่วัดนักบุญเปโตร + สักการสถานบุญราศีนิโคลาส บุญเกิด'},
+// ---------- 🕊️ การเผยแผ่ (บท 12) ----------
+{c:'D', q:'อัครสาวก 2 คนที่นำศาสนาคริสต์เข้าไปเผยแผ่ในยุโรปและกรุงโรม ในช่วงต้นศตวรรษที่ 1 คือใคร?',
+ ch:['นักบุญเปาโล และ นักบุญเปโตร','นักบุญเปโตร และ นักบุญอันดรูว์','ยอห์น และ ยูดาส','นักบุญเปาโล และ ยอห์น','อันดรูว์ และ โจเซฟ'], a:0,
+ h:['คนหนึ่งคือโป๊ปองค์แรก อีกคนเดิมชื่อ Saul','ภาษาอังกฤษ: St. Paul & St. Peter'],
+ ex:'St. Paul (เปาโล) + St. Peter (เปโตร) นำคริสต์เข้ายุโรป/โรม เน้นภราดรภาพ ความเสมอภาค ความรัก'},
+{c:'D', q:'จักรพรรดิโรมันพระองค์ใดออก "กฤษฎีกาแห่งมิลาน (Edict of Milan)" ปี ค.ศ. 313 ทำให้ศาสนาคริสต์ถูกกฎหมาย?',
+ ch:['คอนสแตนตินที่ 1','ทีโอโดซิอัสที่ 1','เนโร','เฮเดรียน','มักเซนติอุส'], a:0,
+ h:['เป็นจักรพรรดิโรมันองค์แรกที่นับถือคริสต์','เมืองหลวงใหม่ตั้งชื่อตามพระองค์'],
+ ex:'Constantine I (The Great) ออก Edict of Milan ปี 313 = คริสต์ถูกกฎหมาย; ท่านเป็นจักรพรรดิองค์แรกที่นับถือคริสต์'},
+{c:'D', q:'"กฤษฎีกาแห่งมิลาน (Edict of Milan)" ประกาศในปี ค.ศ. ใด?',
+ ch:['313','394','1054','312','330'], a:0,
+ h:['ปีถัดจากสงครามสะพานมิลเวียน 1 ปี','เลขน้อยกว่าปีที่คริสต์เป็นศาสนาประจำจักรวรรดิ'],
+ ex:'ค.ศ. 313 = Edict of Milan (คริสต์ถูกกฎหมาย); อย่าสับกับ 394 (ศาสนาประจำจักรวรรดิ)'},
+{c:'D', q:'ก่อนสงครามสะพานมิลเวียน (ค.ศ. 312) คอนสแตนตินฝันว่าให้ทำสิ่งใด จึงได้ชัยชนะเหนือมักเซนติอุส?',
+ ch:['ใส่เครื่องหมายของพระคริสต์บนโล่ทหาร','สร้างโบสถ์กลางสนามรบ','ปล่อยเชลยคริสตชนทั้งหมด','เผารูปเคารพของโรมัน','สวมมงกุฎหนามเข้าสู้'], a:0,
+ h:['เกี่ยวกับสัญลักษณ์บนอาวุธ/เกราะของทหาร','คำละติน "hoc signo victor eris = ด้วยเครื่องหมายนี้ เจ้าจะมีชัย"'],
+ ex:'คอนสแตนตินใส่เครื่องหมายพระคริสต์บนโล่ทหาร → ชนะ Maxentius ที่สะพานมิลเวียน (312); ธงกองทัพชื่อ Labarum'},
+{c:'D', q:'จักรพรรดิพระองค์ใดประกาศให้คริสต์ศาสนาเป็น "ศาสนาประจำจักรวรรดิโรมัน" ในปี ค.ศ. 394?',
+ ch:['ทีโอโดซิอัสที่ 1','คอนสแตนตินที่ 1','เฮเดรียน','เนโร','จัสติเนียน'], a:0,
+ h:['หลัง Edict of Milan ราว 80 ปี','ครองราชย์ ค.ศ. 379–395'],
+ ex:'Theodosius I (394) ประกาศคริสต์เป็นศาสนาประจำจักรวรรดิโรมัน — ต่างจาก Constantine ที่แค่ทำให้ถูกกฎหมาย (313)'},
+{c:'D', q:'คอนสแตนตินย้ายเมืองหลวงไปที่เมืองไบแซนติอูม แล้วเปลี่ยนชื่อเมืองเป็นอะไร?',
+ ch:['คอนสแตนติโนเปิล','โรมใหม่น้อย','ไบแซนไทน์','นิเซีย','อันติออก'], a:0,
+ h:['แปลว่า "เมืองของคอนสแตนติน"','ต่อมาเป็นศูนย์กลางนิกายออร์โธดอกซ์'],
+ ex:'Byzantium → Constantinople ("เมืองของคอนสแตนติน", Nova Roma) — ศูนย์กลางออร์โธดอกซ์ในเวลาต่อมา'},
+{c:'D', q:'เหตุการณ์ "การแตกแยกครั้งใหญ่ (Great Schism)" ปี ค.ศ. 1054 ทำให้คริสต์ศาสนาแยกเป็น 2 นิกายใด?',
+ ch:['โรมันคาทอลิก & ออร์โธดอกซ์','คาทอลิก & โปรเตสแตนต์','ออร์โธดอกซ์ & โปรเตสแตนต์','ลูเธอรัน & คาลวิน','แองกลิกัน & คาทอลิก'], a:0,
+ h:['เป็นการแยกตะวันตก (โรม) ออกจากตะวันออก (คอนสแตนติโนเปิล)','ยังไม่เกี่ยวกับโปรเตสแตนต์ (นั่นเกิด ศต.16)'],
+ ex:'Great Schism 1054 = แยกนิกายตะวันตก (โรมันคาทอลิก) ↔ ตะวันออก (ออร์โธดอกซ์)'},
+{c:'D', q:'การแตกแยกเป็นนิกายคาทอลิกกับออร์โธดอกซ์ (Great Schism) เกิดขึ้นในปี ค.ศ. ใด?',
+ ch:['1054','1517','313','1648','1534'], a:0,
+ h:['ต้นศตวรรษที่ 11','ก่อนการปฏิรูปศาสนาโปรเตสแตนต์เกือบ 500 ปี'],
+ ex:'ค.ศ. 1054 = Great Schism (คาทอลิก/ออร์โธดอกซ์)'},
+{c:'D', q:'ผู้นำการปฏิรูปศาสนา (Reformation) ผู้แปลไบเบิลเป็นภาษาเยอรมันและถูกขับออกจากศาสนจักรปี 1521 คือใคร?',
+ ch:['มาร์ติน ลูเธอร์','จอห์น คาลวิน','อูลริช สวิงลี','พระเจ้าเฮนรีที่ 8','จอห์น น็อกซ์'], a:0,
+ h:['เป็นบาทหลวงชาวเยอรมัน เกิดที่แซกโซนี','ชื่อนิกายตั้งตามชื่อท่าน (Lutheran)'],
+ ex:'Martin Luther (1483–1546) ชาวเยอรมัน — ต้นกำเนิดนิกายลูเธอรัน; ถูก Excommunication ปี 1521'},
+{c:'D', q:'สาเหตุสำคัญข้อหนึ่งของการปฏิรูปศาสนา (Reformation) เกี่ยวกับการหาเงินของศาสนจักร คืออะไร?',
+ ch:['การขายใบไถ่บาป (Indulgence)','การเก็บภาษีโบสถ์','การขายที่ดินวาติกัน','การบังคับบริจาคทศางค์','การค้าทาสในอาณานิคม'], a:0,
+ h:['เป็นการ "ซื้อ" การอภัยบาป','ภาษาอังกฤษขึ้นต้นด้วย In-'],
+ ex:'การขายใบไถ่บาป (Indulgence) — หนึ่งในสาเหตุที่ Luther วิจารณ์ นำสู่การปฏิรูปศาสนา'},
+{c:'D', q:'นิกายย่อยของโปรเตสแตนต์ที่นำโดย "จอห์น คาลวิน (John Calvin)" มีศูนย์กลางอิทธิพลอยู่ที่เมืองใด?',
+ ch:['เจนีวา','วิตเทนเบิร์ก','แคนเทอร์เบอรี','ปารีส','ซูริก'], a:0,
+ h:['เมืองในสวิตเซอร์แลนด์','คาลวินอาศัยที่นี่จนสิ้นใจปี 1564'],
+ ex:'John Calvin มีอิทธิพลมากที่เจนีวา (Geneva); แนวคิดแพร่ผ่าน John Knox → นิกายเพรสไบทีเรียน'},
+{c:'D', q:'นิกายเพรสไบทีเรียน (Presbyterian) ในสก็อตแลนด์ เกิดจากการเผยแผ่แนวคิดของคาลวินโดยใคร?',
+ ch:['จอห์น น็อกซ์','จอห์น เวสลีย์','จอร์จ ฟอกซ์','วิลเลียม เพนน์','ชาร์ล รัสเซลล์'], a:0,
+ h:['ชื่อขึ้นต้นด้วย John เหมือนคาลวิน','นามสกุล Knox'],
+ ex:'John Knox นำคำสอนคาลวินไปสก็อตแลนด์ → นิกายเพรสไบทีเรียน (Presbyterian)'},
+{c:'D', q:'ผู้ก่อตั้งนิกายเมโธดิสต์ (Methodism) ชาวอังกฤษ คือใคร?',
+ ch:['จอห์น เวสลีย์','จอห์น น็อกซ์','จอร์จ ฟอกซ์','ชาร์ล รัสเซลล์','โจเซฟ สมิธ'], a:0,
+ h:['ชาวอังกฤษ มีชีวิตช่วง ค.ศ. 1703–1791','นามสกุล Wesley'],
+ ex:'John Wesley (1703–91) ชาวอังกฤษ = ผู้ก่อตั้งนิกายเมโธดิสต์'},
+{c:'D', q:'ผู้ก่อตั้งนิกายมอร์มอน (Mormonism) ผู้เพิ่มความเชื่อใน "คัมภีร์มอร์มอน" คือใคร?',
+ ch:['โจเซฟ สมิธ','ชาร์ล รัสเซลล์','จอร์จ ฟอกซ์','วิลเลียม เพนน์','มาร์ติน ลูเธอร์'], a:0,
+ h:['ชาวอเมริกัน','นามสกุลเดียวกับคำว่า "ช่างเหล็ก" ในภาษาอังกฤษ (Smith)'],
+ ex:'Joseph Smith = ผู้ก่อตั้งมอร์มอน (The Church of Jesus Christ of Latter-Day Saints) + คัมภีร์มอร์มอน'},
+{c:'D', q:'นิกายเควกเกอร์ (Quaker) แพร่หลายในอเมริกาโดยผู้ใด ในรัฐเพนซิลเวเนีย?',
+ ch:['วิลเลียม เพนน์','จอร์จ ฟอกซ์','จอห์น เวสลีย์','โจเซฟ สมิธ','ชาร์ล รัสเซลล์'], a:0,
+ h:['ชื่อรัฐ Pennsylvania ตั้งตามชื่อตระกูลของเขา','นามสกุล Penn'],
+ ex:'William Penn เผยแผ่ Quaker ในรัฐเพนซิลเวเนีย (Quaker ก่อตั้งในอังกฤษโดย George Fox)'},
+{c:'D', q:'"สงคราม 30 ปี (Thirty Years\' War)" ระหว่างคาทอลิกกับโปรเตสแตนต์ เกิดขึ้นในช่วงปีใด?',
+ ch:['ค.ศ. 1618–1648','ค.ศ. 1517–1547','ค.ศ. 1054–1084','ค.ศ. 1534–1564','ค.ศ. 1700–1730'], a:0,
+ h:['ต้นศตวรรษที่ 17','สมรภูมิหลักอยู่ในเยอรมนี'],
+ ex:'Thirty Years\' War = ค.ศ. 1618–1648 (คาทอลิก vs โปรเตสแตนต์ ส่วนใหญ่ในเยอรมนี)'},
+{c:'D', q:'สงคราม 30 ปี ยุติลงด้วยสนธิสัญญาสันติภาพฉบับใด?',
+ ch:['สนธิสัญญาเวสต์ฟาเลีย (Peace of Westphalia)','สนธิสัญญาลาเตรัน','สนธิสัญญาแวร์ซาย','สนธิสัญญาทอร์เดซิยัส','สนธิสัญญาเวียนนา'], a:0,
+ h:['ปี ค.ศ. 1648 วางหลัก "รัฐมีอำนาจอธิปไตย"','ชื่อขึ้นต้นด้วย West-'],
+ ex:'Peace of Westphalia (1648) ยุติสงคราม 30 ปี — จุดกำเนิดหลักรัฐอธิปไตยสมัยใหม่; โป๊ปลดอำนาจ'},
+{c:'D', q:'จุดเริ่มต้นของสงคราม 30 ปี มาจากการกบฏของโปรเตสแตนต์ในดินแดนใด (ปัจจุบันคือสาธารณรัฐเช็ก)?',
+ ch:['โบฮีเมีย (Bohemia)','แซกโซนี (Saxony)','บาวาเรีย (Bavaria)','ลอมบาร์ดี (Lombardy)','ฟลานเดอร์ส (Flanders)'], a:0,
+ h:['ปัจจุบันคือสาธารณรัฐเช็ก (Czech)','กบฏต่อพระเจ้าเฟอร์ดินานด์ที่ 2 (คาทอลิก)'],
+ ex:'โบฮีเมีย (Bohemia = เช็ก) — โปรเตสแตนต์กบฏต่อ Ferdinand II จุดชนวนสงคราม 30 ปี'},
+{c:'D', q:'นิกายลูเธอรัน (Lutheran) มีผู้นับถือมากในกลุ่มประเทศใด?',
+ ch:['เยอรมนี & สแกนดิเนเวีย','อิตาลี & สเปน','กรีซ & รัสเซีย','อังกฤษ & ไอร์แลนด์','ฝรั่งเศส & โปแลนด์'], a:0,
+ h:['ประเทศต้นกำเนิด + กลุ่มประเทศยุโรปเหนือ','เดนมาร์ก สวีเดน นอร์เวย์ ฟินแลนด์'],
+ ex:'Lutheran นับถือมากในเยอรมนี + สแกนดิเนเวีย (เดนมาร์ก/สวีเดน/นอร์เวย์/ฟินแลนด์)'},
+{c:'D', q:'ในทวีปอเมริกา ภูมิภาค "Latin America" (ตั้งแต่เม็กซิโกลงไป) ส่วนใหญ่นับถือนิกายใด?',
+ ch:['โรมันคาทอลิก','โปรเตสแตนต์','ออร์โธดอกซ์','แองกลิกัน','ลูเธอรัน'], a:0,
+ h:['ตรงข้ามกับ Anglo America (แคนาดา+สหรัฐฯ) ที่เป็นโปรเตสแตนต์','ได้อิทธิพลจากสเปน/โปรตุเกส'],
+ ex:'Latin America (เม็กซิโกลงไป) = คาทอลิก / Anglo America (แคนาดา+สหรัฐฯ) = โปรเตสแตนต์'},
+{c:'D', q:'ผู้ที่พระเจ้าเฮนรีที่ 8 ทรงแต่งตั้งเป็นอาร์คบิชอปแห่งแคนเทอร์เบอรีคนแรกของนิกายแองกลิกัน (ค.ศ. 1533) คือใคร?',
+ ch:['โธมัส แครนเมอร์','จัสติน เวลบี','โธมัส มอร์','จอห์น น็อกซ์','จอห์น คาลวิน'], a:0,
+ h:['ชื่อขึ้นต้นด้วย Thomas','นามสกุล Cranmer'],
+ ex:'Thomas Cranmer — Archbishop of Canterbury คนแรกที่ Henry VIII แต่งตั้งเอง (1533)'},
+// ---------- 📊 สถิติผู้นับถือ (บท 13) ----------
+{c:'N', q:'นิกายใดของคริสต์ศาสนามีผู้นับถือ "มากที่สุด" ในโลก (ราว 50–52%)?',
+ ch:['คาทอลิก','โปรเตสแตนต์','ออร์โธดอกซ์','แองกลิกัน','ลูเธอรัน'], a:0,
+ h:['ราว 1,300–1,400 ล้านคน = ครึ่งหนึ่งของคริสตชนทั้งหมด','ศูนย์กลางอยู่ที่วาติกัน'],
+ ex:'คาทอลิก = มากสุด (1.3–1.4 พันล้าน / 50–52%) > โปรเตสแตนต์ (38–40%) > ออร์โธดอกซ์ (10–11%)'},
+{c:'N', q:'ลำดับจำนวนผู้นับถือ 3 นิกายหลักของคริสต์ในโลก จากมากไปน้อย คือข้อใด?',
+ ch:['คาทอลิก > โปรเตสแตนต์ > ออร์โธดอกซ์','โปรเตสแตนต์ > คาทอลิก > ออร์โธดอกซ์','คาทอลิก > ออร์โธดอกซ์ > โปรเตสแตนต์','ออร์โธดอกซ์ > คาทอลิก > โปรเตสแตนต์','โปรเตสแตนต์ > ออร์โธดอกซ์ > คาทอลิก'], a:0,
+ h:['นิกายที่มีโป๊ปเป็นประมุขมาก่อน','ออร์โธดอกซ์น้อยสุดใน 3 นิกาย'],
+ ex:'โลก: Catholic (50–52%) > Protestant (38–40%) > Orthodox (10–11%)'},
+{c:'N', q:'คริสต์ศาสนิกชนทั่วโลกคิดเป็นประมาณร้อยละเท่าใดของประชากรโลก?',
+ ch:['31–33%','50–52%','10–11%','70–75%','5–7%'], a:0,
+ h:['ราว 2,600 ล้านคนจากประชากรโลกทั้งหมด','ประมาณ 1 ใน 3 ของโลก'],
+ ex:'คริสต์ ~2,600 ล้านคน = ~31–33% ของประชากรโลก (มากที่สุดในบรรดาศาสนา)'},
+{c:'N', q:'ในทวีปแอฟริกา ประชากรนับถือศาสนาคริสต์คิดเป็นประมาณร้อยละเท่าใดของทั้งทวีป?',
+ ch:['45%','86%','10%','99%','25%'], a:0,
+ h:['น้อยกว่าครึ่งเล็กน้อย','แอฟริกาเป็นทวีปที่คริสต์กับอิสลามใกล้เคียงกัน'],
+ ex:'แอฟริกา ~45% เป็นคริสต์ (ทวีปที่คริสต์ยังไม่เกินครึ่ง ต่างจากยุโรป/อเมริกา)'},
+{c:'N', q:'ตามข้อมูลสำรวจปี 2015 ในประเทศไทย นิกายใดมีผู้นับถือ "มากกว่า" (กลับด้านกับระดับโลก)?',
+ ch:['โปรเตสแตนต์','คาทอลิก','ออร์โธดอกซ์','แองกลิกัน','มอร์มอน'], a:0,
+ h:['ในระดับโลกคาทอลิกนำ แต่ในไทยกลับกัน','ราว 444,372 คน มากกว่าคาทอลิก 369,636 คน'],
+ ex:'⚠️ ในไทย (2015) โปรเตสแตนต์ (444,372) > คาทอลิก (369,636) — ตรงข้ามกับระดับโลก'},
+{c:'N', q:'ตามข้อมูลสำรวจปี 2015 คริสต์ศาสนิกชนไทยมีจำนวนราวเท่าใด (คิดเป็น ~1.27% ของประชากร)?',
+ ch:['ราว 814,000 คน','ราว 240,000 คน','ราว 2,600,000 คน','ราว 5,000,000 คน','ราว 100,000 คน'], a:0,
+ h:['ตัวเลขปี 2015 มากกว่าสำมะโนปี 2011 (ราว 409,000) เกือบเท่าตัว','ประมาณแปดแสนคน'],
+ ex:'ปี 2015: คริสต์ในไทย 814,508 คน (1.27%); ปี 2011 (สำมะโน) = 409,110 คน (0.7%)'},
+{c:'N', q:'ทวีปใดต่อไปนี้ "ไม่ได้" มีประชากรส่วนใหญ่นับถือศาสนาคริสต์?',
+ ch:['เอเชีย','ยุโรป','อเมริกาเหนือ','อเมริกาใต้','ออสเตรเลีย–โอเชียเนีย'], a:0,
+ h:['ทวีปที่เป็นต้นกำเนิดของคริสต์เอง แต่ปัจจุบันคริสต์เป็นชนกลุ่มน้อย','ทวีปที่ใหญ่ที่สุดและมีหลายศาสนาหลัก'],
+ ex:'เอเชียคริสต์เป็นส่วนน้อย (แม้เป็นแหล่งกำเนิด); ยุโรป/อเมริกาเหนือ-ใต้/ออสเตรเลีย ส่วนใหญ่เป็นคริสต์'},
+{c:'N', q:'นิกายออร์โธดอกซ์มีผู้นับถือคิดเป็นสัดส่วนเท่าใดในบรรดาคริสตชนทั่วโลก?',
+ ch:['10–11%','38–40%','50–52%','25–30%','1–2%'], a:0,
+ h:['น้อยที่สุดใน 3 นิกายหลัก','ราว 250–270 ล้านคน'],
+ ex:'Orthodox = 10–11% (250–270 ล้าน) — น้อยสุดใน 3 นิกายหลัก'},
+// ---------- ⛪🇹🇭 คริสต์ในไทย (บท 14) ----------
+{c:'Y', q:'ศาสนาคริสต์นิกายโรมันคาทอลิกเข้ามาเผยแผ่ในไทยครั้งแรกในสมัยใด?',
+ ch:['สมัยอยุธยา (พระมหาธรรมราชา)','สมัยธนบุรี','สมัยรัตนโกสินทร์ (ร.3)','สมัยสุโขทัย','สมัยรัตนโกสินทร์ (ร.5)'], a:0,
+ h:['ค.ศ. 1567 โดยคณะโดมินิกัน','ยุคก่อนกรุงแตกครั้งที่ 1'],
+ ex:'คาทอลิกเข้าไทยครั้งแรกสมัยอยุธยา (พระมหาธรรมราชา) ค.ศ. 1567 โดยคณะโดมินิกัน'},
+{c:'Y', q:'มิชชันนารีคณะใดเป็นคณะแรกที่เข้ามาเผยแผ่นิกายคาทอลิกในไทย (ค.ศ. 1567)?',
+ ch:['โดมินิกัน (Dominican)','ฟรังซิสกัน (Franciscan)','เยซูอิต (Jesuit)','เพรสไบทีเรียน (Presbyterian)','แบพติสต์ (Baptist)'], a:0,
+ h:['เข้ามา 2 คนสอนชาวโปรตุเกส','ชื่อขึ้นต้นด้วย Do-'],
+ ex:'คณะโดมินิกัน (Dominican) 2 คน = คณะแรก (1567); ต่อมามีฟรังซิสกัน + เยซูอิต'},
+{c:'Y', q:'ศาสนาคริสต์นิกายโปรเตสแตนต์เข้ามาเผยแผ่ในไทยครั้งแรกในสมัยใด?',
+ ch:['สมัยรัตนโกสินทร์ตอนต้น','สมัยอยุธยา','สมัยธนบุรี','สมัยสุโขทัย','สมัยพระนารายณ์'], a:0,
+ h:['ค.ศ. 1828 โดย Gützlaff และ Tomlin','หลังนิกายคาทอลิกกว่า 260 ปี'],
+ ex:'โปรเตสแตนต์เข้าไทยครั้งแรกสมัยรัตนโกสินทร์ตอนต้น (1828) — ช้ากว่าคาทอลิกมาก'},
+{c:'Y', q:'มิชชันนารีโปรเตสแตนต์ผู้ได้ชื่อว่าเป็น "บิดาแห่งการพิมพ์สมัยใหม่ของไทย" คือใคร?',
+ ch:['หมอบรัดเลย์ (Dan Beach Bradley)','ดร.เฮาส์ (Samuel House)','กุตสลาฟ (Gützlaff)','ทอมลิน (Tomlin)','แมตตูน (Mattoon)'], a:0,
+ h:['ชาวอเมริกัน คณะเพรสไบทีเรียน เข้ามาสมัย ร.3','คนไทยเรียกกันติดปากว่า "หมอบลัดเลย์"'],
+ ex:'Dan Beach Bradley (หมอบรัดเลย์) = บิดาการพิมพ์ไทย + ผ่าตัด/ปลูกฝีครั้งแรก; ถึงไทย 1835 สมัย ร.3'},
+{c:'Y', q:'หมอบรัดเลย์เดินทางถึงกรุงเทพฯ ในปี ค.ศ. 1835 ตรงกับรัชสมัยใด?',
+ ch:['รัชกาลที่ 3','รัชกาลที่ 4','รัชกาลที่ 5','รัชกาลที่ 2','รัชกาลที่ 1'], a:0,
+ h:['ท่านอยู่สยามผ่าน 3 แผ่นดิน (ร.3–ร.4–ร.5) โดยเริ่มที่รัชกาลนี้','รัชกาลที่พระราชทานรางวัลปลูกฝีให้ท่าน'],
+ ex:'หมอบรัดเลย์ถึงไทย 18 ก.ค. 1835 = สมัย ร.3 (อยู่ยาว 3 แผ่นดินถึง ร.5)'},
+{c:'Y', q:'หนังสือพิมพ์ฉบับแรกของสยามที่หมอบรัดเลย์จัดพิมพ์ (พ.ศ. 2387) ชื่อว่าอะไร?',
+ ch:['บางกอกรีคอเดอ (The Bangkok Recorder)','บางกอกกาลันเดอร์','ราชกิจจานุเบกษา','จินดามณี','ดรุโณวาท'], a:0,
+ h:['ชื่อภาษาอังกฤษแปลว่า "ผู้บันทึกแห่งบางกอก"','ขึ้นต้นด้วย Bangkok'],
+ ex:'The Bangkok Recorder (บางกอกรีคอเดอ, 4 ก.ค. 2387) = หนังสือพิมพ์ฉบับแรกของสยาม'},
+{c:'Y', q:'สองมิชชันนารีโปรเตสแตนต์กลุ่มแรกที่เข้าไทย (23 ส.ค. 1828) คือใคร?',
+ ch:['กุตสลาฟ และ ทอมลิน','บรัดเลย์ และ เฮาส์','แมตตูน และ เฮาส์','กุตสลาฟ และ บรัดเลย์','ทอมลิน และ แมตตูน'], a:0,
+ h:['คนหนึ่งเป็นชาวเยอรมัน อีกคนเป็นชาวอังกฤษ','ยังไม่ใช่หมอบรัดเลย์ (ท่านมาปี 1835)'],
+ ex:'Karl Gützlaff (เยอรมัน) + Jacob Tomlin (อังกฤษ) = โปรเตสแตนต์ 2 คนแรก (1828)'},
+{c:'Y', q:'โรงเรียนคาทอลิกแห่งแรก ๆ ที่ก่อตั้งในกรุงเทพฯ ปี ค.ศ. 1877 คือโรงเรียนใด?',
+ ch:['อัสสัมชัญ บางรัก','กรุงเทพคริสเตียนวิทยาลัย','เซนต์คาเบรียล','มงฟอร์ตวิทยาลัย','ดาราวิทยาลัย'], a:0,
+ h:['อยู่ย่านบางรัก ใกล้อาสนวิหารอัสสัมชัญ','ชื่อขึ้นต้นด้วย "อัสสัมชัญ"'],
+ ex:'โรงเรียนอัสสัมชัญ บางรัก (ค.ศ. 1877) = โรงเรียนคาทอลิกแห่งแรก ๆ ในไทย'},
+{c:'Y', q:'พระมหากษัตริย์ไทยพระองค์ใดทรงประกาศพระราชกฤษฎีกาให้ทุกคน "มีเสรีภาพนับถือศาสนาใดก็ได้"?',
+ ch:['รัชกาลที่ 4','รัชกาลที่ 5','รัชกาลที่ 3','รัชกาลที่ 6','สมเด็จพระนารายณ์'], a:0,
+ h:['รัชกาลเดียวกับที่หมอบรัดเลย์ถวายการรักษา','ร.ที่เปิดประเทศรับตะวันตก ก่อน ร.5'],
+ ex:'ร.4 ทรงเปิดเสรีการนับถือศาสนา; ต่อมา ร.5 รับรองมิสซังคาทอลิกเป็นนิติบุคคล'},
+{c:'Y', q:'แพทย์มิชชันนารีคนแรกในไทยที่ใช้ "อีเทอร์ (ether) เป็นยาสลบ" ในการผ่าตัด คือใคร?',
+ ch:['ดร.เฮาส์ (Samuel R. House)','หมอบรัดเลย์','ศาสนาจารย์แมตตูน','ทอมลิน','กุตสลาฟ'], a:0,
+ h:['ไม่ใช่หมอบรัดเลย์ (ท่านเด่นเรื่องผ่าตัด/ปลูกฝี/การพิมพ์)','นามสกุล House'],
+ ex:'Dr. Samuel R. House = แพทย์คนแรกในไทยที่ใช้อีเทอร์เป็นยาสลบ'},
+{c:'Y', q:'ปัจจุบันประเทศไทยมีองค์กรคริสตจักรที่กรมการศาสนารับรองกี่องค์กร?',
+ ch:['5 องค์กร','3 องค์กร','7 องค์กร','10 องค์กร','2 องค์กร'], a:0,
+ h:['เป็นคาทอลิก 1 + โปรเตสแตนต์ 4','นับรวมสภาประมุขบาทหลวงคาทอลิก + สภาคริสตจักร ฯลฯ'],
+ ex:'5 องค์กร = คาทอลิก 1 (สภาประมุขบาทหลวงฯ) + โปรเตสแตนต์ 4 (สภาคริสตจักร/สหกิจ/แบ๊บติสต์/เซเวนต์เดย์)'},
+{c:'Y', q:'ในสมัยพระนารายณ์ ความสัมพันธ์อันดีกับชาติใดทำให้บาทหลวงคาทอลิกเข้ามาเผยแผ่ในไทยมากขึ้น?',
+ ch:['ฝรั่งเศส (พระเจ้าหลุยส์ที่ 14)','โปรตุเกส','สเปน','อังกฤษ','เนเธอร์แลนด์'], a:0,
+ h:['กษัตริย์ของชาตินี้คือ "สุริยกษัตริย์" หลุยส์ที่ 14','ชาติที่ส่งคณะทูตแลกเปลี่ยนกับอยุธยา'],
+ ex:'สมัยพระนารายณ์สัมพันธ์ดีกับฝรั่งเศส (Louis XIV) → บาทหลวงเข้ามามาก + ตั้งเซมินารีผลิตนักบวชไทยรุ่นแรก'},
+// ---------- ✝️ สัญลักษณ์ & ธรรมเนียม ----------
+{c:'R', q:'จากรูป: สัญลักษณ์รูปปลาที่มีอักษรกรีกนี้เรียกว่าอะไร?',
+ img:'<svg viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg"><path d="M28 70 Q80 30 150 62 L186 40 L178 70 L186 100 L150 78 Q80 110 28 70 Z" fill="none" stroke="#5b8cff" stroke-width="5"/><text x="96" y="78" text-anchor="middle" font-size="26" fill="#b07cff" font-family="serif">&#921;&#935;&#920;&#933;&#931;</text></svg>',
+ ch:['Ichthys (ΙΧΘΥΣ)','Labarum','Chi-Rho','Alpha–Omega','INRI'], a:0,
+ h:['เป็นคำภาษากรีกที่แปลว่า "ปลา"','ใช้เป็นสัญลักษณ์ลับของคริสตชนยุคถูกล่า (ค.ศ. 100–313)'],
+ ex:'Ichthys (ΙΧΘΥΣ = ปลา) — 5 อักษรย่อ: Jesus Christ, God\'s Son, Savior; ใช้เป็นรหัสลับยุคถูกเบียดเบียน'},
+{c:'R', q:'สัญลักษณ์รูปปลา ΙΧΘΥΣ (Ichthys) แต่ละอักษรเป็นตัวย่อรวมความว่าอะไร?',
+ ch:['พระเยซูคริสต์ พระบุตรของพระเจ้า พระผู้ช่วยให้รอด','พระบิดา พระบุตร พระจิต เป็นหนึ่งเดียว','จงรักเพื่อนบ้านเหมือนรักตนเอง','เราคืออัลฟาและโอเมกา','สันติสุขจงมีแด่ท่านทั้งหลาย'], a:0,
+ h:['I=พระเยซู, X=คริสต์, Θ=พระเจ้า, Y=พระบุตร, Σ=ผู้ช่วยให้รอด','เป็นการประกาศตัวตนของพระเยซู 5 ประการ'],
+ ex:'ΙΧΘΥΣ = Iēsous Christos Theou Yios Sōtēr = "พระเยซูคริสต์ พระบุตรของพระเจ้า พระผู้ช่วยให้รอด"'},
+{c:'R', q:'จากรูป: อักษร 4 ตัวบนป้ายเหนือกางเขนพระเยซูนี้ คืออะไร?',
+ img:'<svg viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg"><rect x="100" y="20" width="20" height="112" fill="#6b4a2f"/><rect x="72" y="46" width="76" height="14" fill="#6b4a2f"/><rect x="82" y="8" width="56" height="20" rx="2" fill="#e9dfc4" stroke="#b89b52" stroke-width="2"/><text x="110" y="23" text-anchor="middle" font-size="13" fill="#5c3d16" font-family="serif" font-weight="bold">INRI</text></svg>',
+ ch:['INRI','IHS','ΙΧΘΥΣ','A–Ω','SPQR'], a:0,
+ h:['ย่อจากภาษาละติน "Iesus Nazarenus Rex Iudaeorum"','แปลว่า "เยซูชาวนาซาเร็ธ กษัตริย์ของชาวยิว"'],
+ ex:'INRI = Iesus Nazarenus Rex Iudaeorum = "เยซูชาวนาซาเร็ธ กษัตริย์ของชาวยิว"; ปีลาตสั่งเขียน'},
+{c:'R', q:'ตัวอักษร "INRI" บนกางเขนพระเยซู เป็นคำย่อภาษาละตินที่แปลว่าอะไร?',
+ ch:['เยซูชาวนาซาเร็ธ กษัตริย์ของชาวยิว','พระเยซู พระผู้ไถ่ของมนุษยชาติ','ในพระนามพระบิดาและพระบุตร','ข้าพเจ้าคือหนทาง ความจริง และชีวิต','จงตามเรามา'], a:0,
+ h:['Rex = กษัตริย์, Iudaeorum = ของชาวยิว','ระบุเมืองบ้านเกิดของพระเยซูด้วย (นาซาเร็ธ)'],
+ ex:'INRI = "Jesus of Nazareth, King of the Jews" (เยซูชาวนาซาเร็ธ กษัตริย์ของชาวยิว)'},
+{c:'R', q:'ใครเป็นผู้สั่งให้เขียนป้าย "INRI" ติดไว้บนกางเขนพระเยซู?',
+ ch:['ปอนติอัส ปีลาต (Pontius Pilate)','จักรพรรดิคอนสแตนติน','มหาปุโรหิตคายาฟาส','กษัตริย์เฮโรด','นักบุญเปโตร'], a:0,
+ h:['เป็นผู้ว่าการโรมันประจำแคว้นยูเดีย ผู้ตัดสินตรึงกางเขน','ชื่อขึ้นต้นด้วย Pontius'],
+ ex:'Pontius Pilate สั่งเขียน INRI (3 ภาษา: ฮีบรู/กรีก/ละติน) ติดบนกางเขนเพื่อประจาน'},
+{c:'R', q:'คำจารึก INRI บนกางเขนพระเยซู เขียนไว้ด้วยกี่ภาษา อะไรบ้าง?',
+ ch:['3 ภาษา: ฮีบรู กรีก ละติน','2 ภาษา: ฮีบรู ละติน','1 ภาษา: ละติน','3 ภาษา: อราเมอิก กรีก โรมัน','2 ภาษา: กรีก อาหรับ'], a:0,
+ h:['ภาษาศักดิ์สิทธิ์ของยิว + ภาษาสากลยุคนั้น + ภาษาราชการโรมัน','อ้างในยอห์น 19:19–22'],
+ ex:'INRI เขียน 3 ภาษา: ฮีบรู (Hebrew) · กรีก (Greek) · ละติน (Latin)'},
+{c:'R', q:'การทำเครื่องหมายกางเขน (Sign of the Cross) แสดงความเชื่อในพระเจ้าตามหลักคำสอนใด?',
+ ch:['ตรีเอกภาพ (Trinity)','บาปกำเนิด (Original Sin)','การไถ่บาป (Redemption)','การเสด็จกลับมา (Parousia)','ความรอด (Salvation)'], a:0,
+ h:['ย้ำถึง "3 สภาวะ" ของพระเจ้าที่เป็นหนึ่งเดียว','พระบิดา–พระบุตร–พระจิต'],
+ ex:'Sign of the Cross แสดงความเชื่อตามหลักตรีเอกภาพ (Trinity) — พระบิดา พระบุตร พระจิต เป็นหนึ่งเดียว'},
+{c:'R', q:'จุดต่างของการทำเครื่องหมายกางเขนระหว่างนิกายคาทอลิกกับออร์โธดอกซ์ คืออะไร?',
+ ch:['คาทอลิกแตะไหล่ซ้ายก่อนขวา / ออร์โธดอกซ์แตะไหล่ขวาก่อนซ้าย','คาทอลิกใช้มือขวา / ออร์โธดอกซ์ใช้มือซ้าย','คาทอลิกแตะ 3 จุด / ออร์โธดอกซ์แตะ 5 จุด','คาทอลิกเริ่มที่ท้อง / ออร์โธดอกซ์เริ่มที่หน้าผาก','ไม่มีความต่างกันเลย'], a:0,
+ h:['ทั้งคู่แตะ 4 จุด (หน้าผาก–ท้อง–ไหล่–ไหล่) ต่างกันแค่ลำดับไหล่','จำ: คาทอลิก C→ ซ้ายก่อน / ออร์โธดอกซ์ O→ ขวาก่อน'],
+ ex:'คาทอลิก: หน้าผาก→ท้อง→ไหล่ซ้าย→ขวา; ออร์โธดอกซ์: หน้าผาก→ท้อง→ไหล่ขวา→ซ้าย'},
+{c:'R', q:'บทสวด "Ave Maria" (Hail Mary / วันทามารีย์) มีที่มาจากคำพูดของใคร?',
+ ch:['ทูตสวรรค์กาเบรียล','พระเยซู','นักบุญเปโตร','ยอห์นผู้ให้บัพติสมา','นักบุญเปาโล'], a:0,
+ h:['เป็นคำทักทายตอนแจ้งข่าวการประสูติแก่พระนางมารีย์','ทูตสวรรค์องค์เดียวกับที่แจ้งข่าวใน Epiphany เรื่องพระเยซู'],
+ ex:'Ave Maria มาจากคำที่ทูตสวรรค์กาเบรียล (Gabriel) ทักทายมารีย์ตอนแจ้งข่าวการประสูติ'},
+{c:'R', q:'คำว่า "อาเมน (Amen)" มีรากศัพท์มาจากภาษาใด และแปลว่าอะไร?',
+ ch:['ฮีบรู — "ขอให้เป็นดังนั้น / ความมั่นคง สัจจะ"','กรีก — "จงสรรเสริญพระเจ้า"','ละติน — "สันติสุข"','อราเมอิก — "พระเจ้าสถิตกับเรา"','อาหรับ — "พระเจ้ายิ่งใหญ่"'], a:0,
+ h:['เป็นคำตอบรับยืนยันท้ายคำอธิษฐาน','ภาษาเดียวกับที่ใช้เขียนพันธสัญญาเดิม'],
+ ex:'Amen จากภาษาฮีบรู = ความมั่นคง/สัจจะ → "ขอพระเจ้าทรงกระทำให้เป็นดังนั้น"'},
+{c:'R', q:'คำว่า "อาเมน (Amen)" ปรากฏใช้ในกี่ศาสนา?',
+ ch:['3 ศาสนา (ยูดาย คริสต์ อิสลาม)','1 ศาสนา (คริสต์เท่านั้น)','2 ศาสนา (คริสต์ อิสลาม)','4 ศาสนา','2 ศาสนา (ยูดาย คริสต์)'], a:0,
+ h:['พบในคัมภีร์โตราห์ ไบเบิล และอัลกุรอาน','ในอิสลามออกเสียงว่า "อามีน" ท้ายละหมาด'],
+ ex:'Amen อยู่ใน 3 ศาสนา: ยูดาย (Torah) · คริสต์ (Bible) · อิสลาม (Koran/"อามีน")'},
+{c:'R', q:'สัญลักษณ์รูปปลา (Ichthys) ถูกใช้เป็น "สัญลักษณ์ลับ" ของคริสตชนในช่วงเวลาใด?',
+ ch:['ยุคที่คริสตชนถูกเบียดเบียน (ค.ศ. 100–313)','ยุคกลางของยุโรป','ยุคการปฏิรูปศาสนา','หลังสังคายนาวาติกัน II','ยุคสงครามครูเสด'], a:0,
+ h:['ช่วงที่การเป็นคริสเตียนผิดกฎหมายโรมัน มีโทษถึงตาย','สิ้นสุดเมื่อ Edict of Milan ทำให้คริสต์ถูกกฎหมาย'],
+ ex:'Ichthys ใช้ยุคถูกเบียดเบียน ค.ศ. 100–313 (ก่อน Edict of Milan) เป็นรหัสลับระบุพวกเดียวกัน'},
+{c:'R', q:'ชาวคริสต์ทำเครื่องหมายกางเขน (Sign of the Cross) โดยแตะร่างกายทั้งหมดกี่จุด?',
+ ch:['4 จุด (หน้าผาก–ท้อง–ไหล่–ไหล่)','3 จุด','2 จุด','5 จุด','7 จุด'], a:0,
+ h:['หน้าผาก 1 + ท้อง 1 + ไหล่ทั้งสองข้าง','ตรงกับคำ "พระบิดา พระบุตร และพระจิต"'],
+ ex:'แตะ 4 จุด: หน้าผาก (พระบิดา) → ท้อง (พระบุตร) → ไหล่สองข้าง (พระจิต); คาทอลิกซ้ายก่อน ออร์โธดอกซ์ขวาก่อน'},
+{c:'R', q:'บทวันทามารีย์ (Ave Maria) แบ่งเนื้อหาออกเป็น 2 ช่วง ได้แก่ช่วงใดบ้าง?',
+ ch:['การสรรเสริญ + การวอนขอ','การสารภาพบาป + การขอบคุณ','การอธิษฐาน + การถวายบูชา','การประกาศ + การอวยพร','การกลับใจ + การชดใช้'], a:0,
+ h:['ช่วงแรกยกย่องความยิ่งใหญ่ของพระแม่ ช่วงหลังขอความช่วยเหลือ','ไม่เกี่ยวกับการสารภาพบาป'],
+ ex:'Ave Maria 2 ช่วง: (1) การสรรเสริญพระแม่มารีย์ (2) การวอนขอความช่วยเหลือจากพระแม่'},
+{c:'R', q:'เมื่อคริสตชนทำเครื่องหมายกางเขน จะกล่าวคำใด (ฉบับคาทอลิก)?',
+ ch:['ในพระนามพระบิดา และพระบุตร และพระจิตเจ้า อาเมน','จงสรรเสริญพระเจ้า อัลเลลูยา','โฮซันนา แก่บุตรของดาวิด','สันติสุขจงมีแด่ท่าน','ขอพระเจ้าทรงพระเมตตา'], a:0,
+ h:['กล่าวถึง 3 สภาวะของพระเจ้าตามหลักตรีเอกภาพ','ลงท้ายด้วยคำว่า "อาเมน"'],
+ ex:'"ในพระนามพระบิดา และพระบุตร และพระจิตเจ้าผู้ทรงศักดิ์สิทธิ์ อาเมน" (คาทอลิก)'}
+];
+
+// ================= ENGINE =================
+let pool=[], idx=0, score=0, streak=0, best=0, hintsUsed=0, answered=false;
+let wrongs=[], catCount={}, catRight={};
+let activeCats = new Set(Object.keys(CATS));
+
+BANK.forEach((q,i)=>q._i=i);   // stable id for saving
+
+// ===== AUTO-SAVE (localStorage) =====
+// หมายเหตุ: ไฟล์ file:// ทุกไฟล์แชร์ origin เดียวกัน -> key ต้องไม่ซ้ำกับ widget อื่นในวอลต์
+const SAVE_KEY = 'christQuiz_บท7-14_v1';
+const CATS_KEY = 'christQuiz_บท7-14_cats';
+const canSave = (()=>{ try{ localStorage.setItem('__t','1'); localStorage.removeItem('__t'); return true; }catch(e){ return false; } })();
+
+function saveState(){
+  if(!canSave) return;
+  try{
+    localStorage.setItem(SAVE_KEY, JSON.stringify({
+      v:1, ts:Date.now(),
+      pool: pool.map(q=>q._i), idx, score, streak, best,
+      wrongs: wrongs.map(q=>q._i),
+      catCount, catRight, cats:[...activeCats]
+    }));
+  }catch(e){}
+}
+function loadState(){
+  if(!canSave) return null;
+  try{
+    const s=JSON.parse(localStorage.getItem(SAVE_KEY)||'null');
+    if(!s || s.v!==1 || !Array.isArray(s.pool) || !s.pool.length) return null;
+    if(s.idx>=s.pool.length) return null;   // รอบนั้นทำจบแล้ว
+    return s;
+  }catch(e){ return null; }
+}
+function clearState(){ if(!canSave) return; try{ localStorage.removeItem(SAVE_KEY); }catch(e){} }
+function discardSave(){ clearState(); document.getElementById('resumeCard').style.display='none'; }
+
+function resumeQuiz(){
+  const s=loadState(); if(!s){ discardSave(); return; }
+  pool = s.pool.map(i=>BANK[i]).filter(Boolean);
+  if(!pool.length){ discardSave(); return; }
+  idx=Math.min(s.idx, pool.length-1); score=s.score||0; streak=s.streak||0; best=s.best||0;
+  wrongs=(s.wrongs||[]).map(i=>BANK[i]).filter(Boolean);
+  catCount=s.catCount||{}; catRight=s.catRight||{};
+  if(Array.isArray(s.cats)&&s.cats.length){ activeCats=new Set(s.cats); refreshChips(); }
+  document.getElementById('menu').style.display='none';
+  document.getElementById('result').style.display='none';
+  document.getElementById('quiz').style.display='block';
+  document.getElementById('qTotal').textContent=' / '+pool.length;
+  showQ();
+}
+
+function offerResume(){
+  const s=loadState(); if(!s) return;
+  const when=new Date(s.ts||Date.now());
+  const d=String(when.getDate()).padStart(2,'0')+'/'+String(when.getMonth()+1).padStart(2,'0');
+  const t=String(when.getHours()).padStart(2,'0')+':'+String(when.getMinutes()).padStart(2,'0');
+  document.getElementById('resumeInfo').innerHTML=
+    'ค้างอยู่ข้อ <b>'+(s.idx+1)+'</b> จาก <b>'+s.pool.length+'</b> ข้อ · คะแนนสะสม <b>'+(s.score||0)+'</b> แต้ม<br>บันทึกล่าสุด '+d+' เวลา '+t+' น.';
+  document.getElementById('resumeCard').style.display='block';
+}
+
+const chipsEl = document.getElementById('catChips');
+const allChip = document.createElement('button');
+allChip.className='chip on'; allChip.textContent='✅ ทั้งหมด ('+BANK.length+' ข้อ)';
+allChip.onclick=()=>{ activeCats=new Set(Object.keys(CATS)); refreshChips(); };
+chipsEl.appendChild(allChip);
+Object.entries(CATS).forEach(([k,label])=>{
+  const n=BANK.filter(q=>q.c===k).length;
+  const b=document.createElement('button');
+  b.className='chip on'; b.dataset.cat=k; b.textContent=label+' ('+n+')';
+  b.onclick=()=>{
+    if(activeCats.has(k)&&activeCats.size===1) return;
+    activeCats.has(k)?activeCats.delete(k):activeCats.add(k);
+    refreshChips();
+  };
+  chipsEl.appendChild(b);
+});
+function refreshChips(){
+  document.querySelectorAll('.chip[data-cat]').forEach(b=>b.classList.toggle('on',activeCats.has(b.dataset.cat)));
+  allChip.classList.toggle('on',activeCats.size===Object.keys(CATS).length);
+  if(canSave){ try{ localStorage.setItem(CATS_KEY, JSON.stringify([...activeCats])); }catch(e){} }
+}
+
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+// ===== โหมดจำลองข้อสอบ (แนว อ.สอง): วันสำคัญ/สัญลักษณ์ 50% · คนสำคัญ 30% · ทั่วไป/รูป 20% =====
+function pickN(cats,n){ return shuffle(BANK.filter(q=>cats.includes(q.c)).slice()).slice(0,Math.max(0,n)); }
+function examSim(){
+  const nDays=Math.round(EXAM_TOTAL*0.5), nPpl=Math.round(EXAM_TOTAL*0.3), nGen=EXAM_TOTAL-nDays-nPpl;
+  pool=shuffle([...pickN(BUCKETS.days,nDays),...pickN(BUCKETS.ppl,nPpl),...pickN(BUCKETS.gen,nGen)]);
+  if(!pool.length)return;
+  idx=0;score=0;streak=0;best=0;wrongs=[];catCount={};catRight={};
+  document.getElementById('menu').style.display='none';
+  document.getElementById('result').style.display='none';
+  document.getElementById('quiz').style.display='block';
+  document.getElementById('qTotal').textContent=' / '+pool.length; showQ();
+}
+
+function startQuiz(){
+  pool = shuffle(BANK.filter(q=>activeCats.has(q.c)).slice());
+  if(!pool.length) return;
+  idx=0; score=0; streak=0; best=0; wrongs=[]; catCount={}; catRight={};
+  document.getElementById('menu').style.display='none';
+  document.getElementById('result').style.display='none';
+  document.getElementById('quiz').style.display='block';
+  document.getElementById('qTotal').textContent=' / '+pool.length;
+  showQ();
+}
+
+function showQ(){
+  const q=pool[idx]; answered=false; hintsUsed=0;
+  document.getElementById('qNum').textContent=idx+1;
+  document.getElementById('prog').style.width=(idx/pool.length*100)+'%';
+  document.getElementById('score').textContent=score;
+  document.getElementById('streak').textContent= streak>=2 ? '🔥 ติดต่อกัน '+streak : '';
+  document.getElementById('qCat').textContent=CATS[q.c];
+  const im=document.getElementById('qImg');
+  if(q.img){ im.innerHTML=q.img; im.style.display='block'; } else { im.innerHTML=''; im.style.display='none'; }
+  document.getElementById('qText').textContent=q.q;
+  const hb=document.getElementById('hintBtn');
+  hb.disabled=false; hb.textContent='💡 ขอคำใบ้ (เหลือ 2)';
+  document.getElementById('hint1').style.display='none';
+  document.getElementById('hint2').style.display='none';
+  const ex=document.getElementById('exBox'); ex.style.display='none'; ex.className='ex';
+  document.getElementById('nextBtn').style.display='none';
+  // shuffle choices, remember correct
+  const order=shuffle(q.ch.map((t,i)=>({t,i})));
+  const box=document.getElementById('choices'); box.innerHTML='';
+  order.forEach(o=>{
+    const b=document.createElement('button');
+    b.className='choice'; b.textContent=o.t;
+    b.onclick=()=>answer(b,o.i===q.a,q);
+    box.appendChild(b);
+  });
+  saveState();   // เซฟที่ "หัวข้อ" ทุกข้อ — ยังไม่ตอบ ทำให้กลับมาทำต่อได้โดยคะแนนไม่ซ้ำ
+}
+
+function useHint(){
+  if(answered||hintsUsed>=2) return;
+  const q=pool[idx];
+  hintsUsed++;
+  const box=document.getElementById('hint'+hintsUsed);
+  box.textContent='💡 คำใบ้ '+hintsUsed+': '+q.h[hintsUsed-1];
+  box.style.display='block';
+  const hb=document.getElementById('hintBtn');
+  if(hintsUsed>=2){hb.disabled=true; hb.textContent='💡 ใช้คำใบ้ครบแล้ว';}
+  else hb.textContent='💡 ขอคำใบ้ (เหลือ 1)';
+}
+
+function answer(btn,correct,q){
+  if(answered) return; answered=true;
+  catCount[q.c]=(catCount[q.c]||0)+1;
+  const buttons=[...document.querySelectorAll('.choice')];
+  buttons.forEach(b=>{b.disabled=true; if(b.textContent===q.ch[q.a]) b.classList.add('correct');});
+  const ex=document.getElementById('exBox');
+  if(correct){
+    const pts = hintsUsed>0?1:2;
+    score+=pts; streak++; best=Math.max(best,streak);
+    catRight[q.c]=(catRight[q.c]||0)+1;
+    ex.className='ex good';
+    ex.innerHTML='<span class="vd" style="color:var(--green)">✅ ถูกต้อง! +'+pts+' แต้ม'+(hintsUsed>0?' (ใช้คำใบ้)':'')+'</span><br>'+q.ex;
+  }else{
+    btn.classList.add('wrong'); streak=0;
+    wrongs.push(q);
+    ex.className='ex bad';
+    ex.innerHTML='<span class="vd" style="color:var(--red)">❌ ยังไม่ใช่</span> คำตอบคือ <b style="color:var(--green)">'+q.ch[q.a]+'</b><br>'+q.ex;
+  }
+  ex.style.display='block';
+  document.getElementById('score').textContent=score;
+  document.getElementById('hintBtn').disabled=true;
+  const nb=document.getElementById('nextBtn');
+  nb.textContent = idx+1<pool.length ? 'ข้อต่อไป ➜' : '🏁 ดูสรุปผล';
+  nb.style.display='block';
+  nb.focus();
+}
+
+function nextQ(){
+  idx++;
+  if(idx<pool.length) showQ(); else finish();
+}
+
+// ===== open book =====
+function openBook(show){
+  document.getElementById('obPanel').classList.toggle('open',show);
+  document.getElementById('obOverlay').style.display=show?'block':'none';
+}
+function obFilter(qstr){
+  const q=qstr.trim().toLowerCase();
+  document.querySelectorAll('#obBody details').forEach(d=>{
+    const txt=d.textContent.toLowerCase();
+    const hit=!q||txt.includes(q);
+    d.style.display=hit?'':'none';
+    if(q&&hit) d.open=true; else if(!q) d.open=(d===document.querySelector('#obBody details'));
+  });
+}
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') openBook(false); });
+
+function finish(){
+  clearState();   // ทำจบรอบแล้ว ไม่ต้องกู้อีก
+  document.getElementById('quiz').style.display='none';
+  document.getElementById('result').style.display='block';
+  const max=pool.length*2;
+  document.getElementById('finalScore').textContent=score+' / '+max;
+  const pct=score/max*100;
+  const g = pct>=90?'🏆 ระดับพระคาร์ดินัล — พร้อมสอบมาก!':
+            pct>=75?'⭐ เก่งมาก เก็บจุดที่พลาดอีกนิดเดียว':
+            pct>=50?'💪 ผ่านครึ่ง — ทวนข้อที่ผิดด้านล่างแล้วเล่นใหม่':
+            '📖 กลับไปอ่านชีตโกงก่อน แล้วมาลุยใหม่ สู้ ๆ!';
+  document.getElementById('grade').textContent=g+(best>=3?' (สถิติตอบถูกติดต่อกัน '+best+' ข้อ)':'');
+  const cs=document.getElementById('catStats'); cs.innerHTML='';
+  Object.keys(CATS).forEach(k=>{
+    if(!catCount[k]) return;
+    const d=document.createElement('div'); d.className='stat';
+    d.innerHTML='<span>'+CATS[k]+'</span><span><b>'+(catRight[k]||0)+'</b> / '+catCount[k]+'</span>';
+    cs.appendChild(d);
+  });
+  const wc=document.getElementById('wrongCard'), wl=document.getElementById('wrongList');
+  if(wrongs.length){
+    wc.style.display='block'; wl.innerHTML='';
+    wrongs.forEach(q=>{
+      const d=document.createElement('div'); d.className='wrongitem';
+      d.innerHTML=q.q+'<br>→ <b>'+q.ch[q.a]+'</b> — '+q.ex;
+      wl.appendChild(d);
+    });
+  }else{
+    wc.style.display='none';
+  }
+}
+
+// ===== INIT: กู้หมวดที่เคยเลือก + เสนอทำต่อถ้ามีที่ค้างไว้ =====
+(function init(){
+  if(canSave){
+    try{
+      const c=JSON.parse(localStorage.getItem(CATS_KEY)||'null');
+      if(Array.isArray(c)&&c.length){
+        const valid=c.filter(k=>CATS[k]);
+        if(valid.length){ activeCats=new Set(valid); refreshChips(); }
+      }
+    }catch(e){}
+  }
+  offerResume();
+})();
+</script>
+<!--KIT-UI v2.4 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<script>
+/* =============================================================================
+   _kit/ui-controls.js  —  KIT UI  v1.0
+   แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
+     🌙/☀️  โหมดมืด / สว่าง   (จำค่าไว้ใน localStorage)
+     A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
+     ✏️  ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
+     🧮  เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
+
+   ── วิธีใช้ ────────────────────────────────────────────────────────────────
+   ห้ามแก้โค้ดนี้ในไฟล์ widget!  แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
+       pwsh -File _kit/apply-ui.ps1
+   สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
+   (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
+
+   !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
+      เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
+
+   ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
+   ใส่แอตทริบิวต์ที่ tag body:  data-tools="pen,calc"  = บังคับเปิด
+                              data-tools="none"      = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
+   ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
+              หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
+   ============================================================================= */
+(function(){
+if(window.__KITUI__) return; window.__KITUI__='2.4';
+
+/* ---------- helper ---------- */
+const D=document, R=D.documentElement;
+const get=k=>{try{return localStorage.getItem('kitui-'+k)}catch(e){return null}};
+const set=(k,v)=>{try{localStorage.setItem('kitui-'+k,v)}catch(e){}};
+const el=(t,c,h)=>{const e=D.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
+
+/* =============================================================================
+   1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
+   ============================================================================= */
+const CSS=`
+/* ===== DARK TOKENS (คู่กับ _kit/design-tokens.css) ===== */
+:root[data-theme="dark"]{
+  --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
+  --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
+  --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
+  --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
+  --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
+}
+:root[data-theme="dark"] body{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f172a}
+:root[data-theme="dark"] body[data-subject="physics"]{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f1220}
+:root[data-theme="dark"] body[data-subject="bio"]{--accent:#4ade80;--accent-head:#bbf7d0;--accent-ink:#86efac;--accent-soft:#0f2a1a;--accent-bd:#256b41;--accent-chip:#14532d;--accent-ghost:#15803d;--bg:#0d1912}
+:root[data-theme="dark"] body[data-subject="chem"]{--accent:#fb923c;--accent-head:#fed7aa;--accent-ink:#fdba74;--accent-soft:#2b1a0c;--accent-bd:#8a3d12;--accent-chip:#6d2c10;--accent-ghost:#c2410c;--bg:#1a130c}
+:root[data-theme="dark"] body[data-subject="christ"]{--accent:#a78bfa;--accent-head:#ddd6fe;--accent-ink:#c4b5fd;--accent-soft:#241a3d;--accent-bd:#5b21b6;--accent-chip:#4c1d95;--accent-ghost:#6d28d9;--bg:#16121f}
+:root[data-theme="dark"] body[data-subject="islam"]{--accent:#2dd4bf;--accent-head:#99f6e4;--accent-ink:#5eead4;--accent-soft:#0d2b28;--accent-bd:#12615a;--accent-chip:#134e4a;--accent-ghost:#0f766e;--bg:#0c1917}
+:root[data-theme="dark"] body[data-subject="history"]{--accent:#fbbf24;--accent-head:#fde68a;--accent-ink:#fcd34d;--accent-soft:#2a1f0a;--accent-bd:#8a4b0c;--accent-chip:#6d3a0a;--accent-ghost:#b45309;--bg:#191509}
+:root[data-theme="dark"] body[data-subject="math"]{--accent:#38bdf8;--accent-head:#bae6fd;--accent-ink:#7dd3fc;--accent-soft:#0c2434;--accent-bd:#0b5a80;--accent-chip:#0c4a6e;--accent-ghost:#0369a1;--bg:#0b1620}
+:root[data-theme="dark"] body[data-subject="eng"]{--accent:#f472b6;--accent-head:#fbcfe8;--accent-ink:#f9a8d4;--accent-soft:#2e1122;--accent-bd:#8d1748;--accent-chip:#731839;--accent-ghost:#be185d;--bg:#1c0f16}
+:root[data-theme="dark"] body[data-subject="thai"]{--accent:#f87171;--accent-head:#fecaca;--accent-ink:#fca5a5;--accent-soft:#2d1414;--accent-bd:#8d2020;--accent-chip:#7f1d1d;--accent-ghost:#b91c1c;--bg:#1a0f0f}
+:root[data-theme="dark"] img,:root[data-theme="dark"] .svg-box{filter:brightness(.92)}
+/* ช่องกรอก/ดรอปดาวน์ที่ widget เก่ากำหนดพื้นขาวตายตัวไว้ */
+:root[data-theme="dark"] select,:root[data-theme="dark"] textarea,
+:root[data-theme="dark"] input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=color])
+{background-color:var(--soft);color:var(--ink);border-color:var(--line)}
+
+/* ===== แถบเครื่องมือลอย ===== */
+#kitui-bar{position:fixed;right:10px;bottom:10px;z-index:99990;display:flex;gap:6px;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
+#kitui-bar button{border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;
+  font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
+  align-items:center;justify-content:center;font-weight:700}
+#kitui-bar button:hover{background:var(--soft)}
+#kitui-bar button:active{transform:scale(.93)}
+#kitui-bar button.on{background:var(--accent);color:#fff}
+#kitui-bar .kitui-sep{width:1px;height:22px;background:var(--line);flex:0 0 1px}
+#kitui-bar .kitui-fs{font-size:11px;color:var(--muted);min-width:34px;text-align:center;font-weight:700}
+#kitui-bar.hidden > *:not(#kitui-grip){display:none}
+#kitui-grip{font-size:17px}
+
+/* ===== แผงลอย (ที่ทด / เครื่องคิดเลข) ===== */
+.kitui-sheet{position:fixed;left:0;right:0;bottom:0;z-index:99991;background:var(--card);
+  border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
+  display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
+  height:52vh;max-height:92vh;min-height:180px}
+.kitui-sheet.open{display:flex}
+.kitui-sheet.full{height:100vh;border-radius:0}
+.kitui-head{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--line);
+  flex-wrap:wrap;touch-action:none;cursor:ns-resize}
+.kitui-head b{font-size:.9rem;color:var(--accent-ink);margin-right:2px;white-space:nowrap}
+.kitui-head button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;
+  padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
+.kitui-head button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.kitui-head .kitui-spacer{flex:1}
+.kitui-sw{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;min-height:0}
+.kitui-sw.on{border-color:var(--ink);transform:scale(1.12)}
+.kitui-padwrap{flex:1;position:relative;overflow:hidden;background:var(--soft)}
+.kitui-padwrap canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+:root[data-theme="dark"] .kitui-padwrap{background:#0c1220}
+
+/* ===== เครื่องคิดเลข ===== */
+#kitui-calc{height:auto;max-height:90vh}
+.kitui-disp{padding:8px 12px;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);
+  border-bottom:1px solid var(--line)}
+.kitui-disp .ex{font-size:.95rem;color:var(--muted);min-height:1.3em;word-break:break-all}
+.kitui-disp .rs{font-size:1.6rem;font-weight:700;color:var(--accent-ink);word-break:break-all}
+.kitui-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:7px}
+.kitui-keys button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:9px;
+  font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
+.kitui-keys button:active{transform:scale(.95)}
+.kitui-keys button.fn{font-size:.8rem;color:var(--accent-ink)}
+.kitui-keys button.op{background:var(--accent-soft);color:var(--accent-ink)}
+.kitui-keys button.eq{background:var(--accent);color:#fff;grid-row:span 2}
+.kitui-keys button.del{background:var(--hot-bg);color:var(--hot-ink)}
+.kitui-keys button.w3{grid-column:span 3}
+@media(max-width:420px){.kitui-keys button{font-size:.88rem;min-height:40px}.kitui-keys button.fn{font-size:.72rem}}
+@media(min-width:760px){
+  .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
+  .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
+  #kitui-pad{width:560px}
+}
+@media print{#kitui-bar,.kitui-sheet{display:none!important}}
+`;
+const st=el('style'); st.id='kitui-style'; st.textContent=CSS; D.head.appendChild(st);
+
+/* -----------------------------------------------------------------------------
+   1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
+   widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
+   พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
+   แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
+   เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
+----------------------------------------------------------------------------- */
+/* สีพาสเทลสว่าง -> สีเข้มที่ยังคง "เฉดเดิม" ไว้ (เขียว=ถูก / แดง=ผิด ต้องยังแยกออก)
+   ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
+function darken(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
+  const l0=(mx+mn)/2;
+  const s0 = d===0 ? 0 : d/(1-Math.abs(2*l0-1));
+  const s = d===0 ? 0 : Math.min(.5, Math.max(.3, s0));
+  const l = d===0 ? .13 : .17;                       /* เทา/ขาวให้เข้มกว่าสีนิดหน่อย */
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+function darkFix(){
+  const out=[], seen=new Set();
+  const take=r=>{
+    if(!r.style || !r.selectorText) return;
+    if(r.selectorText.indexOf('kitui')>-1) return;               /* ของเราเองใช้ token อยู่แล้ว */
+    const bg=r.style.backgroundColor;
+    if(!bg || bg.indexOf('var(')>-1) return;
+    const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
+    if(!m) return;
+    if(m[4]!==undefined && +m[4]<0.6) return;                    /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
+    const cr=+m[1], cg=+m[2], cb=+m[3];
+    if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return;       /* ไม่สว่างพอ ไม่ต้องยุ่ง */
+    const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
+    const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
+    let css='background-color:'+repl;
+    /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
+    const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
+    out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
+  };
+  /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
+        ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
+  const visit=rules=>{
+    for(let i=0;i<rules.length;i++){
+      const r=rules[i];
+      if(r.selectorText) take(r);
+      if(r.cssRules && r.cssRules.length) visit(r.cssRules);     /* @media / @supports / nesting */
+    }
+  };
+  for(let i=0;i<D.styleSheets.length;i++){
+    let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; }   /* ข้ามชีตข้ามโดเมน */
+    if(rr) visit(rr);
+  }
+  if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
+  return out.length;
+}
+try{ window.__KITUI_DARKFIX__=darkFix(); }catch(e){ window.__KITUI_DARKFIX__='err:'+e.message; }
+
+/* darkFix ข้างบนซ่อมได้เฉพาะสีที่เขียนตายตัวในไฟล์ CSS
+   แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
+   ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
+   จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
+const rgbOf=c=>{const m=c&&c.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null;};
+const lumOf=v=>v?(0.2126*v[0]+0.7152*v[1]+0.0722*v[2])/255:null;
+/* ตรงข้ามกับ darken(): ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
+   (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
+function lighten(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  if(d<0.04) return 'var(--ink)';                    /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
+  let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
+  const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
+  const s=Math.min(.92,Math.max(.55,s0)), l=.72;
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+const SKIP={CANVAS:1,IMG:1,VIDEO:1,SVG:1,IFRAME:1,PICTURE:1,OBJECT:1};
+const OBS_OPT={childList:true,subtree:true,attributes:true,attributeFilter:['class','style']};
+let patched=[], obs=null;
+function elementFix(){
+  /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
+        ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
+  if(obs) obs.disconnect();
+  try{ elementFixCore(); } finally { if(obs) obs.observe(D.body,OBS_OPT); }
+}
+function elementFixCore(){
+  /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
+     ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
+     จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
+  if(R.getAttribute('data-theme')!=='dark'){
+    patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
+    patched=[];
+    return;
+  }
+  /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
+     ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
+  /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
+  const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
+  for(let i=0;i<all.length;i++){
+    const e=all[i];
+    if(e.id&&e.id.indexOf('kitui')===0) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(SKIP[e.tagName]) continue;                      /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
+    const s=getComputedStyle(e);
+    const bg=rgbOf(s.backgroundColor);
+    if(!bg || bg[3]<0.6) continue;                     /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
+    if(lumOf(bg)<0.72) continue;                       /* เข้มพออยู่แล้ว */
+    /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
+    e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
+    const fg=rgbOf(s.color);
+    if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important');  /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
+    patched.push(e);
+  }
+  /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
+     ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
+  const bgCache=new Map();
+  const effBg=n=>{
+    for(let p=n;p;p=p.parentElement){
+      if(bgCache.has(p)) return bgCache.get(p);
+      const b=rgbOf(getComputedStyle(p).backgroundColor);
+      if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
+    }
+    return null;
+  };
+  for(let i=2;i<all.length;i++){
+    const e=all[i];
+    if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(e.style.color) continue;                         /* จัดการไปแล้วในรอบแรก */
+    if(!e.textContent || !e.textContent.trim()) continue;
+    const fg=rgbOf(getComputedStyle(e).color);
+    if(!fg || lumOf(fg)>=0.45) continue;                 /* ตัวอักษรสว่างอยู่แล้ว */
+    const bg=effBg(e);
+    if(!bg || lumOf(bg)>=0.5) continue;                  /* พื้นยังสว่าง อ่านออกอยู่ */
+    e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
+    patched.push(e);
+  }
+}
+let efT=0;
+const scheduleFix=()=>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
+try{
+  obs=new MutationObserver(scheduleFix);
+  obs.observe(D.body,OBS_OPT);
+}catch(e){}
+
+/* =============================================================================
+   2) ธีม + ขนาดตัวอักษร
+   ============================================================================= */
+const FS=[.85,1,1.15,1.3,1.5], FSNAME=['เล็กสุด','เล็ก','ปกติ','ใหญ่','ใหญ่สุด'];
+let fsIdx=parseInt(get('fs')); if(isNaN(fsIdx)||fsIdx<0||fsIdx>4) fsIdx=1;
+let theme=get('theme') || (matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+
+function applyTheme(){
+  R.setAttribute('data-theme',theme);
+  R.style.colorScheme = theme==='dark'?'dark':'light';   /* ให้ select/input เป็นสีเข้มด้วย */
+  const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
+  set('theme',theme);
+  clearTimeout(efT);                                   /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
+  if(typeof elementFix==='function') elementFix();
+  if(typeof draw==='function' && pad) draw();          /* วาดที่ทดใหม่ เส้นดำ<->ขาวตามธีม */
+}
+function applyFS(){
+  R.style.fontSize=(16*FS[fsIdx])+'px';
+  const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
+  set('fs',fsIdx);
+}
+
+/* =============================================================================
+   3) แถบเครื่องมือ
+   ============================================================================= */
+const subj=(D.body.getAttribute('data-subject')||'').toLowerCase();
+/* หลาย widget ไม่ได้ใส่ data-subject ที่ <body> → เดาจากโฟลเดอร์ที่ไฟล์อยู่ด้วย */
+const inPath=/\/(physics|math|chemist)\//i.test(decodeURIComponent(location.pathname));
+const tAttr=D.body.getAttribute('data-tools');
+const wantTools = tAttr!=null ? tAttr.toLowerCase()
+                : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
+const hasPen  = wantTools.includes('pen');
+const hasCalc = wantTools.includes('calc');
+
+const bar=el('div'); bar.id='kitui-bar';
+bar.innerHTML =
+  `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
+  `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button>`+
+  `<span class="kitui-sep"></span>`+
+  `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
+  `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
+  `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
+  (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
+  (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
+D.body.appendChild(bar);
+
+D.getElementById('kitui-theme').onclick=()=>{theme=theme==='dark'?'light':'dark';applyTheme();};
+D.getElementById('kitui-fsup').onclick=()=>{if(fsIdx<4){fsIdx++;applyFS();}};
+D.getElementById('kitui-fsdown').onclick=()=>{if(fsIdx>0){fsIdx--;applyFS();}};
+D.getElementById('kitui-grip').onclick=()=>bar.classList.toggle('hidden');
+applyTheme(); applyFS();
+
+/* ปิดแผงด้วยปุ่ม Esc */
+D.addEventListener('keydown',e=>{ if(e.key==='Escape') D.querySelectorAll('.kitui-sheet.open').forEach(s=>s.classList.remove('open')); });
+
+/* ลากหัวแผงเพื่อปรับความสูง */
+function makeResizable(sheet){
+  const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
+  head.addEventListener('pointerdown',e=>{
+    if(e.target.closest('button'))return;
+    drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect().height;head.setPointerCapture(e.pointerId);
+  });
+  head.addEventListener('pointermove',e=>{
+    if(!drag)return;
+    const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
+    sheet.classList.remove('full'); sheet.style.height=h+'px';
+    if(sheet.id==='kitui-pad') fitPad();
+  });
+  head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
+}
+
+/* =============================================================================
+   4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ  หลายหน้า  เซฟอัตโนมัติ
+   ============================================================================= */
+let pad,padCv,padCx,pages=[[]],pg=0,undone=[],histo=[];
+let tool='pen',color='#111827',width=2.4,penSeen=0;
+const COLORS=['#111827','#2563eb','#dc2626','#16a34a','#f59e0b'];
+const PADKEY='pad-'+location.pathname.split('/').pop();
+
+function buildPad(){
+  pad=el('div','kitui-sheet'); pad.id='kitui-pad';
+  pad.innerHTML=
+   `<div class="kitui-head">
+      <b>✏️ ที่ทด</b>
+      <button data-t="pen" class="on">🖊️</button>
+      <button data-t="hl">🖍️</button>
+      <button data-t="er">🧽</button>
+      ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
+      <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
+      <span class="kitui-spacer"></span>
+      <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
+      <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
+      <button id="kitui-pgadd">+ หน้า</button>
+      <button id="kitui-clear">ล้างหน้านี้</button>
+      <button id="kitui-full">⛶</button>
+      <button id="kitui-padclose">✕</button>
+    </div>
+    <div class="kitui-padwrap"><canvas></canvas></div>`;
+  D.body.appendChild(pad);
+  padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
+  makeResizable(pad);
+
+  pad.querySelector('.kitui-head').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
+  });
+  D.getElementById('kitui-undo').onclick=()=>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop(); draw(); save(); } };
+  D.getElementById('kitui-redo').onclick=()=>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop(); draw(); save(); } };
+  D.getElementById('kitui-clear').onclick=()=>{ snap(); pages[pg]=[]; draw(); save(); };
+  D.getElementById('kitui-pgadd').onclick=()=>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw(); save(); };
+  D.getElementById('kitui-pgprev').onclick=()=>{ if(pg>0){pg--;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-pgnext').onclick=()=>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-full').onclick=()=>{ pad.classList.toggle('full'); pad.style.height=''; fitPad(); };
+  D.getElementById('kitui-padclose').onclick=()=>pad.classList.remove('open');
+
+  /* ---- วาด ---- */
+  let cur=null;
+  padCv.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='pen') penSeen=Date.now();
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;   /* กันฝ่ามือแตะตอนใช้สไตลัส */
+    const p=pt(e);
+    if(tool==='er'){ snap(); erase(p); return; }
+    snap();
+    cur={c:color,w:width,hl:tool==='hl',pts:[p]};
+    pages[pg].push(cur); draw();
+    try{ padCv.setPointerCapture(e.pointerId); }catch(x){}  /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
+  });
+  padCv.addEventListener('pointermove',e=>{
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;
+    if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
+    if(!cur||!e.buttons)return;
+    /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
+    let evs=[e];
+    if(e.getCoalescedEvents){ const c=e.getCoalescedEvents(); if(c&&c.length) evs=c; }
+    evs.forEach(ev=>cur.pts.push(pt(ev)));
+    draw();
+  });
+  const end=()=>{ if(cur){cur=null;save();} };
+  padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
+  padCv.addEventListener('pointerleave',end);
+
+  addEventListener('resize',()=>{ if(pad.classList.contains('open')) fitPad(); });
+  load(); fitPad();
+}
+function pt(e){
+  const r=padCv.getBoundingClientRect();
+  return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
+          p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5};   /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
+}
+function snap(){ histo.push(pages[pg].slice()); if(histo.length>60)histo.shift(); undone=[]; }
+function erase(p){
+  const r=padCv.getBoundingClientRect(), rad=18/r.width;
+  const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
+  if(keep.length!==pages[pg].length){ pages[pg]=keep; draw(); save(); }
+}
+function fitPad(){
+  const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
+  const dpr=Math.min(devicePixelRatio||1,2.5);
+  padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
+  draw();
+}
+function draw(){
+  const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
+  padCx.clearRect(0,0,W,H);
+  /* เส้นตารางจาง ๆ ให้เขียนตรง */
+  const dark=R.getAttribute('data-theme')==='dark';
+  padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
+  for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath();padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke();}
+  padCx.lineCap='round'; padCx.lineJoin='round';
+  pages[pg].forEach(s=>{
+    padCx.globalAlpha=s.hl?0.32:1;
+    padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
+    for(let i=1;i<s.pts.length;i++){
+      const a=s.pts[i-1],b=s.pts[i];
+      padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
+      padCx.beginPath(); padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke();
+    }
+    if(s.pts.length===1){ /* จุดเดียว */
+      padCx.fillStyle=padCx.strokeStyle; padCx.beginPath();
+      padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill();
+    }
+  });
+  padCx.globalAlpha=1;
+  const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
+}
+function save(){ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
+function load(){
+  try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
+}
+
+if(hasPen){
+  buildPad();
+  D.getElementById('kitui-penbtn').onclick=()=>{
+    const o=pad.classList.toggle('open');
+    D.getElementById('kitui-penbtn').classList.toggle('on',o);
+    if(o) fitPad();
+  };
+}
+
+/* =============================================================================
+   5) เครื่องคิดเลขวิทยาศาสตร์  (tokenizer → shunting-yard → RPN  ไม่ใช้ eval)
+   ============================================================================= */
+const FN={sin:1,cos:1,tan:1,asin:1,acos:1,atan:1,ln:1,log:1,sqrt:1,abs:1,exp:1};
+const PREC={'+':1,'-':1,'*':2,'/':2,'^':4,'u-':3};
+function tokenize(s){
+  s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
+  const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!()])/g; let m;
+  while((m=re.exec(s))) out.push(m[1]);
+  return out;
+}
+function toRPN(tk){
+  const out=[],op=[]; let prev=null;
+  for(let t of tk){
+    if(t==='**')t='^';
+    if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
+    else if(t==='PI'){ out.push(Math.PI); }
+    else if(t==='e'||t==='E'){ out.push(Math.E); }
+    else if(t==='ANS'){ out.push(ANS); }
+    else if(FN[t]){ op.push(t); }
+    else if(t==='('){ op.push(t); }
+    else if(t===')'){
+      while(op.length&&op[op.length-1]!=='(') out.push(op.pop());
+      if(!op.length) throw 0; op.pop();
+      if(op.length&&FN[op[op.length-1]]) out.push(op.pop());
+    }
+    else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
+    else if('+-*/^'.includes(t)){
+      let o=t;
+      const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
+      if(t==='-'&&unary) o='u-';
+      else if(t==='+'&&unary){ prev=t; continue; }
+      while(op.length){
+        const top=op[op.length-1];
+        if(top==='('||FN[top])break;
+        const rightAssoc=(o==='^'||o==='u-');
+        if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop()); else break;
+      }
+      op.push(o);
+    }
+    else throw 0;
+    prev=t;
+  }
+  while(op.length){ const o=op.pop(); if(o==='(')throw 0; out.push(o); }
+  return out;
+}
+function evalRPN(rpn,deg){
+  const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
+  const pop=()=>{ if(!st.length)throw 0; return st.pop(); };
+  for(const t of rpn){
+    if(typeof t==='number'){ st.push(t); continue; }
+    if(t==='fact'){ const n=pop(); if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
+    if(t==='pct'){ st.push(pop()/100); continue; }
+    if(t==='u-'){ st.push(-pop()); continue; }
+    if(FN[t]){
+      const a=pop();
+      st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
+             : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
+             : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
+             : t==='abs'?Math.abs(a) : Math.exp(a) );
+      continue;
+    }
+    const b=pop(),a=pop();
+    st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
+  }
+  if(st.length!==1) throw 0;
+  return st[0];
+}
+function calc(src,deg){ return evalRPN(toRPN(tokenize(src)),deg); }
+
+let ANS=0, expr='', calcSheet, isDeg=true;
+const KEYS=[
+ ['DEG','deg','fn'],['(','(',''],[')',')',''],['⌫','del','del'],['AC','ac','del'],
+ ['sin','sin(','fn'],['cos','cos(','fn'],['tan','tan(','fn'],['π','π','fn'],['÷','÷','op'],
+ ['sin⁻¹','asin(','fn'],['cos⁻¹','acos(','fn'],['tan⁻¹','atan(','fn'],['e','e','fn'],['×','×','op'],
+ ['ln','ln(','fn'],['log','log(','fn'],['√','√(','fn'],['xʸ','^','fn'],['−','−','op'],
+ ['7','7',''],['8','8',''],['9','9',''],['x!','!','fn'],['+','+','op'],
+ ['4','4',''],['5','5',''],['6','6',''],['%','%','fn'],['ANS','ANS','fn'],
+ ['1','1',''],['2','2',''],['3','3',''],['.','.',''],['=','eq','eq'],
+ ['0','0','w3'],['x²','^2','fn']
+];
+function buildCalc(){
+  calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
+  calcSheet.innerHTML=
+   `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
+      <button id="kitui-calcclose">✕</button></div>
+    <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
+    <div class="kitui-keys" id="kitui-keys">
+      ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
+    </div>`;
+  D.body.appendChild(calcSheet);
+  D.getElementById('kitui-calcclose').onclick=()=>calcSheet.classList.remove('open');
+  const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
+  const show=()=>{ ex.textContent=expr||' ';
+    try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
+    catch(e){ rs.style.opacity=.35; }
+  };
+  D.getElementById('kitui-keys').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
+    if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
+    if(k==='del'){ expr=expr.slice(0,-1); show(); return; }
+    if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show(); return; }
+    if(k==='eq'){
+      rs.style.opacity=1;
+      try{
+        const v=calc(expr,isDeg);
+        if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
+        if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
+        ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
+      }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
+      return;
+    }
+    expr+=k; show();
+  });
+}
+function fmt(v){
+  if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
+  if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
+  return String(Math.round(v*1e10)/1e10);
+}
+if(hasCalc){
+  buildCalc();
+  D.getElementById('kitui-calcbtn').onclick=()=>{
+    const o=calcSheet.classList.toggle('open');
+    D.getElementById('kitui-calcbtn').classList.toggle('on',o);
+  };
+}
+})();
+
+</script>
+<!--/KIT-UI-->
+</body>
+</html>

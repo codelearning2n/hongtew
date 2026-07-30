@@ -1,0 +1,2683 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ระบบประสาทของสิ่งมีชีวิต - Interactive Learning</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --primary: #6C63FF;
+  --secondary: #FF6584;
+  --accent: #00D2FF;
+  --dark: #1a1a2e;
+  --darker: #16213e;
+  --card: #0f3460;
+  --text: #e6e6e6;
+  --glow: rgba(108, 99, 255, 0.4);
+}
+
+body {
+  font-family: 'Kanit', sans-serif;
+  background: var(--dark);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* Hero Section */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, var(--glow) 0%, transparent 70%);
+  top: -100px; right: -100px;
+  animation: pulse 4s ease-in-out infinite;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(255,101,132,0.3) 0%, transparent 70%);
+  bottom: -50px; left: -50px;
+  animation: pulse 5s ease-in-out infinite reverse;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.2); opacity: 0.8; }
+}
+
+.hero h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+  z-index: 1;
+  animation: fadeInUp 1s ease;
+}
+
+.hero p {
+  font-size: 1.3rem;
+  margin-top: 1rem;
+  opacity: 0.8;
+  z-index: 1;
+  animation: fadeInUp 1s ease 0.3s both;
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 40px;
+  animation: bounce 2s infinite;
+  z-index: 1;
+  cursor: pointer;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Navigation */
+.nav-tabs {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(26, 26, 46, 0.95);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  flex-wrap: wrap;
+  border-bottom: 1px solid rgba(108,99,255,0.3);
+}
+
+.nav-tab {
+  padding: 0.6rem 1.2rem;
+  border: 1px solid rgba(108,99,255,0.3);
+  border-radius: 25px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font-family: 'Kanit', sans-serif;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+}
+
+.nav-tab:hover, .nav-tab.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  box-shadow: 0 0 20px var(--glow);
+}
+
+/* Sections */
+.section {
+  padding: 4rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease;
+}
+
+.section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.section-title {
+  font-size: 2.2rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  text-align: center;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Evolution Timeline */
+.timeline {
+  position: relative;
+  padding: 2rem 0;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0; bottom: 0;
+  width: 3px;
+  background: linear-gradient(to bottom, var(--primary), var(--accent), var(--secondary));
+}
+
+.timeline-item {
+  display: flex;
+  align-items: center;
+  margin: 2rem 0;
+  position: relative;
+  cursor: pointer;
+}
+
+.timeline-item:nth-child(odd) {
+  flex-direction: row;
+}
+
+.timeline-item:nth-child(even) {
+  flex-direction: row-reverse;
+}
+
+.timeline-content {
+  width: 45%;
+  padding: 1.5rem;
+  background: rgba(15, 52, 96, 0.7);
+  border-radius: 16px;
+  border: 1px solid rgba(108,99,255,0.2);
+  transition: all 0.4s;
+  position: relative;
+}
+
+.timeline-content:hover {
+  border-color: var(--primary);
+  box-shadow: 0 0 30px var(--glow);
+  transform: scale(1.03);
+}
+
+.timeline-dot {
+  width: 20px; height: 20px;
+  background: var(--primary);
+  border-radius: 50%;
+  position: absolute;
+  left: calc(50% - 10px);
+  z-index: 2;
+  box-shadow: 0 0 15px var(--glow);
+  animation: dotPulse 2s infinite;
+}
+
+@keyframes dotPulse {
+  0%, 100% { box-shadow: 0 0 5px var(--glow); }
+  50% { box-shadow: 0 0 25px var(--glow), 0 0 50px var(--glow); }
+}
+
+.timeline-content h3 {
+  color: var(--accent);
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.timeline-content .emoji {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+/* Neuron Interactive Diagram */
+.neuron-container {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.neuron-svg {
+  width: 100%;
+  height: auto;
+}
+
+.neuron-label {
+  position: absolute;
+  padding: 0.8rem 1.2rem;
+  background: rgba(15, 52, 96, 0.9);
+  border: 1px solid var(--primary);
+  border-radius: 12px;
+  font-size: 0.85rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.4s;
+  pointer-events: none;
+  max-width: 280px;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+}
+
+.neuron-label.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.neuron-label h4 {
+  color: var(--accent);
+  margin-bottom: 0.3rem;
+}
+
+/* Canvas for neuron animation */
+#neuronCanvas {
+  width: 100%;
+  height: 500px;
+  border-radius: 16px;
+  border: 1px solid rgba(108,99,255,0.2);
+  background: rgba(0,0,0,0.3);
+  cursor: pointer;
+}
+
+/* Neuron Type Cards */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.card {
+  background: rgba(15, 52, 96, 0.6);
+  border: 1px solid rgba(108,99,255,0.2);
+  border-radius: 16px;
+  padding: 2rem;
+  transition: all 0.4s;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(108,99,255,0.1), transparent);
+  transition: left 0.6s;
+}
+
+.card:hover::before {
+  left: 100%;
+}
+
+.card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 8px 40px var(--glow);
+  transform: translateY(-5px);
+}
+
+.card h3 {
+  color: var(--accent);
+  font-size: 1.2rem;
+  margin-bottom: 0.8rem;
+}
+
+.card-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+/* Nerve Signal Animation */
+#signalCanvas {
+  width: 100%;
+  height: 400px;
+  border-radius: 16px;
+  border: 1px solid rgba(108,99,255,0.2);
+  background: rgba(0,0,0,0.3);
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 0.8rem 2rem;
+  border: 1px solid var(--primary);
+  border-radius: 25px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font-family: 'Kanit', sans-serif;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+.btn:hover {
+  background: var(--primary);
+  box-shadow: 0 0 20px var(--glow);
+}
+
+.btn.active {
+  background: var(--primary);
+}
+
+/* Function Neuron Types */
+.func-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.func-card {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  background: rgba(15, 52, 96, 0.6);
+  border: 1px solid rgba(108,99,255,0.2);
+  border-radius: 16px;
+  padding: 2rem;
+  transition: all 0.4s;
+  cursor: pointer;
+}
+
+.func-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 30px rgba(0,210,255,0.3);
+}
+
+.func-icon {
+  font-size: 3.5rem;
+  min-width: 80px;
+  text-align: center;
+}
+
+.func-card h3 {
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.func-arrow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--primary);
+}
+
+.func-arrow .arrow {
+  display: inline-block;
+  animation: arrowMove 1.5s infinite;
+}
+
+@keyframes arrowMove {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(8px); }
+}
+
+/* Quiz Section */
+.quiz-container {
+  max-width: 700px;
+  margin: 2rem auto 0;
+  background: rgba(15, 52, 96, 0.6);
+  border: 1px solid rgba(108,99,255,0.2);
+  border-radius: 16px;
+  padding: 2.5rem;
+}
+
+.quiz-question {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+.quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.quiz-option {
+  padding: 1rem 1.5rem;
+  border: 1px solid rgba(108,99,255,0.3);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'Kanit', sans-serif;
+  font-size: 1rem;
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+}
+
+.quiz-option:hover {
+  border-color: var(--primary);
+  background: rgba(108,99,255,0.1);
+}
+
+.quiz-option.correct {
+  border-color: #4CAF50;
+  background: rgba(76,175,80,0.2);
+  animation: correctPop 0.5s ease;
+}
+
+.quiz-option.wrong {
+  border-color: #f44336;
+  background: rgba(244,67,54,0.2);
+  animation: shake 0.5s ease;
+}
+
+@keyframes correctPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+.quiz-feedback {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  display: none;
+}
+
+.quiz-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.quiz-progress {
+  font-size: 0.9rem;
+  color: var(--accent);
+}
+
+.quiz-score {
+  text-align: center;
+  font-size: 1.5rem;
+  padding: 2rem;
+}
+
+.quiz-score .score-num {
+  font-size: 4rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 2rem; }
+  .timeline::before { left: 20px; }
+  .timeline-item, .timeline-item:nth-child(even) {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 50px;
+  }
+  .timeline-content { width: 100%; }
+  .timeline-dot { left: 10px; }
+  .func-card { flex-direction: column; text-align: center; }
+  .nav-tab { font-size: 0.75rem; padding: 0.4rem 0.8rem; }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--dark); }
+::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+
+/* Comparison Table */
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.compare-table th {
+  background: rgba(108,99,255,0.3);
+  padding: 1rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+.compare-table td {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(108,99,255,0.1);
+  text-align: center;
+  transition: background 0.3s;
+}
+
+.compare-table tr:hover td {
+  background: rgba(108,99,255,0.1);
+}
+
+/* Organism selector */
+.organism-showcase {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin: 2rem 0;
+}
+
+.organism-btn {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 2px solid rgba(108,99,255,0.3);
+  background: rgba(15,52,96,0.6);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s;
+  font-family: 'Kanit', sans-serif;
+  color: var(--text);
+}
+
+.organism-btn:hover, .organism-btn.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 25px rgba(0,210,255,0.4);
+  transform: scale(1.1);
+}
+
+.organism-btn .org-emoji { font-size: 2rem; }
+.organism-btn .org-name { font-size: 0.6rem; margin-top: 2px; }
+
+.organism-detail {
+  background: rgba(15, 52, 96, 0.6);
+  border: 1px solid rgba(0,210,255,0.3);
+  border-radius: 16px;
+  padding: 2rem;
+  min-height: 200px;
+  transition: all 0.5s;
+}
+
+.organism-detail h3 {
+  color: var(--accent);
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+}
+
+.organism-detail .detail-tag {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  background: rgba(108,99,255,0.2);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  margin: 0.2rem;
+}
+
+#organismCanvas {
+  width: 100%;
+  height: 300px;
+  border-radius: 12px;
+  margin-top: 1rem;
+  background: rgba(0,0,0,0.2);
+}
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero" id="top">
+  <h1>ระบบประสาทของสิ่งมีชีวิต</h1>
+  <p>Nervous System of Living Organisms</p>
+  <div class="scroll-hint" onclick="document.getElementById('nav').scrollIntoView({behavior:'smooth'})">
+    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2">
+      <path d="M12 5v14M5 12l7 7 7-7"/>
+    </svg>
+  </div>
+</div>
+
+<!-- Nav -->
+<nav class="nav-tabs" id="nav">
+  <button class="nav-tab active" onclick="scrollToSection('evolution')">วิวัฒนาการ</button>
+  <button class="nav-tab" onclick="scrollToSection('organisms')">สิ่งมีชีวิต</button>
+  <button class="nav-tab" onclick="scrollToSection('neuron')">โครงสร้างเซลล์ประสาท</button>
+  <button class="nav-tab" onclick="scrollToSection('signal')">กระแสประสาท</button>
+  <button class="nav-tab" onclick="scrollToSection('types')">ประเภทเซลล์ประสาท</button>
+  <button class="nav-tab" onclick="scrollToSection('function')">หน้าที่เซลล์ประสาท</button>
+  <button class="nav-tab" onclick="scrollToSection('quiz')">ทดสอบ</button>
+</nav>
+
+<!-- Section 1: Evolution -->
+<div class="section" id="evolution">
+  <h2 class="section-title">วิวัฒนาการระบบประสาท</h2>
+  <p style="text-align:center; margin-bottom:2rem; opacity:0.8;">จากสิ่งมีชีวิตเซลล์เดียวที่ยังไม่มีเซลล์ประสาท สู่ระบบประสาทที่ซับซ้อนในสัตว์มีกระดูกสันหลัง</p>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-content">
+        <span class="emoji">🦠</span>
+        <h3>พารามีเซียม (Paramecium)</h3>
+        <p>สิ่งมีชีวิตเซลล์เดียว <strong>ไม่มีเซลล์ประสาท</strong> แต่มี<strong>เส้นใยประสานงาน</strong> (Co-ordinating fiber) ควบคุมการโบกพัดของซิเลีย</p>
+      </div>
+      <div class="timeline-dot"></div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-content">
+        <span class="emoji">🧽</span>
+        <h3>ฟองน้ำ (Sponge)</h3>
+        <p>สัตว์ชั้นต่ำ <strong>ไม่มีเซลล์ประสาท</strong> แต่ละเซลล์รับรู้และตอบสนองเองได้ ไม่มีการประสานงานระหว่างเซลล์</p>
+      </div>
+      <div class="timeline-dot"></div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-content">
+        <span class="emoji">🪸</span>
+        <h3>ไฮดรา (Hydra)</h3>
+        <p>มี<strong>ร่างแหประสาท</strong> (Nerve net) เซลล์ประสาทเชื่อมโยงกันคล้ายร่างแห กระแสประสาทแพร่ทุกทิศทาง เคลื่อนที่ช้า</p>
+      </div>
+      <div class="timeline-dot"></div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-content">
+        <span class="emoji">🪱</span>
+        <h3>พลานาเรีย (Planaria)</h3>
+        <p>มี<strong>ปมประสาท 2 ปม</strong>ที่หัว ทำหน้าที่เป็นสมอง มีเส้นประสาทใหญ่ 2 เส้นคู่ขนาน เรียกว่า <strong>ระบบประสาทแบบขั้นบันได</strong></p>
+      </div>
+      <div class="timeline-dot"></div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-content">
+        <span class="emoji">🐛</span>
+        <h3>ไส้เดือนดิน (Earthworm)</h3>
+        <p>มี<strong>ปมประสาททุกข้อปล้อง</strong> เป็น CNS มี<strong>เส้นประสาทใหญ่ด้านท้อง</strong> (Ventral solid nerve cord)</p>
+      </div>
+      <div class="timeline-dot"></div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-content">
+        <span class="emoji">🦗</span>
+        <h3>แมลง (Insect)</h3>
+        <p>กลุ่ม Arthropod มี<strong>ปมประสาททุกข้อปล้อง</strong> + CNS + Ventral solid nerve cord</p>
+      </div>
+      <div class="timeline-dot"></div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-content">
+        <span class="emoji">🧠</span>
+        <h3>สัตว์มีกระดูกสันหลัง (Vertebrates)</h3>
+        <p>มี <strong>CNS</strong> (สมอง+ไขสันหลัง) และ <strong>PNS</strong> (เส้นประสาทสมอง+เส้นประสาทไขสันหลัง) เส้นประสาทเป็นท่อกลวงอยู่ด้านหลัง</p>
+      </div>
+      <div class="timeline-dot"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Section 2: Interactive Organism Explorer -->
+<div class="section" id="organisms">
+  <h2 class="section-title">สำรวจระบบประสาทในสิ่งมีชีวิต</h2>
+  <p style="text-align:center; margin-bottom:1rem; opacity:0.8;">คลิกเลือกสิ่งมีชีวิตเพื่อดูระบบประสาทแบบ Animation</p>
+
+  <div class="organism-showcase">
+    <button class="organism-btn active" onclick="showOrganism('paramecium')">
+      <span class="org-emoji">🦠</span>
+      <span class="org-name">พารามีเซียม</span>
+    </button>
+    <button class="organism-btn" onclick="showOrganism('sponge')">
+      <span class="org-emoji">🧽</span>
+      <span class="org-name">ฟองน้ำ</span>
+    </button>
+    <button class="organism-btn" onclick="showOrganism('hydra')">
+      <span class="org-emoji">🪸</span>
+      <span class="org-name">ไฮดรา</span>
+    </button>
+    <button class="organism-btn" onclick="showOrganism('planaria')">
+      <span class="org-emoji">🪱</span>
+      <span class="org-name">พลานาเรีย</span>
+    </button>
+    <button class="organism-btn" onclick="showOrganism('earthworm')">
+      <span class="org-emoji">🐛</span>
+      <span class="org-name">ไส้เดือน</span>
+    </button>
+    <button class="organism-btn" onclick="showOrganism('insect')">
+      <span class="org-emoji">🦗</span>
+      <span class="org-name">แมลง</span>
+    </button>
+    <button class="organism-btn" onclick="showOrganism('vertebrate')">
+      <span class="org-emoji">🧠</span>
+      <span class="org-name">สัตว์มีกระดูกสันหลัง</span>
+    </button>
+  </div>
+
+  <div class="organism-detail" id="organismDetail">
+    <h3 id="orgTitle">พารามีเซียม (Paramecium)</h3>
+    <div id="orgTags">
+      <span class="detail-tag">สิ่งมีชีวิตเซลล์เดียว</span>
+      <span class="detail-tag">ไม่มีเซลล์ประสาท</span>
+      <span class="detail-tag">เส้นใยประสานงาน</span>
+    </div>
+    <p id="orgDesc" style="margin-top:1rem;"></p>
+    <canvas id="organismCanvas"></canvas>
+  </div>
+</div>
+
+<!-- Section 3: Neuron Structure -->
+<div class="section" id="neuron">
+  <h2 class="section-title">โครงสร้างของเซลล์ประสาท (Neuron)</h2>
+  <p style="text-align:center; margin-bottom:1rem; opacity:0.8;">คลิกที่ส่วนต่างๆ ของเซลล์ประสาทเพื่อเรียนรู้</p>
+  <canvas id="neuronCanvas"></canvas>
+  <div id="neuronInfo" style="margin-top:1rem; min-height: 80px;"></div>
+</div>
+
+<!-- Section 4: Nerve Signal Animation -->
+<div class="section" id="signal">
+  <h2 class="section-title">การส่งกระแสประสาท</h2>
+  <p style="text-align:center; margin-bottom:1rem; opacity:0.8;">ดูการเดินทางของกระแสประสาทตามแอกซอน ผ่านโนดออฟแรนเวียร์</p>
+  <canvas id="signalCanvas"></canvas>
+  <div class="controls">
+    <button class="btn" onclick="startSignal()">▶ ส่งกระแสประสาท</button>
+    <button class="btn" onclick="toggleMyelin()">เปรียบเทียบ: มี/ไม่มี ไมอีลิน</button>
+  </div>
+  <div id="signalInfo" style="text-align:center; margin-top:1rem; min-height:40px;"></div>
+</div>
+
+<!-- Section 5: Neuron Types by Structure -->
+<div class="section" id="types">
+  <h2 class="section-title">ประเภทเซลล์ประสาท (แบ่งตามโครงสร้าง)</h2>
+  <div class="card-grid">
+    <div class="card" onclick="this.querySelector('.card-extra').style.display = this.querySelector('.card-extra').style.display === 'block' ? 'none' : 'block'">
+      <span class="card-icon">1️⃣</span>
+      <h3>เซลล์ประสาทขั้วเดียว (Unipolar)</h3>
+      <p>มีใยประสาทแยกออกจากตัวเซลล์เพียง <strong>1 เส้น</strong></p>
+      <div class="card-extra" style="display:none; margin-top:1rem; padding-top:1rem; border-top:1px solid rgba(108,99,255,0.2);">
+        <p>พบเป็นเซลล์รับความรู้สึกที่มีตัวเซลล์อยู่ในประสาทรากบนของไขสันหลัง (Dorsal root ganglion)</p>
+        <canvas class="typeCanvas" data-type="unipolar" width="280" height="150" style="margin-top:0.5rem; border-radius:8px; background:rgba(0,0,0,0.2);"></canvas>
+      </div>
+    </div>
+
+    <div class="card" onclick="this.querySelector('.card-extra').style.display = this.querySelector('.card-extra').style.display === 'block' ? 'none' : 'block'">
+      <span class="card-icon">2️⃣</span>
+      <h3>เซลล์ประสาทสองขั้ว (Bipolar)</h3>
+      <p>มีใยประสาทยื่นออกจากตัวเซลล์ <strong>2 เส้น</strong></p>
+      <div class="card-extra" style="display:none; margin-top:1rem; padding-top:1rem; border-top:1px solid rgba(108,99,255,0.2);">
+        <p>พบที่เรตินา เซลล์รับกลิ่น เซลล์รับเสียงที่หูชั้นใน และออลแฟกทอรีบัลบ์ในสมอง</p>
+        <canvas class="typeCanvas" data-type="bipolar" width="280" height="150" style="margin-top:0.5rem; border-radius:8px; background:rgba(0,0,0,0.2);"></canvas>
+      </div>
+    </div>
+
+    <div class="card" onclick="this.querySelector('.card-extra').style.display = this.querySelector('.card-extra').style.display === 'block' ? 'none' : 'block'">
+      <span class="card-icon">🔀</span>
+      <h3>เซลล์ประสาทหลายขั้ว (Multipolar)</h3>
+      <p>มีใยประสาทยื่นออกจากตัวเซลล์ <strong>หลายเส้น</strong></p>
+      <div class="card-extra" style="display:none; margin-top:1rem; padding-top:1rem; border-top:1px solid rgba(108,99,255,0.2);">
+        <p>พบเป็นเซลล์ประสาทสั่งการ และเซลล์ประสาทประสานงาน ในสมองและไขสันหลัง</p>
+        <canvas class="typeCanvas" data-type="multipolar" width="280" height="150" style="margin-top:0.5rem; border-radius:8px; background:rgba(0,0,0,0.2);"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Section 6: Function Types -->
+<div class="section" id="function">
+  <h2 class="section-title">ชนิดเซลล์ประสาท (แบ่งตามหน้าที่)</h2>
+
+  <div class="func-container">
+    <div class="func-card" onclick="highlightPath('sensory')">
+      <div class="func-icon">👁️</div>
+      <div>
+        <h3>เซลล์ประสาทรับความรู้สึก (Sensory Neuron)</h3>
+        <p>รับกระแสประสาทจากอวัยวะรับสัมผัส (ตา หู จมูก ลิ้น ผิวหนัง) แล้วส่งต่อไปยัง CNS</p>
+        <div class="func-arrow">
+          <span>อวัยวะรับสัมผัส</span>
+          <span class="arrow">→→→</span>
+          <span>สมอง/ไขสันหลัง</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="func-card" onclick="highlightPath('motor')">
+      <div class="func-icon">💪</div>
+      <div>
+        <h3>เซลล์ประสาทสั่งการ (Motor Neuron)</h3>
+        <p>นำกระแสประสาทจาก CNS ไปยังอวัยวะแสดงผล (Effectors) เพื่อให้เกิดการตอบสนอง มีแอกซอนที่ยาวมาก</p>
+        <div class="func-arrow">
+          <span>สมอง/ไขสันหลัง</span>
+          <span class="arrow">→→→</span>
+          <span>กล้ามเนื้อ/ต่อม</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="func-card" onclick="highlightPath('association')">
+      <div class="func-icon">🔗</div>
+      <div>
+        <h3>เซลล์ประสาทประสานงาน (Association Neuron)</h3>
+        <p>เป็นตัวกลางเชื่อมต่อระหว่าง Sensory กับ Motor neuron หรือเชื่อมต่อกันเอง</p>
+        <div class="func-arrow">
+          <span>Sensory</span>
+          <span class="arrow">→→→</span>
+          <span>Association</span>
+          <span class="arrow">→→→</span>
+          <span>Motor</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <canvas id="pathCanvas" style="width:100%; height:200px; border-radius:16px; margin-top:2rem; border:1px solid rgba(108,99,255,0.2); background:rgba(0,0,0,0.3);"></canvas>
+</div>
+
+<!-- Section 7: Quiz -->
+<div class="section" id="quiz">
+  <h2 class="section-title">ทดสอบความเข้าใจ</h2>
+  <div class="quiz-container">
+    <div class="quiz-progress" id="quizProgress">ข้อ 1 / 8</div>
+    <div class="quiz-question" id="quizQuestion"></div>
+    <div class="quiz-options" id="quizOptions"></div>
+    <div class="quiz-feedback" id="quizFeedback"></div>
+    <div class="quiz-nav">
+      <button class="btn" id="quizNext" style="display:none;" onclick="nextQuestion()">ข้อถัดไป →</button>
+    </div>
+  </div>
+</div>
+
+<footer style="text-align:center; padding:3rem; opacity:0.5; font-size:0.85rem;">
+  สื่อการเรียนรู้ ชีววิทยา 5 — ระบบประสาทของสิ่งมีชีวิต (Unit 18-1)
+</footer>
+
+<script>
+// ===== SCROLL & NAV =====
+function scrollToSection(id) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+}
+
+const sections = document.querySelectorAll('.section');
+const navTabs = document.querySelectorAll('.nav-tab');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      const idx = [...sections].indexOf(e.target);
+      navTabs.forEach(t => t.classList.remove('active'));
+      if (navTabs[idx]) navTabs[idx].classList.add('active');
+    }
+  });
+}, { threshold: 0.15 });
+
+sections.forEach(s => observer.observe(s));
+
+// ===== ORGANISM EXPLORER =====
+const organisms = {
+  paramecium: {
+    title: 'พารามีเซียม (Paramecium)',
+    tags: ['สิ่งมีชีวิตเซลล์เดียว', 'ไม่มีเซลล์ประสาท', 'เส้นใยประสานงาน'],
+    desc: 'เป็นโพรโตซัวที่ไม่มีเซลล์ประสาท แต่สามารถตอบสนองต่อสารเคมี อุณหภูมิ แสง และวัตถุสัมผัส โดยอาศัยเส้นใยประสานงาน (Co-ordinating fiber) ควบคุมการโบกพัดของซิเลีย หากตัดเส้นใยนี้ จะไม่สามารถควบคุมซิเลียได้'
+  },
+  sponge: {
+    title: 'ฟองน้ำ (Sponge)',
+    tags: ['สัตว์หลายเซลล์', 'ไม่มีเซลล์ประสาท', 'ไม่มีการประสานงาน'],
+    desc: 'เป็นสัตว์ชั้นต่ำที่ไม่มีเซลล์ประสาท แต่ละเซลล์สามารถรับรู้และตอบสนองได้ด้วยตัวเอง ไม่มีเซลล์ที่ทำหน้าที่ประสานงานระหว่างเซลล์โดยเฉพาะ'
+  },
+  hydra: {
+    title: 'ไฮดรา (Hydra)',
+    tags: ['ร่างแหประสาท', 'Nerve net', 'กระแสแพร่ทุกทิศ'],
+    desc: 'มีเซลล์ประสาทเชื่อมโยงกันคล้ายร่างแห (Nerve net) เมื่อถูกกระตุ้นที่จุดใดจุดหนึ่ง กระแสประสาทจะแพร่ออกทุกทิศทาง การเคลื่อนที่ของกระแสประสาทเกิดช้ากว่าสัตว์อื่น'
+  },
+  planaria: {
+    title: 'พลานาเรีย (Planaria)',
+    tags: ['หนอนตัวแบน', 'ปมประสาท 2 ปม', 'ระบบขั้นบันได'],
+    desc: 'มีปมประสาท 2 ปมที่หัว ทำหน้าที่เป็นสมอง มีเส้นประสาทใหญ่ 2 เส้นคู่ขนานจากหัวถึงท้าย มีใยประสาทยื่นด้านข้าง จึงเรียกว่า ระบบประสาทแบบขั้นบันได (Ladder type system)'
+  },
+  earthworm: {
+    title: 'ไส้เดือนดิน (Earthworm)',
+    tags: ['Annelid', 'ปมประสาททุกข้อปล้อง', 'Ventral nerve cord'],
+    desc: 'อยู่ในกลุ่มหนอนปล้อง (Annelid) มีปมประสาททุกข้อปล้อง ทำหน้าที่เป็น CNS มีเส้นประสาทใหญ่อยู่ด้านท้อง (Ventral solid nerve cord)'
+  },
+  insect: {
+    title: 'แมลง (Insect)',
+    tags: ['Arthropod', 'ปมประสาททุกข้อปล้อง', 'CNS'],
+    desc: 'อยู่ในกลุ่มอาร์โทรพอด (Arthropod) มีปมประสาททุกข้อปล้อง ทำหน้าที่เป็น CNS มีเส้นประสาทใหญ่อยู่ด้านท้อง (Ventral solid nerve cord) คล้ายไส้เดือน'
+  },
+  vertebrate: {
+    title: 'สัตว์มีกระดูกสันหลัง (Vertebrate)',
+    tags: ['CNS', 'PNS', 'Dorsal nerve cord', 'สมอง+ไขสันหลัง'],
+    desc: 'มี CNS (สมอง+ไขสันหลัง) และ PNS (เส้นประสาทสมอง+เส้นประสาทไขสันหลัง) มีเส้นประสาทใหญ่เป็นท่อกลวงอยู่ด้านหลัง (Dorsal nerve cord) เหนือทางเดินอาหาร ซับซ้อนที่สุดในอาณาจักรสัตว์'
+  }
+};
+
+let currentOrg = 'paramecium';
+let orgAnimFrame;
+
+function showOrganism(key) {
+  currentOrg = key;
+  const o = organisms[key];
+  document.getElementById('orgTitle').textContent = o.title;
+  document.getElementById('orgTags').innerHTML = o.tags.map(t => `<span class="detail-tag">${t}</span>`).join('');
+  document.getElementById('orgDesc').textContent = o.desc;
+
+  document.querySelectorAll('.organism-btn').forEach(b => b.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+
+  if (orgAnimFrame) cancelAnimationFrame(orgAnimFrame);
+  drawOrganism(key);
+}
+
+function drawOrganism(key) {
+  const canvas = document.getElementById('organismCanvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth * 2;
+  canvas.height = canvas.offsetHeight * 2;
+  ctx.scale(2, 2);
+  const w = canvas.offsetWidth, h = canvas.offsetHeight;
+  let t = 0;
+
+  function animate() {
+    t += 0.02;
+    ctx.clearRect(0, 0, w, h);
+
+    switch(key) {
+      case 'paramecium': drawParamecium(ctx, w, h, t); break;
+      case 'sponge': drawSponge(ctx, w, h, t); break;
+      case 'hydra': drawHydra(ctx, w, h, t); break;
+      case 'planaria': drawPlanaria(ctx, w, h, t); break;
+      case 'earthworm': drawEarthworm(ctx, w, h, t); break;
+      case 'insect': drawInsect(ctx, w, h, t); break;
+      case 'vertebrate': drawVertebrate(ctx, w, h, t); break;
+    }
+
+    orgAnimFrame = requestAnimationFrame(animate);
+  }
+  animate();
+}
+
+function drawParamecium(ctx, w, h, t) {
+  const cx = w/2, cy = h/2;
+  // Body
+  ctx.beginPath();
+  ctx.ellipse(cx, cy, 120, 50, 0, 0, Math.PI*2);
+  ctx.fillStyle = 'rgba(100, 200, 150, 0.3)';
+  ctx.fill();
+  ctx.strokeStyle = '#4CAF50';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Cilia
+  for (let i = 0; i < 30; i++) {
+    const angle = (i / 30) * Math.PI * 2;
+    const rx = 120, ry = 50;
+    const x = cx + rx * Math.cos(angle);
+    const y = cy + ry * Math.sin(angle);
+    const wave = Math.sin(t * 3 + i * 0.5) * 10;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x + Math.cos(angle) * 20 + wave, y + Math.sin(angle) * 20);
+    ctx.strokeStyle = 'rgba(76, 175, 80, 0.6)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  }
+
+  // Coordinating fiber (highlighted)
+  ctx.beginPath();
+  ctx.setLineDash([5, 3]);
+  ctx.moveTo(cx - 80, cy);
+  for (let x = -80; x <= 80; x += 5) {
+    ctx.lineTo(cx + x, cy + Math.sin(t * 2 + x * 0.05) * 5);
+  }
+  ctx.strokeStyle = '#FF6584';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Nucleus
+  ctx.beginPath();
+  ctx.ellipse(cx - 10, cy, 20, 12, 0, 0, Math.PI*2);
+  ctx.fillStyle = 'rgba(108, 99, 255, 0.5)';
+  ctx.fill();
+
+  // Labels
+  ctx.font = '12px Kanit';
+  ctx.fillStyle = '#FF6584';
+  ctx.fillText('เส้นใยประสานงาน', cx + 20, cy - 20);
+  ctx.fillStyle = '#4CAF50';
+  ctx.fillText('ซิเลีย', cx + 100, cy - 50);
+}
+
+function drawSponge(ctx, w, h, t) {
+  const cx = w/2, cy = h/2;
+  // Body shape
+  ctx.beginPath();
+  ctx.moveTo(cx - 60, cy + 80);
+  ctx.quadraticCurveTo(cx - 80, cy, cx - 40, cy - 60);
+  ctx.quadraticCurveTo(cx, cy - 80, cx + 40, cy - 60);
+  ctx.quadraticCurveTo(cx + 80, cy, cx + 60, cy + 80);
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(255, 165, 0, 0.2)';
+  ctx.fill();
+  ctx.strokeStyle = '#FF9800';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Individual cells (no connection)
+  for (let i = 0; i < 12; i++) {
+    const x = cx + (Math.random() * 80 - 40) * Math.cos(i);
+    const y = cy + (Math.random() * 60 - 30) * Math.sin(i);
+    const pulse = Math.sin(t * 2 + i) * 3;
+    ctx.beginPath();
+    ctx.arc(x, y, 8 + pulse, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255, 200, 100, ${0.3 + Math.sin(t + i) * 0.2})`;
+    ctx.fill();
+    ctx.strokeStyle = '#FFB74D';
+    ctx.stroke();
+  }
+
+  ctx.font = '12px Kanit';
+  ctx.fillStyle = '#FFB74D';
+  ctx.fillText('แต่ละเซลล์ทำงานอิสระ', cx - 55, cy + 100);
+  ctx.fillText('ไม่มีเซลล์ประสาท', cx - 45, cy + 115);
+}
+
+function drawHydra(ctx, w, h, t) {
+  const cx = w/2, cy = h/2;
+  // Body
+  const sway = Math.sin(t) * 10;
+  ctx.beginPath();
+  ctx.moveTo(cx - 15 + sway, cy - 60);
+  ctx.quadraticCurveTo(cx - 25, cy, cx - 15, cy + 60);
+  ctx.lineTo(cx + 15, cy + 60);
+  ctx.quadraticCurveTo(cx + 25, cy, cx + 15 + sway, cy - 60);
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(0, 210, 255, 0.15)';
+  ctx.fill();
+  ctx.strokeStyle = '#00D2FF';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Tentacles
+  for (let i = 0; i < 6; i++) {
+    const angle = -Math.PI/2 + (i - 2.5) * 0.4;
+    ctx.beginPath();
+    ctx.moveTo(cx + sway + Math.cos(angle) * 10, cy - 60);
+    const ex = cx + sway + Math.cos(angle) * 60 + Math.sin(t + i) * 15;
+    const ey = cy - 60 + Math.sin(angle) * 60 - 20;
+    ctx.quadraticCurveTo(cx + sway + Math.cos(angle) * 30, cy - 80, ex, ey);
+    ctx.strokeStyle = 'rgba(0, 210, 255, 0.6)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+
+  // Nerve net
+  const nodes = [];
+  for (let i = 0; i < 20; i++) {
+    const nx = cx + (Math.random() * 2 - 1) * 12 + sway * (1 - i/20);
+    const ny = cy - 55 + i * 6;
+    nodes.push({x: nx, y: ny});
+  }
+
+  // Connections
+  nodes.forEach((n, i) => {
+    nodes.forEach((m, j) => {
+      if (i < j && Math.hypot(n.x - m.x, n.y - m.y) < 30) {
+        ctx.beginPath();
+        ctx.moveTo(n.x, n.y);
+        ctx.lineTo(m.x, m.y);
+        const signal = Math.sin(t * 3 + i * 0.5);
+        ctx.strokeStyle = `rgba(255, 101, 132, ${0.2 + signal * 0.3})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+    });
+  });
+
+  // Nerve nodes
+  nodes.forEach((n, i) => {
+    const glow = Math.sin(t * 3 + i * 0.5);
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, 3, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255, 101, 132, ${0.5 + glow * 0.4})`;
+    ctx.fill();
+  });
+
+  ctx.font = '12px Kanit';
+  ctx.fillStyle = '#FF6584';
+  ctx.fillText('ร่างแหประสาท (Nerve net)', cx + 40, cy);
+  ctx.fillStyle = 'rgba(255,101,132,0.6)';
+  ctx.fillText('กระแสแพร่ทุกทิศ →', cx + 40, cy + 18);
+}
+
+function drawPlanaria(ctx, w, h, t) {
+  const cx = w/2, cy = h/2;
+  // Body
+  ctx.beginPath();
+  ctx.moveTo(cx, cy - 80);
+  ctx.quadraticCurveTo(cx + 40, cy - 60, cx + 30, cy);
+  ctx.quadraticCurveTo(cx + 20, cy + 60, cx, cy + 80);
+  ctx.quadraticCurveTo(cx - 20, cy + 60, cx - 30, cy);
+  ctx.quadraticCurveTo(cx - 40, cy - 60, cx, cy - 80);
+  ctx.fillStyle = 'rgba(165, 130, 100, 0.2)';
+  ctx.fill();
+  ctx.strokeStyle = '#A58264';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Two ganglia at head
+  ctx.beginPath();
+  ctx.arc(cx - 12, cy - 65, 8, 0, Math.PI * 2);
+  ctx.fillStyle = `rgba(108, 99, 255, ${0.5 + Math.sin(t*2) * 0.3})`;
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(cx + 12, cy - 65, 8, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Two parallel nerve cords (ladder)
+  for (let y = -55; y <= 70; y += 3) {
+    const signal = Math.sin(t * 3 - y * 0.1);
+    ctx.beginPath();
+    ctx.arc(cx - 10, cy + y, 1.5, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(108, 99, 255, ${0.4 + signal * 0.3})`;
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(cx + 10, cy + y, 1.5, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // Rungs of ladder
+  for (let y = -50; y <= 65; y += 15) {
+    ctx.beginPath();
+    ctx.moveTo(cx - 10, cy + y);
+    ctx.lineTo(cx + 10, cy + y);
+    ctx.strokeStyle = 'rgba(108, 99, 255, 0.3)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+
+  // Eyes
+  ctx.beginPath();
+  ctx.arc(cx - 12, cy - 72, 3, 0, Math.PI * 2);
+  ctx.fillStyle = '#222';
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(cx + 12, cy - 72, 3, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.font = '12px Kanit';
+  ctx.fillStyle = '#6C63FF';
+  ctx.fillText('ปมประสาท (สมอง)', cx + 30, cy - 62);
+  ctx.fillText('ระบบขั้นบันได', cx + 30, cy);
+}
+
+function drawEarthworm(ctx, w, h, t) {
+  const cx = w/2, cy = h/2;
+  // Segmented body
+  const segments = 12;
+  for (let i = 0; i < segments; i++) {
+    const x = cx - 140 + i * 25;
+    const yOff = Math.sin(t * 2 + i * 0.5) * 8;
+    ctx.beginPath();
+    ctx.ellipse(x, cy + yOff, 14, 25, 0, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(180, 120, 80, ${0.15 + (i%2)*0.05})`;
+    ctx.fill();
+    ctx.strokeStyle = '#B47850';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // Ganglion per segment
+    const glow = Math.sin(t * 3 + i * 0.8);
+    ctx.beginPath();
+    ctx.arc(x, cy + yOff + 5, 4, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(108, 99, 255, ${0.4 + glow * 0.4})`;
+    ctx.fill();
+  }
+
+  // Ventral nerve cord
+  ctx.beginPath();
+  ctx.moveTo(cx - 140, cy + Math.sin(t * 2) * 8 + 5);
+  for (let i = 1; i < segments; i++) {
+    const x = cx - 140 + i * 25;
+    const yOff = Math.sin(t * 2 + i * 0.5) * 8;
+    ctx.lineTo(x, cy + yOff + 5);
+  }
+  ctx.strokeStyle = '#6C63FF';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  ctx.font = '12px Kanit';
+  ctx.fillStyle = '#6C63FF';
+  ctx.fillText('ปมประสาททุกข้อปล้อง', cx - 50, cy - 40);
+  ctx.fillText('Ventral nerve cord', cx - 40, cy + 50);
+}
+
+function drawInsect(ctx, w, h, t) {
+  const cx = w/2, cy = h/2;
+  // Head
+  ctx.beginPath();
+  ctx.ellipse(cx - 80, cy, 25, 20, 0, 0, Math.PI*2);
+  ctx.fillStyle = 'rgba(50, 180, 50, 0.2)';
+  ctx.fill();
+  ctx.strokeStyle = '#4CAF50';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Brain ganglion
+  ctx.beginPath();
+  ctx.arc(cx - 80, cy, 10, 0, Math.PI * 2);
+  ctx.fillStyle = `rgba(108, 99, 255, ${0.5 + Math.sin(t*2) * 0.3})`;
+  ctx.fill();
+
+  // Thorax
+  ctx.beginPath();
+  ctx.ellipse(cx - 20, cy, 35, 25, 0, 0, Math.PI*2);
+  ctx.fillStyle = 'rgba(50, 180, 50, 0.15)';
+  ctx.fill();
+  ctx.stroke();
+
+  // Abdomen
+  ctx.beginPath();
+  ctx.ellipse(cx + 60, cy, 45, 22, 0, 0, Math.PI*2);
+  ctx.fillStyle = 'rgba(50, 180, 50, 0.1)';
+  ctx.fill();
+  ctx.stroke();
+
+  // Ganglia chain
+  const ganglia = [[-80,0],[-40,3],[-10,5],[20,5],[50,3],[80,0],[100,-2]];
+  ganglia.forEach(([gx, gy], i) => {
+    const glow = Math.sin(t * 3 + i * 0.6);
+    ctx.beginPath();
+    ctx.arc(cx + gx, cy + gy + 8, 5, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(108, 99, 255, ${0.4 + glow * 0.4})`;
+    ctx.fill();
+  });
+
+  // Nerve cord
+  ctx.beginPath();
+  ctx.moveTo(cx + ganglia[0][0], cy + ganglia[0][1] + 8);
+  ganglia.forEach(([gx, gy]) => ctx.lineTo(cx + gx, cy + gy + 8));
+  ctx.strokeStyle = '#6C63FF';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Antennae
+  ctx.beginPath();
+  ctx.moveTo(cx - 95, cy - 15);
+  ctx.quadraticCurveTo(cx - 120, cy - 50 + Math.sin(t) * 5, cx - 130, cy - 55);
+  ctx.moveTo(cx - 95, cy - 10);
+  ctx.quadraticCurveTo(cx - 110, cy - 45 + Math.sin(t+1) * 5, cx - 120, cy - 50);
+  ctx.strokeStyle = '#4CAF50';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  // Legs
+  for (let i = 0; i < 3; i++) {
+    const lx = cx - 30 + i * 20;
+    ctx.beginPath();
+    ctx.moveTo(lx, cy + 20);
+    ctx.lineTo(lx - 10, cy + 50 + Math.sin(t*2 + i) * 5);
+    ctx.moveTo(lx, cy + 20);
+    ctx.lineTo(lx + 10, cy + 50 + Math.sin(t*2 + i + 1) * 5);
+    ctx.strokeStyle = '#4CAF50';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  }
+
+  ctx.font = '12px Kanit';
+  ctx.fillStyle = '#6C63FF';
+  ctx.fillText('ปมประสาท (สมอง)', cx - 80, cy - 30);
+  ctx.fillText('Ventral nerve cord', cx - 20, cy + 35);
+}
+
+function drawVertebrate(ctx, w, h, t) {
+  const cx = w/2, cy = h/2;
+
+  // Brain
+  ctx.beginPath();
+  ctx.ellipse(cx - 120, cy - 10, 40, 35, 0, 0, Math.PI*2);
+  ctx.fillStyle = `rgba(108, 99, 255, ${0.2 + Math.sin(t) * 0.1})`;
+  ctx.fill();
+  ctx.strokeStyle = '#6C63FF';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Brain folds
+  for (let i = 0; i < 5; i++) {
+    ctx.beginPath();
+    ctx.arc(cx - 120 + (i-2)*12, cy - 15, 15, Math.PI, 0);
+    ctx.strokeStyle = 'rgba(108, 99, 255, 0.4)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+
+  // Spinal cord (dorsal)
+  ctx.beginPath();
+  ctx.moveTo(cx - 80, cy - 10);
+  for (let x = -80; x <= 140; x += 3) {
+    ctx.lineTo(cx + x, cy - 10 + Math.sin(x * 0.02) * 5);
+  }
+  ctx.strokeStyle = '#6C63FF';
+  ctx.lineWidth = 4;
+  ctx.stroke();
+
+  // Spinal nerves (PNS)
+  for (let i = 0; i < 10; i++) {
+    const x = cx - 60 + i * 22;
+    const yBase = cy - 10 + Math.sin((x - cx) * 0.02) * 5;
+    const signal = Math.sin(t * 3 + i * 0.5);
+
+    ctx.beginPath();
+    ctx.moveTo(x, yBase);
+    ctx.lineTo(x - 8, yBase - 30 - signal * 5);
+    ctx.strokeStyle = `rgba(0, 210, 255, ${0.3 + signal * 0.3})`;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(x, yBase);
+    ctx.lineTo(x + 8, yBase + 30 + signal * 5);
+    ctx.strokeStyle = `rgba(255, 101, 132, ${0.3 + signal * 0.3})`;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  }
+
+  // Signal traveling along spinal cord
+  const sigX = cx - 80 + ((t * 50) % 220);
+  ctx.beginPath();
+  ctx.arc(sigX, cy - 10, 5, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(255, 255, 100, 0.8)';
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(sigX, cy - 10, 10, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(255, 255, 100, 0.2)';
+  ctx.fill();
+
+  // Labels
+  ctx.font = '13px Kanit';
+  ctx.fillStyle = '#6C63FF';
+  ctx.fillText('สมอง (Brain)', cx - 145, cy - 55);
+  ctx.fillText('CNS', cx - 135, cy + 40);
+  ctx.fillStyle = '#00D2FF';
+  ctx.fillText('เส้นประสาทรับ (Sensory)', cx + 20, cy - 50);
+  ctx.fillStyle = '#FF6584';
+  ctx.fillText('เส้นประสาทสั่งการ (Motor)', cx + 20, cy + 55);
+  ctx.fillStyle = '#aaa';
+  ctx.fillText('PNS', cx + 100, cy + 70);
+  ctx.fillText('ไขสันหลัง (Spinal cord)', cx - 30, cy - 20);
+}
+
+// Init first organism
+setTimeout(() => drawOrganism('paramecium'), 500);
+
+// ===== NEURON INTERACTIVE DIAGRAM =====
+const neuronCanvas = document.getElementById('neuronCanvas');
+const neuronCtx = neuronCanvas.getContext('2d');
+let neuronTime = 0;
+let hoveredPart = null;
+
+function resizeNeuronCanvas() {
+  neuronCanvas.width = neuronCanvas.offsetWidth * 2;
+  neuronCanvas.height = neuronCanvas.offsetHeight * 2;
+  neuronCtx.scale(2, 2);
+}
+resizeNeuronCanvas();
+
+const neuronParts = {
+  dendrite: { x: 80, y: 200, r: 80, info: '<h4 style="color:#00D2FF">เดนไดรต์ (Dendrite)</h4><p>รับกระแสประสาทเข้าสู่ตัวเซลล์ ยื่นออกจากตัวเซลล์ มีหลายแขนง สั้น แตกแขนงเล็กๆ จำนวนมาก</p>' },
+  cellBody: { x: 200, y: 250, r: 50, info: '<h4 style="color:#6C63FF">ตัวเซลล์ (Cell Body)</h4><p>มีนิวเคลียส ไมโทคอนเดรีย ไรโบโซม เอนโดพลาสมิกเรติคูลัม กอลจิบอดี ทำหน้าที่เกี่ยวกับการเจริญเติบโต เมแทบอลิซึม สร้างพลังงาน และสังเคราะห์สารสื่อประสาท</p>' },
+  axon: { x: 480, y: 250, r: 120, info: '<h4 style="color:#FF6584">แอกซอน (Axon)</h4><p>นำกระแสประสาทออกจากตัวเซลล์ มีเพียงเส้นเดียว ปลายแตกแขนงเป็นตุ่ม มีเซลล์ชวันน์ห่อหุ้มเป็นเยื่อไมอีลิน (Myelin sheath) ช่วยเป็นฉนวนทำให้กระแสผ่านเร็วขึ้น</p>' },
+  myelin: { x: 440, y: 230, r: 40, info: '<h4 style="color:#FFD700">เยื่อไมอีลิน (Myelin Sheath)</h4><p>สร้างจากเซลล์ชวันน์ (Schwann cell) ห่อหุ้มแอกซอน ทำหน้าที่เป็นฉนวนไฟฟ้า ช่วยให้กระแสประสาทเดินทางเร็วขึ้น</p>' },
+  node: { x: 500, y: 250, r: 20, info: '<h4 style="color:#FF9800">โนดออฟแรนเวียร์ (Node of Ranvier)</h4><p>ช่องว่างระหว่างเยื่อไมอีลิน กระแสประสาทจะ "กระโดด" จากโนดหนึ่งไปอีกโนดหนึ่ง (Saltatory conduction) ทำให้เร็วมาก</p>' },
+  terminal: { x: 680, y: 250, r: 40, info: '<h4 style="color:#E91E63">ปลายแอกซอน (Axon Terminal)</h4><p>ปลายแอกซอนแตกแขนงเป็นตุ่ม (Synaptic knob) บรรจุถุงสารสื่อประสาท (Neurotransmitter) เพื่อส่งต่อสัญญาณไปยังเซลล์ถัดไป</p>' }
+};
+
+neuronCanvas.addEventListener('mousemove', (e) => {
+  const rect = neuronCanvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+
+  hoveredPart = null;
+  for (const [key, part] of Object.entries(neuronParts)) {
+    if (Math.hypot(mx - part.x, my - part.y) < part.r) {
+      hoveredPart = key;
+      break;
+    }
+  }
+  neuronCanvas.style.cursor = hoveredPart ? 'pointer' : 'default';
+});
+
+neuronCanvas.addEventListener('click', (e) => {
+  if (hoveredPart) {
+    document.getElementById('neuronInfo').innerHTML =
+      `<div style="padding:1rem; background:rgba(15,52,96,0.8); border:1px solid var(--primary); border-radius:12px;">${neuronParts[hoveredPart].info}</div>`;
+  }
+});
+
+function drawNeuron() {
+  neuronTime += 0.02;
+  const w = neuronCanvas.offsetWidth;
+  const h = neuronCanvas.offsetHeight;
+  neuronCtx.clearRect(0, 0, w, h);
+
+  // Dendrites
+  const dendrites = [
+    [50, 120], [30, 180], [50, 240], [40, 300], [60, 160], [45, 280]
+  ];
+  dendrites.forEach(([dx, dy], i) => {
+    neuronCtx.beginPath();
+    neuronCtx.moveTo(170, 250);
+    const wave = Math.sin(neuronTime + i) * 5;
+    neuronCtx.quadraticCurveTo(110 + wave, dy, dx, dy + wave);
+    neuronCtx.strokeStyle = hoveredPart === 'dendrite' ? '#00D2FF' : 'rgba(0, 210, 255, 0.6)';
+    neuronCtx.lineWidth = hoveredPart === 'dendrite' ? 3 : 2;
+    neuronCtx.stroke();
+
+    // Small branches
+    neuronCtx.beginPath();
+    neuronCtx.moveTo(dx, dy + wave);
+    neuronCtx.lineTo(dx - 15, dy - 15 + wave);
+    neuronCtx.moveTo(dx, dy + wave);
+    neuronCtx.lineTo(dx - 15, dy + 15 + wave);
+    neuronCtx.stroke();
+  });
+
+  // Cell body
+  const bodyGlow = hoveredPart === 'cellBody' ? 0.6 : 0.3;
+  neuronCtx.beginPath();
+  neuronCtx.ellipse(200, 250, 45, 40, 0, 0, Math.PI * 2);
+  neuronCtx.fillStyle = `rgba(108, 99, 255, ${bodyGlow})`;
+  neuronCtx.fill();
+  neuronCtx.strokeStyle = '#6C63FF';
+  neuronCtx.lineWidth = 2;
+  neuronCtx.stroke();
+
+  // Nucleus
+  neuronCtx.beginPath();
+  neuronCtx.arc(200, 250, 15, 0, Math.PI * 2);
+  neuronCtx.fillStyle = 'rgba(108, 99, 255, 0.7)';
+  neuronCtx.fill();
+
+  // Axon hillock + axon
+  neuronCtx.beginPath();
+  neuronCtx.moveTo(245, 250);
+  neuronCtx.lineTo(680, 250);
+  neuronCtx.strokeStyle = hoveredPart === 'axon' ? '#FF6584' : 'rgba(255, 101, 132, 0.5)';
+  neuronCtx.lineWidth = 3;
+  neuronCtx.stroke();
+
+  // Myelin sheaths
+  const myelinPositions = [290, 370, 450, 530, 600];
+  myelinPositions.forEach((mx, i) => {
+    const isHovered = hoveredPart === 'myelin';
+    neuronCtx.beginPath();
+    neuronCtx.ellipse(mx, 250, 28, 15, 0, 0, Math.PI * 2);
+    neuronCtx.fillStyle = isHovered ? 'rgba(255, 215, 0, 0.4)' : 'rgba(255, 215, 0, 0.2)';
+    neuronCtx.fill();
+    neuronCtx.strokeStyle = isHovered ? '#FFD700' : 'rgba(255, 215, 0, 0.5)';
+    neuronCtx.lineWidth = isHovered ? 2 : 1;
+    neuronCtx.stroke();
+  });
+
+  // Nodes of Ranvier (gaps)
+  const nodePositions = [330, 410, 490, 565];
+  nodePositions.forEach((nx, i) => {
+    const isHovered = hoveredPart === 'node';
+    const glow = Math.sin(neuronTime * 3 + i);
+    neuronCtx.beginPath();
+    neuronCtx.arc(nx, 250, isHovered ? 5 : 3, 0, Math.PI * 2);
+    neuronCtx.fillStyle = isHovered ? '#FF9800' : `rgba(255, 152, 0, ${0.5 + glow * 0.3})`;
+    neuronCtx.fill();
+  });
+
+  // Axon terminals
+  const terminals = [[680, 230], [690, 250], [680, 270], [670, 210], [670, 290]];
+  terminals.forEach(([tx, ty], i) => {
+    const isHovered = hoveredPart === 'terminal';
+    neuronCtx.beginPath();
+    neuronCtx.moveTo(650, 250);
+    neuronCtx.lineTo(tx, ty);
+    neuronCtx.strokeStyle = 'rgba(233, 30, 99, 0.5)';
+    neuronCtx.lineWidth = 2;
+    neuronCtx.stroke();
+
+    neuronCtx.beginPath();
+    neuronCtx.arc(tx + 8, ty, 6, 0, Math.PI * 2);
+    neuronCtx.fillStyle = isHovered ? 'rgba(233, 30, 99, 0.8)' : `rgba(233, 30, 99, ${0.4 + Math.sin(neuronTime + i) * 0.2})`;
+    neuronCtx.fill();
+  });
+
+  // Labels
+  neuronCtx.font = '11px Kanit';
+  neuronCtx.fillStyle = '#00D2FF';
+  neuronCtx.fillText('เดนไดรต์', 30, 105);
+  neuronCtx.fillStyle = '#6C63FF';
+  neuronCtx.fillText('ตัวเซลล์', 175, 310);
+  neuronCtx.fillStyle = '#FFD700';
+  neuronCtx.fillText('เยื่อไมอีลิน', 380, 225);
+  neuronCtx.fillStyle = '#FF9800';
+  neuronCtx.fillText('โนดออฟแรนเวียร์', 430, 280);
+  neuronCtx.fillStyle = '#E91E63';
+  neuronCtx.fillText('ปลายแอกซอน', 650, 310);
+
+  // Direction arrow
+  neuronCtx.fillStyle = 'rgba(255,255,255,0.4)';
+  neuronCtx.font = '11px Kanit';
+  neuronCtx.fillText('ทิศทางกระแสประสาท →→→', 300, 320);
+
+  // Traveling signal
+  const sigPos = (neuronTime * 80) % (680 - 245) + 245;
+  neuronCtx.beginPath();
+  neuronCtx.arc(sigPos, 250, 4, 0, Math.PI * 2);
+  neuronCtx.fillStyle = 'rgba(255, 255, 100, 0.9)';
+  neuronCtx.fill();
+  neuronCtx.beginPath();
+  neuronCtx.arc(sigPos, 250, 10, 0, Math.PI * 2);
+  neuronCtx.fillStyle = 'rgba(255, 255, 100, 0.2)';
+  neuronCtx.fill();
+
+  requestAnimationFrame(drawNeuron);
+}
+drawNeuron();
+
+// ===== NERVE SIGNAL ANIMATION =====
+const signalCanvas = document.getElementById('signalCanvas');
+const sigCtx = signalCanvas.getContext('2d');
+let signalActive = false;
+let signalPos = 0;
+let hasMyelin = true;
+let signalSpeed = 0;
+
+function resizeSignalCanvas() {
+  signalCanvas.width = signalCanvas.offsetWidth * 2;
+  signalCanvas.height = signalCanvas.offsetHeight * 2;
+  sigCtx.scale(2, 2);
+}
+resizeSignalCanvas();
+
+function startSignal() {
+  signalActive = true;
+  signalPos = 50;
+  signalSpeed = hasMyelin ? 6 : 2;
+  document.getElementById('signalInfo').innerHTML = hasMyelin ?
+    '<span style="color:#FFD700">มีเยื่อไมอีลิน → กระแสกระโดดข้ามโนด (Saltatory conduction) = เร็ว!</span>' :
+    '<span style="color:#FF6584">ไม่มีเยื่อไมอีลิน → กระแสเดินทางต่อเนื่อง = ช้ากว่า</span>';
+}
+
+function toggleMyelin() {
+  hasMyelin = !hasMyelin;
+  signalActive = false;
+  signalPos = 0;
+  document.getElementById('signalInfo').innerHTML = hasMyelin ?
+    'โหมด: <span style="color:#FFD700">มีเยื่อไมอีลิน</span> — กดปุ่มส่งกระแสประสาทเพื่อดูความแตกต่าง' :
+    'โหมด: <span style="color:#FF6584">ไม่มีเยื่อไมอีลิน</span> — กดปุ่มส่งกระแสประสาทเพื่อดูความแตกต่าง';
+}
+
+function drawSignalAnim() {
+  const w = signalCanvas.offsetWidth;
+  const h = signalCanvas.offsetHeight;
+  sigCtx.clearRect(0, 0, w, h);
+
+  const cy = h / 2;
+
+  // Axon line
+  sigCtx.beginPath();
+  sigCtx.moveTo(50, cy);
+  sigCtx.lineTo(w - 50, cy);
+  sigCtx.strokeStyle = 'rgba(255, 101, 132, 0.4)';
+  sigCtx.lineWidth = 4;
+  sigCtx.stroke();
+
+  if (hasMyelin) {
+    // Myelin sheaths
+    const mCount = 8;
+    const gap = (w - 100) / mCount;
+    for (let i = 0; i < mCount; i++) {
+      const mx = 50 + i * gap + gap * 0.15;
+      const mw = gap * 0.7;
+      sigCtx.beginPath();
+      sigCtx.ellipse(mx + mw/2, cy, mw/2, 18, 0, 0, Math.PI * 2);
+
+      const lit = signalActive && signalPos > mx && signalPos < mx + mw;
+      sigCtx.fillStyle = lit ? 'rgba(255, 215, 0, 0.4)' : 'rgba(255, 215, 0, 0.15)';
+      sigCtx.fill();
+      sigCtx.strokeStyle = lit ? '#FFD700' : 'rgba(255, 215, 0, 0.4)';
+      sigCtx.lineWidth = 1.5;
+      sigCtx.stroke();
+
+      // Node
+      const nodeX = mx + mw + gap * 0.15;
+      if (i < mCount - 1) {
+        const nodeActive = signalActive && Math.abs(signalPos - nodeX) < 15;
+        sigCtx.beginPath();
+        sigCtx.arc(nodeX, cy, nodeActive ? 6 : 4, 0, Math.PI * 2);
+        sigCtx.fillStyle = nodeActive ? '#FF9800' : 'rgba(255, 152, 0, 0.5)';
+        sigCtx.fill();
+        if (nodeActive) {
+          sigCtx.beginPath();
+          sigCtx.arc(nodeX, cy, 12, 0, Math.PI * 2);
+          sigCtx.fillStyle = 'rgba(255, 152, 0, 0.2)';
+          sigCtx.fill();
+        }
+      }
+    }
+
+    sigCtx.font = '11px Kanit';
+    sigCtx.fillStyle = '#FFD700';
+    sigCtx.fillText('เยื่อไมอีลิน', 60, cy - 30);
+    sigCtx.fillStyle = '#FF9800';
+    sigCtx.fillText('โนดออฟแรนเวียร์', w/2, cy + 40);
+  } else {
+    sigCtx.font = '11px Kanit';
+    sigCtx.fillStyle = '#aaa';
+    sigCtx.fillText('แอกซอนไม่มีเยื่อไมอีลิน (Unmyelinated)', 60, cy - 25);
+  }
+
+  // Signal
+  if (signalActive) {
+    signalPos += signalSpeed;
+
+    // Signal ball
+    sigCtx.beginPath();
+    sigCtx.arc(signalPos, cy, 8, 0, Math.PI * 2);
+    sigCtx.fillStyle = 'rgba(255, 255, 100, 0.9)';
+    sigCtx.fill();
+    sigCtx.beginPath();
+    sigCtx.arc(signalPos, cy, 16, 0, Math.PI * 2);
+    sigCtx.fillStyle = 'rgba(255, 255, 100, 0.2)';
+    sigCtx.fill();
+
+    // Trail
+    for (let i = 1; i <= 5; i++) {
+      sigCtx.beginPath();
+      sigCtx.arc(signalPos - i * 12, cy, 5 - i, 0, Math.PI * 2);
+      sigCtx.fillStyle = `rgba(255, 255, 100, ${0.3 - i * 0.05})`;
+      sigCtx.fill();
+    }
+
+    if (signalPos > w - 50) {
+      signalActive = false;
+      document.getElementById('signalInfo').innerHTML += ' <strong style="color:#4CAF50"> ✓ ส่งสำเร็จ!</strong>';
+    }
+  }
+
+  // Speed label
+  if (signalActive) {
+    sigCtx.font = '13px Kanit';
+    sigCtx.fillStyle = '#fff';
+    sigCtx.fillText(`ความเร็ว: ${hasMyelin ? '●●●●● (เร็ว)' : '●● (ช้า)'}`, w/2 - 60, cy + 70);
+  }
+
+  // Direction
+  sigCtx.fillStyle = 'rgba(255,255,255,0.3)';
+  sigCtx.font = '11px Kanit';
+  sigCtx.fillText('ตัวเซลล์ →', 50, cy + 55);
+  sigCtx.fillText('→ ปลายแอกซอน', w - 150, cy + 55);
+
+  requestAnimationFrame(drawSignalAnim);
+}
+drawSignalAnim();
+
+// ===== PATHWAY ANIMATION =====
+const pathCanvas = document.getElementById('pathCanvas');
+const pathCtx = pathCanvas.getContext('2d');
+let pathHighlight = 'all';
+let pathTime = 0;
+
+function resizePathCanvas() {
+  pathCanvas.width = pathCanvas.offsetWidth * 2;
+  pathCanvas.height = pathCanvas.offsetHeight * 2;
+  pathCtx.scale(2, 2);
+}
+resizePathCanvas();
+
+function highlightPath(type) {
+  pathHighlight = type;
+}
+
+function drawPath() {
+  pathTime += 0.02;
+  const w = pathCanvas.offsetWidth;
+  const h = pathCanvas.offsetHeight;
+  pathCtx.clearRect(0, 0, w, h);
+
+  const cy = h / 2;
+  const sections = [
+    { x: 80, label: 'ตา/หู/ผิวหนัง', emoji: '👁️', color: '#00D2FF' },
+    { x: w * 0.3, label: 'Sensory\nNeuron', emoji: '⚡', color: '#00D2FF' },
+    { x: w * 0.5, label: 'Association\nNeuron (CNS)', emoji: '🔗', color: '#6C63FF' },
+    { x: w * 0.7, label: 'Motor\nNeuron', emoji: '⚡', color: '#FF6584' },
+    { x: w - 80, label: 'กล้ามเนื้อ/ต่อม', emoji: '💪', color: '#FF6584' }
+  ];
+
+  // Draw connections
+  for (let i = 0; i < sections.length - 1; i++) {
+    const from = sections[i];
+    const to = sections[i + 1];
+
+    let alpha = 0.2;
+    if (pathHighlight === 'sensory' && i < 2) alpha = 0.8;
+    if (pathHighlight === 'association' && i === 1 || pathHighlight === 'association' && i === 2) alpha = 0.8;
+    if (pathHighlight === 'motor' && i >= 2) alpha = 0.8;
+    if (pathHighlight === 'all') alpha = 0.4;
+
+    pathCtx.beginPath();
+    pathCtx.moveTo(from.x + 30, cy);
+    pathCtx.lineTo(to.x - 30, cy);
+    pathCtx.strokeStyle = `rgba(255,255,255,${alpha})`;
+    pathCtx.lineWidth = 3;
+    pathCtx.stroke();
+
+    // Animated signal on highlighted path
+    if (alpha > 0.3) {
+      const prog = ((pathTime * 2 + i) % 1);
+      const sx = from.x + 30 + (to.x - from.x - 60) * prog;
+      pathCtx.beginPath();
+      pathCtx.arc(sx, cy, 4, 0, Math.PI * 2);
+      pathCtx.fillStyle = 'rgba(255, 255, 100, 0.8)';
+      pathCtx.fill();
+    }
+
+    // Arrow
+    const ax = to.x - 35;
+    pathCtx.beginPath();
+    pathCtx.moveTo(ax, cy - 5);
+    pathCtx.lineTo(ax + 8, cy);
+    pathCtx.lineTo(ax, cy + 5);
+    pathCtx.fillStyle = `rgba(255,255,255,${alpha})`;
+    pathCtx.fill();
+  }
+
+  // Draw nodes
+  sections.forEach((s, i) => {
+    pathCtx.beginPath();
+    pathCtx.arc(s.x, cy, 25, 0, Math.PI * 2);
+    pathCtx.fillStyle = 'rgba(15, 52, 96, 0.9)';
+    pathCtx.fill();
+    pathCtx.strokeStyle = s.color;
+    pathCtx.lineWidth = 2;
+    pathCtx.stroke();
+
+    pathCtx.font = '18px sans-serif';
+    pathCtx.textAlign = 'center';
+    pathCtx.fillText(s.emoji, s.x, cy + 6);
+
+    pathCtx.font = '10px Kanit';
+    pathCtx.fillStyle = '#ccc';
+    const lines = s.label.split('\n');
+    lines.forEach((line, li) => {
+      pathCtx.fillText(line, s.x, cy + 38 + li * 14);
+    });
+  });
+
+  pathCtx.textAlign = 'left';
+  requestAnimationFrame(drawPath);
+}
+drawPath();
+
+// ===== TYPE CANVASES =====
+function drawTypeNeurons() {
+  document.querySelectorAll('.typeCanvas').forEach(canvas => {
+    const ctx = canvas.getContext('2d');
+    const type = canvas.dataset.type;
+    const w = canvas.width, h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+
+    const cy = h / 2;
+    const cx = w / 2;
+
+    // Cell body
+    ctx.beginPath();
+    ctx.arc(cx, cy, 18, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(108, 99, 255, 0.5)';
+    ctx.fill();
+    ctx.strokeStyle = '#6C63FF';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, 8, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(108, 99, 255, 0.8)';
+    ctx.fill();
+
+    if (type === 'unipolar') {
+      ctx.beginPath();
+      ctx.moveTo(cx, cy - 18);
+      ctx.lineTo(cx, cy - 50);
+      ctx.lineTo(cx - 40, cy - 50);
+      ctx.moveTo(cx, cy - 50);
+      ctx.lineTo(cx + 40, cy - 50);
+      ctx.strokeStyle = '#FF6584';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.font = '10px Kanit';
+      ctx.fillStyle = '#aaa';
+      ctx.fillText('1 เส้นใย', cx - 15, cy + 40);
+    } else if (type === 'bipolar') {
+      ctx.beginPath();
+      ctx.moveTo(cx - 18, cy);
+      ctx.lineTo(cx - 80, cy);
+      ctx.strokeStyle = '#00D2FF';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(cx + 18, cy);
+      ctx.lineTo(cx + 80, cy);
+      ctx.strokeStyle = '#FF6584';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.font = '10px Kanit';
+      ctx.fillStyle = '#00D2FF';
+      ctx.fillText('เดนไดรต์', cx - 80, cy - 10);
+      ctx.fillStyle = '#FF6584';
+      ctx.fillText('แอกซอน', cx + 50, cy - 10);
+    } else if (type === 'multipolar') {
+      // Multiple dendrites
+      const angles = [-2.5, -2, -1.5, -1, 2, 2.5];
+      angles.forEach(a => {
+        ctx.beginPath();
+        ctx.moveTo(cx + Math.cos(a) * 18, cy + Math.sin(a) * 18);
+        ctx.lineTo(cx + Math.cos(a) * 55, cy + Math.sin(a) * 55);
+        ctx.strokeStyle = '#00D2FF';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      });
+
+      ctx.beginPath();
+      ctx.moveTo(cx + 18, cy);
+      ctx.lineTo(cx + 100, cy);
+      ctx.strokeStyle = '#FF6584';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.font = '10px Kanit';
+      ctx.fillStyle = '#00D2FF';
+      ctx.fillText('หลายเดนไดรต์', cx - 80, cy - 30);
+      ctx.fillStyle = '#FF6584';
+      ctx.fillText('แอกซอน', cx + 65, cy - 10);
+    }
+  });
+}
+
+// ===== QUIZ =====
+const quizData = [
+  {
+    q: 'สิ่งมีชีวิตเซลล์เดียวชนิดใดใช้เส้นใยประสานงาน (Co-ordinating fiber) ในการควบคุมซิเลีย?',
+    opts: ['อะมีบา', 'พารามีเซียม', 'ยูกลีนา', 'ฟองน้ำ'],
+    ans: 1,
+    explain: 'พารามีเซียมใช้เส้นใยประสานงานควบคุมการโบกพัดของซิเลีย ถ้าตัดเส้นใยนี้จะควบคุมซิเลียไม่ได้'
+  },
+  {
+    q: 'ไฮดรามีระบบประสาทแบบใด?',
+    opts: ['ระบบขั้นบันได', 'ร่างแหประสาท (Nerve net)', 'ระบบประสาทส่วนกลาง', 'ปมประสาท'],
+    ans: 1,
+    explain: 'ไฮดรามีเซลล์ประสาทเชื่อมโยงกันคล้ายร่างแห (Nerve net) กระแสประสาทแพร่ทุกทิศทาง'
+  },
+  {
+    q: 'ระบบประสาทแบบขั้นบันได (Ladder type) พบในสิ่งมีชีวิตใด?',
+    opts: ['ไฮดรา', 'ไส้เดือนดิน', 'พลานาเรีย', 'แมลง'],
+    ans: 2,
+    explain: 'พลานาเรียมีเส้นประสาทใหญ่ 2 เส้นคู่ขนาน มีใยประสาทยื่นข้างตามขวาง จึงเรียกว่าระบบขั้นบันได'
+  },
+  {
+    q: 'ใยประสาทชนิดใดทำหน้าที่ "รับ" กระแสประสาทเข้าสู่ตัวเซลล์?',
+    opts: ['แอกซอน', 'เดนไดรต์', 'เยื่อไมอีลิน', 'โนดออฟแรนเวียร์'],
+    ans: 1,
+    explain: 'เดนไดรต์ (Dendrite) ทำหน้าที่รับกระแสประสาทเข้าสู่ตัวเซลล์ มีหลายแขนง'
+  },
+  {
+    q: 'เยื่อไมอีลิน (Myelin sheath) สร้างจากเซลล์ชนิดใด?',
+    opts: ['เซลล์ประสาท', 'เซลล์เกลีย', 'เซลล์ชวันน์', 'เซลล์กล้ามเนื้อ'],
+    ans: 2,
+    explain: 'เซลล์ชวันน์ (Schwann cell) ห่อหุ้มแอกซอนเกิดเป็นเยื่อไมอีลิน ทำหน้าที่เป็นฉนวนไฟฟ้า'
+  },
+  {
+    q: 'เซลล์ประสาทที่มีใยประสาทยื่นออกจากตัวเซลล์ 2 เส้น เรียกว่า?',
+    opts: ['Unipolar neuron', 'Bipolar neuron', 'Multipolar neuron', 'Interneuron'],
+    ans: 1,
+    explain: 'Bipolar neuron (เซลล์ประสาทสองขั้ว) มีใยประสาท 2 เส้น พบที่เรตินา เซลล์รับกลิ่น และหูชั้นใน'
+  },
+  {
+    q: 'เซลล์ประสาทชนิดใดนำคำสั่งจาก CNS ไปยังกล้ามเนื้อ?',
+    opts: ['Sensory neuron', 'Motor neuron', 'Association neuron', 'Bipolar neuron'],
+    ans: 1,
+    explain: 'Motor neuron (เซลล์ประสาทสั่งการ) นำกระแสประสาทจาก CNS ไปยังอวัยวะแสดงผล (Effectors)'
+  },
+  {
+    q: 'สัตว์มีกระดูกสันหลังมีเส้นประสาทใหญ่อยู่ตำแหน่งใด?',
+    opts: ['ด้านท้อง (Ventral)', 'ด้านหลัง (Dorsal)', 'ด้านข้าง', 'ตรงกลาง'],
+    ans: 1,
+    explain: 'สัตว์มีกระดูกสันหลังมี Dorsal nerve cord (เส้นประสาทด้านหลัง) เป็นท่อกลวง เหนือทางเดินอาหาร ต่างจากสัตว์ไม่มีกระดูกสันหลังที่อยู่ด้านท้อง'
+  }
+];
+
+let currentQ = 0;
+let quizScore = 0;
+let answered = false;
+
+function loadQuestion() {
+  if (currentQ >= quizData.length) {
+    showScore();
+    return;
+  }
+  const q = quizData[currentQ];
+  answered = false;
+  document.getElementById('quizProgress').textContent = `ข้อ ${currentQ + 1} / ${quizData.length}`;
+  document.getElementById('quizQuestion').textContent = q.q;
+  document.getElementById('quizFeedback').style.display = 'none';
+  document.getElementById('quizNext').style.display = 'none';
+
+  const optContainer = document.getElementById('quizOptions');
+  optContainer.innerHTML = '';
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-option';
+    btn.textContent = opt;
+    btn.onclick = () => checkAnswer(i, btn);
+    optContainer.appendChild(btn);
+  });
+}
+
+function checkAnswer(idx, btn) {
+  if (answered) return;
+  answered = true;
+  const q = quizData[currentQ];
+  const options = document.querySelectorAll('.quiz-option');
+
+  if (idx === q.ans) {
+    btn.classList.add('correct');
+    quizScore++;
+    document.getElementById('quizFeedback').innerHTML = `<span style="color:#4CAF50">✓ ถูกต้อง!</span> ${q.explain}`;
+  } else {
+    btn.classList.add('wrong');
+    options[q.ans].classList.add('correct');
+    document.getElementById('quizFeedback').innerHTML = `<span style="color:#f44336">✗ ไม่ถูกต้อง</span> ${q.explain}`;
+  }
+
+  document.getElementById('quizFeedback').style.display = 'block';
+  document.getElementById('quizFeedback').style.background = 'rgba(108,99,255,0.1)';
+  document.getElementById('quizFeedback').style.borderRadius = '8px';
+  document.getElementById('quizFeedback').style.padding = '1rem';
+  document.getElementById('quizNext').style.display = 'inline-block';
+}
+
+function nextQuestion() {
+  currentQ++;
+  loadQuestion();
+}
+
+function showScore() {
+  const container = document.querySelector('.quiz-container');
+  const pct = Math.round(quizScore / quizData.length * 100);
+  let msg = '';
+  if (pct >= 80) msg = 'ยอดเยี่ยม! เข้าใจเนื้อหาดีมาก';
+  else if (pct >= 60) msg = 'ดีมาก! ลองทบทวนเพิ่มเติมอีกนิด';
+  else msg = 'ลองกลับไปอ่านเนื้อหาแล้วทำใหม่นะ';
+
+  container.innerHTML = `
+    <div class="quiz-score">
+      <div class="score-num">${quizScore}/${quizData.length}</div>
+      <p style="margin-top:1rem">${msg}</p>
+      <p style="margin-top:0.5rem; opacity:0.7">(${pct}%)</p>
+      <button class="btn" style="margin-top:2rem" onclick="resetQuiz()">ทำใหม่</button>
+    </div>
+  `;
+}
+
+function resetQuiz() {
+  currentQ = 0;
+  quizScore = 0;
+  const container = document.querySelector('.quiz-container');
+  container.innerHTML = `
+    <div class="quiz-progress" id="quizProgress"></div>
+    <div class="quiz-question" id="quizQuestion"></div>
+    <div class="quiz-options" id="quizOptions"></div>
+    <div class="quiz-feedback" id="quizFeedback"></div>
+    <div class="quiz-nav">
+      <button class="btn" id="quizNext" style="display:none;" onclick="nextQuestion()">ข้อถัดไป →</button>
+    </div>
+  `;
+  loadQuestion();
+}
+
+// Init quiz
+loadQuestion();
+
+// Handle resize
+window.addEventListener('resize', () => {
+  resizeNeuronCanvas();
+  resizeSignalCanvas();
+  resizePathCanvas();
+  if (currentOrg) drawOrganism(currentOrg);
+  drawTypeNeurons();
+});
+
+// Init type canvases when cards are visible
+const typeObserver = new MutationObserver(() => drawTypeNeurons());
+document.querySelectorAll('.card-extra').forEach(el => {
+  typeObserver.observe(el, { attributes: true, attributeFilter: ['style'] });
+});
+
+setTimeout(drawTypeNeurons, 1000);
+</script>
+<!--KIT-UI v2.4 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<script>
+/* =============================================================================
+   _kit/ui-controls.js  —  KIT UI  v1.0
+   แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
+     🌙/☀️  โหมดมืด / สว่าง   (จำค่าไว้ใน localStorage)
+     A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
+     ✏️  ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
+     🧮  เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
+
+   ── วิธีใช้ ────────────────────────────────────────────────────────────────
+   ห้ามแก้โค้ดนี้ในไฟล์ widget!  แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
+       pwsh -File _kit/apply-ui.ps1
+   สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
+   (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
+
+   !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
+      เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
+
+   ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
+   ใส่แอตทริบิวต์ที่ tag body:  data-tools="pen,calc"  = บังคับเปิด
+                              data-tools="none"      = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
+   ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
+              หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
+   ============================================================================= */
+(function(){
+if(window.__KITUI__) return; window.__KITUI__='2.4';
+
+/* ---------- helper ---------- */
+const D=document, R=D.documentElement;
+const get=k=>{try{return localStorage.getItem('kitui-'+k)}catch(e){return null}};
+const set=(k,v)=>{try{localStorage.setItem('kitui-'+k,v)}catch(e){}};
+const el=(t,c,h)=>{const e=D.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
+
+/* =============================================================================
+   1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
+   ============================================================================= */
+const CSS=`
+/* ===== DARK TOKENS (คู่กับ _kit/design-tokens.css) ===== */
+:root[data-theme="dark"]{
+  --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
+  --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
+  --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
+  --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
+  --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
+}
+:root[data-theme="dark"] body{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f172a}
+:root[data-theme="dark"] body[data-subject="physics"]{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f1220}
+:root[data-theme="dark"] body[data-subject="bio"]{--accent:#4ade80;--accent-head:#bbf7d0;--accent-ink:#86efac;--accent-soft:#0f2a1a;--accent-bd:#256b41;--accent-chip:#14532d;--accent-ghost:#15803d;--bg:#0d1912}
+:root[data-theme="dark"] body[data-subject="chem"]{--accent:#fb923c;--accent-head:#fed7aa;--accent-ink:#fdba74;--accent-soft:#2b1a0c;--accent-bd:#8a3d12;--accent-chip:#6d2c10;--accent-ghost:#c2410c;--bg:#1a130c}
+:root[data-theme="dark"] body[data-subject="christ"]{--accent:#a78bfa;--accent-head:#ddd6fe;--accent-ink:#c4b5fd;--accent-soft:#241a3d;--accent-bd:#5b21b6;--accent-chip:#4c1d95;--accent-ghost:#6d28d9;--bg:#16121f}
+:root[data-theme="dark"] body[data-subject="islam"]{--accent:#2dd4bf;--accent-head:#99f6e4;--accent-ink:#5eead4;--accent-soft:#0d2b28;--accent-bd:#12615a;--accent-chip:#134e4a;--accent-ghost:#0f766e;--bg:#0c1917}
+:root[data-theme="dark"] body[data-subject="history"]{--accent:#fbbf24;--accent-head:#fde68a;--accent-ink:#fcd34d;--accent-soft:#2a1f0a;--accent-bd:#8a4b0c;--accent-chip:#6d3a0a;--accent-ghost:#b45309;--bg:#191509}
+:root[data-theme="dark"] body[data-subject="math"]{--accent:#38bdf8;--accent-head:#bae6fd;--accent-ink:#7dd3fc;--accent-soft:#0c2434;--accent-bd:#0b5a80;--accent-chip:#0c4a6e;--accent-ghost:#0369a1;--bg:#0b1620}
+:root[data-theme="dark"] body[data-subject="eng"]{--accent:#f472b6;--accent-head:#fbcfe8;--accent-ink:#f9a8d4;--accent-soft:#2e1122;--accent-bd:#8d1748;--accent-chip:#731839;--accent-ghost:#be185d;--bg:#1c0f16}
+:root[data-theme="dark"] body[data-subject="thai"]{--accent:#f87171;--accent-head:#fecaca;--accent-ink:#fca5a5;--accent-soft:#2d1414;--accent-bd:#8d2020;--accent-chip:#7f1d1d;--accent-ghost:#b91c1c;--bg:#1a0f0f}
+:root[data-theme="dark"] img,:root[data-theme="dark"] .svg-box{filter:brightness(.92)}
+/* ช่องกรอก/ดรอปดาวน์ที่ widget เก่ากำหนดพื้นขาวตายตัวไว้ */
+:root[data-theme="dark"] select,:root[data-theme="dark"] textarea,
+:root[data-theme="dark"] input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=color])
+{background-color:var(--soft);color:var(--ink);border-color:var(--line)}
+
+/* ===== แถบเครื่องมือลอย ===== */
+#kitui-bar{position:fixed;right:10px;bottom:10px;z-index:99990;display:flex;gap:6px;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
+#kitui-bar button{border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;
+  font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
+  align-items:center;justify-content:center;font-weight:700}
+#kitui-bar button:hover{background:var(--soft)}
+#kitui-bar button:active{transform:scale(.93)}
+#kitui-bar button.on{background:var(--accent);color:#fff}
+#kitui-bar .kitui-sep{width:1px;height:22px;background:var(--line);flex:0 0 1px}
+#kitui-bar .kitui-fs{font-size:11px;color:var(--muted);min-width:34px;text-align:center;font-weight:700}
+#kitui-bar.hidden > *:not(#kitui-grip){display:none}
+#kitui-grip{font-size:17px}
+
+/* ===== แผงลอย (ที่ทด / เครื่องคิดเลข) ===== */
+.kitui-sheet{position:fixed;left:0;right:0;bottom:0;z-index:99991;background:var(--card);
+  border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
+  display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
+  height:52vh;max-height:92vh;min-height:180px}
+.kitui-sheet.open{display:flex}
+.kitui-sheet.full{height:100vh;border-radius:0}
+.kitui-head{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--line);
+  flex-wrap:wrap;touch-action:none;cursor:ns-resize}
+.kitui-head b{font-size:.9rem;color:var(--accent-ink);margin-right:2px;white-space:nowrap}
+.kitui-head button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;
+  padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
+.kitui-head button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.kitui-head .kitui-spacer{flex:1}
+.kitui-sw{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;min-height:0}
+.kitui-sw.on{border-color:var(--ink);transform:scale(1.12)}
+.kitui-padwrap{flex:1;position:relative;overflow:hidden;background:var(--soft)}
+.kitui-padwrap canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+:root[data-theme="dark"] .kitui-padwrap{background:#0c1220}
+
+/* ===== เครื่องคิดเลข ===== */
+#kitui-calc{height:auto;max-height:90vh}
+.kitui-disp{padding:8px 12px;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);
+  border-bottom:1px solid var(--line)}
+.kitui-disp .ex{font-size:.95rem;color:var(--muted);min-height:1.3em;word-break:break-all}
+.kitui-disp .rs{font-size:1.6rem;font-weight:700;color:var(--accent-ink);word-break:break-all}
+.kitui-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:7px}
+.kitui-keys button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:9px;
+  font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
+.kitui-keys button:active{transform:scale(.95)}
+.kitui-keys button.fn{font-size:.8rem;color:var(--accent-ink)}
+.kitui-keys button.op{background:var(--accent-soft);color:var(--accent-ink)}
+.kitui-keys button.eq{background:var(--accent);color:#fff;grid-row:span 2}
+.kitui-keys button.del{background:var(--hot-bg);color:var(--hot-ink)}
+.kitui-keys button.w3{grid-column:span 3}
+@media(max-width:420px){.kitui-keys button{font-size:.88rem;min-height:40px}.kitui-keys button.fn{font-size:.72rem}}
+@media(min-width:760px){
+  .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
+  .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
+  #kitui-pad{width:560px}
+}
+@media print{#kitui-bar,.kitui-sheet{display:none!important}}
+`;
+const st=el('style'); st.id='kitui-style'; st.textContent=CSS; D.head.appendChild(st);
+
+/* -----------------------------------------------------------------------------
+   1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
+   widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
+   พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
+   แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
+   เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
+----------------------------------------------------------------------------- */
+/* สีพาสเทลสว่าง -> สีเข้มที่ยังคง "เฉดเดิม" ไว้ (เขียว=ถูก / แดง=ผิด ต้องยังแยกออก)
+   ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
+function darken(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
+  const l0=(mx+mn)/2;
+  const s0 = d===0 ? 0 : d/(1-Math.abs(2*l0-1));
+  const s = d===0 ? 0 : Math.min(.5, Math.max(.3, s0));
+  const l = d===0 ? .13 : .17;                       /* เทา/ขาวให้เข้มกว่าสีนิดหน่อย */
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+function darkFix(){
+  const out=[], seen=new Set();
+  const take=r=>{
+    if(!r.style || !r.selectorText) return;
+    if(r.selectorText.indexOf('kitui')>-1) return;               /* ของเราเองใช้ token อยู่แล้ว */
+    const bg=r.style.backgroundColor;
+    if(!bg || bg.indexOf('var(')>-1) return;
+    const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
+    if(!m) return;
+    if(m[4]!==undefined && +m[4]<0.6) return;                    /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
+    const cr=+m[1], cg=+m[2], cb=+m[3];
+    if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return;       /* ไม่สว่างพอ ไม่ต้องยุ่ง */
+    const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
+    const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
+    let css='background-color:'+repl;
+    /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
+    const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
+    out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
+  };
+  /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
+        ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
+  const visit=rules=>{
+    for(let i=0;i<rules.length;i++){
+      const r=rules[i];
+      if(r.selectorText) take(r);
+      if(r.cssRules && r.cssRules.length) visit(r.cssRules);     /* @media / @supports / nesting */
+    }
+  };
+  for(let i=0;i<D.styleSheets.length;i++){
+    let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; }   /* ข้ามชีตข้ามโดเมน */
+    if(rr) visit(rr);
+  }
+  if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
+  return out.length;
+}
+try{ window.__KITUI_DARKFIX__=darkFix(); }catch(e){ window.__KITUI_DARKFIX__='err:'+e.message; }
+
+/* darkFix ข้างบนซ่อมได้เฉพาะสีที่เขียนตายตัวในไฟล์ CSS
+   แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
+   ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
+   จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
+const rgbOf=c=>{const m=c&&c.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null;};
+const lumOf=v=>v?(0.2126*v[0]+0.7152*v[1]+0.0722*v[2])/255:null;
+/* ตรงข้ามกับ darken(): ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
+   (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
+function lighten(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  if(d<0.04) return 'var(--ink)';                    /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
+  let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
+  const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
+  const s=Math.min(.92,Math.max(.55,s0)), l=.72;
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+const SKIP={CANVAS:1,IMG:1,VIDEO:1,SVG:1,IFRAME:1,PICTURE:1,OBJECT:1};
+const OBS_OPT={childList:true,subtree:true,attributes:true,attributeFilter:['class','style']};
+let patched=[], obs=null;
+function elementFix(){
+  /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
+        ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
+  if(obs) obs.disconnect();
+  try{ elementFixCore(); } finally { if(obs) obs.observe(D.body,OBS_OPT); }
+}
+function elementFixCore(){
+  /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
+     ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
+     จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
+  if(R.getAttribute('data-theme')!=='dark'){
+    patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
+    patched=[];
+    return;
+  }
+  /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
+     ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
+  /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
+  const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
+  for(let i=0;i<all.length;i++){
+    const e=all[i];
+    if(e.id&&e.id.indexOf('kitui')===0) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(SKIP[e.tagName]) continue;                      /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
+    const s=getComputedStyle(e);
+    const bg=rgbOf(s.backgroundColor);
+    if(!bg || bg[3]<0.6) continue;                     /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
+    if(lumOf(bg)<0.72) continue;                       /* เข้มพออยู่แล้ว */
+    /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
+    e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
+    const fg=rgbOf(s.color);
+    if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important');  /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
+    patched.push(e);
+  }
+  /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
+     ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
+  const bgCache=new Map();
+  const effBg=n=>{
+    for(let p=n;p;p=p.parentElement){
+      if(bgCache.has(p)) return bgCache.get(p);
+      const b=rgbOf(getComputedStyle(p).backgroundColor);
+      if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
+    }
+    return null;
+  };
+  for(let i=2;i<all.length;i++){
+    const e=all[i];
+    if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(e.style.color) continue;                         /* จัดการไปแล้วในรอบแรก */
+    if(!e.textContent || !e.textContent.trim()) continue;
+    const fg=rgbOf(getComputedStyle(e).color);
+    if(!fg || lumOf(fg)>=0.45) continue;                 /* ตัวอักษรสว่างอยู่แล้ว */
+    const bg=effBg(e);
+    if(!bg || lumOf(bg)>=0.5) continue;                  /* พื้นยังสว่าง อ่านออกอยู่ */
+    e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
+    patched.push(e);
+  }
+}
+let efT=0;
+const scheduleFix=()=>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
+try{
+  obs=new MutationObserver(scheduleFix);
+  obs.observe(D.body,OBS_OPT);
+}catch(e){}
+
+/* =============================================================================
+   2) ธีม + ขนาดตัวอักษร
+   ============================================================================= */
+const FS=[.85,1,1.15,1.3,1.5], FSNAME=['เล็กสุด','เล็ก','ปกติ','ใหญ่','ใหญ่สุด'];
+let fsIdx=parseInt(get('fs')); if(isNaN(fsIdx)||fsIdx<0||fsIdx>4) fsIdx=1;
+let theme=get('theme') || (matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+
+function applyTheme(){
+  R.setAttribute('data-theme',theme);
+  R.style.colorScheme = theme==='dark'?'dark':'light';   /* ให้ select/input เป็นสีเข้มด้วย */
+  const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
+  set('theme',theme);
+  clearTimeout(efT);                                   /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
+  if(typeof elementFix==='function') elementFix();
+  if(typeof draw==='function' && pad) draw();          /* วาดที่ทดใหม่ เส้นดำ<->ขาวตามธีม */
+}
+function applyFS(){
+  R.style.fontSize=(16*FS[fsIdx])+'px';
+  const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
+  set('fs',fsIdx);
+}
+
+/* =============================================================================
+   3) แถบเครื่องมือ
+   ============================================================================= */
+const subj=(D.body.getAttribute('data-subject')||'').toLowerCase();
+/* หลาย widget ไม่ได้ใส่ data-subject ที่ <body> → เดาจากโฟลเดอร์ที่ไฟล์อยู่ด้วย */
+const inPath=/\/(physics|math|chemist)\//i.test(decodeURIComponent(location.pathname));
+const tAttr=D.body.getAttribute('data-tools');
+const wantTools = tAttr!=null ? tAttr.toLowerCase()
+                : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
+const hasPen  = wantTools.includes('pen');
+const hasCalc = wantTools.includes('calc');
+
+const bar=el('div'); bar.id='kitui-bar';
+bar.innerHTML =
+  `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
+  `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button>`+
+  `<span class="kitui-sep"></span>`+
+  `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
+  `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
+  `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
+  (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
+  (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
+D.body.appendChild(bar);
+
+D.getElementById('kitui-theme').onclick=()=>{theme=theme==='dark'?'light':'dark';applyTheme();};
+D.getElementById('kitui-fsup').onclick=()=>{if(fsIdx<4){fsIdx++;applyFS();}};
+D.getElementById('kitui-fsdown').onclick=()=>{if(fsIdx>0){fsIdx--;applyFS();}};
+D.getElementById('kitui-grip').onclick=()=>bar.classList.toggle('hidden');
+applyTheme(); applyFS();
+
+/* ปิดแผงด้วยปุ่ม Esc */
+D.addEventListener('keydown',e=>{ if(e.key==='Escape') D.querySelectorAll('.kitui-sheet.open').forEach(s=>s.classList.remove('open')); });
+
+/* ลากหัวแผงเพื่อปรับความสูง */
+function makeResizable(sheet){
+  const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
+  head.addEventListener('pointerdown',e=>{
+    if(e.target.closest('button'))return;
+    drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect().height;head.setPointerCapture(e.pointerId);
+  });
+  head.addEventListener('pointermove',e=>{
+    if(!drag)return;
+    const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
+    sheet.classList.remove('full'); sheet.style.height=h+'px';
+    if(sheet.id==='kitui-pad') fitPad();
+  });
+  head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
+}
+
+/* =============================================================================
+   4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ  หลายหน้า  เซฟอัตโนมัติ
+   ============================================================================= */
+let pad,padCv,padCx,pages=[[]],pg=0,undone=[],histo=[];
+let tool='pen',color='#111827',width=2.4,penSeen=0;
+const COLORS=['#111827','#2563eb','#dc2626','#16a34a','#f59e0b'];
+const PADKEY='pad-'+location.pathname.split('/').pop();
+
+function buildPad(){
+  pad=el('div','kitui-sheet'); pad.id='kitui-pad';
+  pad.innerHTML=
+   `<div class="kitui-head">
+      <b>✏️ ที่ทด</b>
+      <button data-t="pen" class="on">🖊️</button>
+      <button data-t="hl">🖍️</button>
+      <button data-t="er">🧽</button>
+      ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
+      <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
+      <span class="kitui-spacer"></span>
+      <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
+      <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
+      <button id="kitui-pgadd">+ หน้า</button>
+      <button id="kitui-clear">ล้างหน้านี้</button>
+      <button id="kitui-full">⛶</button>
+      <button id="kitui-padclose">✕</button>
+    </div>
+    <div class="kitui-padwrap"><canvas></canvas></div>`;
+  D.body.appendChild(pad);
+  padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
+  makeResizable(pad);
+
+  pad.querySelector('.kitui-head').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
+  });
+  D.getElementById('kitui-undo').onclick=()=>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop(); draw(); save(); } };
+  D.getElementById('kitui-redo').onclick=()=>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop(); draw(); save(); } };
+  D.getElementById('kitui-clear').onclick=()=>{ snap(); pages[pg]=[]; draw(); save(); };
+  D.getElementById('kitui-pgadd').onclick=()=>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw(); save(); };
+  D.getElementById('kitui-pgprev').onclick=()=>{ if(pg>0){pg--;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-pgnext').onclick=()=>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-full').onclick=()=>{ pad.classList.toggle('full'); pad.style.height=''; fitPad(); };
+  D.getElementById('kitui-padclose').onclick=()=>pad.classList.remove('open');
+
+  /* ---- วาด ---- */
+  let cur=null;
+  padCv.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='pen') penSeen=Date.now();
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;   /* กันฝ่ามือแตะตอนใช้สไตลัส */
+    const p=pt(e);
+    if(tool==='er'){ snap(); erase(p); return; }
+    snap();
+    cur={c:color,w:width,hl:tool==='hl',pts:[p]};
+    pages[pg].push(cur); draw();
+    try{ padCv.setPointerCapture(e.pointerId); }catch(x){}  /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
+  });
+  padCv.addEventListener('pointermove',e=>{
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;
+    if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
+    if(!cur||!e.buttons)return;
+    /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
+    let evs=[e];
+    if(e.getCoalescedEvents){ const c=e.getCoalescedEvents(); if(c&&c.length) evs=c; }
+    evs.forEach(ev=>cur.pts.push(pt(ev)));
+    draw();
+  });
+  const end=()=>{ if(cur){cur=null;save();} };
+  padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
+  padCv.addEventListener('pointerleave',end);
+
+  addEventListener('resize',()=>{ if(pad.classList.contains('open')) fitPad(); });
+  load(); fitPad();
+}
+function pt(e){
+  const r=padCv.getBoundingClientRect();
+  return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
+          p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5};   /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
+}
+function snap(){ histo.push(pages[pg].slice()); if(histo.length>60)histo.shift(); undone=[]; }
+function erase(p){
+  const r=padCv.getBoundingClientRect(), rad=18/r.width;
+  const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
+  if(keep.length!==pages[pg].length){ pages[pg]=keep; draw(); save(); }
+}
+function fitPad(){
+  const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
+  const dpr=Math.min(devicePixelRatio||1,2.5);
+  padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
+  draw();
+}
+function draw(){
+  const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
+  padCx.clearRect(0,0,W,H);
+  /* เส้นตารางจาง ๆ ให้เขียนตรง */
+  const dark=R.getAttribute('data-theme')==='dark';
+  padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
+  for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath();padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke();}
+  padCx.lineCap='round'; padCx.lineJoin='round';
+  pages[pg].forEach(s=>{
+    padCx.globalAlpha=s.hl?0.32:1;
+    padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
+    for(let i=1;i<s.pts.length;i++){
+      const a=s.pts[i-1],b=s.pts[i];
+      padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
+      padCx.beginPath(); padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke();
+    }
+    if(s.pts.length===1){ /* จุดเดียว */
+      padCx.fillStyle=padCx.strokeStyle; padCx.beginPath();
+      padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill();
+    }
+  });
+  padCx.globalAlpha=1;
+  const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
+}
+function save(){ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
+function load(){
+  try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
+}
+
+if(hasPen){
+  buildPad();
+  D.getElementById('kitui-penbtn').onclick=()=>{
+    const o=pad.classList.toggle('open');
+    D.getElementById('kitui-penbtn').classList.toggle('on',o);
+    if(o) fitPad();
+  };
+}
+
+/* =============================================================================
+   5) เครื่องคิดเลขวิทยาศาสตร์  (tokenizer → shunting-yard → RPN  ไม่ใช้ eval)
+   ============================================================================= */
+const FN={sin:1,cos:1,tan:1,asin:1,acos:1,atan:1,ln:1,log:1,sqrt:1,abs:1,exp:1};
+const PREC={'+':1,'-':1,'*':2,'/':2,'^':4,'u-':3};
+function tokenize(s){
+  s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
+  const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!()])/g; let m;
+  while((m=re.exec(s))) out.push(m[1]);
+  return out;
+}
+function toRPN(tk){
+  const out=[],op=[]; let prev=null;
+  for(let t of tk){
+    if(t==='**')t='^';
+    if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
+    else if(t==='PI'){ out.push(Math.PI); }
+    else if(t==='e'||t==='E'){ out.push(Math.E); }
+    else if(t==='ANS'){ out.push(ANS); }
+    else if(FN[t]){ op.push(t); }
+    else if(t==='('){ op.push(t); }
+    else if(t===')'){
+      while(op.length&&op[op.length-1]!=='(') out.push(op.pop());
+      if(!op.length) throw 0; op.pop();
+      if(op.length&&FN[op[op.length-1]]) out.push(op.pop());
+    }
+    else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
+    else if('+-*/^'.includes(t)){
+      let o=t;
+      const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
+      if(t==='-'&&unary) o='u-';
+      else if(t==='+'&&unary){ prev=t; continue; }
+      while(op.length){
+        const top=op[op.length-1];
+        if(top==='('||FN[top])break;
+        const rightAssoc=(o==='^'||o==='u-');
+        if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop()); else break;
+      }
+      op.push(o);
+    }
+    else throw 0;
+    prev=t;
+  }
+  while(op.length){ const o=op.pop(); if(o==='(')throw 0; out.push(o); }
+  return out;
+}
+function evalRPN(rpn,deg){
+  const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
+  const pop=()=>{ if(!st.length)throw 0; return st.pop(); };
+  for(const t of rpn){
+    if(typeof t==='number'){ st.push(t); continue; }
+    if(t==='fact'){ const n=pop(); if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
+    if(t==='pct'){ st.push(pop()/100); continue; }
+    if(t==='u-'){ st.push(-pop()); continue; }
+    if(FN[t]){
+      const a=pop();
+      st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
+             : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
+             : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
+             : t==='abs'?Math.abs(a) : Math.exp(a) );
+      continue;
+    }
+    const b=pop(),a=pop();
+    st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
+  }
+  if(st.length!==1) throw 0;
+  return st[0];
+}
+function calc(src,deg){ return evalRPN(toRPN(tokenize(src)),deg); }
+
+let ANS=0, expr='', calcSheet, isDeg=true;
+const KEYS=[
+ ['DEG','deg','fn'],['(','(',''],[')',')',''],['⌫','del','del'],['AC','ac','del'],
+ ['sin','sin(','fn'],['cos','cos(','fn'],['tan','tan(','fn'],['π','π','fn'],['÷','÷','op'],
+ ['sin⁻¹','asin(','fn'],['cos⁻¹','acos(','fn'],['tan⁻¹','atan(','fn'],['e','e','fn'],['×','×','op'],
+ ['ln','ln(','fn'],['log','log(','fn'],['√','√(','fn'],['xʸ','^','fn'],['−','−','op'],
+ ['7','7',''],['8','8',''],['9','9',''],['x!','!','fn'],['+','+','op'],
+ ['4','4',''],['5','5',''],['6','6',''],['%','%','fn'],['ANS','ANS','fn'],
+ ['1','1',''],['2','2',''],['3','3',''],['.','.',''],['=','eq','eq'],
+ ['0','0','w3'],['x²','^2','fn']
+];
+function buildCalc(){
+  calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
+  calcSheet.innerHTML=
+   `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
+      <button id="kitui-calcclose">✕</button></div>
+    <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
+    <div class="kitui-keys" id="kitui-keys">
+      ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
+    </div>`;
+  D.body.appendChild(calcSheet);
+  D.getElementById('kitui-calcclose').onclick=()=>calcSheet.classList.remove('open');
+  const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
+  const show=()=>{ ex.textContent=expr||' ';
+    try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
+    catch(e){ rs.style.opacity=.35; }
+  };
+  D.getElementById('kitui-keys').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
+    if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
+    if(k==='del'){ expr=expr.slice(0,-1); show(); return; }
+    if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show(); return; }
+    if(k==='eq'){
+      rs.style.opacity=1;
+      try{
+        const v=calc(expr,isDeg);
+        if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
+        if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
+        ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
+      }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
+      return;
+    }
+    expr+=k; show();
+  });
+}
+function fmt(v){
+  if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
+  if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
+  return String(Math.round(v*1e10)/1e10);
+}
+if(hasCalc){
+  buildCalc();
+  D.getElementById('kitui-calcbtn').onclick=()=>{
+    const o=calcSheet.classList.toggle('open');
+    D.getElementById('kitui-calcbtn').classList.toggle('on',o);
+  };
+}
+})();
+
+</script>
+<!--/KIT-UI-->
+</body>
+</html>

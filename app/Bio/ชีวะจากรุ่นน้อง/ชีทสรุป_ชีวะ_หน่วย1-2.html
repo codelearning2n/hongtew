@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>ชีทสรุปชีววิทยา หน่วย 1–2</title>
+<style>
+@page { size: A4; margin: 10mm 9mm; }
+*{ box-sizing:border-box; margin:0; padding:0; }
+:root{
+  --u1:#0d9488; --u1bg:#ecfdf7; --u1line:#99f6e4;
+  --u2:#6d28d9; --u2bg:#f5f3ff; --u2line:#ddd6fe;
+  --ink:#1e293b; --mut:#64748b; --line:#e2e8f0;
+  --hl:#fef08a; --warn:#dc2626;
+}
+body{
+  font-family:'Leelawadee UI','Sarabun','Tahoma',sans-serif;
+  color:var(--ink); font-size:9.4px; line-height:1.45; background:#fff;
+}
+.wrap{ max-width:196mm; margin:0 auto; }
+
+/* header */
+.cover{ text-align:center; padding:10px 0 8px; border-bottom:3px solid var(--u1); margin-bottom:10px; }
+.cover h1{ font-size:22px; color:#0f172a; letter-spacing:.3px; }
+.cover .sub{ color:var(--mut); font-size:11px; margin-top:3px; }
+.cover .tag{ display:inline-block; font-size:9px; background:var(--u1bg); color:var(--u1);
+  border:1px solid var(--u1line); border-radius:20px; padding:2px 12px; margin-top:6px; }
+
+/* unit banner */
+.ubanner{ display:flex; align-items:center; gap:8px; margin:14px 0 8px; page-break-after:avoid; }
+.ubanner .num{ font-size:15px; font-weight:700; color:#fff; width:30px; height:30px;
+  border-radius:8px; display:flex; align-items:center; justify-content:center; }
+.ubanner h2{ font-size:15px; }
+.ubanner .en{ color:var(--mut); font-weight:400; font-size:10px; }
+.u1 .num{ background:var(--u1);} .u2 .num{ background:var(--u2);}
+.u1 h2{ color:var(--u1);} .u2 h2{ color:var(--u2);}
+
+/* card grid */
+.grid{ display:grid; grid-template-columns:1fr 1fr; gap:7px; }
+.grid.three{ grid-template-columns:1fr 1fr 1fr; }
+.card{ border:1px solid var(--line); border-radius:8px; padding:7px 9px; background:#fff;
+  page-break-inside:avoid; }
+.card.span2{ grid-column:span 2; }
+.card h3{ font-size:10.5px; margin-bottom:4px; display:flex; align-items:center; gap:5px; }
+.u1 .card{ border-left:3px solid var(--u1); }
+.u2 .card{ border-left:3px solid var(--u2); }
+.u1 .card h3{ color:var(--u1);} .u2 .card h3{ color:var(--u2);}
+.card .ico{ font-size:12px; }
+
+ul{ list-style:none; }
+li{ padding-left:11px; position:relative; margin:1.5px 0; }
+li:before{ content:"›"; position:absolute; left:0; color:var(--mut); font-weight:700; }
+.tight li{ margin:1px 0; }
+
+/* keyword chips */
+.kw{ margin-top:5px; padding-top:4px; border-top:1px dashed var(--line); }
+.kw .lbl{ font-size:8px; color:var(--mut); font-weight:700; letter-spacing:.5px; }
+.chip{ display:inline-block; font-size:8.4px; border-radius:5px; padding:1px 6px; margin:2px 2px 0 0;
+  background:#f1f5f9; color:#334155; border:1px solid #e2e8f0; }
+.u1 .chip{ background:var(--u1bg); border-color:var(--u1line); color:#0f766e; }
+.u2 .chip{ background:var(--u2bg); border-color:var(--u2line); color:#5b21b6; }
+b{ color:#0f172a; } .en{ color:var(--mut); font-style:normal; }
+mark{ background:var(--hl); padding:0 2px; border-radius:2px; }
+.warn{ color:var(--warn); font-weight:700; }
+
+/* mini table */
+table{ width:100%; border-collapse:collapse; font-size:8.6px; margin-top:3px; }
+th,td{ border:1px solid var(--line); padding:2px 4px; text-align:left; vertical-align:top; }
+th{ background:#f8fafc; font-size:8.4px; }
+.u1 th{ background:var(--u1bg);} .u2 th{ background:var(--u2bg);}
+
+.pill{ display:inline-block; font-size:8px; font-weight:700; padding:0 5px; border-radius:4px; }
+.g{ background:#dcfce7; color:#15803d;} .r{ background:#fee2e2; color:#b91c1c;} .b{ background:#dbeafe; color:#1d4ed8;}
+
+.foot{ text-align:center; color:var(--mut); font-size:8px; margin-top:12px; padding-top:6px; border-top:1px solid var(--line); }
+.flow{ font-size:8.8px; }
+.flow b{ color:var(--u2); }
+.eq{ font-family:'Consolas','Courier New',monospace; background:#f8fafc; border:1px solid var(--line);
+  border-radius:4px; padding:1px 4px; font-size:8.6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="cover">
+    <h1>🧬 ชีทสรุปชีววิทยา — หน่วย 1 &amp; 2</h1>
+    <div class="sub">ธรรมชาติของสิ่งมีชีวิต · การศึกษาชีววิทยา · เคมีที่เป็นพื้นฐานของสิ่งมีชีวิต</div>
+    <div class="tag">สรุปจากสไลด์ ครูสุทัศน์ บุญเลิศ · เน้น Keyword ไทย–อังกฤษ · อ่านก่อนสอบ</div>
+  </div>
+
+  <!-- ============ UNIT 1 ============ -->
+  <div class="ubanner u1">
+    <div class="num">1</div>
+    <div><h2>ธรรมชาติของสิ่งมีชีวิต &amp; การศึกษาชีววิทยา <span class="en">Nature of Life &amp; Study of Biology</span></h2></div>
+  </div>
+
+  <div class="u1">
+  <div class="grid">
+
+    <div class="card span2">
+      <h3><span class="ico">⭐</span>ลักษณะเฉพาะของสิ่งมีชีวิต 6 ข้อ (หัวใจของหน่วยนี้)</h3>
+      <div class="grid three" style="gap:6px">
+        <ul class="tight">
+          <li><b>1. สืบพันธุ์ + เจริญเติบโต</b> <span class="en">(Generative)</span> — ดำรงเผ่าพันธุ์/สปีชีส์</li>
+          <li><b>2. เมแทบอลิซึม</b> <span class="en">(Metabolism)</span></li>
+          <li><b>3. ตอบสนองต่อสิ่งเร้า</b> <span class="en">(Responsive)</span></li>
+        </ul>
+        <ul class="tight">
+          <li><b>4. รักษาดุลยภาพ</b> <span class="en">(Homeostasis)</span></li>
+          <li><b>5. มีลักษณะจำเพาะ</b> — รูปร่าง สี ขนาด จำนวนขา</li>
+          <li><b>6. มีการจัดระบบ</b> <span class="en">(Biological organization)</span></li>
+        </ul>
+        <ul class="tight">
+          <li>เจริญเติบโต 4 ขั้น: แบ่งเซลล์ → ขยายขนาด → <span class="en">differentiation</span> → <span class="en">morphogenesis</span></li>
+          <li>เปลี่ยนรูปร่าง <span class="en">metamorphosis</span> 4 แบบ: Ametamorphosis / Gradual / Incomplete / Complete</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="ico">🔁</span>สืบพันธุ์แบบไม่อาศัยเพศ <span class="en">(Asexual)</span></h3>
+      <div style="font-size:8.6px;color:var(--mut)">ไม่รวมเซลล์สืบพันธุ์ · แบ่งเซลล์แบบ <b>Mitosis</b> · ลูกเหมือนพ่อแม่</div>
+      <table>
+        <tr><th>วิธี</th><th>ตัวอย่าง</th></tr>
+        <tr><td>แบ่งตัว 2 ส่วน <span class="en">Binary fission</span></td><td>อะมีบา ยูกลีนา พารามีเซียม แบคทีเรีย</td></tr>
+        <tr><td>แตกหน่อ <span class="en">Budding</span></td><td>ไฮดรา ปะการัง ฟองน้ำ ยีสต์</td></tr>
+        <tr><td>งอกใหม่ <span class="en">Regeneration</span></td><td>ดาวทะเล พลานาเรีย</td></tr>
+        <tr><td>ขาดเป็นท่อน <span class="en">Fragmentation</span></td><td>สาหร่ายทะเล ดอกไม้ทะเล</td></tr>
+        <tr><td>สร้างสปอร์ <span class="en">Sporulation</span></td><td>เห็ด เฟิร์น</td></tr>
+        <tr><td>ไม่ผสมพันธุ์ <span class="en">Parthenogenesis</span></td><td>ตั๊กแตนกิ่งไม้ เพลี้ย ไรน้ำ / ผึ้ง มด ต่อ แตน</td></tr>
+        <tr><td>เจมมูล <span class="en">Gemmule</span></td><td>ฟองน้ำน้ำจืด</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h3><span class="ico">♀♂</span>สืบพันธุ์แบบอาศัยเพศ <span class="en">(Sexual)</span></h3>
+      <ul class="tight">
+        <li>รวมเซลล์สืบพันธุ์ → เกิด <mark>ความผันแปรทางพันธุกรรม</mark> ในรุ่นลูก</li>
+        <li>ทำได้<b>ทั้ง 2 แบบ</b>: พารามีเซียม <span class="en">(Binary fission + Conjugation)</span> · ไฮดรา <span class="en">(Budding + ผสมข้ามตัว)</span></li>
+        <li><b>Hermaphrodite</b> (มี 2 เพศในตัวเดียว) = <b>ไฮดรา · พลานาเรีย · ไส้เดือนดิน</b></li>
+      </ul>
+      <h3 style="margin-top:6px"><span class="ico">🔥</span>เมแทบอลิซึม <span class="en">(Metabolism)</span></h3>
+      <ul class="tight">
+        <li>ปฏิกิริยาชีวเคมีในเซลล์ มี <b>เอนไซม์</b> เป็นตัวเร่ง</li>
+        <li><b>Catabolism</b> = <span class="warn">สลาย</span>สาร → ได้พลังงาน+ความร้อน</li>
+        <li><b>Anabolism</b> = <span style="color:#15803d;font-weight:700">สร้าง</span>สาร (ใช้พลังงานจาก catabolism)</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3><span class="ico">⚡</span>ตอบสนองต่อสิ่งเร้า &amp; ดุลยภาพ</h3>
+      <ul class="tight">
+        <li><b>สิ่งเร้าภายนอก:</b> แสง (แมลงสาบหนีแสง) · อุณหภูมิ (สุนัขหอบ) · ความชื้น (ไส้เดือน) · การสัมผัส (กิ้งกือขดตัว)</li>
+        <li><b>สิ่งเร้าภายใน:</b> ฮอร์โมน ความดันเลือด O₂ ในเลือด ความหิว</li>
+        <li><b>Homeostasis:</b> พารามีเซียมใช้ <b>Contractile vacuole</b> กำจัดน้ำ/ของเสีย · พืชคายน้ำทาง <b>ปากใบ (Stomata)</b></li>
+      </ul>
+      <div class="kw"><span class="lbl">KEYWORDS</span><br>
+        <span class="chip">Mitosis</span><span class="chip">Species</span><span class="chip">Hermaphrodite</span><span class="chip">Metabolism</span><span class="chip">Catabolism</span><span class="chip">Anabolism</span><span class="chip">Homeostasis</span><span class="chip">Contractile vacuole</span><span class="chip">Stomata</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="ico">📖</span>ความหมาย &amp; ขอบข่ายชีววิทยา</h3>
+      <ul class="tight">
+        <li><b>Biology</b> = <b>BIOS</b> (ชีวิต) + <b>LOGOS</b> (ความคิด/เหตุผล) = ความรู้ + กระบวนการค้นหาความรู้</li>
+        <li>ศึกษา<b>กลุ่มสิ่งมีชีวิต:</b> สัตววิทยา <span class="en">Zoology</span> · พฤกษศาสตร์ <span class="en">Botany</span> · จุลชีววิทยา <span class="en">Microbiology</span></li>
+        <li>ศึกษา<b>โครงสร้าง/หน้าที่:</b> กายวิภาค <span class="en">Anatomy</span> · สัณฐาน <span class="en">Morphology</span> · สรีรวิทยา <span class="en">Physiology</span> · นิเวศ <span class="en">Ecology</span></li>
+        <li>ศึกษา<b>เรื่องราว:</b> อนุกรมวิธาน <span class="en">Taxonomy</span> · วิวัฒนาการ <span class="en">Evolution</span> · บรรพชีวิน <span class="en">Paleontology</span></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3><span class="ico">⚖️</span>ชีวจริยธรรม <span class="en">(Bioethics)</span></h3>
+      <ul class="tight">
+        <li><b>Bioethics</b> = <b>Bios</b> (ชีวิต) + <b>Ethics</b> (ดี/เลว) — คุณค่าของการมีชีวิต</li>
+        <li>เกี่ยวกับ<b>การใช้สัตว์ทดลอง</b>เพื่อการวิจัย</li>
+        <li><mark>หลัก 3R</mark> = <b>Reduction</b> (ลด) · <b>Refinement</b> (ละ) · <b>Replacement</b> (เลิก)</li>
+        <li>ใช้สัตว์<b>น้อยที่สุด</b> · ตระหนักว่าสัตว์เป็นสิ่งมีชีวิตเช่นเดียวกับมนุษย์</li>
+      </ul>
+      <div class="kw"><span class="lbl">KEYWORDS</span><br>
+        <span class="chip">Bioethics</span><span class="chip">3R</span><span class="chip">Reduction</span><span class="chip">Refinement</span><span class="chip">Replacement</span>
+      </div>
+    </div>
+
+    <div class="card span2">
+      <h3><span class="ico">🔬</span>วิธีการทางวิทยาศาสตร์ &amp; STEM</h3>
+      <div class="grid" style="gap:8px">
+        <ul class="tight">
+          <li><b>5 ขั้นตอน:</b> ① สังเกต <span class="en">Observation</span> → ② ตั้งสมมติฐาน <span class="en">Hypothesis</span> → ③ ตรวจสอบสมมติฐาน → ④ เก็บ+วิเคราะห์ข้อมูล → ⑤ สรุปผล <span class="en">Conclusion</span></li>
+          <li>สมมติฐานมักอยู่ในรูป <mark>"ถ้า…… ดังนั้น……"</mark></li>
+          <li>องค์ความรู้: ข้อมูล → <b>ทฤษฎี</b> (ตรวจสอบหลายครั้งว่าจริง) → <b>กฎ</b></li>
+        </ul>
+        <ul class="tight">
+          <li><b>ตัวแปร 3 ชนิด:</b> <b>ตัวแปรต้น</b> (จัดให้ต่างกัน) · <b>ตัวแปรตาม</b> (ผลที่วัด) · <b>ตัวแปรควบคุม</b> (จัดให้เหมือนกัน)</li>
+          <li><b>ชุดทดลอง</b> = เพิ่ม/ลดตัวแปรต้น · <b>ชุดควบคุม</b> = ไว้เปรียบเทียบ</li>
+          <li><b>STEM</b> = Science + Technology + Engineering + Math → กระบวนการออกแบบเชิงวิศวกรรม (แก้ปัญหา→นวัตกรรม)</li>
+        </ul>
+      </div>
+      <div class="kw"><span class="lbl">KEYWORDS</span><br>
+        <span class="chip">Observation</span><span class="chip">Hypothesis</span><span class="chip">Independent variable</span><span class="chip">Dependent variable</span><span class="chip">Controlled variable</span><span class="chip">Theory</span><span class="chip">Law</span><span class="chip">STEM</span>
+      </div>
+    </div>
+
+  </div>
+  </div>
+
+  <!-- ============ UNIT 2 ============ -->
+  <div class="ubanner u2" style="page-break-before:always">
+    <div class="num">2</div>
+    <div><h2>เคมีที่เป็นพื้นฐานของสิ่งมีชีวิต <span class="en">Chemical of Life</span></h2></div>
+  </div>
+
+  <div class="u2">
+  <div class="grid">
+
+    <div class="card">
+      <h3><span class="ico">⚛️</span>อะตอม &amp; ธาตุ</h3>
+      <ul class="tight">
+        <li><b>อนุภาคมูลฐาน 3 ชนิด:</b> โปรตอน <span class="en">proton</span> <span class="pill r">+</span> · นิวตรอน <span class="en">neutron</span> <span class="pill b">0</span> · อิเล็กตรอน <span class="en">electron</span> <span class="pill b">−</span></li>
+        <li><b>เลขมวล (A)</b> = โปรตอน + นิวตรอน</li>
+        <li><b>เลขอะตอม (Z)</b> = จำนวนโปรตอน</li>
+        <li><mark>นิวตรอน = A − Z</mark></li>
+        <li><b>เวเลนซ์อิเล็กตรอน</b> <span class="en">(Valence e⁻)</span> = อิเล็กตรอนวงนอกสุด</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3><span class="ico">🔗</span>สารประกอบ &amp; พันธะเคมี</h3>
+      <ul class="tight">
+        <li><b>สารประกอบ:</b> ธาตุ ≥2 ชนิดสร้างพันธะ อัตราส่วนคงที่ (เช่น H₂O, C₆H₁₂O₆, NaCl)</li>
+        <li><b>พันธะโคเวเลนต์</b> <span class="en">Covalent</span> — <mark>ใช้</mark>เวเลนซ์อิเล็กตรอน<mark>ร่วมกัน</mark></li>
+        <li><b>พันธะไอออนิก</b> <span class="en">Ionic</span> — <mark>ให้/รับ</mark> อิเล็กตรอน (แรงดึงดูดไอออน + / −)</li>
+        <li><b>พันธะไฮโดรเจน</b> <span class="en">H-bond</span> — แรง<b>ระหว่างโมเลกุล</b> (H กับธาตุ EN สูง: N, O)</li>
+      </ul>
+      <div class="kw"><span class="lbl">KEYWORDS</span><br>
+        <span class="chip">proton/neutron/electron</span><span class="chip">Mass number (A)</span><span class="chip">Atomic number (Z)</span><span class="chip">Valence electron</span><span class="chip">Covalent</span><span class="chip">Ionic</span><span class="chip">H-bond</span>
+      </div>
+    </div>
+
+    <div class="card span2">
+      <h3><span class="ico">🆚</span>สารอนินทรีย์ vs สารอินทรีย์ <span class="en">(Inorganic vs Organic)</span></h3>
+      <table>
+        <tr><th style="width:22%">สมบัติ</th><th>สารอนินทรีย์ <span class="en">Inorganic</span></th><th>สารอินทรีย์ <span class="en">Organic</span></th></tr>
+        <tr><td>ธาตุองค์ประกอบ</td><td>ทุกธาตุ <b>ยกเว้น C</b> (เช่น น้ำ เกลือแร่)</td><td>มี <b>C และ H</b> เป็นหลัก (+O, N, P, S)</td></tr>
+        <tr><td>พันธะ</td><td>โคเวเลนต์ + ไอออนิก (ส่วนมากไอออนิก)</td><td><b>โคเวเลนต์</b></td></tr>
+        <tr><td>ละลายน้ำ</td><td>ส่วนมากละลายได้ดี</td><td>ส่วนมากไม่ละลาย (ยกเว้นโมเลกุลมีขั้วเล็ก)</td></tr>
+        <tr><td>นำไฟฟ้า (ในน้ำ)</td><td>นำได้ดี (โดยเฉพาะไอออนิก)</td><td>ไม่นำ / นำได้น้อย</td></tr>
+        <tr><td>จุดเดือด–หลอมเหลว</td><td>ค่อนข้างสูง</td><td>ค่อนข้างต่ำ</td></tr>
+        <tr><td>การเผาไหม้</td><td>ติดไฟยาก</td><td><b>ติดไฟง่าย</b> อาจมีเขม่า</td></tr>
+        <tr><td>ตัวอย่าง</td><td>น้ำ, เกลือแร่</td><td>คาร์โบไฮเดรต โปรตีน ไขมัน กรดนิวคลีอิก วิตามิน (<b>ชีวโมเลกุล</b>)</td></tr>
+      </table>
+    </div>
+
+    <div class="card span2">
+      <h3><span class="ico">💧</span>น้ำ <span class="en">(Water)</span> — สารอนินทรีย์ที่สำคัญที่สุด</h3>
+      <div class="grid three" style="gap:8px">
+        <ul class="tight">
+          <li>มีมากถึง <mark>65%</mark> ของร่างกาย</li>
+          <li>H 2 อะตอม + O 1 อะตอม พันธะ<b>โคเวเลนต์</b></li>
+          <li>e⁻ อยู่ใกล้ O มากกว่า → <b>โมเลกุลมีขั้ว</b> <span class="en">(polar)</span></li>
+          <li>โมเลกุลน้ำยึดกันด้วย <b>พันธะไฮโดรเจน</b></li>
+        </ul>
+        <ul class="tight">
+          <li><b>สมบัติเด่น 5 อย่าง:</b></li>
+          <li>① ตัวทำละลายที่ดี (ขนสารเข้า-ออกเซลล์)</li>
+          <li>② <b>Hydrophilic</b> (มีขั้ว ชอบน้ำ: NaCl) vs <b>Hydrophobic</b> (ไม่มีขั้ว: น้ำมัน ขี้ผึ้ง)</li>
+          <li>③ กรด-เบส: H⁺ สูง=pH ต่ำ=กรด / H⁺ ต่ำ=pH สูง=เบส</li>
+        </ul>
+        <ul class="tight">
+          <li>④ <b>ความจุความร้อนจำเพาะสูง</b> (1 กรัม·1°C = 1 แคลอรี) → คุมอุณหภูมิร่างกาย</li>
+          <li>⑤ <b>Cohesion</b> = แรงน้ำ↔น้ำ · <b>Adhesion</b> = แรงน้ำ↔ผิว (ท่อลำเลียงพืช)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="ico">🧂</span>แร่ธาตุ <span class="en">(Minerals)</span></h3>
+      <table>
+        <tr><th>ธาตุ</th><th>หน้าที่เด่น</th></tr>
+        <tr><td><b>แคลเซียม Ca</b></td><td>กระดูก/ฟัน · หด-คลายกล้ามเนื้อ · เลือดแข็งตัว</td></tr>
+        <tr><td><b>โซเดียม Na</b> <span class="warn">*</span></td><td>สมดุลน้ำ/กรด-เบส · ส่งกระแสประสาท (ร่วม K, Mg)</td></tr>
+        <tr><td><b>โพแทสเซียม K</b></td><td>กระตุ้นเอนไซม์เผาผลาญคาร์โบไฮเดรต</td></tr>
+        <tr><td><b>แมกนีเซียม Mg</b></td><td>เผาผลาญสารอาหาร · กระตุ้นเอนไซม์</td></tr>
+        <tr><td><b>ฟอสฟอรัส P</b></td><td>กระดูก/ฟัน (คู่ Ca) · สังเคราะห์ DNA</td></tr>
+        <tr><td><b>เหล็ก Fe</b></td><td>องค์ประกอบ <b>ฮีโมโกลบิน</b> · ไมโอโกลบิน</td></tr>
+        <tr><td><b>ไอโอดีน I</b></td><td>ส่วนของฮอร์โมน <b>ไทรอกซิน</b> (ต่อมไทรอยด์)</td></tr>
+      </table>
+      <div style="font-size:7.8px;color:var(--warn);margin-top:2px">* สไลด์พิมพ์ "แคลเซียม" ซ้ำ แต่หน้าที่คือ <b>โซเดียม (Na)</b></div>
+    </div>
+
+    <div class="card">
+      <h3><span class="ico">⬡</span>สารอินทรีย์ &amp; คาร์บอน</h3>
+      <ul class="tight">
+        <li>อะตอม <b>C</b> มีเวเลนซ์ = <b>4</b> → สร้างพันธะโคเวเลนต์ได้สูงสุด <b>4 พันธะ</b></li>
+        <li>มีแต่ C กับ H = <b>สารประกอบไฮโดรคาร์บอน</b> <span class="en">(Hydrocarbon)</span></li>
+        <li><b>หมู่ฟังก์ชัน</b> <span class="en">(Functional group)</span> = กลุ่มอะตอมที่เกาะ → บ่งบอกสมบัติทางเคมี</li>
+        <li><b>ชีวโมเลกุล 4 ชนิด:</b> คาร์โบไฮเดรต · โปรตีน · ไขมัน · กรดนิวคลีอิก</li>
+      </ul>
+      <div class="kw"><span class="lbl">KEYWORDS</span><br>
+        <span class="chip">Polar molecule</span><span class="chip">Hydrophilic</span><span class="chip">Hydrophobic</span><span class="chip">Cohesion</span><span class="chip">Adhesion</span><span class="chip">Specific heat</span><span class="chip">Hemoglobin</span><span class="chip">Thyroxine</span><span class="chip">Hydrocarbon</span><span class="chip">Functional group</span>
+      </div>
+    </div>
+
+    <div class="card span2">
+      <h3><span class="ico">🍚</span>คาร์โบไฮเดรต <span class="en">(Carbohydrate)</span> — สารอาหารให้พลังงานหลัก</h3>
+      <div style="font-size:8.8px;margin-bottom:3px">ธาตุ <b>C : H : O = 1 : 2 : 1</b> · สูตร <span class="eq">(CH₂O)n</span> · แบ่งตามจำนวนหน่วยน้ำตาล 3 ประเภท</div>
+      <div class="grid three" style="gap:7px">
+        <div>
+          <h3 style="font-size:9.5px">① น้ำตาลโมเลกุลเดี่ยว <span class="en">Monosaccharide</span></h3>
+          <ul class="tight">
+            <li>เล็กสุด รสหวาน ละลายน้ำดี · C 3–7 อะตอม</li>
+            <li><b>C5 Pentose:</b> Ribose (RNA, ATP), Deoxyribose (DNA)</li>
+            <li><b>C6 Hexose:</b> Glucose (พลังงานเซลล์), Fructose (หวานสุด, อสุจิ), Galactose (ในน้ำนม)</li>
+            <li>หมู่: <b>อัลดีไฮด์</b> (Glucose) / <b>คีโตน</b> (Fructose)</li>
+            <li><b>α vs β glucose</b>: ต่างที่ทิศ OH ที่ C1</li>
+          </ul>
+        </div>
+        <div>
+          <h3 style="font-size:9.5px">② น้ำตาลโมเลกุลคู่ <span class="en">Di/Oligosaccharide</span></h3>
+          <ul class="tight">
+            <li>2–10 โมเลกุล เชื่อมด้วย <b>พันธะไกลโคซิดิก</b> <span class="en">(Glycosidic)</span></li>
+            <li>Disaccharide สูตร <span class="eq">C₁₂H₂₂O₁₁</span> · เกิดจากปฏิกิริยา <b>Dehydration</b></li>
+            <li><b>Maltose</b> = Glc + Glc → ข้าวมอลต์ <span class="pill g">reducing</span></li>
+            <li><b>Sucrose</b> = Glc + Fru → อ้อย <span class="pill r">non-reducing</span></li>
+            <li><b>Lactose</b> = Glc + Gal → น้ำนม <span class="pill g">reducing</span></li>
+          </ul>
+        </div>
+        <div>
+          <h3 style="font-size:9.5px">③ น้ำตาลโมเลกุลใหญ่ <span class="en">Polysaccharide</span></h3>
+          <ul class="tight">
+            <li>11–1,000 โมเลกุล · ของแข็ง ไม่ละลายน้ำ ไม่หวาน</li>
+            <li><b>สะสม:</b> แป้ง (Starch, พืช) · <b>Glycogen</b> (สัตว์-ตับ/กล้ามเนื้อ) → หน่วยย่อย <b>α-Glucose</b></li>
+            <li><b>โครงสร้าง:</b> Cellulose (ผนังเซลล์พืช, มากสุดในโลก, <b>β-Glucose</b>) · Chitin (เปลือกกุ้ง-ปู, NAG)</li>
+          </ul>
+        </div>
+      </div>
+      <table style="margin-top:5px">
+        <tr><th style="width:20%">การทดสอบ</th><th>ผล</th></tr>
+        <tr><td><b>ไอโอดีน (แป้ง)</b></td><td>Amylose = น้ำเงินเข้ม · Amylopectin = ม่วงแดง · <b>Glycogen = แดง</b></td></tr>
+        <tr><td><b>Benedict's test</b></td><td>ทดสอบน้ำตาล <b>reducing</b> ทุกชนิด (mono + di) — <span class="warn">ยกเว้น Sucrose ให้ผลลบ</span></td></tr>
+      </table>
+      <div class="kw"><span class="lbl">KEYWORDS</span><br>
+        <span class="chip">Monosaccharide</span><span class="chip">Ribose/Deoxyribose</span><span class="chip">Glucose/Fructose/Galactose</span><span class="chip">α / β form</span><span class="chip">Glycosidic bond</span><span class="chip">Maltose/Sucrose/Lactose</span><span class="chip">Reducing sugar</span><span class="chip">Starch/Glycogen/Cellulose/Chitin</span><span class="chip">Benedict's test</span><span class="chip">Iodine test</span>
+      </div>
+    </div>
+
+  </div>
+  </div>
+
+  <!-- ============ PAGE 3 : BIOMOLECULES CONT. ============ -->
+  <div class="ubanner u2" style="page-break-before:always">
+    <div class="num">2</div>
+    <div><h2>สารชีวโมเลกุล (ต่อ) — โปรตีน · ไขมัน · กรดนิวคลีอิก <span class="en">Protein · Lipid · Nucleic acid</span></h2></div>
+  </div>
+  <div style="font-size:8.4px;color:var(--warn);margin:-4px 0 8px;padding:3px 8px;background:#fff7ed;border:1px solid #fed7aa;border-radius:6px">
+    ⚠️ <b>หน้านี้เป็นเนื้อหาเสริมจากหลักสูตร ม.6 มาตรฐาน (สสวท.)</b> เพื่อให้ครบชุดชีวโมเลกุล — สไลด์ชุดที่รุ่นน้องส่งมาลงรายละเอียดเฉพาะคาร์โบไฮเดรต (แต่พันธะทั้ง 4 อยู่ในสไลด์ทบทวนก่อนเรียนแล้ว)
+  </div>
+
+  <div class="u2">
+  <div class="grid">
+
+    <div class="card">
+      <h3><span class="ico">🥚</span>โปรตีน <span class="en">(Protein)</span></h3>
+      <ul class="tight">
+        <li><b>มอนอเมอร์ = กรดอะมิโน</b> <span class="en">(Amino acid)</span> มี <b>20 ชนิด</b></li>
+        <li>โครงสร้างกรดอะมิโน: หมู่อะมิโน <b>–NH₂</b> + หมู่คาร์บอกซิล <b>–COOH</b> + H + <b>หมู่ R</b> (ต่างกันในแต่ละชนิด) รอบ C กลาง</li>
+        <li><b>จำเป็น</b> <span class="en">(essential)</span> ~8–9 ชนิด ร่างกายสร้างเองไม่ได้ vs <b>ไม่จำเป็น</b></li>
+        <li>เชื่อมด้วย <mark>พันธะเพปไทด์</mark> <span class="en">(Peptide bond)</span> ระหว่าง –COOH ↔ –NH₂ (คาย H₂O) → พอลิเพปไทด์</li>
+        <li><b>โครงสร้าง 4 ระดับ:</b> ①ปฐมภูมิ (ลำดับกรดอะมิโน) ②ทุติยภูมิ (α-helix, β-sheet ด้วย H-bond) ③ตติยภูมิ (พับ 3 มิติ) ④จตุรภูมิ (หลายสายรวมกัน เช่น <b>ฮีโมโกลบิน 4 สาย</b>)</li>
+        <li><b>เสียสภาพ</b> <span class="en">(Denaturation)</span>: ความร้อน/กรด-เบส ทำลายโครงสร้าง (ยกเว้นปฐมภูมิ)</li>
+        <li><b>หน้าที่:</b> เอนไซม์ · โครงสร้าง (เคราติน คอลลาเจน) · ฮอร์โมน · ภูมิคุ้มกัน (แอนติบอดี) · ขนส่ง</li>
+        <li><b>ทดสอบ:</b> <b>Biuret test</b> → สีม่วง</li>
+      </ul>
+      <div class="kw"><span class="lbl">KEYWORDS</span><br>
+        <span class="chip">Amino acid</span><span class="chip">Peptide bond</span><span class="chip">Polypeptide</span><span class="chip">1°–4° structure</span><span class="chip">α-helix / β-sheet</span><span class="chip">Denaturation</span><span class="chip">Biuret test</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="ico">🧈</span>ไขมัน <span class="en">(Lipid)</span></h3>
+      <ul class="tight">
+        <li>ธาตุ <b>C, H, O</b> (O น้อยกว่าคาร์โบไฮเดรต) · <b>ไม่ละลายน้ำ</b> (hydrophobic) ละลายในตัวทำละลายอินทรีย์</li>
+        <li><b>① ไขมัน/น้ำมัน (Triglyceride)</b> = <b>กลีเซอรอล 1</b> + <b>กรดไขมัน 3</b> <span class="en">(fatty acid)</span> เชื่อมด้วย <mark>พันธะเอสเทอร์</mark> <span class="en">(Ester bond)</span></li>
+        <li>&nbsp;&nbsp;• <b>อิ่มตัว</b> <span class="en">(saturated)</span> = พันธะเดี่ยว, ของแข็ง, ไขมันสัตว์</li>
+        <li>&nbsp;&nbsp;• <b>ไม่อิ่มตัว</b> <span class="en">(unsaturated)</span> = มีพันธะคู่, ของเหลว, น้ำมันพืช</li>
+        <li><b>② ฟอสโฟลิพิด</b> <span class="en">(Phospholipid)</span> — หัวฟอสเฟตมีขั้ว(ชอบน้ำ)+หางไม่มีขั้ว(หนีน้ำ) → <b>เยื่อหุ้มเซลล์</b> (bilayer)</li>
+        <li><b>③ สเตอรอยด์</b> <span class="en">(Steroid)</span> — วง 4 วง เช่น คอเลสเตอรอล, ฮอร์โมนเพศ</li>
+        <li><b>หน้าที่:</b> สะสมพลังงาน (<b>9 kcal/g</b> สูงสุด) · ฉนวนกันความร้อน · เยื่อหุ้มเซลล์ · ฮอร์โมน</li>
+        <li><b>ทดสอบ:</b> Sudan III (สีแดง) / กระดาษโปร่งแสง</li>
+      </ul>
+      <div class="kw"><span class="lbl">KEYWORDS</span><br>
+        <span class="chip">Triglyceride</span><span class="chip">Glycerol + Fatty acid</span><span class="chip">Ester bond</span><span class="chip">Saturated / Unsaturated</span><span class="chip">Phospholipid</span><span class="chip">Steroid</span><span class="chip">9 kcal/g</span>
+      </div>
+    </div>
+
+    <div class="card span2">
+      <h3><span class="ico">🧬</span>กรดนิวคลีอิก <span class="en">(Nucleic acid)</span></h3>
+      <div class="grid" style="gap:8px">
+        <ul class="tight">
+          <li><b>มอนอเมอร์ = นิวคลีโอไทด์</b> <span class="en">(Nucleotide)</span> = <b>น้ำตาลเพนโทส (5C)</b> + <b>หมู่ฟอสเฟต</b> + <b>เบสไนโตรเจน</b></li>
+          <li>เชื่อมกันด้วย <mark>พันธะฟอสโฟไดเอสเทอร์</mark> <span class="en">(Phosphodiester bond)</span></li>
+          <li><b>เบส 2 กลุ่ม:</b> พิวรีน <span class="en">(purine)</span> = <b>A, G</b> (วงคู่) · ไพริมิดีน <span class="en">(pyrimidine)</span> = <b>C, T, U</b> (วงเดี่ยว)</li>
+          <li><b>การจับคู่เบส (DNA):</b> <b>A = T</b> (2 H-bond) · <b>C ≡ G</b> (3 H-bond)</li>
+          <li><b>ATP</b> = นิวคลีโอไทด์พลังงานสูง (น้ำตาล = ribose — โยงกับหน่วย 2!)</li>
+        </ul>
+        <table style="margin-top:0">
+          <tr><th style="width:30%"> </th><th><b>DNA</b></th><th><b>RNA</b></th></tr>
+          <tr><td>น้ำตาล</td><td>Deoxyribose</td><td>Ribose</td></tr>
+          <tr><td>สาย</td><td>คู่ (double helix)</td><td>เดี่ยว</td></tr>
+          <tr><td>เบส</td><td>A T C G</td><td>A <b>U</b> C G (ไม่มี T)</td></tr>
+          <tr><td>หน้าที่</td><td>เก็บข้อมูลพันธุกรรม</td><td>สร้างโปรตีน (mRNA, tRNA, rRNA)</td></tr>
+        </table>
+      </div>
+      <div class="kw"><span class="lbl">KEYWORDS</span><br>
+        <span class="chip">Nucleotide</span><span class="chip">Pentose + Phosphate + Base</span><span class="chip">Phosphodiester bond</span><span class="chip">Purine (A,G) / Pyrimidine (C,T,U)</span><span class="chip">A=T · C≡G</span><span class="chip">Double helix</span><span class="chip">DNA vs RNA</span><span class="chip">ATP</span>
+      </div>
+    </div>
+
+    <div class="card span2">
+      <h3><span class="ico">🗂️</span>สรุปรวมสารชีวโมเลกุล 4 ชนิด (ตารางทองสำหรับสอบ)</h3>
+      <table>
+        <tr><th>ชีวโมเลกุล</th><th>มอนอเมอร์</th><th>พันธะ</th><th>ธาตุหลัก</th><th>การทดสอบ</th></tr>
+        <tr><td><b>คาร์โบไฮเดรต</b></td><td>มอโนแซ็กคาไรด์</td><td>ไกลโคซิดิก <span class="en">Glycosidic</span></td><td>C H O</td><td>Benedict / ไอโอดีน</td></tr>
+        <tr><td><b>โปรตีน</b></td><td>กรดอะมิโน</td><td>เพปไทด์ <span class="en">Peptide</span></td><td>C H O <b>N</b> (S)</td><td>Biuret (ม่วง)</td></tr>
+        <tr><td><b>ไขมัน</b> <span class="warn">*</span></td><td>กลีเซอรอล + กรดไขมัน</td><td>เอสเทอร์ <span class="en">Ester</span></td><td>C H O</td><td>Sudan III</td></tr>
+        <tr><td><b>กรดนิวคลีอิก</b></td><td>นิวคลีโอไทด์</td><td>ฟอสโฟไดเอสเทอร์ <span class="en">Phosphodiester</span></td><td>C H O N <b>P</b></td><td>—</td></tr>
+      </table>
+      <div style="font-size:8px;color:var(--warn);margin-top:3px">
+        <span class="warn">*กับดักข้อสอบ:</span> "สารชีวโมเลกุล<b>ทุกชนิด</b>เป็นพอลิเมอร์" → <b>ผิด!</b> <b>ไขมันไม่ใช่พอลิเมอร์แท้</b> (ไม่ได้เกิดจากมอนอเมอร์ซ้ำ ๆ ต่อกัน) · ส่วนอีก 3 ชนิดเป็นพอลิเมอร์ · <b>พันธะทั้ง 4 เป็นพันธะโคเวเลนต์เหมือนกันหมด</b>
+      </div>
+    </div>
+
+  </div>
+  </div>
+
+  <div class="foot">
+    🧬 ชีทสรุปชีววิทยา หน่วย 1–2 (3 หน้า) · สรุปจากสไลด์ครูสุทัศน์ บุญเลิศ (ร.ร.พะเยาพิทยาคม) + หน้า 3 เสริมจากหลักสูตร ม.6 มาตรฐาน (สสวท.) · ทำให้รุ่นน้องอ่านก่อนสอบ
+  </div>
+
+</div>
+<!--KIT-UI v2.4 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<script>
+/* =============================================================================
+   _kit/ui-controls.js  —  KIT UI  v1.0
+   แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
+     🌙/☀️  โหมดมืด / สว่าง   (จำค่าไว้ใน localStorage)
+     A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
+     ✏️  ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
+     🧮  เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
+
+   ── วิธีใช้ ────────────────────────────────────────────────────────────────
+   ห้ามแก้โค้ดนี้ในไฟล์ widget!  แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
+       pwsh -File _kit/apply-ui.ps1
+   สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
+   (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
+
+   !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
+      เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
+
+   ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
+   ใส่แอตทริบิวต์ที่ tag body:  data-tools="pen,calc"  = บังคับเปิด
+                              data-tools="none"      = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
+   ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
+              หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
+   ============================================================================= */
+(function(){
+if(window.__KITUI__) return; window.__KITUI__='2.4';
+
+/* ---------- helper ---------- */
+const D=document, R=D.documentElement;
+const get=k=>{try{return localStorage.getItem('kitui-'+k)}catch(e){return null}};
+const set=(k,v)=>{try{localStorage.setItem('kitui-'+k,v)}catch(e){}};
+const el=(t,c,h)=>{const e=D.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
+
+/* =============================================================================
+   1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
+   ============================================================================= */
+const CSS=`
+/* ===== DARK TOKENS (คู่กับ _kit/design-tokens.css) ===== */
+:root[data-theme="dark"]{
+  --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
+  --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
+  --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
+  --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
+  --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
+}
+:root[data-theme="dark"] body{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f172a}
+:root[data-theme="dark"] body[data-subject="physics"]{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f1220}
+:root[data-theme="dark"] body[data-subject="bio"]{--accent:#4ade80;--accent-head:#bbf7d0;--accent-ink:#86efac;--accent-soft:#0f2a1a;--accent-bd:#256b41;--accent-chip:#14532d;--accent-ghost:#15803d;--bg:#0d1912}
+:root[data-theme="dark"] body[data-subject="chem"]{--accent:#fb923c;--accent-head:#fed7aa;--accent-ink:#fdba74;--accent-soft:#2b1a0c;--accent-bd:#8a3d12;--accent-chip:#6d2c10;--accent-ghost:#c2410c;--bg:#1a130c}
+:root[data-theme="dark"] body[data-subject="christ"]{--accent:#a78bfa;--accent-head:#ddd6fe;--accent-ink:#c4b5fd;--accent-soft:#241a3d;--accent-bd:#5b21b6;--accent-chip:#4c1d95;--accent-ghost:#6d28d9;--bg:#16121f}
+:root[data-theme="dark"] body[data-subject="islam"]{--accent:#2dd4bf;--accent-head:#99f6e4;--accent-ink:#5eead4;--accent-soft:#0d2b28;--accent-bd:#12615a;--accent-chip:#134e4a;--accent-ghost:#0f766e;--bg:#0c1917}
+:root[data-theme="dark"] body[data-subject="history"]{--accent:#fbbf24;--accent-head:#fde68a;--accent-ink:#fcd34d;--accent-soft:#2a1f0a;--accent-bd:#8a4b0c;--accent-chip:#6d3a0a;--accent-ghost:#b45309;--bg:#191509}
+:root[data-theme="dark"] body[data-subject="math"]{--accent:#38bdf8;--accent-head:#bae6fd;--accent-ink:#7dd3fc;--accent-soft:#0c2434;--accent-bd:#0b5a80;--accent-chip:#0c4a6e;--accent-ghost:#0369a1;--bg:#0b1620}
+:root[data-theme="dark"] body[data-subject="eng"]{--accent:#f472b6;--accent-head:#fbcfe8;--accent-ink:#f9a8d4;--accent-soft:#2e1122;--accent-bd:#8d1748;--accent-chip:#731839;--accent-ghost:#be185d;--bg:#1c0f16}
+:root[data-theme="dark"] body[data-subject="thai"]{--accent:#f87171;--accent-head:#fecaca;--accent-ink:#fca5a5;--accent-soft:#2d1414;--accent-bd:#8d2020;--accent-chip:#7f1d1d;--accent-ghost:#b91c1c;--bg:#1a0f0f}
+:root[data-theme="dark"] img,:root[data-theme="dark"] .svg-box{filter:brightness(.92)}
+/* ช่องกรอก/ดรอปดาวน์ที่ widget เก่ากำหนดพื้นขาวตายตัวไว้ */
+:root[data-theme="dark"] select,:root[data-theme="dark"] textarea,
+:root[data-theme="dark"] input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=color])
+{background-color:var(--soft);color:var(--ink);border-color:var(--line)}
+
+/* ===== แถบเครื่องมือลอย ===== */
+#kitui-bar{position:fixed;right:10px;bottom:10px;z-index:99990;display:flex;gap:6px;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
+#kitui-bar button{border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;
+  font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
+  align-items:center;justify-content:center;font-weight:700}
+#kitui-bar button:hover{background:var(--soft)}
+#kitui-bar button:active{transform:scale(.93)}
+#kitui-bar button.on{background:var(--accent);color:#fff}
+#kitui-bar .kitui-sep{width:1px;height:22px;background:var(--line);flex:0 0 1px}
+#kitui-bar .kitui-fs{font-size:11px;color:var(--muted);min-width:34px;text-align:center;font-weight:700}
+#kitui-bar.hidden > *:not(#kitui-grip){display:none}
+#kitui-grip{font-size:17px}
+
+/* ===== แผงลอย (ที่ทด / เครื่องคิดเลข) ===== */
+.kitui-sheet{position:fixed;left:0;right:0;bottom:0;z-index:99991;background:var(--card);
+  border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
+  display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
+  height:52vh;max-height:92vh;min-height:180px}
+.kitui-sheet.open{display:flex}
+.kitui-sheet.full{height:100vh;border-radius:0}
+.kitui-head{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--line);
+  flex-wrap:wrap;touch-action:none;cursor:ns-resize}
+.kitui-head b{font-size:.9rem;color:var(--accent-ink);margin-right:2px;white-space:nowrap}
+.kitui-head button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;
+  padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
+.kitui-head button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.kitui-head .kitui-spacer{flex:1}
+.kitui-sw{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;min-height:0}
+.kitui-sw.on{border-color:var(--ink);transform:scale(1.12)}
+.kitui-padwrap{flex:1;position:relative;overflow:hidden;background:var(--soft)}
+.kitui-padwrap canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+:root[data-theme="dark"] .kitui-padwrap{background:#0c1220}
+
+/* ===== เครื่องคิดเลข ===== */
+#kitui-calc{height:auto;max-height:90vh}
+.kitui-disp{padding:8px 12px;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);
+  border-bottom:1px solid var(--line)}
+.kitui-disp .ex{font-size:.95rem;color:var(--muted);min-height:1.3em;word-break:break-all}
+.kitui-disp .rs{font-size:1.6rem;font-weight:700;color:var(--accent-ink);word-break:break-all}
+.kitui-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:7px}
+.kitui-keys button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:9px;
+  font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
+.kitui-keys button:active{transform:scale(.95)}
+.kitui-keys button.fn{font-size:.8rem;color:var(--accent-ink)}
+.kitui-keys button.op{background:var(--accent-soft);color:var(--accent-ink)}
+.kitui-keys button.eq{background:var(--accent);color:#fff;grid-row:span 2}
+.kitui-keys button.del{background:var(--hot-bg);color:var(--hot-ink)}
+.kitui-keys button.w3{grid-column:span 3}
+@media(max-width:420px){.kitui-keys button{font-size:.88rem;min-height:40px}.kitui-keys button.fn{font-size:.72rem}}
+@media(min-width:760px){
+  .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
+  .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
+  #kitui-pad{width:560px}
+}
+@media print{#kitui-bar,.kitui-sheet{display:none!important}}
+`;
+const st=el('style'); st.id='kitui-style'; st.textContent=CSS; D.head.appendChild(st);
+
+/* -----------------------------------------------------------------------------
+   1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
+   widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
+   พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
+   แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
+   เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
+----------------------------------------------------------------------------- */
+/* สีพาสเทลสว่าง -> สีเข้มที่ยังคง "เฉดเดิม" ไว้ (เขียว=ถูก / แดง=ผิด ต้องยังแยกออก)
+   ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
+function darken(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
+  const l0=(mx+mn)/2;
+  const s0 = d===0 ? 0 : d/(1-Math.abs(2*l0-1));
+  const s = d===0 ? 0 : Math.min(.5, Math.max(.3, s0));
+  const l = d===0 ? .13 : .17;                       /* เทา/ขาวให้เข้มกว่าสีนิดหน่อย */
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+function darkFix(){
+  const out=[], seen=new Set();
+  const take=r=>{
+    if(!r.style || !r.selectorText) return;
+    if(r.selectorText.indexOf('kitui')>-1) return;               /* ของเราเองใช้ token อยู่แล้ว */
+    const bg=r.style.backgroundColor;
+    if(!bg || bg.indexOf('var(')>-1) return;
+    const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
+    if(!m) return;
+    if(m[4]!==undefined && +m[4]<0.6) return;                    /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
+    const cr=+m[1], cg=+m[2], cb=+m[3];
+    if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return;       /* ไม่สว่างพอ ไม่ต้องยุ่ง */
+    const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
+    const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
+    let css='background-color:'+repl;
+    /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
+    const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
+    out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
+  };
+  /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
+        ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
+  const visit=rules=>{
+    for(let i=0;i<rules.length;i++){
+      const r=rules[i];
+      if(r.selectorText) take(r);
+      if(r.cssRules && r.cssRules.length) visit(r.cssRules);     /* @media / @supports / nesting */
+    }
+  };
+  for(let i=0;i<D.styleSheets.length;i++){
+    let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; }   /* ข้ามชีตข้ามโดเมน */
+    if(rr) visit(rr);
+  }
+  if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
+  return out.length;
+}
+try{ window.__KITUI_DARKFIX__=darkFix(); }catch(e){ window.__KITUI_DARKFIX__='err:'+e.message; }
+
+/* darkFix ข้างบนซ่อมได้เฉพาะสีที่เขียนตายตัวในไฟล์ CSS
+   แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
+   ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
+   จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
+const rgbOf=c=>{const m=c&&c.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null;};
+const lumOf=v=>v?(0.2126*v[0]+0.7152*v[1]+0.0722*v[2])/255:null;
+/* ตรงข้ามกับ darken(): ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
+   (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
+function lighten(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  if(d<0.04) return 'var(--ink)';                    /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
+  let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
+  const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
+  const s=Math.min(.92,Math.max(.55,s0)), l=.72;
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+const SKIP={CANVAS:1,IMG:1,VIDEO:1,SVG:1,IFRAME:1,PICTURE:1,OBJECT:1};
+const OBS_OPT={childList:true,subtree:true,attributes:true,attributeFilter:['class','style']};
+let patched=[], obs=null;
+function elementFix(){
+  /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
+        ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
+  if(obs) obs.disconnect();
+  try{ elementFixCore(); } finally { if(obs) obs.observe(D.body,OBS_OPT); }
+}
+function elementFixCore(){
+  /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
+     ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
+     จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
+  if(R.getAttribute('data-theme')!=='dark'){
+    patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
+    patched=[];
+    return;
+  }
+  /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
+     ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
+  /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
+  const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
+  for(let i=0;i<all.length;i++){
+    const e=all[i];
+    if(e.id&&e.id.indexOf('kitui')===0) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(SKIP[e.tagName]) continue;                      /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
+    const s=getComputedStyle(e);
+    const bg=rgbOf(s.backgroundColor);
+    if(!bg || bg[3]<0.6) continue;                     /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
+    if(lumOf(bg)<0.72) continue;                       /* เข้มพออยู่แล้ว */
+    /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
+    e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
+    const fg=rgbOf(s.color);
+    if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important');  /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
+    patched.push(e);
+  }
+  /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
+     ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
+  const bgCache=new Map();
+  const effBg=n=>{
+    for(let p=n;p;p=p.parentElement){
+      if(bgCache.has(p)) return bgCache.get(p);
+      const b=rgbOf(getComputedStyle(p).backgroundColor);
+      if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
+    }
+    return null;
+  };
+  for(let i=2;i<all.length;i++){
+    const e=all[i];
+    if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(e.style.color) continue;                         /* จัดการไปแล้วในรอบแรก */
+    if(!e.textContent || !e.textContent.trim()) continue;
+    const fg=rgbOf(getComputedStyle(e).color);
+    if(!fg || lumOf(fg)>=0.45) continue;                 /* ตัวอักษรสว่างอยู่แล้ว */
+    const bg=effBg(e);
+    if(!bg || lumOf(bg)>=0.5) continue;                  /* พื้นยังสว่าง อ่านออกอยู่ */
+    e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
+    patched.push(e);
+  }
+}
+let efT=0;
+const scheduleFix=()=>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
+try{
+  obs=new MutationObserver(scheduleFix);
+  obs.observe(D.body,OBS_OPT);
+}catch(e){}
+
+/* =============================================================================
+   2) ธีม + ขนาดตัวอักษร
+   ============================================================================= */
+const FS=[.85,1,1.15,1.3,1.5], FSNAME=['เล็กสุด','เล็ก','ปกติ','ใหญ่','ใหญ่สุด'];
+let fsIdx=parseInt(get('fs')); if(isNaN(fsIdx)||fsIdx<0||fsIdx>4) fsIdx=1;
+let theme=get('theme') || (matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+
+function applyTheme(){
+  R.setAttribute('data-theme',theme);
+  R.style.colorScheme = theme==='dark'?'dark':'light';   /* ให้ select/input เป็นสีเข้มด้วย */
+  const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
+  set('theme',theme);
+  clearTimeout(efT);                                   /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
+  if(typeof elementFix==='function') elementFix();
+  if(typeof draw==='function' && pad) draw();          /* วาดที่ทดใหม่ เส้นดำ<->ขาวตามธีม */
+}
+function applyFS(){
+  R.style.fontSize=(16*FS[fsIdx])+'px';
+  const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
+  set('fs',fsIdx);
+}
+
+/* =============================================================================
+   3) แถบเครื่องมือ
+   ============================================================================= */
+const subj=(D.body.getAttribute('data-subject')||'').toLowerCase();
+/* หลาย widget ไม่ได้ใส่ data-subject ที่ <body> → เดาจากโฟลเดอร์ที่ไฟล์อยู่ด้วย */
+const inPath=/\/(physics|math|chemist)\//i.test(decodeURIComponent(location.pathname));
+const tAttr=D.body.getAttribute('data-tools');
+const wantTools = tAttr!=null ? tAttr.toLowerCase()
+                : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
+const hasPen  = wantTools.includes('pen');
+const hasCalc = wantTools.includes('calc');
+
+const bar=el('div'); bar.id='kitui-bar';
+bar.innerHTML =
+  `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
+  `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button>`+
+  `<span class="kitui-sep"></span>`+
+  `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
+  `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
+  `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
+  (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
+  (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
+D.body.appendChild(bar);
+
+D.getElementById('kitui-theme').onclick=()=>{theme=theme==='dark'?'light':'dark';applyTheme();};
+D.getElementById('kitui-fsup').onclick=()=>{if(fsIdx<4){fsIdx++;applyFS();}};
+D.getElementById('kitui-fsdown').onclick=()=>{if(fsIdx>0){fsIdx--;applyFS();}};
+D.getElementById('kitui-grip').onclick=()=>bar.classList.toggle('hidden');
+applyTheme(); applyFS();
+
+/* ปิดแผงด้วยปุ่ม Esc */
+D.addEventListener('keydown',e=>{ if(e.key==='Escape') D.querySelectorAll('.kitui-sheet.open').forEach(s=>s.classList.remove('open')); });
+
+/* ลากหัวแผงเพื่อปรับความสูง */
+function makeResizable(sheet){
+  const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
+  head.addEventListener('pointerdown',e=>{
+    if(e.target.closest('button'))return;
+    drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect().height;head.setPointerCapture(e.pointerId);
+  });
+  head.addEventListener('pointermove',e=>{
+    if(!drag)return;
+    const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
+    sheet.classList.remove('full'); sheet.style.height=h+'px';
+    if(sheet.id==='kitui-pad') fitPad();
+  });
+  head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
+}
+
+/* =============================================================================
+   4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ  หลายหน้า  เซฟอัตโนมัติ
+   ============================================================================= */
+let pad,padCv,padCx,pages=[[]],pg=0,undone=[],histo=[];
+let tool='pen',color='#111827',width=2.4,penSeen=0;
+const COLORS=['#111827','#2563eb','#dc2626','#16a34a','#f59e0b'];
+const PADKEY='pad-'+location.pathname.split('/').pop();
+
+function buildPad(){
+  pad=el('div','kitui-sheet'); pad.id='kitui-pad';
+  pad.innerHTML=
+   `<div class="kitui-head">
+      <b>✏️ ที่ทด</b>
+      <button data-t="pen" class="on">🖊️</button>
+      <button data-t="hl">🖍️</button>
+      <button data-t="er">🧽</button>
+      ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
+      <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
+      <span class="kitui-spacer"></span>
+      <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
+      <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
+      <button id="kitui-pgadd">+ หน้า</button>
+      <button id="kitui-clear">ล้างหน้านี้</button>
+      <button id="kitui-full">⛶</button>
+      <button id="kitui-padclose">✕</button>
+    </div>
+    <div class="kitui-padwrap"><canvas></canvas></div>`;
+  D.body.appendChild(pad);
+  padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
+  makeResizable(pad);
+
+  pad.querySelector('.kitui-head').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
+  });
+  D.getElementById('kitui-undo').onclick=()=>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop(); draw(); save(); } };
+  D.getElementById('kitui-redo').onclick=()=>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop(); draw(); save(); } };
+  D.getElementById('kitui-clear').onclick=()=>{ snap(); pages[pg]=[]; draw(); save(); };
+  D.getElementById('kitui-pgadd').onclick=()=>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw(); save(); };
+  D.getElementById('kitui-pgprev').onclick=()=>{ if(pg>0){pg--;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-pgnext').onclick=()=>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-full').onclick=()=>{ pad.classList.toggle('full'); pad.style.height=''; fitPad(); };
+  D.getElementById('kitui-padclose').onclick=()=>pad.classList.remove('open');
+
+  /* ---- วาด ---- */
+  let cur=null;
+  padCv.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='pen') penSeen=Date.now();
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;   /* กันฝ่ามือแตะตอนใช้สไตลัส */
+    const p=pt(e);
+    if(tool==='er'){ snap(); erase(p); return; }
+    snap();
+    cur={c:color,w:width,hl:tool==='hl',pts:[p]};
+    pages[pg].push(cur); draw();
+    try{ padCv.setPointerCapture(e.pointerId); }catch(x){}  /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
+  });
+  padCv.addEventListener('pointermove',e=>{
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;
+    if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
+    if(!cur||!e.buttons)return;
+    /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
+    let evs=[e];
+    if(e.getCoalescedEvents){ const c=e.getCoalescedEvents(); if(c&&c.length) evs=c; }
+    evs.forEach(ev=>cur.pts.push(pt(ev)));
+    draw();
+  });
+  const end=()=>{ if(cur){cur=null;save();} };
+  padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
+  padCv.addEventListener('pointerleave',end);
+
+  addEventListener('resize',()=>{ if(pad.classList.contains('open')) fitPad(); });
+  load(); fitPad();
+}
+function pt(e){
+  const r=padCv.getBoundingClientRect();
+  return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
+          p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5};   /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
+}
+function snap(){ histo.push(pages[pg].slice()); if(histo.length>60)histo.shift(); undone=[]; }
+function erase(p){
+  const r=padCv.getBoundingClientRect(), rad=18/r.width;
+  const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
+  if(keep.length!==pages[pg].length){ pages[pg]=keep; draw(); save(); }
+}
+function fitPad(){
+  const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
+  const dpr=Math.min(devicePixelRatio||1,2.5);
+  padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
+  draw();
+}
+function draw(){
+  const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
+  padCx.clearRect(0,0,W,H);
+  /* เส้นตารางจาง ๆ ให้เขียนตรง */
+  const dark=R.getAttribute('data-theme')==='dark';
+  padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
+  for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath();padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke();}
+  padCx.lineCap='round'; padCx.lineJoin='round';
+  pages[pg].forEach(s=>{
+    padCx.globalAlpha=s.hl?0.32:1;
+    padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
+    for(let i=1;i<s.pts.length;i++){
+      const a=s.pts[i-1],b=s.pts[i];
+      padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
+      padCx.beginPath(); padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke();
+    }
+    if(s.pts.length===1){ /* จุดเดียว */
+      padCx.fillStyle=padCx.strokeStyle; padCx.beginPath();
+      padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill();
+    }
+  });
+  padCx.globalAlpha=1;
+  const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
+}
+function save(){ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
+function load(){
+  try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
+}
+
+if(hasPen){
+  buildPad();
+  D.getElementById('kitui-penbtn').onclick=()=>{
+    const o=pad.classList.toggle('open');
+    D.getElementById('kitui-penbtn').classList.toggle('on',o);
+    if(o) fitPad();
+  };
+}
+
+/* =============================================================================
+   5) เครื่องคิดเลขวิทยาศาสตร์  (tokenizer → shunting-yard → RPN  ไม่ใช้ eval)
+   ============================================================================= */
+const FN={sin:1,cos:1,tan:1,asin:1,acos:1,atan:1,ln:1,log:1,sqrt:1,abs:1,exp:1};
+const PREC={'+':1,'-':1,'*':2,'/':2,'^':4,'u-':3};
+function tokenize(s){
+  s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
+  const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!()])/g; let m;
+  while((m=re.exec(s))) out.push(m[1]);
+  return out;
+}
+function toRPN(tk){
+  const out=[],op=[]; let prev=null;
+  for(let t of tk){
+    if(t==='**')t='^';
+    if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
+    else if(t==='PI'){ out.push(Math.PI); }
+    else if(t==='e'||t==='E'){ out.push(Math.E); }
+    else if(t==='ANS'){ out.push(ANS); }
+    else if(FN[t]){ op.push(t); }
+    else if(t==='('){ op.push(t); }
+    else if(t===')'){
+      while(op.length&&op[op.length-1]!=='(') out.push(op.pop());
+      if(!op.length) throw 0; op.pop();
+      if(op.length&&FN[op[op.length-1]]) out.push(op.pop());
+    }
+    else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
+    else if('+-*/^'.includes(t)){
+      let o=t;
+      const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
+      if(t==='-'&&unary) o='u-';
+      else if(t==='+'&&unary){ prev=t; continue; }
+      while(op.length){
+        const top=op[op.length-1];
+        if(top==='('||FN[top])break;
+        const rightAssoc=(o==='^'||o==='u-');
+        if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop()); else break;
+      }
+      op.push(o);
+    }
+    else throw 0;
+    prev=t;
+  }
+  while(op.length){ const o=op.pop(); if(o==='(')throw 0; out.push(o); }
+  return out;
+}
+function evalRPN(rpn,deg){
+  const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
+  const pop=()=>{ if(!st.length)throw 0; return st.pop(); };
+  for(const t of rpn){
+    if(typeof t==='number'){ st.push(t); continue; }
+    if(t==='fact'){ const n=pop(); if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
+    if(t==='pct'){ st.push(pop()/100); continue; }
+    if(t==='u-'){ st.push(-pop()); continue; }
+    if(FN[t]){
+      const a=pop();
+      st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
+             : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
+             : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
+             : t==='abs'?Math.abs(a) : Math.exp(a) );
+      continue;
+    }
+    const b=pop(),a=pop();
+    st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
+  }
+  if(st.length!==1) throw 0;
+  return st[0];
+}
+function calc(src,deg){ return evalRPN(toRPN(tokenize(src)),deg); }
+
+let ANS=0, expr='', calcSheet, isDeg=true;
+const KEYS=[
+ ['DEG','deg','fn'],['(','(',''],[')',')',''],['⌫','del','del'],['AC','ac','del'],
+ ['sin','sin(','fn'],['cos','cos(','fn'],['tan','tan(','fn'],['π','π','fn'],['÷','÷','op'],
+ ['sin⁻¹','asin(','fn'],['cos⁻¹','acos(','fn'],['tan⁻¹','atan(','fn'],['e','e','fn'],['×','×','op'],
+ ['ln','ln(','fn'],['log','log(','fn'],['√','√(','fn'],['xʸ','^','fn'],['−','−','op'],
+ ['7','7',''],['8','8',''],['9','9',''],['x!','!','fn'],['+','+','op'],
+ ['4','4',''],['5','5',''],['6','6',''],['%','%','fn'],['ANS','ANS','fn'],
+ ['1','1',''],['2','2',''],['3','3',''],['.','.',''],['=','eq','eq'],
+ ['0','0','w3'],['x²','^2','fn']
+];
+function buildCalc(){
+  calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
+  calcSheet.innerHTML=
+   `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
+      <button id="kitui-calcclose">✕</button></div>
+    <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
+    <div class="kitui-keys" id="kitui-keys">
+      ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
+    </div>`;
+  D.body.appendChild(calcSheet);
+  D.getElementById('kitui-calcclose').onclick=()=>calcSheet.classList.remove('open');
+  const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
+  const show=()=>{ ex.textContent=expr||' ';
+    try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
+    catch(e){ rs.style.opacity=.35; }
+  };
+  D.getElementById('kitui-keys').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
+    if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
+    if(k==='del'){ expr=expr.slice(0,-1); show(); return; }
+    if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show(); return; }
+    if(k==='eq'){
+      rs.style.opacity=1;
+      try{
+        const v=calc(expr,isDeg);
+        if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
+        if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
+        ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
+      }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
+      return;
+    }
+    expr+=k; show();
+  });
+}
+function fmt(v){
+  if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
+  if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
+  return String(Math.round(v*1e10)/1e10);
+}
+if(hasCalc){
+  buildCalc();
+  D.getElementById('kitui-calcbtn').onclick=()=>{
+    const o=calcSheet.classList.toggle('open');
+    D.getElementById('kitui-calcbtn').classList.toggle('on',o);
+  };
+}
+})();
+
+</script>
+<!--/KIT-UI-->
+</body>
+</html>

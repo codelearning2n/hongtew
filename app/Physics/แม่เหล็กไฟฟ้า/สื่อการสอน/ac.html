@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>ไฟฟ้ากระแสสลับ + เฟส</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ===== ธีมกลาง _kit (โทนสว่าง แนว tutor) — ดู _kit/DESIGN.md ===== */
+  :root{
+    --bg:#eef2f7; --surface:#ffffff; --card:#f8fafc; --card2:#eef2ff;
+    --text:#1e293b; --muted:#64748b; --border:#e2e8f0;
+    --field:#0891b2;   /* แรงดัน V */
+    --force:#f59e0b;   /* amber */
+    --current:#db2777; /* กระแส I */
+    --ok:#059669; --bad:#dc2626;
+    --accent:#4f46e5; --accent-head:#312e81; --accent-ink:#3730a3;
+    --accent-soft:#eef2ff; --accent-bd:#c7d2fe;
+    --radius:14px; --shadow:0 1px 4px rgba(15,23,42,.08);
+    --font:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--text); font-family:var(--font);
+    line-height:1.55; padding-bottom:40px;
+  }
+  header.topbar{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:12px; flex-wrap:wrap;
+    padding:14px 18px; background:rgba(238,242,247,.92); backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--border);
+  }
+  header.topbar h1{
+    font-size:clamp(1.05rem,3vw,1.4rem); margin:0; font-weight:700;
+    display:flex; align-items:center; gap:8px; color:var(--accent-head);
+  }
+  header.topbar a{
+    color:var(--accent); text-decoration:none; font-size:.92rem; font-weight:600;
+    padding:6px 12px; border:1px solid var(--border); border-radius:999px;
+    white-space:nowrap;
+  }
+  header.topbar a:hover{ background:var(--card2); }
+
+  main{ max-width:980px; margin:0 auto; padding:16px; display:flex; flex-direction:column; gap:22px; }
+
+  .panel{
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:18px 18px 20px;
+  }
+  .panel h2{
+    margin:0 0 4px; font-size:1.15rem; display:flex; align-items:center; gap:8px; color:var(--accent-head);
+  }
+  .panel .badge{
+    display:inline-block; font-size:.72rem; background:var(--card2); color:var(--muted);
+    padding:2px 9px; border-radius:999px; font-weight:600;
+  }
+  .caption{ color:var(--muted); font-size:.92rem; margin:4px 0 12px; }
+  .hint{
+    color:var(--muted); font-size:.85rem; margin-top:8px; background:var(--card);
+    border-left:3px solid var(--field); padding:8px 12px; border-radius:8px;
+  }
+
+  .controls{
+    display:flex; flex-wrap:wrap; gap:14px; margin:10px 0 12px;
+  }
+  .ctrl{
+    flex:1 1 220px; background:var(--card); border:1px solid var(--border);
+    border-radius:12px; padding:10px 14px;
+  }
+  .ctrl label{
+    display:flex; justify-content:space-between; font-size:.88rem; color:var(--muted);
+    margin-bottom:6px; gap:8px;
+  }
+  .ctrl label b{ color:var(--text); font-weight:700; }
+  input[type=range]{
+    width:100%; accent-color:var(--field); height:22px; cursor:pointer;
+  }
+  select{
+    width:100%; background:var(--card2); color:var(--text); border:1px solid var(--border);
+    border-radius:8px; padding:8px 10px; font-family:var(--font); font-size:.95rem;
+  }
+
+  .btn-row{ display:flex; flex-wrap:wrap; gap:10px; margin:8px 0; }
+  button.toggle{
+    flex:1 1 120px; background:var(--card); color:var(--text); border:1px solid var(--border);
+    border-radius:10px; padding:10px 12px; font-family:var(--font); font-size:.95rem;
+    font-weight:600; cursor:pointer; transition:.15s;
+  }
+  button.toggle.active{ background:var(--accent); color:#fff; border-color:var(--accent); }
+  button.play{
+    background:var(--card2); color:var(--text); border:1px solid var(--border);
+    border-radius:999px; padding:8px 18px; font-family:var(--font); font-weight:600;
+    cursor:pointer; font-size:.9rem;
+  }
+  button.play:hover{ background:var(--border); }
+
+  canvas{
+    width:100%; display:block; background:#fff; border-radius:12px;
+    border:1px solid var(--border); touch-action:none;
+  }
+
+  .readout-grid{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:10px; margin:10px 0;
+  }
+  .readout{
+    background:var(--card); border:1px solid var(--border); border-radius:10px;
+    padding:10px 12px; text-align:center;
+  }
+  .readout .label{ font-size:.76rem; color:var(--muted); }
+  .readout .value{ font-size:1.15rem; font-weight:700; margin-top:2px; }
+  .readout .value.field{ color:var(--field); }
+  .readout .value.current{ color:var(--current); }
+  .readout .value.force{ color:var(--force); }
+  .readout .value.ok{ color:var(--ok); }
+
+  .legend{ display:flex; gap:16px; flex-wrap:wrap; font-size:.85rem; color:var(--muted); margin-top:6px; }
+  .legend span{ display:inline-flex; align-items:center; gap:6px; }
+  .swatch{ width:16px; height:3px; border-radius:2px; display:inline-block; }
+
+  .phase-callout{
+    margin-top:10px; padding:12px 14px; border-radius:10px; background:var(--card2);
+    border:1px solid var(--border); font-size:.95rem;
+  }
+  .phase-callout b{ color:var(--force); }
+  .civil{
+    margin-top:10px; padding:10px 14px; border-radius:10px; background:var(--accent-soft);
+    border:1px dashed var(--field); font-size:.88rem; color:var(--muted);
+  }
+  .civil b{ color:var(--field); }
+
+  footer{ text-align:center; color:var(--muted); font-size:.8rem; padding:20px; }
+
+  @media (max-width:520px){
+    .panel{ padding:14px 12px 16px; }
+    header.topbar{ padding:10px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <h1>〰️ ไฟฟ้ากระแสสลับ + เฟส</h1>
+  <a href="index.html">← กลับหน้ารวม</a>
+</header>
+
+<main>
+
+  <!-- PANEL 1: sine wave -->
+  <section class="panel" id="panel1">
+    <h2>1) รูปคลื่นไซน์ <span class="badge">E = Eₘ·sin(ωt)</span></h2>
+    <p class="caption">ลองลากสไลเดอร์ดู แล้วสังเกตว่าคลื่นเปลี่ยนรูปร่างยังไง — แอมพลิจูดทำให้คลื่น "สูง/เตี้ย" ส่วนความถี่ทำให้คลื่น "ถี่/ห่าง"</p>
+
+    <div class="controls">
+      <div class="ctrl">
+        <label>แอมพลิจูด Eₘ <b id="amp1Val">10 V</b></label>
+        <input type="range" id="amp1" min="2" max="20" step="1" value="10">
+      </div>
+      <div class="ctrl">
+        <label>ความถี่ f <b id="freq1Val">1.0 Hz</b></label>
+        <input type="range" id="freq1" min="0.2" max="5" step="0.1" value="1">
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="play" id="playBtn1">⏸ หยุด</button>
+    </div>
+
+    <canvas id="cv1" height="220"></canvas>
+
+    <div class="readout-grid">
+      <div class="readout"><div class="label">คาบ T = 1/f</div><div class="value field" id="Tval">1.00 s</div></div>
+      <div class="readout"><div class="label">ω = 2πf</div><div class="value field" id="wVal">6.28 rad/s</div></div>
+      <div class="readout"><div class="label">E_rms ≈ 0.707·Eₘ</div><div class="value ok" id="rmsVal1">7.07 V</div></div>
+    </div>
+    <p class="hint">เส้นประคือระดับ <b>ค่ายังผล (rms)</b> — ค่าที่มัลติมิเตอร์ AC วัดได้จริง ไม่ใช่ค่าสูงสุด!</p>
+  </section>
+
+  <!-- PANEL 2: rms explainer -->
+  <section class="panel" id="panel2">
+    <h2>2) ค่ายังผล (rms) คืออะไร?</h2>
+    <p class="caption">ไฟบ้านที่บอกว่า "220 V" คือค่า rms ไม่ใช่ค่าสูงสุด — ลองกดปุ่มด้านล่างเพื่อดูค่าสูงสุดจริงของไฟบ้าน</p>
+    <div class="btn-row">
+      <button class="play" id="homeBtn">⚡ ไฟบ้าน 220 V (rms) แปลว่าค่าสูงสุดเท่าไร?</button>
+    </div>
+    <div class="readout-grid" id="homeResult" style="display:none;">
+      <div class="readout"><div class="label">V_rms (ไฟบ้าน)</div><div class="value field">220 V</div></div>
+      <div class="readout"><div class="label">Vₘ = 220×√2</div><div class="value force" id="homeVm">311.1 V</div></div>
+    </div>
+    <p class="hint">สูตรทั่วไป: <b>V_rms = Vₘ/√2 ≈ 0.707 Vₘ</b> และเช่นเดียวกัน <b>I_rms = Iₘ/√2</b> — ใช้ได้กับทั้งแรงดันและกระแส</p>
+  </section>
+
+  <!-- PANEL 3: phase R/L/C -->
+  <section class="panel" id="panel3">
+    <h2>3) เฟสของ R / L / C</h2>
+    <p class="caption">เลือกอุปกรณ์ แล้วสังเกตว่าเส้นสีชมพู (กระแส i) กับเส้นสีฟ้า (แรงดัน v) เหลื่อมกันยังไง</p>
+
+    <div class="btn-row">
+      <button class="toggle active" data-comp="R">ตัวต้านทาน R</button>
+      <button class="toggle" data-comp="C">ตัวเก็บประจุ C</button>
+      <button class="toggle" data-comp="L">ตัวเหนี่ยวนำ L</button>
+    </div>
+
+    <canvas id="cv3" height="220"></canvas>
+    <div class="legend">
+      <span><span class="swatch" style="background:var(--current)"></span> กระแส i(t)</span>
+      <span><span class="swatch" style="background:var(--field)"></span> แรงดัน v(t)</span>
+    </div>
+
+    <div class="phase-callout" id="phaseCallout">
+      <b>R:</b> แรงดันและกระแส เฟสตรงกัน (0°) — ขึ้นลงพร้อมกันเป๊ะ
+    </div>
+    <div class="civil">
+      <b>จำง่ายๆ ด้วย "CIVIL":</b> ใน C (capaCitor) กระแส <b>I</b> นำหน้าแรงดัน <b>V</b> — ส่วนที่ตัว <b>L</b> (inductor) แรงดัน <b>V</b> นำหน้ากระแส <b>I</b>
+    </div>
+  </section>
+
+  <!-- PANEL 4: reactance vs frequency -->
+  <section class="panel" id="panel4">
+    <h2>4) รีแอกแตนซ์ vs ความถี่</h2>
+    <p class="caption">ลองเพิ่มความถี่ดูสิ เกิดอะไรขึ้นกับ X_L และ X_C? (ปรับ C, L ได้ด้วย)</p>
+
+    <div class="controls">
+      <div class="ctrl">
+        <label>ความถี่ f <b id="freq4Val">50 Hz</b></label>
+        <input type="range" id="freq4" min="1" max="500" step="1" value="50">
+      </div>
+      <div class="ctrl">
+        <label>ค่าเก็บประจุ C <b id="capVal">10 µF</b></label>
+        <input type="range" id="cap4" min="1" max="100" step="1" value="10">
+      </div>
+      <div class="ctrl">
+        <label>ค่าเหนี่ยวนำ L <b id="indVal">0.10 H</b></label>
+        <input type="range" id="ind4" min="1" max="100" step="1" value="10">
+      </div>
+    </div>
+
+    <canvas id="cv4" height="200"></canvas>
+
+    <div class="readout-grid">
+      <div class="readout"><div class="label">X_C = 1/(2πfC)</div><div class="value field" id="xcVal">318.3 Ω</div></div>
+      <div class="readout"><div class="label">X_L = 2πfL</div><div class="value current" id="xlVal">31.4 Ω</div></div>
+    </div>
+    <p class="hint">ความถี่สูงขึ้น → X_C ลดลง (ตัวเก็บประจุยอมให้กระแสสลับผ่านง่ายขึ้น) แต่ X_L เพิ่มขึ้น (ตัวเหนี่ยวนำต้านกระแสสลับมากขึ้น)</p>
+  </section>
+
+  <!-- PANEL 5: phasor diagram -->
+  <section class="panel" id="panel5">
+    <h2>5) แผนภาพเฟสเซอร์ RLC อนุกรม</h2>
+    <p class="caption">ปรับ R, X_L, X_C (หรือใช้ค่าจากพาเนล 4) และกระแสอ้างอิง I แล้วดูเฟสเซอร์รวม</p>
+
+    <div class="controls">
+      <div class="ctrl">
+        <label>ความต้านทาน R <b id="rVal">30 Ω</b></label>
+        <input type="range" id="r5" min="1" max="100" step="1" value="30">
+      </div>
+      <div class="ctrl">
+        <label>กระแสอ้างอิง I <b id="iVal">1.0 A</b></label>
+        <input type="range" id="i5" min="0.1" max="5" step="0.1" value="1">
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="play" id="syncBtn">🔄 ดึงค่า X_L, X_C จากพาเนล 4</button>
+    </div>
+    <div class="controls">
+      <div class="ctrl">
+        <label>X_L (แก้เองได้) <b id="xl5Val">31.4 Ω</b></label>
+        <input type="range" id="xl5" min="0" max="200" step="1" value="31">
+      </div>
+      <div class="ctrl">
+        <label>X_C (แก้เองได้) <b id="xc5Val">318.3 Ω</b></label>
+        <input type="range" id="xc5" min="0" max="400" step="1" value="318">
+      </div>
+    </div>
+
+    <div class="btn-row" style="align-items:center">
+      <button class="toggle" id="stepToggle" style="flex:0 1 190px">🪜 โหมดค่อยๆ วาดทีละขั้น</button>
+      <button class="play" id="stepPrev" disabled>◀ ย้อน</button>
+      <button class="play" id="stepNext" disabled>ถัดไป ▶</button>
+      <button class="play" id="stepAuto" disabled>▶ เล่นเอง</button>
+      <span id="stepCount" style="color:var(--muted);font-size:.85rem"></span>
+    </div>
+    <p class="hint" id="stepText" style="display:none"></p>
+
+    <canvas id="cv5" height="320"></canvas>
+
+    <div class="readout-grid">
+      <div class="readout"><div class="label">V_R = I·R</div><div class="value force" id="vrVal">30.0 V</div></div>
+      <div class="readout"><div class="label">V_L = I·X_L</div><div class="value current" id="vlVal">31.4 V</div></div>
+      <div class="readout"><div class="label">V_C = I·X_C</div><div class="value field" id="vcVal">318.3 V</div></div>
+      <div class="readout"><div class="label">V รวม</div><div class="value ok" id="vTotVal">288.6 V</div></div>
+      <div class="readout"><div class="label">Z = √(R²+(X_L−X_C)²)</div><div class="value ok" id="zVal">288.6 Ω</div></div>
+      <div class="readout"><div class="label">มุมเฟส φ</div><div class="value ok" id="phiVal">-84.0°</div></div>
+    </div>
+    <p class="hint" id="phasorHint">X_C มากกว่า X_L → วงจรมีสมบัติเป็น "ตัวเก็บประจุนำ" กระแสนำแรงดัน (φ ติดลบ)</p>
+  </section>
+
+</main>
+
+<footer>สื่อการสอนฟิสิกส์ ม.6 — ไฟฟ้ากระแสสลับและเฟส R/L/C</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---------- utility: responsive canvas ----------
+  function fitCanvas(cv, cssHeight){
+    const dpr = window.devicePixelRatio || 1;
+    const rect = cv.getBoundingClientRect();
+    const w = Math.max(rect.width, 200);
+    const h = cssHeight;
+    cv.width = Math.round(w * dpr);
+    cv.height = Math.round(h * dpr);
+    cv.style.height = h + "px";
+    const ctx = cv.getContext("2d");
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    return {ctx, w, h};
+  }
+
+  // =========================================================
+  // PANEL 1: scrolling sine wave
+  // =========================================================
+  const cv1 = document.getElementById("cv1");
+  const amp1 = document.getElementById("amp1");
+  const freq1 = document.getElementById("freq1");
+  const amp1Val = document.getElementById("amp1Val");
+  const freq1Val = document.getElementById("freq1Val");
+  const Tval = document.getElementById("Tval");
+  const wVal = document.getElementById("wVal");
+  const rmsVal1 = document.getElementById("rmsVal1");
+  const playBtn1 = document.getElementById("playBtn1");
+
+  let playing1 = true;
+  let t1 = 0;
+
+  playBtn1.addEventListener("click", function(){
+    playing1 = !playing1;
+    playBtn1.textContent = playing1 ? "⏸ หยุด" : "▶ เล่น";
+  });
+
+  function drawSine(cv, opts){
+    const {ctx, w, h} = fitCanvas(cv, cv.__cssHeight || 220);
+    const midY = h/2;
+    const Em = opts.amp;
+    const f = opts.freq;
+    const omega = 2*Math.PI*f;
+    const timeSpan = 4; // seconds visible across width
+    const pxPerSec = w / timeSpan;
+    const scaleY = (h*0.38) / Em;
+
+    ctx.clearRect(0,0,w,h);
+
+    // grid
+    ctx.strokeStyle = "#e8eef6";
+    ctx.lineWidth = 1;
+    for(let gx=0; gx<w; gx+=40){
+      ctx.beginPath(); ctx.moveTo(gx,0); ctx.lineTo(gx,h); ctx.stroke();
+    }
+    // zero line
+    ctx.strokeStyle = "#cbd5e1";
+    ctx.beginPath(); ctx.moveTo(0,midY); ctx.lineTo(w,midY); ctx.stroke();
+
+    // rms dashed lines
+    const rms = Em/Math.SQRT2;
+    ctx.save();
+    ctx.setLineDash([6,5]);
+    ctx.strokeStyle = "#059669";
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(0, midY - rms*scaleY); ctx.lineTo(w, midY - rms*scaleY);
+    ctx.moveTo(0, midY + rms*scaleY); ctx.lineTo(w, midY + rms*scaleY);
+    ctx.stroke();
+    ctx.restore();
+    ctx.fillStyle = "#059669";
+    ctx.font = "12px Sarabun, sans-serif";
+    ctx.fillText("E_rms ≈ " + rms.toFixed(2) + " V", 6, midY - rms*scaleY - 6);
+
+    // sine curve
+    ctx.strokeStyle = "var(--field)";
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--field').trim() || "#0891b2";
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    for(let px=0; px<=w; px++){
+      const timeAtPx = (px / pxPerSec);
+      const tt = opts.t + timeAtPx;
+      const y = midY - Em*Math.sin(omega*tt)*scaleY;
+      if(px===0) ctx.moveTo(px,y); else ctx.lineTo(px,y);
+    }
+    ctx.stroke();
+
+    return {rms};
+  }
+
+  function updateReadouts1(){
+    const Em = parseFloat(amp1.value);
+    const f = parseFloat(freq1.value);
+    const T = 1/f;
+    const w = 2*Math.PI*f;
+    amp1Val.textContent = Em.toFixed(0) + " V";
+    freq1Val.textContent = f.toFixed(1) + " Hz";
+    Tval.textContent = T.toFixed(2) + " s";
+    wVal.textContent = w.toFixed(2) + " rad/s";
+    rmsVal1.textContent = (Em/Math.SQRT2).toFixed(2) + " V";
+  }
+
+  amp1.addEventListener("input", updateReadouts1);
+  freq1.addEventListener("input", updateReadouts1);
+
+  function loop1(){
+    if(playing1){ t1 += 1/60; }
+    drawSine(cv1, {amp: parseFloat(amp1.value), freq: parseFloat(freq1.value), t: t1});
+    requestAnimationFrame(loop1);
+  }
+
+  // =========================================================
+  // PANEL 2: home voltage rms demo
+  // =========================================================
+  const homeBtn = document.getElementById("homeBtn");
+  const homeResult = document.getElementById("homeResult");
+  const homeVm = document.getElementById("homeVm");
+  homeBtn.addEventListener("click", function(){
+    const vm = 220*Math.SQRT2;
+    homeVm.textContent = vm.toFixed(1) + " V";
+    homeResult.style.display = homeResult.style.display === "grid" ? "none" : "grid";
+  });
+
+  // =========================================================
+  // PANEL 3: phase R/L/C
+  // =========================================================
+  const cv3 = document.getElementById("cv3");
+  const toggleBtns = document.querySelectorAll('#panel3 .toggle');
+  const phaseCallout = document.getElementById("phaseCallout");
+  let comp3 = "R";
+  let t3 = 0;
+
+  const phaseText = {
+    R: "<b>R:</b> แรงดันและกระแส เฟสตรงกัน (0°) — ขึ้นลงพร้อมกันเป๊ะ",
+    C: "<b>C:</b> ความต่างศักย์ (v) ตามหลังกระแส (i) อยู่ 90° — พูดอีกแบบคือ <b>กระแสนำแรงดัน (I นำ V)</b>",
+    L: "<b>L:</b> ความต่างศักย์ (v) นำหน้ากระแส (i) อยู่ 90° — พูดอีกแบบคือ <b>แรงดันนำกระแส (V นำ I)</b>"
+  };
+
+  // phase shift applied to v(t) relative to i(t): v = sin(wt + shift)
+  // R: shift = 0
+  // C: v lags i by 90 => shift = -90deg
+  // L: v leads i by 90 => shift = +90deg
+  const phaseShift = { R: 0, C: -Math.PI/2, L: Math.PI/2 };
+
+  toggleBtns.forEach(function(btn){
+    btn.addEventListener("click", function(){
+      toggleBtns.forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+      comp3 = btn.getAttribute("data-comp");
+      phaseCallout.innerHTML = phaseText[comp3];
+    });
+  });
+
+  function drawPhaseWave(cv, t, shift){
+    const {ctx, w, h} = fitCanvas(cv, cv.__cssHeight || 220);
+    const midY = h/2;
+    const amp = h*0.32;
+    const f = 0.6;
+    const omega = 2*Math.PI*f;
+    const timeSpan = 4;
+    const pxPerSec = w/timeSpan;
+
+    ctx.clearRect(0,0,w,h);
+    ctx.strokeStyle = "#e8eef6";
+    for(let gx=0; gx<w; gx+=40){ ctx.beginPath(); ctx.moveTo(gx,0); ctx.lineTo(gx,h); ctx.stroke(); }
+    ctx.strokeStyle = "#cbd5e1";
+    ctx.beginPath(); ctx.moveTo(0,midY); ctx.lineTo(w,midY); ctx.stroke();
+
+    // current i(t) - pink, reference (shift 0)
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--current').trim() || "#db2777";
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    for(let px=0; px<=w; px++){
+      const tt = t + px/pxPerSec;
+      const y = midY - amp*Math.sin(omega*tt);
+      if(px===0) ctx.moveTo(px,y); else ctx.lineTo(px,y);
+    }
+    ctx.stroke();
+
+    // voltage v(t) - cyan, shifted
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--field').trim() || "#0891b2";
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    for(let px=0; px<=w; px++){
+      const tt = t + px/pxPerSec;
+      const y = midY - amp*Math.sin(omega*tt + shift);
+      if(px===0) ctx.moveTo(px,y); else ctx.lineTo(px,y);
+    }
+    ctx.stroke();
+  }
+
+  function loop3(){
+    t3 += 1/60;
+    drawPhaseWave(cv3, t3, phaseShift[comp3]);
+    requestAnimationFrame(loop3);
+  }
+
+  // =========================================================
+  // PANEL 4: reactance vs frequency
+  // =========================================================
+  const cv4 = document.getElementById("cv4");
+  const freq4 = document.getElementById("freq4");
+  const cap4 = document.getElementById("cap4");
+  const ind4 = document.getElementById("ind4");
+  const freq4Val = document.getElementById("freq4Val");
+  const capVal = document.getElementById("capVal");
+  const indVal = document.getElementById("indVal");
+  const xcVal = document.getElementById("xcVal");
+  const xlVal = document.getElementById("xlVal");
+
+  function getC(){ return parseFloat(cap4.value) * 1e-6; } // µF -> F
+  function getL(){ return parseFloat(ind4.value) * 1e-2; } // slider 1-100 -> 0.01 - 1.00 H
+
+  function computeReactance(f, C, L){
+    const xc = 1/(2*Math.PI*f*C);
+    const xl = 2*Math.PI*f*L;
+    return {xc, xl};
+  }
+
+  function drawReactancePlot(){
+    const {ctx, w, h} = fitCanvas(cv4, cv4.__cssHeight || 200);
+    ctx.clearRect(0,0,w,h);
+
+    const C = getC();
+    const L = getL();
+    const fMax = 500;
+    const pad = 34;
+
+    // sample curve to find y-max for scaling
+    let maxVal = 0;
+    const N = 200;
+    const pts = [];
+    for(let k=0;k<=N;k++){
+      const f = 1 + (fMax-1)*k/N;
+      const {xc, xl} = computeReactance(f, C, L);
+      const cx = Math.min(xc, 2000); // clip extreme values for scale sanity
+      pts.push({f, xc: cx, xl});
+      maxVal = Math.max(maxVal, cx, xl);
+    }
+    maxVal = maxVal*1.05 || 1;
+
+    // axes
+    ctx.strokeStyle = "#cbd5e1";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(pad, 6); ctx.lineTo(pad, h-pad); ctx.lineTo(w-6, h-pad);
+    ctx.stroke();
+    ctx.fillStyle = "#64748b";
+    ctx.font = "11px Sarabun, sans-serif";
+    ctx.fillText("f (Hz)", w-40, h-10);
+    ctx.save();
+    ctx.translate(12, 20);
+    ctx.fillText("Ω", 0, 0);
+    ctx.restore();
+
+    function xPix(f){ return pad + (w-pad-10) * (f/fMax); }
+    function yPix(v){ return (h-pad) - (h-pad-10) * (v/maxVal); }
+
+    // X_C curve (cyan)
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--field').trim() || "#0891b2";
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    pts.forEach((p,i)=>{
+      const x = xPix(p.f), y = yPix(p.xc);
+      if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    });
+    ctx.stroke();
+
+    // X_L curve (pink)
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--current').trim() || "#db2777";
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    pts.forEach((p,i)=>{
+      const x = xPix(p.f), y = yPix(p.xl);
+      if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    });
+    ctx.stroke();
+
+    // current f marker
+    const f0 = parseFloat(freq4.value);
+    const {xc: xc0, xl: xl0} = computeReactance(f0, C, L);
+    const mx = xPix(f0);
+    ctx.strokeStyle = "#64748b";
+    ctx.setLineDash([4,4]);
+    ctx.beginPath(); ctx.moveTo(mx, 6); ctx.lineTo(mx, h-pad); ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--field').trim() || "#0891b2";
+    ctx.beginPath(); ctx.arc(mx, yPix(Math.min(xc0,2000)), 4, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--current').trim() || "#db2777";
+    ctx.beginPath(); ctx.arc(mx, yPix(xl0), 4, 0, Math.PI*2); ctx.fill();
+
+    // legend
+    ctx.font = "12px Sarabun, sans-serif";
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--field').trim() || "#0891b2";
+    ctx.fillText("X_C", w-70, 20);
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--current').trim() || "#db2777";
+    ctx.fillText("X_L", w-70, 36);
+  }
+
+  function updateReactanceReadouts(){
+    const f = parseFloat(freq4.value);
+    const C = getC();
+    const L = getL();
+    const {xc, xl} = computeReactance(f, C, L);
+    freq4Val.textContent = f.toFixed(0) + " Hz";
+    capVal.textContent = parseFloat(cap4.value).toFixed(0) + " µF";
+    indVal.textContent = L.toFixed(2) + " H";
+    xcVal.textContent = xc.toFixed(1) + " Ω";
+    xlVal.textContent = xl.toFixed(1) + " Ω";
+    drawReactancePlot();
+  }
+
+  freq4.addEventListener("input", updateReactanceReadouts);
+  cap4.addEventListener("input", updateReactanceReadouts);
+  ind4.addEventListener("input", updateReactanceReadouts);
+
+  // =========================================================
+  // PANEL 5: phasor diagram
+  // =========================================================
+  const cv5 = document.getElementById("cv5");
+  const r5 = document.getElementById("r5");
+  const i5 = document.getElementById("i5");
+  const xl5 = document.getElementById("xl5");
+  const xc5 = document.getElementById("xc5");
+  const rVal = document.getElementById("rVal");
+  const iVal = document.getElementById("iVal");
+  const xl5Val = document.getElementById("xl5Val");
+  const xc5Val = document.getElementById("xc5Val");
+  const vrVal = document.getElementById("vrVal");
+  const vlVal = document.getElementById("vlVal");
+  const vcVal = document.getElementById("vcVal");
+  const vTotVal = document.getElementById("vTotVal");
+  const zVal = document.getElementById("zVal");
+  const phiVal = document.getElementById("phiVal");
+  const phasorHint = document.getElementById("phasorHint");
+  const syncBtn = document.getElementById("syncBtn");
+
+  syncBtn.addEventListener("click", function(){
+    const f = parseFloat(freq4.value);
+    const {xc, xl} = computeReactance(f, getC(), getL());
+    xl5.value = Math.min(200, Math.round(xl));
+    xc5.value = Math.min(400, Math.round(xc));
+    updatePhasor();
+  });
+
+  function drawPhasor(R, XL, XC, I){
+    // จอกว้าง = วาง 2 แผงซ้าย-ขวา · จอแคบ = เรียงบน-ล่าง
+    const wide = (cv5.getBoundingClientRect().width || 600) > 560;
+    const {ctx, w, h} = fitCanvas(cv5, wide ? 340 : 520);
+    ctx.clearRect(0,0,w,h);
+
+    const VR = I*R, VL = I*XL, VC = I*XC;
+    const Vnet = VL - VC;                       // V_L − V_C (หักล้างกันก่อน)
+    const Vtot = Math.sqrt(VR*VR + Vnet*Vnet);
+    const phi  = Math.atan2(Vnet, VR);
+
+    const css = getComputedStyle(document.documentElement);
+    const cR   = css.getPropertyValue('--force').trim()   || "#f59e0b";
+    const cL   = css.getPropertyValue('--current').trim() || "#db2777";
+    const cC   = css.getPropertyValue('--field').trim()   || "#0891b2";
+    const cV   = css.getPropertyValue('--ok').trim()      || "#059669";
+    const cNet = "#7c3aed", cMute = "#64748b", cGrid = "#cbd5e1";
+
+    function arrow(x0,y0,x1,y1,color,wdt){
+      if(Math.hypot(x1-x0,y1-y0) < 2) return;
+      ctx.strokeStyle=color; ctx.fillStyle=color; ctx.lineWidth=wdt||3;
+      ctx.beginPath(); ctx.moveTo(x0,y0); ctx.lineTo(x1,y1); ctx.stroke();
+      const a=Math.atan2(y1-y0,x1-x0), s=9;
+      ctx.beginPath(); ctx.moveTo(x1,y1);
+      ctx.lineTo(x1-s*Math.cos(a-0.4), y1-s*Math.sin(a-0.4));
+      ctx.lineTo(x1-s*Math.cos(a+0.4), y1-s*Math.sin(a+0.4));
+      ctx.closePath(); ctx.fill();
+    }
+    function tag(x,y,txt,color,align){
+      ctx.font="600 12px Sarabun, sans-serif"; ctx.textAlign=align||"left";
+      ctx.fillStyle=color; ctx.fillText(txt,x,y); ctx.textAlign="left";
+    }
+    function title(x,y,txt){
+      ctx.font="700 12.5px Sarabun, sans-serif"; ctx.textAlign="left";
+      ctx.fillStyle="#312e81"; ctx.fillText(txt,x,y);
+    }
+    function axesAt(ox,oy,left,right,up,down){
+      ctx.strokeStyle=cGrid; ctx.lineWidth=1; ctx.setLineDash([4,4]);
+      ctx.beginPath(); ctx.moveTo(ox-left,oy); ctx.lineTo(ox+right,oy); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(ox,oy-up);   ctx.lineTo(ox,oy+down);  ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    const A  = wide ? {x:0,        y:0,     bw:w*0.47, bh:h}
+                    : {x:0,        y:0,     bw:w,      bh:h*0.5};
+    const Bp = wide ? {x:w*0.53,   y:0,     bw:w*0.47, bh:h}
+                    : {x:0,        y:h*0.5, bw:w,      bh:h*0.5};
+    ctx.strokeStyle=cGrid; ctx.lineWidth=1; ctx.beginPath();
+    if(wide){ ctx.moveTo(w*0.5,14); ctx.lineTo(w*0.5,h-14); }
+    else    { ctx.moveTo(14,h*0.5); ctx.lineTo(w-14,h*0.5); }
+    ctx.stroke();
+
+    /* ---------- ① เฟสเซอร์แต่ละตัว (ออกจากจุดกำเนิดเดียวกัน) ---------- */
+    title(A.x+12, A.y+18, "① เฟสเซอร์แต่ละตัว");
+    tag(A.x+12, A.y+33, "V_L ชี้ขึ้น · V_C ชี้ลง · V_R ชี้ตามกระแส", cMute);
+    {
+      const padT=48, padB=20, padL=48, padR=56;
+      const availW=Math.max(40, A.bw-padL-padR), availH=Math.max(40, A.bh-padT-padB);
+      const s=Math.min(availW/Math.max(VR,1), availH/Math.max(VL+VC,1));
+      const ox=A.x+padL, oy=A.y+padT+VL*s;
+      axesAt(ox,oy,24,availW+18,VL*s+12,VC*s+12);
+      arrow(ox,oy,ox+VR*s,oy,cR,3);   tag(ox+VR*s+7, oy+4,          "V_R", cR);
+      arrow(ox,oy,ox,oy-VL*s,cL,3);   tag(ox-7,      oy-VL*s-5,     "V_L", cL, "right");
+      arrow(ox,oy,ox,oy+VC*s,cC,3);   tag(ox-7,      oy+VC*s+11,    "V_C", cC, "right");
+      tag(ox-7, oy+14, "O", cMute, "right");
+    }
+
+    /* ---------- ② รวมเป็นสามเหลี่ยมมุมฉาก ---------- */
+    title(Bp.x+12, Bp.y+18, "② รวมเป็นสามเหลี่ยมมุมฉาก");
+    tag(Bp.x+12, Bp.y+33, "V_L กับ V_C หักล้างกันก่อน → เหลือ V_L−V_C", cMute);
+    {
+      const padT=48, padB=24, padL=48, padR=92;
+      const availW=Math.max(40, Bp.bw-padL-padR), availH=Math.max(40, Bp.bh-padT-padB);
+      const s=Math.min(availW/Math.max(VR,1), availH/Math.max(Math.abs(Vnet),1));
+      const up=Math.max(0,Vnet)*s, down=Math.max(0,-Vnet)*s;
+      const ox=Bp.x+padL, oy=Bp.y+padT+up;
+      axesAt(ox,oy,24,availW+18,up+12,down+12);
+      const tx=ox+VR*s, ty=oy-Vnet*s;
+      // เส้นประช่วยมอง (ประกอบเป็นสี่เหลี่ยม)
+      ctx.strokeStyle="#94a3b8"; ctx.lineWidth=1; ctx.setLineDash([4,4]);
+      ctx.beginPath(); ctx.moveTo(tx,oy); ctx.lineTo(tx,ty); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(ox,ty); ctx.lineTo(tx,ty); ctx.stroke();
+      ctx.setLineDash([]);
+      arrow(ox,oy,tx,oy,cR,3);
+      tag(ox+VR*s/2, oy+17, "V_R", cR, "center");
+      if(Math.abs(Vnet) > 1e-6){
+        arrow(ox,oy,ox,ty,cNet,3);
+        tag(ox-7, ty+(Vnet>=0?-6:14), "V_L−V_C", cNet, "right");
+      }
+      arrow(ox,oy,tx,ty,cV,4);
+      tag(tx+9, ty+(Vnet>=0?-4:15), "V = "+Vtot.toFixed(0)+" V", cV);
+      // ส่วนโค้งมุม φ (สั้น ๆ ระหว่างแกน V_R กับ V) — แก้บั๊กเดิมที่วาดอ้อมเกือบรอบวง
+      if(Math.abs(phi) > 0.02){
+        ctx.strokeStyle=cV; ctx.lineWidth=2;
+        ctx.beginPath(); ctx.arc(ox,oy,34,0,-phi,phi>0); ctx.stroke();
+        const mid=-phi/2;
+        tag(ox+50*Math.cos(mid), oy+50*Math.sin(mid)+4,
+            "φ="+(phi*180/Math.PI).toFixed(1)+"°", cV);
+      } else {
+        tag(ox+40, oy-8, "φ = 0° (เรโซแนนซ์)", cV);
+      }
+    }
+
+    return {VR, VL, VC, Vtot, phi};
+  }
+
+  /* ================= โหมดค่อยๆ วาดทีละขั้น ================= */
+  const STEP_TEXT = [
+    "<b>เริ่มที่แกนอ้างอิง</b> — RLC <b>อนุกรม</b> กระแส I ผ่านทุกตัว<b>เท่ากัน</b> จึงใช้ <b>I เป็นแกนอ้างอิง</b> (ชี้ไปทางขวา) แล้วเทียบเฟสของแรงดันแต่ละตัวกับมัน",
+    "① <b>V_R = I·R</b> — ตัวต้านทาน: แรงดัน<b>เฟสตรงกับกระแส</b> (0°) → ลูกศรทับแกน I ชี้ไปทางขวา",
+    "② <b>V_L = I·X_L</b> — ตัวเหนี่ยวนำ: แรงดัน<b>นำ</b>กระแส 90° → ชี้<b>ขึ้น</b>",
+    "③ <b>V_C = I·X_C</b> — ตัวเก็บประจุ: แรงดัน<b>ตามหลัง</b>กระแส 90° → ชี้<b>ลง</b> (ตรงข้าม V_L พอดี)",
+    "④ V_L กับ V_C อยู่แนวตั้งเหมือนกันแต่<b>ทิศตรงข้าม</b> → <b>หักล้างกันก่อน</b> เหลือแค่ส่วนต่าง <b>V_L − V_C</b> (ลูกศรม่วง)",
+    "⑤ เหลือ 2 ตัวตั้งฉากกัน: V_R (นอน) กับ V_L−V_C (ตั้ง) → ประกอบเป็น<b>สามเหลี่ยมมุมฉาก</b> V รวมคือ<b>ด้านตรงข้ามมุมฉาก</b> · <code>V = √(V_R² + (V_L−V_C)²)</code>",
+    "⑥ <b>มุมเฟส φ</b> = มุมระหว่าง V รวม กับ V_R (แกนกระแส) · <code>tan φ = (V_L−V_C)/V_R</code> · φ <b>บวก</b> = แรงดันนำกระแส (เหนี่ยวนำนำ) · φ <b>ลบ</b> = กระแสนำแรงดัน (เก็บประจุนำ)"
+  ];
+  const STEP_MAX = STEP_TEXT.length - 1;
+
+  function drawPhasorSteps(R, XL, XC, I, step){
+    const {ctx, w, h} = fitCanvas(cv5, 370);
+    ctx.clearRect(0,0,w,h);
+    const VR=I*R, VL=I*XL, VC=I*XC, Vnet=VL-VC;
+    const Vtot=Math.sqrt(VR*VR+Vnet*Vnet), phi=Math.atan2(Vnet,VR);
+    const css=getComputedStyle(document.documentElement);
+    const cR=css.getPropertyValue('--force').trim()||"#f59e0b";
+    const cL=css.getPropertyValue('--current').trim()||"#db2777";
+    const cC=css.getPropertyValue('--field').trim()||"#0891b2";
+    const cV=css.getPropertyValue('--ok').trim()||"#059669";
+    const cNet="#7c3aed", cMute="#64748b", cGrid="#cbd5e1";
+
+    function arrow(x0,y0,x1,y1,color,wdt,dash,alpha){
+      if(Math.hypot(x1-x0,y1-y0)<2) return;
+      ctx.save(); if(alpha!=null) ctx.globalAlpha=alpha;
+      ctx.strokeStyle=color; ctx.fillStyle=color; ctx.lineWidth=wdt||3;
+      if(dash) ctx.setLineDash(dash);
+      ctx.beginPath(); ctx.moveTo(x0,y0); ctx.lineTo(x1,y1); ctx.stroke(); ctx.setLineDash([]);
+      const a=Math.atan2(y1-y0,x1-x0), s=10;
+      ctx.beginPath(); ctx.moveTo(x1,y1);
+      ctx.lineTo(x1-s*Math.cos(a-0.4), y1-s*Math.sin(a-0.4));
+      ctx.lineTo(x1-s*Math.cos(a+0.4), y1-s*Math.sin(a+0.4));
+      ctx.closePath(); ctx.fill(); ctx.restore();
+    }
+    function tag(x,y,txt,color,align,size){
+      ctx.font="700 "+(size||13)+"px Sarabun, sans-serif";
+      ctx.textAlign=align||"left"; ctx.fillStyle=color; ctx.fillText(txt,x,y); ctx.textAlign="left";
+    }
+
+    const padT=28, padB=28, padL=74, padR=Math.min(170, w*0.28);
+    const availW=Math.max(40,w-padL-padR), availH=Math.max(40,h-padT-padB);
+    const s=Math.min(availW/Math.max(VR,1), availH/Math.max(VL+VC,1));
+    const ox=padL, oy=padT+VL*s;
+
+    // แกน
+    ctx.strokeStyle=cGrid; ctx.lineWidth=1; ctx.setLineDash([4,4]);
+    ctx.beginPath(); ctx.moveTo(ox-44,oy); ctx.lineTo(w-14,oy); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(ox,padT-14); ctx.lineTo(ox,h-padB+14); ctx.stroke();
+    ctx.setLineDash([]);
+    tag(ox-10, oy+17, "O", cMute, "right", 12);
+
+    // แกนอ้างอิงกระแส I (มีทุกขั้น)
+    const iLen=Math.min(availW, 92);
+    arrow(ox,oy, ox+iLen, oy, cMute, 2, [6,4], .85);
+    tag(ox+iLen+7, oy-9, "I (แกนอ้างอิง)", cMute, "left", 12);
+
+    const faded = step>=4;
+    if(step>=1){ arrow(ox,oy,ox+VR*s,oy,cR,4); tag(ox+VR*s+9, oy+18, "V_R", cR); }
+    if(step>=2){ arrow(ox,oy,ox,oy-VL*s,cL,4, faded?[5,4]:null, faded?.32:1);
+                 tag(ox-10, oy-VL*s-7, "V_L", cL, "right"); }
+    if(step>=3){ arrow(ox,oy,ox,oy+VC*s,cC,4, faded?[5,4]:null, faded?.32:1);
+                 tag(ox-10, oy+VC*s+15, "V_C", cC, "right"); }
+    if(step>=4 && Math.abs(Vnet)>1e-6){
+      arrow(ox,oy,ox,oy-Vnet*s,cNet,5);
+      tag(ox+12, oy-Vnet*s+(Vnet>=0?-9:17), "V_L−V_C = "+Vnet.toFixed(0)+" V", cNet, "left", 12);
+    }
+    const tx=ox+VR*s, ty=oy-Vnet*s;
+    if(step>=5){
+      ctx.strokeStyle="#94a3b8"; ctx.lineWidth=1; ctx.setLineDash([4,4]);
+      ctx.beginPath(); ctx.moveTo(tx,oy); ctx.lineTo(tx,ty); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(ox,ty); ctx.lineTo(tx,ty); ctx.stroke();
+      ctx.setLineDash([]);
+      arrow(ox,oy,tx,ty,cV,5);
+      tag(tx+11, ty+(Vnet>=0?-7:17), "V = "+Vtot.toFixed(0)+" V", cV);
+    }
+    if(step>=6){
+      if(Math.abs(phi)>0.02){
+        ctx.strokeStyle=cV; ctx.lineWidth=2.5;
+        ctx.beginPath(); ctx.arc(ox,oy,42,0,-phi,phi>0); ctx.stroke();
+        const mid=-phi/2;
+        tag(ox+58*Math.cos(mid), oy+58*Math.sin(mid)+5, "φ="+(phi*180/Math.PI).toFixed(1)+"°", cV);
+      } else tag(ox+48, oy-12, "φ = 0° (เรโซแนนซ์)", cV);
+    }
+    return {VR,VL,VC,Vtot,phi};
+  }
+
+  let stepMode=false, stepIdx=0, stepTimer=null;
+  const stepToggle=document.getElementById("stepToggle");
+  const stepPrev=document.getElementById("stepPrev");
+  const stepNext=document.getElementById("stepNext");
+  const stepAuto=document.getElementById("stepAuto");
+  const stepCount=document.getElementById("stepCount");
+  const stepText=document.getElementById("stepText");
+
+  function stopAuto(){ if(stepTimer){ clearInterval(stepTimer); stepTimer=null; } stepAuto.textContent="▶ เล่นเอง"; }
+  function syncStepUI(){
+    stepToggle.classList.toggle("active", stepMode);
+    stepAuto.disabled = !stepMode;
+    stepText.style.display = stepMode ? "block" : "none";
+    if(stepMode){
+      stepText.innerHTML = STEP_TEXT[stepIdx];
+      stepCount.textContent = "ขั้นที่ " + (stepIdx+1) + " / " + (STEP_MAX+1);
+      stepPrev.disabled = stepIdx<=0;
+      stepNext.disabled = stepIdx>=STEP_MAX;
+    } else {
+      stepCount.textContent = "";
+      stepPrev.disabled = true; stepNext.disabled = true;
+    }
+  }
+  stepToggle.addEventListener("click", ()=>{ stepMode=!stepMode; stepIdx=0; stopAuto(); syncStepUI(); updatePhasor(); });
+  stepPrev.addEventListener("click", ()=>{ stopAuto(); stepIdx=Math.max(0,stepIdx-1); syncStepUI(); updatePhasor(); });
+  stepNext.addEventListener("click", ()=>{ stopAuto(); stepIdx=Math.min(STEP_MAX,stepIdx+1); syncStepUI(); updatePhasor(); });
+  stepAuto.addEventListener("click", ()=>{
+    if(stepTimer){ stopAuto(); return; }
+    stepIdx=0; syncStepUI(); updatePhasor(); stepAuto.textContent="⏸ หยุด";
+    stepTimer=setInterval(()=>{
+      if(stepIdx>=STEP_MAX){ stopAuto(); syncStepUI(); return; }
+      stepIdx++; syncStepUI(); updatePhasor();
+    }, 1800);
+  });
+
+  function updatePhasor(){
+    const R = parseFloat(r5.value);
+    const I = parseFloat(i5.value);
+    const XL = parseFloat(xl5.value);
+    const XC = parseFloat(xc5.value);
+
+    rVal.textContent = R.toFixed(0) + " Ω";
+    iVal.textContent = I.toFixed(1) + " A";
+    xl5Val.textContent = XL.toFixed(0) + " Ω";
+    xc5Val.textContent = XC.toFixed(0) + " Ω";
+
+    const {VR, VL, VC, Vtot, phi} = stepMode
+      ? drawPhasorSteps(R, XL, XC, I, stepIdx)
+      : drawPhasor(R, XL, XC, I);
+    const Z = Math.sqrt(R*R + (XL-XC)*(XL-XC));
+    const phiDeg = phi * 180/Math.PI;
+
+    vrVal.textContent = VR.toFixed(1) + " V";
+    vlVal.textContent = VL.toFixed(1) + " V";
+    vcVal.textContent = VC.toFixed(1) + " V";
+    vTotVal.textContent = Vtot.toFixed(1) + " V";
+    zVal.textContent = Z.toFixed(1) + " Ω";
+    phiVal.textContent = phiDeg.toFixed(1) + "°";
+
+    if(Math.abs(XL-XC) < 1e-6){
+      phasorHint.textContent = "X_L = X_C พอดี → เกิดเรโซแนนซ์! วงจรมีสมบัติเป็นตัวต้านทานล้วนๆ (φ = 0°)";
+    } else if(XC > XL){
+      phasorHint.textContent = "X_C มากกว่า X_L → วงจรมีสมบัติเป็น \"ตัวเก็บประจุนำ\" กระแสนำแรงดัน (φ ติดลบ)";
+    } else {
+      phasorHint.textContent = "X_L มากกว่า X_C → วงจรมีสมบัติเป็น \"ตัวเหนี่ยวนำนำ\" แรงดันนำกระแส (φ เป็นบวก)";
+    }
+  }
+
+  [r5,i5,xl5,xc5].forEach(el=>el.addEventListener("input", updatePhasor));
+
+  // =========================================================
+  // init + resize handling
+  // =========================================================
+  function initSizes(){
+    cv1.__cssHeight = 220;
+    cv3.__cssHeight = 220;
+    cv4.__cssHeight = 200;
+    cv5.__cssHeight = 320;
+  }
+  initSizes();
+  updateReadouts1();
+  updateReactanceReadouts();
+  updatePhasor();
+  phaseCallout.innerHTML = phaseText[comp3];
+
+  requestAnimationFrame(loop1);
+  requestAnimationFrame(loop3);
+
+  let resizeTimer;
+  window.addEventListener("resize", function(){
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function(){
+      drawReactancePlot();
+      updatePhasor();
+    }, 120);
+  });
+
+})();
+</script>
+<!--KIT-UI v2.4 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<script>
+/* =============================================================================
+   _kit/ui-controls.js  —  KIT UI  v1.0
+   แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
+     🌙/☀️  โหมดมืด / สว่าง   (จำค่าไว้ใน localStorage)
+     A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
+     ✏️  ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
+     🧮  เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
+
+   ── วิธีใช้ ────────────────────────────────────────────────────────────────
+   ห้ามแก้โค้ดนี้ในไฟล์ widget!  แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
+       pwsh -File _kit/apply-ui.ps1
+   สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
+   (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
+
+   !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
+      เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
+
+   ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
+   ใส่แอตทริบิวต์ที่ tag body:  data-tools="pen,calc"  = บังคับเปิด
+                              data-tools="none"      = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
+   ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
+              หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
+   ============================================================================= */
+(function(){
+if(window.__KITUI__) return; window.__KITUI__='2.4';
+
+/* ---------- helper ---------- */
+const D=document, R=D.documentElement;
+const get=k=>{try{return localStorage.getItem('kitui-'+k)}catch(e){return null}};
+const set=(k,v)=>{try{localStorage.setItem('kitui-'+k,v)}catch(e){}};
+const el=(t,c,h)=>{const e=D.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
+
+/* =============================================================================
+   1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
+   ============================================================================= */
+const CSS=`
+/* ===== DARK TOKENS (คู่กับ _kit/design-tokens.css) ===== */
+:root[data-theme="dark"]{
+  --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
+  --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
+  --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
+  --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
+  --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
+}
+:root[data-theme="dark"] body{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f172a}
+:root[data-theme="dark"] body[data-subject="physics"]{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f1220}
+:root[data-theme="dark"] body[data-subject="bio"]{--accent:#4ade80;--accent-head:#bbf7d0;--accent-ink:#86efac;--accent-soft:#0f2a1a;--accent-bd:#256b41;--accent-chip:#14532d;--accent-ghost:#15803d;--bg:#0d1912}
+:root[data-theme="dark"] body[data-subject="chem"]{--accent:#fb923c;--accent-head:#fed7aa;--accent-ink:#fdba74;--accent-soft:#2b1a0c;--accent-bd:#8a3d12;--accent-chip:#6d2c10;--accent-ghost:#c2410c;--bg:#1a130c}
+:root[data-theme="dark"] body[data-subject="christ"]{--accent:#a78bfa;--accent-head:#ddd6fe;--accent-ink:#c4b5fd;--accent-soft:#241a3d;--accent-bd:#5b21b6;--accent-chip:#4c1d95;--accent-ghost:#6d28d9;--bg:#16121f}
+:root[data-theme="dark"] body[data-subject="islam"]{--accent:#2dd4bf;--accent-head:#99f6e4;--accent-ink:#5eead4;--accent-soft:#0d2b28;--accent-bd:#12615a;--accent-chip:#134e4a;--accent-ghost:#0f766e;--bg:#0c1917}
+:root[data-theme="dark"] body[data-subject="history"]{--accent:#fbbf24;--accent-head:#fde68a;--accent-ink:#fcd34d;--accent-soft:#2a1f0a;--accent-bd:#8a4b0c;--accent-chip:#6d3a0a;--accent-ghost:#b45309;--bg:#191509}
+:root[data-theme="dark"] body[data-subject="math"]{--accent:#38bdf8;--accent-head:#bae6fd;--accent-ink:#7dd3fc;--accent-soft:#0c2434;--accent-bd:#0b5a80;--accent-chip:#0c4a6e;--accent-ghost:#0369a1;--bg:#0b1620}
+:root[data-theme="dark"] body[data-subject="eng"]{--accent:#f472b6;--accent-head:#fbcfe8;--accent-ink:#f9a8d4;--accent-soft:#2e1122;--accent-bd:#8d1748;--accent-chip:#731839;--accent-ghost:#be185d;--bg:#1c0f16}
+:root[data-theme="dark"] body[data-subject="thai"]{--accent:#f87171;--accent-head:#fecaca;--accent-ink:#fca5a5;--accent-soft:#2d1414;--accent-bd:#8d2020;--accent-chip:#7f1d1d;--accent-ghost:#b91c1c;--bg:#1a0f0f}
+:root[data-theme="dark"] img,:root[data-theme="dark"] .svg-box{filter:brightness(.92)}
+/* ช่องกรอก/ดรอปดาวน์ที่ widget เก่ากำหนดพื้นขาวตายตัวไว้ */
+:root[data-theme="dark"] select,:root[data-theme="dark"] textarea,
+:root[data-theme="dark"] input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=color])
+{background-color:var(--soft);color:var(--ink);border-color:var(--line)}
+
+/* ===== แถบเครื่องมือลอย ===== */
+#kitui-bar{position:fixed;right:10px;bottom:10px;z-index:99990;display:flex;gap:6px;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
+#kitui-bar button{border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;
+  font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
+  align-items:center;justify-content:center;font-weight:700}
+#kitui-bar button:hover{background:var(--soft)}
+#kitui-bar button:active{transform:scale(.93)}
+#kitui-bar button.on{background:var(--accent);color:#fff}
+#kitui-bar .kitui-sep{width:1px;height:22px;background:var(--line);flex:0 0 1px}
+#kitui-bar .kitui-fs{font-size:11px;color:var(--muted);min-width:34px;text-align:center;font-weight:700}
+#kitui-bar.hidden > *:not(#kitui-grip){display:none}
+#kitui-grip{font-size:17px}
+
+/* ===== แผงลอย (ที่ทด / เครื่องคิดเลข) ===== */
+.kitui-sheet{position:fixed;left:0;right:0;bottom:0;z-index:99991;background:var(--card);
+  border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
+  display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
+  height:52vh;max-height:92vh;min-height:180px}
+.kitui-sheet.open{display:flex}
+.kitui-sheet.full{height:100vh;border-radius:0}
+.kitui-head{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--line);
+  flex-wrap:wrap;touch-action:none;cursor:ns-resize}
+.kitui-head b{font-size:.9rem;color:var(--accent-ink);margin-right:2px;white-space:nowrap}
+.kitui-head button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;
+  padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
+.kitui-head button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.kitui-head .kitui-spacer{flex:1}
+.kitui-sw{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;min-height:0}
+.kitui-sw.on{border-color:var(--ink);transform:scale(1.12)}
+.kitui-padwrap{flex:1;position:relative;overflow:hidden;background:var(--soft)}
+.kitui-padwrap canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+:root[data-theme="dark"] .kitui-padwrap{background:#0c1220}
+
+/* ===== เครื่องคิดเลข ===== */
+#kitui-calc{height:auto;max-height:90vh}
+.kitui-disp{padding:8px 12px;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);
+  border-bottom:1px solid var(--line)}
+.kitui-disp .ex{font-size:.95rem;color:var(--muted);min-height:1.3em;word-break:break-all}
+.kitui-disp .rs{font-size:1.6rem;font-weight:700;color:var(--accent-ink);word-break:break-all}
+.kitui-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:7px}
+.kitui-keys button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:9px;
+  font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
+.kitui-keys button:active{transform:scale(.95)}
+.kitui-keys button.fn{font-size:.8rem;color:var(--accent-ink)}
+.kitui-keys button.op{background:var(--accent-soft);color:var(--accent-ink)}
+.kitui-keys button.eq{background:var(--accent);color:#fff;grid-row:span 2}
+.kitui-keys button.del{background:var(--hot-bg);color:var(--hot-ink)}
+.kitui-keys button.w3{grid-column:span 3}
+@media(max-width:420px){.kitui-keys button{font-size:.88rem;min-height:40px}.kitui-keys button.fn{font-size:.72rem}}
+@media(min-width:760px){
+  .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
+  .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
+  #kitui-pad{width:560px}
+}
+@media print{#kitui-bar,.kitui-sheet{display:none!important}}
+`;
+const st=el('style'); st.id='kitui-style'; st.textContent=CSS; D.head.appendChild(st);
+
+/* -----------------------------------------------------------------------------
+   1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
+   widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
+   พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
+   แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
+   เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
+----------------------------------------------------------------------------- */
+/* สีพาสเทลสว่าง -> สีเข้มที่ยังคง "เฉดเดิม" ไว้ (เขียว=ถูก / แดง=ผิด ต้องยังแยกออก)
+   ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
+function darken(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
+  const l0=(mx+mn)/2;
+  const s0 = d===0 ? 0 : d/(1-Math.abs(2*l0-1));
+  const s = d===0 ? 0 : Math.min(.5, Math.max(.3, s0));
+  const l = d===0 ? .13 : .17;                       /* เทา/ขาวให้เข้มกว่าสีนิดหน่อย */
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+function darkFix(){
+  const out=[], seen=new Set();
+  const take=r=>{
+    if(!r.style || !r.selectorText) return;
+    if(r.selectorText.indexOf('kitui')>-1) return;               /* ของเราเองใช้ token อยู่แล้ว */
+    const bg=r.style.backgroundColor;
+    if(!bg || bg.indexOf('var(')>-1) return;
+    const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
+    if(!m) return;
+    if(m[4]!==undefined && +m[4]<0.6) return;                    /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
+    const cr=+m[1], cg=+m[2], cb=+m[3];
+    if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return;       /* ไม่สว่างพอ ไม่ต้องยุ่ง */
+    const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
+    const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
+    let css='background-color:'+repl;
+    /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
+    const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
+    out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
+  };
+  /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
+        ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
+  const visit=rules=>{
+    for(let i=0;i<rules.length;i++){
+      const r=rules[i];
+      if(r.selectorText) take(r);
+      if(r.cssRules && r.cssRules.length) visit(r.cssRules);     /* @media / @supports / nesting */
+    }
+  };
+  for(let i=0;i<D.styleSheets.length;i++){
+    let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; }   /* ข้ามชีตข้ามโดเมน */
+    if(rr) visit(rr);
+  }
+  if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
+  return out.length;
+}
+try{ window.__KITUI_DARKFIX__=darkFix(); }catch(e){ window.__KITUI_DARKFIX__='err:'+e.message; }
+
+/* darkFix ข้างบนซ่อมได้เฉพาะสีที่เขียนตายตัวในไฟล์ CSS
+   แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
+   ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
+   จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
+const rgbOf=c=>{const m=c&&c.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null;};
+const lumOf=v=>v?(0.2126*v[0]+0.7152*v[1]+0.0722*v[2])/255:null;
+/* ตรงข้ามกับ darken(): ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
+   (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
+function lighten(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  if(d<0.04) return 'var(--ink)';                    /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
+  let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
+  const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
+  const s=Math.min(.92,Math.max(.55,s0)), l=.72;
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+const SKIP={CANVAS:1,IMG:1,VIDEO:1,SVG:1,IFRAME:1,PICTURE:1,OBJECT:1};
+const OBS_OPT={childList:true,subtree:true,attributes:true,attributeFilter:['class','style']};
+let patched=[], obs=null;
+function elementFix(){
+  /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
+        ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
+  if(obs) obs.disconnect();
+  try{ elementFixCore(); } finally { if(obs) obs.observe(D.body,OBS_OPT); }
+}
+function elementFixCore(){
+  /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
+     ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
+     จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
+  if(R.getAttribute('data-theme')!=='dark'){
+    patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
+    patched=[];
+    return;
+  }
+  /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
+     ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
+  /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
+  const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
+  for(let i=0;i<all.length;i++){
+    const e=all[i];
+    if(e.id&&e.id.indexOf('kitui')===0) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(SKIP[e.tagName]) continue;                      /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
+    const s=getComputedStyle(e);
+    const bg=rgbOf(s.backgroundColor);
+    if(!bg || bg[3]<0.6) continue;                     /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
+    if(lumOf(bg)<0.72) continue;                       /* เข้มพออยู่แล้ว */
+    /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
+    e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
+    const fg=rgbOf(s.color);
+    if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important');  /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
+    patched.push(e);
+  }
+  /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
+     ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
+  const bgCache=new Map();
+  const effBg=n=>{
+    for(let p=n;p;p=p.parentElement){
+      if(bgCache.has(p)) return bgCache.get(p);
+      const b=rgbOf(getComputedStyle(p).backgroundColor);
+      if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
+    }
+    return null;
+  };
+  for(let i=2;i<all.length;i++){
+    const e=all[i];
+    if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(e.style.color) continue;                         /* จัดการไปแล้วในรอบแรก */
+    if(!e.textContent || !e.textContent.trim()) continue;
+    const fg=rgbOf(getComputedStyle(e).color);
+    if(!fg || lumOf(fg)>=0.45) continue;                 /* ตัวอักษรสว่างอยู่แล้ว */
+    const bg=effBg(e);
+    if(!bg || lumOf(bg)>=0.5) continue;                  /* พื้นยังสว่าง อ่านออกอยู่ */
+    e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
+    patched.push(e);
+  }
+}
+let efT=0;
+const scheduleFix=()=>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
+try{
+  obs=new MutationObserver(scheduleFix);
+  obs.observe(D.body,OBS_OPT);
+}catch(e){}
+
+/* =============================================================================
+   2) ธีม + ขนาดตัวอักษร
+   ============================================================================= */
+const FS=[.85,1,1.15,1.3,1.5], FSNAME=['เล็กสุด','เล็ก','ปกติ','ใหญ่','ใหญ่สุด'];
+let fsIdx=parseInt(get('fs')); if(isNaN(fsIdx)||fsIdx<0||fsIdx>4) fsIdx=1;
+let theme=get('theme') || (matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+
+function applyTheme(){
+  R.setAttribute('data-theme',theme);
+  R.style.colorScheme = theme==='dark'?'dark':'light';   /* ให้ select/input เป็นสีเข้มด้วย */
+  const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
+  set('theme',theme);
+  clearTimeout(efT);                                   /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
+  if(typeof elementFix==='function') elementFix();
+  if(typeof draw==='function' && pad) draw();          /* วาดที่ทดใหม่ เส้นดำ<->ขาวตามธีม */
+}
+function applyFS(){
+  R.style.fontSize=(16*FS[fsIdx])+'px';
+  const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
+  set('fs',fsIdx);
+}
+
+/* =============================================================================
+   3) แถบเครื่องมือ
+   ============================================================================= */
+const subj=(D.body.getAttribute('data-subject')||'').toLowerCase();
+/* หลาย widget ไม่ได้ใส่ data-subject ที่ <body> → เดาจากโฟลเดอร์ที่ไฟล์อยู่ด้วย */
+const inPath=/\/(physics|math|chemist)\//i.test(decodeURIComponent(location.pathname));
+const tAttr=D.body.getAttribute('data-tools');
+const wantTools = tAttr!=null ? tAttr.toLowerCase()
+                : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
+const hasPen  = wantTools.includes('pen');
+const hasCalc = wantTools.includes('calc');
+
+const bar=el('div'); bar.id='kitui-bar';
+bar.innerHTML =
+  `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
+  `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button>`+
+  `<span class="kitui-sep"></span>`+
+  `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
+  `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
+  `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
+  (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
+  (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
+D.body.appendChild(bar);
+
+D.getElementById('kitui-theme').onclick=()=>{theme=theme==='dark'?'light':'dark';applyTheme();};
+D.getElementById('kitui-fsup').onclick=()=>{if(fsIdx<4){fsIdx++;applyFS();}};
+D.getElementById('kitui-fsdown').onclick=()=>{if(fsIdx>0){fsIdx--;applyFS();}};
+D.getElementById('kitui-grip').onclick=()=>bar.classList.toggle('hidden');
+applyTheme(); applyFS();
+
+/* ปิดแผงด้วยปุ่ม Esc */
+D.addEventListener('keydown',e=>{ if(e.key==='Escape') D.querySelectorAll('.kitui-sheet.open').forEach(s=>s.classList.remove('open')); });
+
+/* ลากหัวแผงเพื่อปรับความสูง */
+function makeResizable(sheet){
+  const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
+  head.addEventListener('pointerdown',e=>{
+    if(e.target.closest('button'))return;
+    drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect().height;head.setPointerCapture(e.pointerId);
+  });
+  head.addEventListener('pointermove',e=>{
+    if(!drag)return;
+    const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
+    sheet.classList.remove('full'); sheet.style.height=h+'px';
+    if(sheet.id==='kitui-pad') fitPad();
+  });
+  head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
+}
+
+/* =============================================================================
+   4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ  หลายหน้า  เซฟอัตโนมัติ
+   ============================================================================= */
+let pad,padCv,padCx,pages=[[]],pg=0,undone=[],histo=[];
+let tool='pen',color='#111827',width=2.4,penSeen=0;
+const COLORS=['#111827','#2563eb','#dc2626','#16a34a','#f59e0b'];
+const PADKEY='pad-'+location.pathname.split('/').pop();
+
+function buildPad(){
+  pad=el('div','kitui-sheet'); pad.id='kitui-pad';
+  pad.innerHTML=
+   `<div class="kitui-head">
+      <b>✏️ ที่ทด</b>
+      <button data-t="pen" class="on">🖊️</button>
+      <button data-t="hl">🖍️</button>
+      <button data-t="er">🧽</button>
+      ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
+      <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
+      <span class="kitui-spacer"></span>
+      <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
+      <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
+      <button id="kitui-pgadd">+ หน้า</button>
+      <button id="kitui-clear">ล้างหน้านี้</button>
+      <button id="kitui-full">⛶</button>
+      <button id="kitui-padclose">✕</button>
+    </div>
+    <div class="kitui-padwrap"><canvas></canvas></div>`;
+  D.body.appendChild(pad);
+  padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
+  makeResizable(pad);
+
+  pad.querySelector('.kitui-head').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
+  });
+  D.getElementById('kitui-undo').onclick=()=>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop(); draw(); save(); } };
+  D.getElementById('kitui-redo').onclick=()=>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop(); draw(); save(); } };
+  D.getElementById('kitui-clear').onclick=()=>{ snap(); pages[pg]=[]; draw(); save(); };
+  D.getElementById('kitui-pgadd').onclick=()=>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw(); save(); };
+  D.getElementById('kitui-pgprev').onclick=()=>{ if(pg>0){pg--;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-pgnext').onclick=()=>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-full').onclick=()=>{ pad.classList.toggle('full'); pad.style.height=''; fitPad(); };
+  D.getElementById('kitui-padclose').onclick=()=>pad.classList.remove('open');
+
+  /* ---- วาด ---- */
+  let cur=null;
+  padCv.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='pen') penSeen=Date.now();
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;   /* กันฝ่ามือแตะตอนใช้สไตลัส */
+    const p=pt(e);
+    if(tool==='er'){ snap(); erase(p); return; }
+    snap();
+    cur={c:color,w:width,hl:tool==='hl',pts:[p]};
+    pages[pg].push(cur); draw();
+    try{ padCv.setPointerCapture(e.pointerId); }catch(x){}  /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
+  });
+  padCv.addEventListener('pointermove',e=>{
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;
+    if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
+    if(!cur||!e.buttons)return;
+    /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
+    let evs=[e];
+    if(e.getCoalescedEvents){ const c=e.getCoalescedEvents(); if(c&&c.length) evs=c; }
+    evs.forEach(ev=>cur.pts.push(pt(ev)));
+    draw();
+  });
+  const end=()=>{ if(cur){cur=null;save();} };
+  padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
+  padCv.addEventListener('pointerleave',end);
+
+  addEventListener('resize',()=>{ if(pad.classList.contains('open')) fitPad(); });
+  load(); fitPad();
+}
+function pt(e){
+  const r=padCv.getBoundingClientRect();
+  return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
+          p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5};   /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
+}
+function snap(){ histo.push(pages[pg].slice()); if(histo.length>60)histo.shift(); undone=[]; }
+function erase(p){
+  const r=padCv.getBoundingClientRect(), rad=18/r.width;
+  const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
+  if(keep.length!==pages[pg].length){ pages[pg]=keep; draw(); save(); }
+}
+function fitPad(){
+  const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
+  const dpr=Math.min(devicePixelRatio||1,2.5);
+  padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
+  draw();
+}
+function draw(){
+  const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
+  padCx.clearRect(0,0,W,H);
+  /* เส้นตารางจาง ๆ ให้เขียนตรง */
+  const dark=R.getAttribute('data-theme')==='dark';
+  padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
+  for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath();padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke();}
+  padCx.lineCap='round'; padCx.lineJoin='round';
+  pages[pg].forEach(s=>{
+    padCx.globalAlpha=s.hl?0.32:1;
+    padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
+    for(let i=1;i<s.pts.length;i++){
+      const a=s.pts[i-1],b=s.pts[i];
+      padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
+      padCx.beginPath(); padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke();
+    }
+    if(s.pts.length===1){ /* จุดเดียว */
+      padCx.fillStyle=padCx.strokeStyle; padCx.beginPath();
+      padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill();
+    }
+  });
+  padCx.globalAlpha=1;
+  const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
+}
+function save(){ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
+function load(){
+  try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
+}
+
+if(hasPen){
+  buildPad();
+  D.getElementById('kitui-penbtn').onclick=()=>{
+    const o=pad.classList.toggle('open');
+    D.getElementById('kitui-penbtn').classList.toggle('on',o);
+    if(o) fitPad();
+  };
+}
+
+/* =============================================================================
+   5) เครื่องคิดเลขวิทยาศาสตร์  (tokenizer → shunting-yard → RPN  ไม่ใช้ eval)
+   ============================================================================= */
+const FN={sin:1,cos:1,tan:1,asin:1,acos:1,atan:1,ln:1,log:1,sqrt:1,abs:1,exp:1};
+const PREC={'+':1,'-':1,'*':2,'/':2,'^':4,'u-':3};
+function tokenize(s){
+  s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
+  const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!()])/g; let m;
+  while((m=re.exec(s))) out.push(m[1]);
+  return out;
+}
+function toRPN(tk){
+  const out=[],op=[]; let prev=null;
+  for(let t of tk){
+    if(t==='**')t='^';
+    if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
+    else if(t==='PI'){ out.push(Math.PI); }
+    else if(t==='e'||t==='E'){ out.push(Math.E); }
+    else if(t==='ANS'){ out.push(ANS); }
+    else if(FN[t]){ op.push(t); }
+    else if(t==='('){ op.push(t); }
+    else if(t===')'){
+      while(op.length&&op[op.length-1]!=='(') out.push(op.pop());
+      if(!op.length) throw 0; op.pop();
+      if(op.length&&FN[op[op.length-1]]) out.push(op.pop());
+    }
+    else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
+    else if('+-*/^'.includes(t)){
+      let o=t;
+      const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
+      if(t==='-'&&unary) o='u-';
+      else if(t==='+'&&unary){ prev=t; continue; }
+      while(op.length){
+        const top=op[op.length-1];
+        if(top==='('||FN[top])break;
+        const rightAssoc=(o==='^'||o==='u-');
+        if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop()); else break;
+      }
+      op.push(o);
+    }
+    else throw 0;
+    prev=t;
+  }
+  while(op.length){ const o=op.pop(); if(o==='(')throw 0; out.push(o); }
+  return out;
+}
+function evalRPN(rpn,deg){
+  const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
+  const pop=()=>{ if(!st.length)throw 0; return st.pop(); };
+  for(const t of rpn){
+    if(typeof t==='number'){ st.push(t); continue; }
+    if(t==='fact'){ const n=pop(); if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
+    if(t==='pct'){ st.push(pop()/100); continue; }
+    if(t==='u-'){ st.push(-pop()); continue; }
+    if(FN[t]){
+      const a=pop();
+      st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
+             : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
+             : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
+             : t==='abs'?Math.abs(a) : Math.exp(a) );
+      continue;
+    }
+    const b=pop(),a=pop();
+    st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
+  }
+  if(st.length!==1) throw 0;
+  return st[0];
+}
+function calc(src,deg){ return evalRPN(toRPN(tokenize(src)),deg); }
+
+let ANS=0, expr='', calcSheet, isDeg=true;
+const KEYS=[
+ ['DEG','deg','fn'],['(','(',''],[')',')',''],['⌫','del','del'],['AC','ac','del'],
+ ['sin','sin(','fn'],['cos','cos(','fn'],['tan','tan(','fn'],['π','π','fn'],['÷','÷','op'],
+ ['sin⁻¹','asin(','fn'],['cos⁻¹','acos(','fn'],['tan⁻¹','atan(','fn'],['e','e','fn'],['×','×','op'],
+ ['ln','ln(','fn'],['log','log(','fn'],['√','√(','fn'],['xʸ','^','fn'],['−','−','op'],
+ ['7','7',''],['8','8',''],['9','9',''],['x!','!','fn'],['+','+','op'],
+ ['4','4',''],['5','5',''],['6','6',''],['%','%','fn'],['ANS','ANS','fn'],
+ ['1','1',''],['2','2',''],['3','3',''],['.','.',''],['=','eq','eq'],
+ ['0','0','w3'],['x²','^2','fn']
+];
+function buildCalc(){
+  calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
+  calcSheet.innerHTML=
+   `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
+      <button id="kitui-calcclose">✕</button></div>
+    <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
+    <div class="kitui-keys" id="kitui-keys">
+      ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
+    </div>`;
+  D.body.appendChild(calcSheet);
+  D.getElementById('kitui-calcclose').onclick=()=>calcSheet.classList.remove('open');
+  const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
+  const show=()=>{ ex.textContent=expr||' ';
+    try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
+    catch(e){ rs.style.opacity=.35; }
+  };
+  D.getElementById('kitui-keys').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
+    if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
+    if(k==='del'){ expr=expr.slice(0,-1); show(); return; }
+    if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show(); return; }
+    if(k==='eq'){
+      rs.style.opacity=1;
+      try{
+        const v=calc(expr,isDeg);
+        if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
+        if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
+        ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
+      }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
+      return;
+    }
+    expr+=k; show();
+  });
+}
+function fmt(v){
+  if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
+  if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
+  return String(Math.round(v*1e10)/1e10);
+}
+if(hasCalc){
+  buildCalc();
+  D.getElementById('kitui-calcbtn').onclick=()=>{
+    const o=calcSheet.classList.toggle('open');
+    D.getElementById('kitui-calcbtn').classList.toggle('on',o);
+  };
+}
+})();
+
+</script>
+<!--/KIT-UI-->
+</body>
+</html>

@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ฮอร์โมน & ระบบต่อมไร้ท่อ — สื่อฝึกแบบลงมือเล่น</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap');
+:root{
+  --bg-0:#0a0d18; --bg-1:#11152a; --ink:#f2f4ff; --muted:#9aa2cf;
+  --line:rgba(255,255,255,.09);
+  --accent:#5cc8ff; --accent-2:#a371f7; --gold:#ffd166; --good:#5ee6a8; --bad:#f85149;
+  --pink:#ff8fc7; --orange:#ffb15c;
+  --glass:linear-gradient(180deg,rgba(40,46,90,.50),rgba(16,20,46,.55));
+  --glass-2:linear-gradient(180deg,rgba(52,58,108,.55),rgba(24,28,62,.62));
+  --shadow:0 22px 55px -24px rgba(0,0,0,.78);
+  --ring:0 0 0 1px rgba(255,255,255,.06);
+  --grad-text:linear-gradient(120deg,#ffffff,#bcd4ff 45%,#b6a4ff);
+  --grad-fill:linear-gradient(90deg,var(--accent),var(--accent-2));
+  --r-sm:10px; --r-md:14px; --r-lg:18px; --r-xl:24px; --r-pill:999px;
+  --ease:cubic-bezier(.2,.7,.3,1);
+}
+*{box-sizing:border-box}
+body{
+  margin:0; color:var(--ink); line-height:1.6;
+  padding:18px 14px 40px;
+  font-family:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
+  background:
+    radial-gradient(820px 520px at 8% -12%,rgba(92,120,255,.20),transparent 55%),
+    radial-gradient(720px 520px at 98% -6%,rgba(124,92,255,.22),transparent 52%),
+    radial-gradient(760px 680px at 55% 122%,rgba(40,110,210,.16),transparent 55%),
+    var(--bg-0);
+  background-attachment:fixed; min-height:100vh;
+}
+::selection{background:rgba(92,200,255,.35)}
+.wrap{max-width:960px;margin:0 auto}
+
+/* Hero */
+.hero{
+  position:relative; overflow:hidden; background:var(--glass-2);
+  border:1px solid var(--line); border-radius:var(--r-xl);
+  padding:24px 22px 20px; margin-bottom:16px;
+  box-shadow:var(--shadow),var(--ring),inset 0 1px 0 rgba(255,255,255,.08);
+}
+.hero::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(640px 240px at 102% -10%,rgba(124,92,255,.28),transparent 60%);}
+.hero h1{margin:0 0 4px;font-size:clamp(22px,5vw,32px);font-weight:800;letter-spacing:.2px;
+  background:var(--grad-text);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.hero p{margin:0;color:var(--muted);font-size:15px}
+.pill{display:inline-block;font-size:12px;color:var(--gold);border:1px solid rgba(255,209,102,.35);
+  background:rgba(255,209,102,.08);padding:3px 11px;border-radius:var(--r-pill);margin-bottom:10px;font-weight:600}
+
+/* Tabs */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.tab{flex:1 1 140px;cursor:pointer;border:1px solid var(--line);background:var(--glass);
+  color:var(--ink);padding:12px 10px;border-radius:var(--r-md);font-size:15px;font-weight:600;
+  font-family:inherit;transition:.2s var(--ease);text-align:center}
+.tab:hover{border-color:rgba(92,200,255,.4);transform:translateY(-1px)}
+.tab.active{background:var(--grad-fill);border-color:transparent;color:#08101f;box-shadow:0 8px 24px -10px rgba(92,200,255,.6)}
+.panel{display:none;animation:fade .35s var(--ease)}
+.panel.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.card{background:var(--glass);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:18px;box-shadow:var(--ring);margin-bottom:14px}
+h2.sec{font-size:18px;margin:0 0 10px;display:flex;align-items:center;gap:8px}
+.hint{color:var(--muted);font-size:13.5px;margin:2px 0 14px}
+
+/* Body map */
+.mapgrid{display:grid;grid-template-columns:210px 1fr;gap:18px}
+@media(max-width:640px){.mapgrid{grid-template-columns:1fr}}
+.bodybox{display:flex;justify-content:center;align-items:flex-start}
+svg .gd{cursor:pointer;transition:.15s}
+svg .gd circle{transition:.15s}
+svg .gd:hover circle{r:9}
+.dot-lbl{font-size:8.5px;fill:var(--muted);font-weight:600;pointer-events:none}
+.chiprow{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
+.chip{cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--ink);
+  padding:6px 11px;border-radius:var(--r-pill);font-size:13px;font-family:inherit;font-weight:600;transition:.15s}
+.chip:hover{border-color:rgba(92,200,255,.5)}
+.chip.on{background:var(--grad-fill);color:#08101f;border-color:transparent}
+.info{background:rgba(10,14,28,.5);border:1px solid var(--line);border-radius:var(--r-md);padding:16px;min-height:180px}
+.info h3{margin:0 0 2px;font-size:19px;color:var(--accent)}
+.info .loc{color:var(--muted);font-size:13px;margin-bottom:12px}
+.hlist{display:flex;flex-direction:column;gap:9px}
+.hrow{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:10px;padding:9px 12px}
+.hrow .hn{font-weight:700;color:var(--gold)}
+.hrow .hf{font-size:13.5px;color:var(--ink);opacity:.92}
+.dis{margin-top:12px;font-size:13px;color:var(--pink);background:rgba(255,143,199,.07);
+  border:1px solid rgba(255,143,199,.25);border-radius:10px;padding:8px 12px}
+.dis b{color:var(--pink)}
+
+/* Feedback sim */
+.simgrid{display:grid;grid-template-columns:1fr;gap:14px}
+canvas{width:100%;height:auto;background:rgba(8,11,22,.6);border:1px solid var(--line);border-radius:var(--r-md);display:block}
+.readout{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}
+.stat{flex:1 1 130px;background:rgba(10,14,28,.5);border:1px solid var(--line);border-radius:var(--r-md);padding:10px 13px}
+.stat .k{font-size:12px;color:var(--muted)}
+.stat .v{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums}
+.bar{height:9px;border-radius:6px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:6px}
+.bar>i{display:block;height:100%;border-radius:6px;transition:width .3s var(--ease)}
+.btns{display:flex;flex-wrap:wrap;gap:9px;margin-top:6px}
+.btn{cursor:pointer;border:1px solid var(--line);background:var(--glass);color:var(--ink);
+  padding:11px 15px;border-radius:var(--r-md);font-size:14.5px;font-weight:700;font-family:inherit;transition:.18s var(--ease)}
+.btn:hover{transform:translateY(-1px);border-color:rgba(92,200,255,.5)}
+.btn.eat{border-color:rgba(255,177,92,.4)} .btn.ex{border-color:rgba(94,230,168,.4)}
+.btn.ghost{background:rgba(255,255,255,.03)}
+.statusline{margin-top:12px;font-size:14px;padding:10px 13px;border-radius:var(--r-md);
+  background:rgba(92,200,255,.07);border:1px solid rgba(92,200,255,.25);min-height:22px}
+label.sw{display:flex;align-items:center;gap:9px;font-size:14px;color:var(--muted);margin-top:10px;cursor:pointer}
+input[type=range]{width:100%;accent-color:var(--accent)}
+
+/* Quiz */
+.qmeta{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.badge{font-size:13px;color:var(--muted)}
+.badge b{color:var(--gold)}
+.qtext{font-size:17px;font-weight:600;margin-bottom:14px;line-height:1.5}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{cursor:pointer;text-align:left;border:1px solid var(--line);background:rgba(255,255,255,.03);
+  color:var(--ink);padding:12px 14px;border-radius:var(--r-md);font-size:15px;font-family:inherit;transition:.15s;line-height:1.4}
+.opt:hover{border-color:rgba(92,200,255,.5)}
+.opt.correct{background:rgba(94,230,168,.15);border-color:var(--good);color:#c9ffe6}
+.opt.wrong{background:rgba(248,81,73,.13);border-color:var(--bad);color:#ffd0cd}
+.opt.disabled{pointer-events:none;opacity:.75}
+.fb{margin-top:13px;font-size:14px;padding:11px 14px;border-radius:var(--r-md);display:none}
+.fb.show{display:block}
+.fb.ok{background:rgba(94,230,168,.1);border:1px solid rgba(94,230,168,.3)}
+.fb.no{background:rgba(248,81,73,.1);border:1px solid rgba(248,81,73,.3)}
+.progress{height:7px;border-radius:6px;background:rgba(255,255,255,.08);overflow:hidden;margin-bottom:14px}
+.progress>i{display:block;height:100%;background:var(--grad-fill);width:0;transition:width .3s}
+.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:18px}
+.kbd{font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <span class="pill">ชีววิทยา ม.6 · ระบบต่อมไร้ท่อ</span>
+    <h1>ฮอร์โมน & ต่อมไร้ท่อ</h1>
+    <p>เรียนแบบลงมือเล่น — คลิกดูต่อม จำลองการควบคุมน้ำตาลในเลือด แล้วลองทำแบบฝึก</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-t="map">🧭 แผนที่ต่อม</button>
+    <button class="tab" data-t="sim">🩸 ห้องทดลอง Feedback</button>
+    <button class="tab" data-t="quiz">🎯 เกมฝึก</button>
+  </div>
+
+  <!-- ============ TAB 1: BODY MAP ============ -->
+  <div class="panel active" id="map">
+    <div class="card">
+      <h2 class="sec">🧭 แผนที่ต่อมไร้ท่อ</h2>
+      <p class="hint">คลิกจุด <b>บนร่างกาย</b> หรือ <b>ปุ่มชื่อต่อม</b> ด้านล่าง เพื่อดูฮอร์โมนที่ต่อมนั้นหลั่ง + หน้าที่ + โรคที่เกี่ยวข้อง</p>
+      <div class="chiprow" id="chips"></div>
+      <div class="mapgrid">
+        <div class="bodybox">
+          <svg viewBox="0 0 200 470" width="205" xmlns="http://www.w3.org/2000/svg">
+            <!-- silhouette -->
+            <g fill="rgba(255,255,255,.045)" stroke="rgba(255,255,255,.14)" stroke-width="1.4">
+              <circle cx="100" cy="38" r="26"/>
+              <path d="M92 62 h16 v10 q22 4 26 26 l6 60 q1 12 -9 12 h-6 l-4 96 q-1 8 -8 8 h-8 l-3 -78 h-6 l-3 78 h-8 q-7 0 -8 -8 l-4 -96 h-6 q-10 0 -9 -12 l6 -60 q4 -22 26 -26 z"/>
+            </g>
+            <g id="dots"></g>
+          </svg>
+        </div>
+        <div class="info" id="info">
+          <h3>👆 เลือกต่อมเพื่อเริ่ม</h3>
+          <div class="loc">ร่างกายเรามีต่อมไร้ท่อหลัก ~9 กลุ่ม แต่ละต่อมหลั่งฮอร์โมนคนละแบบ ทำงานเป็น "สารเคมีส่งข่าว" ผ่านกระแสเลือด</div>
+          <div class="hrow"><span class="hf">💡 ฮอร์โมน = สารที่ต่อมไร้ท่อสร้าง หลั่งเข้าเลือดโดยตรง (ไม่มีท่อ) ไปออกฤทธิ์กับอวัยวะเป้าหมายที่มีตัวรับ (receptor) จำเพาะ ใช้ปริมาณน้อยแต่มีผลมาก</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ TAB 2: FEEDBACK SIM ============ -->
+  <div class="panel" id="sim">
+    <div class="card">
+      <h2 class="sec">🩸 ห้องทดลอง: การควบคุมน้ำตาลในเลือด</h2>
+      <p class="hint">นี่คือตัวอย่าง <b>Negative Feedback</b> ที่ชัดที่สุด: ร่างกายพยายามดึงน้ำตาลกลับสู่จุดปกติ (~90 mg/dL) เสมอ <b>ลองกดปุ่มดูสิ</b> ว่าเกิดอะไรขึ้นกับ insulin / glucagon</p>
+      <canvas id="cv" width="880" height="260"></canvas>
+      <div class="readout">
+        <div class="stat">
+          <div class="k">น้ำตาลในเลือด (glucose)</div>
+          <div class="v" id="vg">90</div><div class="k">mg/dL · ปกติ 70–110</div>
+        </div>
+        <div class="stat">
+          <div class="k">อินซูลิน — ลดน้ำตาล (β-cell)</div>
+          <div class="v" style="color:var(--accent)" id="vi">0</div>
+          <div class="bar"><i id="bi" style="width:0;background:linear-gradient(90deg,#5cc8ff,#7aa8ff)"></i></div>
+        </div>
+        <div class="stat">
+          <div class="k">กลูคากอน — เพิ่มน้ำตาล (α-cell)</div>
+          <div class="v" style="color:var(--orange)" id="vga">0</div>
+          <div class="bar"><i id="bga" style="width:0;background:linear-gradient(90deg,#ffb15c,#ff8f6c)"></i></div>
+        </div>
+      </div>
+      <div class="btns">
+        <button class="btn eat" id="bEat">🍚 กินข้าว (+น้ำตาล)</button>
+        <button class="btn eat" id="bSweet">🍰 กินของหวานจัด (++น้ำตาล)</button>
+        <button class="btn ex" id="bExer">🏃 ออกกำลังกาย (−น้ำตาล)</button>
+        <button class="btn ghost" id="bReset">↺ รีเซ็ต</button>
+      </div>
+      <label class="sw"><input type="checkbox" id="diab"> 🚫 จำลอง "เบาหวาน" — ตับอ่อนหลั่งอินซูลินไม่ได้ (ลองแล้วกดกินข้าวดู)</label>
+      <div class="statusline" id="status">น้ำตาลอยู่ที่จุดปกติ — ต่อมไม่ต้องทำงานหนัก 😌</div>
+    </div>
+    <div class="card">
+      <h2 class="sec">🔁 หลักการที่กำลังเกิดขึ้น</h2>
+      <div class="hlist">
+        <div class="hrow"><span class="hn">น้ำตาลสูง →</span> <span class="hf">β-cell ของตับอ่อนหลั่ง <b>อินซูลิน</b> → เซลล์ดูดน้ำตาลเข้าไปใช้/เก็บเป็นไกลโคเจน → น้ำตาลลดลง</span></div>
+        <div class="hrow"><span class="hn">น้ำตาลต่ำ →</span> <span class="hf">α-cell หลั่ง <b>กลูคากอน</b> → ตับสลายไกลโคเจนปล่อยน้ำตาลออกมา → น้ำตาลเพิ่มขึ้น</span></div>
+        <div class="hrow"><span class="hf">📌 ทั้งสองทำงาน <b>ตรงข้ามกัน (antagonistic)</b> ดึงค่ากลับเข้าจุดตั้ง → นี่คือ negative feedback ถ้าอินซูลินเสีย = <b>เบาหวาน</b></span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ TAB 3: QUIZ ============ -->
+  <div class="panel" id="quiz">
+    <div class="card">
+      <div class="progress"><i id="qprog"></i></div>
+      <div class="qmeta">
+        <span class="badge">ข้อ <b id="qnum">1</b>/<span id="qtot">0</span></span>
+        <span class="badge">คะแนน <b id="qscore">0</b></span>
+      </div>
+      <div class="qtext" id="qtext">…</div>
+      <div class="opts" id="qopts"></div>
+      <div class="fb" id="qfb"></div>
+      <div class="btns" style="margin-top:14px">
+        <button class="btn" id="qnext" style="display:none">ข้อต่อไป →</button>
+        <button class="btn ghost" id="qrestart" style="display:none">🔁 เริ่มใหม่</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">สื่อฝึกฮอร์โมน · เปิดในเบราว์เซอร์ได้เลย ไม่ต้องต่อเน็ต · <span class="kbd">ทำเพื่อทบทวน ม.6</span></div>
+</div>
+
+<script>
+/* ================= DATA: glands ================= */
+const GLANDS = [
+  { id:'hypo', name:'ไฮโพทาลามัส', en:'Hypothalamus', x:100, y:30, loc:'ในสมองส่วนล่าง เหนือต่อมใต้สมอง',
+    h:[['ฮอร์โมนกระตุ้น/ยับยั้ง (Releasing/Inhibiting)','สั่งงานต่อมใต้สมองส่วนหน้าอีกที — เป็น "ศูนย์บัญชาการ" เชื่อมระบบประสาทกับต่อมไร้ท่อ'],
+       ['สร้าง ADH และ Oxytocin','สร้างที่นี่ แล้วส่งไปเก็บ/หลั่งที่ต่อมใต้สมองส่วนหลัง']] },
+  { id:'pit', name:'ต่อมใต้สมอง', en:'Pituitary', x:100, y:46, loc:'ใต้สมอง (แบ่งเป็นส่วนหน้า & ส่วนหลัง) — "ต่อมนาย"',
+    h:[['GH (Growth Hormone)','กระตุ้นการเจริญเติบโตของกระดูก/กล้ามเนื้อ'],
+       ['TSH','กระตุ้นต่อมไทรอยด์'],['ACTH','กระตุ้นต่อมหมวกไตชั้นนอก'],
+       ['FSH & LH','กระตุ้นการทำงานของต่อมเพศ (ไข่/อสุจิ, ฮอร์โมนเพศ)'],
+       ['Prolactin','กระตุ้นการสร้างน้ำนม'],
+       ['ADH (ส่วนหลัง)','ดูดน้ำกลับที่ไต ลดการขับปัสสาวะ'],
+       ['Oxytocin (ส่วนหลัง)','กระตุ้นมดลูกบีบตัวคลอด + หลั่งน้ำนม']],
+    dis:'GH มากตอนเด็ก → ร่างยักษ์ (gigantism) / มากตอนโต → นิ้วมือใหญ่ (acromegaly) · GH น้อย → แคระ · ADH น้อย → <b>เบาจืด</b> (ปัสสาวะมาก)' },
+  { id:'pineal', name:'ต่อมไพเนียล', en:'Pineal', x:112, y:34, loc:'กลางสมอง',
+    h:[['Melatonin','ควบคุมวงจรหลับ-ตื่น (นาฬิกาชีวภาพ) หลั่งมากตอนมืด']] },
+  { id:'thy', name:'ต่อมไทรอยด์', en:'Thyroid', x:100, y:86, loc:'บริเวณลำคอ หน้าหลอดลม',
+    h:[['ไทรอกซิน (Thyroxine, T3/T4)','เร่งเมแทบอลิซึมของร่างกาย + ควบคุมการเจริญเติบโตและพัฒนาการ (ต้องใช้ไอโอดีน)'],
+       ['แคลซิโทนิน (Calcitonin)','ลดระดับแคลเซียมในเลือด (นำไปเก็บที่กระดูก)']],
+    dis:'ไทรอกซินน้อย(ขาดไอโอดีน) → <b>คอพอก / โรคเอ๋อ (cretinism)</b> ในเด็ก · มากเกิน → คอพอกเป็นพิษ ผอม ใจสั่น ตาโปน' },
+  { id:'para', name:'ต่อมพาราไทรอยด์', en:'Parathyroid', x:88, y:90, loc:'ฝังอยู่ด้านหลังต่อมไทรอยด์ (4 ต่อมเล็ก)',
+    h:[['พาราทอร์โมน (PTH)','เพิ่มระดับแคลเซียมในเลือด (ดึงจากกระดูก/ดูดกลับที่ไต) — ทำงานตรงข้ามกับแคลซิโทนิน']] },
+  { id:'thymus', name:'ต่อมไทมัส', en:'Thymus', x:100, y:118, loc:'หลังกระดูกอก บริเวณอกส่วนบน',
+    h:[['ไทโมซิน (Thymosin)','กระตุ้นการเจริญและพัฒนาของเซลล์เม็ดเลือดขาว T-cell → เสริมภูมิคุ้มกัน (ใหญ่ในเด็ก เล็กลงเมื่อโต)']] },
+  { id:'adr', name:'ต่อมหมวกไต', en:'Adrenal', x:118, y:196, loc:'อยู่บนไตทั้งสองข้าง (ชั้นนอก cortex + ชั้นใน medulla)',
+    h:[['อะดรีนาลิน (ชั้นใน)','ฮอร์โมน "สู้หรือหนี" — หัวใจเต้นเร็ว น้ำตาลในเลือดสูง เตรียมพร้อมภาวะฉุกเฉิน'],
+       ['คอร์ติซอล (ชั้นนอก)','เพิ่มน้ำตาลในเลือด ต้านความเครียด/อักเสบ'],
+       ['อัลโดสเตอโรน (ชั้นนอก)','ดูดโซเดียม+น้ำกลับที่ไต ควบคุมสมดุลเกลือแร่/ความดัน']] },
+  { id:'panc', name:'ตับอ่อน', en:'Pancreas (islets of Langerhans)', x:108, y:210, loc:'ใต้กระเพาะ — กลุ่มเซลล์ islets of Langerhans',
+    h:[['อินซูลิน (β-cell)','ลดระดับน้ำตาลในเลือด (พาน้ำตาลเข้าเซลล์/เก็บเป็นไกลโคเจน)'],
+       ['กลูคากอน (α-cell)','เพิ่มระดับน้ำตาลในเลือด (สลายไกลโคเจนที่ตับ)']],
+    dis:'อินซูลินไม่พอ/เซลล์ไม่ตอบสนอง → <b>เบาหวาน (diabetes)</b> น้ำตาลในเลือดสูงเรื้อรัง' },
+  { id:'gonad', name:'ต่อมเพศ', en:'Gonads (Ovary / Testis)', x:100, y:270, loc:'รังไข่ (หญิง) / อัณฑะ (ชาย)',
+    h:[['เอสโทรเจน & โพรเจสเทอโรน (รังไข่)','ลักษณะเพศหญิง ควบคุมรอบประจำเดือน & การตั้งครรภ์'],
+       ['เทสโทสเทอโรน (อัณฑะ)','ลักษณะเพศชาย เสียงห้าว หนวดเครา สร้างอสุจิ']] },
+];
+
+/* build chips + dots */
+const chips = document.getElementById('chips');
+const dots = document.getElementById('dots');
+const info = document.getElementById('info');
+GLANDS.forEach(g=>{
+  const b=document.createElement('button'); b.className='chip'; b.textContent=g.name; b.dataset.id=g.id;
+  b.onclick=()=>select(g.id); chips.appendChild(b);
+  const grp=document.createElementNS('http://www.w3.org/2000/svg','g');
+  grp.setAttribute('class','gd'); grp.dataset.id=g.id; grp.style.cursor='pointer';
+  grp.innerHTML=`<circle cx="${g.x}" cy="${g.y}" r="6" fill="#5cc8ff" stroke="#0a0d18" stroke-width="1.5"/>`;
+  grp.onclick=()=>select(g.id); dots.appendChild(grp);
+});
+function select(id){
+  const g=GLANDS.find(x=>x.id===id);
+  document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c.dataset.id===id));
+  document.querySelectorAll('svg .gd circle').forEach(c=>{c.setAttribute('fill','#5cc8ff');c.setAttribute('r','6')});
+  const dc=document.querySelector(`svg .gd[data-id="${id}"] circle`);
+  if(dc){dc.setAttribute('fill','#ffd166');dc.setAttribute('r','9')}
+  let html=`<h3>${g.name} <span style="font-size:13px;color:var(--muted);font-weight:500">${g.en}</span></h3>`;
+  html+=`<div class="loc">📍 ${g.loc}</div><div class="hlist">`;
+  g.h.forEach(([n,f])=>html+=`<div class="hrow"><span class="hn">${n}</span><br><span class="hf">${f}</span></div>`);
+  html+='</div>';
+  if(g.dis) html+=`<div class="dis"><b>⚠️ ความผิดปกติ:</b> ${g.dis}</div>`;
+  info.innerHTML=html;
+}
+
+/* ================= TABS ================= */
+document.querySelectorAll('.tab').forEach(t=>{
+  t.onclick=()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById(t.dataset.t).classList.add('active');
+  };
+});
+
+/* ================= FEEDBACK SIM ================= */
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+const SET=90, LOW=70, HIGH=110;
+let glucose=90, insulin=0, glucagon=0, hist=[], diabetes=false;
+const MAXH=180;
+function pushHist(){ hist.push(glucose); if(hist.length>MAXH) hist.shift(); }
+for(let i=0;i<MAXH;i++) hist.push(90);
+
+function step(){
+  // hormones respond to glucose (negative feedback)
+  if(glucose>SET){
+    insulin = diabetes ? 0 : Math.min(100,(glucose-SET)*1.6);
+    glucagon = Math.max(0, glucagon-6);
+  } else if(glucose<SET){
+    glucagon = Math.min(100,(SET-glucose)*1.8);
+    insulin = Math.max(0, insulin-6);
+  } else {
+    insulin=Math.max(0,insulin-6); glucagon=Math.max(0,glucagon-6);
+  }
+  // hormones move glucose back toward set point
+  glucose -= insulin*0.045;      // insulin lowers
+  glucose += glucagon*0.05;      // glucagon raises
+  // gentle baseline metabolism drift toward set when hormones idle
+  glucose += (SET-glucose)*0.006;
+  glucose=Math.max(20,Math.min(360,glucose));
+  pushHist();
+  draw(); readout();
+}
+function draw(){
+  const W=cv.width,H=cv.height,pad=34;
+  ctx.clearRect(0,0,W,H);
+  const y=v=>H-pad-((v-40)/(320))*(H-pad*1.4);
+  // zones
+  ctx.fillStyle='rgba(94,230,168,.07)'; ctx.fillRect(pad,y(HIGH),W-pad*1.3,y(LOW)-y(HIGH));
+  ctx.strokeStyle='rgba(94,230,168,.35)'; ctx.setLineDash([4,4]);
+  [LOW,HIGH].forEach(v=>{ctx.beginPath();ctx.moveTo(pad,y(v));ctx.lineTo(W-pad*.3,y(v));ctx.stroke();});
+  ctx.strokeStyle='rgba(255,255,255,.25)';
+  ctx.beginPath();ctx.moveTo(pad,y(SET));ctx.lineTo(W-pad*.3,y(SET));ctx.stroke();
+  ctx.setLineDash([]);
+  // labels
+  ctx.fillStyle='#9aa2cf'; ctx.font='12px Sarabun,sans-serif'; ctx.textAlign='right';
+  ctx.fillText('110',pad-4,y(HIGH)+4); ctx.fillText('70',pad-4,y(LOW)+4);
+  ctx.fillStyle='rgba(255,255,255,.5)'; ctx.fillText('90 (จุดปกติ)',pad+80,y(SET)-5);
+  // curve
+  ctx.beginPath();
+  hist.forEach((v,i)=>{ const px=pad+i/(MAXH-1)*(W-pad*1.3); const py=y(v); i?ctx.lineTo(px,py):ctx.moveTo(px,py); });
+  const g=glucose>HIGH?'#ffb15c':glucose<LOW?'#ff8fc7':'#5ee6a8';
+  ctx.strokeStyle=g; ctx.lineWidth=2.5; ctx.stroke();
+  // current dot
+  const lx=pad+(MAXH-1)/(MAXH-1)*(W-pad*1.3), ly=y(glucose);
+  ctx.fillStyle=g; ctx.beginPath(); ctx.arc(lx,ly,4.5,0,7); ctx.fill();
+  ctx.textAlign='left'; ctx.fillStyle='#9aa2cf'; ctx.fillText('เวลา →',pad,H-8);
+}
+function readout(){
+  document.getElementById('vg').textContent=Math.round(glucose);
+  document.getElementById('vg').style.color = glucose>HIGH?'#ffb15c':glucose<LOW?'#ff8fc7':'#5ee6a8';
+  document.getElementById('vi').textContent=Math.round(insulin);
+  document.getElementById('vga').textContent=Math.round(glucagon);
+  document.getElementById('bi').style.width=insulin+'%';
+  document.getElementById('bga').style.width=glucagon+'%';
+  const s=document.getElementById('status');
+  if(diabetes && glucose>HIGH) s.innerHTML='🚫 <b>เบาหวาน:</b> อินซูลินหลั่งไม่ได้ น้ำตาลค้างสูงลงไม่ได้ — นี่คือสิ่งที่เกิดจริงเมื่อตับอ่อนเสีย';
+  else if(glucose>HIGH) s.innerHTML='🔵 น้ำตาลสูง → <b>อินซูลิน</b> กำลังทำงานพาน้ำตาลเข้าเซลล์ ค่ากำลังลดกลับ';
+  else if(glucose<LOW) s.innerHTML='🟠 น้ำตาลต่ำ → <b>กลูคากอน</b> สั่งตับปล่อยน้ำตาล ค่ากำลังเพิ่มกลับ';
+  else s.innerHTML='น้ำตาลอยู่ในช่วงปกติ — ระบบสมดุล (homeostasis) 😌';
+}
+document.getElementById('bEat').onclick=()=>{glucose+=55;};
+document.getElementById('bSweet').onclick=()=>{glucose+=100;};
+document.getElementById('bExer').onclick=()=>{glucose-=42;};
+document.getElementById('bReset').onclick=()=>{glucose=90;insulin=0;glucagon=0;hist=hist.map(()=>90);};
+document.getElementById('diab').onchange=e=>{diabetes=e.target.checked;};
+setInterval(step,110);
+readout(); draw();
+
+/* ================= QUIZ ================= */
+const QUIZ=[
+  {q:'ฮอร์โมนใดทำหน้าที่ "ลดระดับน้ำตาลในเลือด"?',o:['อินซูลิน','กลูคากอน','อะดรีนาลิน','คอร์ติซอล'],a:0,
+   e:'อินซูลินจาก β-cell ของตับอ่อน พาน้ำตาลเข้าเซลล์ → น้ำตาลลด (กลูคากอนทำตรงข้าม)'},
+  {q:'ต่อมใดถูกเรียกว่า "ต่อมนาย (master gland)" ที่ควบคุมต่อมอื่น?',o:['ต่อมไทรอยด์','ต่อมใต้สมอง','ต่อมหมวกไต','ตับอ่อน'],a:1,
+   e:'ต่อมใต้สมองหลั่ง TSH, ACTH, FSH, LH ไปสั่งต่อมอื่นอีกทอด (แต่ตัวมันก็ถูกไฮโพทาลามัสคุมอีกที)'},
+  {q:'การขาดไอโอดีนทำให้เกิดโรคใด เพราะสร้างไทรอกซินไม่ได้?',o:['เบาหวาน','เบาจืด','คอพอก','นิ่วในไต'],a:2,
+   e:'ไทรอกซินต้องใช้ไอโอดีน เมื่อขาด ต่อมไทรอยด์โตขึ้นชดเชย → คอพอก'},
+  {q:'ฮอร์โมน "สู้หรือหนี (fight or flight)" คือฮอร์โมนใด?',o:['เมลาโทนิน','อะดรีนาลิน','ออกซิโทซิน','แคลซิโทนิน'],a:1,
+   e:'อะดรีนาลินจากต่อมหมวกไตชั้นใน ทำให้หัวใจเต้นเร็ว น้ำตาลสูง พร้อมรับสถานการณ์ฉุกเฉิน'},
+  {q:'ADH ที่ทำหน้าที่ดูดน้ำกลับที่ไต ถ้าขาดจะเกิดโรคใด?',o:['เบาหวาน','เบาจืด (ปัสสาวะมาก)','คอพอก','ยักษ์'],a:1,
+   e:'ADH น้อย → ไตดูดน้ำกลับไม่ได้ → ปัสสาวะมากผิดปกติ = เบาจืด (ต่างจากเบาหวานที่เป็นเรื่องน้ำตาล)'},
+  {q:'ฮอร์โมนคู่ใดควบคุม "ระดับแคลเซียมในเลือด" แบบตรงข้ามกัน?',o:['อินซูลิน–กลูคากอน','PTH–แคลซิโทนิน','FSH–LH','T3–T4'],a:1,
+   e:'PTH เพิ่มแคลเซียมในเลือด, แคลซิโทนินลดแคลเซียม — ทำงานตรงข้ามกันเพื่อรักษาสมดุล'},
+  {q:'GH (Growth Hormone) หลั่งมากเกินตอนเป็นเด็กจะทำให้เกิดภาวะใด?',o:['แคระ','ร่างยักษ์ (gigantism)','คอพอก','เบาหวาน'],a:1,
+   e:'GH มากตอนกระดูกยังเจริญ → สูงผิดปกติ (ยักษ์); ถ้าน้อย → แคระ; ถ้ามากตอนโตแล้ว → acromegaly'},
+  {q:'เมื่อน้ำตาลในเลือด "ต่ำ" ฮอร์โมนใดจะถูกหลั่งเพื่อดึงค่ากลับ?',o:['อินซูลิน','กลูคากอน','ออกซิโทซิน','เอสโทรเจน'],a:1,
+   e:'กลูคากอนจาก α-cell สั่งตับสลายไกลโคเจน ปล่อยน้ำตาลเข้าเลือด → น้ำตาลเพิ่ม'},
+  {q:'เอสโทรเจนและโพรเจสเทอโรนถูกสร้างจากต่อมใด?',o:['อัณฑะ','รังไข่','ต่อมไทมัส','ต่อมไพเนียล'],a:1,
+   e:'รังไข่สร้างฮอร์โมนเพศหญิง ควบคุมลักษณะเพศหญิงและรอบประจำเดือน'},
+  {q:'เมลาโทนินจากต่อมไพเนียลเกี่ยวข้องกับเรื่องใดมากที่สุด?',o:['วงจรหลับ-ตื่น','ระดับแคลเซียม','การเจริญเติบโต','ภูมิคุ้มกัน'],a:0,
+   e:'เมลาโทนินหลั่งมากตอนมืด ควบคุมนาฬิกาชีวภาพ (การนอนหลับ)'},
+  {q:'ข้อใดเป็นลักษณะเด่นของ "ฮอร์โมน" ที่ต่างจากต่อมมีท่อ?',o:['หลั่งผ่านท่อไปยังผิว','หลั่งเข้ากระแสเลือดโดยตรง','ใช้ปริมาณมากจึงเห็นผล','ออกฤทธิ์กับทุกเซลล์เท่ากัน'],a:1,
+   e:'ต่อมไร้ท่อไม่มีท่อ หลั่งเข้าเลือดโดยตรง ใช้ปริมาณน้อย และออกฤทธิ์เฉพาะเซลล์ที่มี receptor'},
+  {q:'"เบาหวาน" เกิดจากความผิดปกติของฮอร์โมนใด/ต่อมใด?',o:['อินซูลิน / ตับอ่อน','ADH / ต่อมใต้สมอง','ไทรอกซิน / ไทรอยด์','PTH / พาราไทรอยด์'],a:0,
+   e:'อินซูลินไม่พอหรือเซลล์ไม่ตอบสนอง → น้ำตาลในเลือดสูงเรื้อรัง = เบาหวาน'},
+];
+let qi=0, score=0, qOrder=[];
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;}
+function startQuiz(){ qi=0;score=0;qOrder=shuffle([...Array(QUIZ.length).keys()]);
+  document.getElementById('qtot').textContent=QUIZ.length;
+  document.getElementById('qrestart').style.display='none'; renderQ(); }
+function renderQ(){
+  const q=QUIZ[qOrder[qi]];
+  document.getElementById('qnum').textContent=qi+1;
+  document.getElementById('qscore').textContent=score;
+  document.getElementById('qprog').style.width=(qi/QUIZ.length*100)+'%';
+  document.getElementById('qtext').textContent=q.q;
+  const fb=document.getElementById('qfb'); fb.className='fb'; fb.textContent='';
+  document.getElementById('qnext').style.display='none';
+  const box=document.getElementById('qopts'); box.innerHTML='';
+  const idx=q.o.map((_,i)=>i); shuffle(idx);
+  idx.forEach(i=>{
+    const b=document.createElement('button'); b.className='opt'; b.textContent=q.o[i];
+    b.onclick=()=>answer(b,i===q.a,q,box); box.appendChild(b);
+  });
+}
+function answer(btn,correct,q,box){
+  [...box.children].forEach(c=>c.classList.add('disabled'));
+  const fb=document.getElementById('qfb');
+  if(correct){ btn.classList.add('correct'); score++; fb.className='fb ok show'; fb.innerHTML='✅ ถูกต้อง! '+q.e; }
+  else{ btn.classList.add('wrong'); fb.className='fb no show'; fb.innerHTML='💡 ยังไม่ใช่ — '+q.e;
+    [...box.children].forEach(c=>{ if(c.textContent===q.o[q.a]) c.classList.add('correct'); }); }
+  document.getElementById('qscore').textContent=score;
+  document.getElementById('qnext').style.display='inline-block';
+}
+document.getElementById('qnext').onclick=()=>{
+  qi++;
+  if(qi>=QUIZ.length){
+    document.getElementById('qprog').style.width='100%';
+    document.getElementById('qtext').textContent=`🎉 จบแล้ว! ได้ ${score}/${QUIZ.length} คะแนน — ${score===QUIZ.length?'เต็ม! เก่งมาก 🏆':score>=QUIZ.length*0.7?'เยี่ยม ผ่านสบาย 👍':'ลองทบทวนแผนที่ต่อมอีกรอบแล้วมาใหม่ 💪'}`;
+    document.getElementById('qopts').innerHTML='';
+    document.getElementById('qfb').className='fb';
+    document.getElementById('qnext').style.display='none';
+    document.getElementById('qnum').textContent=QUIZ.length;
+    document.getElementById('qrestart').style.display='inline-block';
+  } else renderQ();
+};
+document.getElementById('qrestart').onclick=startQuiz;
+
+/* init */
+select('panc');
+startQuiz();
+</script>
+<!--KIT-UI v2.4 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<script>
+/* =============================================================================
+   _kit/ui-controls.js  —  KIT UI  v1.0
+   แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
+     🌙/☀️  โหมดมืด / สว่าง   (จำค่าไว้ใน localStorage)
+     A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
+     ✏️  ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
+     🧮  เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
+
+   ── วิธีใช้ ────────────────────────────────────────────────────────────────
+   ห้ามแก้โค้ดนี้ในไฟล์ widget!  แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
+       pwsh -File _kit/apply-ui.ps1
+   สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
+   (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
+
+   !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
+      เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
+
+   ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
+   ใส่แอตทริบิวต์ที่ tag body:  data-tools="pen,calc"  = บังคับเปิด
+                              data-tools="none"      = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
+   ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
+              หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
+   ============================================================================= */
+(function(){
+if(window.__KITUI__) return; window.__KITUI__='2.4';
+
+/* ---------- helper ---------- */
+const D=document, R=D.documentElement;
+const get=k=>{try{return localStorage.getItem('kitui-'+k)}catch(e){return null}};
+const set=(k,v)=>{try{localStorage.setItem('kitui-'+k,v)}catch(e){}};
+const el=(t,c,h)=>{const e=D.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
+
+/* =============================================================================
+   1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
+   ============================================================================= */
+const CSS=`
+/* ===== DARK TOKENS (คู่กับ _kit/design-tokens.css) ===== */
+:root[data-theme="dark"]{
+  --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
+  --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
+  --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
+  --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
+  --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
+}
+:root[data-theme="dark"] body{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f172a}
+:root[data-theme="dark"] body[data-subject="physics"]{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f1220}
+:root[data-theme="dark"] body[data-subject="bio"]{--accent:#4ade80;--accent-head:#bbf7d0;--accent-ink:#86efac;--accent-soft:#0f2a1a;--accent-bd:#256b41;--accent-chip:#14532d;--accent-ghost:#15803d;--bg:#0d1912}
+:root[data-theme="dark"] body[data-subject="chem"]{--accent:#fb923c;--accent-head:#fed7aa;--accent-ink:#fdba74;--accent-soft:#2b1a0c;--accent-bd:#8a3d12;--accent-chip:#6d2c10;--accent-ghost:#c2410c;--bg:#1a130c}
+:root[data-theme="dark"] body[data-subject="christ"]{--accent:#a78bfa;--accent-head:#ddd6fe;--accent-ink:#c4b5fd;--accent-soft:#241a3d;--accent-bd:#5b21b6;--accent-chip:#4c1d95;--accent-ghost:#6d28d9;--bg:#16121f}
+:root[data-theme="dark"] body[data-subject="islam"]{--accent:#2dd4bf;--accent-head:#99f6e4;--accent-ink:#5eead4;--accent-soft:#0d2b28;--accent-bd:#12615a;--accent-chip:#134e4a;--accent-ghost:#0f766e;--bg:#0c1917}
+:root[data-theme="dark"] body[data-subject="history"]{--accent:#fbbf24;--accent-head:#fde68a;--accent-ink:#fcd34d;--accent-soft:#2a1f0a;--accent-bd:#8a4b0c;--accent-chip:#6d3a0a;--accent-ghost:#b45309;--bg:#191509}
+:root[data-theme="dark"] body[data-subject="math"]{--accent:#38bdf8;--accent-head:#bae6fd;--accent-ink:#7dd3fc;--accent-soft:#0c2434;--accent-bd:#0b5a80;--accent-chip:#0c4a6e;--accent-ghost:#0369a1;--bg:#0b1620}
+:root[data-theme="dark"] body[data-subject="eng"]{--accent:#f472b6;--accent-head:#fbcfe8;--accent-ink:#f9a8d4;--accent-soft:#2e1122;--accent-bd:#8d1748;--accent-chip:#731839;--accent-ghost:#be185d;--bg:#1c0f16}
+:root[data-theme="dark"] body[data-subject="thai"]{--accent:#f87171;--accent-head:#fecaca;--accent-ink:#fca5a5;--accent-soft:#2d1414;--accent-bd:#8d2020;--accent-chip:#7f1d1d;--accent-ghost:#b91c1c;--bg:#1a0f0f}
+:root[data-theme="dark"] img,:root[data-theme="dark"] .svg-box{filter:brightness(.92)}
+/* ช่องกรอก/ดรอปดาวน์ที่ widget เก่ากำหนดพื้นขาวตายตัวไว้ */
+:root[data-theme="dark"] select,:root[data-theme="dark"] textarea,
+:root[data-theme="dark"] input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=color])
+{background-color:var(--soft);color:var(--ink);border-color:var(--line)}
+
+/* ===== แถบเครื่องมือลอย ===== */
+#kitui-bar{position:fixed;right:10px;bottom:10px;z-index:99990;display:flex;gap:6px;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
+#kitui-bar button{border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;
+  font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
+  align-items:center;justify-content:center;font-weight:700}
+#kitui-bar button:hover{background:var(--soft)}
+#kitui-bar button:active{transform:scale(.93)}
+#kitui-bar button.on{background:var(--accent);color:#fff}
+#kitui-bar .kitui-sep{width:1px;height:22px;background:var(--line);flex:0 0 1px}
+#kitui-bar .kitui-fs{font-size:11px;color:var(--muted);min-width:34px;text-align:center;font-weight:700}
+#kitui-bar.hidden > *:not(#kitui-grip){display:none}
+#kitui-grip{font-size:17px}
+
+/* ===== แผงลอย (ที่ทด / เครื่องคิดเลข) ===== */
+.kitui-sheet{position:fixed;left:0;right:0;bottom:0;z-index:99991;background:var(--card);
+  border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
+  display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
+  height:52vh;max-height:92vh;min-height:180px}
+.kitui-sheet.open{display:flex}
+.kitui-sheet.full{height:100vh;border-radius:0}
+.kitui-head{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--line);
+  flex-wrap:wrap;touch-action:none;cursor:ns-resize}
+.kitui-head b{font-size:.9rem;color:var(--accent-ink);margin-right:2px;white-space:nowrap}
+.kitui-head button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;
+  padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
+.kitui-head button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.kitui-head .kitui-spacer{flex:1}
+.kitui-sw{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;min-height:0}
+.kitui-sw.on{border-color:var(--ink);transform:scale(1.12)}
+.kitui-padwrap{flex:1;position:relative;overflow:hidden;background:var(--soft)}
+.kitui-padwrap canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+:root[data-theme="dark"] .kitui-padwrap{background:#0c1220}
+
+/* ===== เครื่องคิดเลข ===== */
+#kitui-calc{height:auto;max-height:90vh}
+.kitui-disp{padding:8px 12px;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);
+  border-bottom:1px solid var(--line)}
+.kitui-disp .ex{font-size:.95rem;color:var(--muted);min-height:1.3em;word-break:break-all}
+.kitui-disp .rs{font-size:1.6rem;font-weight:700;color:var(--accent-ink);word-break:break-all}
+.kitui-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:7px}
+.kitui-keys button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:9px;
+  font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
+.kitui-keys button:active{transform:scale(.95)}
+.kitui-keys button.fn{font-size:.8rem;color:var(--accent-ink)}
+.kitui-keys button.op{background:var(--accent-soft);color:var(--accent-ink)}
+.kitui-keys button.eq{background:var(--accent);color:#fff;grid-row:span 2}
+.kitui-keys button.del{background:var(--hot-bg);color:var(--hot-ink)}
+.kitui-keys button.w3{grid-column:span 3}
+@media(max-width:420px){.kitui-keys button{font-size:.88rem;min-height:40px}.kitui-keys button.fn{font-size:.72rem}}
+@media(min-width:760px){
+  .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
+  .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
+  #kitui-pad{width:560px}
+}
+@media print{#kitui-bar,.kitui-sheet{display:none!important}}
+`;
+const st=el('style'); st.id='kitui-style'; st.textContent=CSS; D.head.appendChild(st);
+
+/* -----------------------------------------------------------------------------
+   1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
+   widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
+   พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
+   แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
+   เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
+----------------------------------------------------------------------------- */
+/* สีพาสเทลสว่าง -> สีเข้มที่ยังคง "เฉดเดิม" ไว้ (เขียว=ถูก / แดง=ผิด ต้องยังแยกออก)
+   ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
+function darken(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
+  const l0=(mx+mn)/2;
+  const s0 = d===0 ? 0 : d/(1-Math.abs(2*l0-1));
+  const s = d===0 ? 0 : Math.min(.5, Math.max(.3, s0));
+  const l = d===0 ? .13 : .17;                       /* เทา/ขาวให้เข้มกว่าสีนิดหน่อย */
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+function darkFix(){
+  const out=[], seen=new Set();
+  const take=r=>{
+    if(!r.style || !r.selectorText) return;
+    if(r.selectorText.indexOf('kitui')>-1) return;               /* ของเราเองใช้ token อยู่แล้ว */
+    const bg=r.style.backgroundColor;
+    if(!bg || bg.indexOf('var(')>-1) return;
+    const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
+    if(!m) return;
+    if(m[4]!==undefined && +m[4]<0.6) return;                    /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
+    const cr=+m[1], cg=+m[2], cb=+m[3];
+    if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return;       /* ไม่สว่างพอ ไม่ต้องยุ่ง */
+    const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
+    const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
+    let css='background-color:'+repl;
+    /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
+    const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
+    out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
+  };
+  /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
+        ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
+  const visit=rules=>{
+    for(let i=0;i<rules.length;i++){
+      const r=rules[i];
+      if(r.selectorText) take(r);
+      if(r.cssRules && r.cssRules.length) visit(r.cssRules);     /* @media / @supports / nesting */
+    }
+  };
+  for(let i=0;i<D.styleSheets.length;i++){
+    let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; }   /* ข้ามชีตข้ามโดเมน */
+    if(rr) visit(rr);
+  }
+  if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
+  return out.length;
+}
+try{ window.__KITUI_DARKFIX__=darkFix(); }catch(e){ window.__KITUI_DARKFIX__='err:'+e.message; }
+
+/* darkFix ข้างบนซ่อมได้เฉพาะสีที่เขียนตายตัวในไฟล์ CSS
+   แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
+   ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
+   จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
+const rgbOf=c=>{const m=c&&c.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null;};
+const lumOf=v=>v?(0.2126*v[0]+0.7152*v[1]+0.0722*v[2])/255:null;
+/* ตรงข้ามกับ darken(): ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
+   (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
+function lighten(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  if(d<0.04) return 'var(--ink)';                    /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
+  let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
+  const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
+  const s=Math.min(.92,Math.max(.55,s0)), l=.72;
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+const SKIP={CANVAS:1,IMG:1,VIDEO:1,SVG:1,IFRAME:1,PICTURE:1,OBJECT:1};
+const OBS_OPT={childList:true,subtree:true,attributes:true,attributeFilter:['class','style']};
+let patched=[], obs=null;
+function elementFix(){
+  /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
+        ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
+  if(obs) obs.disconnect();
+  try{ elementFixCore(); } finally { if(obs) obs.observe(D.body,OBS_OPT); }
+}
+function elementFixCore(){
+  /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
+     ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
+     จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
+  if(R.getAttribute('data-theme')!=='dark'){
+    patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
+    patched=[];
+    return;
+  }
+  /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
+     ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
+  /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
+  const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
+  for(let i=0;i<all.length;i++){
+    const e=all[i];
+    if(e.id&&e.id.indexOf('kitui')===0) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(SKIP[e.tagName]) continue;                      /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
+    const s=getComputedStyle(e);
+    const bg=rgbOf(s.backgroundColor);
+    if(!bg || bg[3]<0.6) continue;                     /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
+    if(lumOf(bg)<0.72) continue;                       /* เข้มพออยู่แล้ว */
+    /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
+    e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
+    const fg=rgbOf(s.color);
+    if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important');  /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
+    patched.push(e);
+  }
+  /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
+     ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
+  const bgCache=new Map();
+  const effBg=n=>{
+    for(let p=n;p;p=p.parentElement){
+      if(bgCache.has(p)) return bgCache.get(p);
+      const b=rgbOf(getComputedStyle(p).backgroundColor);
+      if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
+    }
+    return null;
+  };
+  for(let i=2;i<all.length;i++){
+    const e=all[i];
+    if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(e.style.color) continue;                         /* จัดการไปแล้วในรอบแรก */
+    if(!e.textContent || !e.textContent.trim()) continue;
+    const fg=rgbOf(getComputedStyle(e).color);
+    if(!fg || lumOf(fg)>=0.45) continue;                 /* ตัวอักษรสว่างอยู่แล้ว */
+    const bg=effBg(e);
+    if(!bg || lumOf(bg)>=0.5) continue;                  /* พื้นยังสว่าง อ่านออกอยู่ */
+    e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
+    patched.push(e);
+  }
+}
+let efT=0;
+const scheduleFix=()=>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
+try{
+  obs=new MutationObserver(scheduleFix);
+  obs.observe(D.body,OBS_OPT);
+}catch(e){}
+
+/* =============================================================================
+   2) ธีม + ขนาดตัวอักษร
+   ============================================================================= */
+const FS=[.85,1,1.15,1.3,1.5], FSNAME=['เล็กสุด','เล็ก','ปกติ','ใหญ่','ใหญ่สุด'];
+let fsIdx=parseInt(get('fs')); if(isNaN(fsIdx)||fsIdx<0||fsIdx>4) fsIdx=1;
+let theme=get('theme') || (matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+
+function applyTheme(){
+  R.setAttribute('data-theme',theme);
+  R.style.colorScheme = theme==='dark'?'dark':'light';   /* ให้ select/input เป็นสีเข้มด้วย */
+  const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
+  set('theme',theme);
+  clearTimeout(efT);                                   /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
+  if(typeof elementFix==='function') elementFix();
+  if(typeof draw==='function' && pad) draw();          /* วาดที่ทดใหม่ เส้นดำ<->ขาวตามธีม */
+}
+function applyFS(){
+  R.style.fontSize=(16*FS[fsIdx])+'px';
+  const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
+  set('fs',fsIdx);
+}
+
+/* =============================================================================
+   3) แถบเครื่องมือ
+   ============================================================================= */
+const subj=(D.body.getAttribute('data-subject')||'').toLowerCase();
+/* หลาย widget ไม่ได้ใส่ data-subject ที่ <body> → เดาจากโฟลเดอร์ที่ไฟล์อยู่ด้วย */
+const inPath=/\/(physics|math|chemist)\//i.test(decodeURIComponent(location.pathname));
+const tAttr=D.body.getAttribute('data-tools');
+const wantTools = tAttr!=null ? tAttr.toLowerCase()
+                : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
+const hasPen  = wantTools.includes('pen');
+const hasCalc = wantTools.includes('calc');
+
+const bar=el('div'); bar.id='kitui-bar';
+bar.innerHTML =
+  `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
+  `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button>`+
+  `<span class="kitui-sep"></span>`+
+  `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
+  `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
+  `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
+  (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
+  (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
+D.body.appendChild(bar);
+
+D.getElementById('kitui-theme').onclick=()=>{theme=theme==='dark'?'light':'dark';applyTheme();};
+D.getElementById('kitui-fsup').onclick=()=>{if(fsIdx<4){fsIdx++;applyFS();}};
+D.getElementById('kitui-fsdown').onclick=()=>{if(fsIdx>0){fsIdx--;applyFS();}};
+D.getElementById('kitui-grip').onclick=()=>bar.classList.toggle('hidden');
+applyTheme(); applyFS();
+
+/* ปิดแผงด้วยปุ่ม Esc */
+D.addEventListener('keydown',e=>{ if(e.key==='Escape') D.querySelectorAll('.kitui-sheet.open').forEach(s=>s.classList.remove('open')); });
+
+/* ลากหัวแผงเพื่อปรับความสูง */
+function makeResizable(sheet){
+  const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
+  head.addEventListener('pointerdown',e=>{
+    if(e.target.closest('button'))return;
+    drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect().height;head.setPointerCapture(e.pointerId);
+  });
+  head.addEventListener('pointermove',e=>{
+    if(!drag)return;
+    const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
+    sheet.classList.remove('full'); sheet.style.height=h+'px';
+    if(sheet.id==='kitui-pad') fitPad();
+  });
+  head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
+}
+
+/* =============================================================================
+   4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ  หลายหน้า  เซฟอัตโนมัติ
+   ============================================================================= */
+let pad,padCv,padCx,pages=[[]],pg=0,undone=[],histo=[];
+let tool='pen',color='#111827',width=2.4,penSeen=0;
+const COLORS=['#111827','#2563eb','#dc2626','#16a34a','#f59e0b'];
+const PADKEY='pad-'+location.pathname.split('/').pop();
+
+function buildPad(){
+  pad=el('div','kitui-sheet'); pad.id='kitui-pad';
+  pad.innerHTML=
+   `<div class="kitui-head">
+      <b>✏️ ที่ทด</b>
+      <button data-t="pen" class="on">🖊️</button>
+      <button data-t="hl">🖍️</button>
+      <button data-t="er">🧽</button>
+      ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
+      <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
+      <span class="kitui-spacer"></span>
+      <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
+      <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
+      <button id="kitui-pgadd">+ หน้า</button>
+      <button id="kitui-clear">ล้างหน้านี้</button>
+      <button id="kitui-full">⛶</button>
+      <button id="kitui-padclose">✕</button>
+    </div>
+    <div class="kitui-padwrap"><canvas></canvas></div>`;
+  D.body.appendChild(pad);
+  padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
+  makeResizable(pad);
+
+  pad.querySelector('.kitui-head').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
+  });
+  D.getElementById('kitui-undo').onclick=()=>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop(); draw(); save(); } };
+  D.getElementById('kitui-redo').onclick=()=>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop(); draw(); save(); } };
+  D.getElementById('kitui-clear').onclick=()=>{ snap(); pages[pg]=[]; draw(); save(); };
+  D.getElementById('kitui-pgadd').onclick=()=>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw(); save(); };
+  D.getElementById('kitui-pgprev').onclick=()=>{ if(pg>0){pg--;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-pgnext').onclick=()=>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-full').onclick=()=>{ pad.classList.toggle('full'); pad.style.height=''; fitPad(); };
+  D.getElementById('kitui-padclose').onclick=()=>pad.classList.remove('open');
+
+  /* ---- วาด ---- */
+  let cur=null;
+  padCv.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='pen') penSeen=Date.now();
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;   /* กันฝ่ามือแตะตอนใช้สไตลัส */
+    const p=pt(e);
+    if(tool==='er'){ snap(); erase(p); return; }
+    snap();
+    cur={c:color,w:width,hl:tool==='hl',pts:[p]};
+    pages[pg].push(cur); draw();
+    try{ padCv.setPointerCapture(e.pointerId); }catch(x){}  /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
+  });
+  padCv.addEventListener('pointermove',e=>{
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;
+    if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
+    if(!cur||!e.buttons)return;
+    /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
+    let evs=[e];
+    if(e.getCoalescedEvents){ const c=e.getCoalescedEvents(); if(c&&c.length) evs=c; }
+    evs.forEach(ev=>cur.pts.push(pt(ev)));
+    draw();
+  });
+  const end=()=>{ if(cur){cur=null;save();} };
+  padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
+  padCv.addEventListener('pointerleave',end);
+
+  addEventListener('resize',()=>{ if(pad.classList.contains('open')) fitPad(); });
+  load(); fitPad();
+}
+function pt(e){
+  const r=padCv.getBoundingClientRect();
+  return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
+          p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5};   /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
+}
+function snap(){ histo.push(pages[pg].slice()); if(histo.length>60)histo.shift(); undone=[]; }
+function erase(p){
+  const r=padCv.getBoundingClientRect(), rad=18/r.width;
+  const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
+  if(keep.length!==pages[pg].length){ pages[pg]=keep; draw(); save(); }
+}
+function fitPad(){
+  const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
+  const dpr=Math.min(devicePixelRatio||1,2.5);
+  padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
+  draw();
+}
+function draw(){
+  const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
+  padCx.clearRect(0,0,W,H);
+  /* เส้นตารางจาง ๆ ให้เขียนตรง */
+  const dark=R.getAttribute('data-theme')==='dark';
+  padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
+  for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath();padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke();}
+  padCx.lineCap='round'; padCx.lineJoin='round';
+  pages[pg].forEach(s=>{
+    padCx.globalAlpha=s.hl?0.32:1;
+    padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
+    for(let i=1;i<s.pts.length;i++){
+      const a=s.pts[i-1],b=s.pts[i];
+      padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
+      padCx.beginPath(); padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke();
+    }
+    if(s.pts.length===1){ /* จุดเดียว */
+      padCx.fillStyle=padCx.strokeStyle; padCx.beginPath();
+      padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill();
+    }
+  });
+  padCx.globalAlpha=1;
+  const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
+}
+function save(){ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
+function load(){
+  try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
+}
+
+if(hasPen){
+  buildPad();
+  D.getElementById('kitui-penbtn').onclick=()=>{
+    const o=pad.classList.toggle('open');
+    D.getElementById('kitui-penbtn').classList.toggle('on',o);
+    if(o) fitPad();
+  };
+}
+
+/* =============================================================================
+   5) เครื่องคิดเลขวิทยาศาสตร์  (tokenizer → shunting-yard → RPN  ไม่ใช้ eval)
+   ============================================================================= */
+const FN={sin:1,cos:1,tan:1,asin:1,acos:1,atan:1,ln:1,log:1,sqrt:1,abs:1,exp:1};
+const PREC={'+':1,'-':1,'*':2,'/':2,'^':4,'u-':3};
+function tokenize(s){
+  s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
+  const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!()])/g; let m;
+  while((m=re.exec(s))) out.push(m[1]);
+  return out;
+}
+function toRPN(tk){
+  const out=[],op=[]; let prev=null;
+  for(let t of tk){
+    if(t==='**')t='^';
+    if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
+    else if(t==='PI'){ out.push(Math.PI); }
+    else if(t==='e'||t==='E'){ out.push(Math.E); }
+    else if(t==='ANS'){ out.push(ANS); }
+    else if(FN[t]){ op.push(t); }
+    else if(t==='('){ op.push(t); }
+    else if(t===')'){
+      while(op.length&&op[op.length-1]!=='(') out.push(op.pop());
+      if(!op.length) throw 0; op.pop();
+      if(op.length&&FN[op[op.length-1]]) out.push(op.pop());
+    }
+    else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
+    else if('+-*/^'.includes(t)){
+      let o=t;
+      const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
+      if(t==='-'&&unary) o='u-';
+      else if(t==='+'&&unary){ prev=t; continue; }
+      while(op.length){
+        const top=op[op.length-1];
+        if(top==='('||FN[top])break;
+        const rightAssoc=(o==='^'||o==='u-');
+        if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop()); else break;
+      }
+      op.push(o);
+    }
+    else throw 0;
+    prev=t;
+  }
+  while(op.length){ const o=op.pop(); if(o==='(')throw 0; out.push(o); }
+  return out;
+}
+function evalRPN(rpn,deg){
+  const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
+  const pop=()=>{ if(!st.length)throw 0; return st.pop(); };
+  for(const t of rpn){
+    if(typeof t==='number'){ st.push(t); continue; }
+    if(t==='fact'){ const n=pop(); if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
+    if(t==='pct'){ st.push(pop()/100); continue; }
+    if(t==='u-'){ st.push(-pop()); continue; }
+    if(FN[t]){
+      const a=pop();
+      st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
+             : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
+             : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
+             : t==='abs'?Math.abs(a) : Math.exp(a) );
+      continue;
+    }
+    const b=pop(),a=pop();
+    st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
+  }
+  if(st.length!==1) throw 0;
+  return st[0];
+}
+function calc(src,deg){ return evalRPN(toRPN(tokenize(src)),deg); }
+
+let ANS=0, expr='', calcSheet, isDeg=true;
+const KEYS=[
+ ['DEG','deg','fn'],['(','(',''],[')',')',''],['⌫','del','del'],['AC','ac','del'],
+ ['sin','sin(','fn'],['cos','cos(','fn'],['tan','tan(','fn'],['π','π','fn'],['÷','÷','op'],
+ ['sin⁻¹','asin(','fn'],['cos⁻¹','acos(','fn'],['tan⁻¹','atan(','fn'],['e','e','fn'],['×','×','op'],
+ ['ln','ln(','fn'],['log','log(','fn'],['√','√(','fn'],['xʸ','^','fn'],['−','−','op'],
+ ['7','7',''],['8','8',''],['9','9',''],['x!','!','fn'],['+','+','op'],
+ ['4','4',''],['5','5',''],['6','6',''],['%','%','fn'],['ANS','ANS','fn'],
+ ['1','1',''],['2','2',''],['3','3',''],['.','.',''],['=','eq','eq'],
+ ['0','0','w3'],['x²','^2','fn']
+];
+function buildCalc(){
+  calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
+  calcSheet.innerHTML=
+   `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
+      <button id="kitui-calcclose">✕</button></div>
+    <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
+    <div class="kitui-keys" id="kitui-keys">
+      ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
+    </div>`;
+  D.body.appendChild(calcSheet);
+  D.getElementById('kitui-calcclose').onclick=()=>calcSheet.classList.remove('open');
+  const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
+  const show=()=>{ ex.textContent=expr||' ';
+    try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
+    catch(e){ rs.style.opacity=.35; }
+  };
+  D.getElementById('kitui-keys').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
+    if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
+    if(k==='del'){ expr=expr.slice(0,-1); show(); return; }
+    if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show(); return; }
+    if(k==='eq'){
+      rs.style.opacity=1;
+      try{
+        const v=calc(expr,isDeg);
+        if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
+        if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
+        ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
+      }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
+      return;
+    }
+    expr+=k; show();
+  });
+}
+function fmt(v){
+  if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
+  if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
+  return String(Math.round(v*1e10)/1e10);
+}
+if(hasCalc){
+  buildCalc();
+  D.getElementById('kitui-calcbtn').onclick=()=>{
+    const o=calcSheet.classList.toggle('open');
+    D.getElementById('kitui-calcbtn').classList.toggle('on',o);
+  };
+}
+})();
+
+</script>
+<!--/KIT-UI-->
+</body>
+</html>

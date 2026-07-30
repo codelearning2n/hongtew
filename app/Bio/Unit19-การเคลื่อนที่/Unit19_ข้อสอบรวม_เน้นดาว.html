@@ -1,0 +1,1667 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ข้อสอบรวม + เน้นดาว ⭐ — Unit 19 การเคลื่อนที่ของสิ่งมีชีวิต</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b1020; --bg2:#0f1730; --card:#141d38; --card2:#1a2545;
+  --line:#26345c; --txt:#e8edf7; --mut:#94a3c4;
+  --teal:#2dd4bf; --purple:#a78bfa; --blue:#60a5fa;
+  --green:#34d399; --red:#fb7185; --amber:#fbbf24;
+  --glow:0 0 30px rgba(45,212,191,.25);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
+  background:radial-gradient(1200px 600px at 50% -10%,#16224a 0%,var(--bg) 55%);
+  color:var(--txt); min-height:100%; padding:18px; line-height:1.55;}
+.wrap{max-width:780px;margin:0 auto}
+header{text-align:center;margin-bottom:16px}
+header h1{font-size:1.45rem;font-weight:700;letter-spacing:.3px;
+  background:linear-gradient(90deg,var(--amber),var(--purple));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+header p{color:var(--mut);font-size:.88rem;margin-top:4px}
+.card{background:linear-gradient(180deg,var(--card),var(--bg2));
+  border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:0 10px 40px rgba(0,0,0,.35)}
+.modes{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
+.mode-btn{padding:13px 8px;border-radius:14px;border:1px solid var(--line);
+  background:var(--card2);color:var(--txt);cursor:pointer;font-family:inherit;
+  font-size:.92rem;font-weight:600;transition:.18s;text-align:center}
+.mode-btn:hover{border-color:var(--teal);transform:translateY(-2px)}
+.mode-btn.active{background:linear-gradient(135deg,rgba(45,212,191,.22),rgba(167,139,250,.22));
+  border-color:var(--teal);box-shadow:var(--glow)}
+.mode-btn.star.active{background:linear-gradient(135deg,rgba(251,191,36,.28),rgba(167,139,250,.22));border-color:var(--amber);box-shadow:0 0 30px rgba(251,191,36,.3)}
+.mode-btn small{display:block;color:var(--mut);font-weight:400;font-size:.7rem;margin-top:3px}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:8px;border-radius:999px;
+  background:var(--card2);border:1px solid var(--line);outline:none;margin:0;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;
+  border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--green));
+  border:2px solid #06231f;box-shadow:0 0 10px rgba(45,212,191,.55);cursor:pointer}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border:2px solid #06231f;border-radius:50%;
+  background:var(--teal);box-shadow:0 0 10px rgba(45,212,191,.55);cursor:pointer}
+.startbtn{width:100%;padding:15px;border:none;border-radius:14px;cursor:pointer;
+  font-family:inherit;font-size:1.05rem;font-weight:700;color:#06231f;
+  background:linear-gradient(135deg,var(--teal),var(--green));box-shadow:var(--glow);transition:.18s}
+.startbtn:hover{filter:brightness(1.08);transform:translateY(-2px)}
+.hud{display:flex;justify-content:space-between;align-items:center;gap:10px;
+  margin-bottom:14px;font-size:.85rem;color:var(--mut);flex-wrap:wrap}
+.hud b{color:var(--txt)}
+.pill{background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:5px 12px;white-space:nowrap}
+.pill.streak{color:var(--amber)}
+.bar{height:8px;background:var(--card2);border-radius:999px;overflow:hidden;margin-bottom:16px;border:1px solid var(--line)}
+.bar>span{display:block;height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,var(--teal),var(--purple));transition:width .35s}
+.tag{display:inline-block;font-size:.72rem;font-weight:600;padding:3px 10px;border-radius:999px;margin-bottom:12px}
+.tag.tf{background:rgba(96,165,250,.16);color:var(--blue);border:1px solid rgba(96,165,250,.3)}
+.tag.fb{background:rgba(167,139,250,.16);color:var(--purple);border:1px solid rgba(167,139,250,.3)}
+.tag.mc{background:rgba(52,211,153,.16);color:var(--green);border:1px solid rgba(52,211,153,.3)}
+.tag.st{background:rgba(251,191,36,.16);color:var(--amber);border:1px solid rgba(251,191,36,.3)}
+.q{font-size:1.16rem;font-weight:600;margin-bottom:18px;min-height:2.6em;display:flex;align-items:center}
+.tf-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tf-btn{padding:20px;border-radius:16px;border:2px solid var(--line);background:var(--card2);
+  color:var(--txt);cursor:pointer;font-family:inherit;font-size:1.15rem;font-weight:700;transition:.15s}
+.tf-btn:hover{transform:translateY(-2px)} .tf-btn.t:hover{border-color:var(--green)} .tf-btn.f:hover{border-color:var(--red)}
+.tf-btn:disabled{opacity:.55;cursor:default;transform:none}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt-btn{text-align:left;padding:14px 16px;border-radius:14px;border:2px solid var(--line);background:var(--card2);
+  color:var(--txt);cursor:pointer;font-family:inherit;font-size:1.02rem;transition:.15s;display:flex;gap:10px;align-items:flex-start}
+.opt-btn:hover{border-color:var(--teal);transform:translateX(3px)}
+.opt-btn .k{flex-shrink:0;width:24px;height:24px;border-radius:8px;background:var(--bg2);border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;color:var(--mut)}
+.opt-btn:disabled{cursor:default;transform:none}
+.opt-btn.correct{border-color:var(--green);background:rgba(52,211,153,.14)}
+.opt-btn.wrong{border-color:var(--red);background:rgba(251,113,133,.14)}
+.fb-row{display:flex;gap:10px;flex-wrap:wrap}
+.fb-input{flex:1;min-width:180px;padding:15px;border-radius:14px;border:2px solid var(--line);
+  background:var(--card2);color:var(--txt);font-family:inherit;font-size:1.05rem;outline:none}
+.fb-input:focus{border-color:var(--teal);box-shadow:var(--glow)}
+.fb-submit{padding:15px 22px;border:none;border-radius:14px;cursor:pointer;font-family:inherit;
+  font-size:1rem;font-weight:700;color:#06231f;background:linear-gradient(135deg,var(--teal),var(--green))}
+.fb-hint{margin-top:10px;font-size:.82rem;color:var(--mut)}
+.linkbtn{background:none;border:none;color:var(--purple);cursor:pointer;font-family:inherit;font-size:.82rem;text-decoration:underline;padding:0}
+.fb{margin-top:18px;padding:16px;border-radius:14px;border:1px solid var(--line);display:none}
+.fb.show{display:block;animation:pop .25s ease}
+@keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.fb.ok{background:rgba(52,211,153,.1);border-color:rgba(52,211,153,.4)}
+.fb.no{background:rgba(251,113,133,.1);border-color:rgba(251,113,133,.4)}
+.fb .head{font-weight:700;font-size:1.05rem;margin-bottom:6px}
+.fb.ok .head{color:var(--green)} .fb.no .head{color:var(--red)}
+.fb .ans{font-size:.95rem;margin-bottom:6px} .fb .ans b{color:var(--teal)}
+.fb .exp{font-size:.9rem;color:var(--mut)} .fb .cite{font-size:.78rem;color:var(--amber);margin-top:4px}
+.fb .warn{margin-top:8px;font-size:.82rem;color:var(--amber)}
+.nextbtn{margin-top:14px;width:100%;padding:13px;border:none;border-radius:13px;cursor:pointer;
+  font-family:inherit;font-size:1rem;font-weight:700;color:var(--txt);background:var(--card2);border:1px solid var(--teal)}
+.nextbtn:hover{background:#22305a}
+.end{text-align:center}
+.end .score{font-size:3rem;font-weight:700;background:linear-gradient(90deg,var(--teal),var(--purple));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.end .sub{color:var(--mut);margin:6px 0 18px} .end .grade{font-size:1.2rem;font-weight:700;margin-bottom:18px}
+.foot{text-align:center;color:var(--mut);font-size:.75rem;margin-top:18px}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>⭐ ข้อสอบรวม + เน้นดาว — Unit 19 การเคลื่อนที่</h1>
+    <p>รวมข้อสอบทุกชุด (ถูก/ผิด · เติมคำ · ปรนัย) + โหมด ⭐ เน้นเฉพาะสไลด์ที่อาจารย์ดาวไว้</p>
+  </header>
+
+  <div class="card" id="startScreen">
+    <div class="modes">
+      <button class="mode-btn star active" data-mode="star">⭐ เน้นดาว<small>เฉพาะสไลด์ติดดาว</small></button>
+      <button class="mode-btn" data-mode="mix">🎲 รวมทุกแบบ<small>คลังใหญ่ทั้งหมด</small></button>
+      <button class="mode-btn" data-mode="mc">🔘 ปรนัย<small>เลือกตอบ 4 ข้อ</small></button>
+      <button class="mode-btn" data-mode="tf">✅❌ ถูก/ผิด<small>อย่างเดียว</small></button>
+      <button class="mode-btn" data-mode="fb">✏️ เติมคำ<small>อย่างเดียว</small></button>
+      <button class="mode-btn" data-mode="brain">🔥 ข้อโหด<small>ปรนัยยาก (brain)</small></button>
+    </div>
+    <div class="hud" style="margin-bottom:14px;flex-wrap:nowrap">
+      <span class="pill" style="flex-shrink:0">จำนวนข้อต่อรอบ: <b id="lenLabel">20</b></span>
+      <input type="range" id="lenRange" min="10" max="270" step="5" value="20" style="flex:1;min-width:120px">
+    </div>
+    <button class="startbtn" id="startBtn">เริ่มเล่น ▶</button>
+    <p class="foot">คลังรวม <b id="poolCount">0</b> ข้อ · ⭐ เน้นดาว <b id="starCount">0</b> ข้อ · สุ่มไม่ซ้ำจนครบ</p>
+  </div>
+
+  <div class="card hidden" id="gameScreen">
+    <div class="hud">
+      <span class="pill">ข้อ <b id="qNow">1</b>/<b id="qTotal">20</b></span>
+      <span class="pill">คะแนน <b id="score">0</b></span>
+      <span class="pill streak">🔥 สตรีค <b id="streak">0</b></span>
+    </div>
+    <div class="bar"><span id="prog"></span></div>
+    <span class="tag tf" id="qtag">ถูก / ผิด</span>
+    <div class="q" id="qText">…</div>
+
+    <div class="tf-row hidden" id="tfControls">
+      <button class="tf-btn t" data-v="true">✅ ถูก</button>
+      <button class="tf-btn f" data-v="false">❌ ผิด</button>
+    </div>
+
+    <div class="opts hidden" id="mcControls"></div>
+
+    <div id="fbControls" class="hidden">
+      <div class="fb-row">
+        <input class="fb-input" id="fbInput" placeholder="พิมพ์คำตอบ… (ไทยหรืออังกฤษ)" autocomplete="off">
+        <button class="fb-submit" id="fbSubmit">ตอบ</button>
+      </div>
+      <div class="fb-hint"><button class="linkbtn" id="hintBtn">💡 ขอใบ้</button> <span id="hintTxt"></span></div>
+    </div>
+
+    <div class="fb" id="feedback">
+      <div class="head" id="fbHead"></div>
+      <div class="ans" id="fbAns"></div>
+      <div class="exp" id="fbExp"></div>
+      <div class="cite hidden" id="fbCite"></div>
+      <div class="warn hidden" id="fbWarn"></div>
+      <button class="nextbtn" id="nextBtn">ข้อต่อไป →</button>
+    </div>
+  </div>
+
+  <div class="card hidden end" id="endScreen">
+    <div class="score" id="endScore">0/0</div>
+    <div class="sub" id="endPct">0%</div>
+    <div class="grade" id="endGrade"></div>
+    <button class="startbtn" id="againBtn">เล่นอีกครั้ง 🔁</button>
+    <p class="foot" id="endTip"></p>
+  </div>
+</div>
+
+<script>
+/* ============ คลังข้อสอบ (รวมจากทุกไฟล์ + ⭐ ชุดเน้นดาวที่เขียนใหม่) ============ */
+const TF = [
+{q:"สิ่งมีชีวิตเซลล์เดียวไม่มีระบบประสาท จึงตอบสนองต่อสิ่งเร้าไม่ได้",a:false,e:"ไม่มีระบบประสาท แต่ตอบสนองต่อสิ่งเร้าได้",w:"ออกบ่อย: ไม่มีประสาท ≠ ไม่ตอบสนอง"},
+ {q:"ไซโทสเกเลตอนเป็นเส้นใยโปรตีนที่ค้ำจุนเซลล์และช่วยในการเคลื่อนที่",a:true,e:"cytoskeleton = โครงร่างค้ำจุน + ช่วยเคลื่อนที่"},
+ {q:"ในอะมีบา ส่วน ectoplasm มีลักษณะเป็นซอล (sol) ค่อนข้างเหลว",a:false,e:"ectoplasm = ส่วนนอก เป็น gel; sol คือ endoplasm (ส่วนใน)",w:"นอก=gel / ใน=sol"},
+ {q:"โปรตีนที่เป็นองค์ประกอบของ microfilament ในอะมีบา คือ แอกทิน (actin)",a:true,e:"microfilament = actin protein"},
+ {q:"cilia และ flagella มีโครงสร้างไมโครทูบูลแบบ 9+0",a:false,e:"cilia/flagella = 9+2; ส่วน 9+0 คือ basal body",w:"9+2 = cilia/flagella, 9+0 = basal body"},
+ {q:"basal body ทำหน้าที่ควบคุมการเคลื่อนไหวของ cilia และ flagella",a:true,e:"และมีโครงสร้าง 9 outer triplet (9+0)"},
+ {q:"dynein arm ทำให้ flagellum และ cilia โค้งงอและพัดโบกได้",a:true,e:"ไดนีนอาร์มสร้างการงอ/โบก"},
+ {q:"อะมีบาเคลื่อนที่ด้วยเท้าเทียมที่เกิดจากการไหลของไซโทพลาซึม",a:true,e:"pseudopodium จาก cytoplasm flow"},
+ {q:"พารามีเซียมเคลื่อนที่โดยใช้แฟลเจลลัม",a:false,e:"พารามีเซียมใช้ cilia (ซิเลีย) จำนวนมาก; ยูกลีนาต่างหากที่ใช้ flagellum",w:"พารา=cilia / ยูกลีนา=flagellum"},
+ {q:"หนอนตัวกลม (nematode) มีเฉพาะกล้ามเนื้อตามยาว ทำให้เคลื่อนแบบไม่มีทิศทาง",a:true,e:"longitudinal muscle อย่างเดียว → thrashing/whiplike"},
+ {q:"ไส้เดือนดินใช้เดือย (setae) จิกดินเพื่อช่วยในการเคลื่อนที่",a:true,e:"setae ป้องกันลำตัวถอยหลัง"},
+ {q:"การหด-คลายของกล้ามเนื้อวงและตามยาวเป็นจังหวะเหมือนระลอกคลื่น เรียกว่า peristalsis",a:true,e:"เพอริสตัลซิส = การเคลื่อนแบบคลื่นของไส้เดือน"},
+ {q:"หมึกเคลื่อนที่โดยพ่นน้ำออกทางไซฟอน แล้วตัวพุ่งไปทิศทางเดียวกับน้ำที่พ่นออก",a:false,e:"พุ่งไปทิศทางตรงข้ามกับน้ำที่พ่นออก (jet propulsion)",w:"พ่นน้ำลง → พุ่งขึ้น"},
+ {q:"พลานาเรียมีกล้ามเนื้อ 3 ชนิด รวมถึงกล้ามเนื้อทแยง (diagonal)",a:true,e:"circular + longitudinal + diagonal; diagonal คุมการแบนตัว"},
+ {q:"แมงกะพรุนมีเนื้อเยื่อชั้นกลางที่เป็นวุ้น เรียกว่า mesoglea",a:true,e:"epidermis(นอก)/gastrodermis(ใน)/mesoglea(กลาง)"},
+ {q:"โครงร่างแบบ hydrostatic skeleton สนับสนุนการวิ่งและเดินได้ดี",a:false,e:"สนับสนุนการเลื้อย/เจาะรู ไม่สนับสนุนวิ่งหรือเดิน"},
+ {q:"โครงร่างแข็งภายนอกของอาร์โทรพอดประกอบด้วยโปรตีนและไคติน",a:true,e:"chitin + protein"},
+ {q:"ประโยชน์ของ exoskeleton คือป้องกันศัตรูและป้องกันการสูญเสียน้ำ",a:true,e:"กันศัตรู + กันน้ำระเหย"},
+ {q:"การลอกคราบ (molting) จำเป็นต่อการเจริญเติบโตของสัตว์ที่มี exoskeleton",a:true,e:"โครงแข็งขนาดตายตัวจึงต้องลอกคราบ"},
+ {q:"ขณะลอกคราบ สัตว์จะแข็งแรงและป้องกันตัวได้ดีเป็นพิเศษ",a:false,e:"ตรงข้าม! ขณะลอกคราบจะอ่อนแอ ถูกทำร้ายได้ง่ายมาก"},
+ {q:"ดาวทะเลมีโครงร่างแข็งภายใน แต่เคลื่อนที่ด้วยระบบท่อน้ำ (water vascular system)",a:true,e:"endoskeleton แต่ใช้ hydrostatic ในการเคลื่อนที่",w:"กับดักคลาสสิก: endo แต่เคลื่อนด้วย hydrostatic"},
+ {q:"ในดาวทะเล เมื่อ ampulla หดตัวจะดันน้ำไปยัง podium ทำให้ podium ยืดยาว",a:true,e:"ampulla หด → podium ยืด"},
+ {q:"ปลาฉลามและปลากระเบนมีโครงกระดูกเป็นกระดูกแข็ง (bone)",a:false,e:"ฉลาม/กระเบน = กระดูกอ่อน (cartilage) ล้วน",w:"ฉลาม/กระเบน = กระดูกอ่อนล้วน"},
+ {q:"สัตว์มีกระดูกสันหลังทุกชนิดมีโครงร่างแข็งภายใน (endoskeleton)",a:true,e:"endoskeleton พบในสัตว์มีกระดูกสันหลังทุกชนิด"},
+ {q:"ฟองน้ำมีโครงร่างภายในชนิด spicule ที่อาจทำจากแคลเซียมคาร์บอเนตหรือซิลิกา",a:true,e:"spicule = โปรตีน/CaCO3/ซิลิกา"},
+ {q:"ในนก กล้ามเนื้อ pectoralis major ทำหน้าที่ยกปีกขึ้น",a:false,e:"major = กดปีกลง; ที่ยกปีกขึ้นคือ pectoralis minor",w:"minor=ยก / major=กด (ชื่อสวนความรู้สึก!)"},
+ {q:"กล้ามเนื้อปีกนกยึดเกาะกับกระดูกโคนปีก (humerus) และกระดูกอก (sternum)",a:true,e:"จุดยึด 2 กระดูกนี้"},
+ {q:"กระดูกของนกมีรูพรุน ทำให้น้ำหนักเบาเหมาะกับการบิน",a:true,e:"กระดูกพรุน → เบา"},
+ {q:"การร่อนของนกเกิดจากอากาศเหนือปีกเคลื่อนที่ช้ากว่าอากาศใต้ปีก",a:false,e:"อากาศเหนือปีกเร็วกว่า → ความดันน้อยกว่า → เกิดแรงยก"},
+ {q:"กล้ามเนื้อ flexor และ extensor ของตั๊กแตนทำงานตรงข้ามกัน (antagonistic)",a:true,e:"flexor งอ / extensor เหยียด"},
+ {q:"เมื่อตั๊กแตนงอขา กล้ามเนื้อ flexor หดตัวและ extensor คลายตัว",a:true,e:"งอ: flexor หด, extensor คลาย"},
+ {q:"Direct flight muscle เป็นกล้ามเนื้อที่ยึดกับโคนปีกโดยตรง พบในแมลงปอ",a:true,e:"แมลงปอ/ชีปะขาว = direct flight"},
+ {q:"Indirect flight muscle พบในผึ้ง ด้วง และแมลงสองปีก",a:true,e:"ใช้การหด-ขยายส่วนอก/ท้อง ไม่ติดปีกตรง"},
+ {q:"ครีบหางของปลาเรียกว่า dorsal fin",a:false,e:"ครีบหาง = caudal fin; dorsal fin คือครีบหลัง"},
+ {q:"รูปแบบการว่ายน้ำแบบ Anguilliform คือเคลื่อนไหวทั้งตัว",a:true,e:"เช่น ปลาไหล; Thunniform = เฉพาะหาง"},
+ {q:"ถุงลม (swim bladder) ของปลาทำหน้าที่ควบคุมการลอยหรือจม",a:true,e:"มีแก๊สบรรจุ ปรับการลอยตัว"},
+ {q:"ปลาว่ายน้ำโดยกล้ามเนื้อลำตัวยึดกับกระดูกสันหลังแล้วหด-คลายเป็นคลื่น (undulatory)",a:true,e:"undulatory motion"},
+ {q:"ไฮดราใช้ contractile fiber ทั้งแนวยาวและแนววงช่วยในการยืดหดตัว",a:true,e:"longitudinal + circular contractile fiber"},
+ {q:"หมึกเป็นมอลลัสที่มีโครงร่างแข็งภายนอก (exoskeleton) หุ้มร่างกาย",a:false,e:"หมึกเป็นมอลลัสที่ไม่มี exoskeleton"},
+ // ---- 19.4 มนุษย์ ----
+ {q:"มนุษย์โตเต็มวัยมีกระดูก 206 ชิ้น = กระดูกแกน 80 + กระดูกรยางค์ 126",a:true,e:"axial 80 + appendicular 126 = 206"},
+ {q:"กะโหลกศีรษะและกระดูกซี่โครงจัดเป็นกระดูกรยางค์ (appendicular)",a:false,e:"เป็นกระดูกแกน (axial); รยางค์คือแขน-ขา-โอบไหล่-เชิงกราน",w:"แกน=กะโหลก/สันหลัง/ซี่โครง · รยางค์=แขนขา"},
+ {q:"ซี่โครงคู่ที่ยึดกับกระดูกอกโดยตรง (true ribs) มี 7 คู่",a:true,e:"true ribs 7 คู่; floating ribs 2 คู่"},
+ {q:"ข้อต่อแบบ fibrous joint เคลื่อนไหวได้อย่างอิสระ",a:false,e:"fibrous = ขยับไม่ได้ (เช่นกะโหลก); ที่อิสระคือ synovial",w:"fibrous=นิ่ง / synovial=อิสระ"},
+ {q:"ข้อต่อไหล่และข้อสะโพกเป็นแบบ ball-and-socket เคลื่อนไหวได้ทุกทิศทาง",a:true,e:"ลูกกลมในเบ้า = ทุกทิศทาง"},
+ {q:"ข้อศอกเป็นข้อต่อแบบบานพับ (hinge joint)",a:true,e:"งอ-เหยียดทางเดียว"},
+ {q:"เอ็นยึดข้อ (ligament) ทำหน้าที่เชื่อมกล้ามเนื้อกับกระดูก",a:false,e:"ligament เชื่อมกระดูก-กระดูก; ที่เชื่อมกล้ามเนื้อ-กระดูกคือ tendon",w:"tendon=กล้ามเนื้อ↔กระดูก / ligament=กระดูก↔กระดูก"},
+ {q:"กล้ามเนื้อลาย (skeletal) มีหลายนิวเคลียสต่อเซลล์และทำงานในอำนาจจิตใจ",a:true,e:"ทรงกระบอกยาว หลายนิวเคลียส voluntary"},
+ {q:"กล้ามเนื้อเรียบ (smooth muscle) ทำงานในอำนาจจิตใจ",a:false,e:"กล้ามเนื้อเรียบทำงานนอกอำนาจจิตใจ (involuntary)"},
+ {q:"กล้ามเนื้อหัวใจมีลายพาดขวางและมี intercalated disks เชื่อมเซลล์",a:true,e:"ช่วยประสานการหดตัว"},
+ {q:"ขณะงอแขน (flexion) กล้ามเนื้อ biceps หดตัว และ triceps คลายตัว",a:true,e:"เหยียดแขนจะสลับกัน",w:"งอ: biceps หด / เหยียด: triceps หด"},
+ {q:"ขณะเหยียดแขน (extension) กล้ามเนื้อ biceps หดตัว",a:false,e:"เหยียดแขน: biceps คลาย, triceps หด"},
+ {q:"ตาม sliding-filament model เส้นใย actin เลื่อนเข้าหากึ่งกลางซาร์โคเมียร์ทำให้กล้ามเนื้อหด",a:true,e:"myosin ดึง actin เข้ากลาง"},
+ {q:"Ca²⁺ จับกับ tropomyosin โดยตรงเพื่อเปิด myosin binding site",a:false,e:"Ca²⁺ จับ troponin → แล้ว tropomyosin จึงเลื่อนออก",w:"Ca²⁺ จับ troponin ไม่ใช่ tropomyosin"},
+ {q:"Ca²⁺ ที่ใช้ในการหดตัวถูกปล่อยมาจาก sarcoplasmic reticulum (SR)",a:true,e:"SR = smooth ER ของเซลล์กล้ามเนื้อ"},
+ {q:"ใยกล้ามเนื้อ slow-twitch ล้าช้า ใช้การหายใจแบบใช้ออกซิเจน เหมาะกีฬาอดทน",a:true,e:"slow=aerobic, myoglobin/mito มาก",w:"สไลด์ p.39 พิมพ์สลับ ให้ยึดตาราง p.40"},
+ {q:"นักกีฬาวิ่งระยะสั้นใช้ใยกล้ามเนื้อ fast-twitch เป็นหลัก",a:true,e:"fast=พลัง/anaerobic (RR หรือ Rr)"},
+ {q:"ภาวะ rigor mortis กล้ามเนื้อไม่คลายตัวเพราะมี ATP มากเกินไป",a:false,e:"กลับกัน: ไม่มี ATP จึงปั๊ม Ca²⁺ กลับ SR ไม่ได้ กล้ามเนื้อเลยค้างหด"},
+];
+const FB = [
+{q:"อะมีบาเคลื่อนที่โดยใช้โครงสร้างที่เรียกว่า ______",a:["pseudopodium","เท้าเทียม","ซูโดโพเดียม"],h:"แปลว่า 'เท้าเทียม'",e:"pseudopodium (เท้าเทียม)"},
+ {q:"พารามีเซียมเคลื่อนที่โดยใช้ ______ จำนวนมาก",a:["cilia","ซิเลีย","ซีเลีย"],h:"ขนสั้นเล็กจำนวนมาก",e:"cilia (ซิเลีย)"},
+ {q:"ยูกลีนาเคลื่อนที่โดยใช้ ______",a:["flagellum","แฟลเจลลัม","flagella"],h:"แส้ยาวเส้นเดียว",e:"flagellum (แฟลเจลลัม)"},
+ {q:"ส่วนนอกของไซโทพลาซึมอะมีบาที่เป็นกึ่งแข็งกึ่งเหลว (gel) คือ ______",a:["ectoplasm","เอ็กโทพลาซึม","เอกโทพลาซึม"],h:"ecto = ส่วนนอก",e:"ectoplasm (gel)"},
+ {q:"โปรตีนที่เป็นองค์ประกอบของ microfilament คือ ______",a:["actin","แอกทิน","แอคติน"],h:"act-…",e:"actin (แอกทิน)"},
+ {q:"โครงสร้างที่ควบคุมการเคลื่อนไหวของ cilia/flagella และมีแบบ 9+0 คือ ______",a:["basal body","เบซัลบอดี","basalbody"],h:"basal …",e:"basal body (9+0)"},
+ {q:"โครงสร้างที่ทำให้ cilia/flagella โค้งงอและพัดโบกได้ คือ ______",a:["dynein arm","ไดนีนอาร์ม","dynein","ไดนีน"],h:"dyn-…",e:"dynein arm (ไดนีนอาร์ม)"},
+ {q:"โครงร่างที่มีของเหลวบรรจุในช่องลำตัวคอยค้ำจุน คือ ______ skeleton",a:["hydrostatic","ไฮโดรสแตติก","ไฮโดรสแตติกสเกเลตอน"],h:"hydro = น้ำ",e:"hydrostatic skeleton"},
+ {q:"กล้ามเนื้อชนิดที่สามของพลานาเรีย (นอกจากวงและตามยาว) ที่คุมการแบนตัว คือ กล้ามเนื้อ ______",a:["ทแยง","diagonal","diagonal muscle"],h:"แนวเฉียง",e:"กล้ามเนื้อทแยง (diagonal)"},
+ {q:"การที่กล้ามเนื้อวงและตามยาวของไส้เดือนทำงานตรงข้ามกัน เรียกว่า ______",a:["antagonism","แอนตาโกนิซึม","antagonistic","สภาวะตรงข้ามกัน"],h:"anta-…",e:"antagonism (สภาวะตรงข้ามกัน)"},
+ {q:"การเคลื่อนแบบหด-คลายเป็นจังหวะเหมือนระลอกคลื่นของไส้เดือน เรียกว่า ______",a:["peristalsis","เพอริสตัลซิส","เพอริสตัลซิส"],h:"peri-…",e:"peristalsis (เพอริสตัลซิส)"},
+ {q:"โครงสร้างเล็ก ๆ ที่ยื่นจากผนังแต่ละปล้องของไส้เดือนช่วยจิกดิน คือ ______",a:["setae","เดือย","seta"],h:"แปลว่า 'เดือย'",e:"setae (เดือย)"},
+ {q:"ระบบขับเคลื่อนที่พ่นน้ำดันตัวของหมึกและแมงกะพรุน เรียกว่าระบบ ______",a:["jet propulsion","เจ็ตโพรพัลชัน","jet propulsion system","jet"],h:"jet …",e:"jet propulsion system"},
+ {q:"ท่อที่หมึกพ่นน้ำออกเพื่อเคลื่อนที่ เรียกว่า ______",a:["siphon","ไซฟอน"],h:"si-…",e:"siphon (ไซฟอน)"},
+ {q:"โครงร่างแข็งภายนอกที่หุ้มร่างกายอาร์โทรพอด เรียกว่า ______",a:["exoskeleton","เอกโซสเกเลตอน","เอ็กโซสเกเลตอน"],h:"exo = ภายนอก",e:"exoskeleton"},
+ {q:"สารหลักนอกจากโปรตีนที่เป็นองค์ประกอบโครงแข็งของอาร์โทรพอด คือ ______",a:["chitin","ไคติน"],h:"chi-…",e:"chitin (ไคติน)"},
+ {q:"การที่สัตว์ exoskeleton ต้องสลัดโครงแข็งเก่าออกเพื่อเจริญเติบโต เรียกว่า ______",a:["molting","การลอกคราบ","ลอกคราบ","moulting"],h:"ลอก…",e:"molting (การลอกคราบ)"},
+ {q:"ส่วนของ tube feet ในดาวทะเลที่หดตัวเพื่อดันน้ำไปยัง podium คือ ______",a:["ampulla","แอมพูลลา","แอมพูล่า"],h:"amp-…",e:"ampulla (แอมพูลลา)"},
+ {q:"ระบบที่ดาวทะเลใช้ในการเคลื่อนที่โดยอาศัยท่อน้ำภายในลำตัว เรียกว่า ______",a:["water vascular system","ระบบท่อน้ำ","water vascular"],h:"ระบบ…น้ำ",e:"water vascular system (ระบบท่อน้ำ)"},
+ {q:"โครงร่างภายในของฟองน้ำที่ทำจากโปรตีน/แคลเซียม/ซิลิกา เรียกว่า ______",a:["spicule","สปิคูล","spicules"],h:"spi-…",e:"spicule (สปิคูล)"},
+ {q:"ปลาฉลามและปลากระเบนมีโครงกระดูกชนิด ______ ล้วน",a:["cartilage","กระดูกอ่อน","คาร์ทิเลจ"],h:"กระดูก…(ไม่แข็ง)",e:"กระดูกอ่อน (cartilage)"},
+ {q:"รูปแบบการว่ายน้ำของปลาที่เคลื่อนไหวเฉพาะบริเวณหาง เรียกว่า ______",a:["thunniform","ทันนิฟอร์ม"],h:"thunn-… (แบบทูน่า)",e:"Thunniform"},
+ {q:"รูปแบบการว่ายน้ำที่เคลื่อนไหวได้ทั้งตัว (เช่น ปลาไหล) เรียกว่า ______",a:["anguilliform","แองกวิลลิฟอร์ม"],h:"angui-… (แบบปลาไหล)",e:"Anguilliform"},
+ {q:"ครีบหางของปลาเรียกในภาษาอังกฤษว่า ______ fin",a:["caudal","คอดัล"],h:"cau-…",e:"caudal fin (ครีบหาง)"},
+ {q:"ถุงลมของปลาที่ควบคุมการลอย-จม ภาษาอังกฤษว่า ______",a:["swim bladder","swimming bladder","ถุงลม","กระเพาะลม"],h:"swim …",e:"swim bladder (ถุงลม)"},
+ {q:"กล้ามเนื้อยกปีกของนก คือ ______",a:["pectoralis minor","เพคทอราลิสไมเนอร์","pectoralisminor"],h:"…minor (เล็ก)",e:"pectoralis minor"},
+ {q:"กล้ามเนื้อกดปีกของนก คือ ______",a:["pectoralis major","เพคทอราลิสเมเจอร์","pectoralismajor"],h:"…major (ใหญ่)",e:"pectoralis major"},
+ {q:"กระดูกอกของนกที่กล้ามเนื้อปีกยึดเกาะ ภาษาอังกฤษว่า ______",a:["sternum","สเตอร์นัม","กระดูกอก"],h:"ster-…",e:"sternum (กระดูกอก)"},
+ {q:"กล้ามเนื้อของตั๊กแตนที่ทำหน้าที่เหยียดขา คือ ______",a:["extensor","เอ็กเทนเซอร์","เอกซ์เทนเซอร์"],h:"exten-… (เหยียด)",e:"extensor"},
+ {q:"รูปแบบกล้ามเนื้อบินที่ยึดโคนปีกโดยตรง พบในแมลงปอ คือ ______ flight muscle",a:["direct","ไดเรกต์"],h:"ตรงข้ามกับ indirect",e:"direct flight muscle"},
+ // ---- 19.4 มนุษย์ ----
+ {q:"มนุษย์โตเต็มวัยมีกระดูกทั้งหมดกี่ชิ้น ______",a:["206","206 ชิ้น","สองร้อยหก"],h:"แกน 80 + รยางค์ 126",e:"206 ชิ้น"},
+ {q:"กระดูกแกน (axial) มีจำนวน ______ ชิ้น",a:["80","แปดสิบ"],h:"206 ลบ 126",e:"80 ชิ้น"},
+ {q:"กระดูกอ่อนที่คั่นระหว่างกระดูกสันหลังแต่ละข้อ เรียกว่า ______",a:["หมอนรองกระดูก","intervertebral disc","หมอนรอง"],h:"…รองกระดูก",e:"หมอนรองกระดูก (intervertebral disc)"},
+ {q:"ซี่โครงที่ยึดกระดูกอกโดยตรง 7 คู่ เรียกว่า ______ ribs",a:["true","ทรู"],h:"ตรงข้ามกับ false",e:"true ribs"},
+ {q:"ของเหลวที่ลดการเสียดสีในข้อต่อแบบ synovial เรียกว่า ______",a:["น้ำไขข้อ","synovial fluid","นําไขข้อ","ไขข้อ"],h:"…ไขข้อ",e:"น้ำไขข้อ (synovial fluid)"},
+ {q:"เนื้อเยื่อเกี่ยวพันที่เชื่อม 'กล้ามเนื้อกับกระดูก' คือ ______",a:["tendon","เอ็นกล้ามเนื้อ","เอ็นยึดกระดูก","เทนดอน"],h:"ten-…",e:"tendon (เอ็นกล้ามเนื้อ)"},
+ {q:"เนื้อเยื่อเกี่ยวพันที่เชื่อม 'กระดูกกับกระดูก' คือ ______",a:["ligament","เอ็นยึดข้อ","ลิกาเมนต์","เอ็นยึดข้อต่อ"],h:"liga-…",e:"ligament (เอ็นยึดข้อ)"},
+ {q:"ข้อต่อแบบลูกกลมในเบ้า (ball-and-socket) เช่นข้อไหล่และข้อ ______",a:["สะโพก","hip","ตะโพก"],h:"ข้อต่อต้นขา-เชิงกราน",e:"ข้อสะโพก (hip)"},
+ {q:"กล้ามเนื้อที่พบเฉพาะที่หัวใจ ทำงานนอกอำนาจจิตใจ คือ ______",a:["กล้ามเนื้อหัวใจ","cardiac muscle","cardiac","กล้ามเนื้อคาร์ดิแอก"],h:"cardi-…",e:"กล้ามเนื้อหัวใจ (cardiac)"},
+ {q:"หน่วยการหดตัวที่เล็กที่สุดของกล้ามเนื้อลาย คือ ______",a:["sarcomere","ซาร์โคเมียร์","ซาโคเมียร์"],h:"sarco-…",e:"ซาร์โคเมียร์ (sarcomere)"},
+ {q:"เส้นใยชนิดบาง (thin filament) ในซาร์โคเมียร์ คือโปรตีน ______",a:["actin","แอกทิน","แอคติน"],h:"act-…",e:"actin (แอกทิน)"},
+ {q:"เส้นใยชนิดหนา (thick filament) ในซาร์โคเมียร์ คือโปรตีน ______",a:["myosin","ไมโอซิน","ไมโอซิ่น"],h:"myo-…",e:"myosin (ไมโอซิน)"},
+ {q:"ไอออนที่จับกับ troponin เพื่อเริ่มการหดตัวของกล้ามเนื้อ คือ ______",a:["ca2+","ca","แคลเซียม","calcium","ca²⁺","แคลเซียมไอออน"],h:"ธาตุในกระดูก/นม",e:"Ca²⁺ (แคลเซียม)"},
+ {q:"สารสื่อประสาทที่หลั่งที่รอยต่อประสาท-กล้ามเนื้อสั่งให้กล้ามเนื้อหด คือ ______",a:["acetylcholine","ach","อะเซทิลโคลีน","แอซิทิลโคลีน"],h:"ACh",e:"Acetylcholine (ACh)"},
+ {q:"ภาวะกล้ามเนื้อแข็งตัวหลังตาย 2–4 ชม. เรียกว่า ______",a:["rigor mortis","ไรกอร์มอร์ทิส","rigormortis","ศพแข็ง"],h:"rigor …",e:"Rigor mortis"},
+ {q:"ใยกล้ามเนื้อที่หดเร็ว ล้าเร็ว ใช้ fermentation เหมาะกีฬาใช้พลัง คือใยแบบ ______",a:["fast-twitch","fast","ใยเร็ว","fasttwitch","ฟาสต์ทวิช"],h:"เร็ว = ?",e:"fast-twitch (ใยเร็ว)"},
+];
+const BANK=[
+/* ---------- 19.1 เซลล์เดียว ---------- */
+{ch:1,brain:true,q:"สิ่งมีชีวิตเซลล์เดียวยังตอบสนองต่อสิ่งเร้าได้ ทั้งที่ขาดโครงสร้างใดที่สัตว์ชั้นสูงใช้รับรู้และสั่งการ?",
+ opts:["Nervous system","Cytoskeleton","Cytoplasm","Mitochondria"],a:"Nervous system",
+ hint:"โครงสร้างที่ในสัตว์ทำหน้าที่รับสิ่งเร้าและสั่งการตอบสนอง — เซลล์เดียวไม่มีสิ่งนี้",
+ exp:"เซลล์เดียวไม่มีระบบประสาท แต่ตอบสนองต่อสิ่งเร้าได้ผ่านการทำงานของเซลล์โดยตรง",cite:"p.3"},
+{ch:1,q:"เส้นใยโปรตีนภายในไซโทพลาซึมที่ทำหน้าที่เป็นโครงร่างค้ำจุนเซลล์และช่วยการเคลื่อนที่ คือ?",
+ opts:["Cytoskeleton","Exoskeleton","Hydrostatic skeleton","Endoskeleton"],a:"Cytoskeleton",
+ hint:"คำขึ้นต้น cyto- อยู่ภายในเซลล์ เป็นตาข่ายเส้นใยโปรตีน",
+ exp:"ไซโทสเกเลตอนเป็นเส้นใยโปรตีนค้ำจุนและช่วยการไหลของไซโทพลาซึม/การเคลื่อนที่",cite:"p.3"},
+{ch:1,q:"การเคลื่อนที่ของอะมีบาที่อาศัยการไหลของไซโทพลาซึมไปสร้างเท้าเทียม มีชื่อเรียกว่าอะไร?",
+ opts:["Amoeboid movement","Peristalsis","Jet propulsion","Undulatory motion"],a:"Amoeboid movement",
+ hint:"ตั้งชื่อตามตัวสิ่งมีชีวิตเอง อาศัยการยื่น pseudopodium",
+ exp:"Amoeboid movement เกิดจากไซโทพลาซึมไหลไปสร้าง pseudopodium (เท้าเทียม)",cite:"p.5–6"},
+{ch:1,q:"ในอะมีบา ไซโทพลาซึมส่วนนอกที่มีลักษณะกึ่งแข็งกึ่งเหลว (สถานะเจล) เรียกว่าอะไร?",
+ opts:["Ectoplasm","Endoplasm","Mesoglea","Mesophyll"],a:"Ectoplasm",
+ hint:"ส่วนนอก (ecto-) สถานะ gel",
+ exp:"Ectoplasm = ส่วนนอก สถานะเจล ; Endoplasm = ส่วนใน สถานะซอล (เหลว)",cite:"p.5"},
+{ch:1,q:"ไมโครฟิลาเมนต์ที่เกี่ยวข้องกับการเคลื่อนที่แบบอะมีบาสร้างจากโปรตีนชนิดใด?",
+ opts:["Actin","Myosin","Tubulin","Keratin"],a:"Actin",
+ hint:"โปรตีนเส้นใยบางตัวเดียวกับ thin filament ในกล้ามเนื้อ",
+ exp:"Microfilament = แอกทิน (actin protein)",cite:"p.5"},
+{ch:1,q:"สิ่งมีชีวิตเซลล์เดียวที่มีขนสั้นจำนวนมากโบกพัดเพื่อเคลื่อนที่ในน้ำ คือชนิดใด?",
+ opts:["Paramecium","Euglena","Amoeba","Hydra"],a:"Paramecium",
+ hint:"ใช้ cilia จำนวนมากปกคลุมตัว",
+ exp:"พารามีเซียมใช้ cilia (ซิเลีย) จำนวนมากในการเคลื่อนที่",cite:"p.7,10"},
+{ch:1,q:"สิ่งมีชีวิตเซลล์เดียวที่ใช้หนวดยาวเส้นเดียวสะบัดเพื่อเคลื่อนที่ คือชนิดใด?",
+ opts:["Euglena","Paramecium","Amoeba","Planaria"],a:"Euglena",
+ hint:"ใช้ flagellum เส้นเดียว",
+ exp:"ยูกลีนาใช้ flagellum (แฟลเจลลัม) ในการเคลื่อนที่",cite:"p.8,10"},
+{ch:1,q:"การจัดเรียงไมโครทูบูลภายใน cilia และ flagella เป็นแบบใด?",
+ opts:["9 + 2","9 + 0","2 + 9","9 + 3"],a:"9 + 2",
+ hint:"doublet รอบนอก 9 ชุด + singlet ตรงกลาง",
+ exp:"cilia/flagella = 9 outer doublet + 2 central singlet (9+2) ส่วน basal body = 9+0 (triplet)",cite:"p.9"},
+{ch:1,q:"โครงสร้างที่ทำหน้าที่ทำให้ flagellum และ cilia โค้งงอและพัดโบกได้ คือ?",
+ opts:["Dynein arm","Basal body","Cross-bridge","Tropomyosin"],a:"Dynein arm",
+ hint:"แขนโปรตีนระหว่าง doublet ที่สร้างแรงเลื่อน",
+ exp:"Dynein arm ทำให้ cilia/flagella โค้งงอ ; Basal body ควบคุมการเคลื่อนไหวที่โคน",cite:"p.9"},
+{ch:1,q:"โครงสร้างที่โคนของ flagellum/cilia ซึ่งควบคุมการเคลื่อนไหว และมีไมโครทูบูลแบบ 9+0 triplet คือ?",
+ opts:["Basal body","Dynein arm","Centromere","Sarcomere"],a:"Basal body",
+ hint:"อยู่ที่ฐาน จัดเรียงแบบ triplet 9+0",
+ exp:"Basal body ควบคุมการเคลื่อนไหว มีไมโครทูบูล 9 outer triplet (9+0)",cite:"p.9"},
+
+/* ---------- 19.2 ไม่มีกระดูกสันหลัง ---------- */
+{ch:2,brain:true,q:"สัตว์ไม่มีกระดูกสันหลังต่างจากสิ่งมีชีวิตเซลล์เดียวตรงที่มีโครงสร้างใดมาควบคุมการหด-คลายของกล้ามเนื้อ?",
+ opts:["Nervous system","Cytoskeleton","Exoskeleton","Spicule"],a:"Nervous system",
+ hint:"ระบบที่รับรู้สิ่งเร้าและสั่งการกล้ามเนื้อ — เซลล์เดียวไม่มี แต่สัตว์มี",
+ exp:"สัตว์ไม่มีกระดูกสันหลังมีระบบประสาทควบคุมการตอบสนอง สั่งการหด/คลายกล้ามเนื้อ",cite:"p.11"},
+{ch:2,q:"โครงร่างที่ใช้ของเหลวบรรจุในช่องลำตัวค้ำจุนและต้านการหดของกล้ามเนื้อ เรียกว่า?",
+ opts:["Hydrostatic skeleton","Exoskeleton","Endoskeleton","Cytoskeleton"],a:"Hydrostatic skeleton",
+ hint:"อาศัยแรงดันของเหลวในช่อง coelom/pseudocoelom",
+ exp:"Hydrostatic skeleton เหมาะกับการเลื้อย/เจาะรู ไม่สนับสนุนการวิ่งหรือเดิน",cite:"p.14"},
+{ch:2,q:"ข้อใด \"ไม่ใช่\" กลุ่มสัตว์ที่มีโครงร่างแบบ hydrostatic skeleton?",
+ opts:["Arthropods","Cnidarians","Nematodes","Annelids"],a:"Arthropods",
+ hint:"กลุ่มที่มีโครงร่างแข็งภายนอกและต้องลอกคราบ",
+ exp:"hydrostatic skeleton พบใน cnidarians, flatworms, nematodes, annelids — อาร์โทรพอดใช้ exoskeleton",cite:"p.14,25"},
+{ch:2,q:"ไฮดราเคลื่อนที่และยืดหดหนวดได้โดยอาศัยเส้นใยหดตัวชนิดใดร่วมกับแรงดันของเหลวในตัว?",
+ opts:["Longitudinal and circular contractile fibers","Diagonal muscle only","Longitudinal muscle only","Striated muscle"],a:"Longitudinal and circular contractile fibers",
+ hint:"มีทั้งเส้นใยตามยาวและเส้นใยวง ทำงานต้านของเหลวในตัว",
+ exp:"ไฮดรามี longitudinal + circular contractile fibers ทำงานกับของเหลวในตัว (hydrostatic)",cite:"p.15"},
+{ch:2,q:"เนื้อเยื่อชั้นกลางลักษณะคล้ายวุ้น (jelly-like) ของแมงกะพรุน เรียกว่าอะไร?",
+ opts:["Mesoglea","Epidermis","Gastrodermis","Ectoplasm"],a:"Mesoglea",
+ hint:"ชั้นกลาง สถานะคล้ายวุ้น อยู่ระหว่างชั้นนอกกับชั้นใน",
+ exp:"แมงกะพรุน: epidermis (นอก), gastrodermis (ใน), mesoglea (กลาง คล้ายวุ้น)",cite:"p.16"},
+{ch:2,q:"พลานาเรียคลานและว่ายน้ำได้โดยอาศัยโครงสร้างใดร่วมกับการผลิตน้ำเมือก?",
+ opts:["Ventral and lateral cilia","Setae","Tube feet","Flagellum"],a:"Ventral and lateral cilia",
+ hint:"ขนเล็ก ๆ บริเวณด้านท้องและด้านข้างลำตัว",
+ exp:"พลานาเรียใช้ ventral & lateral cilia + น้ำเมือกช่วยเคลื่อนที่",cite:"p.18"},
+{ch:2,q:"กล้ามเนื้อชนิดใดของพลานาเรียทำหน้าที่ควบคุมการแบนของลำตัว?",
+ opts:["Diagonal muscle","Circular muscle","Longitudinal muscle","Oblique sheet"],a:"Diagonal muscle",
+ hint:"กล้ามเนื้อที่วางแนวเฉียง (ทแยง)",
+ exp:"พลานาเรียมีกล้ามเนื้อวง+ตามยาว (หมุนตัว) และกล้ามเนื้อทแยง (diagonal) คุมการแบนตัว",cite:"p.18"},
+{ch:2,q:"หนอนตัวกลม (roundworm) เคลื่อนที่แบบแกว่งไปมาไร้ทิศทางคล้ายแส้ เพราะมีกล้ามเนื้อชนิดเดียวคือ?",
+ opts:["Longitudinal muscle only","Circular muscle only","Diagonal muscle","Cardiac muscle"],a:"Longitudinal muscle only",
+ hint:"ขาดกล้ามเนื้อวง จึงหดได้แค่แนวยาว → สะบัดไปมา",
+ exp:"หนอนตัวกลมมีเฉพาะ longitudinal muscle จึงเคลื่อนที่แบบ thrashing/whiplike",cite:"p.19–20"},
+{ch:2,q:"การเคลื่อนที่แบบแกว่งสะบัดคล้ายแส้ของหนอนตัวกลม มีชื่อเรียกว่าอะไร?",
+ opts:["Thrashing / whiplike motion","Peristalsis","Jet propulsion","Amoeboid movement"],a:"Thrashing / whiplike motion",
+ hint:"ชื่อบรรยายลักษณะเหมือนสะบัดแส้ ไม่มีทิศทางชัด",
+ exp:"A thrashing / whiplike motion เป็นการเคลื่อนที่เฉพาะของกลุ่มหนอนตัวกลม",cite:"p.19"},
+{ch:2,q:"โครงสร้างเล็ก ๆ ที่ยื่นจากผนังลำตัวแต่ละปล้องของไส้เดือน ทำหน้าที่จิกดินกันลำตัวถอยหลัง คือ?",
+ opts:["Setae","Cilia","Spicule","Podium"],a:"Setae",
+ hint:"เดือยแข็งยื่นออกมาเกาะ/จิกพื้น",
+ exp:"Setae (เดือย) ของไส้เดือนช่วยยึดดินขณะเคลื่อนที่",cite:"p.21"},
+{ch:2,q:"ไส้เดือนดินมีกล้ามเนื้อสองชนิดที่ทำงานตรงข้ามกัน คือกล้ามเนื้อชนิดใดบ้าง?",
+ opts:["Circular and longitudinal muscle","Diagonal and circular muscle","Flexor and extensor","Cardiac and smooth muscle"],a:"Circular and longitudinal muscle",
+ hint:"กล้ามเนื้อวง + กล้ามเนื้อตามยาว",
+ exp:"ไส้เดือนใช้ circular + longitudinal muscle ทำงานแบบ antagonism",cite:"p.21"},
+{ch:2,q:"การที่กล้ามเนื้อวงและกล้ามเนื้อตามยาวทำงานตรงข้ามกัน (อันหนึ่งหด อีกอันคลาย) เรียกว่าอะไร?",
+ opts:["Antagonism","Peristalsis","Molting","Undulation"],a:"Antagonism",
+ hint:"คำเดียวกับการทำงานคู่ตรงข้ามของไบเซ็ปส์-ไตรเซ็ปส์",
+ exp:"Antagonism = สภาวะตรงข้ามกันของกล้ามเนื้อสองชุด",cite:"p.21"},
+{ch:2,q:"การที่กล้ามเนื้อวงและตามยาวของไส้เดือนหดคลายเป็นจังหวะคล้ายระลอกคลื่นวิ่งไปตามลำตัว เรียกว่า?",
+ opts:["Peristalsis","Antagonism","Jet propulsion","Gliding"],a:"Peristalsis",
+ hint:"คลื่นการบีบตัวแบบเดียวกับที่ผลักอาหารในทางเดินอาหาร",
+ exp:"Peristalsis = การหดคลายเป็นจังหวะเหมือนระลอกคลื่น",cite:"p.21"},
+{ch:2,q:"หมึกพ่นน้ำออกทางไซฟอนเพื่อดันตัวไปทิศตรงข้าม ระบบการเคลื่อนที่นี้เรียกว่าอะไร?",
+ opts:["Jet propulsion","Peristalsis","Undulatory motion","Amoeboid movement"],a:"Jet propulsion",
+ hint:"พ่นของไหลออกแล้วได้แรงดันกลับไปข้างหน้า (แบบเครื่องบินไอพ่น)",
+ exp:"หมึกใช้ jet propulsion พ่นน้ำออกทางไซฟอน (ใช้ hydrostatic skeleton)",cite:"p.24"},
+{ch:2,q:"โครงร่างแข็งภายนอกของสัตว์กลุ่มอาร์โทรพอดประกอบด้วยสารชนิดใดเป็นหลัก?",
+ opts:["Chitin และโปรตีน","Calcium carbonate และ silica","Cartilage และ bone","Actin และ myosin"],a:"Chitin และโปรตีน",
+ hint:"พอลิแซ็กคาไรด์แข็ง + โปรตีน",
+ exp:"Exoskeleton ของอาร์โทรพอด = ชั้นของโปรตีนและไคติน",cite:"p.26"},
+{ch:2,q:"เนื่องจากโครงร่างแข็งภายนอกมีขนาดตายตัว การเติบโตของอาร์โทรพอดจึงต้องอาศัยกระบวนการใด?",
+ opts:["Molting","Peristalsis","Fermentation","Gliding"],a:"Molting",
+ hint:"การลอก/ทิ้งเปลือกเดิมเพื่อสร้างใหม่ที่ใหญ่ขึ้น",
+ exp:"Molting (การลอกคราบ) ทำให้สัตว์เติบโตได้ และเป็นช่วงที่ถูกทำร้ายง่ายที่สุด",cite:"p.26,28"},
+{ch:2,q:"การกระโดดของตั๊กแตนอาศัยกล้ามเนื้อคู่ตรงข้ามชนิดใด?",
+ opts:["Flexor และ extensor","Circular และ longitudinal","Vertical และ horizontal","Pectoralis major และ minor"],a:"Flexor และ extensor",
+ hint:"คู่กล้ามเนื้อที่ทำหน้าที่ 'งอขา' กับ 'เหยียดขา'",
+ exp:"ขากระโดดตั๊กแตน: flexor (งอ) และ extensor (เหยียด) ทำงานแบบ antagonistic",cite:"p.29"},
+{ch:2,q:"ขณะแมลงงอขา กล้ามเนื้อทำงานอย่างไร?",
+ opts:["Flexor หด, extensor คลาย","Flexor คลาย, extensor หด","หดทั้งคู่","คลายทั้งคู่"],a:"Flexor หด, extensor คลาย",
+ hint:"งอ = ดึงขาเข้า ; ตัวที่ทำให้งอจึงต้องหด",
+ exp:"งอขา: flexor หด + extensor คลาย ; เหยียดขา: สลับกัน",cite:"p.29"},
+{ch:2,q:"แมลงกลุ่มใดบินด้วย direct flight muscle (กล้ามเนื้อยึดติดกับโคนปีกโดยตรง)?",
+ opts:["แมลงปอ","ผึ้ง","ด้วง","แมลงวัน"],a:"แมลงปอ",
+ hint:"กลุ่มดึกดำบรรพ์ เช่น แมลงปอและแมลงชีปะขาว",
+ exp:"Direct flight muscle พบในแมลงปอและแมลงชีปะขาว ; กลุ่มอื่น (ผึ้ง ด้วง แมลงสองปีก) ใช้ indirect",cite:"p.31"},
+{ch:2,q:"ผึ้ง ด้วง และแมลงวัน บินด้วยกลไกกล้ามเนื้อแบบใด?",
+ opts:["Indirect flight muscle","Direct flight muscle","Jet propulsion","Gliding flight"],a:"Indirect flight muscle",
+ hint:"กล้ามเนื้อไม่ติดปีกโดยตรง แต่ขยับเปลือกหุ้มส่วนอกให้ปีกกระพือ",
+ exp:"Indirect flight muscle อาศัยการหด/ขยายกล้ามเนื้อส่วนอก-ท้อง พบในผึ้ง ด้วง แมลงสองปีก",cite:"p.31"},
+{ch:2,q:"โครงร่างของฟองน้ำประกอบด้วยหนามแข็งเล็ก ๆ ที่เรียกว่าอะไร?",
+ opts:["Spicule","Setae","Podium","Ampulla"],a:"Spicule",
+ hint:"แท่งแข็งจากแคลเซียมคาร์บอเนตหรือซิลิกา ฝังในเนื้อเยื่อ",
+ exp:"ฟองน้ำมี spicule (โปรตีนไฟเบอร์/CaCO₃/ซิลิกา) เป็นส่วนของ endoskeleton",cite:"p.32"},
+{ch:2,q:"ข้อใดเป็นสัตว์ไม่มีกระดูกสันหลังที่มีโครงร่างแบบ endoskeleton (โครงร่างภายใน)?",
+ opts:["ดาวทะเลและฟองน้ำ","แมลงและกุ้ง","หอยและหมึก","ไส้เดือนและปลิง"],a:"ดาวทะเลและฟองน้ำ",
+ hint:"กลุ่ม echinoderm และ sponge — มี spicule/plate ฝังในเนื้อเยื่อ",
+ exp:"Endoskeleton พบในฟองน้ำ เอคไคโนเดิร์ม และสัตว์มีกระดูกสันหลังทุกชนิด",cite:"p.32,34"},
+{ch:2,q:"ดาวทะเลมีโครงร่างแข็งภายใน แต่ใช้สิ่งใดในการเคลื่อนที่จริง ๆ?",
+ opts:["Water vascular system","Exoskeleton","Flagellum","Swim bladder"],a:"Water vascular system",
+ hint:"ระบบท่อน้ำภายในลำตัวที่ทำงานแบบ hydrostatic",
+ exp:"ดาวทะเลเคลื่อนที่ด้วย water vascular system (hydrostatic) ผ่าน tube feet",cite:"p.35"},
+{ch:2,q:"ในระบบท่อน้ำของดาวทะเล ส่วนใดหดตัวเพื่อดันน้ำให้ podium ยืดยาวออก?",
+ opts:["Ampulla","Madreporite","Sucker","Spicule"],a:"Ampulla",
+ hint:"กระเปาะเหนือ tube foot ที่บีบดันน้ำลงไป",
+ exp:"Ampulla หด → ดันน้ำไป podium → podium ยืดยาว (และทำงานสลับกัน)",cite:"p.35–36"},
+
+/* ---------- 19.3 มีกระดูกสันหลัง ---------- */
+{ch:3,q:"ปลาฉลามและปลากระเบนมีโครงสร้างค้ำจุนร่างกายเป็นชนิดใด?",
+ opts:["Cartilage","Bone","Chitin","Spicule"],a:"Cartilage",
+ hint:"กระดูกชนิดอ่อน ไม่ใช่กระดูกแข็ง",
+ exp:"ฉลาม/กระเบนเป็นปลากระดูกอ่อน (cartilage) ; กลุ่มอื่นมีทั้ง cartilage และ bone",cite:"p.37"},
+{ch:3,q:"การว่ายน้ำของปลาที่ลำตัวยืดหยุ่นโบกตัวเป็นลูกคลื่น เรียกการเคลื่อนไหวแบบนี้ว่าอะไร?",
+ opts:["Undulatory motion","Peristalsis","Jet propulsion","Gliding flight"],a:"Undulatory motion",
+ hint:"ลำตัวสะบัดเป็นคลื่นต่อเนื่อง",
+ exp:"ปลาว่ายด้วย undulatory motion โดยกล้ามเนื้อลำตัวเกาะกระดูกสันหลัง",cite:"p.39"},
+{ch:3,q:"กล้ามเนื้อลำตัวของปลายึดเกาะกับโครงสร้างใดเพื่อสร้างแรงในการว่าย?",
+ opts:["Vertebrae","Swim bladder","Fin rays","Sternum"],a:"Vertebrae",
+ hint:"แกนกระดูกตามแนวหลังของปลา",
+ exp:"กล้ามเนื้อลำตัว (body musculature) เกาะกับ vertebrae (กระดูกสันหลัง)",cite:"p.39"},
+{ch:3,q:"ครีบคู่ที่อยู่บริเวณด้านหน้าข้างลำตัวของปลา ทำหน้าที่ควบคุมตำแหน่ง/ทรงตัว คือครีบใด?",
+ opts:["Pectoral fins","Caudal fin","Dorsal fin","Anal fin"],a:"Pectoral fins",
+ hint:"ครีบคู่บริเวณอก",
+ exp:"Pectoral fins = ครีบอก (ครีบคู่) ; caudal = หาง, dorsal = หลัง, anal = ก้น",cite:"p.39–40"},
+{ch:3,q:"รูปแบบการว่ายน้ำที่เกิดการเคลื่อนไหวเฉพาะบริเวณหาง (เช่น ปลาทูน่า ว่ายเร็ว) เรียกว่าอะไร?",
+ opts:["Thunniform","Anguilliform","Subcarangiform","Carangiform"],a:"Thunniform",
+ hint:"ตั้งชื่อตามปลาทูน่า (Thunnus) ขยับเฉพาะหาง",
+ exp:"Thunniform = เคลื่อนไหวเฉพาะหาง ; Anguilliform = ทั้งตัว",cite:"p.41"},
+{ch:3,q:"รูปแบบการว่ายน้ำที่ลำตัวเคลื่อนไหวเป็นคลื่นได้ทั้งตัว (เช่น ปลาไหล) เรียกว่าอะไร?",
+ opts:["Anguilliform","Thunniform","Carangiform","Subcarangiform"],a:"Anguilliform",
+ hint:"ตั้งชื่อตามปลาไหล (Anguilla) สะบัดทั้งลำตัว",
+ exp:"Anguilliform = เคลื่อนไหวได้ทั้งตัว ; ไล่ระดับไปจนถึง Thunniform ที่ใช้แต่หาง",cite:"p.41"},
+{ch:3,q:"อวัยวะที่บรรจุแก๊สและทำหน้าที่ควบคุมการลอย/จมของปลา คือ?",
+ opts:["Swim bladder","Lateral line","Operculum","Sucker"],a:"Swim bladder",
+ hint:"ถุงบรรจุแก๊สในช่องตัว (นำมาทำ 'กระเพาะปลา' ได้)",
+ exp:"Swim bladder (ถุงลม/กระเพาะลม) ควบคุมการลอยหรือจม",cite:"p.42"},
+{ch:3,q:"ในการบินของนก กล้ามเนื้อชุดใดทำหน้าที่ 'ยกปีก' ขึ้น?",
+ opts:["Pectoralis minor","Pectoralis major","Deltoid","Latissimus"],a:"Pectoralis minor",
+ hint:"ชุดที่เล็กกว่า ทำหน้าที่ยกปีกขึ้น",
+ exp:"ยกปีก = pectoralis minor หด ; กดปีก = pectoralis major หด (ทำงานตรงข้ามกัน)",cite:"p.44–45"},
+{ch:3,q:"กล้ามเนื้อบินทั้งสองชุดของนกเกาะติดกับกระดูกคู่ใด?",
+ opts:["Humerus และ sternum","Radius และ ulna","Femur และ tibia","Scapula และ clavicle"],a:"Humerus และ sternum",
+ hint:"กระดูกโคนปีก + กระดูกอก",
+ exp:"กล้ามเนื้อยกปีก/กดปีกเกาะกับ humerus (โคนปีก) และ sternum (กระดูกอก)",cite:"p.44"},
+{ch:3,q:"การร่อนของนกที่อาศัยความดันอากาศเหนือปีกน้อยกว่าใต้ปีกจนเกิดแรงยก เรียกว่าอะไร?",
+ opts:["Gliding flight","Flapping flight","Jet propulsion","Undulatory motion"],a:"Gliding flight",
+ hint:"ลอยตัวโดยไม่กระพือปีก อาศัยแรงยกจากความต่างความดัน",
+ exp:"Gliding flight: อากาศเหนือปีกเร็วกว่า → ความดันบนน้อยกว่าล่าง → เกิดแรงยก",cite:"p.47"},
+{ch:3,q:"เหตุใดกระดูกของนกจึงมีน้ำหนักเบา เหมาะกับการบิน?",
+ opts:["กระดูกมีรูพรุน","กระดูกเป็นกระดูกอ่อนทั้งหมด","ไม่มีไขกระดูก","ทำจากไคติน"],a:"กระดูกมีรูพรุน",
+ hint:"โครงสร้างภายในกลวง/พรุน ลดมวล",
+ exp:"กระดูกนกมีรูพรุนทำให้น้ำหนักเบา ; ขนปีก/หางช่วยทรงตัวและปรับทิศ",cite:"p.44"},
+
+/* ---------- 19.4 มนุษย์ ---------- */
+{ch:4,q:"มนุษย์ที่เจริญเติบโตเต็มที่ประกอบด้วยกระดูกทั้งหมดกี่ชิ้น?",
+ opts:["206","186","226","246"],a:"206",
+ hint:"แกน 80 + รยางค์ 126",
+ exp:"206 ชิ้น = axial 80 + appendicular 126",cite:"p.50"},
+{ch:4,brain:true,q:"กระดูกชิ้นใดในกระดูกแกนทำหน้าที่หลักในการป้องกันสมอง?",
+ opts:["Skull","Vertebral column","Rib cage","Sternum"],a:"Skull",
+ hint:"โครงกระดูกที่ครอบและป้องกันสมองไว้",
+ exp:"กะโหลกศีรษะ (skull) ป้องกันสมองและเป็นโครงของรูปหน้า",cite:"p.52"},
+{ch:4,brain:true,q:"ข้อต่อที่เชื่อมกระดูกหุ้มสมอง (รอยประสานกะโหลก) เคลื่อนไหวไม่ได้ จัดเป็นข้อต่อชนิดใด?",
+ opts:["Fibrous joint","Synovial joint","Cartilaginous joint","Pivot joint"],a:"Fibrous joint",
+ hint:"ข้อต่อที่ 'ขยับไม่ได้' เช่นรอยต่อกระดูกกะโหลก",
+ exp:"Fibrous joint เคลื่อนที่ไม่ได้ เช่น กระดูกหุ้มสมอง",cite:"p.58"},
+{ch:4,brain:true,q:"กระดูกสันหลังทำหน้าที่ป้องกันโครงสร้างใดของระบบประสาท?",
+ opts:["ไขสันหลัง (spinal cord)","สมองใหญ่","สมองน้อย","เส้นประสาทสมอง"],a:"ไขสันหลัง (spinal cord)",
+ hint:"ส่วนของระบบประสาทกลางที่ทอดยาวในแนวหลัง",
+ exp:"กระดูกสันหลังค้ำจุนร่างกายและป้องกันไขสันหลัง",cite:"p.53"},
+{ch:4,brain:true,q:"ข้อต่อแบบเดือย (pivot) ที่กระดูกสันหลังคอชิ้นที่ 1–2 เชื่อมกับกะโหลก ทำให้เกิดการเคลื่อนไหวแบบใด?",
+ opts:["หมุน/ส่ายศีรษะ","งอ-เหยียดทางเดียว","เลื่อนไปมา","ทุกทิศทาง"],a:"หมุน/ส่ายศีรษะ",
+ hint:"กระดูกทรงกระบอกสวมในวงแหวน → เคลื่อนที่แบบหมุน",
+ exp:"Pivot joint ที่คอเชื่อมกับกะโหลกทำให้หมุน/ส่ายศีรษะได้",cite:"p.60"},
+{ch:4,q:"หมอนรองกระดูก (intervertebral disc) ระหว่างข้อกระดูกสันหลังทำจากเนื้อเยื่อชนิดใด?",
+ opts:["Cartilage","Bone","Ligament","Tendon"],a:"Cartilage",
+ hint:"แผ่นกระดูกอ่อนรองรับและกันการเสียดสี",
+ exp:"หมอนรองกระดูกเป็นแผ่นกระดูกอ่อน (cartilage) เชื่อม/รองรับกระดูกสันหลังแต่ละข้อ",cite:"p.53"},
+{ch:4,q:"กระดูกซี่โครงที่ยึดติดกับกระดูกอกโดยตรง 7 คู่ เรียกว่าอะไร?",
+ opts:["True ribs","False ribs","Floating ribs","Costal cartilage"],a:"True ribs",
+ hint:"เชื่อม sternum โดยตรง — 'ของจริง'",
+ exp:"7 คู่แรก = true ribs (ยึด sternum ตรง) ; 5 คู่ถัดไป = false ribs ; 2 คู่ = floating ribs",cite:"p.54"},
+{ch:4,q:"ซี่โครงลอย (floating ribs) ที่ไม่ยึดติดกับกระดูกอกเลย มีกี่คู่?",
+ opts:["2 คู่","5 คู่","7 คู่","12 คู่"],a:"2 คู่",
+ hint:"เป็นส่วนหนึ่งของ false ribs ที่ปลายอิสระ",
+ exp:"floating ribs = 2 คู่ (เป็นส่วนหนึ่งของ false ribs 5 คู่)",cite:"p.54"},
+{ch:4,q:"ข้อต่อที่เคลื่อนไหวได้ทุกทิศทาง พบที่ข้อไหล่และข้อสะโพก คือข้อต่อชนิดใด?",
+ opts:["Ball-and-socket joint","Hinge joint","Pivot joint","Saddle joint"],a:"Ball-and-socket joint",
+ hint:"ปลายกระดูกทรงกลมอยู่ในเบ้า",
+ exp:"Ball-and-socket joint เคลื่อนได้ทุกทิศทาง เช่น ไหล่และสะโพก",cite:"p.61"},
+{ch:4,q:"ข้อศอกที่งอ-เหยียดได้ทางเดียวเหมือนบานพับ จัดเป็นข้อต่อชนิดใด?",
+ opts:["Hinge joint","Pivot joint","Plane joint","Condyloid joint"],a:"Hinge joint",
+ hint:"เคลื่อนทางเดียวเหมือนประตูบานพับ",
+ exp:"Hinge joint (บานพับ) เช่น ข้อศอก",cite:"p.60"},
+{ch:4,q:"ข้อต่อที่กระดูกข้อมือ (carpal) และกระดูกข้อเท้า (tarsal) เลื่อนไปมาได้ จัดเป็นชนิดใด?",
+ opts:["Plane / gliding joint","Hinge joint","Ball-and-socket joint","Saddle joint"],a:"Plane / gliding joint",
+ hint:"ผิวแบน เลื่อนสไลด์ไปมา",
+ exp:"Plane/gliding joint เช่น carpal และ tarsal bones",cite:"p.60"},
+{ch:4,q:"ข้อต่อหัวแม่มือที่ผิวเว้า-นูนเข้าคู่กันและเคลื่อนได้ดีกว่าข้อต่อแบบปุ่ม คือชนิดใด?",
+ opts:["Saddle joint","Condyloid joint","Pivot joint","Hinge joint"],a:"Saddle joint",
+ hint:"รูปร่างคล้ายอานม้า พบที่นิ้วหัวแม่มือ",
+ exp:"Saddle joint (อานม้า) เช่น thumb joint",cite:"p.61"},
+{ch:4,q:"เนื้อเยื่อเกี่ยวพันที่เชื่อม 'กระดูกกับกระดูก' เข้าด้วยกัน คือ?",
+ opts:["Ligament","Tendon","Cartilage","Synovial fluid"],a:"Ligament",
+ hint:"เอ็นยึดข้อ เชื่อมกระดูก-กระดูก (อย่าสับสนกับเอ็นกล้ามเนื้อ)",
+ exp:"Ligament (เอ็นยึดข้อ) เชื่อมกระดูก-กระดูก ; Tendon เชื่อมกล้ามเนื้อ-กระดูก",cite:"p.62,72"},
+{ch:4,q:"เนื้อเยื่อเกี่ยวพันที่เชื่อม 'กล้ามเนื้อกับกระดูก' คือ?",
+ opts:["Tendon","Ligament","Cartilage","Periosteum"],a:"Tendon",
+ hint:"เอ็นกล้ามเนื้อ — ส่งแรงหดจากกล้ามเนื้อไปยังกระดูก",
+ exp:"Tendon (เอ็นกล้ามเนื้อ) เชื่อมกล้ามเนื้อ-กระดูก",cite:"p.72"},
+{ch:4,q:"ของเหลวที่ลดการเสียดสีในข้อต่อชนิด synovial เรียกว่าอะไร?",
+ opts:["Synovial fluid","Cytoplasm","Plasma","Lymph"],a:"Synovial fluid",
+ hint:"น้ำไขข้อในช่องว่างของข้อต่อ",
+ exp:"Synovial fluid (น้ำไขข้อ) ทำให้กระดูกไม่เสียดสีกันขณะเคลื่อนไหว",cite:"p.62"},
+{ch:4,q:"บริเวณปลายกระดูกที่ทำหน้าที่สร้างเซลล์เม็ดเลือด คือ?",
+ opts:["Red bone marrow","Yellow bone marrow","Periosteum","Cartilage"],a:"Red bone marrow",
+ hint:"ไขกระดูกสีแดงที่ปลายกระดูก",
+ exp:"Red bone marrow สร้างเซลล์เม็ดเลือด ; เมื่อโตขึ้นไขมันสะสมทำให้สร้างได้น้อยลง",cite:"p.57"},
+{ch:4,brain:true,q:"กล้ามเนื้อชนิดใดทำงานภายใต้อำนาจจิตใจ (สั่งการโดยสมอง) และมีลายพาดขวางหลายนิวเคลียส?",
+ opts:["Skeletal muscle","Smooth muscle","Cardiac muscle","Visceral muscle"],a:"Skeletal muscle",
+ hint:"กล้ามเนื้อโครงร่าง/กล้ามเนื้อลาย ควบคุมได้ตามใจสั่ง",
+ exp:"Skeletal (striated) muscle: ลายพาดขวาง หลายนิวเคลียส voluntary ควบคุมโดยสมอง",cite:"p.50,64,67"},
+{ch:4,q:"กล้ามเนื้อชนิดใดมี intercalated disks เชื่อมเซลล์ และพบเฉพาะที่หัวใจ?",
+ opts:["Cardiac muscle","Skeletal muscle","Smooth muscle","Striated muscle"],a:"Cardiac muscle",
+ hint:"แตกแขนงเชื่อมกัน ทำงานนอกอำนาจจิตใจ",
+ exp:"Cardiac muscle มี intercalated disks เชื่อมเซลล์ ช่วยประสานการหดตัว",cite:"p.68"},
+{ch:4,brain:true,q:"กล้ามเนื้อที่หดตัวช้าแต่นานกว่า อยู่นอกอำนาจจิตใจ และพบที่ผนังอวัยวะภายใน คือ?",
+ opts:["Smooth muscle","Skeletal muscle","Cardiac muscle","Striated muscle"],a:"Smooth muscle",
+ hint:"เซลล์รูปกระสวย 1 นิวเคลียส ควบคุมไม่ได้",
+ exp:"Smooth muscle: เซลล์รูปกระสวย 1 นิวเคลียส involuntary หดช้าแต่นาน พบที่อวัยวะภายใน",cite:"p.69"},
+{ch:4,q:"ขณะงอแขน (flexion) กล้ามเนื้อต้นแขนทำงานอย่างไร?",
+ opts:["Biceps หด, triceps คลาย","Biceps คลาย, triceps หด","หดทั้งคู่","คลายทั้งคู่"],a:"Biceps หด, triceps คลาย",
+ hint:"งอแขน = ดึงปลายแขนเข้า ; ตัวด้านหน้าต้องหด",
+ exp:"Flexion: biceps หด + triceps คลาย ; Extension: สลับกัน (antagonistic muscles)",cite:"p.70"},
+{ch:4,q:"แบบจำลองการหดตัวของกล้ามเนื้อที่ Huxley และ Hanson เสนอ มีชื่อว่าอะไร?",
+ opts:["Sliding-filament model","Lock-and-key model","Fluid-mosaic model","Induced-fit model"],a:"Sliding-filament model",
+ hint:"เส้นใยบางเลื่อนผ่านเส้นใยหนา ทำให้ sarcomere สั้นลง",
+ exp:"Sliding-filament model: actin เลื่อนผ่าน myosin → กล้ามเนื้อหด",cite:"p.77"},
+{ch:4,q:"เส้นใยชนิดบาง (thin filament) ในซาร์โคเมียร์ สร้างจากโปรตีนใด?",
+ opts:["Actin","Myosin","Troponin","Titin"],a:"Actin",
+ hint:"เส้นบาง — ตัวเดียวกับ microfilament ในอะมีบา",
+ exp:"Thin filament = actin ; thick filament = myosin",cite:"p.76"},
+{ch:4,q:"เส้นใยชนิดหนา (thick filament) ที่สลาย ATP และสร้าง cross-bridge ดึง actin คือโปรตีนใด?",
+ opts:["Myosin","Actin","Tropomyosin","Troponin"],a:"Myosin",
+ hint:"เส้นหนา มีหัวที่จับ actin และสลาย ATP",
+ exp:"Myosin สลาย ATP สร้าง cross-bridge ดึง actin เข้าหากลาง sarcomere",cite:"p.76–77"},
+{ch:4,q:"ไอออนชนิดใดที่ทำให้ myosin สามารถจับกับ actin ได้ จึงเริ่มการหดตัวของกล้ามเนื้อ?",
+ opts:["Ca²⁺","Na⁺","K⁺","Cl⁻"],a:"Ca²⁺",
+ hint:"ปล่อยจาก sarcoplasmic reticulum แล้วไปจับ troponin",
+ exp:"Ca²⁺ จับ troponin → tropomyosin เลื่อนเปิด binding site → myosin จับ actin",cite:"p.77–78"},
+{ch:4,q:"Ca²⁺ ที่ใช้กระตุ้นการหดตัวของกล้ามเนื้อถูกปล่อยออกมาจากโครงสร้างใด?",
+ opts:["Sarcoplasmic reticulum","Mitochondria","Golgi apparatus","Nucleus"],a:"Sarcoplasmic reticulum",
+ hint:"คือ smooth ER ของเซลล์กล้ามเนื้อ",
+ exp:"Ca²⁺ ถูกปล่อยจาก sarcoplasmic reticulum (SR)",cite:"p.78"},
+{ch:4,q:"Ca²⁺ ต้องไปจับกับโปรตีนตัวใด เพื่อให้ tropomyosin เลื่อนเปิด myosin binding site?",
+ opts:["Troponin","Tropomyosin","Actin","Myosin"],a:"Troponin",
+ hint:"ไม่ใช่ tropomyosin — เป็นตัวที่ 'สั่ง' ให้ tropomyosin เลื่อน",
+ exp:"Ca²⁺ จับ troponin → ดึง tropomyosin ออกจาก binding site",cite:"p.78,82"},
+{ch:4,brain:true,q:"สารสื่อประสาทที่ปล่อยออกที่รอยต่อประสาท-กล้ามเนื้อ เพื่อกระตุ้น action potential ที่เส้นใยกล้ามเนื้อ คือ?",
+ opts:["Acetylcholine (ACh)","Dopamine","Adrenaline","GABA"],a:"Acetylcholine (ACh)",
+ hint:"หลั่งจาก synaptic terminal ไปจับตัวรับที่เยื่อหุ้มกล้ามเนื้อ",
+ exp:"ACh กระตุ้น action potential ที่เส้นใยกล้ามเนื้อ → ปล่อย Ca²⁺ → หดตัว",cite:"p.82"},
+{ch:4,brain:true,q:"ระบบประสาทใดควบคุมระดับการหดตัวของกล้ามเนื้อโครงร่าง (ภายใต้อำนาจจิตใจ)?",
+ opts:["Somatic nervous system","Autonomic nervous system","Sympathetic system","Parasympathetic system"],a:"Somatic nervous system",
+ hint:"ระบบประสาทที่สั่งการกล้ามเนื้อลายตามใจ",
+ exp:"Somatic nervous system คุมการหดของกล้ามเนื้อโครงร่าง โดยแปรผันกับจำนวนเส้นใยและอัตราการกระตุ้น",cite:"p.79"},
+{ch:4,q:"อาการที่กล้ามเนื้อแข็งเกร็งทั่วร่างกายหลังเสียชีวิตประมาณ 2–4 ชั่วโมง เรียกว่าอะไร?",
+ opts:["Rigor mortis","Tetanus","Atrophy","Fatigue"],a:"Rigor mortis",
+ hint:"กล้ามเนื้อหดค้างเพราะไม่มี ATP มาทำให้คลาย",
+ exp:"Rigor mortis: Ca²⁺ รั่วจาก SR → myosin จับ actin ค้าง แต่ไม่มี ATP จึงคลายไม่ได้",cite:"p.83"},
+{ch:4,q:"เหตุใดกล้ามเนื้อจึงคลายตัวไม่ได้ในภาวะ rigor mortis?",
+ opts:["ไม่มี ATP ปั๊ม Ca²⁺ กลับเข้า SR","Ca²⁺ ถูกปั๊มกลับเร็วเกินไป","ACh หลั่งมากเกินไป","tropomyosin หายไป"],a:"ไม่มี ATP ปั๊ม Ca²⁺ กลับเข้า SR",
+ hint:"การคลายกล้ามเนื้อต้องใช้พลังงานดึง Ca²⁺ กลับ",
+ exp:"ไม่มี ATP → Ca²⁺ ไม่ถูกปั๊มกลับ SR → troponin ยังถูกจับ → กล้ามเนื้อหดค้าง",cite:"p.82–83"},
+{ch:4,q:"เมื่อเริ่มออกกำลังกายอย่างหนัก ร่างกายดึงพลังงานสำรองมาสร้าง ATP อย่างรวดเร็วจากสารใด?",
+ opts:["Creatine phosphate","Glycogen สะสมในตับ","Myoglobin","Lactic acid"],a:"Creatine phosphate",
+ hint:"โมเลกุลสำรองพลังงานที่ใช้ช่วงเริ่มออกแรงหนัก ก่อน aerobic จะตามทัน",
+ exp:"ลำดับการสร้าง ATP: aerobic (ปกติ) → creatine phosphate (เริ่มหนัก) → fermentation",cite:"p.84"},
+{ch:4,q:"กล้ามเนื้อที่หดตัวช้า ทนต่อความล้า ใช้ aerobic respiration และมีไมโอโกลบิน/ไมโทคอนเดรียมาก คือชนิดใด?",
+ opts:["Slow-twitch fibers","Fast-twitch fibers","Smooth muscle","Cardiac muscle"],a:"Slow-twitch fibers",
+ hint:"ทนล้า เหมาะกีฬาอึด (endurance) สีแดงเพราะ myoglobin สูง",
+ exp:"Slow-twitch: หดช้า ทนล้า aerobic myoglobin สูง ไมโทคอนเดรีย/หลอดเลือดฝอยมาก",cite:"p.88",
+ warn:"⚠️ สไลด์ p.87 พิมพ์ \"สลับ\" นิยาม slow/fast-twitch (เขียนว่า slow-twitch = rapid & powerful, fatigue quickly ซึ่งผิด) — ให้ยึดตาม \"ตาราง p.88\" ที่ถูกต้อง: slow = ช้า/ทนล้า, fast = เร็ว/ล้าเร็ว"},
+{ch:4,q:"กีฬาที่ใช้พลังระยะสั้น เช่น วิ่งหรือว่ายน้ำระยะสั้น อาศัยกล้ามเนื้อชนิดใดเป็นหลัก?",
+ opts:["Fast-twitch fibers","Slow-twitch fibers","Cardiac fibers","Smooth fibers"],a:"Fast-twitch fibers",
+ hint:"หดเร็วแรง แต่ล้าเร็ว ใช้ระบบ anaerobic/fermentation",
+ exp:"Power events (วิ่ง/ว่ายระยะสั้น) ใช้ fast-twitch (RR หรือ Rr) ; endurance ใช้ slow-twitch",cite:"p.91"},
+{ch:4,q:"ยีนใดใช้เป็นเครื่องหมายทำนายความได้เปรียบทางกีฬาบางประเภท โดยเกี่ยวกับ Z line ของ fast-twitch fiber?",
+ opts:["ACTN3","ACTN1","BRCA1","HOX"],a:"ACTN3",
+ hint:"สร้างโปรตีน alpha-actinin-3 ที่ Z line ของเส้นใยหดเร็ว",
+ exp:"ACTN3 สร้าง alpha-actinin-3 ส่วนสำคัญของ Z line ใน fast-twitch fiber ; genotype RR พบมากในกลุ่ม power",cite:"p.89–90"},
+
+/* ===== ภาค 2: ⭐ ชุดดาว (หัวข้อที่อาจารย์มาร์ก/ขีดเส้นใต้/จดโน้ต) — โหดขึ้น เน้นกลไก+อ่านตาราง+กับดัก ===== */
+/* -- 19.1–19.2 -- */
+{ch:1,star:true,q:"ไซโทสเกเลตอนของสิ่งมีชีวิตเซลล์เดียวทำหน้าที่สำคัญ 2 ประการพร้อมกันคือข้อใด?",
+ opts:["ค้ำจุนเซลล์ และช่วยการเคลื่อนที่","สังเคราะห์โปรตีน และเก็บพลังงาน","ลำเลียงน้ำ และสร้าง ATP","รับสิ่งเร้า และส่งกระแสประสาท"],a:"ค้ำจุนเซลล์ และช่วยการเคลื่อนที่",
+ hint:"เป็นเส้นใยโปรตีน ทำทั้งงานโครงสร้างและงานการเคลื่อนไหว",
+ exp:"ไซโทสเกเลตอน = เส้นใยโปรตีนค้ำจุนเซลล์ + ช่วยการไหลของไซโทพลาซึม/การเคลื่อนที่",cite:"p.3–4"},
+{ch:2,star:true,q:"ของเหลวในโครงร่างแบบ hydrostatic skeleton บรรจุอยู่ในส่วนใดของลำตัว?",
+ opts:["ช่องลำตัว (coelom / pseudocoelom)","ภายในเซลล์กล้ามเนื้อ","ระหว่างชั้นผิวหนัง","ในระบบหมุนเวียนเลือด"],a:"ช่องลำตัว (coelom / pseudocoelom)",
+ hint:"ช่องว่างกลางลำตัวที่บรรจุของเหลวไว้ต้านการหดของกล้ามเนื้อ",
+ exp:"hydrostatic skeleton ใช้ของเหลวในช่องลำตัว (coelom/pseudocoelom) ค้ำจุนและต้านการหดของกล้ามเนื้อ",cite:"p.14"},
+{ch:2,star:true,q:"hydrostatic skeleton สนับสนุนการเคลื่อนที่รูปแบบใด?",
+ opts:["เลื้อยหรือเจาะรู","วิ่ง","เดิน","กระโดด"],a:"เลื้อยหรือเจาะรู",
+ hint:"เหมาะกับสัตว์ลำตัวอ่อนที่ไชดิน/เลื้อย ไม่เหมาะการลงน้ำหนักบนขา",
+ exp:"hydrostatic skeleton ช่วยการเลื้อย/เจาะรู แต่ไม่สนับสนุนการวิ่งหรือเดิน",cite:"p.14"},
+{ch:2,star:true,q:"กลุ่มสัตว์ในข้อใดที่ \"ทั้งหมด\" มีโครงร่างแบบ hydrostatic skeleton?",
+ opts:["ไนดาเรีย, หนอนตัวแบน, หนอนตัวกลม, แอนนีลิด","อาร์โทรพอด, มอลลัสกา, ฟองน้ำ","ฟองน้ำ, เอคไคโนเดิร์ม, สัตว์มีกระดูกสันหลัง","แมลง, กุ้ง, ปู, แมงมุม"],a:"ไนดาเรีย, หนอนตัวแบน, หนอนตัวกลม, แอนนีลิด",
+ hint:"กลุ่มลำตัวอ่อนนุ่ม ไม่มีโครงแข็งภายนอกหรือภายใน",
+ exp:"hydrostatic skeleton พบใน cnidarians, flatworms, nematodes, annelids",cite:"p.14"},
+{ch:2,star:true,q:"แมงกะพรุนปกติเป็นแพลงก์ตอนลอยตามน้ำ แต่เมื่อต้องการเคลื่อนที่เองทำได้อย่างไร?",
+ opts:["หดและคลายกล้ามเนื้อขอบกระดิ่งและผนังลำตัว ดันน้ำออก","ใช้ cilia โบกพัดทั้งตัว","ยืดหด tube feet","สะบัดหางเป็นคลื่น"],a:"หดและคลายกล้ามเนื้อขอบกระดิ่งและผนังลำตัว ดันน้ำออก",
+ hint:"บีบตัวให้น้ำพ่นออก แล้วถูกดันไปทิศตรงข้าม",
+ exp:"แมงกะพรุนหด/คลายกล้ามเนื้อขอบกระดิ่ง → ดันน้ำ → เคลื่อนที่สวนทางน้ำที่พ่นออก",cite:"p.16"},
+{ch:2,q:"พลานาเรียประกอบด้วยกล้ามเนื้อกี่ชนิด?",
+ opts:["3 ชนิด","1 ชนิด","2 ชนิด","4 ชนิด"],a:"3 ชนิด",
+ hint:"กล้ามเนื้อวง + ตามยาว + ทแยง",
+ exp:"พลานาเรียมีกล้ามเนื้อ 3 ชนิด: circular, longitudinal, diagonal",cite:"p.18"},
+{ch:2,star:true,q:"หนอนตัวกลม (nematode) จัดอยู่ในโครงร่างแบบใด และมีของเหลวบรรจุในช่องใด?",
+ opts:["Hydrostatic skeleton ในช่อง pseudocoelom","Exoskeleton ที่ผิวลำตัว","Endoskeleton จาก spicule","ไม่มีโครงร่าง"],a:"Hydrostatic skeleton ในช่อง pseudocoelom",
+ hint:"มีของเหลวในช่องว่างเทียมของลำตัว",
+ exp:"หนอนตัวกลมมี hydrostatic skeleton จากของเหลวใน pseudocoelom (มีเฉพาะกล้ามเนื้อตามยาว)",cite:"p.19"},
+{ch:2,star:true,q:"ปล้องของไส้เดือนที่มีลักษณะ \"สั้นและโป่งออก\" เกิดจากกล้ามเนื้อทำงานอย่างไร?",
+ opts:["กล้ามเนื้อวงคลาย + กล้ามเนื้อตามยาวหด","กล้ามเนื้อวงหด + กล้ามเนื้อตามยาวคลาย","หดทั้งวงและตามยาว","คลายทั้งวงและตามยาว"],a:"กล้ามเนื้อวงคลาย + กล้ามเนื้อตามยาวหด",
+ hint:"โป่งสั้น = ดึงให้ลำตัวหดสั้นลง → ตัวที่ทำให้สั้นต้องหด",
+ exp:"ปล้องโป่งสั้น: circular คลาย + longitudinal หด (เดือยจิกดินกันถอย)",cite:"p.23"},
+{ch:2,star:true,q:"ปล้องของไส้เดือนที่มีลักษณะ \"ยาวและยืดออก\" เกิดจากกล้ามเนื้อทำงานอย่างไร?",
+ opts:["กล้ามเนื้อวงหด + กล้ามเนื้อตามยาวคลาย","กล้ามเนื้อวงคลาย + กล้ามเนื้อตามยาวหด","หดทั้งคู่","คลายทั้งคู่"],a:"กล้ามเนื้อวงหด + กล้ามเนื้อตามยาวคลาย",
+ hint:"ยืดยาว = บีบรอบตัวให้เรียวยาว → กล้ามเนื้อวงต้องหด",
+ exp:"ปล้องยาวยืด: circular หด (บีบให้เรียว) + longitudinal คลาย",cite:"p.23"},
+{ch:2,star:true,q:"ขณะส่วนหัวไส้เดือนยืดไปข้างหน้า เดือย (setae) บริเวณปล้องที่โป่งออกทำหน้าที่ใด?",
+ opts:["จิกดินไว้ไม่ให้ลำตัวถอยหลัง","ดูดน้ำเข้าลำตัว","ขับน้ำเมือก","รับสัมผัสแสง"],a:"จิกดินไว้ไม่ให้ลำตัวถอยหลัง",
+ hint:"เดือยทำหน้าที่เป็นจุดยึดกับพื้น",
+ exp:"setae ที่ปล้องโป่งจิกดินเป็นจุดยึด ไม่ให้ลำตัวไถลถอยหลังขณะเคลื่อนที่",cite:"p.21,23"},
+{ch:2,star:true,q:"หมึกอยู่ในไฟลัมเดียวกับหอย (Mollusca) แต่ต่างจากหอยทั่วไปในแง่โครงร่างอย่างไร?",
+ opts:["หมึกไม่มี exoskeleton","หมึกมีกระดูกสันหลัง","หมึกมี endoskeleton แบบ spicule","หมึกมีโครงไคติน"],a:"หมึกไม่มี exoskeleton",
+ hint:"มอลลัสกาส่วนใหญ่มีเปลือกแข็ง แต่หมึกใช้ hydrostatic แทน",
+ exp:"มอลลัสกาส่วนมากมี exoskeleton (เปลือก) แต่หมึกไม่มี ใช้ hydrostatic skeleton",cite:"p.24–25"},
+{ch:2,star:true,q:"น้ำที่หมึกใช้พ่นเพื่อเคลื่อนที่มาจากบริเวณใดก่อนถูกดันออกทางไซฟอน?",
+ opts:["ภายในลำตัว (mantle cavity)","ระบบท่อน้ำ","ถุงลม","ช่องเหงือกภายนอก"],a:"ภายในลำตัว (mantle cavity)",
+ hint:"กล้ามเนื้อลำตัวหดบีบน้ำที่อยู่ในโพรงลำตัวออกไป",
+ exp:"กล้ามเนื้อลำตัวหด → ดันน้ำในลำตัวพ่นออกทางไซฟอน → เกิด jet propulsion",cite:"p.24"},
+{ch:2,star:true,q:"ประโยชน์ของโครงร่างแข็งภายนอก (exoskeleton) ของอาร์โทรพอดคือข้อใด?",
+ opts:["ป้องกันศัตรู และลดการสูญเสียน้ำ","สร้างเม็ดเลือด และเก็บแคลเซียม","ช่วยสังเคราะห์แสง และหายใจ","ควบคุมอุณหภูมิ และสร้าง ATP"],a:"ป้องกันศัตรู และลดการสูญเสียน้ำ",
+ hint:"เป็นเกราะภายนอกที่ทั้งกันภัยและกันแห้ง",
+ exp:"exoskeleton ป้องกันอันตรายจากศัตรู และป้องกันการสูญเสียน้ำ",cite:"p.26"},
+{ch:2,star:true,q:"เพราะเหตุใดอาร์โทรพอดจึงต้องลอกคราบ (molting) เพื่อเติบโต?",
+ opts:["โครงร่างแข็งภายนอกมีขนาดตายตัว ขยายตามตัวไม่ได้","เพื่อสร้างเม็ดสีใหม่","เพื่อเปลี่ยนเพศ","เพื่อสะสมไขมัน"],a:"โครงร่างแข็งภายนอกมีขนาดตายตัว ขยายตามตัวไม่ได้",
+ hint:"เกราะแข็งไม่ยืดตามตัวที่โตขึ้น จึงต้องทิ้งของเก่า",
+ exp:"exoskeleton มีขนาดตายตัว การเติบโตจึงต้องลอกคราบ (ช่วงนี้ถูกทำร้ายง่ายที่สุด)",cite:"p.26,28"},
+{ch:2,star:true,q:"ขณะแมลง \"เหยียดขา\" กล้ามเนื้อ flexor และ extensor ทำงานอย่างไร?",
+ opts:["Flexor คลาย, extensor หด","Flexor หด, extensor คลาย","หดทั้งคู่","คลายทั้งคู่"],a:"Flexor คลาย, extensor หด",
+ hint:"เหยียด = ดันขาออก → ตัวที่ทำให้เหยียด (extensor) ต้องหด",
+ exp:"เหยียดขา: extensor หด + flexor คลาย (สลับกับตอนงอขา)",cite:"p.29"},
+{ch:2,q:"แมลงที่บินด้วย indirect flight muscle ขับเคลื่อนปีกด้วยวิธีใด?",
+ opts:["หด/ขยายกล้ามเนื้อส่วนอก-ท้อง ทำให้เปลือกอกขยับ ปีกจึงกระพือ","กล้ามเนื้อยึดโคนปีกดึงปีกโดยตรง","ใช้แรงดันเลือดดันปีก","ใช้ cilia ที่ปีก"],a:"หด/ขยายกล้ามเนื้อส่วนอก-ท้อง ทำให้เปลือกอกขยับ ปีกจึงกระพือ",
+ hint:"กล้ามเนื้อไม่ติดปีก แต่ทำให้เปลือกหุ้มอกเปลี่ยนรูป",
+ exp:"indirect flight muscle: กล้ามเนื้อยึดเปลือกอก เมื่อเปลือกขยับ ปีกที่ติดอยู่จึงกระพือ",cite:"p.30–31"},
+{ch:2,star:true,q:"ในระบบท่อน้ำของดาวทะเล ส่วน Madreporite ทำหน้าที่อะไร?",
+ opts:["เป็นช่องทางให้น้ำเข้าสู่ระบบท่อน้ำ","หดดันน้ำให้ podium ยืด","เป็นแผ่นดูดเกาะพื้น","สร้างเมือก"],a:"เป็นช่องทางให้น้ำเข้าสู่ระบบท่อน้ำ",
+ hint:"เป็นรู/แผ่นทางเข้าของน้ำสู่ water vascular system",
+ exp:"Madreporite = ช่องทางน้ำเข้าสู่ระบบท่อน้ำของดาวทะเล",cite:"p.35"},
+{ch:2,star:true,q:"เมื่อกล้ามเนื้อของ podium หดตัวให้ podium สั้นลง น้ำจะถูกดันไปที่ใด?",
+ opts:["Ampulla (ทำให้ ampulla ขยาย)","Madreporite","Sucker","Sternum"],a:"Ampulla (ทำให้ ampulla ขยาย)",
+ hint:"น้ำไหลย้อนกลับขึ้นไปยังกระเปาะด้านบน",
+ exp:"podium หด → ดันน้ำกลับไป ampulla → ampulla ขยายและกล้ามเนื้อคลาย (ทำงานสลับกัน)",cite:"p.36"},
+/* -- 19.3 -- */
+{ch:3,star:true,q:"รูปแบบการว่ายน้ำที่การเคลื่อนไหวส่วนใหญ่กระจุกอยู่ที่ด้านหลังลำตัวและหาง เรียกว่าอะไร?",
+ opts:["Carangiform","Anguilliform","Subcarangiform","Thunniform"],a:"Carangiform",
+ hint:"อยู่กึ่งกลางสเปกตรัม ค่อนไปทางหาง แต่ยังไม่สุดเท่าปลาทูน่า",
+ exp:"ลำดับ: Anguilliform (ทั้งตัว) → Subcarangiform → Carangiform (ค่อนไปหาง) → Thunniform (เฉพาะหาง)",cite:"p.41"},
+{ch:3,q:"รูปแบบการว่ายน้ำที่ส่วนหน้าลำตัวเคลื่อนไหวจำกัด แต่เพิ่มการเคลื่อนไหวที่ส่วนท้าย เรียกว่าอะไร?",
+ opts:["Subcarangiform","Anguilliform","Thunniform","Carangiform"],a:"Subcarangiform",
+ hint:"ถัดจากปลาไหลมาหนึ่งขั้น เริ่มจำกัดส่วนหน้า",
+ exp:"Subcarangiform = ด้านหน้าจำกัด เพิ่มการเคลื่อนไหวส่วนท้ายลำตัว",cite:"p.41"},
+{ch:3,star:true,q:"ขณะนก \"กดปีก\" (downstroke) กล้ามเนื้อทำงานอย่างไร?",
+ opts:["Pectoralis major หด, pectoralis minor คลาย","Pectoralis minor หด, pectoralis major คลาย","หดทั้งคู่","คลายทั้งคู่"],a:"Pectoralis major หด, pectoralis minor คลาย",
+ hint:"กดปีกลงใช้กล้ามเนื้อชุดใหญ่ (major)",
+ exp:"กดปีก: pectoralis major หด + minor คลาย ; ยกปีก: สลับกัน (antagonistic)",cite:"p.45"},
+{ch:3,star:true,q:"ตามหลักการร่อนของนก ความดันอากาศบริเวณเหนือปีกและใต้ปีกเป็นอย่างไร?",
+ opts:["เหนือปีกน้อยกว่าใต้ปีก จึงเกิดแรงยก","เหนือปีกมากกว่าใต้ปีก จึงกดตัวลง","เท่ากันทั้งสองด้าน","สลับไปมาตลอดเวลา"],a:"เหนือปีกน้อยกว่าใต้ปีก จึงเกิดแรงยก",
+ hint:"อากาศเหนือปีกไหลเร็วกว่า → ความดันต่ำกว่า",
+ exp:"Gliding: อากาศเหนือปีกเร็ว → ความดันบนน้อยกว่าล่าง → แรงดันใต้ปีกพยุงตัวนกไว้",cite:"p.47"},
+/* -- 19.4 มนุษย์ (ดาวเยอะ) -- */
+{ch:4,star:true,q:"กระดูกสันหลังของมนุษย์ (ตามสไลด์) ประกอบด้วยกระดูกกี่ชิ้น และคั่นแต่ละข้อด้วยอะไร?",
+ opts:["24 ชิ้น คั่นด้วยหมอนรองกระดูก (cartilage)","33 ชิ้น คั่นด้วย ligament","12 ชิ้น คั่นด้วย tendon","26 ชิ้น คั่นด้วยน้ำไขข้อ"],a:"24 ชิ้น คั่นด้วยหมอนรองกระดูก (cartilage)",
+ hint:"แต่ละข้อมีแผ่นกระดูกอ่อนรองอยู่",
+ exp:"กระดูกสันหลัง 24 ชิ้น แต่ละข้อมีหมอนรองกระดูก (intervertebral disc = cartilage)",cite:"p.53"},
+{ch:4,star:true,q:"ถ้ารวมซี่โครงทุกประเภท มนุษย์มีกระดูกซี่โครงทั้งหมดกี่คู่?",
+ opts:["12 คู่","10 คู่","7 คู่","14 คู่"],a:"12 คู่",
+ hint:"true 7 คู่ + false 5 คู่ (ซึ่งรวม floating 2 คู่)",
+ exp:"ซี่โครงรวม 12 คู่ = true ribs 7 คู่ + false ribs 5 คู่ (ใน false มี floating 2 คู่)",cite:"p.54"},
+{ch:4,star:true,q:"กระดูกซี่โครงที่ไม่ได้เชื่อมกับกระดูกอกโดยตรง (false ribs) มีกี่คู่?",
+ opts:["5 คู่","2 คู่","7 คู่","3 คู่"],a:"5 คู่",
+ hint:"ส่วนที่เหลือจาก true ribs 7 คู่",
+ exp:"false ribs = 5 คู่ (ในนี้ 2 คู่เป็น floating ribs ที่ปลายอิสระ)",cite:"p.54"},
+{ch:4,star:true,q:"เนื้อเยื่อเกี่ยวพันที่เป็นเบาะรองรับ/ลดแรงเสียดทานที่ข้อต่อ และคงรูปใบหู ปลายจมูก หลอดลม คือ?",
+ opts:["Cartilage","Ligament","Tendon","Synovial fluid"],a:"Cartilage",
+ hint:"กระดูกอ่อน ยืดหยุ่นแต่แข็งแรง พบที่ใบหู/ปลายจมูก",
+ exp:"Cartilage (กระดูกอ่อน) เป็นเบาะรองข้อต่อ ลดแรงเสียดทาน และคงรูปใบหู/จมูก/หลอดลม",cite:"p.72"},
+{ch:4,star:true,q:"ถ้าเรียงคู่ให้ถูก: ตัวเชื่อม \"กระดูก-กระดูก\" และตัวเชื่อม \"กล้ามเนื้อ-กระดูก\" คือข้อใดตามลำดับ?",
+ opts:["Ligament — Tendon","Tendon — Ligament","Cartilage — Tendon","Ligament — Cartilage"],a:"Ligament — Tendon",
+ hint:"เอ็นยึดข้อต่อ เชื่อมกระดูกสองชิ้น ; เอ็นกล้ามเนื้อ เชื่อมกล้ามเนื้อกับกระดูก",
+ exp:"Ligament = กระดูก-กระดูก ; Tendon = กล้ามเนื้อ-กระดูก (กับดักที่สลับกันบ่อย)",cite:"p.72"},
+{ch:4,star:true,q:"เซลล์กระดูกที่อยู่ภายในเนื้อกระดูกเรียกว่าอะไร?",
+ opts:["Osteocytes","Osteoblasts ที่ตายแล้ว","Chondrocytes","Myocytes"],a:"Osteocytes",
+ hint:"เซลล์ประจำถิ่นในเนื้อกระดูก (osteo- = กระดูก)",
+ exp:"ภายในกระดูกมีเซลล์กระดูก (osteocytes) ร่วมกับหลอดเลือด/แคลเซียม",cite:"p.57"},
+{ch:4,q:"ไขกระดูก (bone marrow) ในวัยเด็กทำหน้าที่สร้างสิ่งใด?",
+ opts:["เม็ดเลือดแดง เม็ดเลือดขาว และเพลตเลต","เฉพาะเม็ดเลือดแดง","ฮอร์โมนเพศ","น้ำไขข้อ"],a:"เม็ดเลือดแดง เม็ดเลือดขาว และเพลตเลต",
+ hint:"แหล่งสร้างเซลล์เม็ดเลือดทุกชนิด",
+ exp:"ไขกระดูกวัยเด็กสร้างเม็ดเลือดแดง/ขาว/เพลตเลต ; โตขึ้นมีไขมันสะสมจึงสร้างได้น้อยลง",cite:"p.57"},
+{ch:4,star:true,q:"หน่วยการทำงาน (functional unit) ที่เล็กที่สุดของการหดตัวของกล้ามเนื้อโครงร่างคือ?",
+ opts:["Sarcomere","Myofibril","Muscle fiber","Fascicle"],a:"Sarcomere",
+ hint:"ช่วงระหว่าง Z line ถึง Z line ที่ actin/myosin เลื่อนกัน",
+ exp:"Sarcomere เป็นหน่วยหดตัวเล็กที่สุด ประกอบด้วย actin (thin) และ myosin (thick)",cite:"p.75–76"},
+{ch:4,star:true,q:"เรียงลำดับโครงสร้างกล้ามเนื้อโครงร่างจากใหญ่ไปเล็ก ข้อใดถูกต้อง?",
+ opts:["Muscle fiber → myofibril → sarcomere → actin/myosin","Sarcomere → myofibril → muscle fiber → actin","Myofibril → muscle fiber → sarcomere → myosin","Actin → sarcomere → myofibril → muscle fiber"],a:"Muscle fiber → myofibril → sarcomere → actin/myosin",
+ hint:"เริ่มจากเซลล์กล้ามเนื้อ ลงไปจนถึงเส้นใยโปรตีน",
+ exp:"ลำดับ: muscle fiber (เซลล์) → myofibril → sarcomere → actin & myosin filaments",cite:"p.75"},
+{ch:4,star:true,q:"ขอบเขตหัว-ท้ายของซาร์โคเมียร์แต่ละหน่วยคือเส้นใด?",
+ opts:["Z line","H zone","M line","T tubule"],a:"Z line",
+ hint:"เส้นที่ actin (thin filament) ยึดเกาะ เป็นขอบของ sarcomere",
+ exp:"Z line เป็นขอบเขตของ sarcomere ; ช่วงกลางที่มีแต่ myosin เรียก H zone",cite:"p.76"},
+{ch:4,star:true,q:"ขณะกล้ามเนื้อหดตัวตาม sliding-filament model ความยาวของ sarcomere เป็นอย่างไร?",
+ opts:["สั้นลง เพราะ actin เลื่อนเข้าหากลาง","ยาวขึ้น เพราะ myosin ยืดออก","คงที่ เพราะเส้นใยไม่ขยับ","สั้นลงเพราะ actin หดสั้น"],a:"สั้นลง เพราะ actin เลื่อนเข้าหากลาง",
+ hint:"เส้นใยไม่ได้หดสั้นเอง แต่ \"เลื่อนซ้อน\" กันมากขึ้น",
+ exp:"actin เลื่อนผ่าน myosin เข้าหากลาง sarcomere → sarcomere สั้นลง (เส้นใยยาวเท่าเดิม)",cite:"p.76–77"},
+{ch:4,star:true,q:"เหตุใดในภาวะพัก myosin จึงจับกับ actin ไม่ได้?",
+ opts:["Tropomyosin บัง myosin binding site บน actin","ไม่มี actin ในเซลล์","myosin ไม่มีหัวจับ","Ca²⁺ สูงเกินไป"],a:"Tropomyosin บัง myosin binding site บน actin",
+ hint:"มีโปรตีนเส้นหนึ่งพาดบังตำแหน่งจับไว้ จนกว่า Ca²⁺ จะมาสั่งเลื่อน",
+ exp:"ปกติ tropomyosin บัง myosin binding site ; เมื่อ Ca²⁺ จับ troponin จึงดึง tropomyosin ออก",cite:"p.78"},
+{ch:4,star:true,q:"กล้ามเนื้อจะคลายตัวได้เมื่อเกิดเหตุการณ์ใด?",
+ opts:["Ca²⁺ ถูกปั๊มกลับเข้า SR ด้วย active transport แล้ว tropomyosin กลับมาบัง","Ca²⁺ ไหลออกจาก SR มากขึ้น","ATP หมดลงทันที","ACh หลั่งซ้ำ"],a:"Ca²⁺ ถูกปั๊มกลับเข้า SR ด้วย active transport แล้ว tropomyosin กลับมาบัง",
+ hint:"ต้องดึง Ca²⁺ ออกจากไซโทพลาซึมก่อน (ใช้พลังงาน)",
+ exp:"หลัง action potential สิ้นสุด Ca²⁺ ถูกปั๊มกลับ SR (ใช้ ATP) → tropomyosin กลับมาบัง → คลายตัว",cite:"p.82"},
+{ch:4,brain:true,star:true,q:"action potential จากเยื่อหุ้มเซลล์กล้ามเนื้อแพร่เข้าสู่ภายในเซลล์เพื่อกระตุ้นการปล่อย Ca²⁺ ผ่านโครงสร้างใด?",
+ opts:["T tubule","Tendon","Z line","Madreporite"],a:"T tubule",
+ hint:"ท่อที่เยื่อหุ้มเซลล์พับเข้าไปในเซลล์กล้ามเนื้อ",
+ exp:"action potential แพร่ตามเยื่อหุ้มเซลล์และ T tubule → กระตุ้น SR ปล่อย Ca²⁺",cite:"p.82"},
+{ch:4,star:true,q:"ตามตารางเปรียบเทียบ เส้นใยกล้ามเนื้อ slow fiber มีปริมาณไมโอโกลบินและไมโทคอนเดรียเป็นอย่างไร?",
+ opts:["ไมโอโกลบินสูง ไมโทคอนเดรียมาก","ไมโอโกลบินต่ำ ไมโทคอนเดรียน้อย","ไมโอโกลบินสูง ไมโทคอนเดรียน้อย","ไมโอโกลบินต่ำ ไมโทคอนเดรียมาก"],a:"ไมโอโกลบินสูง ไมโทคอนเดรียมาก",
+ hint:"เส้นใยอึด ต้องใช้ O₂ มาก จึงมีตัวพา O₂ และโรงงานพลังงานเยอะ",
+ exp:"slow fiber: หดช้า ทนล้า aerobic ไมโอโกลบินสูง ไมโทคอนเดรีย/หลอดเลือดฝอยมาก",cite:"p.88",
+ warn:"⚠️ สไลด์ p.87 พิมพ์ \"สลับ\" นิยาม slow/fast — ยึดตาม \"ตาราง p.88\" ที่ถูกต้องนี้"},
+{ch:4,star:true,q:"เส้นใยกล้ามเนื้อ fast fiber สร้าง ATP ผ่านวิถีหลักแบบใด?",
+ opts:["Fermentation (anaerobic)","Cellular respiration (aerobic)","สังเคราะห์แสง","Beta-oxidation"],a:"Fermentation (anaerobic)",
+ hint:"เส้นใยพลังเร็ว ใช้พลังงานแบบไม่พึ่งออกซิเจน",
+ exp:"fast fiber: หดเร็ว ล้าเร็ว สร้าง ATP หลักด้วย fermentation (anaerobic) ; slow ใช้ aerobic",cite:"p.88"},
+{ch:4,star:true,q:"เส้นใยกล้ามเนื้อที่ \"ล้าช้า (fatigue slowly)\" และหดตัวช้า คือชนิดใด?",
+ opts:["Slow fiber","Fast fiber","Cardiac fiber","Smooth fiber"],a:"Slow fiber",
+ hint:"ทนทาน เหมาะวิ่งระยะไกล",
+ exp:"slow fiber = หดช้า + ล้าช้า (ตาราง p.88) เหมาะกีฬา endurance",cite:"p.88",
+ warn:"⚠️ ระวังสไลด์ p.87 ที่เขียนสลับว่า slow-twitch = rapid & fatigue quickly (ผิด) — ตารางถูกคือ p.88"},
+{ch:4,star:true,q:"ยีน ACTN3 สร้างโปรตีนชนิดใด และโปรตีนนี้เป็นองค์ประกอบสำคัญของส่วนใดใน fast-twitch fiber?",
+ opts:["Alpha-actinin-3 ซึ่งเป็นส่วนสำคัญของ Z line","Myoglobin ซึ่งอยู่ใน H zone","Troponin ซึ่งอยู่บน myosin","Tropomyosin ซึ่งอยู่ที่ T tubule"],a:"Alpha-actinin-3 ซึ่งเป็นส่วนสำคัญของ Z line",
+ hint:"ชื่อโปรตีนล้อกับชื่อยีน และเกี่ยวกับเส้นที่ actin ยึด",
+ exp:"ACTN3 → alpha-actinin-3 ซึ่งเป็นองค์ประกอบหลักของ Z line ใน fast-twitch fiber",cite:"p.89"},
+{ch:4,star:true,q:"จากตารางความถี่จีโนไทป์ ACTN3 กลุ่มนักกีฬาพลัง (Power) มีจีโนไทป์ใดมากที่สุด?",
+ opts:["RR (49.5%)","rr (5.6%)","Rr (44.9%)","ทุกแบบเท่ากัน"],a:"RR (49.5%)",
+ hint:"กลุ่มพลังต้องการ fast-twitch ที่ทำงานเต็มที่ → อัลลีล R ครบ",
+ exp:"กลุ่ม Power: RR 49.5% > Rr 44.9% > rr 5.6% ; RR มากที่สุด",cite:"p.90"},
+{ch:4,star:true,q:"เมื่อเทียบสัดส่วนจีโนไทป์ rr ระหว่างกลุ่ม Power กับ Endurance จากตาราง ACTN3 ข้อใดถูก?",
+ opts:["Endurance มี rr มากกว่า Power (23.7% vs 5.6%)","Power มี rr มากกว่า Endurance","ทั้งสองกลุ่มมี rr เท่ากัน","ไม่มีกลุ่มใดมี rr"],a:"Endurance มี rr มากกว่า Power (23.7% vs 5.6%)",
+ hint:"rr = ไม่มี alpha-actinin-3 → เสียเปรียบงานพลัง แต่พบมากในสายอึด",
+ exp:"จากตาราง: rr ในกลุ่ม Endurance 23.7% สูงกว่ากลุ่ม Power 5.6% มาก",cite:"p.90"},
+{ch:4,brain:true,star:true,q:"Somatic nervous system ควบคุมระดับการหดตัวของกล้ามเนื้อโครงร่างโดยแปรผันกับปัจจัยใด?",
+ opts:["จำนวนเส้นใยกล้ามเนื้อที่หด และอัตราการกระตุ้น","อุณหภูมิร่างกาย และระดับ ATP","ปริมาณ Ca²⁺ ในเลือด เท่านั้น","จำนวน sarcomere ทั้งหมด"],a:"จำนวนเส้นใยกล้ามเนื้อที่หด และอัตราการกระตุ้น",
+ hint:"คุมทั้ง 'กี่เส้นที่หด' และ 'กระตุ้นถี่แค่ไหน'",
+ exp:"Somatic NS คุมแรงหดตามจำนวนเส้นใยที่หดตัว + อัตราการกระตุ้นกล้ามเนื้อ",cite:"p.79"}
+];
+const STAR=[
+/* ===== ⭐ ดาว 1 — The cytoskeleton + การเคลื่อนที่ของสิ่งมีชีวิตเซลล์เดียว (สไลด์ p.4,10) ===== */
+{type:'mc',q:"[⭐สไลด์ดาว] เส้นใยโปรตีนในไซโทพลาซึมที่ค้ำจุนเซลล์และช่วยการเคลื่อนที่ คือ?",
+ opts:["Cytoskeleton","Exoskeleton","Hydrostatic skeleton","Spicule"],a:"Cytoskeleton",
+ h:"cyto- = ภายในเซลล์",e:"ไซโทสเกเลตอน = โครงร่างค้ำจุน + ช่วยเคลื่อนที่",cite:"p.4"},
+{type:'mc',q:"[⭐สไลด์ดาว] อะมีบา: ไซโทพลาซึม 'ส่วนนอก' สถานะกึ่งแข็งกึ่งเหลว (gel) เรียกว่า?",
+ opts:["Ectoplasm","Endoplasm","Mesoglea","Microfilament"],a:"Ectoplasm",
+ h:"ecto = นอก",e:"Ectoplasm = ส่วนนอก เป็น gel ; Endoplasm = ส่วนใน เป็น sol",cite:"p.5"},
+{type:'mc',q:"[⭐สไลด์ดาว] ไมโครฟิลาเมนต์ที่ใช้ในการเคลื่อนที่แบบอะมีบา สร้างจากโปรตีนใด?",
+ opts:["Actin","Myosin","Tubulin","Keratin"],a:"Actin",
+ h:"เส้นใยบางตัวเดียวกับ thin filament ในกล้ามเนื้อ",e:"Microfilament = แอกทิน (actin)",cite:"p.5"},
+{type:'mc',q:"[⭐สไลด์ดาว] จับคู่ให้ถูก: พารามีเซียม / อะมีบา / ยูกลีนา ใช้อะไรเคลื่อนที่?",
+ opts:["cilia / pseudopodium / flagellum","flagellum / cilia / pseudopodium","pseudopodium / flagellum / cilia","cilia / flagellum / pseudopodium"],a:"cilia / pseudopodium / flagellum",
+ h:"พารา=ขนสั้นเยอะ, อะมีบา=เท้าเทียม, ยูกลีนา=แส้ยาว",e:"พารามีเซียม→cilia, อะมีบา→pseudopodium, ยูกลีนา→flagellum",cite:"p.10"},
+{type:'mc',q:"[⭐สไลด์ดาว] cilia และ flagella มีการจัดเรียงไมโครทูบูลแบบใด?",
+ opts:["9 + 2","9 + 0","2 + 9","9 + 3"],a:"9 + 2",
+ h:"doublet รอบนอก 9 + singlet กลาง 2",e:"cilia/flagella = 9+2 ; basal body = 9+0",cite:"p.9"},
+{type:'mc',q:"[⭐สไลด์ดาว] โครงสร้างที่ทำให้ flagellum/cilia โค้งงอและพัดโบกได้ คือ?",
+ opts:["Dynein arm","Basal body","Cross-bridge","Tropomyosin"],a:"Dynein arm",
+ h:"แขนโปรตีนสร้างแรงเลื่อนระหว่าง doublet",e:"Dynein arm = ทำให้โบกพัด ; Basal body (9+0) = ควบคุมที่โคน",cite:"p.9"},
+{type:'tf',q:"[⭐สไลด์ดาว] ในอะมีบา ส่วน ectoplasm มีสถานะเป็น sol (เหลว)",a:false,
+ e:"ectoplasm (นอก)=gel ; sol คือ endoplasm (ใน)",w:"นอก=gel / ใน=sol"},
+{type:'tf',q:"[⭐สไลด์ดาว] basal body มีไมโครทูบูลแบบ 9+0 และควบคุมการเคลื่อนไหวของ cilia/flagella",a:true,
+ e:"9 outer triplet (9+0) อยู่ที่โคน ควบคุมการเคลื่อนไหว"},
+{type:'fb',q:"[⭐สไลด์ดาว] การเคลื่อนที่ของอะมีบาที่อาศัยการไหลของไซโทพลาซึมสร้างเท้าเทียม เรียกว่า ______ movement",
+ a:["amoeboid","อะมีบอยด์","amoeboid movement"],h:"ตั้งชื่อตามอะมีบา",e:"Amoeboid movement"},
+{type:'fb',q:"[⭐สไลด์ดาว] ไซโทพลาซึมส่วนในของอะมีบาที่ค่อนข้างเหลว (sol) เรียกว่า ______",
+ a:["endoplasm","เอนโดพลาซึม"],h:"endo = ใน",e:"endoplasm (sol)"},
+
+/* ===== ⭐ ดาว 2 — Animal Diversity: ไฟลัม → ตัวอย่างสัตว์ (สไลด์ p.12) ===== */
+{type:'mc',q:"[⭐สไลด์ดาว] 'ไฮดรา และ แมงกะพรุน' จัดอยู่ในกลุ่ม (phylum) ใด?",
+ opts:["Cnidarians","Sponges","Flatworms","Mollusks"],a:"Cnidarians",
+ h:"กลุ่มที่มีเข็มพิษ (ไนเดต)",e:"Cnidarians → ไฮดรา, แมงกะพรุน",cite:"p.12"},
+{type:'mc',q:"[⭐สไลด์ดาว] 'ดาวทะเล และ เม่นทะเล' จัดอยู่ในกลุ่มใด?",
+ opts:["Echinoderms","Mollusks","Arthropods","Cnidarians"],a:"Echinoderms",
+ h:"กลุ่มผิวหนาม",e:"Echinoderms → ดาวทะเล, เม่นทะเล",cite:"p.12"},
+{type:'mc',q:"[⭐สไลด์ดาว] 'หอย และ หมึก' จัดอยู่ในกลุ่มใด?",
+ opts:["Mollusks","Arthropods","Annelids","Roundworms"],a:"Mollusks",
+ h:"กลุ่มลำตัวนิ่ม",e:"Mollusks → หอย, หมึก",cite:"p.12"},
+{type:'mc',q:"[⭐สไลด์ดาว] 'ไส้เดือน และ ปลิง' จัดอยู่ในกลุ่มใด?",
+ opts:["Annelids","Roundworms","Flatworms","Cnidarians"],a:"Annelids",
+ h:"กลุ่มหนอนปล้อง",e:"Annelids → ไส้เดือน, ปลิง",cite:"p.12"},
+{type:'mc',q:"[⭐สไลด์ดาว] 'พลานาเรีย' จัดอยู่ในกลุ่มใด?",
+ opts:["Flatworms","Roundworms","Annelids","Sponges"],a:"Flatworms",
+ h:"หนอนตัวแบน",e:"Flatworms → พลานาเรีย",cite:"p.12"},
+{type:'mc',q:"[⭐สไลด์ดาว] 'ฟองน้ำ' จัดอยู่ในกลุ่มใด?",
+ opts:["Sponges","Cnidarians","Echinoderms","Mollusks"],a:"Sponges",
+ h:"กลุ่มที่มี spicule",e:"Sponges (Porifera) → ฟองน้ำ",cite:"p.12"},
+{type:'fb',q:"[⭐สไลด์ดาว] 'แมลง และ กุ้ง' (มีโครงแข็งภายนอก+ข้อปล้อง) จัดอยู่ในกลุ่ม ______",
+ a:["arthropod","arthropods","อาร์โทรพอด"],h:"ข้อปล้อง+ไคติน",e:"Arthropod → แมลง, กุ้ง",cite:"p.12"},
+{type:'fb',q:"[⭐สไลด์ดาว] 'หนอนตัวกลม' (nematode) จัดอยู่ในกลุ่ม ______",
+ a:["roundworms","roundworm","หนอนตัวกลม","nematode"],h:"round…",e:"Roundworms → หนอนตัวกลม",cite:"p.12"},
+
+/* ===== ⭐ ดาว 3 — การเคลื่อนที่ของไส้เดือนดิน (สไลด์ p.22-23) ===== */
+{type:'mc',q:"[⭐สไลด์ดาว] ไส้เดือนดิน (Annelids) มีโครงร่างแบบใด?",
+ opts:["Hydrostatic skeleton","Exoskeleton","Endoskeleton","Cytoskeleton"],a:"Hydrostatic skeleton",
+ h:"อาศัยแรงดันของเหลวในช่องลำตัว",e:"ไส้เดือน = hydrostatic skeleton",cite:"p.22"},
+{type:'mc',q:"[⭐สไลด์ดาว] เดือยเล็ก ๆ ที่ยื่นจากผนังแต่ละปล้องของไส้เดือน จิกดินกันลำตัวถอยหลัง คือ?",
+ opts:["Setae","Cilia","Podium","Spicule"],a:"Setae",
+ h:"เดือยแข็งเกาะพื้น",e:"Setae (เดือย) ยึดดินขณะเคลื่อนที่",cite:"p.23"},
+{type:'mc',q:"[⭐สไลด์ดาว] ปล้องของไส้เดือนที่ 'สั้นและโป่งออก + มีเดือยจิกดิน' เกิดจากกล้ามเนื้อทำงานอย่างไร?",
+ opts:["กล้ามเนื้อวงคลาย + กล้ามเนื้อตามยาวหด","กล้ามเนื้อวงหด + กล้ามเนื้อตามยาวคลาย","หดทั้งคู่","คลายทั้งคู่"],a:"กล้ามเนื้อวงคลาย + กล้ามเนื้อตามยาวหด",
+ h:"สั้น+โป่ง = หดตามยาว",e:"ปล้องสั้น-โป่ง (จิกดิน): กล้ามเนื้อวงคลาย ตามยาวหด",cite:"p.23"},
+{type:'mc',q:"[⭐สไลด์ดาว] ปล้องของไส้เดือนที่ 'ยาวและยืดไปข้างหน้า' เกิดจากกล้ามเนื้อทำงานอย่างไร?",
+ opts:["กล้ามเนื้อวงหด + กล้ามเนื้อตามยาวคลาย","กล้ามเนื้อวงคลาย + กล้ามเนื้อตามยาวหด","หดทั้งคู่","คลายทั้งคู่"],a:"กล้ามเนื้อวงหด + กล้ามเนื้อตามยาวคลาย",
+ h:"ยาว+ยืด = หดกล้ามเนื้อวง",e:"ปล้องยาว-ยืด: กล้ามเนื้อวงหด ตามยาวคลาย",cite:"p.23"},
+{type:'mc',q:"[⭐สไลด์ดาว] การหด-คลายของกล้ามเนื้อวงและตามยาวเป็นจังหวะคล้ายระลอกคลื่นวิ่งไปตามลำตัว เรียกว่า?",
+ opts:["Peristalsis","Antagonism","Jet propulsion","Undulation"],a:"Peristalsis",
+ h:"คลื่นบีบตัวแบบเดียวกับทางเดินอาหาร",e:"Peristalsis = การเคลื่อนแบบระลอกคลื่นของไส้เดือน",cite:"p.22"},
+{type:'tf',q:"[⭐สไลด์ดาว] กล้ามเนื้อวงและกล้ามเนื้อตามยาวของไส้เดือนทำงานตรงข้ามกัน (antagonism)",a:true,
+ e:"อันหนึ่งหด อีกอันคลาย สลับกันเป็นจังหวะ"},
+{type:'fb',q:"[⭐สไลด์ดาว] โครงสร้างที่ยื่นจากผนังลำตัวไส้เดือนใช้จิกดินไม่ให้ถอยหลัง คือ ______",
+ a:["setae","เดือย","seta"],h:"แปลว่า 'เดือย'",e:"setae (เดือย)"},
+
+/* ===== ⭐ ดาว 4 — การเคลื่อนที่ของแมลง / การกระโดดตั๊กแตน (สไลด์ p.29) ===== */
+{type:'mc',q:"[⭐สไลด์ดาว] โครงร่างแข็งภายนอกของแมลงประกอบด้วยสารหลักชนิดใด?",
+ opts:["ไคติน (chitin)","แคลเซียมคาร์บอเนต","cartilage","actin"],a:"ไคติน (chitin)",
+ h:"พอลิแซ็กคาไรด์แข็ง",e:"exoskeleton แมลง = ไคติน (+โปรตีน)",cite:"p.29"},
+{type:'mc',q:"[⭐สไลด์ดาว] การกระโดดของตั๊กแตนอาศัยกล้ามเนื้อคู่ตรงข้ามชนิดใด?",
+ opts:["Flexor และ extensor","Circular และ longitudinal","Pectoralis major และ minor","Vertical และ horizontal"],a:"Flexor และ extensor",
+ h:"คู่ 'งอขา' กับ 'เหยียดขา'",e:"ขากระโดดตั๊กแตน: flexor (งอ) + extensor (เหยียด) แบบ antagonistic",cite:"p.29"},
+{type:'mc',q:"[⭐สไลด์ดาว] ขณะตั๊กแตน 'งอขา' กล้ามเนื้อทำงานอย่างไร?",
+ opts:["Flexor หด, extensor คลาย","Flexor คลาย, extensor หด","หดทั้งคู่","คลายทั้งคู่"],a:"Flexor หด, extensor คลาย",
+ h:"งอ = ดึงขาเข้า ตัวที่ทำให้งอต้องหด",e:"งอขา: flexor หด + extensor คลาย",cite:"p.29"},
+{type:'mc',q:"[⭐สไลด์ดาว] ขณะตั๊กแตน 'เหยียดขา' (เพื่อกระโดด) กล้ามเนื้อทำงานอย่างไร?",
+ opts:["Flexor คลาย, extensor หด","Flexor หด, extensor คลาย","หดทั้งคู่","คลายทั้งคู่"],a:"Flexor คลาย, extensor หด",
+ h:"เหยียด = ดันขาออก",e:"เหยียดขา: flexor คลาย + extensor หด",cite:"p.29"},
+{type:'tf',q:"[⭐สไลด์ดาว] กล้ามเนื้อ flexor และ extensor ของตั๊กแตนทำงานตรงข้ามกัน (antagonistic muscle)",a:true,
+ e:"flexor งอ / extensor เหยียด ทำงานสลับกัน"},
+{type:'fb',q:"[⭐สไลด์ดาว] กล้ามเนื้อของตั๊กแตนที่ทำหน้าที่ 'เหยียดขา' คือ ______",
+ a:["extensor","เอ็กเทนเซอร์","เอกซ์เทนเซอร์"],h:"exten- (เหยียด)",e:"extensor"},
+
+/* ===== ⭐ ดาว 5 — การบินของนก (สไลด์ p.45) ===== */
+{type:'mc',q:"[⭐สไลด์ดาว] ขณะนก 'ยกปีก' ขึ้น กล้ามเนื้อทำงานอย่างไร?",
+ opts:["Pectoralis minor หด, major คลาย","Pectoralis major หด, minor คลาย","หดทั้งคู่","คลายทั้งคู่"],a:"Pectoralis minor หด, major คลาย",
+ h:"ยกปีก = ตัวเล็ก (minor) หด",e:"ยกปีก: pectoralis minor หด + major คลาย",cite:"p.45"},
+{type:'mc',q:"[⭐สไลด์ดาว] ขณะนก 'กดปีก' ลง กล้ามเนื้อทำงานอย่างไร?",
+ opts:["Pectoralis major หด, minor คลาย","Pectoralis minor หด, major คลาย","หดทั้งคู่","คลายทั้งคู่"],a:"Pectoralis major หด, minor คลาย",
+ h:"กดปีก = ตัวใหญ่ (major) หด",e:"กดปีก: pectoralis major หด + minor คลาย",cite:"p.45"},
+{type:'tf',q:"[⭐สไลด์ดาว] กล้ามเนื้อ pectoralis major ทำหน้าที่ยกปีกขึ้น",a:false,
+ e:"major = กดปีกลง ; ที่ยกปีกขึ้นคือ pectoralis minor",w:"minor=ยก / major=กด (ชื่อสวนความรู้สึก!)"},
+{type:'fb',q:"[⭐สไลด์ดาว] กล้ามเนื้อยกปีกของนก คือ ______",
+ a:["pectoralis minor","เพคทอราลิสไมเนอร์","pectoralisminor"],h:"…minor (เล็ก)",e:"pectoralis minor"},
+{type:'fb',q:"[⭐สไลด์ดาว] กล้ามเนื้อกดปีกของนก คือ ______",
+ a:["pectoralis major","เพคทอราลิสเมเจอร์","pectoralismajor"],h:"…major (ใหญ่)",e:"pectoralis major"},
+];
+
+/* รวมเป็นคลังเดียว: ทุกไอเท็มมี type = tf | fb | mc, และ star = true/false */
+function buildAll(){
+  const out=[];
+  TF.forEach(x=>out.push({type:'tf',star:false,q:x.q,a:x.a,e:x.e,w:x.w}));
+  FB.forEach(x=>out.push({type:'fb',star:false,q:x.q,a:x.a,e:x.e,h:x.h}));
+  BANK.forEach(x=>out.push({type:'mc',star:false,brain:!!x.brain,q:x.q,opts:x.opts,a:x.a,e:x.exp,h:x.hint,cite:x.cite,ch:x.ch}));
+  STAR.forEach(x=>out.push(Object.assign({star:true,brain:false},x)));
+  return out;
+}
+const ALL = buildAll();
+const STARS = ALL.filter(x=>x.star);
+document.getElementById('poolCount').textContent = ALL.length;
+document.getElementById('starCount').textContent = STARS.length;
+
+/* ============ เครื่องมือ ============ */
+const norm = s => (s||"").toString().toLowerCase()
+  .replace(/[\s\.\,\(\)\-_'"“”็ฺ่้๊๋]/g,"").replace(/์/g,"");
+function fbMatch(input, answers){
+  const u = norm(input); if(!u) return false;
+  return answers.some(a=>{ const n=norm(a); return u===n || u.includes(n) || (n.includes(u) && u.length>=Math.max(2,n.length-1)); });
+}
+function shuffle(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+let mode="star", roundLen=20, queue=[], idx=0, score=0, streak=0, maxStreak=0, answered=false, hintLv=0;
+
+document.querySelectorAll('.mode-btn').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.mode-btn').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active'); mode=b.dataset.mode;
+});
+const lenRange=document.getElementById('lenRange'), lenLabel=document.getElementById('lenLabel');
+lenRange.oninput=()=>lenLabel.textContent=lenRange.value;
+document.getElementById('startBtn').onclick=start;
+document.getElementById('againBtn').onclick=()=>{document.getElementById('endScreen').classList.add('hidden');document.getElementById('startScreen').classList.remove('hidden');};
+
+function buildQueue(){
+  let pool;
+  if(mode==='star') pool=STARS;
+  else if(mode==='tf') pool=ALL.filter(x=>x.type==='tf');
+  else if(mode==='fb') pool=ALL.filter(x=>x.type==='fb');
+  else if(mode==='mc') pool=ALL.filter(x=>x.type==='mc');
+  else if(mode==='brain') pool=ALL.filter(x=>x.type==='mc'&&x.brain);
+  else pool=ALL; // mix
+  return shuffle(pool).slice(0, Math.min(roundLen, pool.length));
+}
+
+function start(){
+  roundLen=parseInt(lenRange.value);
+  queue=buildQueue(); idx=0; score=0; streak=0; maxStreak=0;
+  document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('endScreen').classList.add('hidden');
+  document.getElementById('gameScreen').classList.remove('hidden');
+  document.getElementById('qTotal').textContent=queue.length;
+  render();
+}
+
+function hideAllControls(){
+  document.getElementById('tfControls').classList.add('hidden');
+  document.getElementById('mcControls').classList.add('hidden');
+  document.getElementById('fbControls').classList.add('hidden');
+}
+
+function render(){
+  answered=false; hintLv=0;
+  const item=queue[idx];
+  document.getElementById('qNow').textContent=idx+1;
+  document.getElementById('score').textContent=score;
+  document.getElementById('streak').textContent=streak;
+  document.getElementById('prog').style.width=((idx)/queue.length*100)+'%';
+  document.getElementById('feedback').classList.remove('show','ok','no');
+  document.getElementById('fbWarn').classList.add('hidden');
+  document.getElementById('fbCite').classList.add('hidden');
+  document.getElementById('hintTxt').textContent='';
+  const tag=document.getElementById('qtag');
+  document.getElementById('qText').textContent=item.q;
+  hideAllControls();
+
+  if(item.type==='tf'){
+    tag.className='tag '+(item.star?'st':'tf'); tag.textContent=(item.star?'⭐ ':'')+'✅❌ ถูก / ผิด';
+    document.getElementById('tfControls').classList.remove('hidden');
+    document.querySelectorAll('.tf-btn').forEach(b=>{b.disabled=false;});
+  } else if(item.type==='mc'){
+    tag.className='tag '+(item.star?'st':'mc'); tag.textContent=(item.star?'⭐ ':'')+(item.brain?'🔥 ปรนัย (โหด)':'🔘 ปรนัย');
+    const box=document.getElementById('mcControls'); box.innerHTML=''; box.classList.remove('hidden');
+    const keys=['A','B','C','D','E'];
+    shuffle(item.opts).forEach((o,i)=>{
+      const b=document.createElement('button'); b.className='opt-btn';
+      b.innerHTML='<span class="k">'+keys[i]+'</span><span>'+o+'</span>';
+      b.onclick=()=>{ if(answered) return; judge(o===item.a, item, o); };
+      box.appendChild(b);
+    });
+  } else {
+    tag.className='tag '+(item.star?'st':'fb'); tag.textContent=(item.star?'⭐ ':'')+'✏️ เติมคำ';
+    document.getElementById('fbControls').classList.remove('hidden');
+    const inp=document.getElementById('fbInput'); inp.value=''; inp.disabled=false; inp.focus();
+  }
+}
+
+document.querySelectorAll('.tf-btn').forEach(b=>b.onclick=()=>{
+  if(answered) return; const item=queue[idx];
+  judge(b.dataset.v==='true'===item.a, item);
+  document.querySelectorAll('.tf-btn').forEach(x=>x.disabled=true);
+});
+document.getElementById('fbSubmit').onclick=submitFB;
+document.getElementById('fbInput').addEventListener('keydown',e=>{if(e.key==='Enter')submitFB();});
+function submitFB(){
+  if(answered) return; const item=queue[idx];
+  const val=document.getElementById('fbInput').value; if(!val.trim()) return;
+  document.getElementById('fbInput').disabled=true; judge(fbMatch(val,item.a), item);
+}
+document.getElementById('hintBtn').onclick=()=>{
+  const item=queue[idx]; if(item.type!=='fb'||answered) return; hintLv++;
+  if(hintLv===1) document.getElementById('hintTxt').textContent='💡 '+(item.h||'ลองนึกถึงคำสำคัญในบทเรียน');
+  else document.getElementById('hintTxt').textContent='💡 ตัวอย่างคำตอบ: '+item.a[0].slice(0,2)+'…';
+};
+
+function judge(correct,item,picked){
+  answered=true;
+  const fb=document.getElementById('feedback');
+  fb.classList.add('show', correct?'ok':'no');
+  document.getElementById('fbHead').textContent = correct? '🎉 ถูกต้อง!' : '❌ ยังไม่ใช่';
+  let ansText='';
+  if(item.type==='tf') ansText='เฉลย: <b>'+(item.a?'ถูก ✅':'ผิด ❌')+'</b>';
+  else if(item.type==='mc') ansText='เฉลย: <b>'+item.a+'</b>';
+  else ansText='เฉลย: <b>'+item.a[0]+'</b>';
+  document.getElementById('fbAns').innerHTML=ansText;
+  document.getElementById('fbExp').textContent=item.e||'';
+  if(item.cite){ const c=document.getElementById('fbCite'); c.textContent='📖 อ้างอิงสไลด์ '+item.cite; c.classList.remove('hidden'); }
+  if(item.w){ const w=document.getElementById('fbWarn'); w.textContent='⚠️ '+item.w; w.classList.remove('hidden'); }
+  if(item.type==='mc'){
+    document.querySelectorAll('#mcControls .opt-btn').forEach(b=>{
+      b.disabled=true; const txt=b.querySelector('span:last-child').textContent;
+      if(txt===item.a) b.classList.add('correct');
+      else if(txt===picked) b.classList.add('wrong');
+    });
+  }
+  if(correct){ score++; streak++; maxStreak=Math.max(maxStreak,streak); } else streak=0;
+  document.getElementById('score').textContent=score;
+  document.getElementById('streak').textContent=streak;
+}
+document.getElementById('nextBtn').onclick=()=>{ idx++; if(idx>=queue.length) finish(); else render(); };
+document.addEventListener('keydown',e=>{
+  if(document.getElementById('gameScreen').classList.contains('hidden')) return;
+  if(answered && (e.key==='Enter'||e.key===' ')){ e.preventDefault(); document.getElementById('nextBtn').click(); return; }
+  const item=queue[idx];
+  if(!answered && item && item.type==='mc' && /^[1-5]$/.test(e.key)){
+    const b=document.querySelectorAll('#mcControls .opt-btn')[+e.key-1]; if(b) b.click();
+  }
+});
+
+function finish(){
+  document.getElementById('gameScreen').classList.add('hidden');
+  const es=document.getElementById('endScreen'); es.classList.remove('hidden');
+  const pct=Math.round(score/queue.length*100);
+  document.getElementById('endScore').textContent=score+'/'+queue.length;
+  document.getElementById('endPct').textContent=pct+'% · สตรีคสูงสุด 🔥'+maxStreak;
+  let g,tip;
+  if(pct>=90){g='🏆 เทพการเคลื่อนที่!';tip='แม่นมาก พร้อมสอบแล้ว ลองสลับไปโหมดข้อโหดต่อ';}
+  else if(pct>=75){g='💪 เก่งมาก!';tip='เหลือนิดเดียว ทบทวนข้อที่พลาดอีกรอบ';}
+  else if(pct>=50){g='📘 มาถูกทางแล้ว';tip='เปิดไฟล์สรุปทวนหัวข้อที่ยังพลาด แล้วเล่นใหม่';}
+  else {g='🌱 สู้ ๆ ค่อย ๆ เก็บ';tip='เริ่มจากโหมด ⭐ เน้นดาว ให้แม่นก่อน แล้วค่อยขยับไปคลังใหญ่';}
+  document.getElementById('endGrade').textContent=g;
+  document.getElementById('endTip').textContent=tip;
+}
+</script>
+<!--KIT-UI v2.4 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<script>
+/* =============================================================================
+   _kit/ui-controls.js  —  KIT UI  v1.0
+   แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
+     🌙/☀️  โหมดมืด / สว่าง   (จำค่าไว้ใน localStorage)
+     A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
+     ✏️  ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
+     🧮  เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
+
+   ── วิธีใช้ ────────────────────────────────────────────────────────────────
+   ห้ามแก้โค้ดนี้ในไฟล์ widget!  แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
+       pwsh -File _kit/apply-ui.ps1
+   สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
+   (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
+
+   !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
+      เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
+
+   ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
+   ใส่แอตทริบิวต์ที่ tag body:  data-tools="pen,calc"  = บังคับเปิด
+                              data-tools="none"      = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
+   ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
+              หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
+   ============================================================================= */
+(function(){
+if(window.__KITUI__) return; window.__KITUI__='2.4';
+
+/* ---------- helper ---------- */
+const D=document, R=D.documentElement;
+const get=k=>{try{return localStorage.getItem('kitui-'+k)}catch(e){return null}};
+const set=(k,v)=>{try{localStorage.setItem('kitui-'+k,v)}catch(e){}};
+const el=(t,c,h)=>{const e=D.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
+
+/* =============================================================================
+   1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
+   ============================================================================= */
+const CSS=`
+/* ===== DARK TOKENS (คู่กับ _kit/design-tokens.css) ===== */
+:root[data-theme="dark"]{
+  --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
+  --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
+  --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
+  --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
+  --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
+}
+:root[data-theme="dark"] body{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f172a}
+:root[data-theme="dark"] body[data-subject="physics"]{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f1220}
+:root[data-theme="dark"] body[data-subject="bio"]{--accent:#4ade80;--accent-head:#bbf7d0;--accent-ink:#86efac;--accent-soft:#0f2a1a;--accent-bd:#256b41;--accent-chip:#14532d;--accent-ghost:#15803d;--bg:#0d1912}
+:root[data-theme="dark"] body[data-subject="chem"]{--accent:#fb923c;--accent-head:#fed7aa;--accent-ink:#fdba74;--accent-soft:#2b1a0c;--accent-bd:#8a3d12;--accent-chip:#6d2c10;--accent-ghost:#c2410c;--bg:#1a130c}
+:root[data-theme="dark"] body[data-subject="christ"]{--accent:#a78bfa;--accent-head:#ddd6fe;--accent-ink:#c4b5fd;--accent-soft:#241a3d;--accent-bd:#5b21b6;--accent-chip:#4c1d95;--accent-ghost:#6d28d9;--bg:#16121f}
+:root[data-theme="dark"] body[data-subject="islam"]{--accent:#2dd4bf;--accent-head:#99f6e4;--accent-ink:#5eead4;--accent-soft:#0d2b28;--accent-bd:#12615a;--accent-chip:#134e4a;--accent-ghost:#0f766e;--bg:#0c1917}
+:root[data-theme="dark"] body[data-subject="history"]{--accent:#fbbf24;--accent-head:#fde68a;--accent-ink:#fcd34d;--accent-soft:#2a1f0a;--accent-bd:#8a4b0c;--accent-chip:#6d3a0a;--accent-ghost:#b45309;--bg:#191509}
+:root[data-theme="dark"] body[data-subject="math"]{--accent:#38bdf8;--accent-head:#bae6fd;--accent-ink:#7dd3fc;--accent-soft:#0c2434;--accent-bd:#0b5a80;--accent-chip:#0c4a6e;--accent-ghost:#0369a1;--bg:#0b1620}
+:root[data-theme="dark"] body[data-subject="eng"]{--accent:#f472b6;--accent-head:#fbcfe8;--accent-ink:#f9a8d4;--accent-soft:#2e1122;--accent-bd:#8d1748;--accent-chip:#731839;--accent-ghost:#be185d;--bg:#1c0f16}
+:root[data-theme="dark"] body[data-subject="thai"]{--accent:#f87171;--accent-head:#fecaca;--accent-ink:#fca5a5;--accent-soft:#2d1414;--accent-bd:#8d2020;--accent-chip:#7f1d1d;--accent-ghost:#b91c1c;--bg:#1a0f0f}
+:root[data-theme="dark"] img,:root[data-theme="dark"] .svg-box{filter:brightness(.92)}
+/* ช่องกรอก/ดรอปดาวน์ที่ widget เก่ากำหนดพื้นขาวตายตัวไว้ */
+:root[data-theme="dark"] select,:root[data-theme="dark"] textarea,
+:root[data-theme="dark"] input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=color])
+{background-color:var(--soft);color:var(--ink);border-color:var(--line)}
+
+/* ===== แถบเครื่องมือลอย ===== */
+#kitui-bar{position:fixed;right:10px;bottom:10px;z-index:99990;display:flex;gap:6px;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
+#kitui-bar button{border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;
+  font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
+  align-items:center;justify-content:center;font-weight:700}
+#kitui-bar button:hover{background:var(--soft)}
+#kitui-bar button:active{transform:scale(.93)}
+#kitui-bar button.on{background:var(--accent);color:#fff}
+#kitui-bar .kitui-sep{width:1px;height:22px;background:var(--line);flex:0 0 1px}
+#kitui-bar .kitui-fs{font-size:11px;color:var(--muted);min-width:34px;text-align:center;font-weight:700}
+#kitui-bar.hidden > *:not(#kitui-grip){display:none}
+#kitui-grip{font-size:17px}
+
+/* ===== แผงลอย (ที่ทด / เครื่องคิดเลข) ===== */
+.kitui-sheet{position:fixed;left:0;right:0;bottom:0;z-index:99991;background:var(--card);
+  border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
+  display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
+  height:52vh;max-height:92vh;min-height:180px}
+.kitui-sheet.open{display:flex}
+.kitui-sheet.full{height:100vh;border-radius:0}
+.kitui-head{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--line);
+  flex-wrap:wrap;touch-action:none;cursor:ns-resize}
+.kitui-head b{font-size:.9rem;color:var(--accent-ink);margin-right:2px;white-space:nowrap}
+.kitui-head button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;
+  padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
+.kitui-head button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.kitui-head .kitui-spacer{flex:1}
+.kitui-sw{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;min-height:0}
+.kitui-sw.on{border-color:var(--ink);transform:scale(1.12)}
+.kitui-padwrap{flex:1;position:relative;overflow:hidden;background:var(--soft)}
+.kitui-padwrap canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+:root[data-theme="dark"] .kitui-padwrap{background:#0c1220}
+
+/* ===== เครื่องคิดเลข ===== */
+#kitui-calc{height:auto;max-height:90vh}
+.kitui-disp{padding:8px 12px;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);
+  border-bottom:1px solid var(--line)}
+.kitui-disp .ex{font-size:.95rem;color:var(--muted);min-height:1.3em;word-break:break-all}
+.kitui-disp .rs{font-size:1.6rem;font-weight:700;color:var(--accent-ink);word-break:break-all}
+.kitui-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:7px}
+.kitui-keys button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:9px;
+  font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
+.kitui-keys button:active{transform:scale(.95)}
+.kitui-keys button.fn{font-size:.8rem;color:var(--accent-ink)}
+.kitui-keys button.op{background:var(--accent-soft);color:var(--accent-ink)}
+.kitui-keys button.eq{background:var(--accent);color:#fff;grid-row:span 2}
+.kitui-keys button.del{background:var(--hot-bg);color:var(--hot-ink)}
+.kitui-keys button.w3{grid-column:span 3}
+@media(max-width:420px){.kitui-keys button{font-size:.88rem;min-height:40px}.kitui-keys button.fn{font-size:.72rem}}
+@media(min-width:760px){
+  .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
+  .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
+  #kitui-pad{width:560px}
+}
+@media print{#kitui-bar,.kitui-sheet{display:none!important}}
+`;
+const st=el('style'); st.id='kitui-style'; st.textContent=CSS; D.head.appendChild(st);
+
+/* -----------------------------------------------------------------------------
+   1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
+   widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
+   พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
+   แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
+   เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
+----------------------------------------------------------------------------- */
+/* สีพาสเทลสว่าง -> สีเข้มที่ยังคง "เฉดเดิม" ไว้ (เขียว=ถูก / แดง=ผิด ต้องยังแยกออก)
+   ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
+function darken(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
+  const l0=(mx+mn)/2;
+  const s0 = d===0 ? 0 : d/(1-Math.abs(2*l0-1));
+  const s = d===0 ? 0 : Math.min(.5, Math.max(.3, s0));
+  const l = d===0 ? .13 : .17;                       /* เทา/ขาวให้เข้มกว่าสีนิดหน่อย */
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+function darkFix(){
+  const out=[], seen=new Set();
+  const take=r=>{
+    if(!r.style || !r.selectorText) return;
+    if(r.selectorText.indexOf('kitui')>-1) return;               /* ของเราเองใช้ token อยู่แล้ว */
+    const bg=r.style.backgroundColor;
+    if(!bg || bg.indexOf('var(')>-1) return;
+    const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
+    if(!m) return;
+    if(m[4]!==undefined && +m[4]<0.6) return;                    /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
+    const cr=+m[1], cg=+m[2], cb=+m[3];
+    if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return;       /* ไม่สว่างพอ ไม่ต้องยุ่ง */
+    const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
+    const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
+    let css='background-color:'+repl;
+    /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
+    const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
+    out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
+  };
+  /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
+        ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
+  const visit=rules=>{
+    for(let i=0;i<rules.length;i++){
+      const r=rules[i];
+      if(r.selectorText) take(r);
+      if(r.cssRules && r.cssRules.length) visit(r.cssRules);     /* @media / @supports / nesting */
+    }
+  };
+  for(let i=0;i<D.styleSheets.length;i++){
+    let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; }   /* ข้ามชีตข้ามโดเมน */
+    if(rr) visit(rr);
+  }
+  if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
+  return out.length;
+}
+try{ window.__KITUI_DARKFIX__=darkFix(); }catch(e){ window.__KITUI_DARKFIX__='err:'+e.message; }
+
+/* darkFix ข้างบนซ่อมได้เฉพาะสีที่เขียนตายตัวในไฟล์ CSS
+   แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
+   ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
+   จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
+const rgbOf=c=>{const m=c&&c.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null;};
+const lumOf=v=>v?(0.2126*v[0]+0.7152*v[1]+0.0722*v[2])/255:null;
+/* ตรงข้ามกับ darken(): ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
+   (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
+function lighten(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  if(d<0.04) return 'var(--ink)';                    /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
+  let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
+  const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
+  const s=Math.min(.92,Math.max(.55,s0)), l=.72;
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+const SKIP={CANVAS:1,IMG:1,VIDEO:1,SVG:1,IFRAME:1,PICTURE:1,OBJECT:1};
+const OBS_OPT={childList:true,subtree:true,attributes:true,attributeFilter:['class','style']};
+let patched=[], obs=null;
+function elementFix(){
+  /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
+        ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
+  if(obs) obs.disconnect();
+  try{ elementFixCore(); } finally { if(obs) obs.observe(D.body,OBS_OPT); }
+}
+function elementFixCore(){
+  /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
+     ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
+     จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
+  if(R.getAttribute('data-theme')!=='dark'){
+    patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
+    patched=[];
+    return;
+  }
+  /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
+     ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
+  /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
+  const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
+  for(let i=0;i<all.length;i++){
+    const e=all[i];
+    if(e.id&&e.id.indexOf('kitui')===0) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(SKIP[e.tagName]) continue;                      /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
+    const s=getComputedStyle(e);
+    const bg=rgbOf(s.backgroundColor);
+    if(!bg || bg[3]<0.6) continue;                     /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
+    if(lumOf(bg)<0.72) continue;                       /* เข้มพออยู่แล้ว */
+    /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
+    e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
+    const fg=rgbOf(s.color);
+    if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important');  /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
+    patched.push(e);
+  }
+  /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
+     ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
+  const bgCache=new Map();
+  const effBg=n=>{
+    for(let p=n;p;p=p.parentElement){
+      if(bgCache.has(p)) return bgCache.get(p);
+      const b=rgbOf(getComputedStyle(p).backgroundColor);
+      if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
+    }
+    return null;
+  };
+  for(let i=2;i<all.length;i++){
+    const e=all[i];
+    if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(e.style.color) continue;                         /* จัดการไปแล้วในรอบแรก */
+    if(!e.textContent || !e.textContent.trim()) continue;
+    const fg=rgbOf(getComputedStyle(e).color);
+    if(!fg || lumOf(fg)>=0.45) continue;                 /* ตัวอักษรสว่างอยู่แล้ว */
+    const bg=effBg(e);
+    if(!bg || lumOf(bg)>=0.5) continue;                  /* พื้นยังสว่าง อ่านออกอยู่ */
+    e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
+    patched.push(e);
+  }
+}
+let efT=0;
+const scheduleFix=()=>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
+try{
+  obs=new MutationObserver(scheduleFix);
+  obs.observe(D.body,OBS_OPT);
+}catch(e){}
+
+/* =============================================================================
+   2) ธีม + ขนาดตัวอักษร
+   ============================================================================= */
+const FS=[.85,1,1.15,1.3,1.5], FSNAME=['เล็กสุด','เล็ก','ปกติ','ใหญ่','ใหญ่สุด'];
+let fsIdx=parseInt(get('fs')); if(isNaN(fsIdx)||fsIdx<0||fsIdx>4) fsIdx=1;
+let theme=get('theme') || (matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+
+function applyTheme(){
+  R.setAttribute('data-theme',theme);
+  R.style.colorScheme = theme==='dark'?'dark':'light';   /* ให้ select/input เป็นสีเข้มด้วย */
+  const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
+  set('theme',theme);
+  clearTimeout(efT);                                   /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
+  if(typeof elementFix==='function') elementFix();
+  if(typeof draw==='function' && pad) draw();          /* วาดที่ทดใหม่ เส้นดำ<->ขาวตามธีม */
+}
+function applyFS(){
+  R.style.fontSize=(16*FS[fsIdx])+'px';
+  const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
+  set('fs',fsIdx);
+}
+
+/* =============================================================================
+   3) แถบเครื่องมือ
+   ============================================================================= */
+const subj=(D.body.getAttribute('data-subject')||'').toLowerCase();
+/* หลาย widget ไม่ได้ใส่ data-subject ที่ <body> → เดาจากโฟลเดอร์ที่ไฟล์อยู่ด้วย */
+const inPath=/\/(physics|math|chemist)\//i.test(decodeURIComponent(location.pathname));
+const tAttr=D.body.getAttribute('data-tools');
+const wantTools = tAttr!=null ? tAttr.toLowerCase()
+                : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
+const hasPen  = wantTools.includes('pen');
+const hasCalc = wantTools.includes('calc');
+
+const bar=el('div'); bar.id='kitui-bar';
+bar.innerHTML =
+  `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
+  `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button>`+
+  `<span class="kitui-sep"></span>`+
+  `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
+  `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
+  `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
+  (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
+  (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
+D.body.appendChild(bar);
+
+D.getElementById('kitui-theme').onclick=()=>{theme=theme==='dark'?'light':'dark';applyTheme();};
+D.getElementById('kitui-fsup').onclick=()=>{if(fsIdx<4){fsIdx++;applyFS();}};
+D.getElementById('kitui-fsdown').onclick=()=>{if(fsIdx>0){fsIdx--;applyFS();}};
+D.getElementById('kitui-grip').onclick=()=>bar.classList.toggle('hidden');
+applyTheme(); applyFS();
+
+/* ปิดแผงด้วยปุ่ม Esc */
+D.addEventListener('keydown',e=>{ if(e.key==='Escape') D.querySelectorAll('.kitui-sheet.open').forEach(s=>s.classList.remove('open')); });
+
+/* ลากหัวแผงเพื่อปรับความสูง */
+function makeResizable(sheet){
+  const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
+  head.addEventListener('pointerdown',e=>{
+    if(e.target.closest('button'))return;
+    drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect().height;head.setPointerCapture(e.pointerId);
+  });
+  head.addEventListener('pointermove',e=>{
+    if(!drag)return;
+    const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
+    sheet.classList.remove('full'); sheet.style.height=h+'px';
+    if(sheet.id==='kitui-pad') fitPad();
+  });
+  head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
+}
+
+/* =============================================================================
+   4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ  หลายหน้า  เซฟอัตโนมัติ
+   ============================================================================= */
+let pad,padCv,padCx,pages=[[]],pg=0,undone=[],histo=[];
+let tool='pen',color='#111827',width=2.4,penSeen=0;
+const COLORS=['#111827','#2563eb','#dc2626','#16a34a','#f59e0b'];
+const PADKEY='pad-'+location.pathname.split('/').pop();
+
+function buildPad(){
+  pad=el('div','kitui-sheet'); pad.id='kitui-pad';
+  pad.innerHTML=
+   `<div class="kitui-head">
+      <b>✏️ ที่ทด</b>
+      <button data-t="pen" class="on">🖊️</button>
+      <button data-t="hl">🖍️</button>
+      <button data-t="er">🧽</button>
+      ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
+      <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
+      <span class="kitui-spacer"></span>
+      <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
+      <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
+      <button id="kitui-pgadd">+ หน้า</button>
+      <button id="kitui-clear">ล้างหน้านี้</button>
+      <button id="kitui-full">⛶</button>
+      <button id="kitui-padclose">✕</button>
+    </div>
+    <div class="kitui-padwrap"><canvas></canvas></div>`;
+  D.body.appendChild(pad);
+  padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
+  makeResizable(pad);
+
+  pad.querySelector('.kitui-head').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
+  });
+  D.getElementById('kitui-undo').onclick=()=>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop(); draw(); save(); } };
+  D.getElementById('kitui-redo').onclick=()=>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop(); draw(); save(); } };
+  D.getElementById('kitui-clear').onclick=()=>{ snap(); pages[pg]=[]; draw(); save(); };
+  D.getElementById('kitui-pgadd').onclick=()=>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw(); save(); };
+  D.getElementById('kitui-pgprev').onclick=()=>{ if(pg>0){pg--;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-pgnext').onclick=()=>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-full').onclick=()=>{ pad.classList.toggle('full'); pad.style.height=''; fitPad(); };
+  D.getElementById('kitui-padclose').onclick=()=>pad.classList.remove('open');
+
+  /* ---- วาด ---- */
+  let cur=null;
+  padCv.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='pen') penSeen=Date.now();
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;   /* กันฝ่ามือแตะตอนใช้สไตลัส */
+    const p=pt(e);
+    if(tool==='er'){ snap(); erase(p); return; }
+    snap();
+    cur={c:color,w:width,hl:tool==='hl',pts:[p]};
+    pages[pg].push(cur); draw();
+    try{ padCv.setPointerCapture(e.pointerId); }catch(x){}  /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
+  });
+  padCv.addEventListener('pointermove',e=>{
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;
+    if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
+    if(!cur||!e.buttons)return;
+    /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
+    let evs=[e];
+    if(e.getCoalescedEvents){ const c=e.getCoalescedEvents(); if(c&&c.length) evs=c; }
+    evs.forEach(ev=>cur.pts.push(pt(ev)));
+    draw();
+  });
+  const end=()=>{ if(cur){cur=null;save();} };
+  padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
+  padCv.addEventListener('pointerleave',end);
+
+  addEventListener('resize',()=>{ if(pad.classList.contains('open')) fitPad(); });
+  load(); fitPad();
+}
+function pt(e){
+  const r=padCv.getBoundingClientRect();
+  return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
+          p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5};   /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
+}
+function snap(){ histo.push(pages[pg].slice()); if(histo.length>60)histo.shift(); undone=[]; }
+function erase(p){
+  const r=padCv.getBoundingClientRect(), rad=18/r.width;
+  const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
+  if(keep.length!==pages[pg].length){ pages[pg]=keep; draw(); save(); }
+}
+function fitPad(){
+  const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
+  const dpr=Math.min(devicePixelRatio||1,2.5);
+  padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
+  draw();
+}
+function draw(){
+  const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
+  padCx.clearRect(0,0,W,H);
+  /* เส้นตารางจาง ๆ ให้เขียนตรง */
+  const dark=R.getAttribute('data-theme')==='dark';
+  padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
+  for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath();padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke();}
+  padCx.lineCap='round'; padCx.lineJoin='round';
+  pages[pg].forEach(s=>{
+    padCx.globalAlpha=s.hl?0.32:1;
+    padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
+    for(let i=1;i<s.pts.length;i++){
+      const a=s.pts[i-1],b=s.pts[i];
+      padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
+      padCx.beginPath(); padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke();
+    }
+    if(s.pts.length===1){ /* จุดเดียว */
+      padCx.fillStyle=padCx.strokeStyle; padCx.beginPath();
+      padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill();
+    }
+  });
+  padCx.globalAlpha=1;
+  const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
+}
+function save(){ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
+function load(){
+  try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
+}
+
+if(hasPen){
+  buildPad();
+  D.getElementById('kitui-penbtn').onclick=()=>{
+    const o=pad.classList.toggle('open');
+    D.getElementById('kitui-penbtn').classList.toggle('on',o);
+    if(o) fitPad();
+  };
+}
+
+/* =============================================================================
+   5) เครื่องคิดเลขวิทยาศาสตร์  (tokenizer → shunting-yard → RPN  ไม่ใช้ eval)
+   ============================================================================= */
+const FN={sin:1,cos:1,tan:1,asin:1,acos:1,atan:1,ln:1,log:1,sqrt:1,abs:1,exp:1};
+const PREC={'+':1,'-':1,'*':2,'/':2,'^':4,'u-':3};
+function tokenize(s){
+  s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
+  const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!()])/g; let m;
+  while((m=re.exec(s))) out.push(m[1]);
+  return out;
+}
+function toRPN(tk){
+  const out=[],op=[]; let prev=null;
+  for(let t of tk){
+    if(t==='**')t='^';
+    if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
+    else if(t==='PI'){ out.push(Math.PI); }
+    else if(t==='e'||t==='E'){ out.push(Math.E); }
+    else if(t==='ANS'){ out.push(ANS); }
+    else if(FN[t]){ op.push(t); }
+    else if(t==='('){ op.push(t); }
+    else if(t===')'){
+      while(op.length&&op[op.length-1]!=='(') out.push(op.pop());
+      if(!op.length) throw 0; op.pop();
+      if(op.length&&FN[op[op.length-1]]) out.push(op.pop());
+    }
+    else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
+    else if('+-*/^'.includes(t)){
+      let o=t;
+      const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
+      if(t==='-'&&unary) o='u-';
+      else if(t==='+'&&unary){ prev=t; continue; }
+      while(op.length){
+        const top=op[op.length-1];
+        if(top==='('||FN[top])break;
+        const rightAssoc=(o==='^'||o==='u-');
+        if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop()); else break;
+      }
+      op.push(o);
+    }
+    else throw 0;
+    prev=t;
+  }
+  while(op.length){ const o=op.pop(); if(o==='(')throw 0; out.push(o); }
+  return out;
+}
+function evalRPN(rpn,deg){
+  const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
+  const pop=()=>{ if(!st.length)throw 0; return st.pop(); };
+  for(const t of rpn){
+    if(typeof t==='number'){ st.push(t); continue; }
+    if(t==='fact'){ const n=pop(); if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
+    if(t==='pct'){ st.push(pop()/100); continue; }
+    if(t==='u-'){ st.push(-pop()); continue; }
+    if(FN[t]){
+      const a=pop();
+      st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
+             : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
+             : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
+             : t==='abs'?Math.abs(a) : Math.exp(a) );
+      continue;
+    }
+    const b=pop(),a=pop();
+    st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
+  }
+  if(st.length!==1) throw 0;
+  return st[0];
+}
+function calc(src,deg){ return evalRPN(toRPN(tokenize(src)),deg); }
+
+let ANS=0, expr='', calcSheet, isDeg=true;
+const KEYS=[
+ ['DEG','deg','fn'],['(','(',''],[')',')',''],['⌫','del','del'],['AC','ac','del'],
+ ['sin','sin(','fn'],['cos','cos(','fn'],['tan','tan(','fn'],['π','π','fn'],['÷','÷','op'],
+ ['sin⁻¹','asin(','fn'],['cos⁻¹','acos(','fn'],['tan⁻¹','atan(','fn'],['e','e','fn'],['×','×','op'],
+ ['ln','ln(','fn'],['log','log(','fn'],['√','√(','fn'],['xʸ','^','fn'],['−','−','op'],
+ ['7','7',''],['8','8',''],['9','9',''],['x!','!','fn'],['+','+','op'],
+ ['4','4',''],['5','5',''],['6','6',''],['%','%','fn'],['ANS','ANS','fn'],
+ ['1','1',''],['2','2',''],['3','3',''],['.','.',''],['=','eq','eq'],
+ ['0','0','w3'],['x²','^2','fn']
+];
+function buildCalc(){
+  calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
+  calcSheet.innerHTML=
+   `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
+      <button id="kitui-calcclose">✕</button></div>
+    <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
+    <div class="kitui-keys" id="kitui-keys">
+      ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
+    </div>`;
+  D.body.appendChild(calcSheet);
+  D.getElementById('kitui-calcclose').onclick=()=>calcSheet.classList.remove('open');
+  const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
+  const show=()=>{ ex.textContent=expr||' ';
+    try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
+    catch(e){ rs.style.opacity=.35; }
+  };
+  D.getElementById('kitui-keys').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
+    if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
+    if(k==='del'){ expr=expr.slice(0,-1); show(); return; }
+    if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show(); return; }
+    if(k==='eq'){
+      rs.style.opacity=1;
+      try{
+        const v=calc(expr,isDeg);
+        if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
+        if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
+        ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
+      }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
+      return;
+    }
+    expr+=k; show();
+  });
+}
+function fmt(v){
+  if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
+  if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
+  return String(Math.round(v*1e10)/1e10);
+}
+if(hasCalc){
+  buildCalc();
+  D.getElementById('kitui-calcbtn').onclick=()=>{
+    const o=calcSheet.classList.toggle('open');
+    D.getElementById('kitui-calcbtn').classList.toggle('on',o);
+  };
+}
+})();
+
+</script>
+<!--/KIT-UI-->
+</body>
+</html>

@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O-NET อังกฤษ ม.6 — ข้อสอบจริง (เกมฝึก)</title>
+<style>
+:root{
+  --bg:#0e1117; --card:#1b222e; --card2:#222b39; --line:#2c3647;
+  --ink:#e8edf5; --mut:#9aa7ba; --dim:#6b7787;
+  --acc:#5aa9ff; --acc2:#7c5cff; --ok:#3ddc97; --warn:#ffcb6b; --bad:#ff6b81;
+  --rad:16px; --sh:0 8px 30px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(160deg,#0c0f15,#11161f 45%,#0d1219);
+  color:var(--ink);font-family:"Segoe UI","Sarabun",system-ui,sans-serif;line-height:1.6;
+  padding:22px 14px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:780px;margin:0 auto}
+.tag{display:inline-block;font-size:11px;color:var(--acc);border:1px solid var(--acc);
+  border-radius:999px;padding:1px 10px;margin-bottom:8px;letter-spacing:.5px;text-transform:uppercase}
+h1{font-size:22px;margin:0 0 2px}
+.sub{color:var(--mut);font-size:13px;margin-bottom:14px}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:7px 13px;font-size:13px}
+.stat b{font-size:16px;color:var(--acc)}
+.stat.acc b{color:var(--ok)} .stat.streak b{color:var(--warn)}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.fbtn{background:var(--card);border:1px solid var(--line);color:var(--mut);border-radius:999px;
+  padding:5px 12px;font-size:12.5px;cursor:pointer;transition:.15s}
+.fbtn:hover{border-color:var(--acc);color:var(--ink)}
+.fbtn.on{background:var(--acc2);border-color:var(--acc2);color:#fff;font-weight:600}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--rad);
+  padding:18px 18px 16px;box-shadow:var(--sh)}
+.meta{display:flex;justify-content:space-between;gap:8px;font-size:11.5px;color:var(--dim);margin-bottom:12px;flex-wrap:wrap}
+.pill{background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:2px 10px}
+.pill.y{color:var(--warn)} .pill.s{color:var(--acc)}
+.sit{font-size:13px;color:var(--warn);background:rgba(255,203,107,.07);border:1px solid #3a3423;
+  border-radius:10px;padding:8px 11px;margin-bottom:10px}
+.dlg .ln{font-size:14.5px;margin:3px 0;padding-left:4px}
+.dlg .ln b{color:var(--acc)}
+.bn{color:var(--dim);font-size:12px}
+.blk{background:var(--acc2);color:#fff;border-radius:6px;padding:0 8px;font-weight:600;font-size:12.5px}
+.psg{font-size:14.5px;line-height:2.05}
+.err{border-bottom:1px dashed var(--dim)} .err sup{color:var(--dim);font-size:10px}
+.errA{background:rgba(124,92,255,.25);border-bottom:2px solid var(--acc2);border-radius:4px;padding:0 3px;font-weight:600}
+.errA sup{color:var(--acc);font-size:10px}
+.stem{font-size:16.5px;line-height:1.9;margin-bottom:6px}
+.hint2{font-size:12.5px;color:var(--dim);margin-top:4px}
+.opts{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.opt{background:var(--card2);border:1px solid var(--line);border-radius:11px;padding:10px 13px;
+  font-size:14px;cursor:pointer;transition:.13s;display:flex;gap:9px;align-items:flex-start}
+.opt:hover{border-color:var(--acc);background:#28324260}
+.opt .k{font-weight:700;color:var(--acc);flex:none}
+.opt.locked{cursor:default} .opt.locked:hover{border-color:var(--line);background:var(--card2)}
+.opt.good{border-color:var(--ok);background:rgba(61,220,151,.14)}
+.opt.good .k{color:var(--ok)}
+.opt.bad{border-color:var(--bad);background:rgba(255,107,129,.14)}
+.opt.bad .k{color:var(--bad)}
+.fb{margin-top:12px;border-radius:11px;padding:11px 13px;font-size:13.5px;display:none}
+.fb.show{display:block}
+.fb.right{background:rgba(61,220,151,.10);border:1px solid var(--ok)}
+.fb.wrong{background:rgba(255,107,129,.10);border:1px solid var(--bad)}
+.fb .res{font-weight:700;margin-bottom:3px}
+.fb.right .res{color:var(--ok)} .fb.wrong .res{color:var(--bad)}
+.fb .why{color:var(--mut)}
+.fb .flag{color:var(--warn);font-size:12.5px;margin-top:5px}
+.actions{display:flex;gap:10px;margin-top:14px}
+.btn{flex:1;background:var(--acc2);border:none;color:#fff;border-radius:12px;padding:11px;font-size:14px;font-weight:600;cursor:pointer}
+.btn:hover{filter:brightness(1.12)} .btn:disabled{opacity:.4;cursor:default}
+.btn.ghost{background:var(--card2);border:1px solid var(--line);color:var(--mut)}
+.done{text-align:center;padding:28px 14px} .done .big{font-size:40px}
+.foot{text-align:center;color:var(--dim);font-size:11.5px;margin-top:16px;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="tag">O-NET ข้อสอบจริง สทศ.</span>
+  <h1>O-NET ภาษาอังกฤษ ม.6 — เกมฝึกจากข้อสอบจริง</h1>
+  <div class="sub">ข้อสอบจริงปี <b>2559 + 2561</b> (สทศ.) · Conversation · Speaking · Usage/Error Identification · รวม <b id="tot0">–</b> ข้อ · กรองปี/หมวดได้</div>
+
+  <div class="bar">
+    <div class="stat">ข้อ <b id="pos">0</b>/<span id="total">0</span></div>
+    <div class="stat acc">ถูก <b id="correct">0</b></div>
+    <div class="stat streak">🔥 <b id="streak">0</b></div>
+  </div>
+  <div class="filters" id="filters"></div>
+  <div id="game"></div>
+
+  <div class="foot">
+    ที่มา: ข้อสอบ O-NET ม.6 วิชาภาษาอังกฤษ ปีการศึกษา 2559 และ 2561 (สทศ./NIETS) — ดึงข้อความจริงมาทั้งข้อ<br>
+    ⚠️ เฉลยได้จากการวิเคราะห์ไวยากรณ์ (ข้อบทสนทนา 1 ข้อที่ตอบได้หลายแนวทำเครื่องหมาย ⚑ ไว้) · 2559 ข้อ 30 ตัดออกเพราะข้อความ OCR กำกวม
+  </div>
+</div>
+
+<script>
+// ---------- shared dialog / passage contexts ----------
+const CTX={
+ s59d1:{sit:"Jim นักเรียน ม.ปลาย มาที่ห้องสมุดมหาวิทยาลัย Ohio เพื่อหาหนังสือทำรายงาน",
+  lines:[["Librarian","Hello. What can I do for you?"],["Jim","__1__ Er … it's a history book about China."],
+   ["Librarian","__2__"],["Jim","Yes, it's China in the Han Dynasty. __3__"],
+   ["Librarian","Of course. We have two copies on the top shelf there. __4__"],
+   ["Jim","All right. Well, I'm not a student here. Can I check out the book?"],
+   ["Librarian","__5__ But you can ask a friend studying at this university to borrow it for you."]]},
+ s59d2:{sit:"Sue กำลังย้ายเข้าอพาร์ตเมนต์ใหม่ กำลังขอกุญแจห้องจากพนักงาน",
+  lines:[["Sue","Hello. My name is Susan Clayton. I'm moving in today. __6__"],
+   ["Clerk","Good afternoon, Ms. Clayton. I'll show you to your room. __7__"],
+   ["Sue","That's very kind of you."],
+   ["Clerk","__8__ Er … Ms. Clayton, may I remind you not to hang clothes on the balcony?"],
+   ["Sue","__9__"],["Clerk","I'm afraid not. I hope you'll enjoy staying here. __10__"],["Sue","Thank you."]]},
+ s61d1:{sit:"ในงานเลี้ยงกลางคืนของนักเรียนแลกเปลี่ยน",
+  lines:[["Kim","Hi, I'm Park Jun Hye from Korea."],
+   ["Sandra","__1__ My name's Sandra Smith. I come from Australia."],["Sandra","__2__"],
+   ["Kim","Well, yes. Twice. I have a cousin who lives in Brisbane. I like it a lot. __3__"],
+   ["Sandra","Sydney in New South Wales."],
+   ["Kim","I see. You know, I plan to visit Sydney this December. __4__"],
+   ["Sandra","Sure. You should visit the Harbor Bridge, the Opera House, the sandy beaches, and the vineyards."],
+   ["Kim","__5__"]]},
+ s61d2:{sit:"ที่ร้านอาหาร",
+  lines:[["Waiter","Good evening. __6__"],["Diner","Yes, a table for five under the name Jane."],
+   ["Waiter","Fine. __7__ Here's your table for five in the garden."],["Diner","Wow, lovely. __8__"],
+   ["Waiter","Our restaurant is famous for seafood. __9__"],
+   ["Diner","Yes, please. Two grilled lobsters and three grilled salmon steaks."],
+   ["Waiter","Two grilled lobsters and three grilled salmon steaks. __10__"],["Diner","Just water with ice."]]}
+};
+const PSG={
+ p59a:{t:"Error Correction — Passage 1 (O-NET 2559)",text:[
+  "Most of the food we eat is produced ",{n:26,w:"used"}," mechanized farming methods. These are very fast and efficient and allow prices to be kept down. ",
+  {n:27,w:"Therefore"},", some of these methods involve harmful fertilizers and pesticides or ",{n:28,w:"cruelties"},
+  " to animals. People are becoming worried about this and are ",{n:29,w:"increasing"},
+  " buying foods produced organically, without chemicals, but using methods that do not cause suffering to animals."]},
+ p59b:{t:"Error Correction — Passage 2 (O-NET 2559)",text:[
+  "A lot of animals spend ",{n:31,w:"many"}," of their lives alone. But some live with ",{n:32,w:"other"},
+  " of their kind, usually sharing jobs such as cleaning and finding food, ",{n:33,w:"warn"},
+  " of danger and even protecting each other. These groups are called ",{n:34,w:"animals societies"},
+  ". It is mainly insects, birds and mammals that form these societies. Usually ",{n:35,w:"its"}," is just one leader."]},
+ p61:{t:"Error Correction — Jack Knight (O-NET 2561)",text:[
+  "Jack Knight was an airplane pioneer. He was ",{n:26,w:"one of first man"},
+  " who had the courage to carry mail by airplane from ",{n:27,w:"the end in the country"},
+  " to the other. It took ",{n:28,w:"lots of courageous"},
+  " in those days when airplanes had only one motor, one propeller, and no instruments to check ",{n:29,w:"that"},
+  " you were going or whether you were near a mountain you ",{n:30,w:"will"},
+  " crash into. For instance, if you ",{n:31,w:"are"},
+  " flying at night, farmers had to build bonfires on the ground to show ",{n:32,w:"where will you land your plane"},
+  ". If the bonfires were not there, you were in trouble. ",{n:33,w:"As though"},
+  " you can imagine, Jack Knight had to overcome many difficulties. He and ",{n:34,w:"their"},
+  " buddies ",{n:35,w:"risk"}," their lives to make air mail possible."]}
+};
+
+// ---------- items: y=year, s=section, ctx/blank | psg/num | stem ----------
+const CONV="🗣️ Conversation", SPK="🎤 Speaking", USG="✏️ Usage/Error";
+const D=[
+// 2559 Dialog completion
+{y:59,s:CONV,ctx:"s59d1",blk:1,o:["I like history books.","Do you see any books about China here?","Are there any Chinese books around?","Have you got an interesting book?","I'm looking for a book."],a:4,w:"เปิดบทสนทนาบอกจุดประสงค์ที่มา (ตามด้วย 'it's a history book…')"},
+{y:59,s:CONV,ctx:"s59d1",blk:2,o:["Are you studying history?","Have you got the title?","Which books have you read?","Haven't you seen the book?","What is the best title to read?"],a:1,w:"Jim ตอบชื่อเรื่อง (China in the Han Dynasty) → บรรณารักษ์ถามชื่อเรื่อง"},
+{y:59,s:CONV,ctx:"s59d1",blk:3,o:["Where could I get the book?","You shouldn't have this title here.","Have you ever had a Chinese book?","I wonder if it's available here.","I suppose you've read about that."],a:3,w:"บรรณารักษ์ตอบ 'Of course. We have two copies' → ถามว่ามีไหม"},
+{y:59,s:CONV,ctx:"s59d1",blk:4,o:["Why don't you take a look?","Would you like to read all these books here?","Any other books that you want?","How many books are you looking for?","How about the books on those shelves?"],a:0,w:"Jim ตอบ 'All right' รับข้อเสนอ → ชวนให้ไปดูหนังสือ"},
+{y:59,s:CONV,ctx:"s59d1",blk:5,o:["Why can't you?","I'm afraid that's not possible.","I don't think that's a good idea.","Do you suppose you can?","Sorry, I don't like that idea."],a:1,w:"Jim ยืมไม่ได้ (ไม่ใช่นักศึกษา) → ปฏิเสธอย่างสุภาพ"},
+{y:59,s:CONV,ctx:"s59d2",blk:6,o:["I do want to go to my room now.","Did you get the key for the room?","May I have the key to my room, please?","Can't you give me my room key now?","I should have my key now, you know."],a:2,w:"เพิ่งย้ายเข้า → ขอกุญแจห้องอย่างสุภาพ"},
+{y:59,s:CONV,ctx:"s59d2",blk:7,o:["Do you bring along your things?","Will you take your things to your room?","Don't forget to take all of your things.","Won't you take all your things with you?","Let me give you a hand with your things."],a:4,w:"Sue ตอบ 'That's very kind of you' → พนักงานเสนอช่วยถือของ"},
+{y:59,s:CONV,ctx:"s59d2",blk:8,o:["This might be the right room- Room 645.","Here we are- Room 645.","Should this room be yours?","Make sure it's Room 645.","How did you find this room?"],a:1,w:"พาถึงห้องแล้ว → 'Here we are - Room 645.'"},
+{y:59,s:CONV,ctx:"s59d2",blk:9,o:["Oh, can't I?","Are you sure?","What's wrong?","Oh, how come?","Why not?"],a:0,w:"พนักงานตอบ 'I'm afraid not (=ไม่ได้)' → คำถาม yes/no 'Oh, can't I?'"},
+{y:59,s:CONV,ctx:"s59d2",blk:10,o:["Shall we meet again?","What more do you need?","If you need anything, just ring 005.","I'll do everything for you. Please ring 005.","Want me to visit you some time?"],a:2,w:"ปิดท้ายด้วยการบอกช่องทางติดต่อ"},
+// 2559 Situational
+{y:59,s:SPK,stem:"Manop invites Farah, an American friend, to dinner at a restaurant with Thai classical performances. She <b>eagerly accepts</b>, saying:",o:["Hmm ... Let me think about it.","Great! I'm looking forward to it.","That sounds okay, but I can't make it.","That's interesting. What do you think?","I must say it's a little bit boring."],a:1,w:"ตอบรับคำเชิญอย่างกระตือรือร้น"},
+{y:59,s:SPK,stem:"Mary calls Bob at his office, but he is in a meeting. The <b>secretary</b> who answers the phone says:",o:["Can I give him this message?","Shall we give the message to him?","Would you mind if I leave him a message?","Will he get a message from you?","Would you like to leave him a message?"],a:4,w:"เลขาเสนอรับฝากข้อความให้ผู้โทร"},
+{y:59,s:SPK,stem:"Jane is about to go out of the office, leaving her handbag on her desk. Her <b>colleague</b> says:",o:["Watch out, Jane! Whose handbag is on the desk?","Don't you carry a handbag?","Be careful! Your handbag is too big.","Don't forget your handbag, Jane.","Keep your handbag handy."],a:3,w:"เตือนอย่าลืมกระเป๋า"},
+{y:59,s:SPK,stem:"Mark asks Pam's <b>opinion</b> about a book written by Professor Hornby. He says:",o:["Any suggestions for Professor Hornby's book?","What does Professor Hornby's book look like?","How do you like Professor Hornby's book?","Will you read Professor Hornby's book?","Shall we discuss Professor Hornby's book?"],a:2,w:"ถามความเห็น = How do you like…?"},
+{y:59,s:SPK,stem:"At a university in Singapore, Pornchai asks a girl the way to the cafeteria. She <b>doesn't know</b>. She says:",o:["I do apologize that we're lost.","I know nothing about the cafeteria.","Don't bother me. I'm in a hurry.","Please excuse me. It's not my way.","I'm sorry. This is my first day here."],a:4,w:"ไม่รู้ทาง (วันแรก) → ปฏิเสธอย่างสุภาพ"},
+// 2559 Sentence completion
+{y:59,s:USG,stem:"____ are able to buy whatever they want rarely have sympathy for the poor.",o:["Rich people are those who","Rich people those who","Those people are rich who","Those rich people who","Those who are rich people"],a:3,w:"ประธาน = 'Those rich people who…' แล้วตามด้วยกริยาแท้ rarely have"},
+{y:59,s:USG,stem:"According to the news reporter, the firefighters ____ the forest fire <b>by this afternoon</b>.",o:["extinguished","are extinguishing","have extinguished","will have extinguished","would be extinguishing"],a:3,w:"by + เวลาในอนาคต → future perfect (will have + V.3)"},
+{y:59,s:USG,stem:"Mr. Munby's students all agreed to ____ by a professional photographer.",o:["have taken the class pictures","having taken the class pictures","have the class pictures taken","having had the class pictures taken","have the class take pictures"],a:2,w:"causative: have + กรรม + V.3 (ให้ช่างมาถ่ายให้)"},
+{y:59,s:USG,stem:"The chairs that our school ordered two months ago have not arrived yet, ____.",o:["but the stationery hasn't as well","but the stationery has either","and so hasn't the stationery","and neither has the stationery","and neither the stationery has, too"],a:3,w:"เติมความปฏิเสธ → and neither + aux + S"},
+{y:59,s:USG,stem:"The manager wanted to know ____ a hotel room in the city center.",o:["could the secretary reserve","whether the secretary could reserve","unless the secretary could reserve","whether could the secretary reserve","that if the secretary could reserve"],a:1,w:"indirect question หลัง know → whether + S + V (เรียงปกติ)"},
+{y:59,s:USG,stem:"____ to change goods bought, he must show the receipt.",o:["If a customer will want","Should a customer want","Only if a customer will want","If only a customer wanted","Had a customer wanted"],a:1,w:"เงื่อนไขแบบผัน (inversion): Should + S + V1"},
+{y:59,s:USG,stem:"The receptionist of the hotel admitted ____ to give the message to the guest in Room 29.",o:["forgot","to forget","forgetting","had forgotten","to have forgotten"],a:2,w:"admit + V-ing (gerund)"},
+{y:59,s:USG,stem:"Stella looks ____ in the blue gown than the green one.",o:["charming much more","more much charming","very much charming","much more charming","charming very much"],a:3,w:"ขั้นกว่า: much more + adj + than"},
+{y:59,s:USG,stem:"The old lady, ____ by the noise, asked her neighbor to turn down the volume.",o:["disturbing","disturbed","was disturbed","has been disturbed","had been disturbed"],a:1,w:"ผู้ถูกกระทำ (ถูกรบกวน) → past participle (disturbed)"},
+{y:59,s:USG,stem:"Having finished her homework, Lucy put away her books, telephoned her friend, and ____ her mother prepare dinner.",o:["helped","will help","to help","having helped","would help"],a:0,w:"ขนานกับ put / telephoned → helped (V.2)"},
+// 2559 Error correction
+{y:59,s:USG,psg:"p59a",num:26,o:["using","to use","to be used","is using","being used"],a:0,w:"produced using … (แสดงวิธีการ)"},
+{y:59,s:USG,psg:"p59a",num:27,o:["Thus","Next","Then","However","Moreover"],a:3,w:"ประโยคก่อนบอกข้อดี ประโยคนี้บอกข้อเสีย → ขัดแย้ง 'However'"},
+{y:59,s:USG,psg:"p59a",num:28,o:["crueler","cruelest","cruelty","cruel","cruelly"],a:2,w:"ต้องเป็นคำนาม (นับไม่ได้) → cruelty"},
+{y:59,s:USG,psg:"p59a",num:29,o:["increased","to increase","being increased","to be increased","increasingly"],a:4,w:"ขยายกริยา buying → adverb 'increasingly'"},
+{y:59,s:USG,psg:"p59b",num:31,o:["few","much","more","some","several"],a:1,w:"spend much of their lives (สำนวนเวลา นับไม่ได้)"},
+{y:59,s:USG,psg:"p59b",num:32,o:["others","each","other one","each other","one another"],a:0,w:"live with others of their kind (สรรพนามพหูพจน์)"},
+{y:59,s:USG,psg:"p59b",num:33,o:["warns","to warn","are warning","warning","having warned"],a:3,w:"ขนานกับ sharing / protecting → warning"},
+{y:59,s:USG,psg:"p59b",num:34,o:["society's animal","societies for animals","society for animals","animals for societies","animal societies"],a:4,w:"compound noun คำแรกเป็น adj → animal societies"},
+{y:59,s:USG,psg:"p59b",num:35,o:["it","that","there","this","here"],a:2,w:"there is just one leader → there"},
+// 2561 Dialog completion
+{y:61,s:CONV,ctx:"s61d1",blk:1,o:["Long time no see.","Glad to meet you.","Very well, thank you.","Haven't seen you in ages.","Nice that you are all right."],a:1,w:"ทักทายแนะนำตัวครั้งแรก → Glad to meet you"},
+{y:61,s:CONV,ctx:"s61d1",blk:2,o:["Do you like Australia?","Will you visit Australia?","Have you ever been to Australia?","Do you know anyone in Brisbane?","Does your cousin live in Brisbane?"],a:2,w:"Kim ตอบ 'Well, yes. Twice.' → เคยไปออสเตรเลียไหม"},
+{y:61,s:CONV,ctx:"s61d1",blk:3,o:["Where is Sydney?","Were you born in Sydney?","Is Sydney in New South Wales?","Do you know where Sydney is?","Where in Australia are you from?"],a:4,w:"Sandra ตอบ 'Sydney…' → ถามว่ามาจากไหนในออสเตรเลีย"},
+{y:61,s:CONV,ctx:"s61d1",blk:4,o:["What's the weather like in Sydney?","Is it difficult to travel around in Sydney?","What are the tourist attractions in Sydney?","Do you mind giving me your address in Sydney?","Could you recommend some places for sightseeing?"],a:4,w:"Sandra แนะนำที่เที่ยว → ขอคำแนะนำสถานที่"},
+{y:61,s:CONV,ctx:"s61d1",blk:5,o:["Have you ever seen that before?","Oh, that's very reasonable.","Are they far from here?","Thank you for the information.","I'm very happy to hear from you."],a:3,w:"ปิดท้ายขอบคุณสำหรับข้อมูล"},
+{y:61,s:CONV,ctx:"s61d2",blk:6,o:["Can you sit, please?","What is your seat number?","Do you have a reservation?","Why don't you reserve a table?","Would you please send me your order?"],a:2,w:"ลูกค้าตอบ 'under the name Jane' → ถามการจอง"},
+{y:61,s:CONV,ctx:"s61d2",blk:7,o:["You're welcome.","I will talk to the chef.","You look very hungry.","Come this way, please.","Let me bring you the menu."],a:3,w:"พาไปโต๊ะ → Come this way, please"},
+{y:61,s:CONV,ctx:"s61d2",blk:8,o:["What is today's appetizer?","Do you have a smoking area?","Is there a band in the garden?","What is the restaurant's specialty?","Is this the most popular restaurant in town?"],a:3,w:"บริกรตอบ 'famous for seafood' → ถามของเด่นร้าน"},
+{y:61,s:CONV,ctx:"s61d2",blk:9,o:["What did you order?","When will you order?","Do you want me to order?","Are you ready to start now?","Would you like to order now?"],a:4,w:"ลูกค้าสั่งอาหารต่อ → ถามพร้อมสั่งไหม"},
+{y:61,s:CONV,ctx:"s61d2",blk:10,o:["Do you drink water?","What would you like to drink?","Can you sit down and wait?","Which do you prefer?","Is that all you eat?"],a:1,w:"ลูกค้าตอบ 'Just water with ice' → ถามจะดื่มอะไร"},
+// 2561 Situational
+{y:61,s:SPK,stem:"Kirk wants Mary to play <b>tennis</b> with him this evening. He says:",o:["Do you want to go to the gym?","Why don't you go to the stadium?","How about a game of tennis before dinner?","You are very fond of playing sports, aren't you?","Mary, are you interested in watching tennis matches?"],a:2,w:"ชวนเล่นเทนนิสเย็นนี้ (ก่อนมื้อค่ำ)"},
+{y:61,s:SPK,stem:"Dorothy is at the Tourist Information Center. She wants <b>directions</b> to the train station. She says:",o:["How can I get to the train station?","Do you mind taking me to the train station?","Excuse me, have you been to the train station?","I'm a stranger around here. What can you do for me?","Can you show me the train station, please?"],a:0,w:"ถามเส้นทาง = How can I get to…?"},
+{y:61,s:SPK,stem:"Linda is answering the phone. Mr. Hughes would like to talk to Mr. Jenkins (Head of Personnel). She says:",o:["Mr. Hughes? Yes, Mr. Jenkins is expecting your call.","Oh, hi! The meeting's just started. Don't call again.","I'm Linda, Mr. Jenkins' secretary. I don't know you.","Good afternoon, Mr. Hughes. Would you come back later?","Are you Mr. Hughes? I can see you in a minute in your office."],a:0,w:"รับสายอย่างสุภาพ/มืออาชีพ ตอบรับผู้โทร",flag:"ข้อนี้ตอบได้หลายแนว (บางเฉลยเลือกข้ออื่น) — เน้นความสุภาพเป็นหลัก"},
+{y:61,s:SPK,stem:"Mark has not had enough sleep. John notices it and says:",o:["I can't believe it, Mark. You haven't changed at all.","Hi, Mark. Will you come to my birthday party next Sunday?","You look so tired today! Why don't you get some coffee?","What's up? You never answer my calls.","I heard that you went to Spain last year. Did you have a good time there?"],a:2,w:"สังเกตว่าเพื่อนเหนื่อย → แนะนำดื่มกาแฟ"},
+{y:61,s:SPK,stem:"Laura is unhappy with her roommate, Lucy. She says to Rose:",o:["Lucy's just moved in and she is very well-organized. I must annoy her.","You know what? Lucy bought me a box of chocolate for my birthday.","Do you know Lucy? She had a fight with her ex-boyfriend.","I hate to say this, but I can't stand Lucy any longer. I want to move out.","Everyone in this apartment knows Lucy. She has a reputation as a good negotiator."],a:3,w:"ไม่พอใจ/ทนรูมเมทไม่ไหว อยากย้ายออก"},
+// 2561 Sentence completion
+{y:61,s:USG,stem:"Feeling ____ the two talkative students, Mrs. Potter stopped lecturing and looked straight at them.",o:["annoying at","annoyed with","annoyed from","annoyingly by","annoyingly about"],a:1,w:"be annoyed with + คน (รำคาญใคร)"},
+{y:61,s:USG,stem:"____, I think that Mr. James' grading was unfair.",o:["Among you and us","Among we and you","Between you and I","Between you and me","Between we and you"],a:3,w:"หลังบุพบท between ใช้กรรม → Between you and me"},
+{y:61,s:USG,stem:"Before this course ____, Dr. Mason ____ to give us a special lecture.",o:["ends / will be invited","is ending / is being invited","will end / is invited","will end / will be invited","ends / has invited"],a:0,w:"อนุประโยคเวลา (before) ใช้ปัจจุบันแทนอนาคต + ประโยคหลัก passive อนาคต → ends / will be invited"},
+{y:61,s:USG,stem:"If Cindy gets a job as a TV announcer, she will need ____.",o:["many more new dresses","many new dresses more","dresses many new more","many dresses more new","new dresses many more"],a:0,w:"เรียงลำดับคำขยาย: many more + new + dresses"},
+{y:61,s:USG,stem:"Ever since Thai music ____ at BB restaurant, it ____ crowded every day.",o:["has started to be performing / is","has started performing / was","has started to perform / has been","started to be performed / has been","started to perform / is being"],a:3,w:"ดนตรี 'ถูกบรรเลง' (passive) + Ever since → present perfect: started to be performed / has been"},
+{y:61,s:USG,stem:"The supervisor has warned every operator ____ the machine while it is spinning.",o:["does not touch","not touching","not to touch","is not touching","must not be touching"],a:2,w:"warn somebody + not to + V"},
+{y:61,s:USG,stem:"Twenty-seven dollars ____ not too expensive for ____ trousers.",o:["are / these pairs of","is / these","are / this pair of","is / this","are / these"],a:1,w:"เงินก้อน = เอกพจน์ (is) ; trousers พหูพจน์ → these trousers"},
+{y:61,s:USG,stem:"The old gentleman is bringing up the orphan ____.",o:["as if she is like his own daughter","as if she was the daughter of his own","as if she were his own daughter","like she is his own daughter","like the daughter of his own"],a:2,w:"as if + past subjunctive (สมมติไม่จริง) → were"},
+{y:61,s:USG,stem:"At this time next Monday, Mr. Walters ____ with his wife to Brazil.",o:["flies","would be flying","will have been flying","would have flown","will be flying"],a:4,w:"At this time next Monday → future continuous (will be V-ing)"},
+{y:61,s:USG,stem:"Mr. Miller and Mr. Hill, the ____, have cancelled their next classes.",o:["physic teachers","teachers of physic","teachers' physics","physics teachers","physical teachers"],a:3,w:"compound noun: physics teachers (ครูฟิสิกส์)"},
+// 2561 Error correction
+{y:61,s:USG,psg:"p61",num:26,o:["one of a first man","one of the first men","first one of the men","the first man was the one","the first one man"],a:1,w:"one of the + นามพหูพจน์ → one of the first men"},
+{y:61,s:USG,psg:"p61",num:27,o:["the one end of","the end of","an end in","one end of","one of the ends in"],a:3,w:"from one end of the country to the other"},
+{y:61,s:USG,psg:"p61",num:28,o:["a lot of courage","lots of courages","many courages","much of courage","many of courages"],a:0,w:"courage นับไม่ได้ → a lot of courage"},
+{y:61,s:USG,psg:"p61",num:29,o:["which","when","where","what","why"],a:2,w:"check where you were going (คู่กับ or whether…)"},
+{y:61,s:USG,psg:"p61",num:30,o:["can","may","should","might","must"],a:3,w:"เล่าอดีต + ความเป็นไปได้ → might crash into"},
+{y:61,s:USG,psg:"p61",num:31,o:["have flown","have been flying","were flying","were flown","have been flown"],a:2,w:"บริบทอดีตกำลังกระทำ → were flying"},
+{y:61,s:USG,psg:"p61",num:32,o:["where your plane is landing","where your plane had landed","you where your plane landed","where you are landing your plane","you where your plane should land"],a:4,w:"to show you where your plane should land (indirect + เรียงปกติ)"},
+{y:61,s:USG,psg:"p61",num:33,o:["As","Like","Alike","Even though","Even if"],a:0,w:"As you can imagine (ตามที่คุณนึกออก)"},
+{y:61,s:USG,psg:"p61",num:34,o:["her","his","my","our","your"],a:1,w:"Jack Knight เป็นผู้ชาย → his buddies"},
+{y:61,s:USG,psg:"p61",num:35,o:["risking","to risk","risked","have risked","have been risking"],a:2,w:"เล่าเรื่องอดีต → risked (V.2)"}
+];
+const L="ABCDE";
+
+function renderDialog(id,blank){
+  const c=CTX[id];let h=`<div class="sit">📍 ${c.sit}</div><div class="dlg">`;
+  c.lines.forEach(([who,txt])=>{
+    const t=txt.replace(/__(\d+)__/g,(m,n)=>+n===blank?'<span class="blk">? ตรงนี้</span>':`<span class="bn">(${n})</span>`);
+    h+=`<div class="ln"><b>${who}:</b> ${t}</div>`;
+  });
+  return h+`</div>`;
+}
+function renderPassage(id,num){
+  const c=PSG[id];let h=`<div class="sit">✏️ ${c.t}</div><p class="psg">`;
+  c.text.forEach(seg=>{ h+= (typeof seg==="string")?seg
+    :`<span class="${seg.n===num?'errA':'err'}"><sup>${seg.n}</sup>${seg.w}</span>`; });
+  return h+`</p><div class="hint2">เลือกคำที่ถูกต้องมาแทนตำแหน่งที่ขีดเส้นใต้เลข <b>${num}</b></div>`;
+}
+function promptHTML(q){
+  if(q.ctx) return renderDialog(q.ctx,q.blk)+`<div class="hint2">เลือกคำพูดเติมช่องว่างที่ไฮไลต์</div>`;
+  if(q.psg) return renderPassage(q.psg,q.num);
+  return `<div class="stem">${q.stem}</div>`;
+}
+
+let pool=[],bag=[],idx=0,done=0,correct=0,streak=0,answered=false;
+let fY="all",fS="all";
+function buildFilters(){
+  const f=document.getElementById("filters");f.innerHTML="";
+  const add=(label,type,val)=>{const b=document.createElement("button");
+    b.className="fbtn"+((type==="y"?fY:fS)===val?" on":"");b.textContent=label;
+    b.onclick=()=>{type==="y"?fY=val:fS=val;start();};f.appendChild(b);};
+  add("ทุกปี","y","all");add("ปี 2559","y",59);add("ปี 2561","y",61);
+  const sep=document.createElement("span");sep.style.cssText="width:100%;height:0";f.appendChild(sep);
+  add("ทุกหมวด","s","all");add(CONV,"s",CONV);add(SPK,"s",SPK);add(USG,"s",USG);
+}
+function start(){
+  buildFilters();
+  pool=D.filter(q=>(fY==="all"||q.y===fY)&&(fS==="all"||q.s===fS));
+  bag=[...Array(pool.length).keys()];
+  for(let i=bag.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[bag[i],bag[j]]=[bag[j],bag[i]];}
+  idx=0;done=0;correct=0;streak=0;
+  document.getElementById("total").textContent=pool.length;
+  render();
+}
+function render(){
+  answered=false;
+  document.getElementById("pos").textContent=Math.min(done+1,pool.length);
+  document.getElementById("correct").textContent=correct;
+  document.getElementById("streak").textContent=streak;
+  const g=document.getElementById("game");
+  if(done>=pool.length){
+    const pct=pool.length?Math.round(correct/pool.length*100):0;
+    g.innerHTML=`<div class="card done"><div class="big">${pct>=80?"🏆":pct>=50?"👍":"💪"}</div>
+      <h2>จบชุด! ${correct}/${pool.length} (${pct}%)</h2>
+      <p style="color:var(--mut)">${pct>=80?"ระดับพร้อมสอบจริง!":pct>=50?"ดีแล้ว ทบทวนหมวดที่พลาด":"ลองอ่านเฉลย แล้วเล่นซ้ำ"}</p>
+      <button class="btn" onclick="start()">เล่นอีกครั้ง 🔁</button></div>`;
+    return;
+  }
+  const q=pool[bag[idx]];
+  let h=`<div class="card"><div class="meta">
+    <span class="pill y">O-NET 25${q.y}</span><span class="pill s">${q.s}</span></div>`;
+  h+=promptHTML(q);
+  h+=`<div class="opts" id="opts">`;
+  q.o.forEach((t,i)=>h+=`<div class="opt" data-i="${i}"><span class="k">${L[i]}.</span><span>${t}</span></div>`);
+  h+=`</div><div class="fb" id="fb"></div>
+    <div class="actions"><button class="btn ghost" id="skip" onclick="skip()">ข้าม</button>
+    <button class="btn" id="next" onclick="next()" disabled>ถัดไป →</button></div></div>`;
+  g.innerHTML=h;
+  g.querySelectorAll(".opt").forEach(el=>el.onclick=()=>pick(el,q));
+}
+function pick(el,q){
+  if(answered)return;answered=true;
+  const chosen=+el.dataset.i,ok=chosen===q.a;
+  document.querySelectorAll(".opt").forEach(o=>{o.classList.add("locked");
+    if(+o.dataset.i===q.a)o.classList.add("good");});
+  if(!ok)el.classList.add("bad");
+  if(ok){correct++;streak++;}else streak=0;
+  const fb=document.getElementById("fb");
+  fb.className="fb show "+(ok?"right":"wrong");
+  fb.innerHTML=`<div class="res">${ok?"✅ ถูกต้อง!":"❌ ผิด — คำตอบคือ "+L[q.a]}</div>
+    <div class="why">💡 ${q.w}</div>${q.flag?`<div class="flag">⚑ ${q.flag}</div>`:""}`;
+  document.getElementById("correct").textContent=correct;
+  document.getElementById("streak").textContent=streak;
+  document.getElementById("next").disabled=false;
+  document.getElementById("skip").disabled=true;
+}
+function next(){done++;idx++;render();}
+function skip(){done++;idx++;streak=0;render();}
+document.getElementById("tot0").textContent=D.length;
+start();
+</script>
+<!--KIT-UI v2.4 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<script>
+/* =============================================================================
+   _kit/ui-controls.js  —  KIT UI  v1.0
+   แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
+     🌙/☀️  โหมดมืด / สว่าง   (จำค่าไว้ใน localStorage)
+     A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
+     ✏️  ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
+     🧮  เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
+
+   ── วิธีใช้ ────────────────────────────────────────────────────────────────
+   ห้ามแก้โค้ดนี้ในไฟล์ widget!  แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
+       pwsh -File _kit/apply-ui.ps1
+   สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
+   (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
+
+   !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
+      เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
+
+   ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
+   ใส่แอตทริบิวต์ที่ tag body:  data-tools="pen,calc"  = บังคับเปิด
+                              data-tools="none"      = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
+   ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
+              หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
+   ============================================================================= */
+(function(){
+if(window.__KITUI__) return; window.__KITUI__='2.4';
+
+/* ---------- helper ---------- */
+const D=document, R=D.documentElement;
+const get=k=>{try{return localStorage.getItem('kitui-'+k)}catch(e){return null}};
+const set=(k,v)=>{try{localStorage.setItem('kitui-'+k,v)}catch(e){}};
+const el=(t,c,h)=>{const e=D.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
+
+/* =============================================================================
+   1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
+   ============================================================================= */
+const CSS=`
+/* ===== DARK TOKENS (คู่กับ _kit/design-tokens.css) ===== */
+:root[data-theme="dark"]{
+  --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
+  --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
+  --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
+  --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
+  --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
+}
+:root[data-theme="dark"] body{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f172a}
+:root[data-theme="dark"] body[data-subject="physics"]{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f1220}
+:root[data-theme="dark"] body[data-subject="bio"]{--accent:#4ade80;--accent-head:#bbf7d0;--accent-ink:#86efac;--accent-soft:#0f2a1a;--accent-bd:#256b41;--accent-chip:#14532d;--accent-ghost:#15803d;--bg:#0d1912}
+:root[data-theme="dark"] body[data-subject="chem"]{--accent:#fb923c;--accent-head:#fed7aa;--accent-ink:#fdba74;--accent-soft:#2b1a0c;--accent-bd:#8a3d12;--accent-chip:#6d2c10;--accent-ghost:#c2410c;--bg:#1a130c}
+:root[data-theme="dark"] body[data-subject="christ"]{--accent:#a78bfa;--accent-head:#ddd6fe;--accent-ink:#c4b5fd;--accent-soft:#241a3d;--accent-bd:#5b21b6;--accent-chip:#4c1d95;--accent-ghost:#6d28d9;--bg:#16121f}
+:root[data-theme="dark"] body[data-subject="islam"]{--accent:#2dd4bf;--accent-head:#99f6e4;--accent-ink:#5eead4;--accent-soft:#0d2b28;--accent-bd:#12615a;--accent-chip:#134e4a;--accent-ghost:#0f766e;--bg:#0c1917}
+:root[data-theme="dark"] body[data-subject="history"]{--accent:#fbbf24;--accent-head:#fde68a;--accent-ink:#fcd34d;--accent-soft:#2a1f0a;--accent-bd:#8a4b0c;--accent-chip:#6d3a0a;--accent-ghost:#b45309;--bg:#191509}
+:root[data-theme="dark"] body[data-subject="math"]{--accent:#38bdf8;--accent-head:#bae6fd;--accent-ink:#7dd3fc;--accent-soft:#0c2434;--accent-bd:#0b5a80;--accent-chip:#0c4a6e;--accent-ghost:#0369a1;--bg:#0b1620}
+:root[data-theme="dark"] body[data-subject="eng"]{--accent:#f472b6;--accent-head:#fbcfe8;--accent-ink:#f9a8d4;--accent-soft:#2e1122;--accent-bd:#8d1748;--accent-chip:#731839;--accent-ghost:#be185d;--bg:#1c0f16}
+:root[data-theme="dark"] body[data-subject="thai"]{--accent:#f87171;--accent-head:#fecaca;--accent-ink:#fca5a5;--accent-soft:#2d1414;--accent-bd:#8d2020;--accent-chip:#7f1d1d;--accent-ghost:#b91c1c;--bg:#1a0f0f}
+:root[data-theme="dark"] img,:root[data-theme="dark"] .svg-box{filter:brightness(.92)}
+/* ช่องกรอก/ดรอปดาวน์ที่ widget เก่ากำหนดพื้นขาวตายตัวไว้ */
+:root[data-theme="dark"] select,:root[data-theme="dark"] textarea,
+:root[data-theme="dark"] input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=color])
+{background-color:var(--soft);color:var(--ink);border-color:var(--line)}
+
+/* ===== แถบเครื่องมือลอย ===== */
+#kitui-bar{position:fixed;right:10px;bottom:10px;z-index:99990;display:flex;gap:6px;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
+#kitui-bar button{border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;
+  font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
+  align-items:center;justify-content:center;font-weight:700}
+#kitui-bar button:hover{background:var(--soft)}
+#kitui-bar button:active{transform:scale(.93)}
+#kitui-bar button.on{background:var(--accent);color:#fff}
+#kitui-bar .kitui-sep{width:1px;height:22px;background:var(--line);flex:0 0 1px}
+#kitui-bar .kitui-fs{font-size:11px;color:var(--muted);min-width:34px;text-align:center;font-weight:700}
+#kitui-bar.hidden > *:not(#kitui-grip){display:none}
+#kitui-grip{font-size:17px}
+
+/* ===== แผงลอย (ที่ทด / เครื่องคิดเลข) ===== */
+.kitui-sheet{position:fixed;left:0;right:0;bottom:0;z-index:99991;background:var(--card);
+  border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
+  display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
+  height:52vh;max-height:92vh;min-height:180px}
+.kitui-sheet.open{display:flex}
+.kitui-sheet.full{height:100vh;border-radius:0}
+.kitui-head{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--line);
+  flex-wrap:wrap;touch-action:none;cursor:ns-resize}
+.kitui-head b{font-size:.9rem;color:var(--accent-ink);margin-right:2px;white-space:nowrap}
+.kitui-head button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;
+  padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
+.kitui-head button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.kitui-head .kitui-spacer{flex:1}
+.kitui-sw{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;min-height:0}
+.kitui-sw.on{border-color:var(--ink);transform:scale(1.12)}
+.kitui-padwrap{flex:1;position:relative;overflow:hidden;background:var(--soft)}
+.kitui-padwrap canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+:root[data-theme="dark"] .kitui-padwrap{background:#0c1220}
+
+/* ===== เครื่องคิดเลข ===== */
+#kitui-calc{height:auto;max-height:90vh}
+.kitui-disp{padding:8px 12px;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);
+  border-bottom:1px solid var(--line)}
+.kitui-disp .ex{font-size:.95rem;color:var(--muted);min-height:1.3em;word-break:break-all}
+.kitui-disp .rs{font-size:1.6rem;font-weight:700;color:var(--accent-ink);word-break:break-all}
+.kitui-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:7px}
+.kitui-keys button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:9px;
+  font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
+.kitui-keys button:active{transform:scale(.95)}
+.kitui-keys button.fn{font-size:.8rem;color:var(--accent-ink)}
+.kitui-keys button.op{background:var(--accent-soft);color:var(--accent-ink)}
+.kitui-keys button.eq{background:var(--accent);color:#fff;grid-row:span 2}
+.kitui-keys button.del{background:var(--hot-bg);color:var(--hot-ink)}
+.kitui-keys button.w3{grid-column:span 3}
+@media(max-width:420px){.kitui-keys button{font-size:.88rem;min-height:40px}.kitui-keys button.fn{font-size:.72rem}}
+@media(min-width:760px){
+  .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
+  .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
+  #kitui-pad{width:560px}
+}
+@media print{#kitui-bar,.kitui-sheet{display:none!important}}
+`;
+const st=el('style'); st.id='kitui-style'; st.textContent=CSS; D.head.appendChild(st);
+
+/* -----------------------------------------------------------------------------
+   1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
+   widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
+   พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
+   แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
+   เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
+----------------------------------------------------------------------------- */
+/* สีพาสเทลสว่าง -> สีเข้มที่ยังคง "เฉดเดิม" ไว้ (เขียว=ถูก / แดง=ผิด ต้องยังแยกออก)
+   ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
+function darken(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
+  const l0=(mx+mn)/2;
+  const s0 = d===0 ? 0 : d/(1-Math.abs(2*l0-1));
+  const s = d===0 ? 0 : Math.min(.5, Math.max(.3, s0));
+  const l = d===0 ? .13 : .17;                       /* เทา/ขาวให้เข้มกว่าสีนิดหน่อย */
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+function darkFix(){
+  const out=[], seen=new Set();
+  const take=r=>{
+    if(!r.style || !r.selectorText) return;
+    if(r.selectorText.indexOf('kitui')>-1) return;               /* ของเราเองใช้ token อยู่แล้ว */
+    const bg=r.style.backgroundColor;
+    if(!bg || bg.indexOf('var(')>-1) return;
+    const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
+    if(!m) return;
+    if(m[4]!==undefined && +m[4]<0.6) return;                    /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
+    const cr=+m[1], cg=+m[2], cb=+m[3];
+    if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return;       /* ไม่สว่างพอ ไม่ต้องยุ่ง */
+    const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
+    const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
+    let css='background-color:'+repl;
+    /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
+    const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
+    out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
+  };
+  /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
+        ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
+  const visit=rules=>{
+    for(let i=0;i<rules.length;i++){
+      const r=rules[i];
+      if(r.selectorText) take(r);
+      if(r.cssRules && r.cssRules.length) visit(r.cssRules);     /* @media / @supports / nesting */
+    }
+  };
+  for(let i=0;i<D.styleSheets.length;i++){
+    let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; }   /* ข้ามชีตข้ามโดเมน */
+    if(rr) visit(rr);
+  }
+  if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
+  return out.length;
+}
+try{ window.__KITUI_DARKFIX__=darkFix(); }catch(e){ window.__KITUI_DARKFIX__='err:'+e.message; }
+
+/* darkFix ข้างบนซ่อมได้เฉพาะสีที่เขียนตายตัวในไฟล์ CSS
+   แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
+   ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
+   จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
+const rgbOf=c=>{const m=c&&c.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null;};
+const lumOf=v=>v?(0.2126*v[0]+0.7152*v[1]+0.0722*v[2])/255:null;
+/* ตรงข้ามกับ darken(): ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
+   (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
+function lighten(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  if(d<0.04) return 'var(--ink)';                    /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
+  let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
+  const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
+  const s=Math.min(.92,Math.max(.55,s0)), l=.72;
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+const SKIP={CANVAS:1,IMG:1,VIDEO:1,SVG:1,IFRAME:1,PICTURE:1,OBJECT:1};
+const OBS_OPT={childList:true,subtree:true,attributes:true,attributeFilter:['class','style']};
+let patched=[], obs=null;
+function elementFix(){
+  /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
+        ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
+  if(obs) obs.disconnect();
+  try{ elementFixCore(); } finally { if(obs) obs.observe(D.body,OBS_OPT); }
+}
+function elementFixCore(){
+  /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
+     ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
+     จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
+  if(R.getAttribute('data-theme')!=='dark'){
+    patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
+    patched=[];
+    return;
+  }
+  /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
+     ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
+  /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
+  const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
+  for(let i=0;i<all.length;i++){
+    const e=all[i];
+    if(e.id&&e.id.indexOf('kitui')===0) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(SKIP[e.tagName]) continue;                      /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
+    const s=getComputedStyle(e);
+    const bg=rgbOf(s.backgroundColor);
+    if(!bg || bg[3]<0.6) continue;                     /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
+    if(lumOf(bg)<0.72) continue;                       /* เข้มพออยู่แล้ว */
+    /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
+    e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
+    const fg=rgbOf(s.color);
+    if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important');  /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
+    patched.push(e);
+  }
+  /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
+     ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
+  const bgCache=new Map();
+  const effBg=n=>{
+    for(let p=n;p;p=p.parentElement){
+      if(bgCache.has(p)) return bgCache.get(p);
+      const b=rgbOf(getComputedStyle(p).backgroundColor);
+      if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
+    }
+    return null;
+  };
+  for(let i=2;i<all.length;i++){
+    const e=all[i];
+    if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(e.style.color) continue;                         /* จัดการไปแล้วในรอบแรก */
+    if(!e.textContent || !e.textContent.trim()) continue;
+    const fg=rgbOf(getComputedStyle(e).color);
+    if(!fg || lumOf(fg)>=0.45) continue;                 /* ตัวอักษรสว่างอยู่แล้ว */
+    const bg=effBg(e);
+    if(!bg || lumOf(bg)>=0.5) continue;                  /* พื้นยังสว่าง อ่านออกอยู่ */
+    e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
+    patched.push(e);
+  }
+}
+let efT=0;
+const scheduleFix=()=>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
+try{
+  obs=new MutationObserver(scheduleFix);
+  obs.observe(D.body,OBS_OPT);
+}catch(e){}
+
+/* =============================================================================
+   2) ธีม + ขนาดตัวอักษร
+   ============================================================================= */
+const FS=[.85,1,1.15,1.3,1.5], FSNAME=['เล็กสุด','เล็ก','ปกติ','ใหญ่','ใหญ่สุด'];
+let fsIdx=parseInt(get('fs')); if(isNaN(fsIdx)||fsIdx<0||fsIdx>4) fsIdx=1;
+let theme=get('theme') || (matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+
+function applyTheme(){
+  R.setAttribute('data-theme',theme);
+  R.style.colorScheme = theme==='dark'?'dark':'light';   /* ให้ select/input เป็นสีเข้มด้วย */
+  const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
+  set('theme',theme);
+  clearTimeout(efT);                                   /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
+  if(typeof elementFix==='function') elementFix();
+  if(typeof draw==='function' && pad) draw();          /* วาดที่ทดใหม่ เส้นดำ<->ขาวตามธีม */
+}
+function applyFS(){
+  R.style.fontSize=(16*FS[fsIdx])+'px';
+  const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
+  set('fs',fsIdx);
+}
+
+/* =============================================================================
+   3) แถบเครื่องมือ
+   ============================================================================= */
+const subj=(D.body.getAttribute('data-subject')||'').toLowerCase();
+/* หลาย widget ไม่ได้ใส่ data-subject ที่ <body> → เดาจากโฟลเดอร์ที่ไฟล์อยู่ด้วย */
+const inPath=/\/(physics|math|chemist)\//i.test(decodeURIComponent(location.pathname));
+const tAttr=D.body.getAttribute('data-tools');
+const wantTools = tAttr!=null ? tAttr.toLowerCase()
+                : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
+const hasPen  = wantTools.includes('pen');
+const hasCalc = wantTools.includes('calc');
+
+const bar=el('div'); bar.id='kitui-bar';
+bar.innerHTML =
+  `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
+  `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button>`+
+  `<span class="kitui-sep"></span>`+
+  `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
+  `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
+  `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
+  (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
+  (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
+D.body.appendChild(bar);
+
+D.getElementById('kitui-theme').onclick=()=>{theme=theme==='dark'?'light':'dark';applyTheme();};
+D.getElementById('kitui-fsup').onclick=()=>{if(fsIdx<4){fsIdx++;applyFS();}};
+D.getElementById('kitui-fsdown').onclick=()=>{if(fsIdx>0){fsIdx--;applyFS();}};
+D.getElementById('kitui-grip').onclick=()=>bar.classList.toggle('hidden');
+applyTheme(); applyFS();
+
+/* ปิดแผงด้วยปุ่ม Esc */
+D.addEventListener('keydown',e=>{ if(e.key==='Escape') D.querySelectorAll('.kitui-sheet.open').forEach(s=>s.classList.remove('open')); });
+
+/* ลากหัวแผงเพื่อปรับความสูง */
+function makeResizable(sheet){
+  const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
+  head.addEventListener('pointerdown',e=>{
+    if(e.target.closest('button'))return;
+    drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect().height;head.setPointerCapture(e.pointerId);
+  });
+  head.addEventListener('pointermove',e=>{
+    if(!drag)return;
+    const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
+    sheet.classList.remove('full'); sheet.style.height=h+'px';
+    if(sheet.id==='kitui-pad') fitPad();
+  });
+  head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
+}
+
+/* =============================================================================
+   4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ  หลายหน้า  เซฟอัตโนมัติ
+   ============================================================================= */
+let pad,padCv,padCx,pages=[[]],pg=0,undone=[],histo=[];
+let tool='pen',color='#111827',width=2.4,penSeen=0;
+const COLORS=['#111827','#2563eb','#dc2626','#16a34a','#f59e0b'];
+const PADKEY='pad-'+location.pathname.split('/').pop();
+
+function buildPad(){
+  pad=el('div','kitui-sheet'); pad.id='kitui-pad';
+  pad.innerHTML=
+   `<div class="kitui-head">
+      <b>✏️ ที่ทด</b>
+      <button data-t="pen" class="on">🖊️</button>
+      <button data-t="hl">🖍️</button>
+      <button data-t="er">🧽</button>
+      ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
+      <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
+      <span class="kitui-spacer"></span>
+      <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
+      <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
+      <button id="kitui-pgadd">+ หน้า</button>
+      <button id="kitui-clear">ล้างหน้านี้</button>
+      <button id="kitui-full">⛶</button>
+      <button id="kitui-padclose">✕</button>
+    </div>
+    <div class="kitui-padwrap"><canvas></canvas></div>`;
+  D.body.appendChild(pad);
+  padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
+  makeResizable(pad);
+
+  pad.querySelector('.kitui-head').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
+  });
+  D.getElementById('kitui-undo').onclick=()=>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop(); draw(); save(); } };
+  D.getElementById('kitui-redo').onclick=()=>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop(); draw(); save(); } };
+  D.getElementById('kitui-clear').onclick=()=>{ snap(); pages[pg]=[]; draw(); save(); };
+  D.getElementById('kitui-pgadd').onclick=()=>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw(); save(); };
+  D.getElementById('kitui-pgprev').onclick=()=>{ if(pg>0){pg--;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-pgnext').onclick=()=>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-full').onclick=()=>{ pad.classList.toggle('full'); pad.style.height=''; fitPad(); };
+  D.getElementById('kitui-padclose').onclick=()=>pad.classList.remove('open');
+
+  /* ---- วาด ---- */
+  let cur=null;
+  padCv.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='pen') penSeen=Date.now();
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;   /* กันฝ่ามือแตะตอนใช้สไตลัส */
+    const p=pt(e);
+    if(tool==='er'){ snap(); erase(p); return; }
+    snap();
+    cur={c:color,w:width,hl:tool==='hl',pts:[p]};
+    pages[pg].push(cur); draw();
+    try{ padCv.setPointerCapture(e.pointerId); }catch(x){}  /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
+  });
+  padCv.addEventListener('pointermove',e=>{
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;
+    if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
+    if(!cur||!e.buttons)return;
+    /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
+    let evs=[e];
+    if(e.getCoalescedEvents){ const c=e.getCoalescedEvents(); if(c&&c.length) evs=c; }
+    evs.forEach(ev=>cur.pts.push(pt(ev)));
+    draw();
+  });
+  const end=()=>{ if(cur){cur=null;save();} };
+  padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
+  padCv.addEventListener('pointerleave',end);
+
+  addEventListener('resize',()=>{ if(pad.classList.contains('open')) fitPad(); });
+  load(); fitPad();
+}
+function pt(e){
+  const r=padCv.getBoundingClientRect();
+  return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
+          p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5};   /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
+}
+function snap(){ histo.push(pages[pg].slice()); if(histo.length>60)histo.shift(); undone=[]; }
+function erase(p){
+  const r=padCv.getBoundingClientRect(), rad=18/r.width;
+  const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
+  if(keep.length!==pages[pg].length){ pages[pg]=keep; draw(); save(); }
+}
+function fitPad(){
+  const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
+  const dpr=Math.min(devicePixelRatio||1,2.5);
+  padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
+  draw();
+}
+function draw(){
+  const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
+  padCx.clearRect(0,0,W,H);
+  /* เส้นตารางจาง ๆ ให้เขียนตรง */
+  const dark=R.getAttribute('data-theme')==='dark';
+  padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
+  for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath();padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke();}
+  padCx.lineCap='round'; padCx.lineJoin='round';
+  pages[pg].forEach(s=>{
+    padCx.globalAlpha=s.hl?0.32:1;
+    padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
+    for(let i=1;i<s.pts.length;i++){
+      const a=s.pts[i-1],b=s.pts[i];
+      padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
+      padCx.beginPath(); padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke();
+    }
+    if(s.pts.length===1){ /* จุดเดียว */
+      padCx.fillStyle=padCx.strokeStyle; padCx.beginPath();
+      padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill();
+    }
+  });
+  padCx.globalAlpha=1;
+  const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
+}
+function save(){ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
+function load(){
+  try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
+}
+
+if(hasPen){
+  buildPad();
+  D.getElementById('kitui-penbtn').onclick=()=>{
+    const o=pad.classList.toggle('open');
+    D.getElementById('kitui-penbtn').classList.toggle('on',o);
+    if(o) fitPad();
+  };
+}
+
+/* =============================================================================
+   5) เครื่องคิดเลขวิทยาศาสตร์  (tokenizer → shunting-yard → RPN  ไม่ใช้ eval)
+   ============================================================================= */
+const FN={sin:1,cos:1,tan:1,asin:1,acos:1,atan:1,ln:1,log:1,sqrt:1,abs:1,exp:1};
+const PREC={'+':1,'-':1,'*':2,'/':2,'^':4,'u-':3};
+function tokenize(s){
+  s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
+  const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!()])/g; let m;
+  while((m=re.exec(s))) out.push(m[1]);
+  return out;
+}
+function toRPN(tk){
+  const out=[],op=[]; let prev=null;
+  for(let t of tk){
+    if(t==='**')t='^';
+    if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
+    else if(t==='PI'){ out.push(Math.PI); }
+    else if(t==='e'||t==='E'){ out.push(Math.E); }
+    else if(t==='ANS'){ out.push(ANS); }
+    else if(FN[t]){ op.push(t); }
+    else if(t==='('){ op.push(t); }
+    else if(t===')'){
+      while(op.length&&op[op.length-1]!=='(') out.push(op.pop());
+      if(!op.length) throw 0; op.pop();
+      if(op.length&&FN[op[op.length-1]]) out.push(op.pop());
+    }
+    else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
+    else if('+-*/^'.includes(t)){
+      let o=t;
+      const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
+      if(t==='-'&&unary) o='u-';
+      else if(t==='+'&&unary){ prev=t; continue; }
+      while(op.length){
+        const top=op[op.length-1];
+        if(top==='('||FN[top])break;
+        const rightAssoc=(o==='^'||o==='u-');
+        if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop()); else break;
+      }
+      op.push(o);
+    }
+    else throw 0;
+    prev=t;
+  }
+  while(op.length){ const o=op.pop(); if(o==='(')throw 0; out.push(o); }
+  return out;
+}
+function evalRPN(rpn,deg){
+  const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
+  const pop=()=>{ if(!st.length)throw 0; return st.pop(); };
+  for(const t of rpn){
+    if(typeof t==='number'){ st.push(t); continue; }
+    if(t==='fact'){ const n=pop(); if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
+    if(t==='pct'){ st.push(pop()/100); continue; }
+    if(t==='u-'){ st.push(-pop()); continue; }
+    if(FN[t]){
+      const a=pop();
+      st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
+             : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
+             : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
+             : t==='abs'?Math.abs(a) : Math.exp(a) );
+      continue;
+    }
+    const b=pop(),a=pop();
+    st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
+  }
+  if(st.length!==1) throw 0;
+  return st[0];
+}
+function calc(src,deg){ return evalRPN(toRPN(tokenize(src)),deg); }
+
+let ANS=0, expr='', calcSheet, isDeg=true;
+const KEYS=[
+ ['DEG','deg','fn'],['(','(',''],[')',')',''],['⌫','del','del'],['AC','ac','del'],
+ ['sin','sin(','fn'],['cos','cos(','fn'],['tan','tan(','fn'],['π','π','fn'],['÷','÷','op'],
+ ['sin⁻¹','asin(','fn'],['cos⁻¹','acos(','fn'],['tan⁻¹','atan(','fn'],['e','e','fn'],['×','×','op'],
+ ['ln','ln(','fn'],['log','log(','fn'],['√','√(','fn'],['xʸ','^','fn'],['−','−','op'],
+ ['7','7',''],['8','8',''],['9','9',''],['x!','!','fn'],['+','+','op'],
+ ['4','4',''],['5','5',''],['6','6',''],['%','%','fn'],['ANS','ANS','fn'],
+ ['1','1',''],['2','2',''],['3','3',''],['.','.',''],['=','eq','eq'],
+ ['0','0','w3'],['x²','^2','fn']
+];
+function buildCalc(){
+  calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
+  calcSheet.innerHTML=
+   `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
+      <button id="kitui-calcclose">✕</button></div>
+    <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
+    <div class="kitui-keys" id="kitui-keys">
+      ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
+    </div>`;
+  D.body.appendChild(calcSheet);
+  D.getElementById('kitui-calcclose').onclick=()=>calcSheet.classList.remove('open');
+  const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
+  const show=()=>{ ex.textContent=expr||' ';
+    try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
+    catch(e){ rs.style.opacity=.35; }
+  };
+  D.getElementById('kitui-keys').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
+    if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
+    if(k==='del'){ expr=expr.slice(0,-1); show(); return; }
+    if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show(); return; }
+    if(k==='eq'){
+      rs.style.opacity=1;
+      try{
+        const v=calc(expr,isDeg);
+        if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
+        if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
+        ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
+      }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
+      return;
+    }
+    expr+=k; show();
+  });
+}
+function fmt(v){
+  if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
+  if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
+  return String(Math.round(v*1e10)/1e10);
+}
+if(hasCalc){
+  buildCalc();
+  D.getElementById('kitui-calcbtn').onclick=()=>{
+    const o=calcSheet.classList.toggle('open');
+    D.getElementById('kitui-calcbtn').classList.toggle('on',o);
+  };
+}
+})();
+
+</script>
+<!--/KIT-UI-->
+</body>
+</html>
