@@ -105,6 +105,28 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
 .model{background:var(--steps-bg);border:1px solid var(--steps-bd);border-radius:var(--radius-sm);padding:10px 13px;margin-top:8px;font-size:.94rem;display:none}
 .model.show{display:block}
 .empty{text-align:center;color:var(--muted);padding:34px 10px;font-size:.95rem}
+
+/* ---------- ข้อเลือกหลายคำตอบ ---------- */
+.opt .box{width:20px;height:20px;border:2px solid #94a3b8;border-radius:5px;flex-shrink:0;margin-top:1px;
+  display:flex;align-items:center;justify-content:center;font-size:.8rem;color:#fff;line-height:1}
+.opt.sel .box{background:var(--accent);border-color:var(--accent)}
+.opt.right .box{background:var(--ok);border-color:var(--ok)}
+.opt.wrongpick .box{background:var(--bad);border-color:var(--bad)}
+.opt.missed{border-style:dashed;border-color:var(--ok)}
+.multi-hint{font-size:.82rem;color:var(--muted);margin-bottom:6px}
+
+/* ---------- ข้อดูรูปเติมคำ ---------- */
+.dgwrap{background:#fdf8f4;border:1px solid var(--line);border-radius:var(--radius-sm);padding:6px;margin-bottom:10px;overflow-x:auto}
+.dgwrap svg{width:100%;max-width:470px;height:auto;margin:0 auto;display:block}
+.blanks{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:7px}
+.blk{display:flex;align-items:center;gap:7px}
+.blk .bn{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-size:.8rem;font-weight:700;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.blk input{flex:1;min-width:0;padding:8px 10px;border:2px solid #cbd5e1;border-radius:8px;font-family:inherit;font-size:.92rem}
+.blk input:focus{outline:none;border-color:var(--accent)}
+.blk input.ok{border-color:var(--ok);background:#ecfdf5}
+.blk input.bad{border-color:var(--bad);background:#fef2f2}
+.blk .sol{font-size:.8rem;color:var(--ok);font-weight:700;white-space:nowrap}
 .navbar{display:flex;gap:8px;align-items:center;justify-content:center;margin:14px 0}
 .navbar .pos{font-weight:700;color:var(--accent-head);min-width:80px;text-align:center}
 @media(max-width:480px){.q{padding:12px}header h1{font-size:1.12rem}.wrap{padding:8px 9px 70px}}
@@ -181,7 +203,7 @@ const CATS={
   dis:{n:'โรคจากฮอร์โมน',i:'🩺'},
   fb:{n:'Feedback & โครงสร้าง',i:'🔁'}
 };
-const TYPES={sel:'จับคู่',mc:'ปรนัย',tf:'ถูก/ผิด',fill:'เติมคำ',open:'เขียนตอบ'};
+const TYPES={sel:'จับคู่',mc:'ปรนัย',multi:'เลือกหลายข้อ',label:'ดูรูปเติมคำ',tf:'ถูก/ผิด',fill:'เติมคำ',open:'เขียนตอบ'};
 
 /* ชุดตัวเลือกสำหรับข้อจับคู่ */
 const POOL={
@@ -195,6 +217,80 @@ const POOL={
 };
 /* ชุดตัวเลือกมาตรฐานของข้อ "ตำแหน่งตัวรับ" */
 const R4=['ละลายน้ำ → ตัวรับที่ผิวเซลล์','ละลายน้ำ → ตัวรับในเซลล์','ละลายไขมัน → ตัวรับที่ผิวเซลล์','ละลายไขมัน → ตัวรับในเซลล์'];
+
+/* ============================================================
+   ภาพประกอบสำหรับข้อ "ดูรูปเติมคำ"  (วาดเป็น SVG เองทั้งหมด
+   ไม่ได้ก๊อปรูปจากที่ไหน จึงเปิดออฟไลน์ได้และไม่ติดลิขสิทธิ์)
+   ============================================================ */
+const NUM=(x,y,n)=>'<circle cx="'+x+'" cy="'+y+'" r="13" fill="#16a34a"/>'+
+  '<text x="'+x+'" y="'+(y+5)+'" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">'+n+'</text>';
+const LN=(x1,y1,x2,y2)=>'<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="#64748b" stroke-width="1.6"/>'+
+  '<circle cx="'+x1+'" cy="'+y1+'" r="2.6" fill="#334155"/>';
+const BOX=(x,y,w,h,fill,txt,sz)=>'<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="9" fill="'+fill+'" stroke="#475569" stroke-width="1.4"/>'+
+  '<text x="'+(x+w/2)+'" y="'+(y+h/2+5)+'" text-anchor="middle" font-size="'+(sz||14)+'" font-weight="600" fill="#0f172a">'+txt+'</text>';
+
+/* --- รูปที่ 1: ตำแหน่งต่อมไร้ท่อในร่างกาย --- */
+const SVG_BODY='<svg viewBox="0 0 470 600" xmlns="http://www.w3.org/2000/svg">'+
+ '<g fill="#f7dbc9" stroke="#e0b49b" stroke-width="1.4">'+
+  '<ellipse cx="235" cy="58" rx="42" ry="50"/><rect x="217" y="98" width="36" height="34"/>'+
+  '<path d="M160,130 Q235,108 310,130 L322,246 Q322,296 292,326 L178,326 Q148,296 148,246 Z"/>'+
+  '<rect x="112" y="136" width="33" height="196" rx="16"/><rect x="325" y="136" width="33" height="196" rx="16"/>'+
+  '<rect x="182" y="320" width="43" height="252" rx="20"/><rect x="245" y="320" width="43" height="252" rx="20"/>'+
+ '</g>'+
+ '<ellipse cx="235" cy="52" rx="29" ry="30" fill="#e8cbb0" stroke="#c9a487" stroke-width="1.2"/>'+
+ '<circle cx="250" cy="42" r="4.5" fill="#8b5cf6"/>'+
+ '<circle cx="220" cy="50" r="5.5" fill="#f59e0b"/>'+
+ '<line x1="222" y1="55" x2="226" y2="61" stroke="#ef4444" stroke-width="2"/><circle cx="227" cy="65" r="5.5" fill="#ef4444"/>'+
+ '<g fill="#ec4899" stroke="#be185d" stroke-width="1"><ellipse cx="224" cy="116" rx="10" ry="13"/><ellipse cx="246" cy="116" rx="10" ry="13"/><rect x="229" y="112" width="12" height="8" rx="2"/></g>'+
+ '<g fill="#fbbf24" stroke="#b45309" stroke-width="1"><ellipse cx="228" cy="158" rx="9" ry="14"/><ellipse cx="242" cy="158" rx="9" ry="14"/></g>'+
+ '<ellipse cx="203" cy="254" rx="15" ry="21" fill="#dc8a8a" stroke="#a04a4a" stroke-width="1"/>'+
+ '<ellipse cx="267" cy="254" rx="15" ry="21" fill="#dc8a8a" stroke="#a04a4a" stroke-width="1"/>'+
+ '<path d="M188,236 q15,-14 30,0 q-15,-6 -30,0 z" fill="#f59e0b" stroke="#b45309" stroke-width="1"/>'+
+ '<path d="M252,236 q15,-14 30,0 q-15,-6 -30,0 z" fill="#f59e0b" stroke="#b45309" stroke-width="1"/>'+
+ '<path d="M214,276 q20,-16 46,-13 q7,1 7,7 q-1,6 -9,5 q-24,-3 -40,9 z" fill="#f0a868" stroke="#c2762f" stroke-width="1"/>'+
+ '<ellipse cx="224" cy="316" rx="8" ry="10" fill="#a78bfa" stroke="#6d28d9" stroke-width="1"/>'+
+ '<ellipse cx="246" cy="316" rx="8" ry="10" fill="#a78bfa" stroke="#6d28d9" stroke-width="1"/>'+
+ LN(250,42,392,32)+LN(220,50,78,46)+LN(227,65,78,100)+LN(246,116,392,110)+
+ LN(242,158,392,168)+LN(188,236,78,226)+LN(240,272,392,262)+LN(224,316,78,318)+
+ NUM(392,32,1)+NUM(78,46,2)+NUM(78,100,3)+NUM(392,110,4)+NUM(392,168,5)+NUM(78,226,6)+NUM(392,262,7)+NUM(78,318,8)+
+ '</svg>';
+
+/* --- รูปที่ 2: เส้นทาง hypothalamus → ต่อมใต้สมอง --- */
+const SVG_PIT='<svg viewBox="0 0 460 300" xmlns="http://www.w3.org/2000/svg">'+
+ '<defs><marker id="ah" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">'+
+ '<path d="M0,0 L7,3 L0,6 z" fill="#475569"/></marker></defs>'+
+ BOX(150,14,160,44,'#fde68a','?  (1)')+
+ '<line x1="200" y1="58" x2="130" y2="140" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>'+
+ '<line x1="262" y1="58" x2="330" y2="140" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>'+
+ '<text x="104" y="104" font-size="13" fill="#0f172a" font-weight="600">ส่งสาร (2)</text>'+
+ '<text x="300" y="104" font-size="13" fill="#0f172a" font-weight="600">ส่งตาม (5)</text>'+
+ BOX(28,144,180,44,'#bfdbfe','?  (3)')+
+ BOX(252,144,180,44,'#bbf7d0','?  (4)')+
+ '<text x="118" y="214" text-anchor="middle" font-size="12.5" fill="#334155">หลั่ง TSH · ACTH · FSH · LH · GH</text>'+
+ '<text x="342" y="214" text-anchor="middle" font-size="12.5" fill="#334155">หลั่ง ADH · oxytocin</text>'+
+ '<text x="342" y="234" text-anchor="middle" font-size="12" fill="#b91c1c" font-weight="700">(เก็บ+หลั่ง ไม่ได้สร้างเอง)</text>'+
+ NUM(300,36,1)+NUM(96,90,2)+NUM(52,166,3)+NUM(276,166,4)+NUM(392,90,5)+
+ '</svg>';
+
+/* --- รูปที่ 3: วงจร negative feedback ของไทรอยด์ --- */
+const SVG_FB='<svg viewBox="0 0 460 330" xmlns="http://www.w3.org/2000/svg">'+
+ '<defs><marker id="a2" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">'+
+ '<path d="M0,0 L7,3 L0,6 z" fill="#475569"/></marker>'+
+ '<marker id="a3" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">'+
+ '<path d="M0,0 L7,3 L0,6 z" fill="#2563eb"/></marker></defs>'+
+ BOX(150,10,170,40,'#fde68a','Hypothalamus',13)+
+ BOX(150,96,170,40,'#bfdbfe','Anterior pituitary',13)+
+ BOX(150,182,170,40,'#fbcfe8','ต่อมไทรอยด์',13)+
+ BOX(150,268,170,40,'#e2e8f0','เซลล์ทั่วร่างกาย',13)+
+ '<line x1="235" y1="50" x2="235" y2="92" stroke="#475569" stroke-width="2" marker-end="url(#a2)"/>'+
+ '<line x1="235" y1="136" x2="235" y2="178" stroke="#475569" stroke-width="2" marker-end="url(#a2)"/>'+
+ '<line x1="235" y1="222" x2="235" y2="264" stroke="#475569" stroke-width="2" marker-end="url(#a2)"/>'+
+ '<path d="M150,202 C90,202 78,150 78,116 L78,116" fill="none" stroke="#2563eb" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#a3)"/>'+
+ '<path d="M150,196 C60,196 40,110 40,30 L40,30" fill="none" stroke="#2563eb" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#a3)"/>'+
+ '<line x1="78" y1="112" x2="146" y2="112" stroke="#2563eb" stroke-width="2" marker-end="url(#a3)"/>'+
+ '<line x1="40" y1="30" x2="146" y2="30" stroke="#2563eb" stroke-width="2" marker-end="url(#a3)"/>'+
+ NUM(268,74,1)+NUM(268,160,2)+NUM(268,246,3)+NUM(112,238,4)+
+ '</svg>';
 
 /* ============================================================
    2) คลังข้อสอบ  (c=หมวด, t=รูปแบบ, q=โจทย์, o=ตัวเลือก, a=เฉลย, e=คำอธิบาย, x=กับดัก)
@@ -441,7 +537,87 @@ const BANK=[
 {c:'fb',t:'open',q:'ยกตัวอย่าง positive feedback ในระบบฮอร์โมนมา 2 ตัวอย่าง พร้อมอธิบายสั้น ๆ',
  e:'(1) <b>Oxytocin ตอนคลอด/ให้นม</b> — มดลูกบีบตัวหรือเด็กดูดนม → กระตุ้นให้หลั่ง oxytocin มากขึ้น → บีบแรงขึ้น/น้ำนมออกมากขึ้น → วนเสริมกันจนคลอด/น้ำนมหมด<br>(2) <b>Estrogen–LH ก่อนตกไข่</b> — estrogen ที่สูงมากไปกระตุ้นให้หลั่ง <b>LH surge</b> → ทำให้เกิดการตกไข่<br>ต่างจาก negative feedback ตรงที่ positive <b>ไม่ดึงค่ากลับ</b> แต่เร่งจนเกิดเหตุการณ์แล้วหยุด'},
 {c:'fb',t:'open',q:'อธิบายวงจร hypothalamus → pituitary → thyroid และบอกว่า negative feedback ทำงานตรงจุดใด',
- e:'<b>ขาไป:</b> hypothalamus หลั่ง <b>TRH</b> → กระตุ้นต่อมใต้สมองส่วนหน้าหลั่ง <b>TSH</b> → กระตุ้นต่อมไทรอยด์หลั่ง <b>thyroxine (T3/T4)</b> → เพิ่มอัตราเมแทบอลิซึมของเซลล์ทั่วร่างกาย<br><b>ขากลับ (negative feedback):</b> เมื่อ thyroxine ในเลือดสูงพอ มันจะย้อนกลับไป<b>ยับยั้ง 2 จุด</b> คือ ยับยั้ง TSH ที่ต่อมใต้สมอง และยับยั้ง TRH ที่ hypothalamus → การหลั่งลดลง → ระดับ thyroxine คงที่<br>🪤 ถ้าขาด iodine จนสร้าง thyroxine ไม่ได้ ตัวยับยั้งหายไป → TSH พุ่งค้าง → ต่อมโต = คอพอก'}
+ e:'<b>ขาไป:</b> hypothalamus หลั่ง <b>TRH</b> → กระตุ้นต่อมใต้สมองส่วนหน้าหลั่ง <b>TSH</b> → กระตุ้นต่อมไทรอยด์หลั่ง <b>thyroxine (T3/T4)</b> → เพิ่มอัตราเมแทบอลิซึมของเซลล์ทั่วร่างกาย<br><b>ขากลับ (negative feedback):</b> เมื่อ thyroxine ในเลือดสูงพอ มันจะย้อนกลับไป<b>ยับยั้ง 2 จุด</b> คือ ยับยั้ง TSH ที่ต่อมใต้สมอง และยับยั้ง TRH ที่ hypothalamus → การหลั่งลดลง → ระดับ thyroxine คงที่<br>🪤 ถ้าขาด iodine จนสร้าง thyroxine ไม่ได้ ตัวยับยั้งหายไป → TSH พุ่งค้าง → ต่อมโต = คอพอก'},
+
+/* ---------- G. เลือกหลายข้อ (เลือกได้มากกว่า 1 คำตอบ) ---------- */
+{c:'fb',t:'multi',q:'พิจารณากลไกต่อไปนี้ ว่ากลไกใดเข้ากับ <b>positive feedback</b>',
+ o:['Oxytocin กระตุ้นการบีบตัวของมดลูก และทำให้มีการหลั่ง oxytocin เพิ่มขึ้นอีก',
+    'T3/T4 สูงแล้วทำให้ TSH ลดลง',
+    'Estrogen ที่สูงมากก่อนตกไข่ กระตุ้นให้เกิด LH surge จนตกไข่',
+    'แคลเซียมสูง กระตุ้น calcitonin ให้ดึงแคลเซียมกลับสู่ปกติ'],a:[0,2],x:1,
+ e:'positive feedback = <b>ผลที่เกิดยิ่งเสริมให้กระตุ้นแรงขึ้นอีก</b> จนจบด้วยเหตุการณ์หนึ่ง (คลอด / ตกไข่)<br>ส่วนข้อ ข และ ง เป็นการ<b>ดึงค่ากลับสู่สมดุล</b> = negative feedback'},
+{c:'fb',t:'multi',q:'ข้อความใดเกี่ยวกับเส้นทาง hypothalamus → ต่อมใต้สมอง <b>ถูกต้อง</b>',
+ o:['releasing / inhibiting hormone ทำหน้าที่ควบคุมการหลั่งฮอร์โมนจาก anterior pituitary',
+    'ADH และ oxytocin เกี่ยวข้องกับ posterior pituitary โดยถูกลำเลียงมาตาม neurosecretory cell',
+    'releasing hormone คือฮอร์โมนที่ยับยั้งการหลั่งจาก anterior pituitary',
+    'oxytocin ทำหน้าที่หลักในการควบคุมสมดุลน้ำในเลือด'],a:[0,1],x:1,
+ e:'ผิดตรงไหน: <b>ข้อ ค</b> — releasing = <b>กระตุ้น</b> (ตัวยับยั้งคือ inhibiting hormone) · <b>ข้อ ง</b> — ตัวคุมสมดุลน้ำคือ <b>ADH</b> ไม่ใช่ oxytocin'},
+{c:'anta',t:'multi',q:'ฮอร์โมนใดบ้างที่ทำให้ระดับน้ำตาลในเลือด <b>เพิ่มขึ้น</b>',
+ o:['Glucagon','Insulin','Cortisol','Adrenaline (epinephrine)'],a:[0,2,3],
+ e:'ตัวเพิ่มน้ำตาลมีหลายตัว (glucagon · cortisol · adrenaline · GH) แต่<b>ตัวลดมี insulin ตัวเดียว</b> — นี่คือเหตุผลที่ขาด insulin แล้วเป็นเบาหวานทันที'},
+{c:'recep',t:'multi',q:'ฮอร์โมนใดบ้างมีตัวรับอยู่ <b>ภายในเซลล์</b>',
+ o:['Cortisol','Insulin','Thyroxine','Epinephrine'],a:[0,2],x:1,
+ e:'สูตรจำ: <b>steroid + thyroxine = ในเซลล์</b> · insulin (peptide) กับ epinephrine (amine ละลายน้ำ) อยู่ที่<b>ผิวเซลล์</b>'},
+{c:'source',t:'multi',q:'ฮอร์โมนใดบ้างสร้างจาก <b>ต่อมใต้สมองส่วนหน้า</b> (anterior pituitary)',
+ o:['TSH','ADH','ACTH','Growth hormone'],a:[0,2,3],x:1,
+ e:'🪤 ADH ไม่ได้สร้างที่ต่อมใต้สมองเลย — สร้างที่ <b>hypothalamus</b> แล้วมาหลั่งที่ posterior pituitary'},
+{c:'source',t:'multi',q:'อวัยวะใดบ้างที่ <b>ไม่ใช่ต่อมไร้ท่อโดยตรง</b> แต่หลั่งฮอร์โมนได้',
+ o:['ไต (EPO)','ตับอ่อน (insulin/glucagon)','กระเพาะอาหาร (gastrin)','รก (hCG)'],a:[0,2,3],
+ e:'ตับอ่อนเป็น<b>ต่อมไร้ท่อจริง ๆ</b> (และเป็นต่อมมีท่อด้วย) ส่วนไต/กระเพาะ/รก เป็นอวัยวะที่หลั่งฮอร์โมนได้แม้ไม่ใช่ต่อมไร้ท่อ'},
+{c:'dis',t:'multi',q:'โรคใดบ้างเกิดจาก <b>thyroxine</b> ผิดปกติ',
+ o:['Cretinism','Acromegaly','Myxedema','Simple goiter'],a:[0,2,3],
+ e:'Acromegaly เกิดจาก <b>GH</b> สูงในผู้ใหญ่ ไม่เกี่ยวกับ thyroxine · อีก 3 ข้อคือ thyroxine ต่ำทั้งหมด (เด็ก / ผู้ใหญ่ / ขาด iodine)'},
+{c:'anta',t:'multi',q:'ข้อใดถูกต้องเกี่ยวกับ <b>calcitonin</b> และ <b>parathormone</b>',
+ o:['calcitonin ลดระดับแคลเซียมในเลือด','ทั้งสองตัวสร้างจากต่อมเดียวกัน',
+    'PTH หลั่งเมื่อแคลเซียมในเลือดต่ำ','PTH สลายแคลเซียมออกจากกระดูก'],a:[0,2,3],x:1,
+ e:'🪤 ข้อ ข ผิด — calcitonin มาจาก <b>ไทรอยด์</b> · PTH มาจาก <b>พาราไทรอยด์</b> คนละต่อมกัน'},
+{c:'recep',t:'multi',q:'ข้อใดถูกต้องเกี่ยวกับฮอร์โมนกลุ่ม <b>สเตียรอยด์</b>',
+ o:['สังเคราะห์มาจาก cholesterol','ละลายในไขมัน จึงผ่านเยื่อหุ้มเซลล์ได้',
+    'ออกฤทธิ์โดยเข้าไปควบคุมการถอดรหัส DNA สร้างโปรตีนใหม่',
+    'ออกฤทธิ์เร็วมากผ่าน second messenger (cAMP)'],a:[0,1,2],
+ e:'ข้อ ง เป็นวิธีของฮอร์โมน<b>ละลายน้ำ</b> (เร็วแต่สั้น) · สเตียรอยด์ออกฤทธิ์<b>ช้ากว่าแต่ผลอยู่นาน</b>'},
+{c:'fb',t:'multi',q:'ข้อใดเป็นลักษณะของ <b>negative feedback</b>',
+ o:['ดึงค่าที่เปลี่ยนไปให้กลับเข้าสู่ช่วงสมดุล','ผลลัพธ์ปลายทางย้อนไปยับยั้งการหลั่งฮอร์โมนต้นทาง',
+    'ยิ่งเกิดผลลัพธ์ ยิ่งเสริมให้กระตุ้นแรงขึ้นเรื่อย ๆ','เป็นรูปแบบที่พบมากที่สุดในระบบฮอร์โมน'],a:[0,1,3],
+ e:'ข้อ ค คือนิยามของ <b>positive</b> feedback'},
+
+/* ---------- H. ปรนัยแนววิเคราะห์บทบาท ---------- */
+{c:'fb',t:'mc',q:'ถ้าร่างกายมีแนวโน้มสูญเสียน้ำมากและต้องการลดการสูญเสียน้ำ ข้อใด <b>สอดคล้อง</b> กับบทบาทของเส้นทาง hypothalamus → posterior pituitary มากที่สุด',
+ o:['hypothalamus กระตุ้นการหลั่ง oxytocin เพื่อเพิ่มการบีบตัวของมดลูก',
+    'posterior pituitary ปล่อย ADH เพื่อช่วยดูดน้ำกลับเข้าสู่หลอดเลือด',
+    'hypothalamus หลั่ง inhibiting hormone เพื่อยับยั้งการทำงานของไตโดยตรง',
+    'anterior pituitary หลั่ง releasing hormone เพื่อให้ระดับ oxytocin เพิ่มขึ้นในกระแสเลือด'],a:1,
+ e:'ADH = antidiuretic hormone แปลตรงตัวว่า "ต้านการขับปัสสาวะ" → ดูดน้ำกลับที่ท่อขดส่วนปลาย+ท่อรวม → เสียน้ำน้อยลง<br>ข้อ ง ผิดซ้อน 2 ชั้น: releasing hormone มาจาก hypothalamus (ไม่ใช่ anterior) และ oxytocin ไม่เกี่ยวกับสมดุลน้ำ',x:1},
+{c:'fb',t:'mc',q:'ในภาวะที่ "ค่าฮอร์โมนปลายทาง" เพิ่มขึ้น แล้วไปทำให้ "ฮอร์โมนต้นทางที่กระตุ้นการสร้าง" ลดลง แบบนี้จัดเป็น feedback แบบใด',
+ o:['Negative feedback เพราะช่วยดึงค่ากลับเข้าสู่ช่วงสมดุล','Positive feedback เพราะทำให้การกระตุ้นเพิ่มขึ้นเรื่อย ๆ',
+    'No feedback เพราะไม่มีความสัมพันธ์ระหว่างผลย้อนกลับกับการสร้างฮอร์โมน','Cyclic feedback เพราะเกิดเป็นวงจรที่ไม่เกี่ยวกับการยับยั้ง'],a:0,
+ e:'"ผลย้อนกลับไป<b>ยับยั้ง</b>การกระตุ้นเดิม ทำให้ค่ากลับสู่สมดุล" คือนิยามของ negative feedback ตรงตัว เช่น thyroxine สูง → ยับยั้ง TSH'},
+
+/* ---------- I. ดูรูปเติมคำ ---------- */
+{c:'source',t:'label',img:SVG_BODY,q:'ดูแผนภาพร่างกาย แล้วเติมชื่อ <b>ต่อมไร้ท่อ</b> ตามหมายเลข (พิมพ์ไทยหรืออังกฤษก็ได้)',
+ bl:[{n:1,a:['pineal','pinealgland','ไพเนียล','ต่อมไพเนียล']},
+     {n:2,a:['hypothalamus','ไฮโพทาลามัส','ไฮโปทาลามัส','ไฮโพธาลามัส']},
+     {n:3,a:['pituitary','pituitarygland','ต่อมใต้สมอง','ใต้สมอง','พิทูอิทารี']},
+     {n:4,a:['thyroid','thyroidgland','ไทรอยด์','ต่อมไทรอยด์']},
+     {n:5,a:['thymus','ไทมัส','ต่อมไทมัส']},
+     {n:6,a:['adrenal','adrenalgland','adrenalglands','หมวกไต','ต่อมหมวกไต']},
+     {n:7,a:['pancreas','ตับอ่อน']},
+     {n:8,a:['testis','testes','ovary','ovaries','gonad','อัณฑะ','รังไข่','อวัยวะสืบพันธุ์']}],
+ e:'เรียงจากบนลงล่าง: <b>ไพเนียล → ไฮโพทาลามัส → ต่อมใต้สมอง → ไทรอยด์ → ไทมัส → หมวกไต → ตับอ่อน → อัณฑะ/รังไข่</b><br>🪤 พาราไทรอยด์ไม่ได้อยู่ในภาพนี้เพราะมันซ่อนอยู่<b>ด้านหลัง</b>ต่อมไทรอยด์ (4 ต่อม)'},
+{c:'fb',t:'label',img:SVG_PIT,q:'เติมชื่อในแผนภาพเส้นทาง hypothalamus → ต่อมใต้สมอง',
+ bl:[{n:1,a:['hypothalamus','ไฮโพทาลามัส','ไฮโปทาลามัส']},
+     {n:2,a:['releasinghormone','releasing/inhibitinghormone','inhibitinghormone','releasinghormones','releasing','ฮอร์โมนกระตุ้น','รีลีสซิงฮอร์โมน']},
+     {n:3,a:['anteriorpituitary','anterior','ต่อมใต้สมองส่วนหน้า','ส่วนหน้า','ใต้สมองส่วนหน้า']},
+     {n:4,a:['posteriorpituitary','posterior','ต่อมใต้สมองส่วนหลัง','ส่วนหลัง','ใต้สมองส่วนหลัง']},
+     {n:5,a:['neurosecretorycell','neurosecretorycells','neurosecretory','เซลล์ประสาท','แอกซอน','axon','เส้นประสาท']}],
+ x:1,
+ e:'ซ้าย = <b>anterior</b> ถูกสั่งด้วย <b>releasing / inhibiting hormone</b> ที่ไหลมาตามหลอดเลือด<br>ขวา = <b>posterior</b> ได้ ADH/oxytocin มาตาม <b>neurosecretory cell</b> (ใยประสาท) แล้ว<b>แค่เก็บกับหลั่ง ไม่ได้สร้างเอง</b> 🪤'},
+{c:'fb',t:'label',img:SVG_FB,q:'เติมชื่อฮอร์โมนและชนิดของ feedback ในวงจรควบคุมไทรอยด์ (ลูกศรน้ำเงินประ = ย้อนกลับไปยับยั้ง)',
+ bl:[{n:1,a:['trh','ทีอาร์เอช']},
+     {n:2,a:['tsh','ทีเอสเอช']},
+     {n:3,a:['thyroxine','t4','t3','t3/t4','t4/t3','ไทรอกซิน','ธัยรอกซิน']},
+     {n:4,a:['negativefeedback','negative','ยับยั้ง','ฟีดแบ็กเชิงลบ','feedbackเชิงลบ','เชิงลบ']}],
+ e:'TRH (hypothalamus) → TSH (ต่อมใต้สมองส่วนหน้า) → thyroxine (ไทรอยด์) → เร่งเมแทบอลิซึมของเซลล์<br>เมื่อ thyroxine สูงพอ จะย้อนไป<b>ยับยั้ง 2 จุด</b> ทั้ง TSH และ TRH = <b>negative feedback</b><br>🪤 ขาดไอโอดีน → สร้าง thyroxine ไม่ได้ → ตัวยับยั้งหาย → TSH พุ่งค้าง → ต่อมโต = คอพอก'}
 ];
 
 /* ============================================================
@@ -457,6 +633,9 @@ const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
 const KEY=['ก','ข','ค','ง','จ','ฉ'];
 const norm=s=>(s||'').toLowerCase().replace(/[\s\-().·]/g,'');
 function fillOK(q,v){const n=norm(v);return n.length>0 && q.a.some(a=>n.includes(norm(a)));}
+/* ข้อเติมคำจากรูปต้องเทียบแบบ "ตรงกันพอดี" ไม่ใช่ contains
+   ไม่งั้นพิมพ์ "parathyroid" จะผ่านข้อที่เฉลยว่า "thyroid" */
+function labelOK(b,v){const n=norm(v);return n.length>0 && b.a.some(a=>norm(a)===n);}
 
 /* ---- สร้างชิปฟิลเตอร์ ---- */
 function buildChips(){
@@ -479,7 +658,9 @@ function pass(q){
   if(filt.quick==='wrong'&&q.state!=='wrong')return false;
   if(filt.quick==='todo'&&q.state!==null)return false;
   if(filt.search){
-    const hay=(q.q+' '+(q.o||[]).join(' ')+' '+(q.e||'')+' '+(q.a&&q.a.join?q.a.join(' '):q.a||'')).toLowerCase();
+    const blTxt=(q.bl||[]).map(b=>b.a.join(' ')).join(' ');
+    const ansTxt=(q.t==='fill'||q.t==='sel')?(q.a.join?q.a.join(' '):q.a):'';
+    const hay=(q.q+' '+(q.o||[]).join(' ')+' '+(q.e||'')+' '+ansTxt+' '+blTxt).toLowerCase();
     if(!hay.includes(filt.search))return false;
   }
   return true;
@@ -515,6 +696,34 @@ function qHTML(q,no){
     body=`<div class="ansrow"><input type="text" data-fill placeholder="พิมพ์คำตอบ" value="${q.pick?esc(q.pick):''}" ${q.state?'disabled':''}>
       ${q.state?'':'<button class="btn small" data-check>ตรวจ</button>'}</div>`;
   }
+  else if(q.t==='multi'){
+    const picked=q.pick||[];
+    body=`<div class="multi-hint">☑️ เลือกได้มากกว่า 1 ข้อ — ต้องเลือกให้ครบและไม่เกิน จึงจะนับว่าถูก</div>
+      <div class="opts">`+q.o.map((o,i)=>{
+        let cls='opt';
+        const isAns=q.a.indexOf(i)>-1, isPick=picked.indexOf(i)>-1;
+        if(q.state){ cls+=' locked';
+          if(isAns&&isPick)cls+=' right';
+          else if(!isAns&&isPick)cls+=' wrongpick';
+          else if(isAns&&!isPick)cls+=' missed';
+        } else if(isPick) cls+=' sel';
+        const mark=q.state? (isAns?'✓':(isPick?'✗':'')) : (isPick?'✓':'');
+        return `<button class="${cls}" data-mpick="${i}"><span class="box">${mark}</span><span>${o}</span></button>`;
+      }).join('')+`</div>`+
+      (q.state?'':`<div class="ansrow" style="margin-top:8px"><button class="btn small" data-check>ตรวจคำตอบ</button></div>`);
+  }
+  else if(q.t==='label'){
+    const p=q.pick||[];
+    body=`<div class="dgwrap">${q.img}</div><div class="blanks">`+
+      q.bl.map((b,i)=>{
+        const done=q.state, right=done&&labelOK(b,p[i]);
+        return `<div class="blk"><span class="bn">${b.n}</span>
+          <input type="text" data-b="${i}" placeholder="เติมคำตอบ" value="${p[i]?esc(p[i]):''}"
+            class="${done?(right?'ok':'bad'):''}" ${done?'disabled':''}>
+          ${done&&!right?`<span class="sol">= ${b.a[0]}</span>`:''}</div>`;
+      }).join('')+`</div>`+
+      (q.state?'':`<div class="ansrow" style="margin-top:9px"><button class="btn small" data-check>ตรวจคำตอบ</button></div>`);
+  }
   else if(q.t==='open'){
     body=`<div class="ansrow"><button class="btn ghost small" data-model>📖 ดูแนวคำตอบ</button></div>
       <div class="model">${q.e}</div>`;
@@ -538,6 +747,8 @@ function answerText(q){
   if(q.t==='mc')return KEY[q.a]+'. '+q.o[q.a];
   if(q.t==='sel')return q.a;
   if(q.t==='fill')return q.a[0];
+  if(q.t==='multi')return q.a.map(i=>KEY[i]).join(' และ ');
+  if(q.t==='label')return q.bl.map(b=>b.n+'='+b.a[0]).join(' · ');
   return '';
 }
 
@@ -580,6 +791,21 @@ $('#list').addEventListener('click',e=>{
     const ansIdx=q.t==='tf'?(q.a?0:1):q.a;
     grade(q,i===ansIdx,i); render(); return;
   }
+  /* เลือกหลายข้อ: กดสลับติ๊ก ยังไม่ตรวจจนกว่าจะกดปุ่มตรวจ */
+  const mopt=e.target.closest('[data-mpick]');
+  if(mopt&&!q.state){
+    const i=+mopt.dataset.mpick;
+    const cur=(q.pick||[]).slice();
+    const at=cur.indexOf(i);
+    if(at>-1)cur.splice(at,1); else cur.push(i);
+    q.pick=cur;
+    /* อย่าเรียก render() ที่วาดใหม่ทั้ง 100+ ข้อ แค่ติ๊ก 1 ครั้ง — บนมือถือจะหน่วงและเด้งตำแหน่ง
+       สลับคลาสเฉพาะปุ่มที่กดพอ */
+    const on=at<0;
+    mopt.classList.toggle('sel',on);
+    mopt.querySelector('.box').textContent = on?'✓':'';
+    return;
+  }
   if(e.target.closest('[data-model]')){
     card.querySelector('.model').classList.toggle('show'); return;
   }
@@ -592,12 +818,28 @@ $('#list').addEventListener('click',e=>{
       const v=card.querySelector('[data-fill]').value;
       if(!v.trim())return;
       grade(q,fillOK(q,v),v);
+    }else if(q.t==='multi'){
+      const p=(q.pick||[]).slice();
+      if(!p.length)return;                       /* ยังไม่ได้เลือกอะไรเลย */
+      const a=q.a.slice().sort((x,y)=>x-y), s=p.slice().sort((x,y)=>x-y);
+      grade(q, a.length===s.length && a.every((v,i)=>v===s[i]), p);
+    }else if(q.t==='label'){
+      const vals=[...card.querySelectorAll('[data-b]')].map(el=>el.value);
+      if(!vals.some(v=>v.trim()))return;          /* ยังไม่ได้กรอกสักช่อง */
+      grade(q, q.bl.every((b,i)=>labelOK(b,vals[i])), vals);
     }
     render(); return;
   }
 });
+/* เก็บสิ่งที่พิมพ์ไว้ทันที ไม่งั้นถ้ามีการ re-render (เช่นไปติ๊กข้ออื่น) คำที่กรอกค้างไว้จะหาย */
+$('#list').addEventListener('input',e=>{
+  if(!e.target.matches('[data-b]'))return;
+  const card=e.target.closest('.q'); const q=BANK[+card.dataset.id];
+  q.pick=[...card.querySelectorAll('[data-b]')].map(x=>x.value);
+});
 $('#list').addEventListener('keydown',e=>{
-  if(e.key==='Enter'&&e.target.matches('[data-fill]')){
+  if(e.key!=='Enter')return;
+  if(e.target.matches('[data-fill]')||e.target.matches('[data-b]')){
     const b=e.target.closest('.q').querySelector('[data-check]'); if(b)b.click();
   }
 });
@@ -647,7 +889,7 @@ $('#nextBtn').addEventListener('click',()=>{const v=visible();if(cur<v.length-1)
 
 buildChips(); render();
 </script>
-<!--KIT-UI v2.4 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<!--KIT-UI v2.5 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>
 /* =============================================================================
    _kit/ui-controls.js  —  KIT UI  v1.0
@@ -673,7 +915,7 @@ buildChips(); render();
               หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
    ============================================================================= */
 (function(){
-if(window.__KITUI__) return; window.__KITUI__='2.4';
+if(window.__KITUI__) return; window.__KITUI__='2.5';
 
 /* ---------- helper ---------- */
 const D=document, R=D.documentElement;
@@ -782,10 +1024,11 @@ function darken(cr,cg,cb){
   const r=cr/255,g=cg/255,b=cb/255;
   const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
   let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
-  const l0=(mx+mn)/2;
-  const s0 = d===0 ? 0 : d/(1-Math.abs(2*l0-1));
-  const s = d===0 ? 0 : Math.min(.5, Math.max(.3, s0));
-  const l = d===0 ? .13 : .17;                       /* เทา/ขาวให้เข้มกว่าสีนิดหน่อย */
+  /* ⚠️ ห้ามใช้ saturation ของ HSL ตรง ๆ ตัดสิน: ที่ความสว่างเกือบ 1 ตัวหารจะเล็กมาก
+     ทำให้สีที่แทบเป็นสีขาว (เช่น #fdf8f4) ได้ค่าอิ่มสีสูงลิ่ว แล้วกลายเป็นสีน้ำตาลจัดตอนกดให้เข้ม
+     ให้ดูจาก "ช่วงห่างของแม่สี" (chroma) แทน แล้วแปลงเป็นความอิ่มสีแบบไล่ระดับ */
+  const s = Math.min(.45, Math.max(.08, d*4));
+  const l = d<.02 ? .13 : .17;                       /* เทา/ขาวล้วนให้เข้มกว่าสีนิดหน่อย */
   const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
   let rr,gg,bb;
   if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
