@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ศัพท์ 15 คำ + ฝึกแปล — เตรียมสอบแปล อังกฤษ ม.6</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --font:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
+  --bg:#eef2f7;--ink:#1e293b;--muted:#64748b;--line:#e2e8f0;--card:#fff;--soft:#f8fafc;
+  --shadow:0 1px 4px rgba(15,23,42,.08);--ok:#059669;--bad:#dc2626;
+  --warn-bg:#fff7ed;--warn-bd:#f97316;--tip-bg:#ecfdf5;--tip-bd:#10b981;
+  --info-bg:#eff6ff;--info-bd:#3b82f6;--steps-bg:#fffbeb;--steps-bd:#fcd34d;--steps-dash:#fde68a;
+  --hot-bg:#fee2e2;--hot-ink:#b91c1c;--badge-bg:#fef9c3;--badge-ink:#854d0e;
+  --radius:14px;--radius-sm:10px;--radius-pill:999px;
+  --accent:#db2777;--accent-head:#831843;--accent-ink:#be185d;--accent-soft:#fdf2f8;
+  --accent-bd:#fbcfe8;--accent-chip:#fce7f3;--accent-ghost:#f9a8d4;
+}
+body[data-subject="eng"]{--bg:#f7eef3}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.65}
+.wrap{max-width:880px;margin:0 auto;padding:10px 12px 70px}
+header{padding:16px 4px 4px}
+header h1{font-size:1.3rem;color:var(--accent-head)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{background:var(--accent-chip);color:var(--accent-ink);border-radius:var(--radius-pill);padding:3px 12px;font-size:.82rem;font-weight:600}
+.chip.hot{background:var(--hot-bg);color:var(--hot-ink)}
+.tabs{display:flex;gap:8px;overflow-x:auto;position:sticky;top:0;background:var(--bg);padding:10px 2px;z-index:10}
+.tab-btn{white-space:nowrap;padding:8px 14px;border-radius:var(--radius-pill);border:1.5px solid var(--accent-bd);
+  background:#fff;color:var(--accent-ink);cursor:pointer;font-size:.92rem;font-family:inherit;font-weight:600;flex-shrink:0}
+.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tab{display:none}.tab.show{display:block}
+.card{background:var(--card);border-radius:var(--radius);padding:16px;margin:12px 0;box-shadow:var(--shadow)}
+.card h2{font-size:1.1rem;color:var(--accent-head);margin-bottom:2px}
+.sub{color:var(--muted);font-size:.86rem;margin-bottom:10px}
+.tip{background:var(--tip-bg);border-left:4px solid var(--tip-bd);border-radius:8px;padding:10px 12px;margin:10px 0;font-size:.92rem}
+.warn{background:var(--warn-bg);border-left:4px solid var(--warn-bd);border-radius:8px;padding:10px 12px;margin:10px 0;font-size:.92rem}
+.info{background:var(--info-bg);border-left:4px solid var(--info-bd);border-radius:8px;padding:10px 12px;margin:10px 0;font-size:.92rem}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:var(--radius-sm);padding:9px 15px;font-size:.92rem;cursor:pointer;font-family:inherit;font-weight:600}
+.btn.ghost{background:#fff;color:var(--accent);border:1.5px solid var(--accent-ghost)}
+.btn.small{padding:6px 12px;font-size:.85rem}
+input[type=text],textarea{width:100%;padding:10px 12px;border:2px solid #cbd5e1;border-radius:var(--radius-sm);
+  font-family:inherit;font-size:1rem;background:#fff;color:var(--ink)}
+input:focus,textarea:focus{outline:none;border-color:var(--accent)}
+textarea{min-height:80px;resize:vertical;line-height:1.6}
+
+/* ---------- การ์ดศัพท์ ---------- */
+.w{border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:var(--radius-sm);
+   padding:13px 15px;margin:10px 0;background:var(--soft)}
+.w .top{display:flex;flex-wrap:wrap;align-items:baseline;gap:9px}
+.w .en{font-size:1.22rem;font-weight:700;color:var(--accent-head)}
+.w .pos{font-size:.78rem;background:var(--accent-chip);color:var(--accent-ink);border-radius:6px;padding:1px 8px;font-weight:700}
+.w .ipa{font-size:.85rem;color:var(--muted);font-family:ui-monospace,Consolas,monospace}
+.w .th{font-size:1.05rem;font-weight:600;margin:6px 0 2px}
+.w .def{font-size:.9rem;color:var(--muted);margin-bottom:8px}
+.w .ex{background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 11px;margin:6px 0;font-size:.93rem}
+.w .ex .e{font-style:italic}
+.w .ex .t{color:var(--accent-ink);font-size:.9rem;margin-top:3px}
+.w .syn{font-size:.86rem;color:var(--muted);margin-top:6px}
+.w .trap{background:var(--hot-bg);color:var(--hot-ink);border-radius:8px;padding:7px 11px;margin-top:8px;font-size:.88rem;font-weight:600}
+
+/* ---------- ฝึกทำ ---------- */
+.drill{border:1px solid var(--line);border-radius:var(--radius-sm);padding:13px 15px;margin:10px 0;background:#fff}
+.drill .q{font-size:1.05rem;font-weight:600;margin-bottom:9px}
+.drill .q .u{text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:3px;font-weight:700}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}
+.row input[type=text]{flex:1;min-width:150px}
+.fb{margin-top:8px;font-weight:700;font-size:.94rem;min-height:1.2em}
+.fb.ok{color:var(--ok)}.fb.bad{color:var(--bad)}
+.ansbox{background:var(--info-bg);border-left:4px solid var(--info-bd);border-radius:8px;padding:9px 12px;margin-top:8px;font-size:.93rem;display:none}
+.ansbox.show{display:block}
+.opts{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.opt{display:flex;gap:9px;align-items:flex-start;border:1.5px solid var(--line);background:var(--soft);
+  border-radius:var(--radius-sm);padding:9px 12px;cursor:pointer;font-size:.94rem;text-align:left;font-family:inherit;color:var(--ink);width:100%}
+.opt .k{font-weight:700;color:var(--accent-ink);flex-shrink:0}
+.opt.right{border-color:var(--ok);background:#ecfdf5}
+.opt.wrongpick{border-color:var(--bad);background:#fef2f2}
+.opt.locked{cursor:default}
+.score{position:sticky;top:56px;z-index:9;background:var(--accent-head);color:#fff;border-radius:var(--radius-sm);
+  padding:8px 14px;margin:6px 0 10px;font-weight:700;font-size:.9rem;display:flex;justify-content:space-between;gap:10px}
+table.ref{border-collapse:collapse;width:100%;font-size:.9rem;margin:8px 0}
+table.ref th,table.ref td{border:1px solid var(--line);padding:7px 10px;text-align:left}
+table.ref th{background:var(--accent-soft);color:var(--accent-ink)}
+@media(max-width:480px){.card{padding:12px}header h1{font-size:1.12rem}.wrap{padding:8px 9px 70px}}
+</style>
+</head>
+<body data-subject="eng">
+<div class="wrap">
+
+  <header>
+    <h1>🔤 ศัพท์ 15 คำ + ฝึกแปล</h1>
+    <div class="chips">
+      <span class="chip hot">🎯 อาจารย์จะสอบแปล</span>
+      <span class="chip">10 คำในลิสต์ + 5 คำที่ไฮไลต์</span>
+      <span class="chip">Meaning Recognition</span>
+      <span class="chip">แปล EN⇄TH</span>
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <button class="tab-btn" data-tab="t1">📖 คลังศัพท์</button>
+    <button class="tab-btn" data-tab="t2">✍️ แปล EN→TH</button>
+    <button class="tab-btn" data-tab="t3">✍️ แปล TH→EN</button>
+    <button class="tab-btn" data-tab="t4">🎯 Meaning Recognition</button>
+    <button class="tab-btn" data-tab="t5">📝 แปลประโยค</button>
+  </nav>
+
+  <!-- ============ 1. คลังศัพท์ ============ -->
+  <section id="t1" class="tab">
+    <div class="card">
+      <h2>📖 ศัพท์ 15 คำที่อาจารย์ให้</h2>
+      <p class="sub">อ่านให้ครบทั้งการ์ด — ความหมายไทย · นิยามอังกฤษ · ประโยคตัวอย่างพร้อมคำแปล · คำเหมือน · กับดัก</p>
+      <div class="warn">⚠️ <b>กับดักที่ตั้งใจวางไว้ในลิสต์นี้</b><br>
+        ข้อ 3 <b>Irrigate</b> กับ ข้อ 6 <b>Irritate</b> สะกดต่างกันแค่ตัวเดียว แต่ความหมาย<b>คนละเรื่องเลย</b><br>
+        ข้อ 8 <b>Ensure</b> กับ ข้อ 9 <b>Ascertain</b> แปลไทยคล้ายกันมาก (“ทำให้แน่ใจ”) แต่ใช้ต่างกัน<br>
+        ข้อ 4 <b>Furious</b> กับ ข้อ 7 <b>Placid</b> เป็น<b>คู่ตรงข้าม</b>กัน</div>
+      <div id="wordlist"></div>
+    </div>
+
+    <div class="card">
+      <h2>⚡ ตารางท่องเร็ว</h2>
+      <p class="sub">ก่อนเข้าห้องสอบ กวาดตารางนี้รอบเดียวพอ</p>
+      <div style="overflow-x:auto"><table class="ref" id="quicktable"></table></div>
+    </div>
+  </section>
+
+  <!-- ============ 2. EN -> TH ============ -->
+  <section id="t2" class="tab">
+    <div class="card">
+      <h2>✍️ เห็นคำอังกฤษ → พิมพ์คำแปลไทย</h2>
+      <p class="sub">พิมพ์ความหมายไทยลงไป (ตอบสั้น ๆ ก็ได้ ขอให้ตรงความหมาย) แล้วกดตรวจ</p>
+      <div class="score"><span id="s2">ทำแล้ว 0 ข้อ</span><span id="p2">ถูก 0</span></div>
+      <div id="drill2"></div>
+      <div class="row"><button class="btn ghost small" id="reset2">♻️ เริ่มใหม่</button></div>
+    </div>
+  </section>
+
+  <!-- ============ 3. TH -> EN ============ -->
+  <section id="t3" class="tab">
+    <div class="card">
+      <h2>✍️ เห็นคำแปลไทย → พิมพ์คำอังกฤษ</h2>
+      <p class="sub">อันนี้ยากกว่า เพราะต้อง<b>สะกดให้ถูก</b>ด้วย — ตรวจแบบไม่สนตัวพิมพ์เล็ก/ใหญ่</p>
+      <div class="score"><span id="s3">ทำแล้ว 0 ข้อ</span><span id="p3">ถูก 0</span></div>
+      <div id="drill3"></div>
+      <div class="row"><button class="btn ghost small" id="reset3">♻️ เริ่มใหม่</button></div>
+    </div>
+  </section>
+
+  <!-- ============ 4. Meaning Recognition ============ -->
+  <section id="t4" class="tab">
+    <div class="card">
+      <h2>🎯 Meaning Recognition — แนวข้อสอบจริง</h2>
+      <p class="sub"><i>Choose the best alternative which has the same meaning as the underlined word in the given sentence.</i></p>
+      <div class="info">💡 <b>วิธีคิดข้อแบบนี้</b> — คำที่ขีดเส้นใต้จะโผล่ใน<b>ทุกตัวเลือก</b> แต่ใช้ใน<b>ความหมายต่างกัน</b><br>
+        อย่าดูแค่ว่า “มีคำนี้ไหม” ต้องดูว่า<b>ความหมายในบริบทนั้นตรงกับโจทย์หรือเปล่า</b></div>
+      <div class="score"><span id="s4">ทำแล้ว 0 ข้อ</span><span id="p4">ถูก 0</span></div>
+      <div id="drill4"></div>
+      <div class="row"><button class="btn ghost small" id="reset4">♻️ เริ่มใหม่</button></div>
+    </div>
+
+    <div class="card">
+      <h2>📄 ข้อ 26 จากกระดาษข้อสอบจริง — ข้อนี้กำกวม ต้องถามอาจารย์</h2>
+      <p class="sub">ผมไม่ใส่ไว้ในชุดฝึกข้างบน เพราะ<b>ไม่มั่นใจว่าเฉลยทางการคืออะไร</b> ขอบอกตรง ๆ ดีกว่าเดาให้</p>
+      <div class="drill">
+        <div class="q">26. I <span class="u">pay</span> electricity bill by internet banking since it is very convenient.</div>
+        <div class="opts">
+          <div class="opt locked"><span class="k">1.</span><span>No one <u>pays</u> them any attention. — <i>pay attention = ให้ความสนใจ</i> (สำนวน ไม่ใช่เงิน)</span></div>
+          <div class="opt locked"><span class="k">2.</span><span>He should <u>pay</u> for his mistake. — <i>ชดใช้ความผิด</i> (ไม่ใช่เงินจริง)</span></div>
+          <div class="opt locked"><span class="k">3.</span><span>He <u>pay</u> the respect to his professors… — <i>pay respect = แสดงความเคารพ</i> (สำนวน)</span></div>
+          <div class="opt locked"><span class="k">4.</span><span>We <u>pay</u> 1,500 Baht a day for this kind of work. — <i>จ่ายค่าจ้างเป็นเงินจริง</i></span></div>
+          <div class="opt locked"><span class="k">5.</span><span>I've been saving all year to <u>pay</u> for our holiday. — <i>จ่ายเงินเป็นค่าใช้จ่ายของสิ่งหนึ่ง</i></span></div>
+        </div>
+        <div class="ansbox show">
+          <b>ตัดออกได้ชัดเจน 3 ข้อ:</b> ข้อ 1, 2, 3 เป็น<b>สำนวน</b> ไม่ได้จ่ายเงินจริง → ผิดแน่นอน<br><br>
+          <b>เหลือ 4 กับ 5 ซึ่งจ่ายเงินจริงทั้งคู่</b> — ตรงนี้แหละที่กำกวม<br>
+          • ข้อ 4 = จ่าย<b>จำนวนเงิน</b> (pay + amount) เป็นค่าจ้าง<br>
+          • ข้อ 5 = <b>pay for</b> + สิ่งที่ซื้อ/ค่าใช้จ่าย<br><br>
+          โจทย์คือ <i>pay + electricity bill</i> = จ่าย<b>บิลที่ค้างชำระ</b> ซึ่งโครงสร้างเป็น pay + สิ่งที่ต้องจ่าย
+          ไม่มีตัวเลือกไหนตรงเป๊ะ<br>
+          📸 <b>ในรูปที่ถ่ายมา มีเครื่องหมายกากบาทไว้ที่ข้อ 4</b> — ถ้านั่นคือคำตอบที่เฉลยในห้อง ก็ยึดตามนั้นครับ<br><br>
+          ⚠️ <b>ผมไม่ฟันธงให้ เพราะเดาผิดแล้วจะจำผิดไปเลย</b> — ถามอาจารย์ให้ชัวร์แล้วมาบอกผม เดี๋ยวบันทึกไว้ให้
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 5. แปลประโยค ============ -->
+  <section id="t5" class="tab">
+    <div class="card">
+      <h2>📝 แปลประโยคเต็ม (ข้อเขียน)</h2>
+      <p class="sub">พิมพ์คำแปลไทยลงกล่อง แล้วกดดูแนวคำตอบมาเทียบ — <b>ไม่ต้องเหมือนเป๊ะ</b> ขอให้ได้ใจความและใช้คำศัพท์ถูก</p>
+      <div class="tip">✅ <b>เกณฑ์ตรวจตัวเอง:</b> ① แปลคำศัพท์เป้าหมายถูกไหม ② ใจความรวมตรงไหม ③ ประโยคไทยอ่านลื่นไหม (ไม่แปลตรงตัวจนแข็ง)</div>
+      <div id="drill5"></div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+/* ============================================================
+   คลังศัพท์ 10 คำ (จากลิสต์ที่อาจารย์ให้)
+   ============================================================ */
+const WORDS=[
+ {n:1,en:'Invoke',pos:'v.',ipa:'/ɪnˈvoʊk/',
+  th:'อ้างถึง · เรียกใช้ (กฎ/อำนาจ) · วิงวอนขอ',
+  def:'to call on a law, right, or authority as a reason; to call on a god or spirit for help',
+  ex:[['The lawyer <b>invoked</b> Article 5 to defend his client.','ทนายความ<b>อ้างถึง</b>มาตรา 5 เพื่อแก้ต่างให้ลูกความ'],
+      ['They <b>invoked</b> the gods for rain.','พวกเขา<b>วิงวอนขอ</b>ให้เทพเจ้าประทานฝน']],
+  syn:'cite, appeal to, call upon',
+  trap:'ไม่ได้แปลว่า “เชิญ” (invite) — <b>invoke = อ้าง/เรียกใช้</b> สิ่งที่มีอำนาจ เช่น กฎหมาย สิทธิ เทพเจ้า',
+  keys:['อ้าง','เรียกใช้','วิงวอน','ขอร้อง','อัญเชิญ','เรียกหา']},
+
+ {n:2,en:'Stimulate',pos:'v.',ipa:'/ˈstɪmjuleɪt/',
+  th:'กระตุ้น · ทำให้ตื่นตัว · ส่งเสริมให้เกิด',
+  def:'to encourage something to happen, develop, or improve; to make someone excited or interested',
+  ex:[['Coffee <b>stimulates</b> the nervous system.','กาแฟ<b>กระตุ้น</b>ระบบประสาท'],
+      ['The policy is designed to <b>stimulate</b> the economy.','นโยบายนี้ออกแบบมาเพื่อ<b>กระตุ้น</b>เศรษฐกิจ']],
+  syn:'encourage, arouse, spur, boost',
+  trap:'ใช้ได้ทั้งกับ<b>ร่างกาย</b> (กระตุ้นประสาท) และ<b>นามธรรม</b> (กระตุ้นเศรษฐกิจ/ความสนใจ)',
+  keys:['กระตุ้น','ตื่นตัว','เร้า','ส่งเสริม','ปลุกเร้า']},
+
+ {n:3,en:'Irrigate',pos:'v.',ipa:'/ˈɪrɪɡeɪt/',
+  th:'ทดน้ำ · ให้น้ำแก่พื้นที่เพาะปลูก (ชลประทาน)',
+  def:'to supply water to land or crops through pipes or channels',
+  ex:[['Farmers <b>irrigate</b> the rice fields during the dry season.','ชาวนา<b>ทดน้ำ</b>เข้านาข้าวในช่วงหน้าแล้ง'],
+      ['The nurse <b>irrigated</b> the wound with saline.','พยาบาล<b>ล้าง</b>แผลด้วยน้ำเกลือ']],
+  syn:'water, supply water to',
+  trap:'🚨 <b>อย่าสับสนกับ Irritate!</b> Irri<b>g</b>ate = ให้น้ำ (นึกถึง “ชลประ<b>ทาน</b>”) · Irri<b>t</b>ate = ทำให้รำคาญ',
+  keys:['ทดน้ำ','ให้น้ำ','ชลประทาน','รดน้ำ','ล้างแผล','ส่งน้ำ']},
+
+ {n:4,en:'Furious',pos:'adj.',ipa:'/ˈfjʊəriəs/',
+  th:'โกรธจัด · เดือดดาล · (หรือ) รุนแรงมาก',
+  def:'extremely angry; also: very powerful, intense or fast',
+  ex:[['She was <b>furious</b> when she saw the broken window.','เธอ<b>โกรธจัด</b>เมื่อเห็นหน้าต่างแตก'],
+      ['The ship sank in a <b>furious</b> storm.','เรือจมลงในพายุที่<b>รุนแรง</b>']],
+  syn:'enraged, livid, violent, fierce',
+  trap:'ไม่ได้แปลว่าโกรธอย่างเดียว — ใช้กับ<b>พายุ · ความเร็ว · การต่อสู้</b> ในความหมาย “รุนแรง/ดุเดือด” ได้ด้วย',
+  keys:['โกรธ','เดือดดาล','โมโห','ฉุนเฉียว','รุนแรง','ดุเดือด']},
+
+ {n:5,en:'Nuance',pos:'n.',ipa:'/ˈnuːɑːns/',
+  th:'ความแตกต่างเล็กน้อย · แง่มุมละเอียดอ่อน',
+  def:'a very slight difference in meaning, colour, feeling, or tone',
+  ex:[['He failed to catch the <b>nuances</b> of her tone.','เขาจับ<b>น้ำเสียงที่แตกต่างเพียงเล็กน้อย</b>ของเธอไม่ได้'],
+      ['There are subtle <b>nuances</b> between the two words.','คำสองคำนี้มี<b>ความต่างเล็ก ๆ</b>ที่ละเอียดอ่อน']],
+  syn:'subtlety, shade, fine distinction',
+  trap:'เป็น<b>คำนาม</b> (n.) ไม่ใช่กริยา — และเน้นความต่างที่ “<b>เล็กน้อยจนต้องสังเกต</b>” ไม่ใช่ความต่างใหญ่ ๆ',
+  keys:['ความแตกต่างเล็ก','ความต่างเล็ก','แง่มุม','ละเอียดอ่อน','รายละเอียดปลีกย่อย','นัย']},
+
+ {n:6,en:'Irritate',pos:'v.',ipa:'/ˈɪrɪteɪt/',
+  th:'ทำให้รำคาญ/หงุดหงิด · (ร่างกาย) ทำให้ระคายเคือง',
+  def:'to annoy someone; to make part of the body sore or painful',
+  ex:[['His constant tapping <b>irritated</b> everyone in the room.','การเคาะไม่หยุดของเขา<b>ทำให้</b>ทุกคนในห้อง<b>รำคาญ</b>'],
+      ['The smoke <b>irritated</b> my eyes.','ควัน<b>ทำให้</b>ตาของฉัน<b>ระคายเคือง</b>']],
+  syn:'annoy, bother, aggravate, inflame',
+  trap:'🚨 <b>คู่แฝดของ Irrigate</b> — จำง่าย ๆ: irri<b>T</b>ate มีตัว T เหมือน “<b>T</b>ired of it” = เบื่อ/รำคาญ',
+  keys:['รำคาญ','หงุดหงิด','ระคายเคือง','กวนใจ','โมโห','ฉุน']},
+
+ {n:7,en:'Placid',pos:'adj.',ipa:'/ˈplæsɪd/',
+  th:'สงบ · เงียบสงบ · ใจเย็นไม่โมโหง่าย',
+  def:'calm and peaceful; not easily upset or excited',
+  ex:[['The lake was <b>placid</b> in the morning light.','ทะเลสาบ<b>สงบนิ่ง</b>ท่ามกลางแสงยามเช้า'],
+      ['She has a <b>placid</b> temperament.','เธอมีอุปนิสัย<b>ใจเย็น</b>']],
+  syn:'calm, tranquil, serene, even-tempered',
+  trap:'เป็น<b>คู่ตรงข้ามกับ Furious</b> — ถ้าข้อสอบถามคำตรงข้าม จำคู่นี้ไว้เลย',
+  keys:['สงบ','เงียบ','ใจเย็น','นิ่ง','ราบเรียบ','เยือกเย็น']},
+
+ {n:8,en:'Ensure',pos:'v.',ipa:'/ɪnˈʃʊər/',
+  th:'ทำให้แน่ใจว่า (จะเกิดขึ้น) · รับประกันว่า',
+  def:'to make certain that something will happen',
+  ex:[['Please <b>ensure</b> that all the doors are locked.','กรุณา<b>ทำให้แน่ใจว่า</b>ประตูทุกบานถูกล็อกแล้ว'],
+      ['Good preparation <b>ensures</b> success.','การเตรียมตัวที่ดี<b>รับประกัน</b>ความสำเร็จ']],
+  syn:'make sure, guarantee, secure',
+  trap:'⚠️ <b>Ensure ≠ Ascertain</b> — Ensure = ทำให้มัน<b>เกิดขึ้นแน่ ๆ (มองไปข้างหน้า)</b> · Ascertain = <b>สืบหาความจริง</b>ที่มีอยู่แล้ว<br>และอย่าสับกับ <i>insure</i> (ทำประกันภัย) หรือ <i>assure</i> (บอกให้ใครสบายใจ)',
+  keys:['ทำให้แน่ใจ','แน่ใจ','รับประกัน','ทำให้มั่นใจ','ประกันว่า','ให้มั่นใจ']},
+
+ {n:9,en:'Ascertain',pos:'v.',ipa:'/ˌæsərˈteɪn/',
+  th:'ตรวจสอบให้แน่ชัด · สืบหาความจริง',
+  def:'to find out the true or correct information about something',
+  ex:[['Police are trying to <b>ascertain</b> the cause of the fire.','ตำรวจกำลังพยายาม<b>สืบหาให้แน่ชัด</b>ถึงสาเหตุของเพลิงไหม้'],
+      ['We must <b>ascertain</b> the facts before deciding.','เราต้อง<b>ตรวจสอบข้อเท็จจริงให้แน่ชัด</b>ก่อนตัดสินใจ']],
+  syn:'find out, determine, establish, verify',
+  trap:'⚠️ ใช้กับ “<b>ข้อเท็จจริงที่ยังไม่รู้</b>” — ต่างจาก ensure ที่ใช้กับ “<b>สิ่งที่อยากให้เกิดขึ้น</b>”',
+  keys:['ตรวจสอบ','สืบหา','หาความจริง','ทำให้แน่ชัด','ยืนยัน','พิสูจน์']},
+
+ {n:10,en:'Anticipate',pos:'v.',ipa:'/ænˈtɪsɪpeɪt/',
+  th:'คาดการณ์ล่วงหน้า · คาดหวัง · เตรียมรับมือไว้ก่อน',
+  def:'to expect something to happen and be ready for it; to do something before it is expected',
+  ex:[['We <b>anticipate</b> heavy traffic during the holiday.','เรา<b>คาดว่า</b>จะมีรถติดหนักในช่วงวันหยุด'],
+      ['A good goalkeeper <b>anticipates</b> the striker’s move.','ผู้รักษาประตูที่ดีจะ<b>คาดการณ์ล่วงหน้า</b>ถึงจังหวะของกองหน้า']],
+  syn:'expect, foresee, predict, prepare for',
+  trap:'ไม่ได้แปลว่า “คาดหวัง” เฉย ๆ แบบ expect — <b>anticipate มีความหมายว่า “เตรียมตัวรับมือไว้ด้วย”</b>',
+  keys:['คาดการณ์','คาดหวัง','คาดว่า','ล่วงหน้า','คาดคะเน','เตรียมรับมือ','ทำนาย']},
+
+ /* ===== 5 คำที่ไฮไลต์ไว้ในกระดาษข้อสอบ (Item 26–30 Meaning Recognition) ===== */
+ {n:11,en:'Electricity',pos:'n.',ipa:'/ɪˌlekˈtrɪsəti/',
+  th:'ไฟฟ้า · กระแสไฟฟ้า',
+  def:'a form of energy used to power lights, machines, and devices',
+  ex:[['I pay the <b>electricity</b> bill by internet banking.','ฉันจ่ายบิลค่า<b>ไฟฟ้า</b>ผ่านอินเทอร์เน็ตแบงกิ้ง'],
+      ['The storm cut off the <b>electricity</b> for two days.','พายุทำให้<b>ไฟฟ้า</b>ดับไปสองวัน']],
+  syn:'power, current',
+  trap:'เป็น<b>คำนาม</b> — รูปคุณศัพท์คือ <i>electric</i> (electric car) หรือ <i>electrical</i> (electrical engineer)<br>สังเกตวลี <b>electricity bill = ค่าไฟ</b>',
+  keys:['ไฟฟ้า','กระแสไฟ','ค่าไฟ','ไฟ']},
+
+ {n:12,en:'Convenient',pos:'adj.',ipa:'/kənˈviːniənt/',
+  th:'สะดวก · เหมาะเจาะ (เรื่องเวลา/สถานที่/วิธีการ)',
+  def:'easy to use or suitable for your needs; not causing trouble',
+  ex:[['Internet banking is very <b>convenient</b>.','อินเทอร์เน็ตแบงกิ้ง<b>สะดวก</b>มาก'],
+      ['Would 3 p.m. be <b>convenient</b> for you?','บ่ายสามโมง<b>สะดวก</b>สำหรับคุณไหม']],
+  syn:'handy, easy, suitable',
+  trap:'⚠️ <b>convenient ≠ comfortable</b> — convenient = สะดวก (ไม่เสียเวลา/ไม่ยุ่งยาก) · comfortable = สบาย (ทางกาย เช่น เก้าอี้นั่งสบาย)<br>คำนามคือ <b>convenience</b> (เช่น convenience store = ร้านสะดวกซื้อ)',
+  keys:['สะดวก','สบาย','ง่าย','เหมาะ']},
+
+ {n:13,en:'Retirement',pos:'n.',ipa:'/rɪˈtaɪərmənt/',
+  th:'การเกษียณอายุ · การปลดเกษียณ',
+  def:'the time when you stop working, usually because of age',
+  ex:[['They held a party for his <b>retirement</b>.','พวกเขาจัดงานเลี้ยงให้กับ<b>การเกษียณอายุ</b>ของเขา'],
+      ['She saves money for her <b>retirement</b>.','เธอเก็บเงินไว้ใช้ตอน<b>เกษียณ</b>']],
+  syn:'leaving work, superannuation',
+  trap:'ตระกูลคำ: <b>retire</b> (v. เกษียณ) · <b>retired</b> (adj. ที่เกษียณแล้ว) · <b>retirement</b> (n. การเกษียณ)<br><b>retirement ceremony</b> = พิธีเกษียณอายุ / งานมุทิตาจิต',
+  keys:['เกษียณ','ปลดเกษียณ','เลิกทำงาน','เกษียณอายุ']},
+
+ {n:14,en:'Transfer',pos:'v./n.',ipa:'/trænsˈfɜːr/ (v.) · /ˈtrænsfɜːr/ (n.)',
+  th:'โอน (เงิน/กรรมสิทธิ์) · ย้าย (ที่ทำงาน/สถานศึกษา/ผู้ป่วย) · ต่อรถ เปลี่ยนพาหนะ',
+  def:'to move someone or something from one place, job, or owner to another',
+  ex:[['He would have to <b>transfer</b> money to his own account.','เขาจะต้อง<b>โอน</b>เงินเข้าบัญชีของตัวเอง'],
+      ['The property was <b>transferred</b> to his wife.','ทรัพย์สินถูก<b>โอน</b>ให้ภรรยาของเขา'],
+      ['It took several bus <b>transfers</b> to get there.','ต้อง<b>ต่อรถ</b>เมล์หลายทอดกว่าจะถึงที่นั่น']],
+  syn:'move, shift, hand over, switch',
+  trap:'🚨 <b>คำนี้มีหลายความหมายมาก จึงถูกเอามาออกข้อ Meaning Recognition โดยตรง</b><br>ต้องดูให้ออกว่าบริบทไหน = โอนเงิน/โอนกรรมสิทธิ์ · ย้ายคน · ต่อรถ<br>ตำแหน่งเสียงเน้นต่างกัน: กริยาเน้นพยางค์หลัง · คำนามเน้นพยางค์หน้า',
+  keys:['โอน','ย้าย','ถ่ายโอน','เปลี่ยน','ต่อรถ','ส่งต่อ']},
+
+ {n:15,en:'Psychiatric',pos:'adj.',ipa:'/ˌsaɪkiˈætrɪk/',
+  th:'เกี่ยวกับจิตเวช · ทางจิตเวชศาสตร์',
+  def:'relating to the medical treatment of mental illness',
+  ex:[['He has been transferred to a <b>psychiatric</b> hospital.','เขาถูกย้ายไปโรงพยาบาล<b>จิตเวช</b>'],
+      ['She is receiving <b>psychiatric</b> care.','เธอกำลังได้รับการดูแล<b>ทางจิตเวช</b>']],
+  syn:'mental-health (related)',
+  trap:'⚠️ <b>ตัว p ไม่ออกเสียง</b> — อ่านว่า “ไซ-คิ-แอ-ทริก”<br>อย่าสับสน: <b>psychiatry</b> จิตเวชศาสตร์ (เป็น<b>แพทย์</b> จ่ายยาได้) vs <b>psychology</b> จิตวิทยา (ไม่ใช่แพทย์)<br>psychiatr<b>ist</b> = จิตแพทย์',
+  keys:['จิตเวช','จิตแพทย์','ทางจิต','สุขภาพจิต']}
+];
+
+/* ============================================================
+   Meaning Recognition — รูปแบบเดียวกับข้อสอบอาจารย์
+   ============================================================ */
+const MR=[
+ {sent:'The smoke from the burning field began to <span class="u">irritate</span> my eyes and throat.',
+  word:'irritate',
+  o:['His constant humming <u>irritates</u> everyone in the office.',
+     'The rough wool may <u>irritate</u> sensitive skin.',
+     'She was <u>irritated</u> by his rude answer.',
+     'It <u>irritates</u> me when people arrive late.',
+     'Don’t <u>irritate</u> the dog while it is eating.'],a:1,
+  e:'โจทย์ใช้ในความหมาย <b>“ทำให้ระคายเคืองทางร่างกาย”</b> (ควันเข้าตา)<br>ข้อ 2 ผ้าขนสัตว์ทำให้ผิว<b>ระคายเคือง</b> = ความหมายเดียวกัน<br>ข้อ 1, 3, 4, 5 ล้วนแปลว่า <b>ทำให้รำคาญ/หงุดหงิด</b> ซึ่งเป็นคนละความหมาย'},
+
+ {sent:'The government hopes the new tax cut will <span class="u">stimulate</span> the economy.',
+  word:'stimulate',
+  o:['Bright light <u>stimulates</u> the retina.',
+     'Caffeine <u>stimulates</u> the central nervous system.',
+     'Low interest rates should <u>stimulate</u> investment in the country.',
+     'The teacher tried to <u>stimulate</u> the shy student to speak.',
+     'Massage <u>stimulates</u> blood flow to the muscles.'],a:2,
+  e:'โจทย์ใช้ในความหมาย <b>“กระตุ้นให้ระบบเศรษฐกิจเติบโต”</b> (นามธรรม ระดับประเทศ)<br>ข้อ 3 กระตุ้น<b>การลงทุน</b> = ระดับเดียวกัน<br>ข้อ 1, 2, 5 เป็นการกระตุ้น<b>ทางร่างกาย</b> ส่วนข้อ 4 กระตุ้น<b>บุคคล</b>'},
+
+ {sent:'The defence lawyer <span class="u">invoked</span> the constitution to protect his client’s rights.',
+  word:'invoke',
+  o:['The priest <u>invoked</u> the blessing of God upon the couple.',
+     'The manager <u>invoked</u> company policy to justify the dismissal.',
+     'The song <u>invoked</u> memories of his childhood.',
+     'They <u>invoked</u> the spirits of their ancestors.',
+     'Her speech <u>invoked</u> strong emotions in the audience.'],a:1,
+  e:'โจทย์ใช้ในความหมาย <b>“อ้างถึงกฎหมาย/ข้อบังคับเพื่อสนับสนุนตัวเอง”</b><br>ข้อ 2 อ้าง<b>นโยบายบริษัท</b> = ความหมายเดียวกัน<br>ข้อ 1, 4 = <b>วิงวอนสิ่งศักดิ์สิทธิ์</b> · ข้อ 3, 5 = <b>ปลุกเร้าความรู้สึก/ความทรงจำ</b>'},
+
+ {sent:'Please <span class="u">ensure</span> that all windows are closed before you leave.',
+  word:'ensure',
+  o:['The police will <u>ensure</u> the safety of the witnesses.',
+     'Hard work does not always <u>ensure</u> success.',
+     'Check the list again to <u>ensure</u> nothing is missing.',
+     'This contract <u>ensures</u> him a place in the team.',
+     'Vaccination <u>ensures</u> protection against the disease.'],a:2,
+  e:'โจทย์เป็น<b>คำสั่งให้ตรวจสอบเพื่อให้มั่นใจว่าเรียบร้อย</b> (ก่อนออกจากบ้าน)<br>ข้อ 3 “ตรวจรายการอีกครั้งเพื่อ<b>ให้แน่ใจว่าไม่มีอะไรตกหล่น</b>” = ความหมายและการใช้ตรงกันที่สุด<br>ข้ออื่นเป็น <b>“รับประกันผลลัพธ์”</b> ซึ่งเอนไปทาง guarantee'},
+
+ {sent:'The horse galloped at a <span class="u">furious</span> pace across the field.',
+  word:'furious',
+  o:['My father was <u>furious</u> about my grades.',
+     'She gave him a <u>furious</u> look and walked away.',
+     'The boxers exchanged <u>furious</u> blows in the final round.',
+     'He is still <u>furious</u> with his brother.',
+     'A <u>furious</u> argument broke out between them.'],a:2,
+  e:'โจทย์ใช้ในความหมาย <b>“รุนแรง/เร็วดุเดือด”</b> ไม่ได้แปลว่าโกรธ (ม้าไม่ได้โกรธ)<br>ข้อ 3 หมัดที่<b>หนักหน่วงดุเดือด</b> = ความหมายเดียวกัน<br>ข้อ 1, 2, 4, 5 ล้วนเกี่ยวกับ<b>ความโกรธ</b>'},
+
+ {sent:'Detectives are working to <span class="u">ascertain</span> the identity of the victim.',
+  word:'ascertain',
+  o:['We must <u>ascertain</u> that the door is locked every night.',
+     'The doctor could not <u>ascertain</u> the cause of the illness.',
+     'Please <u>ascertain</u> the guests are comfortable.',
+     'He wants to <u>ascertain</u> his son a good future.',
+     'The rule <u>ascertains</u> fair treatment for all members.'],a:1,
+  e:'โจทย์ = <b>“สืบหาข้อเท็จจริงที่ยังไม่รู้”</b> (ตัวตนของผู้เสียชีวิต)<br>ข้อ 2 หมอ<b>หาสาเหตุของโรคไม่ได้</b> = สืบหาความจริงเหมือนกัน<br>ข้อ 1, 3, 4, 5 จริง ๆ ควรใช้ <b>ensure</b> ไม่ใช่ ascertain — เป็นตัวลวงที่สลับสองคำนี้'},
+
+ /* ===== ข้อ 27 จากกระดาษข้อสอบจริงที่ถ่ายมา ===== */
+ {sent:'<b>[ข้อสอบจริง ข้อ 27]</b> He would have to <span class="u">transfer</span> money to his own account.',
+  word:'transfer',
+  o:['Ron <u>transferred</u> to the University of Idaho.',
+     'The property was <u>transferred</u> to his wife.',
+     'John advised him to <u>transfer</u> from Rome airport to the railroad station.',
+     'It took three hours and several bus <u>transfers</u> to get there.',
+     'He has been <u>transferred</u> to a psychiatric hospital.'],a:1,
+  e:'โจทย์ = <b>โอนทรัพย์สิน/เงิน จากที่หนึ่งไปอีกที่หนึ่ง (เปลี่ยนมือความเป็นเจ้าของ)</b><br>' +
+    'ข้อ 2 ทรัพย์สินถูก<b>โอน</b>ให้ภรรยา = โอนกรรมสิทธิ์ → <b>ความหมายเดียวกัน</b> ✅<br>' +
+    'ข้อ 1 = ย้าย<b>สถานศึกษา</b> · ข้อ 3 = <b>ต่อรถ/เปลี่ยนพาหนะ</b> · ข้อ 4 = <b>คำนาม</b> แปลว่าการต่อรถ · ข้อ 5 = ย้าย<b>ผู้ป่วย</b><br>' +
+    '🎯 เห็นไหมว่าคำเดียวใช้ได้ 4–5 ความหมาย — นี่คือเหตุผลที่อาจารย์เลือก transfer มาออกข้อนี้'},
+
+ {sent:'Internet banking is <span class="u">convenient</span> because I can pay bills at midnight.',
+  word:'convenient',
+  o:['This armchair is very <u>convenient</u> to sit in for hours.',
+     'The hotel is <u>convenient</u> for the train station.',
+     'Would Friday morning be <u>convenient</u> for our meeting?',
+     'Online shopping is <u>convenient</u> — you can order anytime without leaving home.',
+     'He made a <u>convenient</u> excuse to avoid the work.'],a:3,
+  e:'โจทย์ = <b>“สะดวก เพราะไม่ต้องเสียเวลา/ทำได้ทุกเมื่อ”</b> (จ่ายบิลตอนเที่ยงคืนได้)<br>' +
+    'ข้อ 4 ช้อปออนไลน์<b>สั่งได้ตลอดโดยไม่ต้องออกจากบ้าน</b> = เหตุผลเดียวกันเป๊ะ ✅<br>' +
+    'ข้อ 1 ใช้ผิด — เก้าอี้นั่งสบายต้องใช้ <b>comfortable</b> 🪤 · ข้อ 2 = ทำเลใกล้ · ข้อ 3 = เวลาที่ว่างตรงกัน · ข้อ 5 = ข้ออ้างที่<b>หยิบมาใช้ให้เข้าทางตัวเอง</b>'}
+];
+
+/* ============================================================
+   ประโยคแปลเต็ม
+   ============================================================ */
+const SENT=[
+ {en:'The farmers had to <b>irrigate</b> their fields because they <b>anticipated</b> a long drought.',
+  th:'ชาวนาต้อง<b>ทดน้ำ</b>เข้าไร่นาของตน เพราะพวกเขา<b>คาดการณ์ล่วงหน้า</b>ว่าจะเกิดภัยแล้งยาวนาน',
+  note:'จุดที่ต้องได้: <b>irrigate = ทดน้ำ</b> (ไม่ใช่ “ทำให้รำคาญ”) และ <b>anticipate</b> ต้องมีนัย “คาดไว้ล่วงหน้า”'},
+ {en:'Her <b>placid</b> manner did not change even when her boss became <b>furious</b>.',
+  th:'ท่าที<b>เยือกเย็น</b>ของเธอไม่เปลี่ยนไปเลย แม้ในตอนที่เจ้านายของเธอ<b>โกรธจัด</b>',
+  note:'ประโยคนี้ใช้<b>คู่ตรงข้าม</b> placid ↔ furious มาปะทะกัน แปลให้เห็นความตัดกัน'},
+ {en:'Before signing the contract, the committee must <b>ascertain</b> the facts and <b>ensure</b> that every member agrees.',
+  th:'ก่อนลงนามในสัญญา คณะกรรมการต้อง<b>ตรวจสอบข้อเท็จจริงให้แน่ชัด</b> และ<b>ทำให้มั่นใจว่า</b>สมาชิกทุกคนเห็นพ้องต้องกัน',
+  note:'🎯 ข้อนี้วัดว่าแยก <b>ascertain (สืบหาความจริง)</b> กับ <b>ensure (ทำให้มันเกิดขึ้นแน่)</b> ออกไหม'},
+ {en:'The teacher tried to <b>stimulate</b> discussion, but his sarcastic tone only <b>irritated</b> the students.',
+  th:'ครูพยายาม<b>กระตุ้น</b>ให้เกิดการอภิปราย แต่น้ำเสียงเสียดสีของเขากลับ<b>ทำให้</b>นักเรียน<b>รำคาญ</b>เท่านั้น',
+  note:'สังเกตคำเชื่อม <i>but ... only</i> ต้องแปลออกมาเป็น “แต่ ... กลับ ... เท่านั้น” จึงจะได้อารมณ์'},
+ {en:'The lawyer <b>invoked</b> an old law, but the judge noticed a <b>nuance</b> in its wording that changed everything.',
+  th:'ทนายความ<b>อ้างถึง</b>กฎหมายเก่าฉบับหนึ่ง แต่ผู้พิพากษาสังเกตเห็น<b>ความต่างเพียงเล็กน้อย</b>ในถ้อยคำของกฎหมายนั้น ซึ่งเปลี่ยนทุกอย่างไปหมด',
+  note:'<b>nuance</b> เป็นคำนาม ต้องแปลเป็นคำนามไทย เช่น “ความต่างเล็กน้อย / แง่มุมละเอียดอ่อน”'}
+];
+
+/* ============================================================
+   สร้างหน้า
+   ============================================================ */
+const $=s=>document.querySelector(s);
+const KEY=['1','2','3','4','5'];
+const norm=s=>(s||'').toLowerCase().trim().replace(/[\s.,;:!?"'()\-–—]/g,'');
+
+/* --- แท็บ --- */
+function openTab(id){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('show',t.id===id));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
+}
+$('#tabs').addEventListener('click',e=>{const b=e.target.closest('.tab-btn');if(b)openTab(b.dataset.tab);});
+
+/* --- 1. คลังศัพท์ --- */
+$('#wordlist').innerHTML=WORDS.map(w=>`
+ <div class="w">
+   <div class="top"><span class="en">${w.n}. ${w.en}</span><span class="pos">${w.pos}</span><span class="ipa">${w.ipa}</span></div>
+   <div class="th">${w.th}</div>
+   <div class="def">${w.def}</div>
+   ${w.ex.map(p=>`<div class="ex"><div class="e">${p[0]}</div><div class="t">→ ${p[1]}</div></div>`).join('')}
+   <div class="syn"><b>คำใกล้เคียง:</b> ${w.syn}</div>
+   <div class="trap">${w.trap}</div>
+ </div>`).join('');
+
+$('#quicktable').innerHTML='<tr><th>#</th><th>คำ</th><th>ชนิด</th><th>ความหมายสั้น</th></tr>'+
+  WORDS.map(w=>`<tr><td>${w.n}</td><td><b>${w.en}</b></td><td>${w.pos}</td><td>${w.th}</td></tr>`).join('');
+
+/* --- 2/3. ฝึกแปลคำ --- */
+const st={2:{done:0,ok:0},3:{done:0,ok:0},4:{done:0,ok:0}};
+function upd(n){ $('#s'+n).textContent='ทำแล้ว '+st[n].done+' ข้อ'; $('#p'+n).textContent='ถูก '+st[n].ok; }
+
+function buildWordDrill(box,dir){
+  const n = dir==='en2th'?2:3;
+  box.innerHTML=WORDS.map((w,i)=>`
+    <div class="drill" data-i="${i}">
+      <div class="q">${dir==='en2th'?`<b>${w.en}</b> <span style="color:var(--muted);font-size:.85rem">(${w.pos})</span> แปลว่า?`
+                                     :`“${w.th.split(' · ')[0]}” ภาษาอังกฤษคือคำใด?`}</div>
+      <div class="row">
+        <input type="text" placeholder="${dir==='en2th'?'พิมพ์คำแปลไทย':'type the English word'}">
+        <button class="btn small" data-check>ตรวจ</button>
+        <button class="btn ghost small" data-show>เฉลย</button>
+      </div>
+      <div class="fb"></div>
+      <div class="ansbox"></div>
+    </div>`).join('');
+  box.addEventListener('click',e=>{
+    const d=e.target.closest('.drill'); if(!d)return;
+    const w=WORDS[+d.dataset.i], inp=d.querySelector('input'), fb=d.querySelector('.fb'), ab=d.querySelector('.ansbox');
+    if(e.target.closest('[data-show]')){
+      ab.innerHTML=`<b>เฉลย:</b> ${w.en} = ${w.th}<br><span style="color:var(--muted)">${w.def}</span>`;
+      ab.classList.add('show'); return;
+    }
+    if(e.target.closest('[data-check]')){
+      const v=inp.value; if(!v.trim())return;
+      if(d.dataset.done)return;
+      let ok;
+      if(dir==='en2th') ok = w.keys.some(k=>norm(v).includes(norm(k)));
+      else ok = norm(v)===norm(w.en);
+      d.dataset.done=1; st[n].done++; if(ok)st[n].ok++; upd(n);
+      fb.textContent = ok?'✓ ถูกต้อง!':'✗ ยังไม่ใช่';
+      fb.className='fb '+(ok?'ok':'bad');
+      ab.innerHTML=`<b>เฉลย:</b> ${w.en} = ${w.th}<br><span style="color:var(--muted)">${w.def}</span>`;
+      ab.classList.add('show');
+      inp.disabled=true;
+    }
+  });
+  box.addEventListener('keydown',e=>{
+    if(e.key==='Enter'&&e.target.matches('input')){ e.target.closest('.drill').querySelector('[data-check]').click(); }
+  });
+}
+buildWordDrill($('#drill2'),'en2th');
+buildWordDrill($('#drill3'),'th2en');
+
+/* --- 4. Meaning Recognition --- */
+$('#drill4').innerHTML=MR.map((m,i)=>`
+  <div class="drill" data-i="${i}">
+    <div class="q">${i+1}. ${m.sent}</div>
+    <div class="opts">${m.o.map((o,j)=>`<button class="opt" data-p="${j}"><span class="k">${KEY[j]}.</span><span>${o}</span></button>`).join('')}</div>
+    <div class="fb"></div>
+    <div class="ansbox"></div>
+  </div>`).join('');
+$('#drill4').addEventListener('click',e=>{
+  const d=e.target.closest('.drill'); if(!d)return;
+  const b=e.target.closest('[data-p]'); if(!b||d.dataset.done)return;
+  const m=MR[+d.dataset.i], pick=+b.dataset.p, ok=pick===m.a;
+  d.dataset.done=1; st[4].done++; if(ok)st[4].ok++; upd(4);
+  d.querySelectorAll('.opt').forEach((o,j)=>{
+    o.classList.add('locked');
+    if(j===m.a)o.classList.add('right');
+    else if(j===pick)o.classList.add('wrongpick');
+  });
+  const fb=d.querySelector('.fb');
+  fb.textContent=ok?'✓ ถูกต้อง!':('✗ ยังไม่ใช่ — เฉลยคือข้อ '+KEY[m.a]);
+  fb.className='fb '+(ok?'ok':'bad');
+  d.querySelector('.ansbox').innerHTML='<b>ทำไมถึงเป็นข้อนี้:</b> '+m.e;
+  d.querySelector('.ansbox').classList.add('show');
+});
+
+/* --- 5. แปลประโยค --- */
+$('#drill5').innerHTML=SENT.map((s,i)=>`
+  <div class="drill">
+    <div class="q">${i+1}. ${s.en}</div>
+    <textarea placeholder="พิมพ์คำแปลไทยของทั้งประโยค..."></textarea>
+    <div class="row"><button class="btn small" data-model>📖 ดูแนวคำตอบมาเทียบ</button></div>
+    <div class="ansbox"><b>แนวคำแปล:</b><br>${s.th}<br><br>🎯 ${s.note}</div>
+  </div>`).join('');
+$('#drill5').addEventListener('click',e=>{
+  if(e.target.closest('[data-model]')) e.target.closest('.drill').querySelector('.ansbox').classList.toggle('show');
+});
+
+/* --- ปุ่มเริ่มใหม่ --- */
+[2,3,4].forEach(n=>{
+  $('#reset'+n).addEventListener('click',()=>{ st[n]={done:0,ok:0}; upd(n); location.reload(); });
+});
+[2,3,4].forEach(upd);
+openTab('t1');
+</script>
+<!--KIT-UI v2.6 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<script>
+/* =============================================================================
+   _kit/ui-controls.js  —  KIT UI  v1.0
+   แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
+     🌙/☀️  โหมดมืด / สว่าง   (จำค่าไว้ใน localStorage)
+     A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
+     ✏️  ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
+     🧮  เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
+
+   ── วิธีใช้ ────────────────────────────────────────────────────────────────
+   ห้ามแก้โค้ดนี้ในไฟล์ widget!  แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
+       pwsh -File _kit/apply-ui.ps1
+   สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
+   (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
+
+   !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
+      เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
+
+   ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
+   ใส่แอตทริบิวต์ที่ tag body:  data-tools="pen,calc"  = บังคับเปิด
+                              data-tools="none"      = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
+   ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
+              หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
+   ============================================================================= */
+(function(){
+if(window.__KITUI__) return; window.__KITUI__='2.6';
+
+/* ---------- helper ---------- */
+const D=document, R=D.documentElement;
+const get=k=>{try{return localStorage.getItem('kitui-'+k)}catch(e){return null}};
+const set=(k,v)=>{try{localStorage.setItem('kitui-'+k,v)}catch(e){}};
+const el=(t,c,h)=>{const e=D.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
+
+/* =============================================================================
+   1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
+   ============================================================================= */
+const CSS=`
+/* ===== DARK TOKENS (คู่กับ _kit/design-tokens.css) ===== */
+:root[data-theme="dark"]{
+  --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
+  --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
+  --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
+  --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
+  --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
+}
+:root[data-theme="dark"] body{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f172a}
+:root[data-theme="dark"] body[data-subject="physics"]{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f1220}
+:root[data-theme="dark"] body[data-subject="bio"]{--accent:#4ade80;--accent-head:#bbf7d0;--accent-ink:#86efac;--accent-soft:#0f2a1a;--accent-bd:#256b41;--accent-chip:#14532d;--accent-ghost:#15803d;--bg:#0d1912}
+:root[data-theme="dark"] body[data-subject="chem"]{--accent:#fb923c;--accent-head:#fed7aa;--accent-ink:#fdba74;--accent-soft:#2b1a0c;--accent-bd:#8a3d12;--accent-chip:#6d2c10;--accent-ghost:#c2410c;--bg:#1a130c}
+:root[data-theme="dark"] body[data-subject="christ"]{--accent:#a78bfa;--accent-head:#ddd6fe;--accent-ink:#c4b5fd;--accent-soft:#241a3d;--accent-bd:#5b21b6;--accent-chip:#4c1d95;--accent-ghost:#6d28d9;--bg:#16121f}
+:root[data-theme="dark"] body[data-subject="islam"]{--accent:#2dd4bf;--accent-head:#99f6e4;--accent-ink:#5eead4;--accent-soft:#0d2b28;--accent-bd:#12615a;--accent-chip:#134e4a;--accent-ghost:#0f766e;--bg:#0c1917}
+:root[data-theme="dark"] body[data-subject="history"]{--accent:#fbbf24;--accent-head:#fde68a;--accent-ink:#fcd34d;--accent-soft:#2a1f0a;--accent-bd:#8a4b0c;--accent-chip:#6d3a0a;--accent-ghost:#b45309;--bg:#191509}
+:root[data-theme="dark"] body[data-subject="math"]{--accent:#38bdf8;--accent-head:#bae6fd;--accent-ink:#7dd3fc;--accent-soft:#0c2434;--accent-bd:#0b5a80;--accent-chip:#0c4a6e;--accent-ghost:#0369a1;--bg:#0b1620}
+:root[data-theme="dark"] body[data-subject="eng"]{--accent:#f472b6;--accent-head:#fbcfe8;--accent-ink:#f9a8d4;--accent-soft:#2e1122;--accent-bd:#8d1748;--accent-chip:#731839;--accent-ghost:#be185d;--bg:#1c0f16}
+:root[data-theme="dark"] body[data-subject="thai"]{--accent:#f87171;--accent-head:#fecaca;--accent-ink:#fca5a5;--accent-soft:#2d1414;--accent-bd:#8d2020;--accent-chip:#7f1d1d;--accent-ghost:#b91c1c;--bg:#1a0f0f}
+:root[data-theme="dark"] img,:root[data-theme="dark"] .svg-box{filter:brightness(.92)}
+/* ช่องกรอก/ดรอปดาวน์ที่ widget เก่ากำหนดพื้นขาวตายตัวไว้ */
+:root[data-theme="dark"] select,:root[data-theme="dark"] textarea,
+:root[data-theme="dark"] input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=color])
+{background-color:var(--soft);color:var(--ink);border-color:var(--line)}
+
+/* ===== แถบเครื่องมือลอย ===== */
+#kitui-bar{position:fixed;right:10px;bottom:10px;z-index:99990;display:flex;gap:6px;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
+#kitui-bar button{border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;
+  font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
+  align-items:center;justify-content:center;font-weight:700}
+#kitui-bar button:hover{background:var(--soft)}
+#kitui-bar button:active{transform:scale(.93)}
+#kitui-bar button.on{background:var(--accent);color:#fff}
+#kitui-bar .kitui-sep{width:1px;height:22px;background:var(--line);flex:0 0 1px}
+#kitui-bar .kitui-fs{font-size:11px;color:var(--muted);min-width:34px;text-align:center;font-weight:700}
+#kitui-bar.hidden > *:not(#kitui-grip){display:none}
+#kitui-grip{font-size:17px}
+
+/* ===== แผงลอย (ที่ทด / เครื่องคิดเลข) ===== */
+.kitui-sheet{position:fixed;left:0;right:0;bottom:0;z-index:99991;background:var(--card);
+  border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
+  display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
+  height:52vh;max-height:92vh;min-height:180px}
+.kitui-sheet.open{display:flex}
+.kitui-sheet.full{height:100vh;border-radius:0}
+.kitui-head{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--line);
+  flex-wrap:wrap;touch-action:none;cursor:ns-resize}
+.kitui-head b{font-size:.9rem;color:var(--accent-ink);margin-right:2px;white-space:nowrap}
+.kitui-head button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;
+  padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
+.kitui-head button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.kitui-head .kitui-spacer{flex:1}
+.kitui-sw{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;min-height:0}
+.kitui-sw.on{border-color:var(--ink);transform:scale(1.12)}
+.kitui-padwrap{flex:1;position:relative;overflow:hidden;background:var(--soft)}
+.kitui-padwrap canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+:root[data-theme="dark"] .kitui-padwrap{background:#0c1220}
+
+/* ===== เครื่องคิดเลข ===== */
+#kitui-calc{height:auto;max-height:90vh}
+.kitui-disp{padding:8px 12px;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);
+  border-bottom:1px solid var(--line)}
+.kitui-disp .ex{font-size:.95rem;color:var(--muted);min-height:1.3em;word-break:break-all}
+.kitui-disp .rs{font-size:1.6rem;font-weight:700;color:var(--accent-ink);word-break:break-all}
+.kitui-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:7px}
+.kitui-keys button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:9px;
+  font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
+.kitui-keys button:active{transform:scale(.95)}
+.kitui-keys button.fn{font-size:.8rem;color:var(--accent-ink)}
+.kitui-keys button.op{background:var(--accent-soft);color:var(--accent-ink)}
+.kitui-keys button.eq{background:var(--accent);color:#fff;grid-row:span 2}
+.kitui-keys button.del{background:var(--hot-bg);color:var(--hot-ink)}
+.kitui-keys button.w3{grid-column:span 3}
+@media(max-width:420px){.kitui-keys button{font-size:.88rem;min-height:40px}.kitui-keys button.fn{font-size:.72rem}}
+@media(min-width:760px){
+  .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
+  .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
+  #kitui-pad{width:560px}
+}
+@media print{#kitui-bar,.kitui-sheet{display:none!important}}
+`;
+const st=el('style'); st.id='kitui-style'; st.textContent=CSS; D.head.appendChild(st);
+
+/* -----------------------------------------------------------------------------
+   1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
+   widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
+   พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
+   แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
+   เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
+----------------------------------------------------------------------------- */
+/* สีพาสเทลสว่าง -> สีเข้มที่ยังคง "เฉดเดิม" ไว้ (เขียว=ถูก / แดง=ผิด ต้องยังแยกออก)
+   ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
+function darken(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
+  /* ⚠️ ห้ามใช้ saturation ของ HSL ตรง ๆ ตัดสิน: ที่ความสว่างเกือบ 1 ตัวหารจะเล็กมาก
+     ทำให้สีที่แทบเป็นสีขาว (เช่น #fdf8f4) ได้ค่าอิ่มสีสูงลิ่ว แล้วกลายเป็นสีน้ำตาลจัดตอนกดให้เข้ม
+     ให้ดูจาก "ช่วงห่างของแม่สี" (chroma) แทน แล้วแปลงเป็นความอิ่มสีแบบไล่ระดับ */
+  const s = Math.min(.45, Math.max(.08, d*4));
+  const l = d<.02 ? .13 : .17;                       /* เทา/ขาวล้วนให้เข้มกว่าสีนิดหน่อย */
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+function darkFix(){
+  const out=[], seen=new Set();
+  const take=r=>{
+    if(!r.style || !r.selectorText) return;
+    if(r.selectorText.indexOf('kitui')>-1) return;               /* ของเราเองใช้ token อยู่แล้ว */
+    const bg=r.style.backgroundColor;
+    if(!bg || bg.indexOf('var(')>-1) return;
+    const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
+    if(!m) return;
+    if(m[4]!==undefined && +m[4]<0.6) return;                    /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
+    const cr=+m[1], cg=+m[2], cb=+m[3];
+    if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return;       /* ไม่สว่างพอ ไม่ต้องยุ่ง */
+    const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
+    const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
+    let css='background-color:'+repl;
+    /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
+    const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
+    out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
+  };
+  /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
+        ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
+  const visit=rules=>{
+    for(let i=0;i<rules.length;i++){
+      const r=rules[i];
+      if(r.selectorText) take(r);
+      if(r.cssRules && r.cssRules.length) visit(r.cssRules);     /* @media / @supports / nesting */
+    }
+  };
+  for(let i=0;i<D.styleSheets.length;i++){
+    let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; }   /* ข้ามชีตข้ามโดเมน */
+    if(rr) visit(rr);
+  }
+  if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
+  return out.length;
+}
+try{ window.__KITUI_DARKFIX__ = (D.body.getAttribute('data-kit-theme')==='off') ? 'locked' : darkFix(); }
+catch(e){ window.__KITUI_DARKFIX__='err:'+e.message; }
+
+/* darkFix ข้างบนซ่อมได้เฉพาะสีที่เขียนตายตัวในไฟล์ CSS
+   แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
+   ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
+   จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
+const rgbOf=c=>{const m=c&&c.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null;};
+const lumOf=v=>v?(0.2126*v[0]+0.7152*v[1]+0.0722*v[2])/255:null;
+/* ตรงข้ามกับ darken(): ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
+   (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
+function lighten(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  if(d<0.04) return 'var(--ink)';                    /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
+  let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
+  const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
+  const s=Math.min(.92,Math.max(.55,s0)), l=.72;
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+const SKIP={CANVAS:1,IMG:1,VIDEO:1,SVG:1,IFRAME:1,PICTURE:1,OBJECT:1};
+const OBS_OPT={childList:true,subtree:true,attributes:true,attributeFilter:['class','style']};
+let patched=[], obs=null;
+function elementFix(){
+  /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
+        ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
+  if(obs) obs.disconnect();
+  try{ elementFixCore(); } finally { if(obs) obs.observe(D.body,OBS_OPT); }
+}
+function elementFixCore(){
+  if(D.body.getAttribute('data-kit-theme')==='off') return;   /* หน้าที่ล็อกธีมไว้ ห้ามไปยุ่งสี */
+  /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
+     ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
+     จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
+  if(R.getAttribute('data-theme')!=='dark'){
+    patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
+    patched=[];
+    return;
+  }
+  /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
+     ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
+  /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
+  const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
+  for(let i=0;i<all.length;i++){
+    const e=all[i];
+    if(e.id&&e.id.indexOf('kitui')===0) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(SKIP[e.tagName]) continue;                      /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
+    const s=getComputedStyle(e);
+    const bg=rgbOf(s.backgroundColor);
+    if(!bg || bg[3]<0.6) continue;                     /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
+    if(lumOf(bg)<0.72) continue;                       /* เข้มพออยู่แล้ว */
+    /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
+    e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
+    const fg=rgbOf(s.color);
+    if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important');  /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
+    patched.push(e);
+  }
+  /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
+     ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
+  const bgCache=new Map();
+  const effBg=n=>{
+    for(let p=n;p;p=p.parentElement){
+      if(bgCache.has(p)) return bgCache.get(p);
+      const b=rgbOf(getComputedStyle(p).backgroundColor);
+      if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
+    }
+    return null;
+  };
+  for(let i=2;i<all.length;i++){
+    const e=all[i];
+    if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(e.style.color) continue;                         /* จัดการไปแล้วในรอบแรก */
+    if(!e.textContent || !e.textContent.trim()) continue;
+    const fg=rgbOf(getComputedStyle(e).color);
+    if(!fg || lumOf(fg)>=0.45) continue;                 /* ตัวอักษรสว่างอยู่แล้ว */
+    const bg=effBg(e);
+    if(!bg || lumOf(bg)>=0.5) continue;                  /* พื้นยังสว่าง อ่านออกอยู่ */
+    e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
+    patched.push(e);
+  }
+}
+let efT=0;
+const scheduleFix=()=>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
+try{
+  obs=new MutationObserver(scheduleFix);
+  obs.observe(D.body,OBS_OPT);
+}catch(e){}
+
+/* =============================================================================
+   2) ธีม + ขนาดตัวอักษร
+   ============================================================================= */
+const FS=[.85,1,1.15,1.3,1.5], FSNAME=['เล็กสุด','เล็ก','ปกติ','ใหญ่','ใหญ่สุด'];
+let fsIdx=parseInt(get('fs')); if(isNaN(fsIdx)||fsIdx<0||fsIdx>4) fsIdx=1;
+let theme=get('theme') || (matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+
+/* หน้าที่ออกแบบธีมมาเองครบแล้ว (เช่น "หนังสือทบทวน" พื้นเข้มทั้งเล่ม) ให้ปิดระบบธีมของ KIT UI
+   ไม่งั้นโทเคน --bg/--ink ของเราจะไปทับสีที่หน้านั้นตั้งไว้ แล้วหน้าเพี้ยน
+   ใส่ที่ tag body:  data-kit-theme="off"   (ปุ่มปรับขนาดตัวอักษรยังใช้ได้ตามปกติ) */
+const themeLock = D.body.getAttribute('data-kit-theme')==='off';
+
+function applyTheme(){
+  if(themeLock) return;
+  R.setAttribute('data-theme',theme);
+  R.style.colorScheme = theme==='dark'?'dark':'light';   /* ให้ select/input เป็นสีเข้มด้วย */
+  const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
+  set('theme',theme);
+  clearTimeout(efT);                                   /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
+  if(typeof elementFix==='function') elementFix();
+  if(typeof draw==='function' && pad) draw();          /* วาดที่ทดใหม่ เส้นดำ<->ขาวตามธีม */
+}
+function applyFS(){
+  R.style.fontSize=(16*FS[fsIdx])+'px';
+  const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
+  set('fs',fsIdx);
+}
+
+/* =============================================================================
+   3) แถบเครื่องมือ
+   ============================================================================= */
+const subj=(D.body.getAttribute('data-subject')||'').toLowerCase();
+/* หลาย widget ไม่ได้ใส่ data-subject ที่ <body> → เดาจากโฟลเดอร์ที่ไฟล์อยู่ด้วย */
+const inPath=/\/(physics|math|chemist)\//i.test(decodeURIComponent(location.pathname));
+const tAttr=D.body.getAttribute('data-tools');
+const wantTools = tAttr!=null ? tAttr.toLowerCase()
+                : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
+const hasPen  = wantTools.includes('pen');
+const hasCalc = wantTools.includes('calc');
+
+const bar=el('div'); bar.id='kitui-bar';
+bar.innerHTML =
+  `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
+  (themeLock ? '' : `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button><span class="kitui-sep"></span>`)+
+  `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
+  `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
+  `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
+  (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
+  (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
+D.body.appendChild(bar);
+
+if(!themeLock) D.getElementById('kitui-theme').onclick=()=>{theme=theme==='dark'?'light':'dark';applyTheme();};
+D.getElementById('kitui-fsup').onclick=()=>{if(fsIdx<4){fsIdx++;applyFS();}};
+D.getElementById('kitui-fsdown').onclick=()=>{if(fsIdx>0){fsIdx--;applyFS();}};
+D.getElementById('kitui-grip').onclick=()=>bar.classList.toggle('hidden');
+applyTheme(); applyFS();
+
+/* ปิดแผงด้วยปุ่ม Esc */
+D.addEventListener('keydown',e=>{ if(e.key==='Escape') D.querySelectorAll('.kitui-sheet.open').forEach(s=>s.classList.remove('open')); });
+
+/* ลากหัวแผงเพื่อปรับความสูง */
+function makeResizable(sheet){
+  const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
+  head.addEventListener('pointerdown',e=>{
+    if(e.target.closest('button'))return;
+    drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect().height;head.setPointerCapture(e.pointerId);
+  });
+  head.addEventListener('pointermove',e=>{
+    if(!drag)return;
+    const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
+    sheet.classList.remove('full'); sheet.style.height=h+'px';
+    if(sheet.id==='kitui-pad') fitPad();
+  });
+  head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
+}
+
+/* =============================================================================
+   4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ  หลายหน้า  เซฟอัตโนมัติ
+   ============================================================================= */
+let pad,padCv,padCx,pages=[[]],pg=0,undone=[],histo=[];
+let tool='pen',color='#111827',width=2.4,penSeen=0;
+const COLORS=['#111827','#2563eb','#dc2626','#16a34a','#f59e0b'];
+const PADKEY='pad-'+location.pathname.split('/').pop();
+
+function buildPad(){
+  pad=el('div','kitui-sheet'); pad.id='kitui-pad';
+  pad.innerHTML=
+   `<div class="kitui-head">
+      <b>✏️ ที่ทด</b>
+      <button data-t="pen" class="on">🖊️</button>
+      <button data-t="hl">🖍️</button>
+      <button data-t="er">🧽</button>
+      ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
+      <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
+      <span class="kitui-spacer"></span>
+      <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
+      <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
+      <button id="kitui-pgadd">+ หน้า</button>
+      <button id="kitui-clear">ล้างหน้านี้</button>
+      <button id="kitui-full">⛶</button>
+      <button id="kitui-padclose">✕</button>
+    </div>
+    <div class="kitui-padwrap"><canvas></canvas></div>`;
+  D.body.appendChild(pad);
+  padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
+  makeResizable(pad);
+
+  pad.querySelector('.kitui-head').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
+  });
+  D.getElementById('kitui-undo').onclick=()=>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop(); draw(); save(); } };
+  D.getElementById('kitui-redo').onclick=()=>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop(); draw(); save(); } };
+  D.getElementById('kitui-clear').onclick=()=>{ snap(); pages[pg]=[]; draw(); save(); };
+  D.getElementById('kitui-pgadd').onclick=()=>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw(); save(); };
+  D.getElementById('kitui-pgprev').onclick=()=>{ if(pg>0){pg--;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-pgnext').onclick=()=>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-full').onclick=()=>{ pad.classList.toggle('full'); pad.style.height=''; fitPad(); };
+  D.getElementById('kitui-padclose').onclick=()=>pad.classList.remove('open');
+
+  /* ---- วาด ---- */
+  let cur=null;
+  padCv.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='pen') penSeen=Date.now();
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;   /* กันฝ่ามือแตะตอนใช้สไตลัส */
+    const p=pt(e);
+    if(tool==='er'){ snap(); erase(p); return; }
+    snap();
+    cur={c:color,w:width,hl:tool==='hl',pts:[p]};
+    pages[pg].push(cur); draw();
+    try{ padCv.setPointerCapture(e.pointerId); }catch(x){}  /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
+  });
+  padCv.addEventListener('pointermove',e=>{
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;
+    if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
+    if(!cur||!e.buttons)return;
+    /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
+    let evs=[e];
+    if(e.getCoalescedEvents){ const c=e.getCoalescedEvents(); if(c&&c.length) evs=c; }
+    evs.forEach(ev=>cur.pts.push(pt(ev)));
+    draw();
+  });
+  const end=()=>{ if(cur){cur=null;save();} };
+  padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
+  padCv.addEventListener('pointerleave',end);
+
+  addEventListener('resize',()=>{ if(pad.classList.contains('open')) fitPad(); });
+  load(); fitPad();
+}
+function pt(e){
+  const r=padCv.getBoundingClientRect();
+  return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
+          p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5};   /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
+}
+function snap(){ histo.push(pages[pg].slice()); if(histo.length>60)histo.shift(); undone=[]; }
+function erase(p){
+  const r=padCv.getBoundingClientRect(), rad=18/r.width;
+  const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
+  if(keep.length!==pages[pg].length){ pages[pg]=keep; draw(); save(); }
+}
+function fitPad(){
+  const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
+  const dpr=Math.min(devicePixelRatio||1,2.5);
+  padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
+  draw();
+}
+function draw(){
+  const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
+  padCx.clearRect(0,0,W,H);
+  /* เส้นตารางจาง ๆ ให้เขียนตรง */
+  const dark=R.getAttribute('data-theme')==='dark';
+  padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
+  for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath();padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke();}
+  padCx.lineCap='round'; padCx.lineJoin='round';
+  pages[pg].forEach(s=>{
+    padCx.globalAlpha=s.hl?0.32:1;
+    padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
+    for(let i=1;i<s.pts.length;i++){
+      const a=s.pts[i-1],b=s.pts[i];
+      padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
+      padCx.beginPath(); padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke();
+    }
+    if(s.pts.length===1){ /* จุดเดียว */
+      padCx.fillStyle=padCx.strokeStyle; padCx.beginPath();
+      padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill();
+    }
+  });
+  padCx.globalAlpha=1;
+  const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
+}
+function save(){ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
+function load(){
+  try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
+}
+
+if(hasPen){
+  buildPad();
+  D.getElementById('kitui-penbtn').onclick=()=>{
+    const o=pad.classList.toggle('open');
+    D.getElementById('kitui-penbtn').classList.toggle('on',o);
+    if(o) fitPad();
+  };
+}
+
+/* =============================================================================
+   5) เครื่องคิดเลขวิทยาศาสตร์  (tokenizer → shunting-yard → RPN  ไม่ใช้ eval)
+   ============================================================================= */
+const FN={sin:1,cos:1,tan:1,asin:1,acos:1,atan:1,ln:1,log:1,sqrt:1,abs:1,exp:1};
+const PREC={'+':1,'-':1,'*':2,'/':2,'^':4,'u-':3};
+function tokenize(s){
+  s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
+  const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!()])/g; let m;
+  while((m=re.exec(s))) out.push(m[1]);
+  return out;
+}
+function toRPN(tk){
+  const out=[],op=[]; let prev=null;
+  for(let t of tk){
+    if(t==='**')t='^';
+    if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
+    else if(t==='PI'){ out.push(Math.PI); }
+    else if(t==='e'||t==='E'){ out.push(Math.E); }
+    else if(t==='ANS'){ out.push(ANS); }
+    else if(FN[t]){ op.push(t); }
+    else if(t==='('){ op.push(t); }
+    else if(t===')'){
+      while(op.length&&op[op.length-1]!=='(') out.push(op.pop());
+      if(!op.length) throw 0; op.pop();
+      if(op.length&&FN[op[op.length-1]]) out.push(op.pop());
+    }
+    else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
+    else if('+-*/^'.includes(t)){
+      let o=t;
+      const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
+      if(t==='-'&&unary) o='u-';
+      else if(t==='+'&&unary){ prev=t; continue; }
+      while(op.length){
+        const top=op[op.length-1];
+        if(top==='('||FN[top])break;
+        const rightAssoc=(o==='^'||o==='u-');
+        if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop()); else break;
+      }
+      op.push(o);
+    }
+    else throw 0;
+    prev=t;
+  }
+  while(op.length){ const o=op.pop(); if(o==='(')throw 0; out.push(o); }
+  return out;
+}
+function evalRPN(rpn,deg){
+  const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
+  const pop=()=>{ if(!st.length)throw 0; return st.pop(); };
+  for(const t of rpn){
+    if(typeof t==='number'){ st.push(t); continue; }
+    if(t==='fact'){ const n=pop(); if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
+    if(t==='pct'){ st.push(pop()/100); continue; }
+    if(t==='u-'){ st.push(-pop()); continue; }
+    if(FN[t]){
+      const a=pop();
+      st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
+             : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
+             : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
+             : t==='abs'?Math.abs(a) : Math.exp(a) );
+      continue;
+    }
+    const b=pop(),a=pop();
+    st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
+  }
+  if(st.length!==1) throw 0;
+  return st[0];
+}
+function calc(src,deg){ return evalRPN(toRPN(tokenize(src)),deg); }
+
+let ANS=0, expr='', calcSheet, isDeg=true;
+const KEYS=[
+ ['DEG','deg','fn'],['(','(',''],[')',')',''],['⌫','del','del'],['AC','ac','del'],
+ ['sin','sin(','fn'],['cos','cos(','fn'],['tan','tan(','fn'],['π','π','fn'],['÷','÷','op'],
+ ['sin⁻¹','asin(','fn'],['cos⁻¹','acos(','fn'],['tan⁻¹','atan(','fn'],['e','e','fn'],['×','×','op'],
+ ['ln','ln(','fn'],['log','log(','fn'],['√','√(','fn'],['xʸ','^','fn'],['−','−','op'],
+ ['7','7',''],['8','8',''],['9','9',''],['x!','!','fn'],['+','+','op'],
+ ['4','4',''],['5','5',''],['6','6',''],['%','%','fn'],['ANS','ANS','fn'],
+ ['1','1',''],['2','2',''],['3','3',''],['.','.',''],['=','eq','eq'],
+ ['0','0','w3'],['x²','^2','fn']
+];
+function buildCalc(){
+  calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
+  calcSheet.innerHTML=
+   `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
+      <button id="kitui-calcclose">✕</button></div>
+    <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
+    <div class="kitui-keys" id="kitui-keys">
+      ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
+    </div>`;
+  D.body.appendChild(calcSheet);
+  D.getElementById('kitui-calcclose').onclick=()=>calcSheet.classList.remove('open');
+  const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
+  const show=()=>{ ex.textContent=expr||' ';
+    try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
+    catch(e){ rs.style.opacity=.35; }
+  };
+  D.getElementById('kitui-keys').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
+    if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
+    if(k==='del'){ expr=expr.slice(0,-1); show(); return; }
+    if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show(); return; }
+    if(k==='eq'){
+      rs.style.opacity=1;
+      try{
+        const v=calc(expr,isDeg);
+        if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
+        if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
+        ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
+      }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
+      return;
+    }
+    expr+=k; show();
+  });
+}
+function fmt(v){
+  if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
+  if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
+  return String(Math.round(v*1e10)/1e10);
+}
+if(hasCalc){
+  buildCalc();
+  D.getElementById('kitui-calcbtn').onclick=()=>{
+    const o=calcSheet.classList.toggle('open');
+    D.getElementById('kitui-calcbtn').classList.toggle('on',o);
+  };
+}
+})();
+
+</script>
+<!--/KIT-UI-->
+</body>
+</html>
