@@ -2,441 +2,469 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>ชีทสรุปชีววิทยา หน่วย 1–2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ศัพท์ 10 คำ + ฝึกแปล — เตรียมสอบแปล อังกฤษ ม.6</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-@page { size: A4; margin: 10mm 9mm; }
-*{ box-sizing:border-box; margin:0; padding:0; }
 :root{
-  --u1:#0d9488; --u1bg:#ecfdf7; --u1line:#99f6e4;
-  --u2:#6d28d9; --u2bg:#f5f3ff; --u2line:#ddd6fe;
-  --ink:#1e293b; --mut:#64748b; --line:#e2e8f0;
-  --hl:#fef08a; --warn:#dc2626;
+  --font:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
+  --bg:#eef2f7;--ink:#1e293b;--muted:#64748b;--line:#e2e8f0;--card:#fff;--soft:#f8fafc;
+  --shadow:0 1px 4px rgba(15,23,42,.08);--ok:#059669;--bad:#dc2626;
+  --warn-bg:#fff7ed;--warn-bd:#f97316;--tip-bg:#ecfdf5;--tip-bd:#10b981;
+  --info-bg:#eff6ff;--info-bd:#3b82f6;--steps-bg:#fffbeb;--steps-bd:#fcd34d;--steps-dash:#fde68a;
+  --hot-bg:#fee2e2;--hot-ink:#b91c1c;--badge-bg:#fef9c3;--badge-ink:#854d0e;
+  --radius:14px;--radius-sm:10px;--radius-pill:999px;
+  --accent:#db2777;--accent-head:#831843;--accent-ink:#be185d;--accent-soft:#fdf2f8;
+  --accent-bd:#fbcfe8;--accent-chip:#fce7f3;--accent-ghost:#f9a8d4;
 }
-body{
-  font-family:'Leelawadee UI','Sarabun','Tahoma',sans-serif;
-  color:var(--ink); font-size:9.4px; line-height:1.45; background:#fff;
-}
-.wrap{ max-width:196mm; margin:0 auto; }
+body[data-subject="eng"]{--bg:#f7eef3}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.65}
+.wrap{max-width:880px;margin:0 auto;padding:10px 12px 70px}
+header{padding:16px 4px 4px}
+header h1{font-size:1.3rem;color:var(--accent-head)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{background:var(--accent-chip);color:var(--accent-ink);border-radius:var(--radius-pill);padding:3px 12px;font-size:.82rem;font-weight:600}
+.chip.hot{background:var(--hot-bg);color:var(--hot-ink)}
+.tabs{display:flex;gap:8px;overflow-x:auto;position:sticky;top:0;background:var(--bg);padding:10px 2px;z-index:10}
+.tab-btn{white-space:nowrap;padding:8px 14px;border-radius:var(--radius-pill);border:1.5px solid var(--accent-bd);
+  background:#fff;color:var(--accent-ink);cursor:pointer;font-size:.92rem;font-family:inherit;font-weight:600;flex-shrink:0}
+.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tab{display:none}.tab.show{display:block}
+.card{background:var(--card);border-radius:var(--radius);padding:16px;margin:12px 0;box-shadow:var(--shadow)}
+.card h2{font-size:1.1rem;color:var(--accent-head);margin-bottom:2px}
+.sub{color:var(--muted);font-size:.86rem;margin-bottom:10px}
+.tip{background:var(--tip-bg);border-left:4px solid var(--tip-bd);border-radius:8px;padding:10px 12px;margin:10px 0;font-size:.92rem}
+.warn{background:var(--warn-bg);border-left:4px solid var(--warn-bd);border-radius:8px;padding:10px 12px;margin:10px 0;font-size:.92rem}
+.info{background:var(--info-bg);border-left:4px solid var(--info-bd);border-radius:8px;padding:10px 12px;margin:10px 0;font-size:.92rem}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:var(--radius-sm);padding:9px 15px;font-size:.92rem;cursor:pointer;font-family:inherit;font-weight:600}
+.btn.ghost{background:#fff;color:var(--accent);border:1.5px solid var(--accent-ghost)}
+.btn.small{padding:6px 12px;font-size:.85rem}
+input[type=text],textarea{width:100%;padding:10px 12px;border:2px solid #cbd5e1;border-radius:var(--radius-sm);
+  font-family:inherit;font-size:1rem;background:#fff;color:var(--ink)}
+input:focus,textarea:focus{outline:none;border-color:var(--accent)}
+textarea{min-height:80px;resize:vertical;line-height:1.6}
 
-/* header */
-.cover{ text-align:center; padding:10px 0 8px; border-bottom:3px solid var(--u1); margin-bottom:10px; }
-.cover h1{ font-size:22px; color:#0f172a; letter-spacing:.3px; }
-.cover .sub{ color:var(--mut); font-size:11px; margin-top:3px; }
-.cover .tag{ display:inline-block; font-size:9px; background:var(--u1bg); color:var(--u1);
-  border:1px solid var(--u1line); border-radius:20px; padding:2px 12px; margin-top:6px; }
+/* ---------- การ์ดศัพท์ ---------- */
+.w{border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:var(--radius-sm);
+   padding:13px 15px;margin:10px 0;background:var(--soft)}
+.w .top{display:flex;flex-wrap:wrap;align-items:baseline;gap:9px}
+.w .en{font-size:1.22rem;font-weight:700;color:var(--accent-head)}
+.w .pos{font-size:.78rem;background:var(--accent-chip);color:var(--accent-ink);border-radius:6px;padding:1px 8px;font-weight:700}
+.w .ipa{font-size:.85rem;color:var(--muted);font-family:ui-monospace,Consolas,monospace}
+.w .th{font-size:1.05rem;font-weight:600;margin:6px 0 2px}
+.w .def{font-size:.9rem;color:var(--muted);margin-bottom:8px}
+.w .ex{background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 11px;margin:6px 0;font-size:.93rem}
+.w .ex .e{font-style:italic}
+.w .ex .t{color:var(--accent-ink);font-size:.9rem;margin-top:3px}
+.w .syn{font-size:.86rem;color:var(--muted);margin-top:6px}
+.w .trap{background:var(--hot-bg);color:var(--hot-ink);border-radius:8px;padding:7px 11px;margin-top:8px;font-size:.88rem;font-weight:600}
 
-/* unit banner */
-.ubanner{ display:flex; align-items:center; gap:8px; margin:14px 0 8px; page-break-after:avoid; }
-.ubanner .num{ font-size:15px; font-weight:700; color:#fff; width:30px; height:30px;
-  border-radius:8px; display:flex; align-items:center; justify-content:center; }
-.ubanner h2{ font-size:15px; }
-.ubanner .en{ color:var(--mut); font-weight:400; font-size:10px; }
-.u1 .num{ background:var(--u1);} .u2 .num{ background:var(--u2);}
-.u1 h2{ color:var(--u1);} .u2 h2{ color:var(--u2);}
-
-/* card grid */
-.grid{ display:grid; grid-template-columns:1fr 1fr; gap:7px; }
-.grid.three{ grid-template-columns:1fr 1fr 1fr; }
-.card{ border:1px solid var(--line); border-radius:8px; padding:7px 9px; background:#fff;
-  page-break-inside:avoid; }
-.card.span2{ grid-column:span 2; }
-.card h3{ font-size:10.5px; margin-bottom:4px; display:flex; align-items:center; gap:5px; }
-.u1 .card{ border-left:3px solid var(--u1); }
-.u2 .card{ border-left:3px solid var(--u2); }
-.u1 .card h3{ color:var(--u1);} .u2 .card h3{ color:var(--u2);}
-.card .ico{ font-size:12px; }
-
-ul{ list-style:none; }
-li{ padding-left:11px; position:relative; margin:1.5px 0; }
-li:before{ content:"›"; position:absolute; left:0; color:var(--mut); font-weight:700; }
-.tight li{ margin:1px 0; }
-
-/* keyword chips */
-.kw{ margin-top:5px; padding-top:4px; border-top:1px dashed var(--line); }
-.kw .lbl{ font-size:8px; color:var(--mut); font-weight:700; letter-spacing:.5px; }
-.chip{ display:inline-block; font-size:8.4px; border-radius:5px; padding:1px 6px; margin:2px 2px 0 0;
-  background:#f1f5f9; color:#334155; border:1px solid #e2e8f0; }
-.u1 .chip{ background:var(--u1bg); border-color:var(--u1line); color:#0f766e; }
-.u2 .chip{ background:var(--u2bg); border-color:var(--u2line); color:#5b21b6; }
-b{ color:#0f172a; } .en{ color:var(--mut); font-style:normal; }
-mark{ background:var(--hl); padding:0 2px; border-radius:2px; }
-.warn{ color:var(--warn); font-weight:700; }
-
-/* mini table */
-table{ width:100%; border-collapse:collapse; font-size:8.6px; margin-top:3px; }
-th,td{ border:1px solid var(--line); padding:2px 4px; text-align:left; vertical-align:top; }
-th{ background:#f8fafc; font-size:8.4px; }
-.u1 th{ background:var(--u1bg);} .u2 th{ background:var(--u2bg);}
-
-.pill{ display:inline-block; font-size:8px; font-weight:700; padding:0 5px; border-radius:4px; }
-.g{ background:#dcfce7; color:#15803d;} .r{ background:#fee2e2; color:#b91c1c;} .b{ background:#dbeafe; color:#1d4ed8;}
-
-.foot{ text-align:center; color:var(--mut); font-size:8px; margin-top:12px; padding-top:6px; border-top:1px solid var(--line); }
-.flow{ font-size:8.8px; }
-.flow b{ color:var(--u2); }
-.eq{ font-family:'Consolas','Courier New',monospace; background:#f8fafc; border:1px solid var(--line);
-  border-radius:4px; padding:1px 4px; font-size:8.6px; }
+/* ---------- ฝึกทำ ---------- */
+.drill{border:1px solid var(--line);border-radius:var(--radius-sm);padding:13px 15px;margin:10px 0;background:#fff}
+.drill .q{font-size:1.05rem;font-weight:600;margin-bottom:9px}
+.drill .q .u{text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:3px;font-weight:700}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}
+.row input[type=text]{flex:1;min-width:150px}
+.fb{margin-top:8px;font-weight:700;font-size:.94rem;min-height:1.2em}
+.fb.ok{color:var(--ok)}.fb.bad{color:var(--bad)}
+.ansbox{background:var(--info-bg);border-left:4px solid var(--info-bd);border-radius:8px;padding:9px 12px;margin-top:8px;font-size:.93rem;display:none}
+.ansbox.show{display:block}
+.opts{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.opt{display:flex;gap:9px;align-items:flex-start;border:1.5px solid var(--line);background:var(--soft);
+  border-radius:var(--radius-sm);padding:9px 12px;cursor:pointer;font-size:.94rem;text-align:left;font-family:inherit;color:var(--ink);width:100%}
+.opt .k{font-weight:700;color:var(--accent-ink);flex-shrink:0}
+.opt.right{border-color:var(--ok);background:#ecfdf5}
+.opt.wrongpick{border-color:var(--bad);background:#fef2f2}
+.opt.locked{cursor:default}
+.score{position:sticky;top:56px;z-index:9;background:var(--accent-head);color:#fff;border-radius:var(--radius-sm);
+  padding:8px 14px;margin:6px 0 10px;font-weight:700;font-size:.9rem;display:flex;justify-content:space-between;gap:10px}
+table.ref{border-collapse:collapse;width:100%;font-size:.9rem;margin:8px 0}
+table.ref th,table.ref td{border:1px solid var(--line);padding:7px 10px;text-align:left}
+table.ref th{background:var(--accent-soft);color:var(--accent-ink)}
+@media(max-width:480px){.card{padding:12px}header h1{font-size:1.12rem}.wrap{padding:8px 9px 70px}}
 </style>
 </head>
-<body>
+<body data-subject="eng">
 <div class="wrap">
 
-  <div class="cover">
-    <h1>🧬 ชีทสรุปชีววิทยา — หน่วย 1 &amp; 2</h1>
-    <div class="sub">ธรรมชาติของสิ่งมีชีวิต · การศึกษาชีววิทยา · เคมีที่เป็นพื้นฐานของสิ่งมีชีวิต</div>
-    <div class="tag">สรุปจากสไลด์ ครูสุทัศน์ บุญเลิศ · เน้น Keyword ไทย–อังกฤษ · อ่านก่อนสอบ</div>
-  </div>
+  <header>
+    <h1>🔤 ศัพท์ 10 คำ + ฝึกแปล</h1>
+    <div class="chips">
+      <span class="chip hot">🎯 อาจารย์จะสอบแปล</span>
+      <span class="chip">Meaning Recognition</span>
+      <span class="chip">แปล EN⇄TH</span>
+    </div>
+  </header>
 
-  <!-- ============ UNIT 1 ============ -->
-  <div class="ubanner u1">
-    <div class="num">1</div>
-    <div><h2>ธรรมชาติของสิ่งมีชีวิต &amp; การศึกษาชีววิทยา <span class="en">Nature of Life &amp; Study of Biology</span></h2></div>
-  </div>
+  <nav class="tabs" id="tabs">
+    <button class="tab-btn" data-tab="t1">📖 คลังศัพท์</button>
+    <button class="tab-btn" data-tab="t2">✍️ แปล EN→TH</button>
+    <button class="tab-btn" data-tab="t3">✍️ แปล TH→EN</button>
+    <button class="tab-btn" data-tab="t4">🎯 Meaning Recognition</button>
+    <button class="tab-btn" data-tab="t5">📝 แปลประโยค</button>
+  </nav>
 
-  <div class="u1">
-  <div class="grid">
-
-    <div class="card span2">
-      <h3><span class="ico">⭐</span>ลักษณะเฉพาะของสิ่งมีชีวิต 6 ข้อ (หัวใจของหน่วยนี้)</h3>
-      <div class="grid three" style="gap:6px">
-        <ul class="tight">
-          <li><b>1. สืบพันธุ์ + เจริญเติบโต</b> <span class="en">(Generative)</span> — ดำรงเผ่าพันธุ์/สปีชีส์</li>
-          <li><b>2. เมแทบอลิซึม</b> <span class="en">(Metabolism)</span></li>
-          <li><b>3. ตอบสนองต่อสิ่งเร้า</b> <span class="en">(Responsive)</span></li>
-        </ul>
-        <ul class="tight">
-          <li><b>4. รักษาดุลยภาพ</b> <span class="en">(Homeostasis)</span></li>
-          <li><b>5. มีลักษณะจำเพาะ</b> — รูปร่าง สี ขนาด จำนวนขา</li>
-          <li><b>6. มีการจัดระบบ</b> <span class="en">(Biological organization)</span></li>
-        </ul>
-        <ul class="tight">
-          <li>เจริญเติบโต 4 ขั้น: แบ่งเซลล์ → ขยายขนาด → <span class="en">differentiation</span> → <span class="en">morphogenesis</span></li>
-          <li>เปลี่ยนรูปร่าง <span class="en">metamorphosis</span> 4 แบบ: Ametamorphosis / Gradual / Incomplete / Complete</li>
-        </ul>
-      </div>
+  <!-- ============ 1. คลังศัพท์ ============ -->
+  <section id="t1" class="tab">
+    <div class="card">
+      <h2>📖 ศัพท์ 10 คำที่อาจารย์ให้</h2>
+      <p class="sub">อ่านให้ครบทั้งการ์ด — ความหมายไทย · นิยามอังกฤษ · ประโยคตัวอย่างพร้อมคำแปล · คำเหมือน · กับดัก</p>
+      <div class="warn">⚠️ <b>กับดักที่ตั้งใจวางไว้ในลิสต์นี้</b><br>
+        ข้อ 3 <b>Irrigate</b> กับ ข้อ 6 <b>Irritate</b> สะกดต่างกันแค่ตัวเดียว แต่ความหมาย<b>คนละเรื่องเลย</b><br>
+        ข้อ 8 <b>Ensure</b> กับ ข้อ 9 <b>Ascertain</b> แปลไทยคล้ายกันมาก (“ทำให้แน่ใจ”) แต่ใช้ต่างกัน<br>
+        ข้อ 4 <b>Furious</b> กับ ข้อ 7 <b>Placid</b> เป็น<b>คู่ตรงข้าม</b>กัน</div>
+      <div id="wordlist"></div>
     </div>
 
     <div class="card">
-      <h3><span class="ico">🔁</span>สืบพันธุ์แบบไม่อาศัยเพศ <span class="en">(Asexual)</span></h3>
-      <div style="font-size:8.6px;color:var(--mut)">ไม่รวมเซลล์สืบพันธุ์ · แบ่งเซลล์แบบ <b>Mitosis</b> · ลูกเหมือนพ่อแม่</div>
-      <table>
-        <tr><th>วิธี</th><th>ตัวอย่าง</th></tr>
-        <tr><td>แบ่งตัว 2 ส่วน <span class="en">Binary fission</span></td><td>อะมีบา ยูกลีนา พารามีเซียม แบคทีเรีย</td></tr>
-        <tr><td>แตกหน่อ <span class="en">Budding</span></td><td>ไฮดรา ปะการัง ฟองน้ำ ยีสต์</td></tr>
-        <tr><td>งอกใหม่ <span class="en">Regeneration</span></td><td>ดาวทะเล พลานาเรีย</td></tr>
-        <tr><td>ขาดเป็นท่อน <span class="en">Fragmentation</span></td><td>สาหร่ายทะเล ดอกไม้ทะเล</td></tr>
-        <tr><td>สร้างสปอร์ <span class="en">Sporulation</span></td><td>เห็ด เฟิร์น</td></tr>
-        <tr><td>ไม่ผสมพันธุ์ <span class="en">Parthenogenesis</span></td><td>ตั๊กแตนกิ่งไม้ เพลี้ย ไรน้ำ / ผึ้ง มด ต่อ แตน</td></tr>
-        <tr><td>เจมมูล <span class="en">Gemmule</span></td><td>ฟองน้ำน้ำจืด</td></tr>
-      </table>
+      <h2>⚡ ตารางท่องเร็ว</h2>
+      <p class="sub">ก่อนเข้าห้องสอบ กวาดตารางนี้รอบเดียวพอ</p>
+      <div style="overflow-x:auto"><table class="ref" id="quicktable"></table></div>
     </div>
+  </section>
 
+  <!-- ============ 2. EN -> TH ============ -->
+  <section id="t2" class="tab">
     <div class="card">
-      <h3><span class="ico">♀♂</span>สืบพันธุ์แบบอาศัยเพศ <span class="en">(Sexual)</span></h3>
-      <ul class="tight">
-        <li>รวมเซลล์สืบพันธุ์ → เกิด <mark>ความผันแปรทางพันธุกรรม</mark> ในรุ่นลูก</li>
-        <li>ทำได้<b>ทั้ง 2 แบบ</b>: พารามีเซียม <span class="en">(Binary fission + Conjugation)</span> · ไฮดรา <span class="en">(Budding + ผสมข้ามตัว)</span></li>
-        <li><b>Hermaphrodite</b> (มี 2 เพศในตัวเดียว) = <b>ไฮดรา · พลานาเรีย · ไส้เดือนดิน</b></li>
-      </ul>
-      <h3 style="margin-top:6px"><span class="ico">🔥</span>เมแทบอลิซึม <span class="en">(Metabolism)</span></h3>
-      <ul class="tight">
-        <li>ปฏิกิริยาชีวเคมีในเซลล์ มี <b>เอนไซม์</b> เป็นตัวเร่ง</li>
-        <li><b>Catabolism</b> = <span class="warn">สลาย</span>สาร → ได้พลังงาน+ความร้อน</li>
-        <li><b>Anabolism</b> = <span style="color:#15803d;font-weight:700">สร้าง</span>สาร (ใช้พลังงานจาก catabolism)</li>
-      </ul>
+      <h2>✍️ เห็นคำอังกฤษ → พิมพ์คำแปลไทย</h2>
+      <p class="sub">พิมพ์ความหมายไทยลงไป (ตอบสั้น ๆ ก็ได้ ขอให้ตรงความหมาย) แล้วกดตรวจ</p>
+      <div class="score"><span id="s2">ทำแล้ว 0 ข้อ</span><span id="p2">ถูก 0</span></div>
+      <div id="drill2"></div>
+      <div class="row"><button class="btn ghost small" id="reset2">♻️ เริ่มใหม่</button></div>
     </div>
+  </section>
 
+  <!-- ============ 3. TH -> EN ============ -->
+  <section id="t3" class="tab">
     <div class="card">
-      <h3><span class="ico">⚡</span>ตอบสนองต่อสิ่งเร้า &amp; ดุลยภาพ</h3>
-      <ul class="tight">
-        <li><b>สิ่งเร้าภายนอก:</b> แสง (แมลงสาบหนีแสง) · อุณหภูมิ (สุนัขหอบ) · ความชื้น (ไส้เดือน) · การสัมผัส (กิ้งกือขดตัว)</li>
-        <li><b>สิ่งเร้าภายใน:</b> ฮอร์โมน ความดันเลือด O₂ ในเลือด ความหิว</li>
-        <li><b>Homeostasis:</b> พารามีเซียมใช้ <b>Contractile vacuole</b> กำจัดน้ำ/ของเสีย · พืชคายน้ำทาง <b>ปากใบ (Stomata)</b></li>
-      </ul>
-      <div class="kw"><span class="lbl">KEYWORDS</span><br>
-        <span class="chip">Mitosis</span><span class="chip">Species</span><span class="chip">Hermaphrodite</span><span class="chip">Metabolism</span><span class="chip">Catabolism</span><span class="chip">Anabolism</span><span class="chip">Homeostasis</span><span class="chip">Contractile vacuole</span><span class="chip">Stomata</span>
-      </div>
+      <h2>✍️ เห็นคำแปลไทย → พิมพ์คำอังกฤษ</h2>
+      <p class="sub">อันนี้ยากกว่า เพราะต้อง<b>สะกดให้ถูก</b>ด้วย — ตรวจแบบไม่สนตัวพิมพ์เล็ก/ใหญ่</p>
+      <div class="score"><span id="s3">ทำแล้ว 0 ข้อ</span><span id="p3">ถูก 0</span></div>
+      <div id="drill3"></div>
+      <div class="row"><button class="btn ghost small" id="reset3">♻️ เริ่มใหม่</button></div>
     </div>
+  </section>
 
+  <!-- ============ 4. Meaning Recognition ============ -->
+  <section id="t4" class="tab">
     <div class="card">
-      <h3><span class="ico">📖</span>ความหมาย &amp; ขอบข่ายชีววิทยา</h3>
-      <ul class="tight">
-        <li><b>Biology</b> = <b>BIOS</b> (ชีวิต) + <b>LOGOS</b> (ความคิด/เหตุผล) = ความรู้ + กระบวนการค้นหาความรู้</li>
-        <li>ศึกษา<b>กลุ่มสิ่งมีชีวิต:</b> สัตววิทยา <span class="en">Zoology</span> · พฤกษศาสตร์ <span class="en">Botany</span> · จุลชีววิทยา <span class="en">Microbiology</span></li>
-        <li>ศึกษา<b>โครงสร้าง/หน้าที่:</b> กายวิภาค <span class="en">Anatomy</span> · สัณฐาน <span class="en">Morphology</span> · สรีรวิทยา <span class="en">Physiology</span> · นิเวศ <span class="en">Ecology</span></li>
-        <li>ศึกษา<b>เรื่องราว:</b> อนุกรมวิธาน <span class="en">Taxonomy</span> · วิวัฒนาการ <span class="en">Evolution</span> · บรรพชีวิน <span class="en">Paleontology</span></li>
-      </ul>
+      <h2>🎯 Meaning Recognition — แนวข้อสอบจริง</h2>
+      <p class="sub"><i>Choose the best alternative which has the same meaning as the underlined word in the given sentence.</i></p>
+      <div class="info">💡 <b>วิธีคิดข้อแบบนี้</b> — คำที่ขีดเส้นใต้จะโผล่ใน<b>ทุกตัวเลือก</b> แต่ใช้ใน<b>ความหมายต่างกัน</b><br>
+        อย่าดูแค่ว่า “มีคำนี้ไหม” ต้องดูว่า<b>ความหมายในบริบทนั้นตรงกับโจทย์หรือเปล่า</b></div>
+      <div class="score"><span id="s4">ทำแล้ว 0 ข้อ</span><span id="p4">ถูก 0</span></div>
+      <div id="drill4"></div>
+      <div class="row"><button class="btn ghost small" id="reset4">♻️ เริ่มใหม่</button></div>
     </div>
+  </section>
 
+  <!-- ============ 5. แปลประโยค ============ -->
+  <section id="t5" class="tab">
     <div class="card">
-      <h3><span class="ico">⚖️</span>ชีวจริยธรรม <span class="en">(Bioethics)</span></h3>
-      <ul class="tight">
-        <li><b>Bioethics</b> = <b>Bios</b> (ชีวิต) + <b>Ethics</b> (ดี/เลว) — คุณค่าของการมีชีวิต</li>
-        <li>เกี่ยวกับ<b>การใช้สัตว์ทดลอง</b>เพื่อการวิจัย</li>
-        <li><mark>หลัก 3R</mark> = <b>Reduction</b> (ลด) · <b>Refinement</b> (ละ) · <b>Replacement</b> (เลิก)</li>
-        <li>ใช้สัตว์<b>น้อยที่สุด</b> · ตระหนักว่าสัตว์เป็นสิ่งมีชีวิตเช่นเดียวกับมนุษย์</li>
-      </ul>
-      <div class="kw"><span class="lbl">KEYWORDS</span><br>
-        <span class="chip">Bioethics</span><span class="chip">3R</span><span class="chip">Reduction</span><span class="chip">Refinement</span><span class="chip">Replacement</span>
-      </div>
+      <h2>📝 แปลประโยคเต็ม (ข้อเขียน)</h2>
+      <p class="sub">พิมพ์คำแปลไทยลงกล่อง แล้วกดดูแนวคำตอบมาเทียบ — <b>ไม่ต้องเหมือนเป๊ะ</b> ขอให้ได้ใจความและใช้คำศัพท์ถูก</p>
+      <div class="tip">✅ <b>เกณฑ์ตรวจตัวเอง:</b> ① แปลคำศัพท์เป้าหมายถูกไหม ② ใจความรวมตรงไหม ③ ประโยคไทยอ่านลื่นไหม (ไม่แปลตรงตัวจนแข็ง)</div>
+      <div id="drill5"></div>
     </div>
-
-    <div class="card span2">
-      <h3><span class="ico">🔬</span>วิธีการทางวิทยาศาสตร์ &amp; STEM</h3>
-      <div class="grid" style="gap:8px">
-        <ul class="tight">
-          <li><b>5 ขั้นตอน:</b> ① สังเกต <span class="en">Observation</span> → ② ตั้งสมมติฐาน <span class="en">Hypothesis</span> → ③ ตรวจสอบสมมติฐาน → ④ เก็บ+วิเคราะห์ข้อมูล → ⑤ สรุปผล <span class="en">Conclusion</span></li>
-          <li>สมมติฐานมักอยู่ในรูป <mark>"ถ้า…… ดังนั้น……"</mark></li>
-          <li>องค์ความรู้: ข้อมูล → <b>ทฤษฎี</b> (ตรวจสอบหลายครั้งว่าจริง) → <b>กฎ</b></li>
-        </ul>
-        <ul class="tight">
-          <li><b>ตัวแปร 3 ชนิด:</b> <b>ตัวแปรต้น</b> (จัดให้ต่างกัน) · <b>ตัวแปรตาม</b> (ผลที่วัด) · <b>ตัวแปรควบคุม</b> (จัดให้เหมือนกัน)</li>
-          <li><b>ชุดทดลอง</b> = เพิ่ม/ลดตัวแปรต้น · <b>ชุดควบคุม</b> = ไว้เปรียบเทียบ</li>
-          <li><b>STEM</b> = Science + Technology + Engineering + Math → กระบวนการออกแบบเชิงวิศวกรรม (แก้ปัญหา→นวัตกรรม)</li>
-        </ul>
-      </div>
-      <div class="kw"><span class="lbl">KEYWORDS</span><br>
-        <span class="chip">Observation</span><span class="chip">Hypothesis</span><span class="chip">Independent variable</span><span class="chip">Dependent variable</span><span class="chip">Controlled variable</span><span class="chip">Theory</span><span class="chip">Law</span><span class="chip">STEM</span>
-      </div>
-    </div>
-
-  </div>
-  </div>
-
-  <!-- ============ UNIT 2 ============ -->
-  <div class="ubanner u2" style="page-break-before:always">
-    <div class="num">2</div>
-    <div><h2>เคมีที่เป็นพื้นฐานของสิ่งมีชีวิต <span class="en">Chemical of Life</span></h2></div>
-  </div>
-
-  <div class="u2">
-  <div class="grid">
-
-    <div class="card">
-      <h3><span class="ico">⚛️</span>อะตอม &amp; ธาตุ</h3>
-      <ul class="tight">
-        <li><b>อนุภาคมูลฐาน 3 ชนิด:</b> โปรตอน <span class="en">proton</span> <span class="pill r">+</span> · นิวตรอน <span class="en">neutron</span> <span class="pill b">0</span> · อิเล็กตรอน <span class="en">electron</span> <span class="pill b">−</span></li>
-        <li><b>เลขมวล (A)</b> = โปรตอน + นิวตรอน</li>
-        <li><b>เลขอะตอม (Z)</b> = จำนวนโปรตอน</li>
-        <li><mark>นิวตรอน = A − Z</mark></li>
-        <li><b>เวเลนซ์อิเล็กตรอน</b> <span class="en">(Valence e⁻)</span> = อิเล็กตรอนวงนอกสุด</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <h3><span class="ico">🔗</span>สารประกอบ &amp; พันธะเคมี</h3>
-      <ul class="tight">
-        <li><b>สารประกอบ:</b> ธาตุ ≥2 ชนิดสร้างพันธะ อัตราส่วนคงที่ (เช่น H₂O, C₆H₁₂O₆, NaCl)</li>
-        <li><b>พันธะโคเวเลนต์</b> <span class="en">Covalent</span> — <mark>ใช้</mark>เวเลนซ์อิเล็กตรอน<mark>ร่วมกัน</mark></li>
-        <li><b>พันธะไอออนิก</b> <span class="en">Ionic</span> — <mark>ให้/รับ</mark> อิเล็กตรอน (แรงดึงดูดไอออน + / −)</li>
-        <li><b>พันธะไฮโดรเจน</b> <span class="en">H-bond</span> — แรง<b>ระหว่างโมเลกุล</b> (H กับธาตุ EN สูง: N, O)</li>
-      </ul>
-      <div class="kw"><span class="lbl">KEYWORDS</span><br>
-        <span class="chip">proton/neutron/electron</span><span class="chip">Mass number (A)</span><span class="chip">Atomic number (Z)</span><span class="chip">Valence electron</span><span class="chip">Covalent</span><span class="chip">Ionic</span><span class="chip">H-bond</span>
-      </div>
-    </div>
-
-    <div class="card span2">
-      <h3><span class="ico">🆚</span>สารอนินทรีย์ vs สารอินทรีย์ <span class="en">(Inorganic vs Organic)</span></h3>
-      <table>
-        <tr><th style="width:22%">สมบัติ</th><th>สารอนินทรีย์ <span class="en">Inorganic</span></th><th>สารอินทรีย์ <span class="en">Organic</span></th></tr>
-        <tr><td>ธาตุองค์ประกอบ</td><td>ทุกธาตุ <b>ยกเว้น C</b> (เช่น น้ำ เกลือแร่)</td><td>มี <b>C และ H</b> เป็นหลัก (+O, N, P, S)</td></tr>
-        <tr><td>พันธะ</td><td>โคเวเลนต์ + ไอออนิก (ส่วนมากไอออนิก)</td><td><b>โคเวเลนต์</b></td></tr>
-        <tr><td>ละลายน้ำ</td><td>ส่วนมากละลายได้ดี</td><td>ส่วนมากไม่ละลาย (ยกเว้นโมเลกุลมีขั้วเล็ก)</td></tr>
-        <tr><td>นำไฟฟ้า (ในน้ำ)</td><td>นำได้ดี (โดยเฉพาะไอออนิก)</td><td>ไม่นำ / นำได้น้อย</td></tr>
-        <tr><td>จุดเดือด–หลอมเหลว</td><td>ค่อนข้างสูง</td><td>ค่อนข้างต่ำ</td></tr>
-        <tr><td>การเผาไหม้</td><td>ติดไฟยาก</td><td><b>ติดไฟง่าย</b> อาจมีเขม่า</td></tr>
-        <tr><td>ตัวอย่าง</td><td>น้ำ, เกลือแร่</td><td>คาร์โบไฮเดรต โปรตีน ไขมัน กรดนิวคลีอิก วิตามิน (<b>ชีวโมเลกุล</b>)</td></tr>
-      </table>
-    </div>
-
-    <div class="card span2">
-      <h3><span class="ico">💧</span>น้ำ <span class="en">(Water)</span> — สารอนินทรีย์ที่สำคัญที่สุด</h3>
-      <div class="grid three" style="gap:8px">
-        <ul class="tight">
-          <li>มีมากถึง <mark>65%</mark> ของร่างกาย</li>
-          <li>H 2 อะตอม + O 1 อะตอม พันธะ<b>โคเวเลนต์</b></li>
-          <li>e⁻ อยู่ใกล้ O มากกว่า → <b>โมเลกุลมีขั้ว</b> <span class="en">(polar)</span></li>
-          <li>โมเลกุลน้ำยึดกันด้วย <b>พันธะไฮโดรเจน</b></li>
-        </ul>
-        <ul class="tight">
-          <li><b>สมบัติเด่น 5 อย่าง:</b></li>
-          <li>① ตัวทำละลายที่ดี (ขนสารเข้า-ออกเซลล์)</li>
-          <li>② <b>Hydrophilic</b> (มีขั้ว ชอบน้ำ: NaCl) vs <b>Hydrophobic</b> (ไม่มีขั้ว: น้ำมัน ขี้ผึ้ง)</li>
-          <li>③ กรด-เบส: H⁺ สูง=pH ต่ำ=กรด / H⁺ ต่ำ=pH สูง=เบส</li>
-        </ul>
-        <ul class="tight">
-          <li>④ <b>ความจุความร้อนจำเพาะสูง</b> (1 กรัม·1°C = 1 แคลอรี) → คุมอุณหภูมิร่างกาย</li>
-          <li>⑤ <b>Cohesion</b> = แรงน้ำ↔น้ำ · <b>Adhesion</b> = แรงน้ำ↔ผิว (ท่อลำเลียงพืช)</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3><span class="ico">🧂</span>แร่ธาตุ <span class="en">(Minerals)</span></h3>
-      <table>
-        <tr><th>ธาตุ</th><th>หน้าที่เด่น</th></tr>
-        <tr><td><b>แคลเซียม Ca</b></td><td>กระดูก/ฟัน · หด-คลายกล้ามเนื้อ · เลือดแข็งตัว</td></tr>
-        <tr><td><b>โซเดียม Na</b> <span class="warn">*</span></td><td>สมดุลน้ำ/กรด-เบส · ส่งกระแสประสาท (ร่วม K, Mg)</td></tr>
-        <tr><td><b>โพแทสเซียม K</b></td><td>กระตุ้นเอนไซม์เผาผลาญคาร์โบไฮเดรต</td></tr>
-        <tr><td><b>แมกนีเซียม Mg</b></td><td>เผาผลาญสารอาหาร · กระตุ้นเอนไซม์</td></tr>
-        <tr><td><b>ฟอสฟอรัส P</b></td><td>กระดูก/ฟัน (คู่ Ca) · สังเคราะห์ DNA</td></tr>
-        <tr><td><b>เหล็ก Fe</b></td><td>องค์ประกอบ <b>ฮีโมโกลบิน</b> · ไมโอโกลบิน</td></tr>
-        <tr><td><b>ไอโอดีน I</b></td><td>ส่วนของฮอร์โมน <b>ไทรอกซิน</b> (ต่อมไทรอยด์)</td></tr>
-      </table>
-      <div style="font-size:7.8px;color:var(--warn);margin-top:2px">* สไลด์พิมพ์ "แคลเซียม" ซ้ำ แต่หน้าที่คือ <b>โซเดียม (Na)</b></div>
-    </div>
-
-    <div class="card">
-      <h3><span class="ico">⬡</span>สารอินทรีย์ &amp; คาร์บอน</h3>
-      <ul class="tight">
-        <li>อะตอม <b>C</b> มีเวเลนซ์ = <b>4</b> → สร้างพันธะโคเวเลนต์ได้สูงสุด <b>4 พันธะ</b></li>
-        <li>มีแต่ C กับ H = <b>สารประกอบไฮโดรคาร์บอน</b> <span class="en">(Hydrocarbon)</span></li>
-        <li><b>หมู่ฟังก์ชัน</b> <span class="en">(Functional group)</span> = กลุ่มอะตอมที่เกาะ → บ่งบอกสมบัติทางเคมี</li>
-        <li><b>ชีวโมเลกุล 4 ชนิด:</b> คาร์โบไฮเดรต · โปรตีน · ไขมัน · กรดนิวคลีอิก</li>
-      </ul>
-      <div class="kw"><span class="lbl">KEYWORDS</span><br>
-        <span class="chip">Polar molecule</span><span class="chip">Hydrophilic</span><span class="chip">Hydrophobic</span><span class="chip">Cohesion</span><span class="chip">Adhesion</span><span class="chip">Specific heat</span><span class="chip">Hemoglobin</span><span class="chip">Thyroxine</span><span class="chip">Hydrocarbon</span><span class="chip">Functional group</span>
-      </div>
-    </div>
-
-    <div class="card span2">
-      <h3><span class="ico">🍚</span>คาร์โบไฮเดรต <span class="en">(Carbohydrate)</span> — สารอาหารให้พลังงานหลัก</h3>
-      <div style="font-size:8.8px;margin-bottom:3px">ธาตุ <b>C : H : O = 1 : 2 : 1</b> · สูตร <span class="eq">(CH₂O)n</span> · แบ่งตามจำนวนหน่วยน้ำตาล 3 ประเภท</div>
-      <div class="grid three" style="gap:7px">
-        <div>
-          <h3 style="font-size:9.5px">① น้ำตาลโมเลกุลเดี่ยว <span class="en">Monosaccharide</span></h3>
-          <ul class="tight">
-            <li>เล็กสุด รสหวาน ละลายน้ำดี · C 3–7 อะตอม</li>
-            <li><b>C5 Pentose:</b> Ribose (RNA, ATP), Deoxyribose (DNA)</li>
-            <li><b>C6 Hexose:</b> Glucose (พลังงานเซลล์), Fructose (หวานสุด, อสุจิ), Galactose (ในน้ำนม)</li>
-            <li>หมู่: <b>อัลดีไฮด์</b> (Glucose) / <b>คีโตน</b> (Fructose)</li>
-            <li><b>α vs β glucose</b>: ต่างที่ทิศ OH ที่ C1</li>
-          </ul>
-        </div>
-        <div>
-          <h3 style="font-size:9.5px">② น้ำตาลโมเลกุลคู่ <span class="en">Di/Oligosaccharide</span></h3>
-          <ul class="tight">
-            <li>2–10 โมเลกุล เชื่อมด้วย <b>พันธะไกลโคซิดิก</b> <span class="en">(Glycosidic)</span></li>
-            <li>Disaccharide สูตร <span class="eq">C₁₂H₂₂O₁₁</span> · เกิดจากปฏิกิริยา <b>Dehydration</b></li>
-            <li><b>Maltose</b> = Glc + Glc → ข้าวมอลต์ <span class="pill g">reducing</span></li>
-            <li><b>Sucrose</b> = Glc + Fru → อ้อย <span class="pill r">non-reducing</span></li>
-            <li><b>Lactose</b> = Glc + Gal → น้ำนม <span class="pill g">reducing</span></li>
-          </ul>
-        </div>
-        <div>
-          <h3 style="font-size:9.5px">③ น้ำตาลโมเลกุลใหญ่ <span class="en">Polysaccharide</span></h3>
-          <ul class="tight">
-            <li>11–1,000 โมเลกุล · ของแข็ง ไม่ละลายน้ำ ไม่หวาน</li>
-            <li><b>สะสม:</b> แป้ง (Starch, พืช) · <b>Glycogen</b> (สัตว์-ตับ/กล้ามเนื้อ) → หน่วยย่อย <b>α-Glucose</b></li>
-            <li><b>โครงสร้าง:</b> Cellulose (ผนังเซลล์พืช, มากสุดในโลก, <b>β-Glucose</b>) · Chitin (เปลือกกุ้ง-ปู, NAG)</li>
-          </ul>
-        </div>
-      </div>
-      <table style="margin-top:5px">
-        <tr><th style="width:20%">การทดสอบ</th><th>ผล</th></tr>
-        <tr><td><b>ไอโอดีน (แป้ง)</b></td><td>Amylose = น้ำเงินเข้ม · Amylopectin = ม่วงแดง · <b>Glycogen = แดง</b></td></tr>
-        <tr><td><b>Benedict's test</b></td><td>ทดสอบน้ำตาล <b>reducing</b> ทุกชนิด (mono + di) — <span class="warn">ยกเว้น Sucrose ให้ผลลบ</span></td></tr>
-      </table>
-      <div class="kw"><span class="lbl">KEYWORDS</span><br>
-        <span class="chip">Monosaccharide</span><span class="chip">Ribose/Deoxyribose</span><span class="chip">Glucose/Fructose/Galactose</span><span class="chip">α / β form</span><span class="chip">Glycosidic bond</span><span class="chip">Maltose/Sucrose/Lactose</span><span class="chip">Reducing sugar</span><span class="chip">Starch/Glycogen/Cellulose/Chitin</span><span class="chip">Benedict's test</span><span class="chip">Iodine test</span>
-      </div>
-    </div>
-
-  </div>
-  </div>
-
-  <!-- ============ PAGE 3 : BIOMOLECULES CONT. ============ -->
-  <div class="ubanner u2" style="page-break-before:always">
-    <div class="num">2</div>
-    <div><h2>สารชีวโมเลกุล (ต่อ) — โปรตีน · ไขมัน · กรดนิวคลีอิก <span class="en">Protein · Lipid · Nucleic acid</span></h2></div>
-  </div>
-  <div style="font-size:8.4px;color:var(--warn);margin:-4px 0 8px;padding:3px 8px;background:#fff7ed;border:1px solid #fed7aa;border-radius:6px">
-    ⚠️ <b>หน้านี้เป็นเนื้อหาเสริมจากหลักสูตร ม.6 มาตรฐาน (สสวท.)</b> เพื่อให้ครบชุดชีวโมเลกุล — สไลด์ชุดที่รุ่นน้องส่งมาลงรายละเอียดเฉพาะคาร์โบไฮเดรต (แต่พันธะทั้ง 4 อยู่ในสไลด์ทบทวนก่อนเรียนแล้ว)
-  </div>
-
-  <div class="u2">
-  <div class="grid">
-
-    <div class="card">
-      <h3><span class="ico">🥚</span>โปรตีน <span class="en">(Protein)</span></h3>
-      <ul class="tight">
-        <li><b>มอนอเมอร์ = กรดอะมิโน</b> <span class="en">(Amino acid)</span> มี <b>20 ชนิด</b></li>
-        <li>โครงสร้างกรดอะมิโน: หมู่อะมิโน <b>–NH₂</b> + หมู่คาร์บอกซิล <b>–COOH</b> + H + <b>หมู่ R</b> (ต่างกันในแต่ละชนิด) รอบ C กลาง</li>
-        <li><b>จำเป็น</b> <span class="en">(essential)</span> ~8–9 ชนิด ร่างกายสร้างเองไม่ได้ vs <b>ไม่จำเป็น</b></li>
-        <li>เชื่อมด้วย <mark>พันธะเพปไทด์</mark> <span class="en">(Peptide bond)</span> ระหว่าง –COOH ↔ –NH₂ (คาย H₂O) → พอลิเพปไทด์</li>
-        <li><b>โครงสร้าง 4 ระดับ:</b> ①ปฐมภูมิ (ลำดับกรดอะมิโน) ②ทุติยภูมิ (α-helix, β-sheet ด้วย H-bond) ③ตติยภูมิ (พับ 3 มิติ) ④จตุรภูมิ (หลายสายรวมกัน เช่น <b>ฮีโมโกลบิน 4 สาย</b>)</li>
-        <li><b>เสียสภาพ</b> <span class="en">(Denaturation)</span>: ความร้อน/กรด-เบส ทำลายโครงสร้าง (ยกเว้นปฐมภูมิ)</li>
-        <li><b>หน้าที่:</b> เอนไซม์ · โครงสร้าง (เคราติน คอลลาเจน) · ฮอร์โมน · ภูมิคุ้มกัน (แอนติบอดี) · ขนส่ง</li>
-        <li><b>ทดสอบ:</b> <b>Biuret test</b> → สีม่วง</li>
-      </ul>
-      <div class="kw"><span class="lbl">KEYWORDS</span><br>
-        <span class="chip">Amino acid</span><span class="chip">Peptide bond</span><span class="chip">Polypeptide</span><span class="chip">1°–4° structure</span><span class="chip">α-helix / β-sheet</span><span class="chip">Denaturation</span><span class="chip">Biuret test</span>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3><span class="ico">🧈</span>ไขมัน <span class="en">(Lipid)</span></h3>
-      <ul class="tight">
-        <li>ธาตุ <b>C, H, O</b> (O น้อยกว่าคาร์โบไฮเดรต) · <b>ไม่ละลายน้ำ</b> (hydrophobic) ละลายในตัวทำละลายอินทรีย์</li>
-        <li><b>① ไขมัน/น้ำมัน (Triglyceride)</b> = <b>กลีเซอรอล 1</b> + <b>กรดไขมัน 3</b> <span class="en">(fatty acid)</span> เชื่อมด้วย <mark>พันธะเอสเทอร์</mark> <span class="en">(Ester bond)</span></li>
-        <li>&nbsp;&nbsp;• <b>อิ่มตัว</b> <span class="en">(saturated)</span> = พันธะเดี่ยว, ของแข็ง, ไขมันสัตว์</li>
-        <li>&nbsp;&nbsp;• <b>ไม่อิ่มตัว</b> <span class="en">(unsaturated)</span> = มีพันธะคู่, ของเหลว, น้ำมันพืช</li>
-        <li><b>② ฟอสโฟลิพิด</b> <span class="en">(Phospholipid)</span> — หัวฟอสเฟตมีขั้ว(ชอบน้ำ)+หางไม่มีขั้ว(หนีน้ำ) → <b>เยื่อหุ้มเซลล์</b> (bilayer)</li>
-        <li><b>③ สเตอรอยด์</b> <span class="en">(Steroid)</span> — วง 4 วง เช่น คอเลสเตอรอล, ฮอร์โมนเพศ</li>
-        <li><b>หน้าที่:</b> สะสมพลังงาน (<b>9 kcal/g</b> สูงสุด) · ฉนวนกันความร้อน · เยื่อหุ้มเซลล์ · ฮอร์โมน</li>
-        <li><b>ทดสอบ:</b> Sudan III (สีแดง) / กระดาษโปร่งแสง</li>
-      </ul>
-      <div class="kw"><span class="lbl">KEYWORDS</span><br>
-        <span class="chip">Triglyceride</span><span class="chip">Glycerol + Fatty acid</span><span class="chip">Ester bond</span><span class="chip">Saturated / Unsaturated</span><span class="chip">Phospholipid</span><span class="chip">Steroid</span><span class="chip">9 kcal/g</span>
-      </div>
-    </div>
-
-    <div class="card span2">
-      <h3><span class="ico">🧬</span>กรดนิวคลีอิก <span class="en">(Nucleic acid)</span></h3>
-      <div class="grid" style="gap:8px">
-        <ul class="tight">
-          <li><b>มอนอเมอร์ = นิวคลีโอไทด์</b> <span class="en">(Nucleotide)</span> = <b>น้ำตาลเพนโทส (5C)</b> + <b>หมู่ฟอสเฟต</b> + <b>เบสไนโตรเจน</b></li>
-          <li>เชื่อมกันด้วย <mark>พันธะฟอสโฟไดเอสเทอร์</mark> <span class="en">(Phosphodiester bond)</span></li>
-          <li><b>เบส 2 กลุ่ม:</b> พิวรีน <span class="en">(purine)</span> = <b>A, G</b> (วงคู่) · ไพริมิดีน <span class="en">(pyrimidine)</span> = <b>C, T, U</b> (วงเดี่ยว)</li>
-          <li><b>การจับคู่เบส (DNA):</b> <b>A = T</b> (2 H-bond) · <b>C ≡ G</b> (3 H-bond)</li>
-          <li><b>ATP</b> = นิวคลีโอไทด์พลังงานสูง (น้ำตาล = ribose — โยงกับหน่วย 2!)</li>
-        </ul>
-        <table style="margin-top:0">
-          <tr><th style="width:30%"> </th><th><b>DNA</b></th><th><b>RNA</b></th></tr>
-          <tr><td>น้ำตาล</td><td>Deoxyribose</td><td>Ribose</td></tr>
-          <tr><td>สาย</td><td>คู่ (double helix)</td><td>เดี่ยว</td></tr>
-          <tr><td>เบส</td><td>A T C G</td><td>A <b>U</b> C G (ไม่มี T)</td></tr>
-          <tr><td>หน้าที่</td><td>เก็บข้อมูลพันธุกรรม</td><td>สร้างโปรตีน (mRNA, tRNA, rRNA)</td></tr>
-        </table>
-      </div>
-      <div class="kw"><span class="lbl">KEYWORDS</span><br>
-        <span class="chip">Nucleotide</span><span class="chip">Pentose + Phosphate + Base</span><span class="chip">Phosphodiester bond</span><span class="chip">Purine (A,G) / Pyrimidine (C,T,U)</span><span class="chip">A=T · C≡G</span><span class="chip">Double helix</span><span class="chip">DNA vs RNA</span><span class="chip">ATP</span>
-      </div>
-    </div>
-
-    <div class="card span2">
-      <h3><span class="ico">🗂️</span>สรุปรวมสารชีวโมเลกุล 4 ชนิด (ตารางทองสำหรับสอบ)</h3>
-      <table>
-        <tr><th>ชีวโมเลกุล</th><th>มอนอเมอร์</th><th>พันธะ</th><th>ธาตุหลัก</th><th>การทดสอบ</th></tr>
-        <tr><td><b>คาร์โบไฮเดรต</b></td><td>มอโนแซ็กคาไรด์</td><td>ไกลโคซิดิก <span class="en">Glycosidic</span></td><td>C H O</td><td>Benedict / ไอโอดีน</td></tr>
-        <tr><td><b>โปรตีน</b></td><td>กรดอะมิโน</td><td>เพปไทด์ <span class="en">Peptide</span></td><td>C H O <b>N</b> (S)</td><td>Biuret (ม่วง)</td></tr>
-        <tr><td><b>ไขมัน</b> <span class="warn">*</span></td><td>กลีเซอรอล + กรดไขมัน</td><td>เอสเทอร์ <span class="en">Ester</span></td><td>C H O</td><td>Sudan III</td></tr>
-        <tr><td><b>กรดนิวคลีอิก</b></td><td>นิวคลีโอไทด์</td><td>ฟอสโฟไดเอสเทอร์ <span class="en">Phosphodiester</span></td><td>C H O N <b>P</b></td><td>—</td></tr>
-      </table>
-      <div style="font-size:8px;color:var(--warn);margin-top:3px">
-        <span class="warn">*กับดักข้อสอบ:</span> "สารชีวโมเลกุล<b>ทุกชนิด</b>เป็นพอลิเมอร์" → <b>ผิด!</b> <b>ไขมันไม่ใช่พอลิเมอร์แท้</b> (ไม่ได้เกิดจากมอนอเมอร์ซ้ำ ๆ ต่อกัน) · ส่วนอีก 3 ชนิดเป็นพอลิเมอร์ · <b>พันธะทั้ง 4 เป็นพันธะโคเวเลนต์เหมือนกันหมด</b>
-      </div>
-    </div>
-
-  </div>
-  </div>
-
-  <div class="foot">
-    🧬 ชีทสรุปชีววิทยา หน่วย 1–2 (3 หน้า) · สรุปจากสไลด์ครูสุทัศน์ บุญเลิศ (ร.ร.พะเยาพิทยาคม) + หน้า 3 เสริมจากหลักสูตร ม.6 มาตรฐาน (สสวท.) · ทำให้รุ่นน้องอ่านก่อนสอบ
-  </div>
+  </section>
 
 </div>
+
+<script>
+/* ============================================================
+   คลังศัพท์ 10 คำ (จากลิสต์ที่อาจารย์ให้)
+   ============================================================ */
+const WORDS=[
+ {n:1,en:'Invoke',pos:'v.',ipa:'/ɪnˈvoʊk/',
+  th:'อ้างถึง · เรียกใช้ (กฎ/อำนาจ) · วิงวอนขอ',
+  def:'to call on a law, right, or authority as a reason; to call on a god or spirit for help',
+  ex:[['The lawyer <b>invoked</b> Article 5 to defend his client.','ทนายความ<b>อ้างถึง</b>มาตรา 5 เพื่อแก้ต่างให้ลูกความ'],
+      ['They <b>invoked</b> the gods for rain.','พวกเขา<b>วิงวอนขอ</b>ให้เทพเจ้าประทานฝน']],
+  syn:'cite, appeal to, call upon',
+  trap:'ไม่ได้แปลว่า “เชิญ” (invite) — <b>invoke = อ้าง/เรียกใช้</b> สิ่งที่มีอำนาจ เช่น กฎหมาย สิทธิ เทพเจ้า',
+  keys:['อ้าง','เรียกใช้','วิงวอน','ขอร้อง','อัญเชิญ','เรียกหา']},
+
+ {n:2,en:'Stimulate',pos:'v.',ipa:'/ˈstɪmjuleɪt/',
+  th:'กระตุ้น · ทำให้ตื่นตัว · ส่งเสริมให้เกิด',
+  def:'to encourage something to happen, develop, or improve; to make someone excited or interested',
+  ex:[['Coffee <b>stimulates</b> the nervous system.','กาแฟ<b>กระตุ้น</b>ระบบประสาท'],
+      ['The policy is designed to <b>stimulate</b> the economy.','นโยบายนี้ออกแบบมาเพื่อ<b>กระตุ้น</b>เศรษฐกิจ']],
+  syn:'encourage, arouse, spur, boost',
+  trap:'ใช้ได้ทั้งกับ<b>ร่างกาย</b> (กระตุ้นประสาท) และ<b>นามธรรม</b> (กระตุ้นเศรษฐกิจ/ความสนใจ)',
+  keys:['กระตุ้น','ตื่นตัว','เร้า','ส่งเสริม','ปลุกเร้า']},
+
+ {n:3,en:'Irrigate',pos:'v.',ipa:'/ˈɪrɪɡeɪt/',
+  th:'ทดน้ำ · ให้น้ำแก่พื้นที่เพาะปลูก (ชลประทาน)',
+  def:'to supply water to land or crops through pipes or channels',
+  ex:[['Farmers <b>irrigate</b> the rice fields during the dry season.','ชาวนา<b>ทดน้ำ</b>เข้านาข้าวในช่วงหน้าแล้ง'],
+      ['The nurse <b>irrigated</b> the wound with saline.','พยาบาล<b>ล้าง</b>แผลด้วยน้ำเกลือ']],
+  syn:'water, supply water to',
+  trap:'🚨 <b>อย่าสับสนกับ Irritate!</b> Irri<b>g</b>ate = ให้น้ำ (นึกถึง “ชลประ<b>ทาน</b>”) · Irri<b>t</b>ate = ทำให้รำคาญ',
+  keys:['ทดน้ำ','ให้น้ำ','ชลประทาน','รดน้ำ','ล้างแผล','ส่งน้ำ']},
+
+ {n:4,en:'Furious',pos:'adj.',ipa:'/ˈfjʊəriəs/',
+  th:'โกรธจัด · เดือดดาล · (หรือ) รุนแรงมาก',
+  def:'extremely angry; also: very powerful, intense or fast',
+  ex:[['She was <b>furious</b> when she saw the broken window.','เธอ<b>โกรธจัด</b>เมื่อเห็นหน้าต่างแตก'],
+      ['The ship sank in a <b>furious</b> storm.','เรือจมลงในพายุที่<b>รุนแรง</b>']],
+  syn:'enraged, livid, violent, fierce',
+  trap:'ไม่ได้แปลว่าโกรธอย่างเดียว — ใช้กับ<b>พายุ · ความเร็ว · การต่อสู้</b> ในความหมาย “รุนแรง/ดุเดือด” ได้ด้วย',
+  keys:['โกรธ','เดือดดาล','โมโห','ฉุนเฉียว','รุนแรง','ดุเดือด']},
+
+ {n:5,en:'Nuance',pos:'n.',ipa:'/ˈnuːɑːns/',
+  th:'ความแตกต่างเล็กน้อย · แง่มุมละเอียดอ่อน',
+  def:'a very slight difference in meaning, colour, feeling, or tone',
+  ex:[['He failed to catch the <b>nuances</b> of her tone.','เขาจับ<b>น้ำเสียงที่แตกต่างเพียงเล็กน้อย</b>ของเธอไม่ได้'],
+      ['There are subtle <b>nuances</b> between the two words.','คำสองคำนี้มี<b>ความต่างเล็ก ๆ</b>ที่ละเอียดอ่อน']],
+  syn:'subtlety, shade, fine distinction',
+  trap:'เป็น<b>คำนาม</b> (n.) ไม่ใช่กริยา — และเน้นความต่างที่ “<b>เล็กน้อยจนต้องสังเกต</b>” ไม่ใช่ความต่างใหญ่ ๆ',
+  keys:['ความแตกต่างเล็ก','ความต่างเล็ก','แง่มุม','ละเอียดอ่อน','รายละเอียดปลีกย่อย','นัย']},
+
+ {n:6,en:'Irritate',pos:'v.',ipa:'/ˈɪrɪteɪt/',
+  th:'ทำให้รำคาญ/หงุดหงิด · (ร่างกาย) ทำให้ระคายเคือง',
+  def:'to annoy someone; to make part of the body sore or painful',
+  ex:[['His constant tapping <b>irritated</b> everyone in the room.','การเคาะไม่หยุดของเขา<b>ทำให้</b>ทุกคนในห้อง<b>รำคาญ</b>'],
+      ['The smoke <b>irritated</b> my eyes.','ควัน<b>ทำให้</b>ตาของฉัน<b>ระคายเคือง</b>']],
+  syn:'annoy, bother, aggravate, inflame',
+  trap:'🚨 <b>คู่แฝดของ Irrigate</b> — จำง่าย ๆ: irri<b>T</b>ate มีตัว T เหมือน “<b>T</b>ired of it” = เบื่อ/รำคาญ',
+  keys:['รำคาญ','หงุดหงิด','ระคายเคือง','กวนใจ','โมโห','ฉุน']},
+
+ {n:7,en:'Placid',pos:'adj.',ipa:'/ˈplæsɪd/',
+  th:'สงบ · เงียบสงบ · ใจเย็นไม่โมโหง่าย',
+  def:'calm and peaceful; not easily upset or excited',
+  ex:[['The lake was <b>placid</b> in the morning light.','ทะเลสาบ<b>สงบนิ่ง</b>ท่ามกลางแสงยามเช้า'],
+      ['She has a <b>placid</b> temperament.','เธอมีอุปนิสัย<b>ใจเย็น</b>']],
+  syn:'calm, tranquil, serene, even-tempered',
+  trap:'เป็น<b>คู่ตรงข้ามกับ Furious</b> — ถ้าข้อสอบถามคำตรงข้าม จำคู่นี้ไว้เลย',
+  keys:['สงบ','เงียบ','ใจเย็น','นิ่ง','ราบเรียบ','เยือกเย็น']},
+
+ {n:8,en:'Ensure',pos:'v.',ipa:'/ɪnˈʃʊər/',
+  th:'ทำให้แน่ใจว่า (จะเกิดขึ้น) · รับประกันว่า',
+  def:'to make certain that something will happen',
+  ex:[['Please <b>ensure</b> that all the doors are locked.','กรุณา<b>ทำให้แน่ใจว่า</b>ประตูทุกบานถูกล็อกแล้ว'],
+      ['Good preparation <b>ensures</b> success.','การเตรียมตัวที่ดี<b>รับประกัน</b>ความสำเร็จ']],
+  syn:'make sure, guarantee, secure',
+  trap:'⚠️ <b>Ensure ≠ Ascertain</b> — Ensure = ทำให้มัน<b>เกิดขึ้นแน่ ๆ (มองไปข้างหน้า)</b> · Ascertain = <b>สืบหาความจริง</b>ที่มีอยู่แล้ว<br>และอย่าสับกับ <i>insure</i> (ทำประกันภัย) หรือ <i>assure</i> (บอกให้ใครสบายใจ)',
+  keys:['ทำให้แน่ใจ','แน่ใจ','รับประกัน','ทำให้มั่นใจ','ประกันว่า','ให้มั่นใจ']},
+
+ {n:9,en:'Ascertain',pos:'v.',ipa:'/ˌæsərˈteɪn/',
+  th:'ตรวจสอบให้แน่ชัด · สืบหาความจริง',
+  def:'to find out the true or correct information about something',
+  ex:[['Police are trying to <b>ascertain</b> the cause of the fire.','ตำรวจกำลังพยายาม<b>สืบหาให้แน่ชัด</b>ถึงสาเหตุของเพลิงไหม้'],
+      ['We must <b>ascertain</b> the facts before deciding.','เราต้อง<b>ตรวจสอบข้อเท็จจริงให้แน่ชัด</b>ก่อนตัดสินใจ']],
+  syn:'find out, determine, establish, verify',
+  trap:'⚠️ ใช้กับ “<b>ข้อเท็จจริงที่ยังไม่รู้</b>” — ต่างจาก ensure ที่ใช้กับ “<b>สิ่งที่อยากให้เกิดขึ้น</b>”',
+  keys:['ตรวจสอบ','สืบหา','หาความจริง','ทำให้แน่ชัด','ยืนยัน','พิสูจน์']},
+
+ {n:10,en:'Anticipate',pos:'v.',ipa:'/ænˈtɪsɪpeɪt/',
+  th:'คาดการณ์ล่วงหน้า · คาดหวัง · เตรียมรับมือไว้ก่อน',
+  def:'to expect something to happen and be ready for it; to do something before it is expected',
+  ex:[['We <b>anticipate</b> heavy traffic during the holiday.','เรา<b>คาดว่า</b>จะมีรถติดหนักในช่วงวันหยุด'],
+      ['A good goalkeeper <b>anticipates</b> the striker’s move.','ผู้รักษาประตูที่ดีจะ<b>คาดการณ์ล่วงหน้า</b>ถึงจังหวะของกองหน้า']],
+  syn:'expect, foresee, predict, prepare for',
+  trap:'ไม่ได้แปลว่า “คาดหวัง” เฉย ๆ แบบ expect — <b>anticipate มีความหมายว่า “เตรียมตัวรับมือไว้ด้วย”</b>',
+  keys:['คาดการณ์','คาดหวัง','คาดว่า','ล่วงหน้า','คาดคะเน','เตรียมรับมือ','ทำนาย']}
+];
+
+/* ============================================================
+   Meaning Recognition — รูปแบบเดียวกับข้อสอบอาจารย์
+   ============================================================ */
+const MR=[
+ {sent:'The smoke from the burning field began to <span class="u">irritate</span> my eyes and throat.',
+  word:'irritate',
+  o:['His constant humming <u>irritates</u> everyone in the office.',
+     'The rough wool may <u>irritate</u> sensitive skin.',
+     'She was <u>irritated</u> by his rude answer.',
+     'It <u>irritates</u> me when people arrive late.',
+     'Don’t <u>irritate</u> the dog while it is eating.'],a:1,
+  e:'โจทย์ใช้ในความหมาย <b>“ทำให้ระคายเคืองทางร่างกาย”</b> (ควันเข้าตา)<br>ข้อ 2 ผ้าขนสัตว์ทำให้ผิว<b>ระคายเคือง</b> = ความหมายเดียวกัน<br>ข้อ 1, 3, 4, 5 ล้วนแปลว่า <b>ทำให้รำคาญ/หงุดหงิด</b> ซึ่งเป็นคนละความหมาย'},
+
+ {sent:'The government hopes the new tax cut will <span class="u">stimulate</span> the economy.',
+  word:'stimulate',
+  o:['Bright light <u>stimulates</u> the retina.',
+     'Caffeine <u>stimulates</u> the central nervous system.',
+     'Low interest rates should <u>stimulate</u> investment in the country.',
+     'The teacher tried to <u>stimulate</u> the shy student to speak.',
+     'Massage <u>stimulates</u> blood flow to the muscles.'],a:2,
+  e:'โจทย์ใช้ในความหมาย <b>“กระตุ้นให้ระบบเศรษฐกิจเติบโต”</b> (นามธรรม ระดับประเทศ)<br>ข้อ 3 กระตุ้น<b>การลงทุน</b> = ระดับเดียวกัน<br>ข้อ 1, 2, 5 เป็นการกระตุ้น<b>ทางร่างกาย</b> ส่วนข้อ 4 กระตุ้น<b>บุคคล</b>'},
+
+ {sent:'The defence lawyer <span class="u">invoked</span> the constitution to protect his client’s rights.',
+  word:'invoke',
+  o:['The priest <u>invoked</u> the blessing of God upon the couple.',
+     'The manager <u>invoked</u> company policy to justify the dismissal.',
+     'The song <u>invoked</u> memories of his childhood.',
+     'They <u>invoked</u> the spirits of their ancestors.',
+     'Her speech <u>invoked</u> strong emotions in the audience.'],a:1,
+  e:'โจทย์ใช้ในความหมาย <b>“อ้างถึงกฎหมาย/ข้อบังคับเพื่อสนับสนุนตัวเอง”</b><br>ข้อ 2 อ้าง<b>นโยบายบริษัท</b> = ความหมายเดียวกัน<br>ข้อ 1, 4 = <b>วิงวอนสิ่งศักดิ์สิทธิ์</b> · ข้อ 3, 5 = <b>ปลุกเร้าความรู้สึก/ความทรงจำ</b>'},
+
+ {sent:'Please <span class="u">ensure</span> that all windows are closed before you leave.',
+  word:'ensure',
+  o:['The police will <u>ensure</u> the safety of the witnesses.',
+     'Hard work does not always <u>ensure</u> success.',
+     'Check the list again to <u>ensure</u> nothing is missing.',
+     'This contract <u>ensures</u> him a place in the team.',
+     'Vaccination <u>ensures</u> protection against the disease.'],a:2,
+  e:'โจทย์เป็น<b>คำสั่งให้ตรวจสอบเพื่อให้มั่นใจว่าเรียบร้อย</b> (ก่อนออกจากบ้าน)<br>ข้อ 3 “ตรวจรายการอีกครั้งเพื่อ<b>ให้แน่ใจว่าไม่มีอะไรตกหล่น</b>” = ความหมายและการใช้ตรงกันที่สุด<br>ข้ออื่นเป็น <b>“รับประกันผลลัพธ์”</b> ซึ่งเอนไปทาง guarantee'},
+
+ {sent:'The horse galloped at a <span class="u">furious</span> pace across the field.',
+  word:'furious',
+  o:['My father was <u>furious</u> about my grades.',
+     'She gave him a <u>furious</u> look and walked away.',
+     'The boxers exchanged <u>furious</u> blows in the final round.',
+     'He is still <u>furious</u> with his brother.',
+     'A <u>furious</u> argument broke out between them.'],a:2,
+  e:'โจทย์ใช้ในความหมาย <b>“รุนแรง/เร็วดุเดือด”</b> ไม่ได้แปลว่าโกรธ (ม้าไม่ได้โกรธ)<br>ข้อ 3 หมัดที่<b>หนักหน่วงดุเดือด</b> = ความหมายเดียวกัน<br>ข้อ 1, 2, 4, 5 ล้วนเกี่ยวกับ<b>ความโกรธ</b>'},
+
+ {sent:'Detectives are working to <span class="u">ascertain</span> the identity of the victim.',
+  word:'ascertain',
+  o:['We must <u>ascertain</u> that the door is locked every night.',
+     'The doctor could not <u>ascertain</u> the cause of the illness.',
+     'Please <u>ascertain</u> the guests are comfortable.',
+     'He wants to <u>ascertain</u> his son a good future.',
+     'The rule <u>ascertains</u> fair treatment for all members.'],a:1,
+  e:'โจทย์ = <b>“สืบหาข้อเท็จจริงที่ยังไม่รู้”</b> (ตัวตนของผู้เสียชีวิต)<br>ข้อ 2 หมอ<b>หาสาเหตุของโรคไม่ได้</b> = สืบหาความจริงเหมือนกัน<br>ข้อ 1, 3, 4, 5 จริง ๆ ควรใช้ <b>ensure</b> ไม่ใช่ ascertain — เป็นตัวลวงที่สลับสองคำนี้'}
+];
+
+/* ============================================================
+   ประโยคแปลเต็ม
+   ============================================================ */
+const SENT=[
+ {en:'The farmers had to <b>irrigate</b> their fields because they <b>anticipated</b> a long drought.',
+  th:'ชาวนาต้อง<b>ทดน้ำ</b>เข้าไร่นาของตน เพราะพวกเขา<b>คาดการณ์ล่วงหน้า</b>ว่าจะเกิดภัยแล้งยาวนาน',
+  note:'จุดที่ต้องได้: <b>irrigate = ทดน้ำ</b> (ไม่ใช่ “ทำให้รำคาญ”) และ <b>anticipate</b> ต้องมีนัย “คาดไว้ล่วงหน้า”'},
+ {en:'Her <b>placid</b> manner did not change even when her boss became <b>furious</b>.',
+  th:'ท่าที<b>เยือกเย็น</b>ของเธอไม่เปลี่ยนไปเลย แม้ในตอนที่เจ้านายของเธอ<b>โกรธจัด</b>',
+  note:'ประโยคนี้ใช้<b>คู่ตรงข้าม</b> placid ↔ furious มาปะทะกัน แปลให้เห็นความตัดกัน'},
+ {en:'Before signing the contract, the committee must <b>ascertain</b> the facts and <b>ensure</b> that every member agrees.',
+  th:'ก่อนลงนามในสัญญา คณะกรรมการต้อง<b>ตรวจสอบข้อเท็จจริงให้แน่ชัด</b> และ<b>ทำให้มั่นใจว่า</b>สมาชิกทุกคนเห็นพ้องต้องกัน',
+  note:'🎯 ข้อนี้วัดว่าแยก <b>ascertain (สืบหาความจริง)</b> กับ <b>ensure (ทำให้มันเกิดขึ้นแน่)</b> ออกไหม'},
+ {en:'The teacher tried to <b>stimulate</b> discussion, but his sarcastic tone only <b>irritated</b> the students.',
+  th:'ครูพยายาม<b>กระตุ้น</b>ให้เกิดการอภิปราย แต่น้ำเสียงเสียดสีของเขากลับ<b>ทำให้</b>นักเรียน<b>รำคาญ</b>เท่านั้น',
+  note:'สังเกตคำเชื่อม <i>but ... only</i> ต้องแปลออกมาเป็น “แต่ ... กลับ ... เท่านั้น” จึงจะได้อารมณ์'},
+ {en:'The lawyer <b>invoked</b> an old law, but the judge noticed a <b>nuance</b> in its wording that changed everything.',
+  th:'ทนายความ<b>อ้างถึง</b>กฎหมายเก่าฉบับหนึ่ง แต่ผู้พิพากษาสังเกตเห็น<b>ความต่างเพียงเล็กน้อย</b>ในถ้อยคำของกฎหมายนั้น ซึ่งเปลี่ยนทุกอย่างไปหมด',
+  note:'<b>nuance</b> เป็นคำนาม ต้องแปลเป็นคำนามไทย เช่น “ความต่างเล็กน้อย / แง่มุมละเอียดอ่อน”'}
+];
+
+/* ============================================================
+   สร้างหน้า
+   ============================================================ */
+const $=s=>document.querySelector(s);
+const KEY=['1','2','3','4','5'];
+const norm=s=>(s||'').toLowerCase().trim().replace(/[\s.,;:!?"'()\-–—]/g,'');
+
+/* --- แท็บ --- */
+function openTab(id){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('show',t.id===id));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
+}
+$('#tabs').addEventListener('click',e=>{const b=e.target.closest('.tab-btn');if(b)openTab(b.dataset.tab);});
+
+/* --- 1. คลังศัพท์ --- */
+$('#wordlist').innerHTML=WORDS.map(w=>`
+ <div class="w">
+   <div class="top"><span class="en">${w.n}. ${w.en}</span><span class="pos">${w.pos}</span><span class="ipa">${w.ipa}</span></div>
+   <div class="th">${w.th}</div>
+   <div class="def">${w.def}</div>
+   ${w.ex.map(p=>`<div class="ex"><div class="e">${p[0]}</div><div class="t">→ ${p[1]}</div></div>`).join('')}
+   <div class="syn"><b>คำใกล้เคียง:</b> ${w.syn}</div>
+   <div class="trap">${w.trap}</div>
+ </div>`).join('');
+
+$('#quicktable').innerHTML='<tr><th>#</th><th>คำ</th><th>ชนิด</th><th>ความหมายสั้น</th></tr>'+
+  WORDS.map(w=>`<tr><td>${w.n}</td><td><b>${w.en}</b></td><td>${w.pos}</td><td>${w.th}</td></tr>`).join('');
+
+/* --- 2/3. ฝึกแปลคำ --- */
+const st={2:{done:0,ok:0},3:{done:0,ok:0},4:{done:0,ok:0}};
+function upd(n){ $('#s'+n).textContent='ทำแล้ว '+st[n].done+' ข้อ'; $('#p'+n).textContent='ถูก '+st[n].ok; }
+
+function buildWordDrill(box,dir){
+  const n = dir==='en2th'?2:3;
+  box.innerHTML=WORDS.map((w,i)=>`
+    <div class="drill" data-i="${i}">
+      <div class="q">${dir==='en2th'?`<b>${w.en}</b> <span style="color:var(--muted);font-size:.85rem">(${w.pos})</span> แปลว่า?`
+                                     :`“${w.th.split(' · ')[0]}” ภาษาอังกฤษคือคำใด?`}</div>
+      <div class="row">
+        <input type="text" placeholder="${dir==='en2th'?'พิมพ์คำแปลไทย':'type the English word'}">
+        <button class="btn small" data-check>ตรวจ</button>
+        <button class="btn ghost small" data-show>เฉลย</button>
+      </div>
+      <div class="fb"></div>
+      <div class="ansbox"></div>
+    </div>`).join('');
+  box.addEventListener('click',e=>{
+    const d=e.target.closest('.drill'); if(!d)return;
+    const w=WORDS[+d.dataset.i], inp=d.querySelector('input'), fb=d.querySelector('.fb'), ab=d.querySelector('.ansbox');
+    if(e.target.closest('[data-show]')){
+      ab.innerHTML=`<b>เฉลย:</b> ${w.en} = ${w.th}<br><span style="color:var(--muted)">${w.def}</span>`;
+      ab.classList.add('show'); return;
+    }
+    if(e.target.closest('[data-check]')){
+      const v=inp.value; if(!v.trim())return;
+      if(d.dataset.done)return;
+      let ok;
+      if(dir==='en2th') ok = w.keys.some(k=>norm(v).includes(norm(k)));
+      else ok = norm(v)===norm(w.en);
+      d.dataset.done=1; st[n].done++; if(ok)st[n].ok++; upd(n);
+      fb.textContent = ok?'✓ ถูกต้อง!':'✗ ยังไม่ใช่';
+      fb.className='fb '+(ok?'ok':'bad');
+      ab.innerHTML=`<b>เฉลย:</b> ${w.en} = ${w.th}<br><span style="color:var(--muted)">${w.def}</span>`;
+      ab.classList.add('show');
+      inp.disabled=true;
+    }
+  });
+  box.addEventListener('keydown',e=>{
+    if(e.key==='Enter'&&e.target.matches('input')){ e.target.closest('.drill').querySelector('[data-check]').click(); }
+  });
+}
+buildWordDrill($('#drill2'),'en2th');
+buildWordDrill($('#drill3'),'th2en');
+
+/* --- 4. Meaning Recognition --- */
+$('#drill4').innerHTML=MR.map((m,i)=>`
+  <div class="drill" data-i="${i}">
+    <div class="q">${i+1}. ${m.sent}</div>
+    <div class="opts">${m.o.map((o,j)=>`<button class="opt" data-p="${j}"><span class="k">${KEY[j]}.</span><span>${o}</span></button>`).join('')}</div>
+    <div class="fb"></div>
+    <div class="ansbox"></div>
+  </div>`).join('');
+$('#drill4').addEventListener('click',e=>{
+  const d=e.target.closest('.drill'); if(!d)return;
+  const b=e.target.closest('[data-p]'); if(!b||d.dataset.done)return;
+  const m=MR[+d.dataset.i], pick=+b.dataset.p, ok=pick===m.a;
+  d.dataset.done=1; st[4].done++; if(ok)st[4].ok++; upd(4);
+  d.querySelectorAll('.opt').forEach((o,j)=>{
+    o.classList.add('locked');
+    if(j===m.a)o.classList.add('right');
+    else if(j===pick)o.classList.add('wrongpick');
+  });
+  const fb=d.querySelector('.fb');
+  fb.textContent=ok?'✓ ถูกต้อง!':('✗ ยังไม่ใช่ — เฉลยคือข้อ '+KEY[m.a]);
+  fb.className='fb '+(ok?'ok':'bad');
+  d.querySelector('.ansbox').innerHTML='<b>ทำไมถึงเป็นข้อนี้:</b> '+m.e;
+  d.querySelector('.ansbox').classList.add('show');
+});
+
+/* --- 5. แปลประโยค --- */
+$('#drill5').innerHTML=SENT.map((s,i)=>`
+  <div class="drill">
+    <div class="q">${i+1}. ${s.en}</div>
+    <textarea placeholder="พิมพ์คำแปลไทยของทั้งประโยค..."></textarea>
+    <div class="row"><button class="btn small" data-model>📖 ดูแนวคำตอบมาเทียบ</button></div>
+    <div class="ansbox"><b>แนวคำแปล:</b><br>${s.th}<br><br>🎯 ${s.note}</div>
+  </div>`).join('');
+$('#drill5').addEventListener('click',e=>{
+  if(e.target.closest('[data-model]')) e.target.closest('.drill').querySelector('.ansbox').classList.toggle('show');
+});
+
+/* --- ปุ่มเริ่มใหม่ --- */
+[2,3,4].forEach(n=>{
+  $('#reset'+n).addEventListener('click',()=>{ st[n]={done:0,ok:0}; upd(n); location.reload(); });
+});
+[2,3,4].forEach(upd);
+openTab('t1');
+</script>
 <!--KIT-UI v2.6 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>
 /* =============================================================================

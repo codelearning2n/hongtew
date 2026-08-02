@@ -1,0 +1,1636 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ศาสนาอิสลาม — หนังสือทบทวน</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&family=Noto+Serif+Thai:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d1412; --bg2:#131c19; --bg3:#182320; --line:#24332e; --line2:#33463f;
+  --text:#e6f0ec; --muted:#93a8a0;
+  --gold:#4fd1a5; --gold2:#8ff0cd; --goldsoft:#4fd1a518;
+  --blue:#6ba4e0; --red:#e57373; --amber:#e0b252;
+  --radius:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Sarabun','Noto Sans Thai','Leelawadee UI',sans-serif;
+  background:radial-gradient(1100px 560px at 82% -8%,#16302a 0%,transparent 55%),
+             radial-gradient(820px 470px at -8% 12%,#12242e 0%,transparent 50%),var(--bg);
+  color:var(--text);line-height:1.75;font-size:1.03rem;-webkit-font-smoothing:antialiased}
+  /* ใช้ rem ไม่ใช่ px เพื่อให้ปุ่ม A-/A+ ของแถบเครื่องมือกลางขยายตัวหนังสือได้จริง */
+h1,h2,h3,h4{font-family:'Noto Serif Thai','Sarabun',serif;line-height:1.42}
+#progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:200;
+  background:linear-gradient(90deg,var(--gold),var(--gold2));box-shadow:0 0 10px var(--gold)}
+.wrap{display:flex;max-width:1320px;margin:0 auto}
+.sidebar{width:292px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;
+  padding:24px 16px 70px;border-right:1px solid var(--line);background:linear-gradient(180deg,#101a17,#0d1412)}
+.sidebar::-webkit-scrollbar{width:8px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--line2);border-radius:8px}
+.brand{display:flex;align-items:center;gap:11px;padding:0 6px;margin-bottom:4px}
+.brand .ic{font-size:26px;color:var(--gold);filter:drop-shadow(0 0 8px var(--goldsoft))}
+.brand b{font-size:18px;font-family:'Noto Serif Thai',serif}
+.brand small{display:block;color:var(--muted);font-size:12px;font-weight:400}
+#q{width:100%;margin:14px 0 4px;padding:9px 12px;border-radius:10px;border:1px solid var(--line2);
+  background:var(--bg2);color:var(--text);font-family:inherit;font-size:14px}
+#q:focus{outline:none;border-color:var(--gold)}
+.navgroup{margin-top:18px}
+.navgroup>.gt{font-size:12.5px;font-weight:700;letter-spacing:.5px;color:var(--gold);
+  padding:6px 8px;border-bottom:1px solid var(--line);margin-bottom:5px}
+.sidebar a{display:block;color:var(--muted);text-decoration:none;font-size:14px;
+  padding:5px 10px;border-radius:9px;border-left:2px solid transparent;transition:.15s}
+.sidebar a.chtop{color:var(--text);font-weight:600}
+.sidebar a:hover{color:var(--text);background:var(--bg3)}
+.sidebar a.active{color:var(--gold2);background:var(--goldsoft);border-left-color:var(--gold)}
+.sidebar a.hide{display:none}
+.main{flex:1;min-width:0;padding:34px 44px 130px;max-width:940px}
+.hero{border:1px solid var(--line);border-radius:18px;padding:26px 28px;margin-bottom:26px;
+  background:linear-gradient(135deg,#16302a 0%,#132029 100%)}
+.hero h1{font-size:1.9rem;margin-bottom:6px}
+.hero p{color:var(--muted)}
+.hero .meta{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px;font-size:12.5px}
+.hero .meta span{background:var(--goldsoft);color:var(--gold2);border:1px solid var(--line2);
+  padding:3px 11px;border-radius:999px;font-weight:600}
+.chapter{margin:52px 0 0;scroll-margin-top:16px}
+.chhead{border-bottom:2px solid var(--line);padding-bottom:12px;margin-bottom:20px}
+.chno{display:inline-block;font-size:13px;font-weight:700;color:var(--gold);letter-spacing:.4px}
+.chhead h1{font-size:1.62rem;margin-top:3px}
+.chsrc{font-size:12px;color:var(--muted);margin-top:5px}
+.chsrc code{background:var(--bg2);padding:1px 7px;border-radius:5px;font-size:11.5px}
+.main h2{font-size:1.24rem;color:var(--gold2);margin:32px 0 10px;padding-top:6px;scroll-margin-top:14px}
+.main h3{font-size:1.08rem;margin:20px 0 8px;color:var(--text)}
+.main h4{font-size:.99rem;margin:15px 0 6px;color:var(--muted)}
+.main p{margin:9px 0}
+.main ul,.main ol{margin:9px 0 9px 24px}
+.main li{margin:4px 0}
+.main strong{color:var(--gold2)}
+.main code{background:var(--bg2);border:1px solid var(--line);padding:1px 6px;border-radius:5px;
+  font-size:.88em;color:var(--amber)}
+.main pre{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:12px 14px;overflow-x:auto;margin:12px 0}
+.main pre code{border:0;background:none;padding:0}
+.main blockquote{border-left:3px solid var(--gold);background:var(--goldsoft);
+  padding:11px 16px;margin:14px 0;border-radius:0 10px 10px 0;color:var(--text)}
+.main blockquote p{margin:5px 0}
+.main hr{border:0;border-top:1px solid var(--line);margin:26px 0}
+.main table{border-collapse:collapse;width:100%;font-size:.93rem;margin:14px 0;
+  display:block;overflow-x:auto;white-space:nowrap}
+.main th,.main td{border:1px solid var(--line);padding:8px 12px;text-align:left;white-space:normal}
+.main th{background:var(--bg3);color:var(--gold2);font-weight:700}
+.main tr:nth-child(even) td{background:#ffffff05}
+.main a{color:var(--blue)}
+#top{position:fixed;right:18px;bottom:74px;z-index:120;background:var(--bg3);color:var(--gold2);
+  border:1px solid var(--line2);border-radius:50%;width:44px;height:44px;cursor:pointer;font-size:17px;display:none}
+#top.show{display:block}
+@media(max-width:900px){
+  .wrap{flex-direction:column}
+  .sidebar{position:static;width:auto;height:auto;max-height:none;border-right:0;border-bottom:1px solid var(--line);padding:18px 14px 22px}
+  .main{padding:22px 16px 120px}
+  .hero{padding:20px 18px}.hero h1{font-size:1.5rem}
+}
+@media print{.sidebar,#top,#progress{display:none}.main{max-width:none;padding:0}
+  body{background:#fff;color:#000}.main strong{color:#000}}
+</style>
+</head>
+<!-- data-kit-theme="off" = หน้านี้คุมสีเองครบแล้ว อย่าให้ KIT UI มาสลับธีมทับ -->
+<body data-subject="islam" data-tools="none" data-kit-theme="off">
+<div id="progress"></div>
+<div class="wrap">
+
+  <aside class="sidebar">
+    <div class="brand"><span class="ic">☪️</span><div><b>อิสลาม</b><small>หนังสือทบทวน · ม.6</small></div></div>
+    <input id="q" type="text" placeholder="🔍 ค้นหาหัวข้อ...">
+    <div class="navgroup"><div class="gt">🕌 บทนำ</div><a href="#ch-intro" class="chtop">อิสลามคืออะไร</a><a href="#intro-0">1. ข้อมูลพื้นฐาน (ตารางหน้าสรุปของสไลด์) [p.18]</a><a href="#intro-1">2. พระเจ้าในศาสนาอิสลาม [p.4]</a><a href="#intro-2">3. ศาสดา [p.5, p.19]</a><a href="#intro-3">4. เวลาที่เกิดศาสนา [p.7-8]  ออกสอบบ่อย</a><a href="#intro-4">5. สถานที่กำเนิด [p.12-13]</a><a href="#intro-5">6. ตระกูลศาสนา Abrahamic — ยูดาย → คริสต์ → อิสลาม [p.2, p.15, p.19]</a><a href="#intro-6">7. ความหมายของคำว่า &quot;อิสลาม&quot; [p.20]</a><a href="#intro-7">8. คำเรียกผู้นับถือ [p.21]</a></div>
+<div class="navgroup"><div class="gt">👤 ศาสดามูฮัมหมัด</div><a href="#ch-nabi" class="chtop">ชีวิต &amp; Timeline</a><a href="#nabi-0">1. ตัวตนของท่านนบี [p.4]</a><a href="#nabi-1">2. Timeline ชีวิต  (ปี ค.ศ. | อายุ | เหตุการณ์)</a><a href="#nabi-2">3. นางเคาะดีญะฮ์ (Lady Khadijah bint Khuwaylid)  บุคคลสำคัญ [p.21-26]</a><a href="#nabi-3">4. โองการแรก ที่ถ้ำฮิรออ์ (610)  [p.32-38]</a><a href="#nabi-4">5. อิสรออ์–เมี้ยะรอจญ์ (Isra &amp; Mi&#x27;raj, ค.ศ. 621)  [p.59-64]</a><a href="#nabi-5">6. ฮิจเราะห์ &amp; กำเนิดฮิจเราะห์ศักราช  [p.66-75]</a><a href="#nabi-6">7. สงคราม 3 ครั้งใหญ่ (The Medinan / Military Period)  [p.77-86]</a><a href="#nabi-7">8. ฮุดัยบียะฮ์ → พิชิตมักกะฮ์ → วาระสุดท้าย [p.88-101]</a></div>
+<div class="navgroup"><div class="gt">📖 คัมภีร์</div><a href="#ch-book" class="chtop">กุรอาน &amp; ฮะดีษ</a><a href="#book-0">1. อัล-กุรอาน (Al-Quran / Koran) — คัมภีร์หลัก</a><a href="#book-1">2. อัล-ฮะดีษ (Al-Hadith) — คัมภีร์รอง  [p.28-32]</a><a href="#book-2">เก็งจุดหลอก</a></div>
+<div class="navgroup"><div class="gt">🤲 หลักศรัทธา 6</div><a href="#ch-iman" class="chtop">Iman</a><a href="#iman-0">0. ภาพรวม — หลักคำสอนอิสลาม 3 หมวด [A p.2]</a><a href="#iman-1">1. ศรัทธาต่อองค์อัลลอฮ์ (Belief in Allah)  [A p.7–17]</a><a href="#iman-2">2. ศรัทธาในบรรดาคัมภีร์ (Belief in the Books / Kutub)  [A p.18–44]</a><a href="#iman-3">3. ศรัทธาในบรรดาศาสนทูต/นบี (Belief in the Messengers / Prophets)  [A p.45–107]</a><a href="#iman-4">4. ศรัทธาในมลาอิกะฮ์ (Belief in Angels / Malaikah)  [B p.126–410]</a><a href="#iman-5">5. ศรัทธาในวันพิพากษา (Belief in the Day of Judgment / Qiyamah)  [B p.462–620]</a><a href="#iman-6">6. ศรัทธาในกฎสภาวการณ์/การลิขิต (Belief in Predestination / Qadar) [B p.860–1040]</a><a href="#iman-7">7.  จุดออกสอบ (อ.สองออกอังกฤษ — ต้องแม่น)</a></div>
+<div class="navgroup"><div class="gt">☪️ สัญลักษณ์</div><a href="#ch-symbol" class="chtop">จุดหลอกข้อสอบ</a><a href="#symbol-0">1. หลักสำคัญ  (จุดหลอกข้อสอบ)</a><a href="#symbol-1">2. ที่มาของดาว-จันทร์เสี้ยว [p.6]</a><a href="#symbol-2">3. การใช้งานจริง</a></div>
+<div class="navgroup"><div class="gt">⚖️ เทียบ 3 ศาสนา</div><a href="#ch-abraham" class="chtop">ยูดาย·คริสต์·อิสลาม</a><a href="#abraham-0">1. ศาสนาตระกูลอับราฮัมคืออะไร [p.11,15]</a><a href="#abraham-1">2. พระเจ้าองค์เดียวกัน — แต่ต่างชื่อ/สภาวะ [p.3–9]</a><a href="#abraham-2">3. ตารางเทียบหลัก 3 ศาสนา [p.16–17]</a><a href="#abraham-3">4.  จุดออกสอบ (ต้องแม่น)</a></div>
+<div class="navgroup"><div class="gt">🌙 วันสำคัญ</div><a href="#ch-festival" class="chtop">เทศกาล &amp; ปฏิทิน</a><a href="#festival-0">1. ปฏิทินอิสลาม (Islamic / Hijri Calendar)</a><a href="#festival-1">2. เทศกาล/วันสำคัญ (Festivals / Holy Days)  (ออกสอบเยอะสุด)</a><a href="#festival-2">3. พิธีฮัจญ์ (Hajj) + การแต่งกาย/สี</a><a href="#festival-3">4. สัญลักษณ์/สถานที่ (bucket &quot;ทั่วไป&quot;)</a><a href="#festival-4">5. ผู้นำ/ลำดับขั้นทางศาสนา (bucket &quot;คนสำคัญ&quot; 30%)</a><a href="#festival-5">6.  จุดออกสอบ (ตามน้ำหนักข้อสอบ)</a></div>
+  </aside>
+
+  <main class="main">
+    <div class="hero">
+      <h1>☪️ ศาสนาอิสลาม — หนังสือทบทวน</h1>
+      <p>รวมสรุปทุกไฟล์ไว้ในหน้าเดียว เรียงตามลำดับที่ควรอ่าน · เปิดสอบแบบ open-book ได้เลย</p>
+      <div class="meta"><span>7 บท</span><span>40 หัวข้อ</span><span>อัปเดต 2026-08-02 23:05</span><span>ออฟไลน์ได้</span></div>
+    </div>
+    <section class="chapter" id="ch-intro"><div class="chhead"><span class="chno">🕌 บทนำ</span><h1>อิสลามคืออะไร</h1><div class="chsrc">ที่มา: <code>Islam_บทนำ_Introduction_สรุปเต็ม.md</code></div></div><blockquote>
+<p><strong>For future Claude:</strong> สรุปจากสไลด์ <code>Islam1.pdf</code> (21 หน้า) ของอาจารย์สอง Satit UP — บทนำศาสนาอิสลาม: ความหมายของคำว่าอิสลาม/มุสลิม, พระอัลลอฮ์, เวลา-สถานที่กำเนิด, ความสัมพันธ์กับยูดาย-คริสต์ (ตระกูล Abrahamic), ข้อมูลพื้นฐาน (คัมภีร์/นิกาย/สัญลักษณ์) ใช้คู่กับ <strong>Islam_ศาสดามูฮัมหมัด_Timeline_สรุปเต็ม</strong>, <strong>Islam_สัญลักษณ์_สรุปเต็ม</strong>, <strong>Islam_คัมภีร์_อัลกุรอาน-ฮะดีษ_สรุปเต็ม</strong></p>
+</blockquote>
+<h2><a id="intro-0"></a>1. ข้อมูลพื้นฐาน (ตารางหน้าสรุปของสไลด์) [p.18]</h2>
+<table>
+<thead>
+<tr>
+<th>หัวข้อ</th>
+<th>ข้อมูล</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ชื่อศาสนา</td>
+<td>อิสลาม (Islam)</td>
+</tr>
+<tr>
+<td>คัมภีร์</td>
+<td>อัล-กุรอ่าน (Al-Quran / Koran)</td>
+</tr>
+<tr>
+<td>สัญลักษณ์ทางศาสนา</td>
+<td><strong>ไม่มี</strong> (แต่มีเครื่องหมายที่สื่อถึงอิสลาม คือ พระจันทร์เสี้ยว + ดาว)</td>
+</tr>
+<tr>
+<td>เวลาที่เกิดศาสนา</td>
+<td>ค.ศ. 622 (นับจากปีเริ่ม ฮ.ศ. — ดูข้อ 4)</td>
+</tr>
+<tr>
+<td>นิกายสำคัญ</td>
+<td>สุนนี่ (Sunni), ชีอะห์ (Shia)</td>
+</tr>
+<tr>
+<td>เป้าหมายชีวิต</td>
+<td>การได้อยู่กับพระเจ้า (พระอัลลอฮ์) ในสวรรค์</td>
+</tr>
+<tr>
+<td>ผู้ที่นับถือ เรียกว่า</td>
+<td>มุสลิม (Muslim)</td>
+</tr>
+<tr>
+<td>ประเภทความเชื่อ</td>
+<td>เอกเทวนิยม Monotheism — พระเจ้าองค์เดียว [p.3]</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ขนาดศาสนา</strong> [p.2]: อิสลามเป็นศาสนา<strong>ใหญ่อันดับ 2 ของโลก</strong> ~1.9 พันล้านคน (~25%) / คริสต์อันดับ 1 ~2.3 พันล้านคน (~32%)</p>
+<h2><a id="intro-1"></a>2. พระเจ้าในศาสนาอิสลาม [p.4]</h2>
+<ul>
+<li><strong>อัลลอฮ์ / อัลเลาะห์ (Allah)</strong> — The One &amp; Only God / The One True God</li>
+<li>เขียนได้หลายแบบในไทย: อัลลอฮ์, อัลเลาะห์, องค์อัลลอฮ์, องค์อัลเลาะห์</li>
+</ul>
+<h2><a id="intro-2"></a>3. ศาสดา [p.5, p.19]</h2>
+<ul>
+<li><strong>นบีมูฮัมหมัด (Prophet Muhammad / Muhammad ibn Abdullah)</strong> — ผู้ก่อตั้งศาสนาอิสลาม (The Founder of Islam)</li>
+<li>สะกดไทยได้หลายแบบ: มูฮัมหมัด, มุฮัมหมัด, มะหะหมัด, โมฮัมหมัด</li>
+<li>เป็น <strong>นบี (ศาสนทูต) คนสุดท้าย</strong> ขององค์อัลลอฮ์ (The Final/Last Prophet)</li>
+</ul>
+<h2><a id="intro-3"></a>4. เวลาที่เกิดศาสนา [p.7-8] ⭐ ออกสอบบ่อย</h2>
+<p>เกิดช่วง <strong>ต้นคริสต์ศตวรรษที่ 7</strong> (early 7th century; ถ้านับจากปีเกิดศาสดาคือปลายศตวรรษที่ 6) — สไลด์ให้ 4 จุดนับ:</p>
+<table>
+<thead>
+<tr>
+<th>นับจาก</th>
+<th>ปี</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ปีเกิดของนบีมูฮัมหมัด</td>
+<td>ค.ศ. 570</td>
+</tr>
+<tr>
+<td>ปีที่ได้รับ<strong>โองการครั้งแรก</strong>จากอัลลอฮ์</td>
+<td>ค.ศ. 610</td>
+</tr>
+<tr>
+<td>ปีที่<strong>อพยพ (ฮิจเราะห์)</strong> มักกะฮ์→เมดินะฮ์ = <strong>ปีเริ่ม ฮ.ศ.</strong></td>
+<td>ค.ศ. 622</td>
+</tr>
+<tr>
+<td>ปีที่นบีมูฮัมหมัดเสียชีวิต</td>
+<td>ค.ศ. 632</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>เทียบศาสนาอื่น [p.9]: อิสลามเกิด<strong>หลัง</strong>พุทธ ~1200 ปี, หลังคริสต์ ~610 ปี, หลังยูดาย ~2400 ปี; เกิด<strong>ก่อน</strong>ซิกข์ ~900 ปี, ก่อนบาไฮ ~1200 ปี</li>
+</ul>
+<h2><a id="intro-4"></a>5. สถานที่กำเนิด [p.12-13]</h2>
+<ul>
+<li>กำเนิดบน<strong>คาบสมุทรอาระเบีย</strong> (Arabian Peninsula) — ที่เมือง<strong>มักกะฮ์ (Mecca) และ เมดินะฮ์ (Medina)</strong> ทางตะวันตกของคาบสมุทร</li>
+<li>ปัจจุบันอยู่ในเขตประเทศ<strong>ซาอุดิอาระเบีย (Saudi Arabia)</strong></li>
+</ul>
+<h2><a id="intro-5"></a>6. ตระกูลศาสนา Abrahamic — ยูดาย → คริสต์ → อิสลาม [p.2, p.15, p.19]</h2>
+<ul>
+<li>ทั้ง 3 ศาสนาอยู่ตระกูล <strong>The Abrahamic religions</strong> สืบจาก<strong>อับราฮัม (นบีอิบรอฮีม)</strong></li>
+<li>แผนภาพสายตระกูล [p.15]:</li>
+<li>อับราฮัม + <strong>ซาราห์</strong> → <strong>อิสอัค (Isaac)</strong> → ยาโคบ (Jacob) → <strong>ชาวยิว (Jews)</strong> → โมเสส, กษัตริย์ดาวิด, กษัตริย์โซโลมอน (สุไลมาน), พระเยซู → ยูดาย/คริสต์</li>
+<li>อับราฮัม + <strong>ฮาการ์ (Hagar)</strong> → <strong>อิสมาเอล (Ishmael)</strong> → <strong>ชาวอาหรับ (Arabs)</strong> → <strong>นบีมูฮัมหมัด</strong> → อิสลาม</li>
+<li>ยูดายเป็นศาสนา Abrahamic ที่เก่าแก่ที่สุด; อิสลามมีข้อเชื่อ/ข้อปฏิบัติหลายอย่างคล้ายยูดายและคริสต์</li>
+</ul>
+<h2><a id="intro-6"></a>7. ความหมายของคำว่า "อิสลาม" [p.20] ⭐</h2>
+<p>เป็นคำภาษาอาหรับ มี 2 ความหมาย:<br />
+1. <strong>ความหมายหลัก (ยอมรับทั่วไป):</strong> "การสวามิภักดิ์อย่างบริบูรณ์สิ้นเชิงต่อองค์อัลลอฮ์" / การอ่อนน้อม ยอมตาม เชื่อฟัง ยอมจำนนอย่างสิ้นเชิงต่อองค์อัลลอฮ์<br />
+2. <strong>ความหมายที่ 2:</strong> "สันติ สันติภาพ" — มาจากคำ "อัสละมะ" ⚠️ สไลด์เน้นว่าแปลว่า "สันติ" เฉยๆ <strong>ยังไม่ครอบคลุม</strong> ต้องขยายเป็น "การเข้าสู่สันติโดยการจำนนอย่างสิ้นเชิงต่อพระเจ้า"</p>
+<h2><a id="intro-7"></a>8. คำเรียกผู้นับถือ [p.21] ⭐</h2>
+<table>
+<thead>
+<tr>
+<th>คำ</th>
+<th>ความหมาย</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>มุสลิม (Muslim)</strong></td>
+<td>ผู้นับถืออิสลาม (รวมทุกเพศ) — ไทยใช้ "อิสลามิกชน"</td>
+</tr>
+<tr>
+<td><strong>มุสลีมีน (Muslimin)</strong></td>
+<td>ผู้นับถืออิสลามที่เป็น<strong>บุรุษ</strong></td>
+</tr>
+<tr>
+<td><strong>มุสลิมะฮ์ (Muslima/Muslimah)</strong></td>
+<td>ผู้นับถืออิสลามที่เป็น<strong>สตรี</strong></td>
+</tr>
+</tbody>
+</table>
+<p>ความหมายรากศัพท์: ผู้รักสงบสันติในองค์อัลลอฮ์ / ผู้รับใช้พระเป็นเจ้า / ผู้นอบน้อมยอมจำนนต่อข้อบัญญัติของอัลลอฮ์ / ผู้ศิโรราบภักดีต่อองค์อัลลอฮ์</p></section>
+<section class="chapter" id="ch-nabi"><div class="chhead"><span class="chno">👤 ศาสดามูฮัมหมัด</span><h1>ชีวิต &amp; Timeline</h1><div class="chsrc">ที่มา: <code>Islam_ศาสดามูฮัมหมัด_Timeline_สรุปเต็ม.md</code></div></div><blockquote>
+<p><strong>For future Claude:</strong> สรุปจากสไลด์ <code>Islam2.pdf</code> (102 หน้า) — ประวัติศาสดามูฮัมหมัดแบบ timeline ตั้งแต่เกิดถึงเสียชีวิต พร้อมปี ค.ศ. / อายุ / ปีฮิจเราะห์ (B.H. = ก่อนฮิจเราะห์, A.H. = ฮ.ศ.) บุคคลสำคัญรอบตัวท่าน (เคาะดีญะฮ์, อาบูตอลิบ, ญิบรีล ฯลฯ) สงคราม 3 ครั้ง และการกำเนิดฮิจเราะห์ศักราช เชื่อมกับ <strong>Islam_บทนำ_Introduction_สรุปเต็ม</strong></p>
+</blockquote>
+<h2><a id="nabi-0"></a>1. ตัวตนของท่านนบี [p.4]</h2>
+<ul>
+<li>ชาวอาหรับ เกิดในเผ่า<strong>บะนูฮาชิม (Banu Hashim)</strong> ซึ่งเป็นเผ่าย่อยของเผ่า<strong>กุเรช/กุร็อยซ์ (Quraysh)</strong> — เผ่าใหญ่ทรงอิทธิพลด้านการเมือง สังคม เศรษฐกิจของมักกะฮ์ [p.7]</li>
+<li>สืบเชื้อสายจาก <strong>นบีอิบรอฮีม (Abraham)</strong> และ <strong>นบีอิสมาอิล (Ishmael)</strong></li>
+<li>มีสถานะเป็นทั้ง <strong>นบี (Nabi)</strong> และ <strong>รอซูล/เราะซูล (Rasul)</strong></li>
+<li>เป็น 1 ใน <strong>5 นบีองค์ใหญ่</strong> (The 5 Greatest Prophets of Islam) และเป็น <strong>นบีคนสุดท้าย</strong> (The Final Prophet)</li>
+</ul>
+<h2><a id="nabi-1"></a>2. Timeline ชีวิต ⭐ (ปี ค.ศ. | อายุ | เหตุการณ์)</h2>
+<table>
+<thead>
+<tr>
+<th>ค.ศ.</th>
+<th>อายุ</th>
+<th>เหตุการณ์</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>570</strong></td>
+<td>เกิด</td>
+<td>เกิดที่<strong>เมืองมักกะฮ์</strong> วันจันทร์ 12 เดือนรอบิอุ้ลเอาวัล (เดือน 3 ปฏิทินอิสลาม) — บิดา<strong>อับดุลเลาะห์</strong>เสียชีวิตก่อนท่านเกิด (ขณะมารดาตั้งครรภ์ได้ 2 เดือน) มารดาชื่อ<strong>อามีนะฮ์</strong> [p.6-8, 11]</td>
+</tr>
+<tr>
+<td><strong>575</strong></td>
+<td>5</td>
+<td>มารดาเสียชีวิต → เป็นกำพร้า อยู่กับปู่ <strong>อับดุลมุฏฏอลิบ</strong> (ชรามาก ~100 ปี แล้วก็เสียชีวิต) [p.9, 11]</td>
+</tr>
+<tr>
+<td><strong>578</strong></td>
+<td>8</td>
+<td>ไปอยู่กับลุง <strong>อาบูตอลิบ (Abu Talib)</strong> พ่อค้าฐานะมั่งคั่ง [p.10-11]</td>
+</tr>
+<tr>
+<td>580–594</td>
+<td>10–24</td>
+<td>วัยรุ่น: เลี้ยงสัตว์รับจ้าง + เดินทางค้าขายกับคาราวานของลุงทั่วอาระเบีย (อียิปต์ ปาเลสไตน์ ซีเรีย) — <strong>ท่านไม่ได้เรียนหนังสือ อ่านไม่ออกเขียนไม่ได้ตลอดชีวิต</strong> แต่ได้ประสบการณ์จากการเดินทาง [p.12-14]</td>
+</tr>
+<tr>
+<td><strong>582</strong></td>
+<td>12</td>
+<td>ระหว่างไปซีเรีย พบนักบวชคริสต์ชื่อ <strong>บาฮิรา (Bahira)</strong> แห่งเมือง Busra ผู้<strong>ทำนายว่าท่านจะเป็นศาสดาผู้ยิ่งใหญ่</strong> [p.15-17]</td>
+</tr>
+<tr>
+<td><strong>594</strong></td>
+<td>24</td>
+<td>เป็นตัวแทนคาราวานการค้าให้<strong>นางเคาะดีญะฮ์</strong> แม่หม้ายเศรษฐี [p.18]</td>
+</tr>
+<tr>
+<td><strong>595</strong></td>
+<td>25</td>
+<td><strong>แต่งงานกับนางเคาะดีญะฮ์</strong> (นางอายุ ~40 — แก่กว่า 15 ปี, นางเป็นฝ่ายขอแต่งงาน) [p.20]</td>
+</tr>
+<tr>
+<td><strong>610</strong></td>
+<td>40</td>
+<td><strong>ได้รับโองการ (วะฮีย์) ครั้งแรก</strong> ที่<strong>ถ้ำฮิรออ์ บนภูเขาฮิรา</strong> ใกล้มักกะฮ์ ผ่านเทวทูต<strong>ญิบรีล (Jibril/Gabriel)</strong> → เป็นนบี/ศาสนทูตอย่างเป็นทางการ [p.29-37]</td>
+</tr>
+<tr>
+<td>610–613</td>
+<td>40–43</td>
+<td>เผยแผ่อิสลาม<strong>แบบส่วนตัว (ลับ)</strong> แก่คนใกล้ชิด 3 ปี [p.41]</td>
+</tr>
+<tr>
+<td><strong>613</strong></td>
+<td>43</td>
+<td>เริ่มประกาศศาสนา<strong>ต่อสาธารณะ</strong>ในมักกะฮ์ครั้งแรก — ชาวมักกะฮ์ส่วนใหญ่ไม่สนใจ+ล้อเลียน [p.42-43]</td>
+</tr>
+<tr>
+<td><strong>614</strong></td>
+<td>44</td>
+<td>แนะนำให้มุสลิมที่ถูกกดขี่<strong>อพยพไปอะบิสซิเนีย (เอธิโอเปีย)</strong> ดินแดนใต้การปกครองอาณาจักรคริสเตียน [p.45]</td>
+</tr>
+<tr>
+<td><strong>616</strong></td>
+<td>46</td>
+<td>เผ่ากุเรช<strong>คว่ำบาตร (Boycott) เผ่าบะนูฮาชิม</strong> (616–619) กดดันให้เลิกปกป้องฝ่ายมุสลิม → ชีวิตยากลำบากมาก [p.48]</td>
+</tr>
+<tr>
+<td><strong>619</strong></td>
+<td>49</td>
+<td><strong>ปีแห่งความโศกเศร้า (The Year of Sorrow / "Aam al-huzn")</strong> — สูญเสีย<strong>ลุงอาบูตอลิบ</strong> (หัวหน้าเผ่าบะนูฮาชิม ผู้คุ้มครองหลัก) และ <strong>ภรรยาเคาะดีญะฮ์</strong> (อายุ 65, เสียชีวิต 10 เดือนรอมฎอน, ฝังที่ Jannat al-Mulla มักกะฮ์) ในปีเดียวกัน → หลังสูญเสียผู้คุ้มครอง ท่านไปหาผู้คุ้มครองใหม่ที่เมือง<strong>ฏออิฟ (Ta'if)</strong> (~100 กม. ตะวันออกเฉียงใต้ของมักกะฮ์) [p.50-57]</td>
+</tr>
+<tr>
+<td><strong>621</strong></td>
+<td>51</td>
+<td><strong>อิสรออ์–เมี้ยะรอจญ์ (Isra &amp; Mi'raj)</strong> การเดินทางยามค่ำคืนอันอัศจรรย์ (27 เดือนรอญับ) [p.59-64]</td>
+</tr>
+<tr>
+<td><strong>622</strong></td>
+<td>52</td>
+<td><strong>ฮิจเราะห์ (Hijrah): อพยพจากมักกะฮ์ → เมดินะฮ์</strong> (ชื่อเดิม<strong>ยัธริบ Yathrib</strong>, ห่าง ~339 กม.) วันที่ 16 ก.ค. 622 = <strong>จุดเริ่มปฏิทินอิสลาม ฮ.ศ. 1</strong> [p.66, 69, 74]</td>
+</tr>
+<tr>
+<td><strong>624</strong></td>
+<td>54 (ฮ.ศ. 2)</td>
+<td>⚔️ <strong>สงครามบะดัร (Badr)</strong> — ชนะ [p.78]</td>
+</tr>
+<tr>
+<td><strong>625</strong></td>
+<td>55 (ฮ.ศ. 3)</td>
+<td>⚔️ <strong>สงครามอุฮุด (Uhud)</strong> — แพ้ [p.81]</td>
+</tr>
+<tr>
+<td><strong>627</strong></td>
+<td>57 (ฮ.ศ. 5)</td>
+<td>⚔️ <strong>สงครามค็อนดัก/สนามเพลาะ (Khandaq/Trench)</strong> — ชนะ (ตั้งรับสำเร็จ) [p.85]</td>
+</tr>
+<tr>
+<td><strong>628</strong></td>
+<td>58 (ฮ.ศ. 6)</td>
+<td>🕊️ <strong>สนธิสัญญาฮุดัยบียะฮ์ (Treaty of Hudaybiyyah)</strong> สงบศึก 10 ปี กับเผ่ากุเรช [p.88]</td>
+</tr>
+<tr>
+<td><strong>630</strong></td>
+<td>60 (ฮ.ศ. 8)</td>
+<td>🏙️ <strong>พิชิตมักกะฮ์ (Conquest of Mecca) โดยไม่เสียเลือดเนื้อ</strong> — ให้อภัยโทษชาวมักกะฮ์ [p.92-94]</td>
+</tr>
+<tr>
+<td><strong>632</strong></td>
+<td>62 (ฮ.ศ. 10)</td>
+<td><strong>ฮัจญ์อำลา (The Farewell Hajj)</strong> — ฮัจญ์<strong>ครั้งเดียว</strong>ที่ท่านเข้าร่วม [p.96-97]</td>
+</tr>
+<tr>
+<td><strong>632</strong></td>
+<td>62–63 (ฮ.ศ. 11)</td>
+<td><strong>เสียชีวิตที่เมดินะฮ์</strong>ด้วยอาการป่วย (3 เดือนหลังฮัจญ์อำลา) ฝังที่<strong>มัสยิดอัล-นะบาวี</strong> เมดินะฮ์ — <strong>ไม่ได้ระบุชื่อผู้สืบทอด</strong> → ปัญหาใหญ่ของโลกมุสลิมต่อมา [p.99-101]</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>⚠️ อายุตอนเสียชีวิต: สไลด์ p.99 ระบุ 62 ปี แต่ p.101 ระบุ "63 ปี วันที่ 8 มิ.ย. 632 (12 Rabi al-Awwal ฮ.ศ. 11)" — ตัวเลขไม่ตรงกันในสไลด์เอง (ต่างวิธีนับ)<br />
+⚠️ ลำดับการเสียชีวิตปี 619: สไลด์ p.55 บอกเคาะดีญะฮ์เสีย "ไม่ถึง 40 วันหลังอาบูตอลิบ" แต่ p.56 บอก "อาบูตอลิบป่วยหนักหลังเคาะดีญะฮ์เสีย / เสียหลังเคาะดีญะฮ์ 1 เดือน" — สไลด์ขัดกันเอง จำแค่ว่า<strong>ทั้งคู่เสียปี 619 = Year of Sorrow</strong> พอ</p>
+</blockquote>
+<h2><a id="nabi-2"></a>3. นางเคาะดีญะฮ์ (Lady Khadijah bint Khuwaylid) ⭐ บุคคลสำคัญ [p.21-26]</h2>
+<ul>
+<li>เกิดในเผ่ากุเรช เมืองมักกะฮ์ — บิดา<strong>คุวัยลิด</strong> (พ่อค้าดังของเผ่า) มารดา<strong>ฟาติมะฮ์</strong>; เก่งการค้าจากการเรียนรู้จากบิดา</li>
+<li>แม่หม้าย ผ่านสามีมา 2 คน (เสียชีวิตทิ้งทรัพย์สมบัติไว้มาก) → เศรษฐีนีของมักกะฮ์</li>
+<li><strong>ภรรยาคนแรก</strong>ของนบีมูฮัมหมัด + ภรรยาที่ท่านรักที่สุด — ตลอด 25 ปีที่อยู่กับนาง ท่านนบี<strong>ไม่มีภรรยาอื่นเลย</strong></li>
+<li><strong>มุสลิมคนแรก / ผู้เข้ารับอิสลามคนแรก</strong> (The First Believer in Islam) และสตรีคนแรกที่รับอิสลาม</li>
+<li>สนับสนุนพันธกิจของท่านนบีด้วยชีวิตและทรัพย์สินทั้งหมด โดยเฉพาะช่วงถูกคว่ำบาตร</li>
+<li>มีบุตรกับท่านนบี <strong>6 คน</strong> — คนสุดท้องคือ<strong>ฟาติมะห์ (Fatimah)</strong> ซึ่งต่อมาแต่งงานกับ<strong>ท่านอาลี (Ali)</strong> ผู้ที่ภายหลังเป็น<strong>คอลีฟะฮ์</strong></li>
+<li>1 ใน <strong>"4 สตรีที่ยิ่งใหญ่ที่สุดของโลกอิสลาม"</strong>: ① เคาะดีญะฮ์ ② ฟาติมะห์ บุตรีนบี ③ มัรยัม (Mary มารดาของอีซา/เยซู) ④ อาซียะฮ์ (ราชินีอียิปต์ ภรรยาฟาโรห์ ผู้ช่วยชีวิต+เลี้ยงโมเสส)</li>
+</ul>
+<h2><a id="nabi-3"></a>4. โองการแรก ที่ถ้ำฮิรออ์ (610) ⭐ [p.32-38]</h2>
+<ul>
+<li>ท่านชอบปลีกตัวไปทำสมาธิใคร่ครวญสัจธรรมใน<strong>ถ้ำฮิรออ์ (Cave of Hira)</strong> บนยอดเขาใกล้มักกะฮ์</li>
+<li>เทวทูต<strong>ญิบรีล (Jibril)</strong> = กาเบรียล (Gabriel ชื่อในไบเบิล) ผู้ทำหน้าที่นำโองการของอัลลอฮ์มาให้บรรดาศาสนทูต — มาปรากฏและกล่าวว่า <strong>"อิกเราะฮ์" (แปลว่า "จงอ่าน")</strong> ถึง 3 ครั้ง; ท่านตอบ "ฉันอ่านไม่ได้" (เพราะอ่านหนังสือไม่ออก) จนครั้งสุดท้ายท่านอ่านได้: <em>"จงอ่าน ด้วยพระนามของพระเจ้า ผู้ทรงสร้างมนุษย์จากก้อนเลือด..."</em></li>
+<li>วันที่ 27 เดือน<strong>รอญับ (Rajab)</strong> (เดือน 7 ปฏิทินอิสลาม) ค.ศ. 610 ขณะอายุ 40 ปี</li>
+<li>ปัจจุบันเชื่อว่าถ้ำอยู่บนยอดเขา<strong>ญะบะลุนนูร (Jabal an-Nour)</strong> ห่างมักกะฮ์ ~11 กม. ทางตะวันออกเฉียงเหนือ สูง ~270 ม.</li>
+<li>⚠️ สไลด์ p.32 เปรียบเทียบกับโมเสสที่ภูเขาซีนายจนอ่านแล้วชวนสับสน — <strong>ผู้รับพระบัญญัติ 10 ประการคือโมเสส ไม่ใช่มูฮัมหมัด</strong> (การเปรียบเทียบของสไลด์เท่านั้น)</li>
+</ul>
+<h2><a id="nabi-4"></a>5. อิสรออ์–เมี้ยะรอจญ์ (Isra &amp; Mi'raj, ค.ศ. 621) ⭐ [p.59-64]</h2>
+<ul>
+<li><strong>ปาฏิหาริย์ที่ยิ่งใหญ่ที่สุด</strong>ของท่านนบี (The Miraculous Night Journey) — คืนวันที่ 27 เดือนรอญับ ค.ศ. 621 (1 ปีก่อนฮิจเราะห์)</li>
+<li><strong>Isra:</strong> เดินทางยามค่ำคืน <strong>มักกะฮ์ ⇄ เยรูซาเล็ม</strong> ในคืนเดียว บนพาหนะสวรรค์ <strong>"บูร็อก" (Buraq)</strong> (คล้ายม้าวิเศษ)</li>
+<li><strong>Mi'raj:</strong> หลังละหมาดที่<strong>มัสยิดอัล-อักซอ (Al-Aqsa)</strong> ณ เยรูซาเล็ม ท่านถูกยกขึ้นสู่<strong>สวรรค์ 7 ชั้น</strong> พบองค์อัลลอฮ์ และได้รับโองการเรื่อง<strong>การละหมาด 5 เวลา/วัน</strong> (ฟัรฎู — ภาคบังคับของมุสลิมทุกคน)</li>
+<li>จุดที่ถูกยกขึ้นสู่ฟ้า ปัจจุบันคือที่ตั้ง <strong>Dome of the Rock</strong> ข้างมัสยิดอัล-อักซอ บนเนินพระวิหาร (Temple Mount) เขตเมืองเก่าเยรูซาเล็ม</li>
+</ul>
+<h2><a id="nabi-5"></a>6. ฮิจเราะห์ &amp; กำเนิดฮิจเราะห์ศักราช ⭐ [p.66-75]</h2>
+<ul>
+<li><strong>ฮิจเราะห์ = การอพยพ</strong> ของท่านนบี+ผู้ติดตามหลายร้อยคน จาก<strong>มักกะฮ์ → เมดินะฮ์</strong> (ชื่อเดิม <strong>ยัธริบ/Yathrib</strong>) วันที่ <strong>16 กรกฎาคม ค.ศ. 622</strong></li>
+<li>เหตุการณ์นี้ = จุดเริ่ม <strong>ฮ.ศ. 1</strong> (A.H. = Anno Hegirae; ก่อนฮิจเราะห์ = B.H.)</li>
+<li><strong>ผู้กำหนดศักราชอิสลามอย่างเป็นทางการ = คอลีฟะฮ์อุมัร (Umar)</strong> — คอลีฟะฮ์<strong>คนที่ 2</strong> (ต่อจาก<strong>อะบูบักร์ Abu Bakr</strong>) กำหนดในปี ค.ศ. 638 (ฮ.ศ. 17) คือ <strong>7 ปีหลัง</strong>ท่านนบีเสียชีวิต โดยที่ประชุมเลือกปีอพยพเป็นปีที่ 1</li>
+<li>ปฏิทินอิสลาม = <strong>จันทรคติ (Lunar)</strong>: ปีละ 354–355 วัน, เดือนละ 29–30 วัน, 12 เดือน, วันใหม่เริ่มหลังดวงอาทิตย์ตก → ไม่ตรงกับปฏิทินเกรกอเรียน (สุริยคติ)</li>
+<li><strong>วันปีใหม่อิสลาม = 1 เดือนมุฮัรรอม (1st Muharram)</strong> — ฉลองการอพยพของท่านนบี</li>
+</ul>
+<h2><a id="nabi-6"></a>7. สงคราม 3 ครั้งใหญ่ (The Medinan / Military Period) ⭐ [p.77-86]</h2>
+<table>
+<thead>
+<tr>
+<th>สงคราม</th>
+<th>ปี</th>
+<th>กำลังพล</th>
+<th>ผล</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>บะดัร (Badr)</strong> — สงครามครั้งแรก</td>
+<td>624 (ฮ.ศ. 2, เดือนรอมฎอน)</td>
+<td>มุสลิม ~300 vs กุเรช 1,000 (นำโดย<strong>อบูซุฟยาน</strong>)</td>
+<td><strong>มุสลิมชนะ</strong> — มุสลิมเสีย 14, กุเรชตาย 70 + ถูกจับ 70 → จุดเปลี่ยนสำคัญ อิทธิพลกุเรชลด (สมรภูมิห่างเมดินะฮ์ ~90 กม. ทางตะวันตกเฉียงใต้)</td>
+</tr>
+<tr>
+<td><strong>อุฮุด (Uhud)</strong></td>
+<td>625 (ฮ.ศ. 3)</td>
+<td>มุสลิม 700 (แม่ทัพ = ท่านนบีเอง) vs กุเรช 3,000 (แม่ทัพ = อบูซุฟยาน)</td>
+<td><strong>มุสลิมแพ้</strong> — เสียชีวิต 70+ คน (รบที่เชิงเขาอุฮุด เหนือเมดินะฮ์)</td>
+</tr>
+<tr>
+<td><strong>ค็อนดัก (Khandaq) / สนามเพลาะ (Trench)</strong></td>
+<td>627 (ฮ.ศ. 5)</td>
+<td>มุสลิม ~3,000 vs พันธมิตรกุเรช+เผ่ามุชริก+ยิว ~10,000 + ม้า/อูฐ 600</td>
+<td><strong>มุสลิมชนะ</strong> (ขุดสนามเพลาะตั้งรับรอบเมดินะฮ์ 30 วัน ฝ่ายล้อมถอนทัพ)</td>
+</tr>
+</tbody>
+</table>
+<h2><a id="nabi-7"></a>8. ฮุดัยบียะฮ์ → พิชิตมักกะฮ์ → วาระสุดท้าย [p.88-101]</h2>
+<ul>
+<li><strong>สนธิสัญญาฮุดัยบียะฮ์ (628, ฮ.ศ. 6):</strong> สงบศึก 10 ปี ระหว่างฝ่ายมุสลิมกับเผ่ากุเรช ลงนามที่หมู่บ้านฮุดัยบียะฮ์ (~14.5 กม. นอกมักกะฮ์) — มุสลิมได้สิทธิกลับไปแสวงบุญ/เยี่ยมญาติที่มักกะฮ์ ⚠️ สไลด์ p.89 พิมพ์ "In 630 C.E., 6 A.H." — ปีที่ถูกคือ <strong>628</strong></li>
+<li><strong>พิชิตมักกะฮ์ (630, ฮ.ศ. 8):</strong> หลังกุเรชผิดสัญญา ท่านนบีนำมุสลิม (เผ่าต่างๆ เข้าร่วมตลอดทาง) เข้ายึดมักกะฮ์<strong>โดยไม่นองเลือด</strong> และ<strong>ให้อภัยโทษ</strong>ชาวมักกะฮ์</li>
+<li><strong>ฮัจญ์อำลา (632, ฮ.ศ. 10):</strong> ฮัจญ์ครั้งแรกและครั้งเดียวของท่าน + เทศนาครั้งสุดท้าย (The Last Sermon)</li>
+<li><strong>เสียชีวิต (632, ฮ.ศ. 11):</strong> ป่วยและเสียชีวิตที่เมดินะฮ์ ฝังที่<strong>มัสยิดอัล-นะบาวี</strong> — ไม่ได้ตั้งผู้สืบทอด → ที่มาของปัญหาการสืบทอด (สุนนี่–ชีอะห์ ในเวลาต่อมา)</li>
+</ul></section>
+<section class="chapter" id="ch-book"><div class="chhead"><span class="chno">📖 คัมภีร์</span><h1>กุรอาน &amp; ฮะดีษ</h1><div class="chsrc">ที่มา: <code>Islam_คัมภีร์_อัลกุรอาน-ฮะดีษ_สรุปเต็ม.md</code></div></div><blockquote>
+<p><strong>For future Claude:</strong> สรุปจากสไลด์ <code>Islam4.pdf</code> (32 หน้า) — คัมภีร์อัล-กุรอาน (ที่มา โครงสร้าง 114 ซูเราะห์/6,666 โองการ, ซูเราะห์มักกะฮ์ vs เมดินะฮ์) และอัล-ฮะดีษ (บันทึกจริยาวัตรท่านนบี สำคัญรองจากกุรอาน) ใช้คู่กับ <strong>Islam_ศาสดามูฮัมหมัด_Timeline_สรุปเต็ม</strong> (เหตุการณ์รับโองการ)</p>
+</blockquote>
+<h2><a id="book-0"></a>1. อัล-กุรอาน (Al-Quran / Koran) — คัมภีร์หลัก</h2>
+<h3>ข้อมูลพื้นฐาน</h3>
+<ul>
+<li>ชื่อแปลว่า <strong>"สิ่งที่ต้องอ่าน / บทอ่าน"</strong> (That which is to be read) [p.27]</li>
+<li>บันทึกครั้งแรกด้วย<strong>ภาษาอาหรับ</strong> [p.5-6]</li>
+<li><strong>รวบรวมเป็นรูปเล่มสมบูรณ์ครั้งแรก หลังท่านนบีมูฮัมหมัดเสียชีวิตแล้ว 5 เดือน</strong> [p.8] ⭐</li>
+<li>ลักษณะการบันทึก: <strong>ร้อยแก้ว</strong> มีบางตอนท้ายเล่มที่ถ้อยคำสอดคล้องมีจังหวะรับกันคล้ายโคลงกลอน [p.9]</li>
+<li>ขนาดเล็กกว่าคัมภีร์ไบเบิลของคริสต์ — เนื้อหาหลายตอน<strong>คล้ายคลึงกับคัมภีร์ยูดายและคริสต์</strong> (ทั้งเหตุการณ์และบุคคล) [p.10, 26]</li>
+</ul>
+<h3>ที่มา (สายการเปิดเผย) ⭐ [p.11-12]</h3>
+<p><strong>อัลลอฮ์ → เทวทูต/มะลาอิกะฮ์ (ญิบรีล) → ลงวะฮีย์ (Wahi = การเปิดเผยโองการ) → นบีมูฮัมหมัด</strong><br />
+- ตามหลักเชื่ออิสลาม: กุรอาน<strong>ไม่ได้เกิดจากมนุษย์คิด/เขียนเอง</strong> — เป็นเทวบัญชา สัจพจน์บริสุทธิ์ศักดิ์สิทธิ์ขององค์อัลลอฮ์ <strong>ห้ามสงสัย ดัดแปลง แก้ไข</strong><br />
+- "อัล-กุรอานเป็นโองการของพระผู้เป็นเจ้าอย่างแท้จริง ไม่ใช่กวีนิพนธ์ของมนุษย์"</p>
+<h3>โครงสร้าง ⭐ ตัวเลขออกสอบ [p.13, 27]</h3>
+<table>
+<thead>
+<tr>
+<th>หน่วย</th>
+<th>จำนวน</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ซูเราะห์ (Surah)</strong> = บท (Chapter)</td>
+<td><strong>114 บท</strong></td>
+</tr>
+<tr>
+<td><strong>อายะฮ์/อายัต (Ayah)</strong> = โองการ/วรรค (Verse)</td>
+<td><strong>6,666 โองการ</strong> (⚠️ ตามการนับมาตรฐานฉบับพิมพ์รัฐบาลซาอุดีอาระเบีย = <strong>6,236 อายะฮ์</strong>)</td>
+</tr>
+<tr>
+<td>จำนวนคำทั้งเล่ม</td>
+<td>77,639 คำ</td>
+</tr>
+</tbody>
+</table>
+<h3>ซูเราะห์มักกะฮ์ vs ซูเราะห์เมดินะฮ์ ⭐ [p.14-19]</h3>
+<p>ท่านนบีรับโองการรวม <strong>23 ปี (อายุ 40–63)</strong>: ที่มักกะฮ์ 13 ปี + ที่เมดินะฮ์ 10 ปี</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>มักกียะห์ (The Meccan surah)</strong></th>
+<th><strong>มะดะนียะห์ (The Medinan surah)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>เปิดเผยที่</td>
+<td>เมืองมักกะฮ์ (13 ปี)</td>
+<td>เมืองเมดินะฮ์ (10 ปี)</td>
+</tr>
+<tr>
+<td>จำนวน</td>
+<td><strong>93 ซูเราะห์</strong> (บางเกณฑ์นับ 86–93)</td>
+<td><strong>21 ซูเราะห์</strong> (บางเกณฑ์นับ 21–28)</td>
+</tr>
+<tr>
+<td>ลักษณะ</td>
+<td><strong>โองการสั้นๆ</strong></td>
+<td><strong>โองการค่อนข้างยาว</strong></td>
+</tr>
+<tr>
+<td>เนื้อหา</td>
+<td>เรื่องราวชนชาติต่างๆ และความพินาศของสังคม, เอกภาพขององค์อัลลอฮ์และศรัทธา, ข้อพิสูจน์ความเป็นพระเจ้า, สอนทำดีเว้นชั่ว</td>
+<td><strong>ประมวลกฎหมาย</strong> (มรดก ซื้อขาย หย่าร้าง ฯลฯ), <strong>หลักปฏิบัติของมุสลิม</strong> (ถือศีลอด พิธีฮัจญ์ ฯลฯ)</td>
+</tr>
+</tbody>
+</table>
+<h2><a id="book-1"></a>2. อัล-ฮะดีษ (Al-Hadith) — คัมภีร์รอง ⭐ [p.28-32]</h2>
+<ul>
+<li>สะกดได้หลายแบบ: ฮะดีษ / หะดีษ / ฮะดิต / อัล-ฮะดีต ฯลฯ [p.29]</li>
+<li>คือ <strong>บันทึก/คำอธิบายคำสอน และจริยาวัตร (แบบอย่างการดำเนินชีวิต) ของท่านนบีมูฮัมหมัด</strong> — รวบรวมวาจา การกระทำ และนิสัยของท่าน</li>
+<li>เดิมเป็น<strong>เรื่องเล่าจดจำสืบต่อกันมา (มุขปาฐะ)</strong> ภายหลังจึงมีผู้รวบรวมบันทึกเป็นลายลักษณ์อักษร [p.30]</li>
+<li>มีจำนวน<strong>ไม่น้อยกว่า 4,000 ข้อ</strong> [p.32]</li>
+<li><strong>ความสำคัญ: รองจากอัล-กุรอาน</strong> — ใช้ศึกษาแบบอย่างชีวิตท่านนบี และช่วย<strong>ตีความ</strong>ข้อความในกุรอานที่เข้าใจยาก [p.31]</li>
+<li>ตัวอย่างฮะดีษ [p.32]: "มนุษย์ที่ดีที่สุดคือผู้บำเพ็ญประโยชน์แก่เพื่อนมนุษย์" / "ผู้ใดมีความพยายาม ผู้นั้นจะได้รับความสำเร็จ" / "บุรุษที่อิ่มหนำสำราญขณะที่เพื่อนบ้านตกยาก ไม่ใช่มุสลิม" / "อย่าริอ่านเป็นคนติดเหล้าหรือเล่นการพนัน" / "ผู้ที่ดีที่สุดในพวกท่านคือผู้ปฏิบัติต่อครอบครัวของเขาอย่างดีที่สุด"</li>
+</ul>
+<h2><a id="book-2"></a>เก็งจุดหลอก</h2>
+<ol>
+<li>กุรอานรวมเล่มสมบูรณ์<strong>หลัง</strong>นบีเสียชีวิต 5 เดือน (ไม่ใช่ก่อน/ทันทีที่ยังมีชีวิต)</li>
+<li>114 ซูเราะห์ / 6,666 โองการ (มาตรฐานซาอุฯ 6,236) — อย่าสลับเลข</li>
+<li>ซูเราะห์<strong>มักกะฮ์ = สั้น เรื่องศรัทธา</strong> / <strong>เมดินะฮ์ = ยาว เรื่องกฎหมาย+หลักปฏิบัติ</strong> (สลับกันคือผิด)</li>
+<li>ฮะดีษสำคัญ<strong>รองจาก</strong>กุรอาน ไม่ใช่เท่ากัน</li>
+<li>ผู้นำโองการมาส่ง = เทวทูต<strong>ญิบรีล</strong> (ไม่ใช่อัลลอฮ์มาโดยตรง)</li>
+</ol></section>
+<section class="chapter" id="ch-iman"><div class="chhead"><span class="chno">🤲 หลักศรัทธา 6</span><h1>Iman</h1><div class="chsrc">ที่มา: <code>Islam_หลักศรัทธา6ประการ_Iman_สรุปเต็ม.md</code></div></div><blockquote>
+<p><strong>คอร์ส:</strong> ศาสนาอิสลาม — อาจารย์สอง (Satit UP)<br />
+<strong>สำหรับ Claude ในอนาคต:</strong> โน้ตนี้สรุป <strong>หลักศรัทธา 6 ประการ (อีมาน/Iman)</strong> จากสไลด์ชุด Islam5_1 A+B. หลักคำสอนอิสลามมี <strong>3 หมวด</strong>: (1) <strong>อีมาน (Iman)</strong> = หลักศรัทธา/ความเชื่อ ← โน้ตนี้ · (2) <strong>อิห์ซาน (Ihsan)</strong> = หลักคุณธรรม/ความดี · (3) <strong>อิบาดะฮ์ (Ibadat)</strong> = หลักปฏิบัติ/หน้าที่. อ้างหน้าแบบ <code>[A p.N]</code> = ไฟล์ Islam5_1_(A), <code>[B p.N]</code> = ไฟล์ Islam5_1_(B).<br />
+⚠️ อาจารย์สองออกสอบ <strong>ภาษาอังกฤษ</strong> — ท่องชื่ออาหรับ/อังกฤษของแต่ละหลัก + คู่คัมภีร์-นบี + หน้าที่ทูตสวรรค์ให้แม่น.<br />
+<strong>เชื่อมโยง:</strong> คัมภีร์อัลกุรอานดูเพิ่ม <strong>Islam_คัมภีร์_อัลกุรอาน-ฮะดีษ_สรุปเต็ม</strong>; นบีมุฮัมมัดดู <strong>Islam_ศาสดามูฮัมหมัด_Timeline_สรุปเต็ม</strong>; เทียบ 3 ศาสนาดู <strong>Islam_3ศาสนาอับราฮัม_ยูดาย-คริสต์-อิสลาม_สรุปเต็ม</strong>.</p>
+</blockquote>
+<hr />
+<h2><a id="iman-0"></a>0. ภาพรวม — หลักคำสอนอิสลาม 3 หมวด <code>[A p.2]</code></h2>
+<table>
+<thead>
+<tr>
+<th>หมวด</th>
+<th>ชื่ออาหรับ</th>
+<th>คือ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>หลักศรัทธา (ความเชื่อ)</td>
+<td><strong>อีมาน (Iman)</strong></td>
+<td>สิ่งที่ต้องเชื่อ 6 ประการ ← โน้ตนี้</td>
+</tr>
+<tr>
+<td>หลักคุณธรรม (ความดี)</td>
+<td><strong>อิห์ซาน (Ihsan)</strong></td>
+<td>จริยธรรม/ทำดี</td>
+</tr>
+<tr>
+<td>หลักปฏิบัติ (หน้าที่)</td>
+<td><strong>อิบาดะฮ์ (Ibadat)</strong></td>
+<td>การปฏิบัติศาสนกิจ (เช่น 5 เสาหลัก)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>หลักศรัทธา 6 ประการ (6 Articles of Faith / Iman):</strong> (1) อัลลอฮ์ (2) คัมภีร์ (3) ศาสนทูต (4) มลาอิกะฮ์ (5) วันพิพากษา (6) กฎสภาวการณ์</p>
+<hr />
+<h2><a id="iman-1"></a>1. ศรัทธาต่อองค์อัลลอฮ์ (Belief in Allah) ⭐⭐ <code>[A p.7–17]</code></h2>
+<ul>
+<li><strong>อัลลอฮ์ (Allah)</strong> = พระเจ้าองค์เดียวสูงสุด · ชื่อเฉพาะของพระเจ้าในอิสลาม</li>
+<li><strong>เตาฮีด (Tawhid)</strong> = "ความเป็นหนึ่งเดียวของพระเจ้า" (Oneness of God) — แนวคิดศูนย์กลางและสำคัญที่สุดของอิสลาม</li>
+<li>อัลลอฮ์: เป็นผู้สร้างสรรพสิ่ง · ไม่มีบุตร ไม่มีภาคี ไม่มีเพศ ไม่มีร่างกาย ไม่เหมือนสิ่งใด (<strong>ต่างจากตรีเอกภาพของคริสต์</strong>)</li>
+<li><strong>ชิริก (Shirk / การตั้งภาคี)</strong> ⭐ = การเอาสิ่งอื่นมาเคารพบูชา/เทียบเคียงกับอัลลอฮ์ = <strong>บาปใหญ่ที่สุด (The Greatest / Unforgivable sin)</strong> → ตกนรก (Jahannam) ไม่ได้ขึ้นสวรรค์</li>
+<li>เป็น <strong>หลักข้อแรกและสำคัญที่สุด</strong> ของอีมาน</li>
+</ul>
+<h2><a id="iman-2"></a>2. ศรัทธาในบรรดาคัมภีร์ (Belief in the Books / Kutub) ⭐⭐ <code>[A p.18–44]</code></h2>
+<ul>
+<li>ต้องศรัทธาใน <strong>คัมภีร์ทุกเล่ม</strong>ที่อัลลอฮ์ประทาน — เชื่อเฉพาะอัลกุรอานเล่มเดียวไม่ได้</li>
+<li>รวมมี <strong>104 คัมภีร์</strong> ประทานผ่านบรรดานบีตั้งแต่สร้างโลก; <strong>4 คัมภีร์สำคัญที่สุด + ศุฮุฟ:</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>คัมภีร์</th>
+<th>ประทานแก่นบี</th>
+<th>ภาษา</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ศุฮุฟ (Suhuf / Scrolls)</strong></td>
+<td>อิบรอฮีม (Ibrahim / Abraham)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>เตารอต / โตราห์ (Taurat / Torah)</strong></td>
+<td>มูซา (Musa / Moses)</td>
+<td>ฮีบรู</td>
+</tr>
+<tr>
+<td><strong>ซะบูร (Zabur / Psalms)</strong></td>
+<td>ดาวูด (Dawud / David)</td>
+<td>ซีเรียโบราณ</td>
+</tr>
+<tr>
+<td><strong>อินญีล (Injil / Gospel)</strong></td>
+<td>อีซา (Isa / Jesus)</td>
+<td>กรีกโบราณ</td>
+</tr>
+<tr>
+<td><strong>อัลกุรอาน (Al-Quran)</strong></td>
+<td>มุฮัมมัด (Muhammad)</td>
+<td>อาหรับ</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>อัลกุรอาน</strong> ⭐ = คัมภีร์ <strong>เล่มสุดท้าย (The Final/Last)</strong> และ <strong>สมบูรณ์ที่สุด</strong> · <strong>ไม่เคยถูกแก้ไข/บิดเบือน</strong> (Flawless &amp; Untampered)</li>
+<li>คัมภีร์ก่อนหน้า (เตารอต/ซะบูร/อินญีล) ถูกเปลี่ยนแปลงบิดเบือนไปจากเดิม → อัลกุรอาน <strong>ยกเลิก (abrogate) และแทนที่</strong> ทั้งหมด · ใช้จนถึง <strong>วันกิยามะฮ์ (วันสิ้นโลก)</strong></li>
+<li>อินญีล = ตรงกับ <strong>พระวรสาร 4 เล่มแรก</strong> (มัทธิว มาระโก ลูกา ยอห์น) ในภาคพันธสัญญาใหม่</li>
+</ul>
+<h2><a id="iman-3"></a>3. ศรัทธาในบรรดาศาสนทูต/นบี (Belief in the Messengers / Prophets) ⭐⭐ <code>[A p.45–107]</code></h2>
+<ul>
+<li><strong>นบี/รอซูล (Nabi / Rasul)</strong> = ศาสนทูตที่อัลลอฮ์ส่งมานำทางมนุษย์ + สอนกฎของพระเจ้า</li>
+<li>มีนบีมากมาย · <strong>25 ท่านถูกระบุชื่อในอัลกุรอาน</strong></li>
+<li><strong>อาดัม (Adam)</strong> = <strong>นบีคนแรก</strong> + มนุษย์คนแรก</li>
+<li><strong>มุฮัมมัด (Muhammad)</strong> = <strong>นบีคนสุดท้าย (The Final / Seal of the Prophets)</strong> — ไม่ใช่บุตรของพระเจ้า และไม่ใช่บิดาของผู้ใด</li>
+<li>นบีมุฮัมมัดรับวิวรณ์ผ่านทูตสวรรค์ <strong>ญิบรีล (Jibril)</strong></li>
+</ul>
+<h2><a id="iman-4"></a>4. ศรัทธาในมลาอิกะฮ์ (Belief in Angels / Malaikah) ⭐⭐ <code>[B p.126–410]</code></h2>
+<ul>
+<li><strong>มลาอิกะฮ์ (Malaikah)</strong> = ทูตสวรรค์/เทวทูต ทำหน้าที่ตามคำสั่งอัลลอฮ์ · ทูตสวรรค์สำคัญ:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>ทูตสวรรค์</th>
+<th>หน้าที่ ⭐</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ญิบรีล (Jibril / Gabriel)</strong></td>
+<td>นำวิวรณ์/สาส์นจากอัลลอฮ์สู่บรรดานบี</td>
+</tr>
+<tr>
+<td><strong>มิกาอีล (Mika'il / Michael)</strong></td>
+<td>ควบคุมระบบสุริยจักรวาล + นำปัจจัยยังชีพ (ฝน/อาหาร) มาให้มนุษย์</td>
+</tr>
+<tr>
+<td><strong>อิสรอฟีล (Israfil / Raphael)</strong></td>
+<td><strong>เป่าแตร (Sur)</strong> เมื่อถึงวันสิ้นโลกและวันฟื้นคืนชีพ</td>
+</tr>
+<tr>
+<td><strong>อิซรออีล (Izra'il / Azrael)</strong></td>
+<td><strong>ทูตมรณะ (Angel of Death)</strong> — ถอดวิญญาณตามเวลาที่กำหนด</td>
+</tr>
+<tr>
+<td><strong>รอกีบ &amp; อะตีด (Raqib &amp; Atid)</strong></td>
+<td>บันทึกความดี (ไหล่ขวา) / ความชั่ว (ไหล่ซ้าย) ของมนุษย์</td>
+</tr>
+<tr>
+<td><strong>มุนกัร &amp; นะกีร (Munkar &amp; Nakir)</strong></td>
+<td>สอบสวนผู้ตายในหลุมศพ (กุโบร์) เรื่องศรัทธา</td>
+</tr>
+<tr>
+<td><strong>ริฎวาน (Ridwan)</strong></td>
+<td>เฝ้าประตูสวรรค์ (7 ชั้น)</td>
+</tr>
+<tr>
+<td><strong>มาลิก (Malik)</strong></td>
+<td>เฝ้าประตูนรก (7 ขุม)</td>
+</tr>
+</tbody>
+</table>
+<h2><a id="iman-5"></a>5. ศรัทธาในวันพิพากษา (Belief in the Day of Judgment / Qiyamah) ⭐ <code>[B p.462–620]</code></h2>
+<ul>
+<li><strong>วันกิยามะฮ์ (Qiyamah)</strong> = วันสิ้นโลก + วันพิพากษาครั้งสุดท้ายจากอัลลอฮ์ (Yawm al-Qiyamah / The Day of Judgment)</li>
+<li>ลำดับ: <strong>อิสรอฟีลเป่าแตร → การฟื้นคืนชีพ (Resurrection) → การพิพากษา</strong></li>
+<li>ผล: <strong>คนดี → สวรรค์ (Jannah)</strong> · <strong>คนชั่ว → นรก (Jahannam)</strong> — ตลอดกาล</li>
+<li>เกี่ยวข้องกับ <strong>อาคิเราะฮ์ (Akhirah = โลกหน้า)</strong> · มี <strong>สัญญาณวันสิ้นโลก</strong> เกิดก่อน</li>
+<li>ทั้ง 3 ศาสนาอับราฮัม (ยูดาย/คริสต์/อิสลาม) เชื่อเรื่องวันพิพากษาสอดคล้องกัน</li>
+</ul>
+<h2><a id="iman-6"></a>6. ศรัทธาในกฎสภาวการณ์/การลิขิต (Belief in Predestination / Qadar) <code>[B p.860–1040]</code></h2>
+<ul>
+<li><strong>กอฎออ์ (Qadha) &amp; กอฎัร (Qadar)</strong> = การศรัทธาต่อ <strong>การกำหนด/ลิขิตสภาวะทั้งดีและร้าย</strong> จากอัลลอฮ์</li>
+<li>ทุกสิ่งเกิดขึ้นและเป็นไป <strong>ตามพระประสงค์และการกำหนดของอัลลอฮ์</strong> — เป็นสิทธิ์ขาดของพระเจ้า</li>
+<li>มนุษย์: ต้อง <strong>ทำดีที่สุด + วิงวอนขอพร</strong> แต่ต้อง <strong>ยอมรับสิ่งที่พระเจ้าลิขิต</strong> อย่างหลีกเลี่ยงไม่ได้</li>
+</ul>
+<hr />
+<h2><a id="iman-7"></a>7. 📌 จุดออกสอบ (อ.สองออกอังกฤษ — ต้องแม่น)</h2>
+<ul>
+<li><strong>3 หมวดคำสอน:</strong> Iman (ศรัทธา) · Ihsan (คุณธรรม) · Ibadat (ปฏิบัติ)</li>
+<li><strong>6 articles of faith:</strong> Allah · Books · Messengers · Angels · Day of Judgment · Qadar</li>
+<li><strong>Tawhid</strong> (เอกภาพพระเจ้า) vs <strong>Shirk</strong> (ตั้งภาคี = บาปใหญ่สุด อภัยไม่ได้)</li>
+<li><strong>คู่คัมภีร์–นบี:</strong> Suhuf–Ibrahim · Taurat–Musa · Zabur–Dawud · Injil–Isa · <strong>Quran–Muhammad</strong></li>
+<li><strong>Quran = คัมภีร์สุดท้าย + สมบูรณ์สุด + ไม่ถูกแก้ไข</strong></li>
+<li><strong>Adam = นบีคนแรก · Muhammad = นบีคนสุดท้าย</strong> · 25 นบีในกุรอาน</li>
+<li><strong>หน้าที่ทูตสวรรค์:</strong> Jibril(วิวรณ์) · Mika'il(ปัจจัยยังชีพ) · Israfil(เป่าแตร) · Izra'il(ถอดวิญญาณ) · Munkar-Nakir(สอบในหลุมศพ) · Raqib-Atid(บันทึกดี-ชั่ว)</li>
+<li><strong>Jannah</strong> = สวรรค์ · <strong>Jahannam</strong> = นรก · <strong>Qiyamah</strong> = วันพิพากษา</li>
+</ul>
+<hr />
+<p><em>สร้างโดย <code>/obsidian-ingest</code> (2026-07-21) จากสไลด์ Islam5_1 A (107 น.) + B (110 น.). สไลด์เป็นแนว "กำแพงศัพท์อังกฤษ" (ซ้ำเยอะ) — ดึงเฉพาะข้อเท็จจริงหลัก. ฟอนต์ไทยในสไลด์มีเพี้ยนบางจุด (เช่น "ค า"="คำ") แก้แล้ว.</em></p></section>
+<section class="chapter" id="ch-symbol"><div class="chhead"><span class="chno">☪️ สัญลักษณ์</span><h1>จุดหลอกข้อสอบ</h1><div class="chsrc">ที่มา: <code>Islam_สัญลักษณ์_สรุปเต็ม.md</code></div></div><blockquote>
+<p><strong>For future Claude:</strong> สรุปจากสไลด์ <code>Islam3.pdf</code> (30 หน้า ส่วนใหญ่เป็นภาพ) — ประเด็นหลักเดียวที่ต้องแม่น: <strong>อิสลามไม่มีสัญลักษณ์ทางศาสนาอย่างเป็นทางการ</strong> ดาว+จันทร์เสี้ยวเป็นแค่ "เครื่องหมายที่สื่อถึงอิสลาม" ซึ่งมีที่มาจากอาณาจักรออตโตมาน ใช้คู่กับ <strong>Islam_บทนำ_Introduction_สรุปเต็ม</strong></p>
+</blockquote>
+<h2><a id="symbol-0"></a>1. หลักสำคัญ ⭐ (จุดหลอกข้อสอบ)</h2>
+<ul>
+<li>ศาสนาอิสลามเคารพบูชา<strong>เฉพาะองค์อัลลอฮ์องค์เดียว</strong> ไม่บูชารูปเคารพใดๆ — การบูชาสิ่งอื่นถือเป็น <strong>"ชิริก" (Shirk)</strong> = การตั้งภาคีเทียบเคียงกับองค์อัลลอฮ์ [p.4]</li>
+<li>ดังนั้นโดยหลักการ <strong>อิสลามไม่มีสัญลักษณ์ทางศาสนา</strong> (ภายในมัสยิดไม่มีสัญลักษณ์/รูปเคารพ) [p.4-5]</li>
+<li><strong>ดาว + เดือน (พระจันทร์เสี้ยว) (Crescent and Star)</strong> ที่เห็นบนยอดมัสยิด = <strong>เครื่องหมาย</strong>ที่บ่งบอก/สื่อถึงความเป็นอิสลาม — <strong>ไม่ใช่สัญลักษณ์ทางศาสนา</strong> [p.3-5, 15]</li>
+</ul>
+<h2><a id="symbol-1"></a>2. ที่มาของดาว-จันทร์เสี้ยว [p.6] ⭐</h2>
+<ul>
+<li>เดิมเป็นเครื่องหมายของ<strong>อาณาจักรออตโตมานเติร์ก (Ottoman Turks)</strong> — อาณาจักรมุสลิมที่ยิ่งใหญ่ ครอบงำยุโรปตะวันออก+ตะวันออกกลางทั้งหมด ตั้งแต่<strong>ศตวรรษที่ 15 ถึงศตวรรษที่ 20</strong></li>
+<li>ประเทศมุสลิมที่เคยอยู่ใต้อำนาจออตโตมานจึงรับเครื่องหมายนี้มาใช้ต่อ ในฐานะชนชาติมุสลิมเหมือนกัน</li>
+</ul>
+<h2><a id="symbol-2"></a>3. การใช้งานจริง</h2>
+<ul>
+<li>พบบน<strong>ยอดมัสยิด (สุเหร่า)</strong> / ศาสนสถานอิสลามทั่วไป [p.7-14]</li>
+<li>ใช้สื่อถึงความเป็นอิสลามในบริบททั่วไปได้ [p.15]</li>
+<li>ประเทศที่ประชากรส่วนใหญ่เป็นมุสลิมหลายประเทศใช้บน<strong>ธงชาติ</strong> [p.16] — ตัวอย่างในสไลด์ [p.18-29]: มาเลเซีย, ตุรกี, เติร์กเมนิสถาน, ตูนิเซีย, แอลจีเรีย, มัลดีฟส์, ปากีสถาน, มอริเตเนีย, อุซเบกิสถาน, อาเซอร์ไบจาน, คอโมโรส, เวสเทิร์นสะฮารา</li>
+</ul>
+<blockquote>
+<p>⚠️ สไลด์สะกด Shirk เป็น "Chirik" — คำมาตรฐานภาษาอังกฤษคือ <strong>Shirk</strong> (ชิริก)</p>
+</blockquote></section>
+<section class="chapter" id="ch-abraham"><div class="chhead"><span class="chno">⚖️ เทียบ 3 ศาสนา</span><h1>ยูดาย·คริสต์·อิสลาม</h1><div class="chsrc">ที่มา: <code>Islam_3ศาสนาอับราฮัม_ยูดาย-คริสต์-อิสลาม_สรุปเต็ม.md</code></div></div><blockquote>
+<p><strong>คอร์ส:</strong> ศาสนาอิสลาม — อาจารย์สอง (Satit UP)<br />
+<strong>สำหรับ Claude ในอนาคต:</strong> โน้ตนี้เปรียบเทียบ <strong>3 ศาสนาตระกูลอับราฮัม (Abrahamic religions)</strong> — ยูดาย (Judaism) · คริสต์ (Christianity) · อิสลาม (Islam) — ทั้งด้านพระเจ้า คัมภีร์ พระเยซู ปี/สถานที่ก่อตั้ง ภาษา นิกาย และการยอมรับ/ปฏิเสธซึ่งกันและกัน. จากสไลด์ Islam5_1_Judaism-Christianity-Islam. อ้างหน้าแบบ <code>[p.N]</code>.<br />
+⚠️ อาจารย์สองออกสอบ <strong>ภาษาอังกฤษ</strong> — ท่องชื่อพระเจ้า/ปีก่อตั้ง/ภาษา/นิกายของแต่ละศาสนาให้แม่น + ตารางเทียบ.<br />
+<strong>เชื่อมโยง:</strong> หลักศรัทธาอิสลามดู <strong>Islam_หลักศรัทธา6ประการ_Iman_สรุปเต็ม</strong>; ตรีเอกภาพ/พระเยซูฝั่งคริสต์ดู <strong>Christ_สรุปเต็ม</strong>.</p>
+</blockquote>
+<hr />
+<h2><a id="abraham-0"></a>1. ศาสนาตระกูลอับราฮัมคืออะไร <code>[p.11,15]</code> ⭐</h2>
+<ul>
+<li>กลุ่มศาสนา <strong>เอกเทวนิยม (Monotheism)</strong> ที่บูชา <strong>พระเจ้าองค์เดียวของอับราฮัม (God of Abraham)</strong></li>
+<li><strong>3 ศาสนาพี่น้อง (sister religions):</strong> ยูดาย · คริสต์ · อิสลาม — ทั้งหมดยอมรับ <strong>อับราฮัม (อิบรอฮีม)</strong> เป็น <strong>นบีคนแรก + บิดาแห่งเอกเทวนิยม (father of monotheism)</strong></li>
+<li>รวมกันมีศาสนิก <strong>~55–60% ของประชากรโลก</strong> (~4,200–4,300 ล้านคน) — ศาสนาหลักของโลก</li>
+<li><strong>ยูดายเก่าแก่ที่สุด</strong> ในสามศาสนา (the original Abrahamic faith)</li>
+<li>(ยังมีศาสนาอับราฮัมกลุ่มเล็ก: Baha'i, Druze, Samaritan, Rastafari ฯลฯ)</li>
+</ul>
+<h2><a id="abraham-1"></a>2. พระเจ้าองค์เดียวกัน — แต่ต่างชื่อ/สภาวะ <code>[p.3–9]</code> ⭐⭐</h2>
+<p>ทั้ง 3 นับถือ <strong>พระเจ้าองค์เดียวกัน</strong> (ที่บรรดานบีเช่น นูฮ์/โนอาห์, อิบรอฮีม/อับราฮัม, มูซา/โมเสส, ดาวูด/เดวิด นับถือ) แต่เรียกและเข้าใจต่างกัน:</p>
+<table>
+<thead>
+<tr>
+<th>ศาสนา</th>
+<th>ชื่อพระเจ้า</th>
+<th>ลักษณะเด่น</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ยูดาย</strong></td>
+<td><strong>Yahweh / YHWH / Elohim</strong> (ยาห์เวห์/เยโฮวาห์)</td>
+<td>พระเจ้าหนึ่งเดียว</td>
+</tr>
+<tr>
+<td><strong>คริสต์</strong></td>
+<td><strong>ตรีเอกภาพ (Trinity)</strong></td>
+<td>หนึ่งเดียวแต่ 3 สภาวะ: พระบิดา (Father→Yahweh) · พระบุตร (Son→Jesus) · พระจิต (Holy Spirit)</td>
+</tr>
+<tr>
+<td><strong>อิสลาม</strong></td>
+<td><strong>อัลลอฮ์ (Allah)</strong></td>
+<td>หนึ่งเดียว ไม่มีภาคี ไม่ใช่ตรีเอกภาพ</td>
+</tr>
+</tbody>
+</table>
+<p><strong>การยอมรับ/ปฏิเสธซึ่งกันและกัน</strong> (จุดออกสอบ):<br />
+- <strong>ยูดาย</strong> ปฏิเสธ: ตรีเอกภาพ, พันธสัญญาใหม่, พระเยซูเป็นเมสสิยาห์, อัลลอฮ์/กุรอาน/มุฮัมมัด<br />
+- <strong>คริสต์</strong> ยอมรับ: Yahweh (=พระบิดา), คัมภีร์ยูดาย (=พันธสัญญาเดิม), บุคคลสำคัญยูดาย; แต่ปฏิเสธที่ยูดายไม่ยอมรับพระเยซูเป็นพระบุตร/เมสสิยาห์<br />
+- <strong>อิสลาม</strong> ยอมรับ: พระเจ้ายูดาย (ในชื่ออัลลอฮ์), บรรดานบี (โนอาห์/อับราฮัม/โมเสส/ดาวิด/เยซู = นบี), คัมภีร์เก่า <strong>แต่ถือว่าถูกแก้ไขไปแล้ว → อัลกุรอานสมบูรณ์ที่สุด</strong>; ยอมรับพระเยซูเป็น <strong>นบี/มนุษย์ธรรมดา ไม่ใช่พระบุตรของพระเจ้า</strong> และปฏิเสธตรีเอกภาพ</p>
+<h2><a id="abraham-2"></a>3. ตารางเทียบหลัก 3 ศาสนา <code>[p.16–17]</code> ⭐⭐⭐</h2>
+<table>
+<thead>
+<tr>
+<th>หัวข้อ</th>
+<th><strong>ยูดาย (Judaism)</strong></th>
+<th><strong>คริสต์ (Christianity)</strong></th>
+<th><strong>อิสลาม (Islam)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ประเภทเทวนิยม</td>
+<td>Monotheism</td>
+<td>Monotheism</td>
+<td>Monotheism</td>
+</tr>
+<tr>
+<td><strong>% ประชากรโลก</strong></td>
+<td><strong>0.2%</strong></td>
+<td><strong>~31%</strong></td>
+<td><strong>~25%</strong></td>
+</tr>
+<tr>
+<td><strong>ปีก่อตั้ง</strong></td>
+<td>ไม่ทราบ (เก่าสุด)</td>
+<td>~100 CE</td>
+<td><strong>622 CE</strong></td>
+</tr>
+<tr>
+<td><strong>สถานที่ก่อตั้ง</strong></td>
+<td>ปาเลสไตน์/ดินแดนศักดิ์สิทธิ์</td>
+<td>ปาเลสไตน์–โรม</td>
+<td><strong>ซาอุดีอาระเบีย</strong></td>
+</tr>
+<tr>
+<td><strong>ผู้นำ/ศาสดา</strong></td>
+<td>อับราฮัม–โมเสส</td>
+<td>พระเยซู</td>
+<td>มุฮัมมัด</td>
+</tr>
+<tr>
+<td><strong>ภาษาเดิม</strong></td>
+<td>ฮีบรู (Hebrew)</td>
+<td>อารามาอิก–กรีก</td>
+<td>อาหรับ (Arabic)</td>
+</tr>
+<tr>
+<td><strong>คัมภีร์</strong></td>
+<td>Torah, Nevi'im, K'tuvim (Tanakh)</td>
+<td>+ Gospels / พันธสัญญาใหม่</td>
+<td>+ <strong>อัลกุรอาน</strong></td>
+</tr>
+<tr>
+<td><strong>พระเยซูคือ</strong></td>
+<td>แค่รับบี (ครูสอน) ไม่ใช่เมสสิยาห์</td>
+<td>พระเมสสิยาห์ + <strong>พระบุตรพระเจ้า</strong> + ผู้ไถ่บาป</td>
+<td><strong>นบี/เมสสิยาห์ แต่ไม่ใช่พระบุตรพระเจ้า</strong></td>
+</tr>
+<tr>
+<td><strong>การคืนชีพของพระเยซู</strong></td>
+<td>ปฏิเสธ</td>
+<td>ยอมรับ</td>
+<td>ปฏิเสธ</td>
+</tr>
+<tr>
+<td><strong>นิกายหลัก</strong></td>
+<td>Orthodox · Conservative · Reform</td>
+<td>Catholic · Orthodox · Protestant</td>
+<td><strong>Sunni · Shia</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>"People of the Book" (Ahl al-Kitab)</strong> = ในมุมมองอิสลาม ถือว่า <strong>ยิวและคริสต์</strong> เป็น "ชาวคัมภีร์" (แต่มีความเชื่อที่คลาดเคลื่อน/วิวรณ์ไม่สมบูรณ์)</li>
+</ul>
+<hr />
+<h2><a id="abraham-3"></a>4. 📌 จุดออกสอบ (ต้องแม่น)</h2>
+<ul>
+<li><strong>3 ศาสนาอับราฮัม</strong> = ยูดาย · คริสต์ · อิสลาม — เอกเทวนิยม, ยอมรับ <strong>อับราฮัม = นบีคนแรก/บิดาเอกเทวนิยม</strong></li>
+<li><strong>ชื่อพระเจ้า:</strong> Yahweh (ยูดาย) · Trinity/พระบิดา-บุตร-จิต (คริสต์) · <strong>Allah (อิสลาม)</strong></li>
+<li><strong>ปีก่อตั้ง:</strong> ยูดายเก่าสุด · คริสต์ ~100 CE · <strong>อิสลาม 622 CE</strong></li>
+<li><strong>ภาษา:</strong> ฮีบรู · อารามาอิก-กรีก · อาหรับ</li>
+<li><strong>นิกาย:</strong> ยูดาย(Orthodox/Conservative/Reform) · คริสต์(Catholic/Orthodox/Protestant) · <strong>อิสลาม(Sunni/Shia)</strong></li>
+<li><strong>พระเยซู:</strong> ยูดายว่าเป็นแค่รับบี · คริสต์ว่าเป็นพระบุตรพระเจ้า/เมสสิยาห์ · <strong>อิสลามว่าเป็นนบี (ไม่ใช่พระบุตร)</strong></li>
+<li><strong>การคืนชีพพระเยซู:</strong> คริสต์ยอมรับ / ยูดาย+อิสลามปฏิเสธ</li>
+</ul>
+<hr />
+<p><em>สร้างโดย <code>/obsidian-ingest</code> (2026-07-21) จากสไลด์ Islam5_1_Judaism-Christianity-Islam (20 น.). ตัวเลข %/ปี ตามที่สไลด์ระบุ (ยูดาย 0.2%, คริสต์ ~31%, อิสลาม ~25%).</em></p></section>
+<section class="chapter" id="ch-festival"><div class="chhead"><span class="chno">🌙 วันสำคัญ</span><h1>เทศกาล &amp; ปฏิทิน</h1><div class="chsrc">ที่มา: <code>Islam_วันสำคัญ-เทศกาล-ปฏิทิน_สรุปเต็ม.md</code></div></div><blockquote>
+<p><strong>คอร์ส:</strong> ศาสนาอิสลาม — อาจารย์สอง (Satit UP)<br />
+<strong>สำหรับ Claude ในอนาคต:</strong> โน้ตนี้สร้างขึ้นเพื่ออุด <strong>bucket ที่ออกสอบเยอะสุด (วันสำคัญ 40-50%)</strong> ตามแนวข้อสอบ อ.สอง (ถอดจากข้อสอบคริสต์: วันสำคัญ 40-50% · คนสำคัญ 30% · ทั่วไป/ที่ตั้ง/รูป 20-30%). ครอบคลุม <strong>ปฏิทินฮิจเราะฮ์ · เทศกาล/วันสำคัญ · พิธีกรรม · การแต่งกาย · สี · สัญลักษณ์ · ผู้นำ/ลำดับขั้นศาสนา</strong>.<br />
+⚠️⚠️ <strong>คำเตือนสำคัญ:</strong> เนื้อหาโน้ตนี้มาจาก <strong>ความรู้อิสลามมาตรฐานทั่วไป ไม่ได้คัดจากสไลด์ อ.สอง</strong> (วอลต์ยังไม่มี deck เทศกาลอิสลาม). ข้อเท็จจริงเป็นมาตรฐานที่ยอมรับกันทั่วไป แต่ <strong>ถ้อยคำ/จุดเน้น/คำตอบที่ อ.ต้องการอาจต่างออกไป</strong> — ให้ทวนกับสไลด์จริงเมื่อได้มา. ใช้เพื่อเตรียมสอบตามแนว blueprint ไปพลางก่อน.<br />
+<strong>เชื่อมโยง:</strong> สัญลักษณ์ (ไม่มีสัญลักษณ์ทางการ/พระจันทร์เสี้ยว) ดู <strong>Islam_สัญลักษณ์_สรุปเต็ม</strong>; ละหมาด 5 เวลา/ฮิจเราะฮ์ ดู <strong>Islam_ศาสดามูฮัมหมัด_Timeline_สรุปเต็ม</strong>; หลักศรัทธา ดู <strong>Islam_หลักศรัทธา6ประการ_Iman_สรุปเต็ม</strong>.</p>
+</blockquote>
+<hr />
+<h2><a id="festival-0"></a>1. ปฏิทินอิสลาม (Islamic / Hijri Calendar) ⭐⭐</h2>
+<ul>
+<li>เป็น <strong>ปฏิทินจันทรคติ (Lunar calendar)</strong> — ยึดการโคจรของดวงจันทร์</li>
+<li>มี <strong>12 เดือน ~354 วัน/ปี</strong> — สั้นกว่าปฏิทินสุริยคติ ~11 วัน → <strong>วันสำคัญอิสลามเลื่อนเร็วขึ้นทุกปี</strong> (ไม่ตรงฤดูกาลตายตัว)</li>
+<li>เริ่มนับศักราชจาก <strong>การอพยพฮิจเราะฮ์ (Hijrah) ค.ศ. 622</strong> → เรียก <strong>ปีฮิจเราะฮ์ศักราช (ฮ.ศ. / AH)</strong> · (คอลีฟะฮ์ <strong>อุมัร</strong> เป็นผู้กำหนดให้เริ่มนับอย่างเป็นทางการ)</li>
+<li><strong>การกำหนดวันสำคัญ:</strong> ใช้ <strong>การดูดวงจันทร์ (moon sighting / รุอ์ยะฮ์)</strong> โดยผู้นำศาสนา</li>
+<li>เดือนสำคัญ: <strong>รอมฎอน (เดือน 9)</strong> ถือศีลอด · <strong>ซุลฮิจญะฮ์ (เดือน 12)</strong> ฮัจญ์ · <strong>มุฮัรรอม (เดือน 1)</strong> ปีใหม่/อาชูรอ</li>
+</ul>
+<h2><a id="festival-1"></a>2. เทศกาล/วันสำคัญ (Festivals / Holy Days) ⭐⭐⭐ (ออกสอบเยอะสุด)</h2>
+<h3>กลุ่ม "วันอีด (Eid)" — 2 วันตรุษใหญ่</h3>
+<table>
+<thead>
+<tr>
+<th>วัน</th>
+<th>เมื่อไร</th>
+<th>ความหมาย/พิธีกรรม</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>อีดิลฟิฏริ (Eid al-Fitr)</strong> = ตรุษเล็ก</td>
+<td><strong>1 เชาวาล</strong> (เดือน 10) หลังสิ้นรอมฎอน</td>
+<td>ฉลอง<strong>สิ้นสุดการถือศีลอด</strong>; ละหมาดอีด, จ่าย <strong>ซะกาตฟิฏเราะฮ์</strong> (ทานก่อนละหมาด), แต่งกายสวยงาม, เยี่ยมญาติ ขออภัย</td>
+</tr>
+<tr>
+<td><strong>อีดิลอัฎฮา (Eid al-Adha)</strong> = ตรุษใหญ่/วันเชือดพลี</td>
+<td><strong>10 ซุลฮิจญะฮ์</strong> (เดือน 12) ช่วงฮัจญ์</td>
+<td>รำลึก<strong>การเสียสละของนบีอิบรอฮีม</strong> (จะเชือดบุตรตามบัญชา); <strong>เชือดสัตว์พลี (กุรบาน)</strong> แจกจ่ายเนื้อแก่คนยากจน</td>
+</tr>
+</tbody>
+</table>
+<h3>วันสำคัญอื่น ๆ</h3>
+<ul>
+<li><strong>เดือนรอมฎอน (Ramadan)</strong> <code>[เดือน 9]</code> — เดือนถือศีลอด (<strong>เศาม์/Sawm</strong>) ตั้งแต่รุ่งสาง (ฟัจญ์) ถึงตะวันตกดิน (มัฆริบ); 1 ใน 5 เสาหลัก</li>
+<li><strong>ลัยละตุลก็อดร์ (Laylat al-Qadr / คืนอานุภาพ)</strong> — คืนที่ <strong>อัลกุรอานถูกประทานครั้งแรก</strong>; อยู่ในคืนคี่ 10 คืนสุดท้ายของรอมฎอน (มักถือคืนที่ 27); <strong>ประเสริฐกว่า 1,000 เดือน</strong></li>
+<li><strong>เมาลิด (Mawlid al-Nabi)</strong> <code>[12 เราะบีอุลเอาวัล เดือน 3]</code> — วันคล้าย<strong>วันประสูติของนบีมุฮัมมัด</strong></li>
+<li><strong>อาชูรอ (Ashura)</strong> <code>[10 มุฮัรรอม เดือน 1]</code> — <strong>ซุนนี</strong>ถือศีลอดสมัครใจ; <strong>ชีอะฮ์</strong>ไว้อาลัยการเสียชีวิตของ <strong>ฮุเซน (หลานนบี)</strong> ที่กัรบะลาอ์</li>
+<li><strong>อิสรออ์ วัลเมียะราจ (Isra &amp; Mi'raj)</strong> <code>[27 เราะญับ เดือน 7]</code> — การเดินทางกลางคืน + ขึ้นสู่ฟากฟ้าของนบีมุฮัมมัด; เป็นคืนที่ได้รับบัญชา <strong>ละหมาด 5 เวลา</strong></li>
+<li><strong>วันศุกร์ (ญุมุอะฮ์ / Jumu'ah)</strong> — วันสำคัญ<strong>ประจำสัปดาห์</strong>; มีละหมาดวันศุกร์รวมที่มัสยิด (แทนละหมาดกลางวัน)</li>
+</ul>
+<h2><a id="festival-2"></a>3. พิธีฮัจญ์ (Hajj) + การแต่งกาย/สี ⭐⭐</h2>
+<ul>
+<li><strong>ฮัจญ์</strong> = การแสวงบุญที่ <strong>เมกกะ (Mecca)</strong> เดือนซุลฮิจญะฮ์; เป็น <strong>1 ใน 5 เสาหลักของอิสลาม</strong> (ฟัรฎูสำหรับผู้มีความสามารถ ครั้งหนึ่งในชีวิต)</li>
+<li><strong>การแต่งกาย: อิฮ์รอม (Ihram)</strong> ⭐ — ชาย: <strong>ผ้าขาวไม่มีตะเข็บ 2 ผืน</strong> (แสดงความเท่าเทียม ไม่แบ่งชนชั้น); หญิง: แต่งกายมิดชิดปกติ (คลุมได้แต่ไม่คลุมหน้า/มือ)</li>
+<li><strong>พิธีกรรมสำคัญ:</strong> <strong>เฏาะวาฟ</strong> (เวียนรอบ <strong>กะอ์บะฮ์</strong> 7 รอบ) · <strong>สะแอ</strong> (เดินไป-มาระหว่างเนินเศาะฟา–มัรวะฮ์ 7 เที่ยว) · <strong>วุกูฟ</strong> (หยุดพักที่ทุ่งอะเราะฟะฮ์) · <strong>ขว้างเสาหิน (ญัมเราะฮ์)</strong> สัญลักษณ์ขับไล่มาร</li>
+<li><strong>สี:</strong> <strong>สีเขียว</strong> = สีที่ผูกพันกับอิสลาม (สื่อถึงสวรรค์/ความอุดมสมบูรณ์; ปรากฏบนธงหลายชาติมุสลิม); <strong>อิฮ์รอม = ขาว</strong></li>
+</ul>
+<h2><a id="festival-3"></a>4. สัญลักษณ์/สถานที่ (bucket "ทั่วไป") ⭐</h2>
+<ul>
+<li><strong>กะอ์บะฮ์ (Ka'bah)</strong> = อาคารทรงลูกบาศก์สีดำที่<strong>เมกกะ</strong> — เป็น <strong>ทิศทางการละหมาด (กิบละฮ์/Qiblah)</strong> ของมุสลิมทั่วโลก</li>
+<li><strong>มัสยิด (Mosque/Masjid)</strong> = ศาสนสถาน; <strong>มัสยิดอัลฮะรอม</strong> (เมกกะ, ล้อมกะอ์บะฮ์) และ <strong>มัสยิดอันนะบะวี</strong> (เมดินา, ที่ฝังศพนบี) สำคัญที่สุด</li>
+<li><strong>พระจันทร์เสี้ยว + ดาว</strong> = สัญลักษณ์ที่<strong>เกี่ยวข้อง</strong> (มาจากจักรวรรดิออตโตมัน) — แต่ <strong>อิสลามไม่มีสัญลักษณ์ทางการ</strong> (การบูชารูปเคารพ = ชิริก) → ดู <strong>Islam_สัญลักษณ์_สรุปเต็ม</strong></li>
+<li>เมืองศักดิ์สิทธิ์: <strong>เมกกะ (Mecca)</strong> · <strong>เมดินา (Medina)</strong> · <strong>เยรูซาเล็ม</strong> (มัสยิดอัลอักซอ)</li>
+</ul>
+<h2><a id="festival-4"></a>5. ผู้นำ/ลำดับขั้นทางศาสนา (bucket "คนสำคัญ" 30%) ⭐⭐</h2>
+<blockquote>
+<p>อิสลามไม่มีระบบนักบวช/ลำดับชั้นแบบคาทอลิก แต่มีผู้นำ/ผู้รู้ตามบทบาท:</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>ตำแหน่ง</th>
+<th>บทบาท</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>เคาะลีฟะฮ์ (Caliph / กาหลิบ)</strong></td>
+<td><strong>ประมุขผู้สืบทอด</strong>หลังนบีสิ้น; 4 ท่านแรก (<strong>อัรรอชิดีน</strong>) = อบูบักร · อุมัร · อุษมาน · <strong>อาลี</strong></td>
+</tr>
+<tr>
+<td><strong>อิหม่าม (Imam)</strong></td>
+<td>ผู้นำละหมาด / ผู้นำชุมชนมุสลิม</td>
+</tr>
+<tr>
+<td><strong>มุฟตี (Mufti)</strong></td>
+<td>ผู้รู้ที่ออก <strong>คำวินิจฉัยศาสนา (ฟัตวา/Fatwa)</strong></td>
+</tr>
+<tr>
+<td><strong>อุลามาอ์ (Ulama)</strong></td>
+<td>คณะนักปราชญ์/ผู้รู้ทางศาสนา</td>
+</tr>
+<tr>
+<td><strong>ชัยค์ (Sheikh)</strong></td>
+<td>ผู้รู้/ผู้อาวุโสที่ได้รับความเคารพ</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>ผู้ประกาศวันสำคัญ/ดูดวงจันทร์:</strong> สภา/ผู้นำศาสนาโดยการเห็นดวงจันทร์ (รุอ์ยะฮ์)</li>
+<li><strong>ในประเทศไทย:</strong> <strong>จุฬาราชมนตรี (Chularatchamontri)</strong> = ผู้นำสูงสุดของมุสลิมในไทย — เป็น<strong>ผู้ประกาศวันสำคัญอิสลาม</strong>ในไทย (เช่น วันอีด, วันเริ่ม-สิ้นรอมฎอน) และเป็นที่ปรึกษากิจการศาสนาอิสลามต่อรัฐ</li>
+</ul>
+<hr />
+<h2><a id="festival-5"></a>6. 📌 จุดออกสอบ (ตามน้ำหนักข้อสอบ)</h2>
+<ul>
+<li><strong>ปฏิทินอิสลาม = จันทรคติ ~354 วัน</strong> เริ่มนับจากฮิจเราะฮ์ 622 (ฮ.ศ.) → วันสำคัญเลื่อนทุกปี</li>
+<li><strong>อีดิลฟิฏริ</strong> = สิ้นรอมฎอน (1 เชาวาล) · <strong>อีดิลอัฎฮา</strong> = วันเชือดพลี ช่วงฮัจญ์ (10 ซุลฮิจญะฮ์, รำลึกอิบรอฮีม)</li>
+<li><strong>รอมฎอน</strong> = เดือนถือศีลอด (เดือน 9) · <strong>ลัยละตุลก็อดร์</strong> = คืนประทานกุรอาน (ประเสริฐกว่า 1000 เดือน)</li>
+<li><strong>อิฮ์รอม</strong> = ผ้าขาว 2 ผืนไม่มีตะเข็บ (แต่งกายฮัจญ์) · <strong>สีเขียว</strong> = สีของอิสลาม</li>
+<li><strong>กะอ์บะฮ์</strong> = ทิศละหมาด (กิบละฮ์) ที่เมกกะ</li>
+<li><strong>คนสำคัญ:</strong> เคาะลีฟะฮ์(ประมุข) · อิหม่าม(นำละหมาด) · มุฟตี(ฟัตวา) · <strong>จุฬาราชมนตรี = ผู้นำ/ผู้ประกาศวันมุสลิมในไทย</strong></li>
+</ul>
+<hr />
+<p><em>สร้าง 2026-07-21 เพื่ออุด bucket "วันสำคัญ 40-50%" ตามแนวข้อสอบ อ.สอง. ⚠️ เนื้อหาจากความรู้ทั่วไปมาตรฐาน ไม่ใช่สไลด์ อ. — เมื่อได้ deck จริงให้ทวน/แก้ถ้อยคำ. เชื่อม </em><em>Islam_สัญลักษณ์_สรุปเต็ม</em><em>, </em><em>Islam_ศาสดามูฮัมหมัด_Timeline_สรุปเต็ม</em><em>.</em></p></section>
+  </main>
+</div>
+<button id="top" title="กลับขึ้นบน">↑</button>
+
+<script>
+/* แถบความคืบหน้าการอ่าน */
+addEventListener('scroll',()=>{
+  const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight||1)*100;
+  document.getElementById('progress').style.width=p+'%';
+  document.getElementById('top').classList.toggle('show',h.scrollTop>500);
+});
+document.getElementById('top').onclick=()=>scrollTo({top:0,behavior:'smooth'});
+
+/* ไฮไลต์หัวข้อที่กำลังอ่านอยู่ในสารบัญ */
+const links=[...document.querySelectorAll('.sidebar a')];
+const targets=links.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
+const io=new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(!e.isIntersecting)return;
+    const id='#'+e.target.id;
+    links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')===id));
+  });
+},{rootMargin:'-10% 0px -80% 0px'});
+targets.forEach(t=>io.observe(t));
+
+/* ค้นหาในสารบัญ */
+document.getElementById('q').addEventListener('input',e=>{
+  const v=e.target.value.trim().toLowerCase();
+  links.forEach(a=>a.classList.toggle('hide', v && !a.textContent.toLowerCase().includes(v)));
+  document.querySelectorAll('.navgroup').forEach(g=>{
+    const any=[...g.querySelectorAll('a')].some(a=>!a.classList.contains('hide'));
+    g.style.display = any?'':'none';
+  });
+});
+</script>
+<!--KIT-UI v2.6 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<script>
+/* =============================================================================
+   _kit/ui-controls.js  —  KIT UI  v1.0
+   แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
+     🌙/☀️  โหมดมืด / สว่าง   (จำค่าไว้ใน localStorage)
+     A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
+     ✏️  ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
+     🧮  เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
+
+   ── วิธีใช้ ────────────────────────────────────────────────────────────────
+   ห้ามแก้โค้ดนี้ในไฟล์ widget!  แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
+       pwsh -File _kit/apply-ui.ps1
+   สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
+   (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
+
+   !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
+      เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
+
+   ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
+   ใส่แอตทริบิวต์ที่ tag body:  data-tools="pen,calc"  = บังคับเปิด
+                              data-tools="none"      = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
+   ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
+              หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
+   ============================================================================= */
+(function(){
+if(window.__KITUI__) return; window.__KITUI__='2.6';
+
+/* ---------- helper ---------- */
+const D=document, R=D.documentElement;
+const get=k=>{try{return localStorage.getItem('kitui-'+k)}catch(e){return null}};
+const set=(k,v)=>{try{localStorage.setItem('kitui-'+k,v)}catch(e){}};
+const el=(t,c,h)=>{const e=D.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
+
+/* =============================================================================
+   1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
+   ============================================================================= */
+const CSS=`
+/* ===== DARK TOKENS (คู่กับ _kit/design-tokens.css) ===== */
+:root[data-theme="dark"]{
+  --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
+  --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
+  --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
+  --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
+  --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
+}
+:root[data-theme="dark"] body{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f172a}
+:root[data-theme="dark"] body[data-subject="physics"]{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f1220}
+:root[data-theme="dark"] body[data-subject="bio"]{--accent:#4ade80;--accent-head:#bbf7d0;--accent-ink:#86efac;--accent-soft:#0f2a1a;--accent-bd:#256b41;--accent-chip:#14532d;--accent-ghost:#15803d;--bg:#0d1912}
+:root[data-theme="dark"] body[data-subject="chem"]{--accent:#fb923c;--accent-head:#fed7aa;--accent-ink:#fdba74;--accent-soft:#2b1a0c;--accent-bd:#8a3d12;--accent-chip:#6d2c10;--accent-ghost:#c2410c;--bg:#1a130c}
+:root[data-theme="dark"] body[data-subject="christ"]{--accent:#a78bfa;--accent-head:#ddd6fe;--accent-ink:#c4b5fd;--accent-soft:#241a3d;--accent-bd:#5b21b6;--accent-chip:#4c1d95;--accent-ghost:#6d28d9;--bg:#16121f}
+:root[data-theme="dark"] body[data-subject="islam"]{--accent:#2dd4bf;--accent-head:#99f6e4;--accent-ink:#5eead4;--accent-soft:#0d2b28;--accent-bd:#12615a;--accent-chip:#134e4a;--accent-ghost:#0f766e;--bg:#0c1917}
+:root[data-theme="dark"] body[data-subject="history"]{--accent:#fbbf24;--accent-head:#fde68a;--accent-ink:#fcd34d;--accent-soft:#2a1f0a;--accent-bd:#8a4b0c;--accent-chip:#6d3a0a;--accent-ghost:#b45309;--bg:#191509}
+:root[data-theme="dark"] body[data-subject="math"]{--accent:#38bdf8;--accent-head:#bae6fd;--accent-ink:#7dd3fc;--accent-soft:#0c2434;--accent-bd:#0b5a80;--accent-chip:#0c4a6e;--accent-ghost:#0369a1;--bg:#0b1620}
+:root[data-theme="dark"] body[data-subject="eng"]{--accent:#f472b6;--accent-head:#fbcfe8;--accent-ink:#f9a8d4;--accent-soft:#2e1122;--accent-bd:#8d1748;--accent-chip:#731839;--accent-ghost:#be185d;--bg:#1c0f16}
+:root[data-theme="dark"] body[data-subject="thai"]{--accent:#f87171;--accent-head:#fecaca;--accent-ink:#fca5a5;--accent-soft:#2d1414;--accent-bd:#8d2020;--accent-chip:#7f1d1d;--accent-ghost:#b91c1c;--bg:#1a0f0f}
+:root[data-theme="dark"] img,:root[data-theme="dark"] .svg-box{filter:brightness(.92)}
+/* ช่องกรอก/ดรอปดาวน์ที่ widget เก่ากำหนดพื้นขาวตายตัวไว้ */
+:root[data-theme="dark"] select,:root[data-theme="dark"] textarea,
+:root[data-theme="dark"] input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=color])
+{background-color:var(--soft);color:var(--ink);border-color:var(--line)}
+
+/* ===== แถบเครื่องมือลอย ===== */
+#kitui-bar{position:fixed;right:10px;bottom:10px;z-index:99990;display:flex;gap:6px;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
+#kitui-bar button{border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;
+  font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
+  align-items:center;justify-content:center;font-weight:700}
+#kitui-bar button:hover{background:var(--soft)}
+#kitui-bar button:active{transform:scale(.93)}
+#kitui-bar button.on{background:var(--accent);color:#fff}
+#kitui-bar .kitui-sep{width:1px;height:22px;background:var(--line);flex:0 0 1px}
+#kitui-bar .kitui-fs{font-size:11px;color:var(--muted);min-width:34px;text-align:center;font-weight:700}
+#kitui-bar.hidden > *:not(#kitui-grip){display:none}
+#kitui-grip{font-size:17px}
+
+/* ===== แผงลอย (ที่ทด / เครื่องคิดเลข) ===== */
+.kitui-sheet{position:fixed;left:0;right:0;bottom:0;z-index:99991;background:var(--card);
+  border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
+  display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
+  height:52vh;max-height:92vh;min-height:180px}
+.kitui-sheet.open{display:flex}
+.kitui-sheet.full{height:100vh;border-radius:0}
+.kitui-head{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--line);
+  flex-wrap:wrap;touch-action:none;cursor:ns-resize}
+.kitui-head b{font-size:.9rem;color:var(--accent-ink);margin-right:2px;white-space:nowrap}
+.kitui-head button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;
+  padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
+.kitui-head button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.kitui-head .kitui-spacer{flex:1}
+.kitui-sw{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;min-height:0}
+.kitui-sw.on{border-color:var(--ink);transform:scale(1.12)}
+.kitui-padwrap{flex:1;position:relative;overflow:hidden;background:var(--soft)}
+.kitui-padwrap canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+:root[data-theme="dark"] .kitui-padwrap{background:#0c1220}
+
+/* ===== เครื่องคิดเลข ===== */
+#kitui-calc{height:auto;max-height:90vh}
+.kitui-disp{padding:8px 12px;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);
+  border-bottom:1px solid var(--line)}
+.kitui-disp .ex{font-size:.95rem;color:var(--muted);min-height:1.3em;word-break:break-all}
+.kitui-disp .rs{font-size:1.6rem;font-weight:700;color:var(--accent-ink);word-break:break-all}
+.kitui-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:7px}
+.kitui-keys button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:9px;
+  font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
+.kitui-keys button:active{transform:scale(.95)}
+.kitui-keys button.fn{font-size:.8rem;color:var(--accent-ink)}
+.kitui-keys button.op{background:var(--accent-soft);color:var(--accent-ink)}
+.kitui-keys button.eq{background:var(--accent);color:#fff;grid-row:span 2}
+.kitui-keys button.del{background:var(--hot-bg);color:var(--hot-ink)}
+.kitui-keys button.w3{grid-column:span 3}
+@media(max-width:420px){.kitui-keys button{font-size:.88rem;min-height:40px}.kitui-keys button.fn{font-size:.72rem}}
+@media(min-width:760px){
+  .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
+  .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
+  #kitui-pad{width:560px}
+}
+@media print{#kitui-bar,.kitui-sheet{display:none!important}}
+`;
+const st=el('style'); st.id='kitui-style'; st.textContent=CSS; D.head.appendChild(st);
+
+/* -----------------------------------------------------------------------------
+   1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
+   widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
+   พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
+   แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
+   เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
+----------------------------------------------------------------------------- */
+/* สีพาสเทลสว่าง -> สีเข้มที่ยังคง "เฉดเดิม" ไว้ (เขียว=ถูก / แดง=ผิด ต้องยังแยกออก)
+   ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
+function darken(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
+  /* ⚠️ ห้ามใช้ saturation ของ HSL ตรง ๆ ตัดสิน: ที่ความสว่างเกือบ 1 ตัวหารจะเล็กมาก
+     ทำให้สีที่แทบเป็นสีขาว (เช่น #fdf8f4) ได้ค่าอิ่มสีสูงลิ่ว แล้วกลายเป็นสีน้ำตาลจัดตอนกดให้เข้ม
+     ให้ดูจาก "ช่วงห่างของแม่สี" (chroma) แทน แล้วแปลงเป็นความอิ่มสีแบบไล่ระดับ */
+  const s = Math.min(.45, Math.max(.08, d*4));
+  const l = d<.02 ? .13 : .17;                       /* เทา/ขาวล้วนให้เข้มกว่าสีนิดหน่อย */
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+function darkFix(){
+  const out=[], seen=new Set();
+  const take=r=>{
+    if(!r.style || !r.selectorText) return;
+    if(r.selectorText.indexOf('kitui')>-1) return;               /* ของเราเองใช้ token อยู่แล้ว */
+    const bg=r.style.backgroundColor;
+    if(!bg || bg.indexOf('var(')>-1) return;
+    const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
+    if(!m) return;
+    if(m[4]!==undefined && +m[4]<0.6) return;                    /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
+    const cr=+m[1], cg=+m[2], cb=+m[3];
+    if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return;       /* ไม่สว่างพอ ไม่ต้องยุ่ง */
+    const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
+    const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
+    let css='background-color:'+repl;
+    /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
+    const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
+    out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
+  };
+  /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
+        ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
+  const visit=rules=>{
+    for(let i=0;i<rules.length;i++){
+      const r=rules[i];
+      if(r.selectorText) take(r);
+      if(r.cssRules && r.cssRules.length) visit(r.cssRules);     /* @media / @supports / nesting */
+    }
+  };
+  for(let i=0;i<D.styleSheets.length;i++){
+    let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; }   /* ข้ามชีตข้ามโดเมน */
+    if(rr) visit(rr);
+  }
+  if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
+  return out.length;
+}
+try{ window.__KITUI_DARKFIX__ = (D.body.getAttribute('data-kit-theme')==='off') ? 'locked' : darkFix(); }
+catch(e){ window.__KITUI_DARKFIX__='err:'+e.message; }
+
+/* darkFix ข้างบนซ่อมได้เฉพาะสีที่เขียนตายตัวในไฟล์ CSS
+   แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
+   ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
+   จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
+const rgbOf=c=>{const m=c&&c.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null;};
+const lumOf=v=>v?(0.2126*v[0]+0.7152*v[1]+0.0722*v[2])/255:null;
+/* ตรงข้ามกับ darken(): ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
+   (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
+function lighten(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  if(d<0.04) return 'var(--ink)';                    /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
+  let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
+  const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
+  const s=Math.min(.92,Math.max(.55,s0)), l=.72;
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+const SKIP={CANVAS:1,IMG:1,VIDEO:1,SVG:1,IFRAME:1,PICTURE:1,OBJECT:1};
+const OBS_OPT={childList:true,subtree:true,attributes:true,attributeFilter:['class','style']};
+let patched=[], obs=null;
+function elementFix(){
+  /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
+        ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
+  if(obs) obs.disconnect();
+  try{ elementFixCore(); } finally { if(obs) obs.observe(D.body,OBS_OPT); }
+}
+function elementFixCore(){
+  if(D.body.getAttribute('data-kit-theme')==='off') return;   /* หน้าที่ล็อกธีมไว้ ห้ามไปยุ่งสี */
+  /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
+     ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
+     จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
+  if(R.getAttribute('data-theme')!=='dark'){
+    patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
+    patched=[];
+    return;
+  }
+  /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
+     ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
+  /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
+  const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
+  for(let i=0;i<all.length;i++){
+    const e=all[i];
+    if(e.id&&e.id.indexOf('kitui')===0) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(SKIP[e.tagName]) continue;                      /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
+    const s=getComputedStyle(e);
+    const bg=rgbOf(s.backgroundColor);
+    if(!bg || bg[3]<0.6) continue;                     /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
+    if(lumOf(bg)<0.72) continue;                       /* เข้มพออยู่แล้ว */
+    /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
+    e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
+    const fg=rgbOf(s.color);
+    if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important');  /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
+    patched.push(e);
+  }
+  /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
+     ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
+  const bgCache=new Map();
+  const effBg=n=>{
+    for(let p=n;p;p=p.parentElement){
+      if(bgCache.has(p)) return bgCache.get(p);
+      const b=rgbOf(getComputedStyle(p).backgroundColor);
+      if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
+    }
+    return null;
+  };
+  for(let i=2;i<all.length;i++){
+    const e=all[i];
+    if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(e.style.color) continue;                         /* จัดการไปแล้วในรอบแรก */
+    if(!e.textContent || !e.textContent.trim()) continue;
+    const fg=rgbOf(getComputedStyle(e).color);
+    if(!fg || lumOf(fg)>=0.45) continue;                 /* ตัวอักษรสว่างอยู่แล้ว */
+    const bg=effBg(e);
+    if(!bg || lumOf(bg)>=0.5) continue;                  /* พื้นยังสว่าง อ่านออกอยู่ */
+    e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
+    patched.push(e);
+  }
+}
+let efT=0;
+const scheduleFix=()=>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
+try{
+  obs=new MutationObserver(scheduleFix);
+  obs.observe(D.body,OBS_OPT);
+}catch(e){}
+
+/* =============================================================================
+   2) ธีม + ขนาดตัวอักษร
+   ============================================================================= */
+const FS=[.85,1,1.15,1.3,1.5], FSNAME=['เล็กสุด','เล็ก','ปกติ','ใหญ่','ใหญ่สุด'];
+let fsIdx=parseInt(get('fs')); if(isNaN(fsIdx)||fsIdx<0||fsIdx>4) fsIdx=1;
+let theme=get('theme') || (matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+
+/* หน้าที่ออกแบบธีมมาเองครบแล้ว (เช่น "หนังสือทบทวน" พื้นเข้มทั้งเล่ม) ให้ปิดระบบธีมของ KIT UI
+   ไม่งั้นโทเคน --bg/--ink ของเราจะไปทับสีที่หน้านั้นตั้งไว้ แล้วหน้าเพี้ยน
+   ใส่ที่ tag body:  data-kit-theme="off"   (ปุ่มปรับขนาดตัวอักษรยังใช้ได้ตามปกติ) */
+const themeLock = D.body.getAttribute('data-kit-theme')==='off';
+
+function applyTheme(){
+  if(themeLock) return;
+  R.setAttribute('data-theme',theme);
+  R.style.colorScheme = theme==='dark'?'dark':'light';   /* ให้ select/input เป็นสีเข้มด้วย */
+  const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
+  set('theme',theme);
+  clearTimeout(efT);                                   /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
+  if(typeof elementFix==='function') elementFix();
+  if(typeof draw==='function' && pad) draw();          /* วาดที่ทดใหม่ เส้นดำ<->ขาวตามธีม */
+}
+function applyFS(){
+  R.style.fontSize=(16*FS[fsIdx])+'px';
+  const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
+  set('fs',fsIdx);
+}
+
+/* =============================================================================
+   3) แถบเครื่องมือ
+   ============================================================================= */
+const subj=(D.body.getAttribute('data-subject')||'').toLowerCase();
+/* หลาย widget ไม่ได้ใส่ data-subject ที่ <body> → เดาจากโฟลเดอร์ที่ไฟล์อยู่ด้วย */
+const inPath=/\/(physics|math|chemist)\//i.test(decodeURIComponent(location.pathname));
+const tAttr=D.body.getAttribute('data-tools');
+const wantTools = tAttr!=null ? tAttr.toLowerCase()
+                : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
+const hasPen  = wantTools.includes('pen');
+const hasCalc = wantTools.includes('calc');
+
+const bar=el('div'); bar.id='kitui-bar';
+bar.innerHTML =
+  `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
+  (themeLock ? '' : `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button><span class="kitui-sep"></span>`)+
+  `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
+  `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
+  `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
+  (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
+  (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
+D.body.appendChild(bar);
+
+if(!themeLock) D.getElementById('kitui-theme').onclick=()=>{theme=theme==='dark'?'light':'dark';applyTheme();};
+D.getElementById('kitui-fsup').onclick=()=>{if(fsIdx<4){fsIdx++;applyFS();}};
+D.getElementById('kitui-fsdown').onclick=()=>{if(fsIdx>0){fsIdx--;applyFS();}};
+D.getElementById('kitui-grip').onclick=()=>bar.classList.toggle('hidden');
+applyTheme(); applyFS();
+
+/* ปิดแผงด้วยปุ่ม Esc */
+D.addEventListener('keydown',e=>{ if(e.key==='Escape') D.querySelectorAll('.kitui-sheet.open').forEach(s=>s.classList.remove('open')); });
+
+/* ลากหัวแผงเพื่อปรับความสูง */
+function makeResizable(sheet){
+  const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
+  head.addEventListener('pointerdown',e=>{
+    if(e.target.closest('button'))return;
+    drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect().height;head.setPointerCapture(e.pointerId);
+  });
+  head.addEventListener('pointermove',e=>{
+    if(!drag)return;
+    const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
+    sheet.classList.remove('full'); sheet.style.height=h+'px';
+    if(sheet.id==='kitui-pad') fitPad();
+  });
+  head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
+}
+
+/* =============================================================================
+   4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ  หลายหน้า  เซฟอัตโนมัติ
+   ============================================================================= */
+let pad,padCv,padCx,pages=[[]],pg=0,undone=[],histo=[];
+let tool='pen',color='#111827',width=2.4,penSeen=0;
+const COLORS=['#111827','#2563eb','#dc2626','#16a34a','#f59e0b'];
+const PADKEY='pad-'+location.pathname.split('/').pop();
+
+function buildPad(){
+  pad=el('div','kitui-sheet'); pad.id='kitui-pad';
+  pad.innerHTML=
+   `<div class="kitui-head">
+      <b>✏️ ที่ทด</b>
+      <button data-t="pen" class="on">🖊️</button>
+      <button data-t="hl">🖍️</button>
+      <button data-t="er">🧽</button>
+      ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
+      <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
+      <span class="kitui-spacer"></span>
+      <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
+      <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
+      <button id="kitui-pgadd">+ หน้า</button>
+      <button id="kitui-clear">ล้างหน้านี้</button>
+      <button id="kitui-full">⛶</button>
+      <button id="kitui-padclose">✕</button>
+    </div>
+    <div class="kitui-padwrap"><canvas></canvas></div>`;
+  D.body.appendChild(pad);
+  padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
+  makeResizable(pad);
+
+  pad.querySelector('.kitui-head').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
+  });
+  D.getElementById('kitui-undo').onclick=()=>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop(); draw(); save(); } };
+  D.getElementById('kitui-redo').onclick=()=>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop(); draw(); save(); } };
+  D.getElementById('kitui-clear').onclick=()=>{ snap(); pages[pg]=[]; draw(); save(); };
+  D.getElementById('kitui-pgadd').onclick=()=>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw(); save(); };
+  D.getElementById('kitui-pgprev').onclick=()=>{ if(pg>0){pg--;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-pgnext').onclick=()=>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-full').onclick=()=>{ pad.classList.toggle('full'); pad.style.height=''; fitPad(); };
+  D.getElementById('kitui-padclose').onclick=()=>pad.classList.remove('open');
+
+  /* ---- วาด ---- */
+  let cur=null;
+  padCv.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='pen') penSeen=Date.now();
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;   /* กันฝ่ามือแตะตอนใช้สไตลัส */
+    const p=pt(e);
+    if(tool==='er'){ snap(); erase(p); return; }
+    snap();
+    cur={c:color,w:width,hl:tool==='hl',pts:[p]};
+    pages[pg].push(cur); draw();
+    try{ padCv.setPointerCapture(e.pointerId); }catch(x){}  /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
+  });
+  padCv.addEventListener('pointermove',e=>{
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;
+    if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
+    if(!cur||!e.buttons)return;
+    /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
+    let evs=[e];
+    if(e.getCoalescedEvents){ const c=e.getCoalescedEvents(); if(c&&c.length) evs=c; }
+    evs.forEach(ev=>cur.pts.push(pt(ev)));
+    draw();
+  });
+  const end=()=>{ if(cur){cur=null;save();} };
+  padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
+  padCv.addEventListener('pointerleave',end);
+
+  addEventListener('resize',()=>{ if(pad.classList.contains('open')) fitPad(); });
+  load(); fitPad();
+}
+function pt(e){
+  const r=padCv.getBoundingClientRect();
+  return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
+          p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5};   /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
+}
+function snap(){ histo.push(pages[pg].slice()); if(histo.length>60)histo.shift(); undone=[]; }
+function erase(p){
+  const r=padCv.getBoundingClientRect(), rad=18/r.width;
+  const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
+  if(keep.length!==pages[pg].length){ pages[pg]=keep; draw(); save(); }
+}
+function fitPad(){
+  const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
+  const dpr=Math.min(devicePixelRatio||1,2.5);
+  padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
+  draw();
+}
+function draw(){
+  const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
+  padCx.clearRect(0,0,W,H);
+  /* เส้นตารางจาง ๆ ให้เขียนตรง */
+  const dark=R.getAttribute('data-theme')==='dark';
+  padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
+  for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath();padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke();}
+  padCx.lineCap='round'; padCx.lineJoin='round';
+  pages[pg].forEach(s=>{
+    padCx.globalAlpha=s.hl?0.32:1;
+    padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
+    for(let i=1;i<s.pts.length;i++){
+      const a=s.pts[i-1],b=s.pts[i];
+      padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
+      padCx.beginPath(); padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke();
+    }
+    if(s.pts.length===1){ /* จุดเดียว */
+      padCx.fillStyle=padCx.strokeStyle; padCx.beginPath();
+      padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill();
+    }
+  });
+  padCx.globalAlpha=1;
+  const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
+}
+function save(){ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
+function load(){
+  try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
+}
+
+if(hasPen){
+  buildPad();
+  D.getElementById('kitui-penbtn').onclick=()=>{
+    const o=pad.classList.toggle('open');
+    D.getElementById('kitui-penbtn').classList.toggle('on',o);
+    if(o) fitPad();
+  };
+}
+
+/* =============================================================================
+   5) เครื่องคิดเลขวิทยาศาสตร์  (tokenizer → shunting-yard → RPN  ไม่ใช้ eval)
+   ============================================================================= */
+const FN={sin:1,cos:1,tan:1,asin:1,acos:1,atan:1,ln:1,log:1,sqrt:1,abs:1,exp:1};
+const PREC={'+':1,'-':1,'*':2,'/':2,'^':4,'u-':3};
+function tokenize(s){
+  s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
+  const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!()])/g; let m;
+  while((m=re.exec(s))) out.push(m[1]);
+  return out;
+}
+function toRPN(tk){
+  const out=[],op=[]; let prev=null;
+  for(let t of tk){
+    if(t==='**')t='^';
+    if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
+    else if(t==='PI'){ out.push(Math.PI); }
+    else if(t==='e'||t==='E'){ out.push(Math.E); }
+    else if(t==='ANS'){ out.push(ANS); }
+    else if(FN[t]){ op.push(t); }
+    else if(t==='('){ op.push(t); }
+    else if(t===')'){
+      while(op.length&&op[op.length-1]!=='(') out.push(op.pop());
+      if(!op.length) throw 0; op.pop();
+      if(op.length&&FN[op[op.length-1]]) out.push(op.pop());
+    }
+    else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
+    else if('+-*/^'.includes(t)){
+      let o=t;
+      const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
+      if(t==='-'&&unary) o='u-';
+      else if(t==='+'&&unary){ prev=t; continue; }
+      while(op.length){
+        const top=op[op.length-1];
+        if(top==='('||FN[top])break;
+        const rightAssoc=(o==='^'||o==='u-');
+        if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop()); else break;
+      }
+      op.push(o);
+    }
+    else throw 0;
+    prev=t;
+  }
+  while(op.length){ const o=op.pop(); if(o==='(')throw 0; out.push(o); }
+  return out;
+}
+function evalRPN(rpn,deg){
+  const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
+  const pop=()=>{ if(!st.length)throw 0; return st.pop(); };
+  for(const t of rpn){
+    if(typeof t==='number'){ st.push(t); continue; }
+    if(t==='fact'){ const n=pop(); if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
+    if(t==='pct'){ st.push(pop()/100); continue; }
+    if(t==='u-'){ st.push(-pop()); continue; }
+    if(FN[t]){
+      const a=pop();
+      st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
+             : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
+             : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
+             : t==='abs'?Math.abs(a) : Math.exp(a) );
+      continue;
+    }
+    const b=pop(),a=pop();
+    st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
+  }
+  if(st.length!==1) throw 0;
+  return st[0];
+}
+function calc(src,deg){ return evalRPN(toRPN(tokenize(src)),deg); }
+
+let ANS=0, expr='', calcSheet, isDeg=true;
+const KEYS=[
+ ['DEG','deg','fn'],['(','(',''],[')',')',''],['⌫','del','del'],['AC','ac','del'],
+ ['sin','sin(','fn'],['cos','cos(','fn'],['tan','tan(','fn'],['π','π','fn'],['÷','÷','op'],
+ ['sin⁻¹','asin(','fn'],['cos⁻¹','acos(','fn'],['tan⁻¹','atan(','fn'],['e','e','fn'],['×','×','op'],
+ ['ln','ln(','fn'],['log','log(','fn'],['√','√(','fn'],['xʸ','^','fn'],['−','−','op'],
+ ['7','7',''],['8','8',''],['9','9',''],['x!','!','fn'],['+','+','op'],
+ ['4','4',''],['5','5',''],['6','6',''],['%','%','fn'],['ANS','ANS','fn'],
+ ['1','1',''],['2','2',''],['3','3',''],['.','.',''],['=','eq','eq'],
+ ['0','0','w3'],['x²','^2','fn']
+];
+function buildCalc(){
+  calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
+  calcSheet.innerHTML=
+   `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
+      <button id="kitui-calcclose">✕</button></div>
+    <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
+    <div class="kitui-keys" id="kitui-keys">
+      ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
+    </div>`;
+  D.body.appendChild(calcSheet);
+  D.getElementById('kitui-calcclose').onclick=()=>calcSheet.classList.remove('open');
+  const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
+  const show=()=>{ ex.textContent=expr||' ';
+    try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
+    catch(e){ rs.style.opacity=.35; }
+  };
+  D.getElementById('kitui-keys').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
+    if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
+    if(k==='del'){ expr=expr.slice(0,-1); show(); return; }
+    if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show(); return; }
+    if(k==='eq'){
+      rs.style.opacity=1;
+      try{
+        const v=calc(expr,isDeg);
+        if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
+        if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
+        ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
+      }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
+      return;
+    }
+    expr+=k; show();
+  });
+}
+function fmt(v){
+  if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
+  if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
+  return String(Math.round(v*1e10)/1e10);
+}
+if(hasCalc){
+  buildCalc();
+  D.getElementById('kitui-calcbtn').onclick=()=>{
+    const o=calcSheet.classList.toggle('open');
+    D.getElementById('kitui-calcbtn').classList.toggle('on',o);
+  };
+}
+})();
+
+</script>
+<!--/KIT-UI-->
+</body>
+</html>
