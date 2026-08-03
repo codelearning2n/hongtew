@@ -428,7 +428,7 @@ function updateScore(){
 }
 updateScore();
 </script>
-<!--KIT-UI v2.6 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<!--KIT-UI v2.7 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>
 /* =============================================================================
    _kit/ui-controls.js  —  KIT UI  v1.0
@@ -454,7 +454,7 @@ updateScore();
               หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
    ============================================================================= */
 (function(){
-if(window.__KITUI__) return; window.__KITUI__='2.6';
+if(window.__KITUI__) return; window.__KITUI__='2.7';
 
 /* ---------- helper ---------- */
 const D=document, R=D.documentElement;
@@ -724,7 +724,11 @@ function applyTheme(){
   set('theme',theme);
   clearTimeout(efT);                                   /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
   if(typeof elementFix==='function') elementFix();
-  if(typeof draw==='function' && pad) draw();          /* วาดที่ทดใหม่ เส้นดำ<->ขาวตามธีม */
+  /* ⚠️ ห้ามอ้างถึงตัวแปรของส่วน "ที่ทด" ตรงนี้!
+     applyTheme() ถูกเรียกก่อนที่ `let pad` ในส่วนที่ 4 จะทำงาน → ชน temporal dead zone
+     แล้ว ReferenceError จะทำให้สคริปต์ตายทั้งก้อน (ปุ่มขนาดอักษร/ที่ทด/เครื่องคิดเลขหายหมด)
+     ใช้วิธียิง event แทน ใครสนใจค่อยไปดักฟังเอง */
+  try{ D.dispatchEvent(new CustomEvent('kitui-theme')); }catch(e){}
 }
 function applyFS(){
   R.style.fontSize=(16*FS[fsIdx])+'px';
@@ -853,6 +857,7 @@ function buildPad(){
   padCv.addEventListener('pointerleave',end);
 
   addEventListener('resize',()=>{ if(pad.classList.contains('open')) fitPad(); });
+  D.addEventListener('kitui-theme',()=>draw());   /* สลับธีมแล้ววาดลายใหม่ เส้นดำ<->ขาวตามพื้น */
   load(); fitPad();
 }
 function pt(e){
