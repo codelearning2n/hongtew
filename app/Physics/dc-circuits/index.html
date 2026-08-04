@@ -652,7 +652,9 @@ h4 { color: var(--accent); margin-bottom: 8px; }
     #sidebar { width: 60px; padding: 10px 0; }
     .logo h2, .nav-links li span:not(.nav-icon) { display: none; }
     .nav-links li { justify-content: center; padding: 12px; }
-    #content { margin-left: 60px; padding: 20px; }
+    /* min-width:0 จำเป็น! #content เป็นลูก flex ที่มี flex:1 ซึ่งค่าเริ่มต้น min-width คือ auto
+       = ห้ามหดเล็กกว่าเนื้อหาข้างใน พอบวก margin-left:60px แล้วจึงดันหน้าจนล้นขอบมือถือ */
+    #content { margin-left: 60px; padding: 20px; min-width: 0; }
     .two-col { grid-template-columns: 1fr; }
     .lab-container { grid-template-columns: 1fr; }
     .hero h1 { font-size: 1.8em; }

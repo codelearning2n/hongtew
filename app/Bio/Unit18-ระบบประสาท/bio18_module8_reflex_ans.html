@@ -140,6 +140,11 @@
   footer{color:var(--muted);text-align:center;font-size:.85rem;margin:10px 0 22px}
   .score{font-weight:700;color:var(--accent2)}
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ── มือถือ: ตาราง .tbl กว้างเกินจอแล้วเลื่อนไม่ได้ (ตั้ง overflow:hidden ไว้) ── */
+@media (max-width:640px){
+  .tbl{ display:block; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+}
 </style>
 </head>
 <body>

@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ราชาศัพท์ &amp; คำสุภาพ — ฝึกก่อนสอบ</title>
+<style>
+/* ============================================================================
+   ราชาศัพท์ & คำสุภาพ — สื่อฝึกก่อนสอบ
+   ที่มา: ภาษาไทย/คำราชาศัพท์ (1).pdf (29 สไลด์) + คำสุภาพหมวดผัก/ผลไม้/สัตว์
+          ซึ่ง "ไม่มีในสไลด์" ต้องหาเพิ่ม (อาจารย์สั่งให้ไปดูเอง) — ระบุที่มาไว้ในหน้าเว็บ
+
+   บทเรียนที่ต้องไม่ทำพลาดซ้ำ (จากไฟล์ Cheat Table ฮอร์โมน + ชีทสรุปชีวะ):
+   ① ห้ามตั้งชื่อตัวแปรทับ token กลางของ _kit  (--card --ink --line --ok --bg --muted --soft)
+      KIT UI แทรกสไตล์เข้า <head> ตอนรัน = มาทีหลัง สเปคเท่ากัน แล้วชนะเรา
+   ② ห้ามเขียนสีสว่างตรง ๆ ในบล็อก @media print — darkFix อ่านกฎในทุก @media
+      แล้วสร้างกฎโหมดมืดแบบไม่มี @media ครอบ สีหน้ากระดาษจะรั่วมาทับหน้าจอ
+   ③ ขนาดตัวอักษรเป็น rem ทั้งหมด ปุ่ม A+/A− ถึงจะทำงาน
+   ④ ลูกของ grid ต้องมี min-width:0 ไม่งั้นตารางข้างในดันกล่องจนล้นจอ
+   ========================================================================== */
+*{ box-sizing:border-box; margin:0; padding:0; -webkit-text-size-adjust:100%; }
+:root{
+  --pg:#f4f1ea; --cd:#ffffff; --cd2:#faf8f3;
+  --tx:#2a2318; --strong:#1a150d; --mut:#7b6f5c; --bd:#e3dccd;
+  --ac:#a8641b; --acbg:#fdf3e3; --acbd:#f0d9ac; --achd:#7c4408;
+  --gold:#b8860b; --goldbg:#fdf6e0;
+  --mk:#8a2f6b; --mkbg:#fdf0f8; --mkbd:#f2cfe6;      /* พระสงฆ์ */
+  --pl:#2f7d5c; --plbg:#eefaf3; --plbd:#bfe7d3;      /* คำสุภาพ */
+  --hl:#fde68a; --hlink:#6b4708;
+  --good:#15803d; --goodbg:#e9f9ef; --bad:#b91c1c; --badbg:#fdeceb;
+  --sh:0 1px 3px rgba(42,35,24,.08);
+}
+:root[data-theme="dark"]{
+  --pg:#0e0c09; --cd:#1a1712; --cd2:#211d17;
+  --tx:#ece6da; --strong:#faf6ee; --mut:#a1957f; --bd:#3a332a;
+  --ac:#e0a33f; --acbg:#2a1e0c; --acbd:#5c4315; --achd:#f2c877;
+  --gold:#e8c25a; --goldbg:#2b2208;
+  --mk:#e8a0d0; --mkbg:#2c1226; --mkbd:#5e2a4e;
+  --pl:#6ee7a8; --plbg:#0d2a1c; --plbd:#22603f;
+  --hl:#4a3a06; --hlink:#fde68a;
+  --good:#86efac; --goodbg:#102c1a; --bad:#fca5a5; --badbg:#2f1414;
+  --sh:0 1px 3px rgba(0,0,0,.5);
+}
+html{ background:var(--pg); }
+body{
+  font-family:'Leelawadee UI','Sarabun','Noto Sans Thai','Tahoma',sans-serif;
+  background:var(--pg); color:var(--tx); line-height:1.6; font-size:1rem; padding-bottom:4rem;
+}
+.wrap{ max-width:60rem; margin:0 auto; padding:0 .7rem; }
+
+.cover{ text-align:center; padding:1rem 0 .7rem; border-bottom:3px solid var(--ac); margin-bottom:.5rem; }
+.cover h1{ font-size:1.35rem; color:var(--strong); line-height:1.3; }
+.cover .sub{ color:var(--mut); font-size:.85rem; margin-top:.25rem; }
+.cover .tag{ display:inline-block; font-size:.75rem; background:var(--acbg); color:var(--ac);
+  border:1px solid var(--acbd); border-radius:1.2rem; padding:.15rem .8rem; margin-top:.45rem; }
+
+.tabs{ position:sticky; top:0; z-index:30; background:var(--pg); margin:0 -.7rem;
+  padding:.5rem .7rem; border-bottom:1px solid var(--bd);
+  display:flex; gap:.35rem; overflow-x:auto; scrollbar-width:none; }
+.tabs::-webkit-scrollbar{ display:none; }
+.tab{ flex:0 0 auto; font:inherit; font-size:.82rem; cursor:pointer; white-space:nowrap;
+  background:var(--cd); color:var(--tx); border:1px solid var(--bd);
+  border-radius:1.2rem; padding:.32rem .7rem; box-shadow:var(--sh); }
+.tab[aria-selected="true"]{ background:var(--ac); border-color:var(--ac); color:var(--cd); font-weight:700; }
+
+section[hidden]{ display:none; }
+.sec{ margin:1rem 0 .45rem; display:flex; align-items:center; gap:.4rem; }
+/* ⚠️ แถบตกแต่งพวกนี้ใช้ background-IMAGE (ไล่สีเดียว) ไม่ใช่ background-color — จงใจ
+   เพราะสีเน้นในโหมดมืดเป็นสีสว่าง (เช่น --pl เขียวสด) ซึ่ง elementFix ของ KIT UI
+   จะเข้าใจว่าเป็น "พื้นสีอ่อนบนหน้ามืด" แล้วกดให้เข้มจนแถบจมหายไปกับพื้น
+   getComputedStyle จะอ่าน backgroundColor ของ gradient ได้เป็นโปร่งใส -> ถูกข้าม สีจึงอยู่ครบ */
+.sec .bar{ width:.28rem; height:1.05rem; border-radius:.2rem; flex:0 0 auto;
+  background-image:linear-gradient(var(--ac),var(--ac)); }
+.sec h2{ font-size:1rem; color:var(--ac); line-height:1.3; }
+.sec h2 .en{ color:var(--mut); font-weight:400; font-size:.8rem; }
+.sec.monk .bar{ background-image:linear-gradient(var(--mk),var(--mk)); } .sec.monk h2{ color:var(--mk); }
+.sec.polite .bar{ background-image:linear-gradient(var(--pl),var(--pl)); } .sec.polite h2{ color:var(--pl); }
+
+.card{ background:var(--cd); border:1px solid var(--bd); border-radius:.6rem;
+  padding:.7rem .85rem; box-shadow:var(--sh); margin-bottom:.6rem; }
+.card h3{ font-size:.98rem; color:var(--strong); margin-bottom:.4rem; }
+.card p{ margin:.3rem 0; }
+ul.b{ list-style:none; margin:.2rem 0; }
+ul.b li{ padding-left:.9rem; position:relative; margin:.25rem 0; }
+ul.b li:before{ content:"›"; position:absolute; left:0; color:var(--mut); font-weight:700; }
+b{ color:var(--strong); }
+.en{ color:var(--mut); font-style:normal; font-size:.95em; }
+mark{ background:var(--hl); color:var(--hlink); padding:0 .15rem; border-radius:.15rem; }
+
+.tw{ overflow-x:auto; -webkit-overflow-scrolling:touch; border:1px solid var(--bd);
+  border-radius:.55rem; background:var(--cd); box-shadow:var(--sh); margin-bottom:.6rem; }
+.tw::-webkit-scrollbar{ height:.45rem; }
+.tw::-webkit-scrollbar-thumb{ background:var(--bd); border-radius:.5rem; }
+table{ width:100%; border-collapse:separate; border-spacing:0; font-size:.85rem; }
+th,td{ border-bottom:1px solid var(--bd); border-right:1px solid var(--bd);
+  padding:.38rem .55rem; text-align:left; vertical-align:top; }
+th:last-child,td:last-child{ border-right:0; }
+tbody tr:last-child td{ border-bottom:0; }
+thead th{ background:var(--acbg); color:var(--achd); font-size:.82rem; }
+.monk thead th{ background:var(--mkbg); color:var(--mk); }
+.polite thead th{ background:var(--plbg); color:var(--pl); }
+tbody tr:nth-child(even) td{ background:var(--cd2); }
+.rw{ font-weight:700; color:var(--strong); }
+@media (max-width:52rem){ table{ min-width:24rem; } }
+
+.grid2{ display:grid; grid-template-columns:1fr; gap:.6rem; }
+.grid2>*{ min-width:0; }
+@media (min-width:52rem){ .grid2{ grid-template-columns:1fr 1fr; } }
+
+.rule{ border-left:4px solid var(--good); background:var(--goodbg); border-radius:.5rem;
+  padding:.55rem .8rem; margin:.4rem 0; }
+.rule.no{ border-left-color:var(--bad); background:var(--badbg); }
+.rule .hd{ font-weight:700; color:var(--strong); margin-bottom:.2rem; }
+.yes{ color:var(--good); font-weight:700; } .no2{ color:var(--bad); font-weight:700; }
+.warnbox{ border:1px solid var(--acbd); background:var(--acbg); border-radius:.5rem;
+  padding:.55rem .8rem; font-size:.88rem; margin:.5rem 0; }
+
+.chips{ display:flex; flex-wrap:wrap; gap:.3rem; margin:.3rem 0; }
+.chip{ font-size:.8rem; background:var(--acbg); color:var(--achd); border:1px solid var(--acbd);
+  border-radius:.35rem; padding:.12rem .45rem; }
+.chip.k{ background:var(--badbg); color:var(--bad); border-color:var(--bad); }
+
+/* ---- ฝึกจับคู่ / ควิซ ---- */
+.q{ background:var(--cd); border:1px solid var(--bd); border-radius:.6rem; padding:.8rem .85rem;
+  box-shadow:var(--sh); }
+.qhead{ display:flex; justify-content:space-between; gap:.5rem; font-size:.78rem; color:var(--mut);
+  margin-bottom:.4rem; flex-wrap:wrap; }
+.qtopic{ background:var(--acbg); color:var(--achd); border:1px solid var(--acbd);
+  border-radius:1rem; padding:.05rem .5rem; }
+.qtext{ font-size:1.05rem; color:var(--strong); margin:.3rem 0 .6rem; line-height:1.5; }
+.opts{ display:grid; gap:.35rem; }
+.opt{ font:inherit; font-size:.92rem; text-align:left; cursor:pointer; color:var(--tx);
+  background:var(--cd2); border:1px solid var(--bd); border-radius:.45rem; padding:.5rem .65rem; }
+.opt:hover{ border-color:var(--ac); }
+.opt.sel{ border-color:var(--ac); background:var(--acbg); }
+.opt.right{ border-color:var(--good); background:var(--goodbg); color:var(--good); font-weight:700; }
+.opt.wrong{ border-color:var(--bad); background:var(--badbg); color:var(--bad); }
+.opt[disabled]{ cursor:default; }
+.tin{ font:inherit; font-size:1rem; color:var(--tx); background:var(--cd2);
+  border:1px solid var(--bd); border-radius:.45rem; padding:.5rem .65rem; width:100%; }
+.btn{ font:inherit; font-size:.9rem; cursor:pointer; border-radius:.45rem; padding:.45rem .9rem;
+  border:1px solid var(--ac); background:var(--ac); color:var(--cd); font-weight:700; }
+.btn.ghost{ background:transparent; color:var(--ac); }
+.btnrow{ display:flex; gap:.4rem; flex-wrap:wrap; margin-top:.6rem; }
+.fb{ margin-top:.6rem; padding:.55rem .7rem; border-radius:.45rem; font-size:.9rem; display:none; }
+.fb.ok{ display:block; background:var(--goodbg); border:1px solid var(--good); color:var(--good); }
+.fb.bad{ display:block; background:var(--badbg); border:1px solid var(--bad); color:var(--bad); }
+.fb .why{ color:var(--tx); margin-top:.25rem; font-size:.86rem; }
+.stats{ display:flex; gap:.4rem; flex-wrap:wrap; margin:.5rem 0; }
+.st{ flex:1 1 5rem; background:var(--cd); border:1px solid var(--bd); border-radius:.5rem;
+  padding:.35rem .5rem; text-align:center; box-shadow:var(--sh); }
+.st .n{ font-size:1.1rem; font-weight:700; color:var(--strong); display:block; }
+.st .l{ font-size:.72rem; color:var(--mut); }
+.bar2{ height:.5rem; background:var(--cd2); border:1px solid var(--bd); border-radius:1rem; overflow:hidden; }
+.bar2 i{ display:block; height:100%; background-image:linear-gradient(var(--ac),var(--ac)); }  /* ดูหมายเหตุที่ .sec .bar */
+.rrow{ margin:.45rem 0; }
+.rrow .t{ display:flex; justify-content:space-between; font-size:.85rem; margin-bottom:.15rem; }
+.verdict{ border:1px solid var(--acbd); background:var(--acbg); border-radius:.55rem;
+  padding:.7rem .85rem; margin-top:.6rem; }
+
+.foot{ text-align:center; color:var(--mut); font-size:.75rem; margin-top:1.4rem;
+  padding-top:.6rem; border-top:1px solid var(--bd); }
+.src{ font-size:.78rem; color:var(--mut); margin-top:.3rem; }
+
+@media print{
+  :root,:root[data-theme="dark"]{
+    --pg:#fff; --cd:#fff; --cd2:#fafafa; --tx:#2a2318; --strong:#1a150d; --mut:#7b6f5c; --bd:#e3dccd;
+    --ac:#a8641b; --acbg:#fdf3e3; --acbd:#f0d9ac; --achd:#7c4408; --gold:#b8860b; --goldbg:#fdf6e0;
+    --mk:#8a2f6b; --mkbg:#fdf0f8; --mkbd:#f2cfe6; --pl:#2f7d5c; --plbg:#eefaf3; --plbd:#bfe7d3;
+    --hl:#fde68a; --hlink:#6b4708; --good:#15803d; --goodbg:#e9f9ef; --bad:#b91c1c; --badbg:#fdeceb;
+    --sh:none;
+  }
+  .tabs,#kitui-bar,.btnrow{ display:none !important; }
+  section[hidden]{ display:block !important; }
+  .tw{ overflow:visible; } table{ min-width:0 !important; }
+}
+</style>
+</head>
+<body data-subject="thai">
+<div class="wrap">
+
+  <div class="cover">
+    <h1>👑 ราชาศัพท์ &amp; คำสุภาพ — ฝึกก่อนสอบ</h1>
+    <div class="sub">ภาษาไทย ม.6 · ระดับขั้นของภาษา · กษัตริย์ · พระสงฆ์ · สุภาพชน</div>
+    <div class="tag">สรุปจากสไลด์ “คำราชาศัพท์” 29 สไลด์ + หมวดผัก/ผลไม้ที่อาจารย์สั่งให้ไปดูเพิ่ม</div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" data-t="rule" aria-selected="true">📖 หลักการ</button>
+    <button class="tab" role="tab" data-t="song" aria-selected="false">👑 “ทรง” ใช้ยังไง</button>
+    <button class="tab" role="tab" data-t="king" aria-selected="false">🏛️ ราชาศัพท์</button>
+    <button class="tab" role="tab" data-t="monk" aria-selected="false">🙏 พระสงฆ์</button>
+    <button class="tab" role="tab" data-t="polite" aria-selected="false">🥬 คำสุภาพ</button>
+    <button class="tab" role="tab" data-t="quiz" aria-selected="false">🎯 ฝึกไม่จำกัดข้อ</button>
+  </div>
+
+  <!-- ═════════════ 1. หลักการ ═════════════ -->
+  <section data-t="rule">
+    <div class="sec"><span class="bar"></span><h2>ราชาศัพท์คืออะไร <span class="en">[สไลด์ 2–5]</span></h2></div>
+    <div class="card">
+      <p><b>คำราชาศัพท์</b> = คำสุภาพที่ใช้ให้เหมาะสมกับ<b>ฐานะของบุคคล</b> เพื่อแสดงความเคารพนับถือ
+         และเพื่อให้เกิดความสุภาพ ถือเป็น<b>วัฒนธรรม</b>อย่างหนึ่งของคนไทย</p>
+      <div class="warnbox">
+        🎯 <b>จุดที่มักออกสอบ:</b> คำว่า “ราชาศัพท์” <mark>ไม่ได้ใช้กับกษัตริย์อย่างเดียว</mark> —
+        ครอบคลุมถึง<b>พระสงฆ์</b>และ<b>สุภาพชนทั่วไป</b>ด้วย
+        และ <b>“คำสุภาพเป็นส่วนหนึ่งของคำราชาศัพท์”</b> <span class="en">[สไลด์ 25]</span>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>ใช้กับใครบ้าง (4 กลุ่ม) <span class="en">[สไลด์ 4]</span></h3>
+        <ul class="b">
+          <li>๑. พระมหากษัตริย์และพระราชินี</li>
+          <li>๒. พระบรมวงศานุวงศ์</li>
+          <li>๓. พระภิกษุสงฆ์และสามเณร</li>
+          <li>๔. สุภาพชน</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>ที่มาของคำราชาศัพท์ 2 ทาง <span class="en">[สไลด์ 5]</span></h3>
+        <ul class="b">
+          <li><b>๑. รับมาจากภาษาอื่น</b><br>
+            • ภาษาเขมร — <b>เสด็จ เขนย โปรด เสวย</b><br>
+            • ภาษาบาลี-สันสกฤต — <b>อาพาธ เนตร หัตถ์</b></li>
+          <li><b>๒. สร้างคำขึ้นใหม่</b> (การประสมคำ) — <b>ลูกหลวง ซับพระพักตร์ ตั้งเครื่อง</b></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sec polite"><span class="bar"></span><h2>คำสุภาพ — หลักและลักษณะ <span class="en">[สไลด์ 25–29]</span></h2></div>
+    <div class="card">
+      <p><b>คำสุภาพ</b> = คำที่ไม่หยาบคาย เหมาะสมกับบุคคลทั่วไปหรือตามฐานะของบุคคล
+         เป็นการเลือกใช้คำให้ถูกต้องเหมาะสมตาม<b>กาลเทศะและบุคคล</b></p>
+      <p class="src">⚠️ กฎการใช้คำสุภาพ <b>ไม่มีกำหนดตายตัว</b> บางคำใช้ในภาษาพูด บางคำใช้ในภาษาเขียน <span class="en">[สไลด์ 26]</span></p>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h3>ลักษณะของถ้อยคำสุภาพ 6 ข้อ <span class="en">[สไลด์ 28]</span></h3>
+        <ul class="b">
+          <li>ไม่เป็นคำห้วนหรือคำกระด้าง</li>
+          <li>ไม่เป็นคำอุทานที่ไม่แสดงความเคารพ</li>
+          <li>ไม่เป็นคำภาษาต่างประเทศ</li>
+          <li>ไม่เป็นคำสแลงหรือคำคะนอง</li>
+          <li>ไม่เป็น<b>คำผวน</b>ที่มีความหมายหยาบคาย</li>
+          <li>ไม่เป็นคำหยาบหรือคำด่า</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>แนวทางการใช้คำสุภาพ 3 ข้อ <span class="en">[สไลด์ 29]</span></h3>
+        <ul class="b">
+          <li>๑. เปลี่ยนคำพูดกลาง ๆ เป็นคำสุภาพ เช่น <b>ไม่รู้ → ไม่ทราบ</b></li>
+          <li>๒. ใช้คำว่า <b>ครับ / ค่ะ</b> ลงท้ายประโยค</li>
+          <li>๓. เลี่ยงคำพูดที่ผู้ฟังไม่สบายใจ</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tw"><table class="polite">
+      <thead><tr><th style="width:40%">คำไม่สุภาพ</th><th>คำสุภาพ <span class="en">[สไลด์ 27]</span></th></tr></thead>
+      <tbody>
+      <tr><td class="rw">กู</td><td>ฉัน · เรา</td></tr>
+      <tr><td class="rw">มึง</td><td>ท่าน · เธอ · คุณ</td></tr>
+      <tr><td class="rw">กิน</td><td>รับประทาน</td></tr>
+      <tr><td class="rw">เมีย</td><td>ภรรยา</td></tr>
+      <tr><td class="rw">ผัว</td><td>สามี</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- ═════════════ 2. ทรง ═════════════ -->
+  <section data-t="song" hidden>
+    <div class="sec"><span class="bar"></span><h2>คำกริยาราชาศัพท์ “ทรง” <span class="en">[สไลด์ 11–12]</span></h2></div>
+
+    <div class="rule">
+      <div class="hd"><span class="yes">✓ กฎ 1</span> — ทรง + คำกริยาธรรมดา</div>
+      ใส่ <b>ทรง</b> นำหน้า<b>คำกริยาทั่ว ๆ ไป</b> เพื่อทำให้เป็นราชาศัพท์<br>
+      <div class="chips"><span class="chip">ทรงฟัง</span><span class="chip">ทรงยืน</span><span class="chip">ทรงยินดี</span></div>
+    </div>
+
+    <div class="rule">
+      <div class="hd"><span class="yes">✓ กฎ 2</span> — ทรง + คำนามธรรมดา = กลายเป็นกริยา</div>
+      ใส่ <b>ทรง</b> นำหน้า<b>คำนาม</b> แล้วทั้งก้อนกลายเป็นกริยาราชาศัพท์<br>
+      <div class="chips">
+        <span class="chip">ทรงม้า = ขี่ม้า</span>
+        <span class="chip">ทรงดนตรี = เล่นดนตรี</span>
+        <span class="chip">ทรงสร้าง = สร้าง</span>
+      </div>
+    </div>
+
+    <div class="rule no">
+      <div class="hd"><span class="no2">✗ กฎ 3 (ข้อหลอกที่สุด)</span> — ห้ามใส่ ทรง หน้ากริยาที่<b>เป็นราชาศัพท์อยู่แล้ว</b></div>
+      คำ 10 คำนี้<b>เป็นราชาศัพท์ในตัวเอง</b> ใส่ ทรง เพิ่มคือ <b>ผิด</b> (ซ้ำซ้อน)
+      <div class="tw" style="margin-top:.5rem"><table>
+        <thead><tr><th>คำราชาศัพท์</th><th>แปลว่า</th><th>เขียนผิดแบบนี้</th></tr></thead>
+        <tbody id="songbad"></tbody>
+      </table></div>
+    </div>
+
+    <div class="warnbox">
+      💡 <b>“ทรงพระ…”</b> — สไลด์ 11 บอกว่าใช้ <b>ทรงพระ</b> นำหน้าคำที่เป็นราชาศัพท์อยู่แล้ว
+      เช่น <b>ทรงพระกรุณา · ทรงพระเมตตา · ทรงพระราชดำริ · ทรงพระประชวร · ทรงพระสุบิน</b><br>
+      <span class="en">⚠️ ระวังสับสน: “ทรงพระ” เข้าคู่กับ<b>คำนาม</b>ราชาศัพท์ได้ แต่ ทรง เฉย ๆ
+      เข้าหน้า<b>กริยา</b>ราชาศัพท์ (เสวย บรรทม ตรัส) <b>ไม่ได้</b> — ถ้าข้อสอบถามแบบ “ทรงเสวย ถูกไหม” ตอบว่า <b>ผิด</b></span>
+    </div>
+
+    <div class="sec"><span class="bar"></span><h2>ลองตัดสินเอง — ถูกหรือผิด</h2></div>
+    <div class="card">
+      <p class="src">กดเลือกว่าประโยคนี้ใช้ “ทรง” ถูกไหม แล้วดูเหตุผลทันที</p>
+      <div id="songdrill"></div>
+    </div>
+  </section>
+
+  <!-- ═════════════ 3. ราชาศัพท์ ═════════════ -->
+  <section data-t="king" hidden>
+    <div class="sec"><span class="bar"></span><h2>คำสรรพนามราชาศัพท์ <span class="en">[สไลด์ 10]</span></h2></div>
+    <div class="tw"><table>
+      <thead><tr><th style="width:26%">บุรุษ</th><th>คำ</th><th>ใช้เมื่อไร</th></tr></thead>
+      <tbody>
+      <tr><td class="rw">ที่ ๑ (ผู้พูด)</td><td><b>ข้าพระพุทธเจ้า · กระหม่อม · หม่อมฉัน</b></td><td>ใช้พูดเมื่อ<b>ผู้พูดมีศักดิ์ต่ำกว่า</b></td></tr>
+      <tr><td class="rw">ที่ ๒ (ผู้ฟัง)</td><td><b>ใต้ฝ่าละอองธุลีพระบาท</b></td><td>ใช้กับพระมหากษัตริย์และพระบรมวงศานุวงศ์</td></tr>
+      <tr><td class="rw">ที่ ๓ (ผู้ถูกพูดถึง)</td><td><b>พระองค์</b></td><td>ใช้กับพระมหากษัตริย์และพระบรมวงศานุวงศ์</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="sec"><span class="bar"></span><h2>อวัยวะ <span class="en">[สไลด์ 7–9] · 13 คำ</span></h2></div>
+    <div class="tw"><table><thead><tr><th style="width:45%">ราชาศัพท์</th><th>คำสามัญ</th></tr></thead><tbody id="tbodyparts"></tbody></table></div>
+
+    <div class="sec"><span class="bar"></span><h2>เครื่องใช้ &amp; ของใช้ <span class="en">[สไลด์ 14–15] · 16 คำ</span></h2></div>
+    <div class="tw"><table><thead><tr><th style="width:45%">ราชาศัพท์</th><th>คำสามัญ</th></tr></thead><tbody id="tbodything"></tbody></table></div>
+    <div class="warnbox">
+      ⚠️ <b>สไลด์ 15 พิมพ์ผิด</b>: เขียนว่า “ธรพระการ” (ไม้เท้า) —
+      คำที่ถูกต้องคือ <b>ธารพระกร</b> (ธาร + พระกร = แขน) ให้จำแบบถูก
+    </div>
+
+    <div class="sec"><span class="bar"></span><h2>อื่น ๆ <span class="en">[สไลด์ 7]</span></h2></div>
+    <div class="chips">
+      <span class="chip">ราชโองการ = คำสั่ง</span>
+      <span class="chip">พระราชวัง = ที่ประทับของพระมหากษัตริย์และพระบรมวงศานุวงศ์</span>
+    </div>
+  </section>
+
+  <!-- ═════════════ 4. พระสงฆ์ ═════════════ -->
+  <section data-t="monk" hidden>
+    <div class="sec monk"><span class="bar"></span><h2>มารยาทในการพูดกับพระ <span class="en">[สไลด์ 17–19]</span></h2></div>
+    <div class="card">
+      <ul class="b">
+        <li><b>กาสาวพัสตร์</b> = ผ้าเหลือง สัญลักษณ์ของภิกษุ-สามเณรในพุทธศาสนา</li>
+        <li>ต้องมี<b>สัมมาคารวะ สำรวม</b> ไม่พูดเล่นหรือพูดพล่อย ๆ</li>
+        <li>คำบางคำ<b>พระใช้เอง</b> เช่น <b>อาตมาภาพ / อาตมา</b> = ฉัน</li>
+        <li>คำบางคำ<b>ใช้ได้ทั้งสองฝ่าย</b> เช่น <b>ฉัน</b> = กิน</li>
+      </ul>
+    </div>
+
+    <div class="sec monk"><span class="bar"></span><h2>คำราชาศัพท์สำหรับพระสงฆ์ <span class="en">[สไลด์ 22–23] · 16 คำ</span></h2></div>
+    <div class="tw"><table class="monk"><thead><tr><th style="width:45%">คำพระ</th><th>คำสามัญ</th></tr></thead><tbody id="tbodymonk"></tbody></table></div>
+
+    <div class="sec monk"><span class="bar"></span><h2>สมณศักดิ์ของพระภิกษุ — เรียงจากสูงสุด <span class="en">[สไลด์ 20]</span></h2></div>
+    <div class="tw"><table class="monk"><thead><tr><th style="width:12%">ลำดับ</th><th>สมณศักดิ์</th></tr></thead><tbody id="tbodyrank"></tbody></table></div>
+    <div class="warnbox">
+      🎯 <b>เคล็ดจำ:</b> ชั้นพระราชาคณะ 4 ชั้นกลาง จำจากคำที่อยู่ในชื่อ —
+      <b>ธรรม (๔) → เทพ (๕) → ราช (๖)</b> แล้วต่ำสุดคือ <b>สามัญ (๗)</b>
+      (จำเรียงว่า “ธรรม-เทพ-ราช-สามัญ” จากสูงไปต่ำ)
+    </div>
+  </section>
+
+  <!-- ═════════════ 5. คำสุภาพ ═════════════ -->
+  <section data-t="polite" hidden>
+    <div class="warnbox">
+      📌 <b>อ่านก่อน — เรื่องที่มาของหมวดนี้</b><br>
+      หมวด <b>ผัก / ผลไม้ / สัตว์ / ขนม</b> ข้างล่าง <b>ไม่มีอยู่ในสไลด์ของอาจารย์</b>
+      (ในสไลด์มีคำสุภาพแค่ กู มึง กิน เมีย ผัว)<br>
+      แปลว่าตรงกับที่อาจารย์บอกให้ “ไปดูให้ดี” — รายการนี้รวบรวมจากแหล่งเรียนภาษาไทยมาตรฐาน
+      <b>ควรเอาไปทานกับที่อาจารย์สอนอีกครั้ง</b> คำที่ทำเครื่องหมาย ⚠️ คือคำที่พบน้อย/แหล่งอ้างอิงไม่ตรงกัน
+    </div>
+
+    <div class="sec polite"><span class="bar"></span><h2>🥬 หมวดผัก <span class="en">— ออกสอบบ่อยที่สุด</span></h2></div>
+    <div class="tw"><table class="polite"><thead><tr><th style="width:44%">คำสามัญ</th><th>คำสุภาพ</th></tr></thead><tbody id="tbodyveg"></tbody></table></div>
+
+    <div class="sec polite"><span class="bar"></span><h2>🍉 หมวดผลไม้</h2></div>
+    <div class="tw"><table class="polite"><thead><tr><th style="width:44%">คำสามัญ</th><th>คำสุภาพ</th></tr></thead><tbody id="tbodyfruit"></tbody></table></div>
+
+    <div class="sec polite"><span class="bar"></span><h2>🌸 หมวดดอกไม้</h2></div>
+    <div class="tw"><table class="polite"><thead><tr><th style="width:44%">คำสามัญ</th><th>คำสุภาพ</th></tr></thead><tbody id="tbodyflower"></tbody></table></div>
+
+    <div class="sec polite"><span class="bar"></span><h2>🐃 หมวดสัตว์</h2></div>
+    <div class="tw"><table class="polite"><thead><tr><th style="width:44%">คำสามัญ</th><th>คำสุภาพ</th></tr></thead><tbody id="tbodyanimal"></tbody></table></div>
+
+    <div class="sec polite"><span class="bar"></span><h2>🍬 หมวดอาหาร &amp; ขนม</h2></div>
+    <div class="tw"><table class="polite"><thead><tr><th style="width:44%">คำสามัญ</th><th>คำสุภาพ</th></tr></thead><tbody id="tbodyfood"></tbody></table></div>
+
+    <div class="sec polite"><span class="bar"></span><h2>🪨 หมวดอื่น ๆ</h2></div>
+    <div class="tw"><table class="polite"><thead><tr><th style="width:44%">คำสามัญ</th><th>คำสุภาพ</th></tr></thead><tbody id="tbodyother"></tbody></table></div>
+
+    <div class="card">
+      <h3>🧠 ทำไมถึงต้องเปลี่ยน — จับหลักได้จะไม่ต้องท่อง</h3>
+      <ul class="b">
+        <li>คำเดิมมีเสียง/คำที่ถือว่าหยาบอยู่ข้างใน เช่น <b>ขี้ · เยี่ยว · ตบ · ผัว · เมีย</b>
+            → เลี่ยงไปใช้คำอื่น (ผัก<b>ตบ</b> → ผักสามหาว, ขนม<b>ขี้</b>หนู → ขนมทราย, ไข่<b>เยี่ยว</b>ม้า → ไข่สำเภา)</li>
+        <li>คำเดิม<b>ผวนแล้วหยาบ</b> → เปลี่ยน (ดอก<b>ซ่อนชู้</b> → ดอกซ่อนกลิ่น)</li>
+        <li>เปลี่ยนไปใช้<b>คำบาลี-สันสกฤต</b>แทนคำไทยแท้ (ควาย→กระบือ, วัว→โค, หมา→สุนัข, หมู→สุกร, หิน→ศิลา)</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═════════════ 6. ควิซ ═════════════ -->
+  <section data-t="quiz" hidden>
+    <div class="stats">
+      <div class="st"><span class="n" id="s-no">0</span><span class="l">ข้อที่</span></div>
+      <div class="st"><span class="n" id="s-streak">0</span><span class="l">ถูกติดกัน</span></div>
+      <div class="st"><span class="n" id="s-best">0</span><span class="l">สถิติสูงสุด</span></div>
+      <div class="st"><span class="n" id="s-acc">–</span><span class="l">ความแม่น</span></div>
+    </div>
+    <div id="quizbox"></div>
+    <div class="btnrow">
+      <button class="btn" id="b-next">ข้อต่อไป →</button>
+      <button class="btn ghost" id="b-end">🏁 จบ &amp; ดูผล</button>
+      <button class="btn ghost" id="b-reset">ล้างสถิติ</button>
+    </div>
+    <div id="result"></div>
+  </section>
+
+  <div class="foot">
+    👑 ราชาศัพท์ &amp; คำสุภาพ · สรุปจาก <b>ภาษาไทย/คำราชาศัพท์ (1).pdf</b> (29 สไลด์)
+    · หมวดผัก/ผลไม้/สัตว์/ขนม รวบรวมเพิ่มจากแหล่งเรียนภาษาไทยมาตรฐาน (ไม่มีในสไลด์)
+    · คู่กับ Fact_Sheet_ภาษาไทย_กลางภาค.md
+  </div>
+</div>
+
+<script>
+(function(){
+var $=function(s){return document.querySelector(s);};
+var $$=function(s){return [].slice.call(document.querySelectorAll(s));};
+
+/* ═══════════ ข้อมูล ═══════════ */
+/* [สไลด์ 7-9] อวัยวะ */
+var PARTS=[['พระหัตถ์','มือ'],['พระกร','ปลายแขน'],['พระบาท','เท้า'],['พระเนตร','ดวงตา'],
+ ['พระโอษฐ์','ปาก'],['พระชิวหา','ลิ้น'],['พระศอ','คอ'],['พระขนง','คิ้ว'],['พระปราง','แก้ม'],
+ ['พระมัสสุ','หนวด'],['พระโลมา','ขน'],['พระอุทร','ท้อง'],['พระปัปผาสะ','ปอด']];
+/* [สไลด์ 14-15] เครื่องใช้ */
+var THINGS=[['พระวิสูตร','ม่าน'],['ฉลองพระองค์','เสื้อ'],['รัดพระองค์','เข็มขัด'],['ฉลองพระบาท','รองเท้า'],
+ ['เครื่องเสวย','อาหาร'],['พระสุธารส','น้ำดื่ม'],['น้ำจัณฑ์','เหล้า'],['พระยี่ภู่','เตียง'],
+ ['พระทวาร','ประตู'],['พระแสงปืน','ปืน'],['พระฉาย','กระจก'],['พระกุณฑล','ตุ้มหู'],
+ ['พระจุฑามณี','ปิ่น'],['ธารพระกร','ไม้เท้า'],['ฉลองพระหัตถ์ช้อน','ช้อน'],['ฉลองพระหัตถ์ส้อม','ส้อม']];
+/* [สไลด์ 22-23] พระสงฆ์ */
+var MONK=[['ภัตตาหาร','อาหาร'],['ฉัน','รับประทาน'],['ปัจจัย','เงิน'],['ลิขิต','จดหมาย'],
+ ['อาตมา','ฉัน (พระเรียกตัวเอง)'],['มหาบพิตร','พระเจ้าแผ่นดิน'],['โยม','ญาติ / ฆราวาส'],
+ ['นิมนต์','คำเชิญพระ'],['อาพาธ','ป่วย'],['มรณภาพ','ตาย'],['ทำวัตร','สวดมนต์'],['จำวัด','นอน'],
+ ['ปลงผม','โกนผม'],['กุฏิ','เรือนพักในวัด'],['อุปสมบท','บวชเป็นพระภิกษุ'],['บรรพชา','บวชเป็นเณร']];
+/* [สไลด์ 20] สมณศักดิ์ */
+var RANKS=['สมเด็จพระสังฆราช','สมเด็จพระราชาคณะ','พระราชาคณะชั้นรอง',
+ 'พระราชาคณะชั้นธรรม <span class="en">(มักมีคำว่า ธรรม)</span>',
+ 'พระราชาคณะชั้นเทพ <span class="en">(มักมีคำว่า เทพ)</span>',
+ 'พระราชาคณะชั้นราช <span class="en">(มักมีคำว่า ราช)</span>',
+ 'พระราชาคณะสามัญ',
+ 'พระครูสัญญาบัติ · พระครูชั้นประทวน · พระครูฐานานุกรม',
+ 'พระเปรียญตั้งแต่ ๓–๙'];
+/* [สไลด์ 12] กริยาที่ห้ามใส่ ทรง */
+var NOSONG=[['ประสูติ','เกิด'],['ทูล','บอก'],['ถวาย','ให้'],['บรรทม','นอน'],['ประทับ','อยู่'],
+ ['ตรัส','พูด'],['เสวย','กิน'],['เสด็จ','ไป'],['กริ้ว','โกรธ'],['ประชวร','ป่วย']];
+/* [สไลด์ 11] คำที่ใส่ ทรง นำหน้าได้ (กริยาธรรมดา / คำนาม) */
+var OKSONG=[['ทรงฟัง','ฟัง'],['ทรงยืน','ยืน'],['ทรงยินดี','ยินดี'],['ทรงม้า','ขี่ม้า'],
+ ['ทรงดนตรี','เล่นดนตรี'],['ทรงสร้าง','สร้าง']];
+/* คำสุภาพ — ไม่มีในสไลด์ (⚠️ = พบน้อย/แหล่งอ้างอิงไม่ตรงกัน) */
+var VEG=[['ผักบุ้ง','ผักทอดยอด',0],['ผักตบ','ผักสามหาว',0],['ผักกระเฉด','ผักรู้นอน',0],
+ ['ดอกสลิด','ดอกขจร',0],['ถั่วงอก','ถั่วเพาะ',0],['ฟักทอง','ฟักเหลือง',0],['หัวปลี','ปลีกล้วย',0],
+ ['ต้นตำแย','ต้นอเนกคุณ',0],['แห้ว','สมหวัง',0],['พริกขี้หนู','พริกเม็ดเล็ก',1],
+ ['ผักปลาบ','ผักไห่',1],['ดอกขี้เหล็ก','ดอกเหล็ก',0]];
+var FRUIT=[['แตงโม','ผลอุลิด',0],['ลูกมะม่วง','ผลอัมพรา',0],
+ ['กล้วยไข่','กล้วยเปลือกบาง · กล้วยกระ',1],['ลูกตะลิงปลิง','มูลละมั่ง',1]];
+var FLOWER=[['ดอกซ่อนชู้','ดอกซ่อนกลิ่น',0],['ดอกมะลิ','ดอกมัลลิกา',0],['ดอกนมแมว','ดอกถันวิฬาร์',1],
+ ['ดอกยี่หุบ','ดอกมณฑาขาว',1]];
+var ANIMAL=[['ควาย','กระบือ',0],['วัว','โค',0],['หมา','สุนัข',0],['หมู','สุกร',0],['แมว','วิฬาร์',0],
+ ['ลิง','วานร',0],['หนู','มูสิกะ',1],['ปลาช่อน','ปลาหาง',0],['ปลาสลิด','ปลาใบไม้',0],
+ ['ปลาไหล','ปลายาว',0],['ไส้เดือน','รากดิน',0],['ปลิง','ชัลลุกา',1],['หอยอีรม','หอยนางรม',0],
+ ['ไข่','ฟองไข่',0],['แมลงวัน','มักขิกา',1],['นกเค้าแมว','นกอุลูก',1]];
+var FOOD=[['ขนมขี้หนู','ขนมทราย',0],['ขนมจีน','ขนมเส้น',0],['ขนมตาล','ขนมทองฟู',1],
+ ['ขนมเทียน','ขนมบัวสาว',1],['ขนมสอดไส้','ขนมใส่ไส้',0],['กล้วยบวชชี','นารีจำศีล',0],
+ ['ไข่เยี่ยวม้า','ไข่สำเภา',0],['ถั่วเขียวต้ม','จรกาลงสรง',1],['ปลาร้า','ปลามัจฉะ',1],['กะปิ','เยื่อเคย',0]];
+var OTHER=[['หิน','ศิลา',0],['ขี้ผึ้ง','สีผึ้ง',0],['สากกะเบือ','ไม้ตีพริก',0],['ครกกะเบือ','ครกตีพริก',0],
+ ['ไม่รู้','ไม่ทราบ',0],['กู','ฉัน · เรา',0],['มึง','ท่าน · เธอ · คุณ',0],['กิน','รับประทาน',0],
+ ['เมีย','ภรรยา',0],['ผัว','สามี',0]];
+
+/* ═══════════ เติมตาราง ═══════════ */
+function fill(id,rows,flag){
+  var b=document.getElementById(id); if(!b) return;
+  b.innerHTML=rows.map(function(r){
+    var warn=(flag&&r[2])?' <span class="en">⚠️</span>':'';
+    return '<tr><td class="rw">'+r[0]+'</td><td>'+r[1]+warn+'</td></tr>';
+  }).join('');
+}
+fill('tbodyparts',PARTS); fill('tbodything',THINGS); fill('tbodymonk',MONK);
+fill('tbodyveg',VEG,1); fill('tbodyfruit',FRUIT,1); fill('tbodyflower',FLOWER,1);
+fill('tbodyanimal',ANIMAL,1); fill('tbodyfood',FOOD,1); fill('tbodyother',OTHER,1);
+document.getElementById('tbodyrank').innerHTML=RANKS.map(function(r,i){
+  return '<tr><td class="rw">'+(i+1)+'</td><td>'+r+'</td></tr>';}).join('');
+document.getElementById('songbad').innerHTML=NOSONG.map(function(r){
+  return '<tr><td class="rw">'+r[0]+'</td><td>'+r[1]+'</td><td class="no2">✗ ทรง'+r[0]+'</td></tr>';}).join('');
+
+/* ═══════════ แท็บ ═══════════ */
+$$('.tab').forEach(function(t){
+  t.onclick=function(){
+    $$('.tab').forEach(function(x){x.setAttribute('aria-selected',x===t?'true':'false');});
+    var k=t.getAttribute('data-t');
+    $$('section[data-t]').forEach(function(s){ s.hidden = s.getAttribute('data-t')!==k; });
+    window.scrollTo({top:Math.max(0,$('.tabs').offsetTop-4),behavior:'smooth'});
+  };
+});
+
+/* ═══════════ ฝึกตัดสิน "ทรง" ═══════════ */
+var DRILL=[
+  ['พระองค์<b>ทรงเสวย</b>พระกระยาหาร',false,'“เสวย” เป็นกริยาราชาศัพท์อยู่แล้ว ห้ามใส่ ทรง ซ้ำ → ที่ถูกคือ <b>เสวย</b>'],
+  ['พระองค์<b>ทรงฟัง</b>ดนตรีไทย',true,'“ฟัง” เป็นกริยาธรรมดา ใส่ ทรง นำหน้าได้ (กฎ 1)'],
+  ['พระองค์<b>ทรงบรรทม</b>แล้ว',false,'“บรรทม” (นอน) เป็นราชาศัพท์อยู่แล้ว → ที่ถูกคือ <b>บรรทม</b>'],
+  ['พระองค์<b>ทรงม้า</b>ไปยังพระราชวัง',true,'“ม้า” เป็นคำนาม ใส่ ทรง นำหน้าแล้วกลายเป็นกริยา = ขี่ม้า (กฎ 2)'],
+  ['พระองค์<b>ทรงตรัส</b>กับประชาชน',false,'“ตรัส” (พูด) เป็นราชาศัพท์อยู่แล้ว → ที่ถูกคือ <b>ตรัส</b>'],
+  ['พระองค์<b>ทรงดนตรี</b>ในงานพระราชพิธี',true,'“ดนตรี” เป็นคำนาม + ทรง = เล่นดนตรี (กฎ 2)'],
+  ['พระองค์<b>ทรงเสด็จ</b>ไปต่างประเทศ',false,'“เสด็จ” (ไป) เป็นราชาศัพท์อยู่แล้ว → ที่ถูกคือ <b>เสด็จ</b>'],
+  ['พระองค์<b>ทรงยินดี</b>กับความสำเร็จ',true,'“ยินดี” เป็นคำธรรมดา ใส่ ทรง ได้ (กฎ 1)'],
+  ['พระองค์<b>ทรงประชวร</b>',false,'“ประชวร” (ป่วย) เป็นราชาศัพท์อยู่แล้ว → พูดว่า <b>ประชวร</b> หรือ <b>ทรงพระประชวร</b>'],
+  ['พระองค์<b>ทรงถวาย</b>ผ้าพระกฐิน',false,'“ถวาย” (ให้) เป็นราชาศัพท์อยู่แล้ว → ที่ถูกคือ <b>ถวาย</b>']
+];
+(function(){
+  var host=document.getElementById('songdrill'); if(!host) return;
+  host.innerHTML=DRILL.map(function(d,i){
+    return '<div class="rule" style="border-left-color:var(--bd);background:var(--cd2)" data-i="'+i+'">'+
+      '<div style="margin-bottom:.35rem">'+d[0]+'</div>'+
+      '<div class="btnrow" style="margin-top:0">'+
+        '<button class="btn ghost" data-a="1">✓ ถูก</button>'+
+        '<button class="btn ghost" data-a="0">✗ ผิด</button>'+
+      '</div><div class="fb"></div></div>';
+  }).join('');
+  host.addEventListener('click',function(e){
+    var b=e.target.closest('button[data-a]'); if(!b) return;
+    var box=b.closest('[data-i]'), d=DRILL[+box.getAttribute('data-i')];
+    var ok=(b.getAttribute('data-a')==='1')===d[1];
+    var fb=box.querySelector('.fb');
+    fb.className='fb '+(ok?'ok':'bad');
+    fb.innerHTML=(ok?'✓ ถูกต้อง':'✗ ยังไม่ใช่')+'<div class="why">'+d[2]+'</div>';
+    box.querySelectorAll('button').forEach(function(x){x.disabled=true;});
+    box.style.borderLeftColor=d[1]?'var(--good)':'var(--bad)';
+  });
+})();
+
+/* ═══════════ ควิซไม่จำกัดข้อ ═══════════ */
+var TOPICS={
+  part:'อวัยวะ (ราชาศัพท์)', thing:'เครื่องใช้ (ราชาศัพท์)', pron:'คำสรรพนาม',
+  song:'การใช้ “ทรง”', monk:'คำพระสงฆ์', rank:'สมณศักดิ์', polite:'คำสุภาพ (ผัก/ผลไม้/สัตว์)'
+};
+var rnd=function(n){return Math.floor(Math.random()*n);};
+var pick=function(a){return a[rnd(a.length)];};
+function others(pool,not,n,idx){
+  var out=[],guard=0;
+  while(out.length<n && guard++<300){
+    var v=pick(pool)[idx];
+    if(v!==not && out.indexOf(v)<0) out.push(v);
+  }
+  return out;
+}
+function shuffle(a){ for(var i=a.length-1;i>0;i--){var j=rnd(i+1),t=a[i];a[i]=a[j];a[j]=t;} return a; }
+
+/* ตัวสร้างโจทย์: คืน {topic, fmt, q, opts, ans, why} */
+var GEN=[
+ /* 1. ราชาศัพท์อวัยวะ -> คำสามัญ */
+ function(){ var r=pick(PARTS);
+   return {topic:'part',fmt:'choice',q:'“'+r[0]+'” หมายถึงอวัยวะใด',
+     opts:shuffle([r[1]].concat(others(PARTS,r[1],3,1))),ans:r[1],
+     why:'<b>'+r[0]+'</b> = '+r[1]+' [สไลด์ 7–9]'}; },
+ /* 2. คำสามัญ -> ราชาศัพท์ */
+ function(){ var r=pick(PARTS);
+   return {topic:'part',fmt:'choice',q:'“'+r[1]+'” ใช้คำราชาศัพท์ว่าอะไร',
+     opts:shuffle([r[0]].concat(others(PARTS,r[0],3,0))),ans:r[0],
+     why:'<b>'+r[1]+'</b> → '+r[0]}; },
+ /* 3. เครื่องใช้ */
+ function(){ var r=pick(THINGS);
+   return {topic:'thing',fmt:'choice',q:'“'+r[0]+'” คือสิ่งใด',
+     opts:shuffle([r[1]].concat(others(THINGS,r[1],3,1))),ans:r[1],
+     why:'<b>'+r[0]+'</b> = '+r[1]+' [สไลด์ 14–15]'}; },
+ /* 4. เครื่องใช้ เติมคำ */
+ function(){ var r=pick(THINGS);
+   return {topic:'thing',fmt:'fill',q:'คำราชาศัพท์ของ “'+r[1]+'” คือ',ans:r[0],
+     why:'<b>'+r[1]+'</b> → '+r[0]}; },
+ /* 5. ทรง ถูก/ผิด */
+ function(){
+   if(Math.random()<0.5){ var b=pick(NOSONG);
+     return {topic:'song',fmt:'tf',q:'ประโยค “พระองค์<b>ทรง'+b[0]+'</b>” ใช้ถูกต้องหรือไม่',ans:'ผิด',
+       why:'“'+b[0]+'” ('+b[1]+') เป็นกริยาราชาศัพท์อยู่แล้ว <b>ห้ามใส่ ทรง ซ้ำ</b> [สไลด์ 12]'}; }
+   var g=pick(OKSONG);
+   return {topic:'song',fmt:'tf',q:'ประโยค “พระองค์<b>'+g[0]+'</b>” ใช้ถูกต้องหรือไม่',ans:'ถูก',
+     why:'“'+g[0].replace('ทรง','')+'” เป็นคำธรรมดา/คำนาม ใส่ ทรง นำหน้าได้ = '+g[1]+' [สไลด์ 11]'}; },
+ /* 6. ทรง เลือกคำที่ห้ามใส่ */
+ function(){ var b=pick(NOSONG);
+   var good=pick(OKSONG)[0].replace('ทรง','');
+   var opts=shuffle([b[0],good,pick(PARTS)[1],pick(THINGS)[1]]);
+   return {topic:'song',fmt:'choice',q:'คำใด <b>ห้าม</b> ใส่ “ทรง” นำหน้า (เพราะเป็นราชาศัพท์อยู่แล้ว)',
+     opts:opts,ans:b[0],why:'<b>'+b[0]+'</b> = '+b[1]+' เป็นกริยาราชาศัพท์ในตัวเอง [สไลด์ 12]'}; },
+ /* 7. สรรพนาม */
+ function(){
+   var P=[['ข้าพระพุทธเจ้า','บุรุษที่ ๑'],['กระหม่อม','บุรุษที่ ๑'],['หม่อมฉัน','บุรุษที่ ๑'],
+          ['ใต้ฝ่าละอองธุลีพระบาท','บุรุษที่ ๒'],['พระองค์','บุรุษที่ ๓']];
+   var r=pick(P);
+   return {topic:'pron',fmt:'choice',q:'“'+r[0]+'” เป็นสรรพนามบุรุษที่เท่าใด',
+     opts:['บุรุษที่ ๑','บุรุษที่ ๒','บุรุษที่ ๓'],ans:r[1],
+     why:'บุรุษที่ ๑ = ผู้พูด (ข้าพระพุทธเจ้า กระหม่อม หม่อมฉัน) · บุรุษที่ ๒ = ใต้ฝ่าละอองธุลีพระบาท · บุรุษที่ ๓ = พระองค์ [สไลด์ 10]'}; },
+ /* 8. พระสงฆ์ */
+ function(){ var r=pick(MONK);
+   return {topic:'monk',fmt:'choice',q:'พระสงฆ์ใช้คำว่า “'+r[0]+'” หมายถึงอะไร',
+     opts:shuffle([r[1]].concat(others(MONK,r[1],3,1))),ans:r[1],
+     why:'<b>'+r[0]+'</b> = '+r[1]+' [สไลด์ 22–23]'}; },
+ /* 9. พระสงฆ์ เติมคำ */
+ function(){ var r=pick(MONK);
+   return {topic:'monk',fmt:'fill',q:'คำที่ใช้กับพระสงฆ์ซึ่งแปลว่า “'+r[1]+'” คือ',ans:r[0],
+     why:'<b>'+r[1]+'</b> → '+r[0]}; },
+ /* 10. สมณศักดิ์ ลำดับ */
+ function(){ var i=rnd(RANKS.length);
+   var plain=function(s){return s.replace(/<[^>]+>/g,'').trim();};
+   var opts=shuffle([plain(RANKS[i])].concat(
+     others(RANKS.map(function(x){return [plain(x)];}),plain(RANKS[i]),3,0)));
+   return {topic:'rank',fmt:'choice',q:'สมณศักดิ์ลำดับที่ '+(i+1)+' (นับจากสูงสุด) คือข้อใด',
+     opts:opts,ans:plain(RANKS[i]),why:'ลำดับที่ '+(i+1)+' = <b>'+plain(RANKS[i])+'</b> [สไลด์ 20]'}; },
+ /* 11. สมณศักดิ์ สูงกว่า */
+ function(){ var i=rnd(RANKS.length-1), j=i+1+rnd(RANKS.length-i-1);
+   var plain=function(s){return s.replace(/<[^>]+>/g,'').trim();};
+   return {topic:'rank',fmt:'choice',q:'สมณศักดิ์ใด<b>สูงกว่า</b>',
+     opts:shuffle([plain(RANKS[i]),plain(RANKS[j])]),ans:plain(RANKS[i]),
+     why:'“'+plain(RANKS[i])+'” อยู่ลำดับ '+(i+1)+' ส่วน “'+plain(RANKS[j])+'” อยู่ลำดับ '+(j+1)+' — เลขน้อยกว่าคือสูงกว่า'}; },
+ /* 12. คำสุภาพ สามัญ -> สุภาพ */
+ function(){ var pool=VEG.concat(FRUIT,FLOWER,ANIMAL,FOOD,OTHER); var r=pick(pool);
+   return {topic:'polite',fmt:'choice',q:'คำสุภาพของ “'+r[0]+'” คือข้อใด',
+     opts:shuffle([r[1]].concat(others(pool,r[1],3,1))),ans:r[1],
+     why:'<b>'+r[0]+'</b> → '+r[1]}; },
+ /* 13. คำสุภาพ สุภาพ -> สามัญ */
+ function(){ var pool=VEG.concat(FRUIT,ANIMAL,FOOD); var r=pick(pool);
+   return {topic:'polite',fmt:'choice',q:'“'+r[1]+'” เป็นคำสุภาพของคำใด',
+     opts:shuffle([r[0]].concat(others(pool,r[0],3,0))),ans:r[0],
+     why:'<b>'+r[1]+'</b> ← '+r[0]}; },
+ /* 14. คำสุภาพ เติมคำ (เฉพาะผัก ที่อาจารย์เน้น) */
+ function(){ var r=pick(VEG.filter(function(x){return !x[2];}));
+   return {topic:'polite',fmt:'fill',q:'คำสุภาพของ “'+r[0]+'” คือ',ans:r[1],
+     why:'<b>'+r[0]+'</b> → '+r[1]+' (หมวดผัก — อาจารย์เน้น)'}; },
+ /* 15. เลือกหลายข้อ: คำไหนเป็นราชาศัพท์อวัยวะ */
+ function(){
+   var right=shuffle(PARTS.slice()).slice(0,2).map(function(x){return x[0];});
+   var wrong=shuffle(THINGS.slice()).slice(0,2).map(function(x){return x[0];});
+   return {topic:'part',fmt:'multi',q:'ข้อใดเป็นคำราชาศัพท์ของ <b>อวัยวะ</b> (เลือกได้หลายข้อ)',
+     opts:shuffle(right.concat(wrong)),ans:right,
+     why:'อวัยวะ: '+right.join(' · ')+' — ส่วน '+wrong.join(' · ')+' เป็นเครื่องใช้'}; }
+];
+
+var KEY='thai-rachasap-stats';
+var stats=(function(){ try{ return JSON.parse(localStorage.getItem(KEY))||{}; }catch(e){ return {}; } })();
+if(!stats.t) stats={n:0,ok:0,streak:0,best:0,t:{}};
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify(stats)); }catch(e){} }
+function paint(){
+  $('#s-no').textContent=stats.n; $('#s-streak').textContent=stats.streak;
+  $('#s-best').textContent=stats.best;
+  $('#s-acc').textContent=stats.n?Math.round(stats.ok/stats.n*100)+'%':'–';
+}
+
+var cur=null, answered=false;
+function newQ(){
+  cur=GEN[rnd(GEN.length)](); answered=false;
+  $('#result').innerHTML='';
+  var h='<div class="q"><div class="qhead"><span class="qtopic">'+TOPICS[cur.topic]+'</span>'+
+        '<span>ข้อที่ '+(stats.n+1)+'</span></div><div class="qtext">'+cur.q+'</div>';
+  if(cur.fmt==='fill'){
+    h+='<input class="tin" id="ans" placeholder="พิมพ์คำตอบแล้วกด Enter" autocomplete="off">';
+  }else{
+    var o = cur.fmt==='tf' ? ['ถูก','ผิด'] : cur.opts;
+    h+='<div class="opts">'+o.map(function(x){
+      return '<button class="opt" data-v="'+x.replace(/"/g,'&quot;')+'">'+x+'</button>';}).join('')+'</div>';
+    if(cur.fmt==='multi') h+='<div class="btnrow"><button class="btn" id="sub">ตรวจคำตอบ</button></div>';
+  }
+  h+='<div class="fb"></div></div>';
+  $('#quizbox').innerHTML=h;
+  var inp=document.getElementById('ans');
+  if(inp){ inp.focus(); inp.onkeydown=function(e){ if(e.key==='Enter') grade(inp.value); }; }
+}
+var norm=function(s){ return (s||'').replace(/[\s​·]/g,'').trim(); };
+function grade(val){
+  if(answered) return; answered=true;
+  var ok;
+  if(cur.fmt==='multi'){
+    var got=$$('.opt.sel').map(function(b){return b.getAttribute('data-v');});
+    ok = got.length===cur.ans.length && cur.ans.every(function(a){return got.indexOf(a)>-1;});
+    $$('.opt').forEach(function(b){
+      var v=b.getAttribute('data-v');
+      b.classList.remove('sel');
+      b.classList.add(cur.ans.indexOf(v)>-1?'right':(got.indexOf(v)>-1?'wrong':''));
+      b.disabled=true;
+    });
+  }else if(cur.fmt==='fill'){
+    ok = norm(val)===norm(cur.ans) ||
+         cur.ans.split('·').some(function(a){return norm(a)===norm(val);});
+    document.getElementById('ans').disabled=true;
+  }else{
+    ok = val===cur.ans;
+    $$('.opt').forEach(function(b){
+      var v=b.getAttribute('data-v');
+      if(v===cur.ans) b.classList.add('right');
+      else if(v===val) b.classList.add('wrong');
+      b.disabled=true;
+    });
+  }
+  stats.n++; if(ok){ stats.ok++; stats.streak++; if(stats.streak>stats.best) stats.best=stats.streak; }
+  else stats.streak=0;
+  var t=stats.t[cur.topic]||(stats.t[cur.topic]={n:0,ok:0});
+  t.n++; if(ok) t.ok++;
+  save(); paint();
+  var fb=$('.fb');
+  fb.className='fb '+(ok?'ok':'bad');
+  fb.innerHTML=(ok?'✓ ถูกต้อง!':'✗ ยังไม่ใช่ — เฉลย: <b>'+(cur.fmt==='multi'?cur.ans.join(' · '):cur.ans)+'</b>')+
+    '<div class="why">'+cur.why+'</div>';
+}
+$('#quizbox').addEventListener('click',function(e){
+  var b=e.target.closest('.opt');
+  if(b && !b.disabled){
+    if(cur.fmt==='multi'){ b.classList.toggle('sel'); return; }
+    grade(b.getAttribute('data-v')); return;
+  }
+  if(e.target.id==='sub') grade();
+});
+$('#b-next').onclick=newQ;
+$('#b-reset').onclick=function(){
+  if(!confirm('ล้างสถิติทั้งหมด?')) return;
+  stats={n:0,ok:0,streak:0,best:0,t:{}}; save(); paint(); $('#result').innerHTML=''; newQ();
+};
+$('#b-end').onclick=function(){
+  var rows=Object.keys(TOPICS).map(function(k){
+    var t=stats.t[k]||{n:0,ok:0};
+    return {k:k,name:TOPICS[k],n:t.n,ok:t.ok,p:t.n?t.ok/t.n:-1};
+  }).sort(function(a,b){ return (a.p<0?2:a.p)-(b.p<0?2:b.p); });
+  var done=rows.filter(function(r){return r.n>0;});
+  var h='<div class="sec"><span class="bar"></span><h2>ผลรวม — เรียงจากบทที่อ่อนที่สุด</h2></div>';
+  if(!done.length){ h+='<div class="card">ยังไม่ได้ทำข้อไหนเลย ลองกด “ข้อต่อไป” แล้วทำสัก 10 ข้อก่อนนะ</div>'; }
+  else{
+    h+='<div class="card">';
+    rows.forEach(function(r){
+      if(r.n===0){ h+='<div class="rrow"><div class="t"><span>'+r.name+'</span><span class="en">ยังไม่ได้ทำ</span></div></div>'; return; }
+      var pc=Math.round(r.p*100);
+      var col = pc>=80?'var(--good)':pc>=50?'var(--gold)':'var(--bad)';
+      h+='<div class="rrow"><div class="t"><span>'+r.name+'</span><span><b>'+r.ok+'/'+r.n+'</b> ('+pc+'%)</span></div>'+
+         '<div class="bar2"><i style="width:'+pc+'%;background-image:linear-gradient('+col+','+col+')"></i></div></div>';
+    });
+    h+='</div>';
+    var weak=done[0];
+    h+='<div class="verdict"><b>🎯 สรุป:</b> ทำไปทั้งหมด <b>'+stats.n+'</b> ข้อ ถูก <b>'+stats.ok+'</b> ข้อ ('+
+       Math.round(stats.ok/stats.n*100)+'%)<br>'+
+       'บทที่<b>ควรกลับไปทบทวนก่อน</b>คือ <b>'+weak.name+'</b> ('+weak.ok+'/'+weak.n+')<br>'+
+       '<span class="en">→ กดแท็บ '+
+       ({part:'🏛️ ราชาศัพท์',thing:'🏛️ ราชาศัพท์',pron:'🏛️ ราชาศัพท์',song:'👑 “ทรง” ใช้ยังไง',
+         monk:'🙏 พระสงฆ์',rank:'🙏 พระสงฆ์',polite:'🥬 คำสุภาพ'}[weak.k])+' แล้วอ่านซ้ำ</span></div>';
+  }
+  $('#result').innerHTML=h;
+  $('#result').scrollIntoView({behavior:'smooth',block:'nearest'});
+};
+paint(); newQ();
+})();
+</script>
+<!--KIT-UI v2.7 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<script>
+/* =============================================================================
+   _kit/ui-controls.js  —  KIT UI  v1.0
+   แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
+     🌙/☀️  โหมดมืด / สว่าง   (จำค่าไว้ใน localStorage)
+     A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
+     ✏️  ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
+     🧮  เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
+
+   ── วิธีใช้ ────────────────────────────────────────────────────────────────
+   ห้ามแก้โค้ดนี้ในไฟล์ widget!  แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
+       pwsh -File _kit/apply-ui.ps1
+   สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
+   (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
+
+   !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
+      เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
+
+   ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
+   ใส่แอตทริบิวต์ที่ tag body:  data-tools="pen,calc"  = บังคับเปิด
+                              data-tools="none"      = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
+   ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
+              หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
+   ============================================================================= */
+(function(){
+if(window.__KITUI__) return; window.__KITUI__='2.7';
+
+/* ---------- helper ---------- */
+const D=document, R=D.documentElement;
+const get=k=>{try{return localStorage.getItem('kitui-'+k)}catch(e){return null}};
+const set=(k,v)=>{try{localStorage.setItem('kitui-'+k,v)}catch(e){}};
+const el=(t,c,h)=>{const e=D.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
+
+/* =============================================================================
+   1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
+   ============================================================================= */
+const CSS=`
+/* ===== DARK TOKENS (คู่กับ _kit/design-tokens.css) ===== */
+:root[data-theme="dark"]{
+  --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
+  --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
+  --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
+  --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
+  --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
+}
+:root[data-theme="dark"] body{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f172a}
+:root[data-theme="dark"] body[data-subject="physics"]{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f1220}
+:root[data-theme="dark"] body[data-subject="bio"]{--accent:#4ade80;--accent-head:#bbf7d0;--accent-ink:#86efac;--accent-soft:#0f2a1a;--accent-bd:#256b41;--accent-chip:#14532d;--accent-ghost:#15803d;--bg:#0d1912}
+:root[data-theme="dark"] body[data-subject="chem"]{--accent:#fb923c;--accent-head:#fed7aa;--accent-ink:#fdba74;--accent-soft:#2b1a0c;--accent-bd:#8a3d12;--accent-chip:#6d2c10;--accent-ghost:#c2410c;--bg:#1a130c}
+:root[data-theme="dark"] body[data-subject="christ"]{--accent:#a78bfa;--accent-head:#ddd6fe;--accent-ink:#c4b5fd;--accent-soft:#241a3d;--accent-bd:#5b21b6;--accent-chip:#4c1d95;--accent-ghost:#6d28d9;--bg:#16121f}
+:root[data-theme="dark"] body[data-subject="islam"]{--accent:#2dd4bf;--accent-head:#99f6e4;--accent-ink:#5eead4;--accent-soft:#0d2b28;--accent-bd:#12615a;--accent-chip:#134e4a;--accent-ghost:#0f766e;--bg:#0c1917}
+:root[data-theme="dark"] body[data-subject="history"]{--accent:#fbbf24;--accent-head:#fde68a;--accent-ink:#fcd34d;--accent-soft:#2a1f0a;--accent-bd:#8a4b0c;--accent-chip:#6d3a0a;--accent-ghost:#b45309;--bg:#191509}
+:root[data-theme="dark"] body[data-subject="math"]{--accent:#38bdf8;--accent-head:#bae6fd;--accent-ink:#7dd3fc;--accent-soft:#0c2434;--accent-bd:#0b5a80;--accent-chip:#0c4a6e;--accent-ghost:#0369a1;--bg:#0b1620}
+:root[data-theme="dark"] body[data-subject="eng"]{--accent:#f472b6;--accent-head:#fbcfe8;--accent-ink:#f9a8d4;--accent-soft:#2e1122;--accent-bd:#8d1748;--accent-chip:#731839;--accent-ghost:#be185d;--bg:#1c0f16}
+:root[data-theme="dark"] body[data-subject="thai"]{--accent:#f87171;--accent-head:#fecaca;--accent-ink:#fca5a5;--accent-soft:#2d1414;--accent-bd:#8d2020;--accent-chip:#7f1d1d;--accent-ghost:#b91c1c;--bg:#1a0f0f}
+:root[data-theme="dark"] img,:root[data-theme="dark"] .svg-box{filter:brightness(.92)}
+/* ช่องกรอก/ดรอปดาวน์ที่ widget เก่ากำหนดพื้นขาวตายตัวไว้ */
+:root[data-theme="dark"] select,:root[data-theme="dark"] textarea,
+:root[data-theme="dark"] input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=color])
+{background-color:var(--soft);color:var(--ink);border-color:var(--line)}
+
+/* ===== แถบเครื่องมือลอย ===== */
+#kitui-bar{position:fixed;right:10px;bottom:10px;z-index:99990;display:flex;gap:6px;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
+#kitui-bar button{border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;
+  font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
+  align-items:center;justify-content:center;font-weight:700}
+#kitui-bar button:hover{background:var(--soft)}
+#kitui-bar button:active{transform:scale(.93)}
+#kitui-bar button.on{background:var(--accent);color:#fff}
+#kitui-bar .kitui-sep{width:1px;height:22px;background:var(--line);flex:0 0 1px}
+#kitui-bar .kitui-fs{font-size:11px;color:var(--muted);min-width:34px;text-align:center;font-weight:700}
+#kitui-bar.hidden > *:not(#kitui-grip){display:none}
+#kitui-grip{font-size:17px}
+
+/* ===== แผงลอย (ที่ทด / เครื่องคิดเลข) ===== */
+.kitui-sheet{position:fixed;left:0;right:0;bottom:0;z-index:99991;background:var(--card);
+  border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
+  display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
+  height:52vh;max-height:92vh;min-height:180px}
+.kitui-sheet.open{display:flex}
+.kitui-sheet.full{height:100vh;border-radius:0}
+.kitui-head{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--line);
+  flex-wrap:wrap;touch-action:none;cursor:ns-resize}
+.kitui-head b{font-size:.9rem;color:var(--accent-ink);margin-right:2px;white-space:nowrap}
+.kitui-head button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;
+  padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
+.kitui-head button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.kitui-head .kitui-spacer{flex:1}
+.kitui-sw{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;min-height:0}
+.kitui-sw.on{border-color:var(--ink);transform:scale(1.12)}
+.kitui-padwrap{flex:1;position:relative;overflow:hidden;background:var(--soft)}
+.kitui-padwrap canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+:root[data-theme="dark"] .kitui-padwrap{background:#0c1220}
+
+/* ===== เครื่องคิดเลข ===== */
+#kitui-calc{height:auto;max-height:90vh}
+.kitui-disp{padding:8px 12px;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);
+  border-bottom:1px solid var(--line)}
+.kitui-disp .ex{font-size:.95rem;color:var(--muted);min-height:1.3em;word-break:break-all}
+.kitui-disp .rs{font-size:1.6rem;font-weight:700;color:var(--accent-ink);word-break:break-all}
+.kitui-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:7px}
+.kitui-keys button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:9px;
+  font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
+.kitui-keys button:active{transform:scale(.95)}
+.kitui-keys button.fn{font-size:.8rem;color:var(--accent-ink)}
+.kitui-keys button.op{background:var(--accent-soft);color:var(--accent-ink)}
+.kitui-keys button.eq{background:var(--accent);color:#fff;grid-row:span 2}
+.kitui-keys button.del{background:var(--hot-bg);color:var(--hot-ink)}
+.kitui-keys button.w3{grid-column:span 3}
+@media(max-width:420px){.kitui-keys button{font-size:.88rem;min-height:40px}.kitui-keys button.fn{font-size:.72rem}}
+@media(min-width:760px){
+  .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
+  .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
+  #kitui-pad{width:560px}
+}
+@media print{#kitui-bar,.kitui-sheet{display:none!important}}
+`;
+const st=el('style'); st.id='kitui-style'; st.textContent=CSS; D.head.appendChild(st);
+
+/* -----------------------------------------------------------------------------
+   1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
+   widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
+   พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
+   แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
+   เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
+----------------------------------------------------------------------------- */
+/* สีพาสเทลสว่าง -> สีเข้มที่ยังคง "เฉดเดิม" ไว้ (เขียว=ถูก / แดง=ผิด ต้องยังแยกออก)
+   ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
+function darken(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
+  /* ⚠️ ห้ามใช้ saturation ของ HSL ตรง ๆ ตัดสิน: ที่ความสว่างเกือบ 1 ตัวหารจะเล็กมาก
+     ทำให้สีที่แทบเป็นสีขาว (เช่น #fdf8f4) ได้ค่าอิ่มสีสูงลิ่ว แล้วกลายเป็นสีน้ำตาลจัดตอนกดให้เข้ม
+     ให้ดูจาก "ช่วงห่างของแม่สี" (chroma) แทน แล้วแปลงเป็นความอิ่มสีแบบไล่ระดับ */
+  const s = Math.min(.45, Math.max(.08, d*4));
+  const l = d<.02 ? .13 : .17;                       /* เทา/ขาวล้วนให้เข้มกว่าสีนิดหน่อย */
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+function darkFix(){
+  const out=[], seen=new Set();
+  const take=r=>{
+    if(!r.style || !r.selectorText) return;
+    if(r.selectorText.indexOf('kitui')>-1) return;               /* ของเราเองใช้ token อยู่แล้ว */
+    const bg=r.style.backgroundColor;
+    if(!bg || bg.indexOf('var(')>-1) return;
+    const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
+    if(!m) return;
+    if(m[4]!==undefined && +m[4]<0.6) return;                    /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
+    const cr=+m[1], cg=+m[2], cb=+m[3];
+    if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return;       /* ไม่สว่างพอ ไม่ต้องยุ่ง */
+    const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
+    const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
+    let css='background-color:'+repl;
+    /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
+    const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
+    out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
+  };
+  /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
+        ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
+  const visit=rules=>{
+    for(let i=0;i<rules.length;i++){
+      const r=rules[i];
+      if(r.selectorText) take(r);
+      if(r.cssRules && r.cssRules.length) visit(r.cssRules);     /* @media / @supports / nesting */
+    }
+  };
+  for(let i=0;i<D.styleSheets.length;i++){
+    let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; }   /* ข้ามชีตข้ามโดเมน */
+    if(rr) visit(rr);
+  }
+  if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
+  return out.length;
+}
+try{ window.__KITUI_DARKFIX__ = (D.body.getAttribute('data-kit-theme')==='off') ? 'locked' : darkFix(); }
+catch(e){ window.__KITUI_DARKFIX__='err:'+e.message; }
+
+/* darkFix ข้างบนซ่อมได้เฉพาะสีที่เขียนตายตัวในไฟล์ CSS
+   แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
+   ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
+   จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
+const rgbOf=c=>{const m=c&&c.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null;};
+const lumOf=v=>v?(0.2126*v[0]+0.7152*v[1]+0.0722*v[2])/255:null;
+/* ตรงข้ามกับ darken(): ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
+   (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
+function lighten(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  if(d<0.04) return 'var(--ink)';                    /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
+  let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
+  const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
+  const s=Math.min(.92,Math.max(.55,s0)), l=.72;
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+const SKIP={CANVAS:1,IMG:1,VIDEO:1,SVG:1,IFRAME:1,PICTURE:1,OBJECT:1};
+const OBS_OPT={childList:true,subtree:true,attributes:true,attributeFilter:['class','style']};
+let patched=[], obs=null;
+function elementFix(){
+  /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
+        ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
+  if(obs) obs.disconnect();
+  try{ elementFixCore(); } finally { if(obs) obs.observe(D.body,OBS_OPT); }
+}
+function elementFixCore(){
+  if(D.body.getAttribute('data-kit-theme')==='off') return;   /* หน้าที่ล็อกธีมไว้ ห้ามไปยุ่งสี */
+  /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
+     ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
+     จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
+  if(R.getAttribute('data-theme')!=='dark'){
+    patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
+    patched=[];
+    return;
+  }
+  /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
+     ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
+  /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
+  const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
+  for(let i=0;i<all.length;i++){
+    const e=all[i];
+    if(e.id&&e.id.indexOf('kitui')===0) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(SKIP[e.tagName]) continue;                      /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
+    const s=getComputedStyle(e);
+    const bg=rgbOf(s.backgroundColor);
+    if(!bg || bg[3]<0.6) continue;                     /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
+    if(lumOf(bg)<0.72) continue;                       /* เข้มพออยู่แล้ว */
+    /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
+    e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
+    const fg=rgbOf(s.color);
+    if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important');  /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
+    patched.push(e);
+  }
+  /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
+     ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
+  const bgCache=new Map();
+  const effBg=n=>{
+    for(let p=n;p;p=p.parentElement){
+      if(bgCache.has(p)) return bgCache.get(p);
+      const b=rgbOf(getComputedStyle(p).backgroundColor);
+      if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
+    }
+    return null;
+  };
+  for(let i=2;i<all.length;i++){
+    const e=all[i];
+    if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(e.style.color) continue;                         /* จัดการไปแล้วในรอบแรก */
+    if(!e.textContent || !e.textContent.trim()) continue;
+    const fg=rgbOf(getComputedStyle(e).color);
+    if(!fg || lumOf(fg)>=0.45) continue;                 /* ตัวอักษรสว่างอยู่แล้ว */
+    const bg=effBg(e);
+    if(!bg || lumOf(bg)>=0.5) continue;                  /* พื้นยังสว่าง อ่านออกอยู่ */
+    e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
+    patched.push(e);
+  }
+}
+let efT=0;
+const scheduleFix=()=>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
+try{
+  obs=new MutationObserver(scheduleFix);
+  obs.observe(D.body,OBS_OPT);
+}catch(e){}
+
+/* =============================================================================
+   2) ธีม + ขนาดตัวอักษร
+   ============================================================================= */
+const FS=[.85,1,1.15,1.3,1.5], FSNAME=['เล็กสุด','เล็ก','ปกติ','ใหญ่','ใหญ่สุด'];
+let fsIdx=parseInt(get('fs')); if(isNaN(fsIdx)||fsIdx<0||fsIdx>4) fsIdx=1;
+let theme=get('theme') || (matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+
+/* หน้าที่ออกแบบธีมมาเองครบแล้ว (เช่น "หนังสือทบทวน" พื้นเข้มทั้งเล่ม) ให้ปิดระบบธีมของ KIT UI
+   ไม่งั้นโทเคน --bg/--ink ของเราจะไปทับสีที่หน้านั้นตั้งไว้ แล้วหน้าเพี้ยน
+   ใส่ที่ tag body:  data-kit-theme="off"   (ปุ่มปรับขนาดตัวอักษรยังใช้ได้ตามปกติ) */
+const themeLock = D.body.getAttribute('data-kit-theme')==='off';
+
+function applyTheme(){
+  if(themeLock) return;
+  R.setAttribute('data-theme',theme);
+  R.style.colorScheme = theme==='dark'?'dark':'light';   /* ให้ select/input เป็นสีเข้มด้วย */
+  const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
+  set('theme',theme);
+  clearTimeout(efT);                                   /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
+  if(typeof elementFix==='function') elementFix();
+  /* ⚠️ ห้ามอ้างถึงตัวแปรของส่วน "ที่ทด" ตรงนี้!
+     applyTheme() ถูกเรียกก่อนที่ `let pad` ในส่วนที่ 4 จะทำงาน → ชน temporal dead zone
+     แล้ว ReferenceError จะทำให้สคริปต์ตายทั้งก้อน (ปุ่มขนาดอักษร/ที่ทด/เครื่องคิดเลขหายหมด)
+     ใช้วิธียิง event แทน ใครสนใจค่อยไปดักฟังเอง */
+  try{ D.dispatchEvent(new CustomEvent('kitui-theme')); }catch(e){}
+}
+function applyFS(){
+  R.style.fontSize=(16*FS[fsIdx])+'px';
+  const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
+  set('fs',fsIdx);
+}
+
+/* =============================================================================
+   3) แถบเครื่องมือ
+   ============================================================================= */
+const subj=(D.body.getAttribute('data-subject')||'').toLowerCase();
+/* หลาย widget ไม่ได้ใส่ data-subject ที่ <body> → เดาจากโฟลเดอร์ที่ไฟล์อยู่ด้วย */
+const inPath=/\/(physics|math|chemist)\//i.test(decodeURIComponent(location.pathname));
+const tAttr=D.body.getAttribute('data-tools');
+const wantTools = tAttr!=null ? tAttr.toLowerCase()
+                : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
+const hasPen  = wantTools.includes('pen');
+const hasCalc = wantTools.includes('calc');
+
+const bar=el('div'); bar.id='kitui-bar';
+bar.innerHTML =
+  `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
+  (themeLock ? '' : `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button><span class="kitui-sep"></span>`)+
+  `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
+  `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
+  `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
+  (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
+  (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
+D.body.appendChild(bar);
+
+if(!themeLock) D.getElementById('kitui-theme').onclick=()=>{theme=theme==='dark'?'light':'dark';applyTheme();};
+D.getElementById('kitui-fsup').onclick=()=>{if(fsIdx<4){fsIdx++;applyFS();}};
+D.getElementById('kitui-fsdown').onclick=()=>{if(fsIdx>0){fsIdx--;applyFS();}};
+D.getElementById('kitui-grip').onclick=()=>bar.classList.toggle('hidden');
+applyTheme(); applyFS();
+
+/* ปิดแผงด้วยปุ่ม Esc */
+D.addEventListener('keydown',e=>{ if(e.key==='Escape') D.querySelectorAll('.kitui-sheet.open').forEach(s=>s.classList.remove('open')); });
+
+/* ลากหัวแผงเพื่อปรับความสูง */
+function makeResizable(sheet){
+  const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
+  head.addEventListener('pointerdown',e=>{
+    if(e.target.closest('button'))return;
+    drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect().height;head.setPointerCapture(e.pointerId);
+  });
+  head.addEventListener('pointermove',e=>{
+    if(!drag)return;
+    const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
+    sheet.classList.remove('full'); sheet.style.height=h+'px';
+    if(sheet.id==='kitui-pad') fitPad();
+  });
+  head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
+}
+
+/* =============================================================================
+   4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ  หลายหน้า  เซฟอัตโนมัติ
+   ============================================================================= */
+let pad,padCv,padCx,pages=[[]],pg=0,undone=[],histo=[];
+let tool='pen',color='#111827',width=2.4,penSeen=0;
+const COLORS=['#111827','#2563eb','#dc2626','#16a34a','#f59e0b'];
+const PADKEY='pad-'+location.pathname.split('/').pop();
+
+function buildPad(){
+  pad=el('div','kitui-sheet'); pad.id='kitui-pad';
+  pad.innerHTML=
+   `<div class="kitui-head">
+      <b>✏️ ที่ทด</b>
+      <button data-t="pen" class="on">🖊️</button>
+      <button data-t="hl">🖍️</button>
+      <button data-t="er">🧽</button>
+      ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
+      <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
+      <span class="kitui-spacer"></span>
+      <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
+      <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
+      <button id="kitui-pgadd">+ หน้า</button>
+      <button id="kitui-clear">ล้างหน้านี้</button>
+      <button id="kitui-full">⛶</button>
+      <button id="kitui-padclose">✕</button>
+    </div>
+    <div class="kitui-padwrap"><canvas></canvas></div>`;
+  D.body.appendChild(pad);
+  padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
+  makeResizable(pad);
+
+  pad.querySelector('.kitui-head').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
+  });
+  D.getElementById('kitui-undo').onclick=()=>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop(); draw(); save(); } };
+  D.getElementById('kitui-redo').onclick=()=>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop(); draw(); save(); } };
+  D.getElementById('kitui-clear').onclick=()=>{ snap(); pages[pg]=[]; draw(); save(); };
+  D.getElementById('kitui-pgadd').onclick=()=>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw(); save(); };
+  D.getElementById('kitui-pgprev').onclick=()=>{ if(pg>0){pg--;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-pgnext').onclick=()=>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-full').onclick=()=>{ pad.classList.toggle('full'); pad.style.height=''; fitPad(); };
+  D.getElementById('kitui-padclose').onclick=()=>pad.classList.remove('open');
+
+  /* ---- วาด ---- */
+  let cur=null;
+  padCv.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='pen') penSeen=Date.now();
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;   /* กันฝ่ามือแตะตอนใช้สไตลัส */
+    const p=pt(e);
+    if(tool==='er'){ snap(); erase(p); return; }
+    snap();
+    cur={c:color,w:width,hl:tool==='hl',pts:[p]};
+    pages[pg].push(cur); draw();
+    try{ padCv.setPointerCapture(e.pointerId); }catch(x){}  /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
+  });
+  padCv.addEventListener('pointermove',e=>{
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;
+    if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
+    if(!cur||!e.buttons)return;
+    /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
+    let evs=[e];
+    if(e.getCoalescedEvents){ const c=e.getCoalescedEvents(); if(c&&c.length) evs=c; }
+    evs.forEach(ev=>cur.pts.push(pt(ev)));
+    draw();
+  });
+  const end=()=>{ if(cur){cur=null;save();} };
+  padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
+  padCv.addEventListener('pointerleave',end);
+
+  addEventListener('resize',()=>{ if(pad.classList.contains('open')) fitPad(); });
+  D.addEventListener('kitui-theme',()=>draw());   /* สลับธีมแล้ววาดลายใหม่ เส้นดำ<->ขาวตามพื้น */
+  load(); fitPad();
+}
+function pt(e){
+  const r=padCv.getBoundingClientRect();
+  return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
+          p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5};   /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
+}
+function snap(){ histo.push(pages[pg].slice()); if(histo.length>60)histo.shift(); undone=[]; }
+function erase(p){
+  const r=padCv.getBoundingClientRect(), rad=18/r.width;
+  const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
+  if(keep.length!==pages[pg].length){ pages[pg]=keep; draw(); save(); }
+}
+function fitPad(){
+  const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
+  const dpr=Math.min(devicePixelRatio||1,2.5);
+  padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
+  draw();
+}
+function draw(){
+  const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
+  padCx.clearRect(0,0,W,H);
+  /* เส้นตารางจาง ๆ ให้เขียนตรง */
+  const dark=R.getAttribute('data-theme')==='dark';
+  padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
+  for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath();padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke();}
+  padCx.lineCap='round'; padCx.lineJoin='round';
+  pages[pg].forEach(s=>{
+    padCx.globalAlpha=s.hl?0.32:1;
+    padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
+    for(let i=1;i<s.pts.length;i++){
+      const a=s.pts[i-1],b=s.pts[i];
+      padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
+      padCx.beginPath(); padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke();
+    }
+    if(s.pts.length===1){ /* จุดเดียว */
+      padCx.fillStyle=padCx.strokeStyle; padCx.beginPath();
+      padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill();
+    }
+  });
+  padCx.globalAlpha=1;
+  const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
+}
+function save(){ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
+function load(){
+  try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
+}
+
+if(hasPen){
+  buildPad();
+  D.getElementById('kitui-penbtn').onclick=()=>{
+    const o=pad.classList.toggle('open');
+    D.getElementById('kitui-penbtn').classList.toggle('on',o);
+    if(o) fitPad();
+  };
+}
+
+/* =============================================================================
+   5) เครื่องคิดเลขวิทยาศาสตร์  (tokenizer → shunting-yard → RPN  ไม่ใช้ eval)
+   ============================================================================= */
+const FN={sin:1,cos:1,tan:1,asin:1,acos:1,atan:1,ln:1,log:1,sqrt:1,abs:1,exp:1};
+const PREC={'+':1,'-':1,'*':2,'/':2,'^':4,'u-':3};
+function tokenize(s){
+  s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
+  const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!()])/g; let m;
+  while((m=re.exec(s))) out.push(m[1]);
+  return out;
+}
+function toRPN(tk){
+  const out=[],op=[]; let prev=null;
+  for(let t of tk){
+    if(t==='**')t='^';
+    if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
+    else if(t==='PI'){ out.push(Math.PI); }
+    else if(t==='e'||t==='E'){ out.push(Math.E); }
+    else if(t==='ANS'){ out.push(ANS); }
+    else if(FN[t]){ op.push(t); }
+    else if(t==='('){ op.push(t); }
+    else if(t===')'){
+      while(op.length&&op[op.length-1]!=='(') out.push(op.pop());
+      if(!op.length) throw 0; op.pop();
+      if(op.length&&FN[op[op.length-1]]) out.push(op.pop());
+    }
+    else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
+    else if('+-*/^'.includes(t)){
+      let o=t;
+      const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
+      if(t==='-'&&unary) o='u-';
+      else if(t==='+'&&unary){ prev=t; continue; }
+      while(op.length){
+        const top=op[op.length-1];
+        if(top==='('||FN[top])break;
+        const rightAssoc=(o==='^'||o==='u-');
+        if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop()); else break;
+      }
+      op.push(o);
+    }
+    else throw 0;
+    prev=t;
+  }
+  while(op.length){ const o=op.pop(); if(o==='(')throw 0; out.push(o); }
+  return out;
+}
+function evalRPN(rpn,deg){
+  const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
+  const pop=()=>{ if(!st.length)throw 0; return st.pop(); };
+  for(const t of rpn){
+    if(typeof t==='number'){ st.push(t); continue; }
+    if(t==='fact'){ const n=pop(); if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
+    if(t==='pct'){ st.push(pop()/100); continue; }
+    if(t==='u-'){ st.push(-pop()); continue; }
+    if(FN[t]){
+      const a=pop();
+      st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
+             : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
+             : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
+             : t==='abs'?Math.abs(a) : Math.exp(a) );
+      continue;
+    }
+    const b=pop(),a=pop();
+    st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
+  }
+  if(st.length!==1) throw 0;
+  return st[0];
+}
+function calc(src,deg){ return evalRPN(toRPN(tokenize(src)),deg); }
+
+let ANS=0, expr='', calcSheet, isDeg=true;
+const KEYS=[
+ ['DEG','deg','fn'],['(','(',''],[')',')',''],['⌫','del','del'],['AC','ac','del'],
+ ['sin','sin(','fn'],['cos','cos(','fn'],['tan','tan(','fn'],['π','π','fn'],['÷','÷','op'],
+ ['sin⁻¹','asin(','fn'],['cos⁻¹','acos(','fn'],['tan⁻¹','atan(','fn'],['e','e','fn'],['×','×','op'],
+ ['ln','ln(','fn'],['log','log(','fn'],['√','√(','fn'],['xʸ','^','fn'],['−','−','op'],
+ ['7','7',''],['8','8',''],['9','9',''],['x!','!','fn'],['+','+','op'],
+ ['4','4',''],['5','5',''],['6','6',''],['%','%','fn'],['ANS','ANS','fn'],
+ ['1','1',''],['2','2',''],['3','3',''],['.','.',''],['=','eq','eq'],
+ ['0','0','w3'],['x²','^2','fn']
+];
+function buildCalc(){
+  calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
+  calcSheet.innerHTML=
+   `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
+      <button id="kitui-calcclose">✕</button></div>
+    <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
+    <div class="kitui-keys" id="kitui-keys">
+      ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
+    </div>`;
+  D.body.appendChild(calcSheet);
+  D.getElementById('kitui-calcclose').onclick=()=>calcSheet.classList.remove('open');
+  const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
+  const show=()=>{ ex.textContent=expr||' ';
+    try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
+    catch(e){ rs.style.opacity=.35; }
+  };
+  D.getElementById('kitui-keys').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
+    if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
+    if(k==='del'){ expr=expr.slice(0,-1); show(); return; }
+    if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show(); return; }
+    if(k==='eq'){
+      rs.style.opacity=1;
+      try{
+        const v=calc(expr,isDeg);
+        if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
+        if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
+        ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
+      }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
+      return;
+    }
+    expr+=k; show();
+  });
+}
+function fmt(v){
+  if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
+  if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
+  return String(Math.round(v*1e10)/1e10);
+}
+if(hasCalc){
+  buildCalc();
+  D.getElementById('kitui-calcbtn').onclick=()=>{
+    const o=calcSheet.classList.toggle('open');
+    D.getElementById('kitui-calcbtn').classList.toggle('on',o);
+  };
+}
+})();
+
+</script>
+<!--/KIT-UI-->
+</body>
+</html>
