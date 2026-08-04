@@ -85,7 +85,12 @@ sub{font-size:.72em}
    linear-gradient(#eef2f7 1px,transparent 1px) 0 0/100% 25px,
    linear-gradient(90deg,#eef2f7 1px,transparent 1px) 0 0/25px 100%}
 .draw canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
-.sol{padding:10px;border-top:1px dashed var(--line);display:none;background:var(--soft)}
+.sol{padding:10px;border-top:1px dashed var(--line);display:none;background:var(--soft);
+     --sk:#334155;--tx:#0f172a;--sub:#c2410c}
+:root[data-theme="dark"] .sol{--sk:#94a3b8;--tx:#e6edf3;--sub:#fb923c}
+:root[data-theme="dark"] .draw .cvwrap{background:
+   linear-gradient(rgba(148,163,184,.16) 1px,transparent 1px) 0 0/100% 25px,
+   linear-gradient(90deg,rgba(148,163,184,.16) 1px,transparent 1px) 0 0/25px 100%}
 .sol.show{display:block}
 .sol svg{width:100%;max-width:560px;height:auto;display:block;margin:0 auto}
 .sol .cap{font-size:.86rem;color:var(--muted);text-align:center;margin-top:5px}
@@ -376,8 +381,9 @@ function chainSVG(n,opt){
   const subs=opt.subs||[];           /* [{at:1,group:'Br'}] แทน H หนึ่งตัวบน C ตัวนั้น */
   const dx=104, x0=70, y=118, W=x0*2+dx*(n-1), H=210;
   let s=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" font-family="Sarabun,sans-serif">`;
-  const L=(x1,y1,x2,y2)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#334155" stroke-width="2.2"/>`;
-  const T=(x,yy,t,col)=>`<text x="${x}" y="${yy}" text-anchor="middle" font-size="21" font-weight="600" fill="${col||'#0f172a'}">${t}</text>`;
+  /* ใช้ตัวแปร CSS ไม่ใส่สีตายตัว เพื่อให้เฉลยอ่านออกทั้งโหมดสว่างและมืด */
+  const L=(x1,y1,x2,y2)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="var(--sk,#334155)" stroke-width="2.2"/>`;
+  const T=(x,yy,t,col)=>`<text x="${x}" y="${yy}" text-anchor="middle" font-size="21" font-weight="600" fill="${col||'var(--tx,#0f172a)'}">${t}</text>`;
   const cx=i=>x0+dx*i;
   /* พันธะระหว่าง C */
   for(let i=0;i<n-1;i++){
@@ -411,7 +417,7 @@ function chainSVG(n,opt){
     let k=0;
     mySubs.forEach(v=>{ const sl=slots[k++]; if(!sl)return;
       s+= (sl[2]==='up'?L(x,y-14,x,y-40):sl[2]==='down'?L(x,y+14,x,y+50):L(x+(sl[0]>x?15:-15),y,sl[0]+(sl[0]>x?-15:15),y));
-      s+=T(sl[0],sl[1],v.group,'#c2410c'); });
+      s+=T(sl[0],sl[1],v.group,'var(--sub,#c2410c)'); });
     for(let j=0;j<h;j++){ const sl=slots[k++]; if(!sl)continue;
       s+= (sl[2]==='up'?L(x,y-14,x,y-40):sl[2]==='down'?L(x,y+14,x,y+50):L(x+(sl[0]>x?15:-15),y,sl[0]+(sl[0]>x?-15:15),y));
       s+=T(sl[0],sl[1],'H'); }
@@ -467,7 +473,9 @@ document.querySelectorAll('.draw').forEach(box=>{
   function draw(){
     cx.clearRect(0,0,cv.width,cv.height);
     const dpr=Math.min(devicePixelRatio||1,2.5);
-    cx.lineCap='round'; cx.lineJoin='round'; cx.strokeStyle='#1e293b';
+    /* ⚠️ ห้าม hard-code สีหมึกเป็นสีเข้ม! ในโหมดมืดพื้นก็เข้ม -> ลายมือหายไปเลย มองไม่เห็นว่าวาดอะไร */
+    const dark=document.documentElement.getAttribute('data-theme')==='dark';
+    cx.lineCap='round'; cx.lineJoin='round'; cx.strokeStyle=dark?'#f1f5f9':'#1e293b';
     strokes.forEach(s=>{ cx.lineWidth=2.4*dpr;
       for(let i=1;i<s.length;i++){cx.beginPath();
         cx.moveTo(s[i-1].x*cv.width,s[i-1].y*cv.height);
@@ -501,7 +509,9 @@ document.querySelectorAll('.draw').forEach(box=>{
     if(b.hasAttribute('data-clear')){strokes=[];draw();}
     if(b.hasAttribute('data-sol')) box.querySelector('.sol').classList.toggle('show');
   });
-  addEventListener('resize',fit); fit();
+  addEventListener('resize',fit);
+  document.addEventListener('kitui-theme',draw);   /* สลับธีมแล้ววาดใหม่ หมึกจะได้กลับสี */
+  fit();
 });
 
 /* ============================================================
