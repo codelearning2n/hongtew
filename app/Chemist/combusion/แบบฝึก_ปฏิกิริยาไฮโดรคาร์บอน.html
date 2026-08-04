@@ -72,7 +72,30 @@ sub{font-size:.72em}
 .opt.wrongpick{border-color:var(--bad);background:#fef2f2}
 .opt.locked{cursor:default}
 .score{position:sticky;top:56px;z-index:9;background:var(--accent-head);color:#fff;border-radius:var(--radius-sm);
-  padding:8px 14px;margin:6px 0 10px;font-weight:700;font-size:.9rem;display:flex;justify-content:space-between;gap:10px}
+  padding:8px 14px;margin:6px 0 10px;font-weight:700;font-size:.9rem;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+
+/* ---------- สรุปผลรายบท ---------- */
+.topic{margin:9px 0}
+.topic .lab{display:flex;justify-content:space-between;gap:8px;font-size:.92rem;font-weight:600;margin-bottom:3px}
+.topic .lab .n{color:var(--muted);font-weight:500;font-size:.86rem}
+.bar{height:14px;background:var(--soft);border:1px solid var(--line);border-radius:99px;overflow:hidden}
+.bar>i{display:block;height:100%;border-radius:99px}
+.topic.weak .lab{color:var(--bad)}
+.topic.good .lab{color:var(--ok)}
+.verdict{border-radius:var(--radius-sm);padding:12px 14px;margin:10px 0;font-size:.95rem}
+.verdict.bad{background:var(--hot-bg);color:var(--hot-ink)}
+.verdict.ok{background:#ecfdf5;color:#065f46}
+.tag{display:inline-block;background:var(--accent-chip);color:var(--accent-ink);border-radius:6px;
+  padding:1px 9px;font-size:.76rem;font-weight:700;margin-bottom:6px}
+.numin{width:90px;padding:8px 10px;border:2px solid #cbd5e1;border-radius:8px;text-align:center;
+  font-family:inherit;font-size:1.05rem;background:#fff;color:var(--ink)}
+.numin:focus{outline:none;border-color:var(--accent)}
+.opt .box{width:20px;height:20px;border:2px solid #94a3b8;border-radius:5px;flex-shrink:0;margin-top:1px;
+  display:flex;align-items:center;justify-content:center;font-size:.8rem;color:#fff;line-height:1}
+.opt.sel .box{background:var(--accent);border-color:var(--accent)}
+.opt.right .box{background:var(--ok);border-color:var(--ok)}
+.opt.wrongpick .box{background:var(--bad);border-color:var(--bad)}
+.opt.missed{border-style:dashed;border-color:var(--ok)}
 
 /* ---------- เขียนโครงสร้าง ---------- */
 .draw{border:1px solid var(--line);border-radius:var(--radius-sm);background:#fff;margin:10px 0;overflow:hidden}
@@ -202,13 +225,31 @@ sub{font-size:.72em}
     </div>
   </section>
 
-  <!-- ================= รวมมิตร ================= -->
+  <!-- ================= รวมมิตร (ไม่จำกัดข้อ) ================= -->
   <section id="t4" class="tab">
-    <div class="card">
-      <h2>🎯 ข้อสอบรวม</h2>
-      <p class="sub">คละทุกเรื่อง — สมบัติ · การทดสอบ · ปฏิกิริยา</p>
-      <div class="score"><span id="s4">ทำแล้ว 0</span><span id="p4">ถูก 0</span></div>
-      <div id="d4"></div>
+    <div class="card" id="runCard">
+      <h2>🎯 ฝึกรวมมิตร — ไม่จำกัดข้อ</h2>
+      <p class="sub">โจทย์สุ่มใหม่ทุกข้อ ไม่มีวันหมด · มีทั้ง <b>เลือกตอบ · เติมตัวเลข · ถูก/ผิด · เลือกหลายข้อ</b> ·
+        ทำไปเรื่อย ๆ แล้วกด <b>“จบ &amp; ดูผล”</b> เพื่อดูว่าอ่อนบทไหนที่สุด</p>
+      <div class="score">
+        <span id="sTot">ข้อที่ 0</span>
+        <span id="sStreak">🔥 ติดกัน 0</span>
+        <span id="sAcc">ถูก 0 (0%)</span>
+      </div>
+      <div id="stage"></div>
+      <div class="row" style="margin-top:12px">
+        <button class="btn" id="nextQ" style="display:none">ข้อถัดไป →</button>
+        <button class="btn ghost" id="finish">🏁 จบ &amp; ดูผล</button>
+      </div>
+    </div>
+
+    <div class="card" id="resultCard" style="display:none">
+      <h2>📊 สรุปผล</h2>
+      <div id="resultBody"></div>
+      <div class="row" style="margin-top:14px">
+        <button class="btn" id="again">▶️ ฝึกต่อ</button>
+        <button class="btn ghost" id="reset">♻️ ล้างสถิติเริ่มใหม่</button>
+      </div>
     </div>
   </section>
 
@@ -217,7 +258,7 @@ sub{font-size:.72em}
 <script>
 const $=s=>document.querySelector(s);
 const KEY=['ก','ข','ค','ง','จ'];
-const st={1:{d:0,o:0},2:{d:0,o:0},4:{d:0,o:0}};
+const st={1:{d:0,o:0},2:{d:0,o:0}};
 const upd=n=>{$('#s'+n).textContent='ทำแล้ว '+st[n].d;$('#p'+n).textContent='ถูก '+st[n].o;};
 
 function openTab(id){
@@ -515,8 +556,275 @@ document.querySelectorAll('.draw').forEach(box=>{
 });
 
 /* ============================================================
-   4) รวมมิตร
+   4) รวมมิตร — โหมดไม่จำกัดข้อ (สุ่มโจทย์ใหม่ทุกครั้ง)
    ============================================================ */
+const TOPICS={
+  formula:'สูตรทั่วไป & จำแนกชนิด',
+  burn:   'ดุลสมการเผาไหม้',
+  subst:  'ปฏิกิริยาแทนที่ (แอลเคน)',
+  addn:   'ปฏิกิริยาการเติม (แอลคีน/แอลไคน์)',
+  test:   'การทดสอบ & ฟอกจางสี',
+  phys:   'สมบัติทางกายภาพ',
+  struct: 'โครงสร้าง & การนับ H'
+};
+const TABOF={formula:'t0',burn:'t1',subst:'t2',addn:'t2',test:'t2',phys:'t0',struct:'t3'};
+const R_=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const NAMES={1:'มีเทน',2:'อีเทน',3:'โพรเพน',4:'บิวเทน',5:'เพนเทน',6:'เฮกเซน',7:'เฮปเทน',8:'ออกเทน',9:'โนเนน',10:'เดเคน'};
+const ENE={2:'อีทีน',3:'โพรพีน',4:'บิวทีน',5:'เพนทีน',6:'เฮกซีน',7:'เฮปทีน',8:'ออกทีน'};
+const YNE={2:'อีไทน์',3:'โพรไพน์',4:'บิวไทน์',5:'เพนไทน์',6:'เฮกไซน์'};
+const hOf=(n,t)=>t==='ane'?2*n+2:t==='ene'?2*n:2*n-2;
+const fml=(n,t)=>'C'+(n>1?n:'')+'H'+hOf(n,t);
+const TH={ane:'แอลเคน',ene:'แอลคีน',yne:'แอลไคน์'};
+
+/* --- ตัวสร้างโจทย์ (แต่ละตัวคืนอ็อบเจกต์คำถาม) --- */
+const GEN=[
+ /* 1. จำแนกชนิดจากสูตร */
+ ()=>{const t=pick(['ane','ene','yne']), n=t==='ane'?R_(1,10):R_(2,8);
+   return {topic:'formula',type:'mc',
+     q:`สาร <b>${sub(fml(n,t))}</b> จัดเป็นไฮโดรคาร์บอนชนิดใด`,
+     o:['แอลเคน','แอลคีน','แอลไคน์','ไม่ใช่ไฮโดรคาร์บอน'],
+     a:['ane','ene','yne'].indexOf(t),
+     e:`มี C = ${n} → แอลเคน ${sub(fml(n,'ane'))} · แอลคีน ${sub(fml(n,'ene'))} · แอลไคน์ ${sub(fml(n,'yne'))}<br>สูตรที่ให้มาตรงกับ <b>${TH[t]}</b> (C<sub>n</sub>H<sub>${t==='ane'?'2n+2':t==='ene'?'2n':'2n−2'}</sub>)`};},
+
+ /* 2. นับ H */
+ ()=>{const t=pick(['ane','ene','yne']), n=t==='ane'?R_(2,10):R_(2,8);
+   const nm = t==='ane'?NAMES[n]:t==='ene'?ENE[n]:YNE[n];
+   return {topic:'formula',type:'num',
+     q:`<b>${nm||TH[t]+' ที่มี C '+n+' อะตอม'}</b> มีไฮโดรเจนกี่อะตอม`,unit:'อะตอม',
+     a:hOf(n,t),
+     e:`${TH[t]} = C<sub>n</sub>H<sub>${t==='ane'?'2n+2':t==='ene'?'2n':'2n−2'}</sub> · แทน n=${n} → H = <b>${hOf(n,t)}</b> → ${sub(fml(n,t))}`};},
+
+ /* 3. ดุลสมการ — ถามสัมประสิทธิ์ตัวใดตัวหนึ่ง */
+ ()=>{const t=pick(['ane','ene','yne']), n=t==='ane'?R_(1,8):R_(2,7), m=hOf(n,t);
+   const co=target(n,m), which=R_(0,2);
+   const lbl=['O₂','CO₂','H₂O'][which], val=[co[1],co[2],co[3]][which];
+   return {topic:'burn',type:'num',
+     q:`ดุลสมการเผาไหม้สมบูรณ์ของ <b>${sub(fml(n,t))}</b> โดยให้สัมประสิทธิ์ของสารตั้งต้นเป็น <b>${co[0]}</b><br>
+        สัมประสิทธิ์ของ <b>${lbl}</b> เป็นเท่าใด`,unit:'',
+     a:val,
+     e:`${co[0]===1?'':co[0]} ${sub(fml(n,t))} + ${co[1]} O<sub>2</sub> → ${co[2]} CO<sub>2</sub> + ${co[3]} H<sub>2</sub>O<br>ดุล C ก่อน (CO₂ = จำนวน C) → ดุล H (H₂O = H÷2) → ค่อยดุล O`};},
+
+ /* 4. ปฏิกิริยาแทนที่ */
+ ()=>{const n=R_(1,8), X=pick([['Cl','คลอรีน','HCl'],['Br','โบรมีน','HBr']]);
+   const p='C'+(n>1?n:'')+'H'+(2*n+1)+X[0];
+   const wrong=['C'+(n>1?n:'')+'H'+(2*n+2)+X[0]+'<sub>2</sub>','C'+(n>1?n:'')+'H'+(2*n)+' + 2'+X[2],'ไม่เกิดปฏิกิริยา'];
+   const opts=shuffle([sub(p)+' + '+X[2], ...wrong]);
+   return {topic:'subst',type:'mc',
+     q:`<b>${NAMES[n]||'แอลเคน C'+n}</b> (${sub(fml(n,'ane'))}) + ${X[0]}<sub>2</sub> <b>เมื่อมีแสงสว่าง</b> ได้ผลิตภัณฑ์ใด`,
+     o:opts, a:opts.indexOf(sub(p)+' + '+X[2]),
+     e:`ปฏิกิริยา<b>แทนที่</b>: ${X[0]} เข้าไปแทน H <b>เพียง 1 ตัว</b> แล้วปล่อย ${X[2]} ออกมา<br>H ลดจาก ${2*n+2} → ${2*n+1} จึงได้ <b>${sub(p)}</b>`};},
+
+ /* 5. ปฏิกิริยาเติมของแอลคีน */
+ ()=>{const n=R_(2,6);
+   const R=pick([
+     ['Br<sub>2</sub>','ได'+'ฮาโลแอลเคน','C'+(n>1?n:'')+'H'+(2*n)+'Br<sub>2</sub>','สีน้ำตาลแดงจางหาย'],
+     ['H<sub>2</sub> (Ni)','แอลเคน','C'+(n>1?n:'')+'H'+(2*n+2),'พันธะคู่หายกลายเป็นพันธะเดี่ยว'],
+     ['HCl','แอลคิลเฮไลด์','C'+(n>1?n:'')+'H'+(2*n+1)+'Cl','H กับ Cl แยกกันเกาะคนละ C'],
+     ['H<sub>2</sub>O (H<sub>2</sub>SO<sub>4</sub>)','แอลกอฮอล์','C'+(n>1?n:'')+'H'+(2*n+1)+'OH','ได้หมู่ –OH']]);
+   const opts=shuffle(['แอลเคน','แอลคีน','แอลกอฮอล์','แอลคิลเฮไลด์','ไดฮาโลแอลเคน'].filter(x=>x!==R[1]).slice(0,3).concat([R[1]]));
+   return {topic:'addn',type:'mc',
+     q:`<b>${ENE[n]||'แอลคีน C'+n}</b> (${sub(fml(n,'ene'))}) ทำปฏิกิริยากับ <b>${R[0]}</b> ได้สารประเภทใด`,
+     o:opts,a:opts.indexOf(R[1]),
+     e:`ปฏิกิริยา<b>การเติม</b>ที่พันธะคู่ → ได้ <b>${R[1]}</b> สูตร ${sub(R[2])}<br>${R[3]}`};},
+
+ /* 6. การทดสอบ */
+ ()=>{const n=R_(4,8);
+   const set=pick([
+     {q:`ถ้าหยดสารละลาย <b>Br<sub>2</sub> ในที่มืด</b> ลงในสารสองขวด: ${NAMES[n]} กับ ${ENE[n]} ขวดใดจะ<b>ฟอกจางสี</b>`,
+      o:[NAMES[n],ENE[n],'ทั้งสองขวด','ไม่มีขวดใดเลย'],a:1,
+      e:`เฉพาะ<b>พันธะคู่</b>เท่านั้นที่เกิดปฏิกิริยาเติมกับ Br₂ ได้ในที่มืด → <b>${ENE[n]}</b> ฟอกจางสี<br>🎯 ต้องระบุ “ในที่มืด” เพราะถ้ามีแสง แอลเคนจะเกิดปฏิกิริยาแทนที่และสีจางได้เหมือนกัน`},
+     {q:`สารใด<b>ไม่</b>ฟอกจางสีสารละลาย KMnO<sub>4</sub>`,
+      o:[ENE[n],YNE[n>6?6:n],NAMES[n],'ฟอกจางสีทุกตัว'],a:2,
+      e:`<b>แอลเคน</b> อิ่มตัวแล้ว ไม่เกิดปฏิกิริยาออกซิเดชันกับ KMnO₄ → ไม่ฟอกจางสี<br>ส่วนแอลคีน/แอลไคน์ฟอกจางสีได้ พร้อมเกิด<b>ตะกอน MnO₂ สีน้ำตาล</b>`},
+     {q:`เมื่อแอลคีนฟอกจางสี KMnO<sub>4</sub> จะได้ผลิตภัณฑ์อินทรีย์ชนิดใด`,
+      o:['ไกลคอล (มี –OH สองหมู่)','แอลเคน','กรดคาร์บอกซิลิก','อีเทอร์'],a:0,
+      e:`ได้ <b>ไกลคอล</b> = แอลกอฮอล์ที่มีหมู่ –OH เกาะ C ที่ติดกันสองตัว [สไลด์ p.31]`}]);
+   return Object.assign({topic:'test',type:'mc'},set);},
+
+ /* 7. สมบัติทางกายภาพ */
+ ()=>{const n=R_(3,7);
+   const set=pick([
+     {q:`เปรียบเทียบที่ C เท่ากัน (${n} อะตอม) ข้อใดเรียง<b>จุดเดือด</b>จากมากไปน้อยถูกต้อง`,
+      o:['แอลไคน์ > แอลเคน > แอลคีน','แอลเคน > แอลคีน > แอลไคน์','แอลคีน > แอลไคน์ > แอลเคน','เท่ากันหมด'],a:0,
+      e:`<b>แอลไคน์ > แอลเคน > แอลคีน</b> [สไลด์ p.35] · จำว่า “ไคน์–เคน–คีน”`},
+     {q:`${NAMES[n]} กับ ${NAMES[n+2]} สารใดมี<b>จุดเดือดสูงกว่า</b>`,
+      o:[NAMES[n],NAMES[n+2],'เท่ากัน','บอกไม่ได้'],a:1,
+      e:`จุดเดือดเพิ่มตาม<b>มวลโมเลกุล</b> → C มากกว่า (${n+2} > ${n}) จึงมีจุดเดือดสูงกว่า`},
+     {q:`ไฮโดรคาร์บอนละลายในตัวทำละลายใดได้ดี`,
+      o:['น้ำ','เอทานอลผสมน้ำ','ตัวทำละลายอินทรีย์ เช่น CCl<sub>4</sub>','กรดเกลือเจือจาง'],a:2,
+      e:`ไฮโดรคาร์บอนเป็น<b>โมเลกุลไม่มีขั้ว</b> จึงไม่ละลายน้ำ แต่ละลายในตัวทำละลาย<b>ไม่มีขั้ว</b>เช่น CCl₄ · acetone · DME [p.6]`}]);
+   return Object.assign({topic:'phys',type:'mc'},set);},
+
+ /* 8. โครงสร้าง — นับ H บน C ตำแหน่งที่กำหนด */
+ ()=>{const t=pick(['ane','ene']), n=R_(3,6), i=R_(1,n);
+   const bondsToC=(n===1)?0:((i===1||i===n)?1:2);
+   let h=4-bondsToC; if(t==='ene'&&(i===1||i===2)) h-=1;
+   const nm=t==='ane'?NAMES[n]:ENE[n];
+   return {topic:'struct',type:'num',
+     q:`ในโมเลกุล <b>${nm}</b> (${sub(fml(n,t))}${t==='ene'?' พันธะคู่อยู่ระหว่าง C ตัวที่ 1–2':''})<br>
+        คาร์บอน<b>ตัวที่ ${i}</b> มีไฮโดรเจนเกาะอยู่กี่อะตอม`,unit:'อะตอม',
+     a:h,
+     e:`คิดจาก <b>C ต้องมี 4 พันธะเสมอ</b><br>C ตัวที่ ${i} ต่อกับ C อื่น ${bondsToC} พันธะ${t==='ene'&&(i===1||i===2)?' และอยู่ในพันธะคู่ (ใช้ไปอีก 1)':''} → เหลือให้ H = <b>${h}</b>`};},
+
+ /* 9. ถูก/ผิด */
+ ()=>{const s=pick([
+     ['ปฏิกิริยาการเติมของแอลคีนต้องมีแสงสว่างจึงจะเกิดได้',false,'<b>ผิด</b> — ปฏิกิริยาเติมเกิดได้<b>ทั้งในที่มืดและสว่าง โดยไม่ต้องมีตัวเร่ง</b> ต่างจากปฏิกิริยาแทนที่ของแอลเคนที่ต้องใช้แสง/ความร้อน'],
+     ['การเผาไหม้ไม่สมบูรณ์ทำให้เกิดแก๊ส CO ซึ่งเป็นพิษ',true,'<b>ถูก</b> — เมื่อ O₂ ไม่พอ จะได้ CO · formaldehyde · acetic acid [p.10]'],
+     ['แอลเคนฟอกจางสีสารละลาย KMnO₄ ได้',false,'<b>ผิด</b> — แอลเคน<b>ไม่ฟอกจางสี</b> KMnO₄ [p.17] เพราะไม่มีพันธะคู่/สาม'],
+     ['ในการเผาไหม้สมบูรณ์ จำนวนโมล CO₂ เท่ากับจำนวนอะตอม C ในไฮโดรคาร์บอน 1 โมล',true,'<b>ถูก</b> — C ทุกอะตอมกลายเป็น CO₂ หนึ่งโมเลกุล'],
+     ['พอลิเมอไรเซชันเกิดที่พันธะเดี่ยว C–C ของแอลเคน',false,'<b>ผิด</b> — เกิดที่<b>พันธะคู่ C=C</b> ของแอลคีน [p.32] แอลเคนไม่เกิดพอลิเมอไรเซชัน'],
+     ['แอลไคน์มีสูตรทั่วไปเป็น CₙH₂ₙ₋₂',true,'<b>ถูก</b> — พันธะสามทำให้ H น้อยกว่าแอลเคนอยู่ 4 อะตอม']]);
+   return {topic:pick(['test','addn','burn','formula']),type:'tf',q:s[0],a:s[1],e:s[2]};},
+
+ /* 10. เลือกหลายข้อ */
+ ()=>{const set=pick([
+     {q:'ข้อใดเป็น<b>ปฏิกิริยาการเติม</b>ของแอลคีน (เลือกได้มากกว่า 1)',
+      o:['เติม H<sub>2</sub> โดยมี Ni เป็นตัวเร่ง','เติม Br<sub>2</sub>','แทนที่ H ด้วย Cl เมื่อมีแสง','เติม H<sub>2</sub>O โดยมี H<sub>2</sub>SO<sub>4</sub>'],
+      a:[0,1,3],e:'ข้อ ค เป็นปฏิกิริยา<b>แทนที่</b>ของแอลเคน ไม่ใช่การเติม'},
+     {q:'ข้อใดถูกต้องเกี่ยวกับการเผาไหม้ไม่สมบูรณ์ (เลือกได้มากกว่า 1)',
+      o:['เกิดเมื่อปริมาณ O<sub>2</sub> ไม่เพียงพอ','ได้แก๊ส CO','ได้ CO<sub>2</sub> อย่างเดียว','อาจได้ formaldehyde หรือ acetic acid'],
+      a:[0,1,3],e:'ถ้าได้ CO₂ อย่างเดียวแปลว่าเผาไหม้<b>สมบูรณ์</b>แล้ว'},
+     {q:'สารใดบ้างที่<b>ฟอกจางสี</b> KMnO<sub>4</sub> ได้ (เลือกได้มากกว่า 1)',
+      o:['เฮกซีน','เฮกเซน','โพรไพน์','อีทีน'],a:[0,2,3],
+      e:'ต้องมี<b>พันธะคู่หรือสาม</b> — เฮกเซนเป็นแอลเคน อิ่มตัวแล้ว จึงไม่ฟอกจางสี'}]);
+   return Object.assign({topic:'test',type:'multi'},set);}
+];
+
+/* --- สถิติรายบท (จำไว้ในเครื่อง) --- */
+const SKEY='chem-endless-stats';
+let stats={}, total=0, correct=0, streak=0, best=0, curQ=null, answered=false;
+try{ const j=JSON.parse(localStorage.getItem(SKEY)); if(j&&j.stats){stats=j.stats;total=j.total||0;correct=j.correct||0;best=j.best||0;} }catch(e){}
+const saveStats=()=>{try{localStorage.setItem(SKEY,JSON.stringify({stats,total,correct,best}))}catch(e){}};
+function bump(topic,ok){
+  stats[topic]=stats[topic]||{n:0,ok:0};
+  stats[topic].n++; if(ok)stats[topic].ok++;
+  total++; if(ok){correct++;streak++;if(streak>best)best=streak;} else streak=0;
+  saveStats(); updHead();
+}
+function updHead(){
+  $('#sTot').textContent='ข้อที่ '+total;
+  $('#sStreak').textContent='🔥 ติดกัน '+streak+(best>2?' (สูงสุด '+best+')':'');
+  $('#sAcc').textContent='ถูก '+correct+' ('+(total?Math.round(correct/total*100):0)+'%)';
+}
+
+/* --- แสดงโจทย์ --- */
+function nextQuestion(){
+  curQ=GEN[Math.floor(Math.random()*GEN.length)]();
+  answered=false;
+  $('#nextQ').style.display='none';
+  const q=curQ;
+  let body='';
+  if(q.type==='mc') body=`<div class="opts">${q.o.map((o,j)=>`<button class="opt" data-p="${j}"><span class="k">${KEY[j]}.</span><span>${o}</span></button>`).join('')}</div>`;
+  else if(q.type==='tf') body=`<div class="opts" style="flex-direction:row;gap:8px">
+      <button class="opt" data-p="1" style="justify-content:center;max-width:160px"><b>ถูก</b></button>
+      <button class="opt" data-p="0" style="justify-content:center;max-width:160px"><b>ผิด</b></button></div>`;
+  else if(q.type==='multi') body=`<div class="sub" style="margin:0 0 6px">☑️ เลือกได้มากกว่า 1 ข้อ — ต้องครบและไม่เกิน</div>
+      <div class="opts">${q.o.map((o,j)=>`<button class="opt" data-m="${j}"><span class="box"></span><span>${o}</span></button>`).join('')}</div>
+      <div class="row"><button class="btn small" data-checkm>ตรวจคำตอบ</button></div>`;
+  else body=`<div class="row"><input class="numin" type="text" inputmode="numeric" placeholder="?">
+      <span style="font-weight:600">${q.unit||''}</span>
+      <button class="btn small" data-checkn>ตรวจ</button></div>`;
+  $('#stage').innerHTML=`<div class="q" id="curq">
+      <span class="tag">${TOPICS[q.topic]}</span>
+      <div class="ask">${q.q}</div>${body}
+      <div class="fb"></div><div class="ans"></div></div>`;
+  const inp=$('#stage input'); if(inp) inp.focus();
+}
+function judge(ok){
+  answered=true; bump(curQ.topic,ok);
+  const card=$('#curq'), fb=card.querySelector('.fb');
+  card.classList.add(ok?'correct':'wrong');
+  fb.textContent = ok?'✓ ถูกต้อง!':'✗ ยังไม่ใช่';
+  fb.className='fb '+(ok?'ok':'bad');
+  card.querySelector('.ans').innerHTML='<b>เฉลย:</b> '+curQ.e;
+  card.querySelector('.ans').classList.add('show');
+  $('#nextQ').style.display='';
+}
+$('#stage').addEventListener('click',e=>{
+  if(!curQ||answered)return;
+  const b=e.target.closest('[data-p]');
+  if(b){
+    const p=+b.dataset.p;
+    const right = curQ.type==='tf' ? (curQ.a?1:0) : curQ.a;
+    $('#stage').querySelectorAll('.opt').forEach((o,j)=>{o.classList.add('locked');
+      const jv = curQ.type==='tf' ? +o.dataset.p : j;
+      if(jv===right)o.classList.add('right'); else if(jv===p)o.classList.add('wrongpick');});
+    judge(p===right); return;
+  }
+  const m=e.target.closest('[data-m]');
+  if(m){ m.classList.toggle('sel'); m.querySelector('.box').textContent=m.classList.contains('sel')?'✓':''; return; }
+  if(e.target.closest('[data-checkm]')){
+    const picks=[...$('#stage').querySelectorAll('[data-m]')].filter(x=>x.classList.contains('sel')).map(x=>+x.dataset.m).sort();
+    if(!picks.length)return;
+    const a=curQ.a.slice().sort();
+    const ok = a.length===picks.length && a.every((v,i)=>v===picks[i]);
+    $('#stage').querySelectorAll('[data-m]').forEach((o,j)=>{o.classList.add('locked');
+      const isA=curQ.a.indexOf(j)>-1, isP=picks.indexOf(j)>-1;
+      if(isA&&isP)o.classList.add('right'); else if(!isA&&isP)o.classList.add('wrongpick'); else if(isA)o.classList.add('missed');
+      o.querySelector('.box').textContent=isA?'✓':(isP?'✗':'');});
+    judge(ok); return;
+  }
+  if(e.target.closest('[data-checkn]')){
+    const v=$('#stage input').value.trim(); if(v==='')return;
+    const ok=Number(v)===curQ.a;
+    $('#stage input').classList.add(ok?'ok':'bad'); $('#stage input').disabled=true;
+    judge(ok); return;
+  }
+});
+$('#stage').addEventListener('keydown',e=>{
+  if(e.key!=='Enter')return;
+  if(e.target.matches('input')){ const b=$('#stage [data-checkn]'); if(b&&!answered)b.click(); else $('#nextQ').click(); }
+});
+$('#nextQ').addEventListener('click',nextQuestion);
+$('#again').addEventListener('click',()=>{
+  $('#resultCard').style.display='none'; $('#runCard').style.display=''; nextQuestion();
+});
+$('#reset').addEventListener('click',()=>{
+  stats={};total=0;correct=0;streak=0;best=0;saveStats();updHead();
+  $('#resultCard').style.display='none'; $('#runCard').style.display=''; nextQuestion();
+});
+
+/* --- สรุปผล --- */
+$('#finish').addEventListener('click',()=>{
+  const rows=Object.keys(TOPICS).filter(k=>stats[k]&&stats[k].n>0)
+    .map(k=>({k,n:stats[k].n,ok:stats[k].ok,p:stats[k].ok/stats[k].n}))
+    .sort((a,b)=>a.p-b.p);
+  let html='';
+  if(!rows.length){
+    html='<div class="verdict ok">ยังไม่ได้ทำข้อไหนเลย — กด “ฝึกต่อ” แล้วลองทำสัก 10–15 ข้อก่อนนะ จะได้เห็นว่าอ่อนบทไหน</div>';
+  }else{
+    const worst=rows[0], acc=Math.round(correct/total*100);
+    html=`<p style="margin-bottom:10px">ทำไปทั้งหมด <b>${total} ข้อ</b> · ถูก <b>${correct} ข้อ</b> (${acc}%) · ทำถูกติดกันสูงสุด <b>${best}</b> ข้อ</p>`;
+    if(worst.p<0.6 && worst.n>=2){
+      html+=`<div class="verdict bad">🎯 <b>บทที่ควรกลับไปทบทวนก่อนเลยคือ “${TOPICS[worst.k]}”</b><br>
+        ทำได้ ${worst.ok}/${worst.n} ข้อ (${Math.round(worst.p*100)}%) — ต่ำสุดในบรรดาบทที่ทำไป</div>`;
+    }else if(rows.every(r=>r.p>=0.8)){
+      html+=`<div class="verdict ok">🎉 แน่นทุกบทเลย! ทุกหัวข้อทำได้เกิน 80% — ลองเพิ่มความเร็วในการดุลสมการดู</div>`;
+    }else{
+      html+=`<div class="verdict ok">โดยรวมโอเค — บทที่ยังไม่นิ่งที่สุดคือ <b>${TOPICS[worst.k]}</b> (${Math.round(worst.p*100)}%)</div>`;
+    }
+    html+=rows.map(r=>{
+      const pc=Math.round(r.p*100);
+      const col = pc>=80?'var(--ok)':pc>=60?'#f59e0b':'var(--bad)';
+      const cls = pc>=80?'good':pc<60?'weak':'';
+      return `<div class="topic ${cls}">
+        <div class="lab"><span>${TOPICS[r.k]}</span><span class="n">${r.ok}/${r.n} · ${pc}%</span></div>
+        <div class="bar"><i style="width:${Math.max(pc,3)}%;background:${col}"></i></div></div>`;
+    }).join('');
+    const un=Object.keys(TOPICS).filter(k=>!stats[k]||!stats[k].n);
+    if(un.length) html+=`<p class="sub" style="margin-top:12px">ยังไม่ได้เจอโจทย์บท: ${un.map(k=>TOPICS[k]).join(' · ')} — ทำต่อไปเรื่อย ๆ เดี๋ยวสุ่มมาเอง</p>`;
+    html+=`<div class="tip" style="margin-top:12px">📖 <b>ไปทบทวนต่อ:</b> กดแท็บ
+      <b>${{formula:'📋 สรุปกฎ',burn:'🔥 ดุลสมการเผาไหม้',subst:'🧪 แทนที่ / เติม',addn:'🧪 แทนที่ / เติม',test:'🧪 แทนที่ / เติม',phys:'📋 สรุปกฎ',struct:'✏️ เขียนโครงสร้าง'}[worst.k]}</b> ด้านบน</div>`;
+  }
+  $('#resultBody').innerHTML=html;
+  $('#runCard').style.display='none'; $('#resultCard').style.display='';
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+updHead(); nextQuestion();
+
+/* ---- ชุดเดิม (เก็บไว้เป็นข้อมูลอ้างอิง ไม่ได้แสดงผลแล้ว) ---- */
 const MIX=[
  {q:'สาร X เป็นแก๊ส ไม่ละลายน้ำ <b>ไม่ฟอกจางสี</b> KMnO<sub>4</sub> และทำปฏิกิริยากับ Cl<sub>2</sub> ได้<b>เมื่อมีแสง</b>เท่านั้น สาร X น่าจะเป็นอะไร',
   o:['แอลคีน','แอลเคน','แอลไคน์','แอลกอฮอล์'],a:1,
@@ -537,14 +845,10 @@ const MIX=[
   o:['CO','เขม่าคาร์บอน','CO<sub>2</sub> อย่างเดียวล้วน ๆ','formaldehyde'],a:2,
   e:'ถ้าได้ CO₂ ล้วน ๆ แปลว่า<b>เผาไหม้สมบูรณ์</b>แล้ว — การเผาไหม้ไม่สมบูรณ์จะมี CO / เขม่า / สารอินทรีย์ปนออกมาเสมอ'}
 ];
-$('#d4').innerHTML=MIX.map((r,i)=>`
- <div class="q" data-i="${i}"><span class="no">${i+1}</span>
-   <div class="ask">${r.q}</div>
-   <div class="opts">${r.o.map((o,j)=>`<button class="opt" data-p="${j}"><span class="k">${KEY[j]}.</span><span>${o}</span></button>`).join('')}</div>
-   <div class="fb"></div><div class="ans"></div></div>`).join('');
-mcHandler($('#d4'),MIX,4);
+/* หมายเหตุ: ชุด MIX 6 ข้อเดิมถูกแทนที่ด้วยโหมด "ไม่จำกัดข้อ" ข้างบนแล้ว
+   เก็บตัวข้อมูลไว้เฉย ๆ เผื่ออยากหยิบไปใช้ที่อื่น — ไม่ได้เรนเดอร์ออกหน้าจอ */
 
-[1,2,4].forEach(upd);
+[1,2].forEach(upd);
 openTab('t0');
 </script>
 <!--KIT-UI v2.7 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
