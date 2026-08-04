@@ -725,6 +725,12 @@ var q1=function(s){ return qbox().querySelector(s); };
 var qA=function(s){ return [].slice.call(qbox().querySelectorAll(s)); };
 function grade(val){
   if(answered) return; answered=true;
+  /* ตาข่ายกันเหนียว: ไม่ว่าข้างในจะพังยังไง ต้องปลดล็อกปุ่ม "ข้อต่อไป" เสมอ
+     ไม่งั้นผู้ใช้จะติดค้างอยู่กับข้อเดิม ไปไหนไม่ได้เลย (เคยเกิดมาแล้วจาก classList.add('')) */
+  try{ gradeCore(val); }
+  finally{ $('#b-next').disabled=false; $('#b-hint').style.display='none'; }
+}
+function gradeCore(val){
   var ok;
   if(cur.fmt==='multi'){
     var got=qA('.opt.sel').map(function(b){return b.getAttribute('data-v');});
@@ -732,7 +738,11 @@ function grade(val){
     qA('.opt').forEach(function(b){
       var v=b.getAttribute('data-v');
       b.classList.remove('sel');
-      b.classList.add(cur.ans.indexOf(v)>-1?'right':(got.indexOf(v)>-1?'wrong':''));
+      /* ⚠️ ตัวเลือกที่ "ไม่ใช่คำตอบ และผู้ใช้ก็ไม่ได้เลือก" จะไม่มีคลาสจะใส่
+         ห้ามเรียก classList.add('') เด็ดขาด — มันโยน SyntaxError ทำให้ทั้ง grade() ตายกลางคัน
+         ผลคือเฉลยไม่ขึ้นและปุ่ม "ข้อต่อไป" ไม่ถูกปลดล็อก = กดไปต่อไม่ได้ (บั๊กที่เจ้าของแจ้ง) */
+      var cls = cur.ans.indexOf(v)>-1 ? 'right' : (got.indexOf(v)>-1 ? 'wrong' : '');
+      if(cls) b.classList.add(cls);
       b.disabled=true;
     });
     var sub=document.getElementById('sub'); if(sub) sub.disabled=true;
@@ -759,8 +769,6 @@ function grade(val){
   fb.className='fb '+(ok?'ok':'bad');
   fb.innerHTML=(ok?'✓ ถูกต้อง!':'✗ ยังไม่ใช่ — เฉลย: <b>'+(cur.fmt==='multi'?cur.ans.join(' · '):cur.ans)+'</b>')+
     '<div class="why">'+cur.why+'</div>';
-  $('#b-next').disabled=false;
-  $('#b-hint').style.display='none';
 }
 $('#quizbox').addEventListener('click',function(e){
   var b=e.target.closest('.opt');
