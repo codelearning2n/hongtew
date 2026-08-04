@@ -21,11 +21,13 @@
 *{ box-sizing:border-box; margin:0; padding:0; -webkit-text-size-adjust:100%; }
 :root{
   --pg:#f4f1ea; --cd:#ffffff; --cd2:#faf8f3;
-  --tx:#2a2318; --strong:#1a150d; --mut:#7b6f5c; --bd:#e3dccd;
-  --ac:#a8641b; --acbg:#fdf3e3; --acbd:#f0d9ac; --achd:#7c4408;
+  /* --mut / --ac เคยอ่อนไปในโหมดสว่าง (คอนทราสต์ 4.3 และ 4.13 ต่ำกว่าเกณฑ์ AA 4.5)
+     จึงกดให้เข้มขึ้น — วัดใหม่แล้วผ่านทั้งคู่ */
+  --tx:#2a2318; --strong:#1a150d; --mut:#6a5e4b; --bd:#e3dccd;
+  --ac:#8f5412; --acbg:#fdf3e3; --acbd:#f0d9ac; --achd:#7c4408;
   --gold:#b8860b; --goldbg:#fdf6e0;
   --mk:#8a2f6b; --mkbg:#fdf0f8; --mkbd:#f2cfe6;      /* พระสงฆ์ */
-  --pl:#2f7d5c; --plbg:#eefaf3; --plbd:#bfe7d3;      /* คำสุภาพ */
+  --pl:#25674b; --plbg:#eefaf3; --plbd:#bfe7d3;      /* คำสุภาพ (เขียวเข้มพอให้ผ่าน AA บนพื้นสว่าง) */
   --hl:#fde68a; --hlink:#6b4708;
   --good:#15803d; --goodbg:#e9f9ef; --bad:#b91c1c; --badbg:#fdeceb;
   --sh:0 1px 3px rgba(42,35,24,.08);
@@ -191,6 +193,7 @@ tbody tr:nth-child(even) td{ background:var(--cd2); }
     <button class="tab" role="tab" data-t="king" aria-selected="false">🏛️ ราชาศัพท์</button>
     <button class="tab" role="tab" data-t="monk" aria-selected="false">🙏 พระสงฆ์</button>
     <button class="tab" role="tab" data-t="polite" aria-selected="false">🥬 คำสุภาพ</button>
+    <button class="tab" role="tab" data-t="exam" aria-selected="false">📝 ชุดข้อสอบ</button>
     <button class="tab" role="tab" data-t="quiz" aria-selected="false">🎯 ฝึกไม่จำกัดข้อ</button>
   </div>
 
@@ -402,7 +405,37 @@ tbody tr:nth-child(even) td{ background:var(--cd2); }
     </div>
   </section>
 
-  <!-- ═════════════ 6. ควิซ ═════════════ -->
+  <!-- ═════════════ 6. ชุดข้อสอบ (คละราชาศัพท์ + คำสุภาพ) ═════════════ -->
+  <section data-t="exam" hidden>
+    <div class="sec"><span class="bar"></span><h2>ชุดข้อสอบรวม <span class="en">— ราชาศัพท์ + คำสุภาพ คละกัน</span></h2></div>
+    <div id="examsetup">
+      <div class="card">
+        <p>ทำเหมือนสอบจริง — <b>ไม่เฉลยระหว่างทาง</b> ทำครบแล้วกดส่ง ถึงจะได้คะแนนและเฉลยทั้งชุด<br>
+        <span class="en">ทุกชุดคละครบทั้ง 2 ฝั่ง: ราชาศัพท์ (กษัตริย์ · ทรง · สรรพนาม · พระสงฆ์) และ คำสุภาพ (ผัก · ผลไม้ · สัตว์ · ขนม)</span></p>
+        <div class="btnrow">
+          <button class="btn" data-len="20">📝 20 ข้อ</button>
+          <button class="btn" data-len="30">📝 30 ข้อ</button>
+          <button class="btn" data-len="40">📝 40 ข้อ (จัดเต็ม)</button>
+        </div>
+      </div>
+    </div>
+    <div id="exambar" style="display:none">
+      <div class="stats">
+        <div class="st"><span class="n" id="e-done">0</span><span class="l">ทำแล้ว</span></div>
+        <div class="st"><span class="n" id="e-total">0</span><span class="l">ทั้งชุด</span></div>
+        <div class="st"><span class="n" id="e-left">0</span><span class="l">ยังไม่ตอบ</span></div>
+      </div>
+      <div class="bar2"><i id="e-prog" style="width:0%"></i></div>
+    </div>
+    <div id="examresult"></div>
+    <div id="exambox"></div>
+    <div class="btnrow" id="exambtns" style="display:none">
+      <button class="btn" id="e-submit">✅ ส่งคำตอบ &amp; ดูคะแนน</button>
+      <button class="btn ghost" id="e-new">🔄 ชุดใหม่</button>
+    </div>
+  </section>
+
+  <!-- ═════════════ 7. ควิซ ═════════════ -->
   <section data-t="quiz" hidden>
     <div class="stats">
       <div class="st"><span class="n" id="s-no">0</span><span class="l">ข้อที่</span></div>
@@ -753,6 +786,156 @@ $('#b-end').onclick=function(){
   $('#result').innerHTML=h;
   $('#result').scrollIntoView({behavior:'smooth',block:'nearest'});
 };
+/* ═══════════════════════════════════════════════════════════════════════════
+   ชุดข้อสอบรวม — คละ "ราชาศัพท์" กับ "คำสุภาพ" ในชุดเดียว
+   ต่างจากแท็บฝึกไม่จำกัดข้อตรงที่ "ไม่เฉลยระหว่างทาง" ทำครบแล้วส่งทีเดียวเหมือนสอบจริง
+   ═══════════════════════════════════════════════════════════════════════════ */
+var ROYAL=['part','thing','pron','song','monk','rank'], POLITE=['polite'];
+var esc=function(s){ return String(s).replace(/"/g,'&quot;'); };
+function genIn(group){
+  for(var i=0;i<500;i++){ var q=GEN[rnd(GEN.length)](); if(group.indexOf(q.topic)>-1) return q; }
+  return null;
+}
+var exam=null;
+function buildExam(n){
+  var seen={}, list=[];
+  function add(group){
+    for(var g=0; g<80; g++){
+      var q=genIn(group); if(!q) return false;
+      /* กันซ้ำด้วย "ข้อความโจทย์" อย่างเดียว ห้ามเอาเฉลยมาผสมในกุญแจ
+         ไม่งั้นข้อแบบเลือกหลายคำตอบ (ข้อความคงที่ แต่สุ่มตัวเลือกใหม่ทุกครั้ง)
+         จะหลุดเข้ามาซ้ำในชุดเดียวกัน — เจอตอนทดสอบชุด 30 ข้อ */
+      var key=q.q;
+      if(!seen[key]){ seen[key]=1; list.push(q); return true; }
+    }
+    return false;   /* สุ่มจนหมดคำในหมวดนั้นแล้ว (โจทย์ไม่ซ้ำ) */
+  }
+  var half=Math.round(n/2);
+  for(var i=0;i<half;i++) if(!add(POLITE)) break;      /* ครึ่งหนึ่งเป็นคำสุภาพ */
+  while(list.length<n) if(!add(ROYAL)) break;          /* ที่เหลือเป็นราชาศัพท์ */
+  exam={qs:shuffle(list), done:false};
+  renderExam();
+}
+function renderExam(){
+  document.getElementById('examsetup').style.display='none';
+  document.getElementById('exambar').style.display='';
+  document.getElementById('exambtns').style.display='';
+  document.getElementById('exambox').innerHTML = exam.qs.map(function(q,i){
+    var body;
+    if(q.fmt==='fill'){
+      body='<input class="tin" data-i="'+i+'" placeholder="พิมพ์คำตอบ" autocomplete="off">';
+    }else{
+      var o = q.fmt==='tf' ? ['ถูก','ผิด'] : q.opts;
+      body='<div class="opts">'+o.map(function(x){
+        return '<button class="opt" data-i="'+i+'" data-v="'+esc(x)+'">'+x+'</button>';}).join('')+'</div>';
+      if(q.fmt==='multi') body='<div class="en" style="margin-bottom:.3rem">เลือกได้มากกว่า 1 ข้อ</div>'+body;
+    }
+    return '<div class="q" data-q="'+i+'" style="margin-bottom:.6rem">'+
+      '<div class="qhead"><span class="qtopic">'+TOPICS[q.topic]+'</span><span>ข้อ '+(i+1)+' / '+exam.qs.length+'</span></div>'+
+      '<div class="qtext">'+q.q+'</div>'+body+'<div class="fb"></div></div>';
+  }).join('');
+  document.getElementById('examresult').innerHTML='';
+  document.getElementById('e-total').textContent=exam.qs.length;
+  updateProg();
+}
+function answeredCount(){
+  var c=0;
+  exam.qs.forEach(function(q,i){
+    if(q.fmt==='fill'){ var el=document.querySelector('.tin[data-i="'+i+'"]'); if(el&&el.value.trim()) c++; }
+    else if(document.querySelector('.opt.sel[data-i="'+i+'"]')) c++;
+  });
+  return c;
+}
+function updateProg(){
+  if(!exam||exam.done) return;
+  var a=answeredCount(), n=exam.qs.length;
+  document.getElementById('e-done').textContent=a;
+  document.getElementById('e-left').textContent=n-a;
+  document.getElementById('e-prog').style.width=Math.round(a/n*100)+'%';
+}
+document.getElementById('exambox').addEventListener('click',function(e){
+  if(!exam||exam.done) return;
+  var b=e.target.closest('.opt'); if(!b||b.disabled) return;
+  var i=b.getAttribute('data-i');
+  if(exam.qs[+i].fmt==='multi'){ b.classList.toggle('sel'); }
+  else{
+    [].slice.call(document.querySelectorAll('.opt[data-i="'+i+'"]')).forEach(function(x){x.classList.remove('sel');});
+    b.classList.add('sel');
+  }
+  updateProg();
+});
+document.getElementById('exambox').addEventListener('input',updateProg);
+[].slice.call(document.querySelectorAll('#examsetup [data-len]')).forEach(function(b){
+  b.onclick=function(){ buildExam(+b.getAttribute('data-len')); };
+});
+document.getElementById('e-new').onclick=function(){
+  if(exam && !exam.done && answeredCount()>0 && !confirm('ทิ้งชุดนี้แล้วเริ่มชุดใหม่?')) return;
+  exam=null;
+  document.getElementById('examsetup').style.display='';
+  document.getElementById('exambar').style.display='none';
+  document.getElementById('exambtns').style.display='none';
+  document.getElementById('exambox').innerHTML='';
+  document.getElementById('examresult').innerHTML='';
+};
+document.getElementById('e-submit').onclick=function(){
+  if(!exam||exam.done) return;
+  var left=exam.qs.length-answeredCount();
+  if(left>0 && !confirm('ยังไม่ได้ตอบ '+left+' ข้อ — ส่งเลยไหม? (ข้อที่ไม่ตอบนับว่าผิด)')) return;
+  exam.done=true;
+  var byTopic={}, score=0;
+  exam.qs.forEach(function(q,i){
+    var ok=false, got=null;
+    var all=[].slice.call(document.querySelectorAll('.opt[data-i="'+i+'"]'));
+    if(q.fmt==='fill'){
+      var el=document.querySelector('.tin[data-i="'+i+'"]'); got=el.value; el.disabled=true;
+      ok = norm(got)===norm(q.ans) || q.ans.split('·').some(function(a){return norm(a)===norm(got);});
+    }else if(q.fmt==='multi'){
+      var sel=all.filter(function(x){return x.classList.contains('sel');}).map(function(x){return x.getAttribute('data-v');});
+      ok = sel.length===q.ans.length && q.ans.every(function(a){return sel.indexOf(a)>-1;});
+      all.forEach(function(x){ var v=x.getAttribute('data-v'); x.classList.remove('sel');
+        if(q.ans.indexOf(v)>-1) x.classList.add('right'); else if(sel.indexOf(v)>-1) x.classList.add('wrong');
+        x.disabled=true; });
+    }else{
+      var s=document.querySelector('.opt.sel[data-i="'+i+'"]'); got=s?s.getAttribute('data-v'):null;
+      ok = got===q.ans;
+      all.forEach(function(x){ var v=x.getAttribute('data-v'); x.classList.remove('sel');
+        if(v===q.ans) x.classList.add('right'); else if(v===got) x.classList.add('wrong');
+        x.disabled=true; });
+    }
+    if(ok) score++;
+    var t=byTopic[q.topic]||(byTopic[q.topic]={n:0,ok:0}); t.n++; if(ok) t.ok++;
+    var fb=document.querySelector('.q[data-q="'+i+'"] .fb');
+    fb.className='fb '+(ok?'ok':'bad');
+    fb.innerHTML=(ok?'✓ ถูก':'✗ ผิด — เฉลย: <b>'+(q.fmt==='multi'?q.ans.join(' · '):q.ans)+'</b>'+
+      (q.fmt==='fill'&&got?' <span class="en">(ตอบไว้: '+esc(got)+')</span>':''))+
+      '<div class="why">'+q.why+'</div>';
+  });
+  var n=exam.qs.length, pc=Math.round(score/n*100);
+  var grade = pc>=80?'ดีมาก 🎉':pc>=70?'ผ่านสบาย 👍':pc>=50?'ยังต้องซ้อม 💪':'ต้องกลับไปอ่านก่อน 📖';
+  var sum=function(keys){ var a=0,b=0; keys.forEach(function(k){ var t=byTopic[k]; if(t){a+=t.ok;b+=t.n;} }); return [a,b]; };
+  var R=sum(ROYAL), P=sum(POLITE);
+  var rows=Object.keys(byTopic).map(function(k){ var t=byTopic[k];
+    return {name:TOPICS[k],ok:t.ok,n:t.n,p:t.ok/t.n}; }).sort(function(a,b){return a.p-b.p;});
+  var h='<div class="sec"><span class="bar"></span><h2>ผลสอบ</h2></div><div class="card">'+
+    '<div style="font-size:1.5rem;font-weight:700;color:var(--strong)">'+score+' / '+n+
+    ' <span style="font-size:1rem;color:var(--mut)">('+pc+'%)</span></div>'+
+    '<div style="margin:.2rem 0 .6rem">'+grade+'</div>'+
+    '<div class="rrow"><div class="t"><span>🏛️ ฝั่งราชาศัพท์</span><span><b>'+R[0]+'/'+R[1]+'</b></span></div>'+
+      '<div class="bar2"><i style="width:'+(R[1]?Math.round(R[0]/R[1]*100):0)+'%"></i></div></div>'+
+    '<div class="rrow"><div class="t"><span>🥬 ฝั่งคำสุภาพ</span><span><b>'+P[0]+'/'+P[1]+'</b></span></div>'+
+      '<div class="bar2"><i style="width:'+(P[1]?Math.round(P[0]/P[1]*100):0)+'%;background-image:linear-gradient(var(--pl),var(--pl))"></i></div></div>'+
+    '</div><div class="card"><h3>แยกรายบท (อ่อนสุดขึ้นก่อน)</h3>';
+  rows.forEach(function(r){
+    var p=Math.round(r.p*100), col=p>=80?'var(--good)':p>=50?'var(--gold)':'var(--bad)';
+    h+='<div class="rrow"><div class="t"><span>'+r.name+'</span><span><b>'+r.ok+'/'+r.n+'</b> ('+p+'%)</span></div>'+
+       '<div class="bar2"><i style="width:'+p+'%;background-image:linear-gradient('+col+','+col+')"></i></div></div>';
+  });
+  h+='</div><div class="verdict">📖 <b>เลื่อนลงไปดูเฉลยรายข้อได้เลย</b> — ข้อที่ผิดจะมีเหตุผลกำกับว่าทำไม'+
+     (rows.length?'<br>บทที่ควรทบทวนก่อนคือ <b>'+rows[0].name+'</b> ('+rows[0].ok+'/'+rows[0].n+')':'')+'</div>';
+  document.getElementById('examresult').innerHTML=h;
+  document.getElementById('examresult').scrollIntoView({behavior:'smooth',block:'start'});
+};
+
 paint(); newQ();
 })();
 </script>
