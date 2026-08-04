@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>แบบฝึก ปฏิกิริยาไฮโดรคาร์บอน — เผาไหม้ · แทนที่ · เติม + เขียนโครงสร้าง</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --font:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
+  --bg:#f6f2ec;--ink:#1e293b;--muted:#64748b;--line:#e2e8f0;--card:#fff;--soft:#f8fafc;
+  --shadow:0 1px 4px rgba(15,23,42,.08);--ok:#059669;--bad:#dc2626;
+  --warn-bg:#fff7ed;--warn-bd:#f97316;--tip-bg:#ecfdf5;--tip-bd:#10b981;
+  --info-bg:#eff6ff;--info-bd:#3b82f6;--hot-bg:#fee2e2;--hot-ink:#b91c1c;
+  --radius:14px;--radius-sm:10px;--radius-pill:999px;
+  --accent:#ea7317;--accent-head:#7c3a06;--accent-ink:#c2560c;--accent-soft:#fff7ed;
+  --accent-bd:#fed7aa;--accent-chip:#ffedd5;--accent-ghost:#fdba74;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.65}
+.wrap{max-width:900px;margin:0 auto;padding:10px 12px 70px}
+header{padding:16px 4px 4px}
+header h1{font-size:1.28rem;color:var(--accent-head)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{background:var(--accent-chip);color:var(--accent-ink);border-radius:var(--radius-pill);padding:3px 12px;font-size:.82rem;font-weight:600}
+.chip.hot{background:var(--hot-bg);color:var(--hot-ink)}
+.tabs{display:flex;gap:8px;overflow-x:auto;position:sticky;top:0;background:var(--bg);padding:10px 2px;z-index:10}
+.tab-btn{white-space:nowrap;padding:8px 14px;border-radius:var(--radius-pill);border:1.5px solid var(--accent-bd);
+  background:#fff;color:var(--accent-ink);cursor:pointer;font-size:.92rem;font-family:inherit;font-weight:600;flex-shrink:0}
+.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tab{display:none}.tab.show{display:block}
+.card{background:var(--card);border-radius:var(--radius);padding:16px;margin:12px 0;box-shadow:var(--shadow)}
+.card h2{font-size:1.1rem;color:var(--accent-head);margin-bottom:2px}
+.sub{color:var(--muted);font-size:.86rem;margin-bottom:10px}
+.tip{background:var(--tip-bg);border-left:4px solid var(--tip-bd);border-radius:8px;padding:10px 12px;margin:10px 0;font-size:.92rem}
+.warn{background:var(--warn-bg);border-left:4px solid var(--warn-bd);border-radius:8px;padding:10px 12px;margin:10px 0;font-size:.92rem}
+.info{background:var(--info-bg);border-left:4px solid var(--info-bd);border-radius:8px;padding:10px 12px;margin:10px 0;font-size:.92rem}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:var(--radius-sm);padding:9px 15px;font-size:.92rem;cursor:pointer;font-family:inherit;font-weight:600}
+.btn.ghost{background:#fff;color:var(--accent);border:1.5px solid var(--accent-ghost)}
+.btn.small{padding:6px 12px;font-size:.85rem}
+table.ref{border-collapse:collapse;width:100%;font-size:.9rem;margin:8px 0}
+table.ref th,table.ref td{border:1px solid var(--line);padding:7px 10px;text-align:left}
+table.ref th{background:var(--accent-soft);color:var(--accent-ink)}
+code{background:var(--soft);border:1px solid var(--line);padding:1px 6px;border-radius:5px;font-size:.9em}
+
+/* ---------- โจทย์ ---------- */
+.q{border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:var(--radius-sm);
+   padding:13px 15px;margin:11px 0;background:#fff}
+.q.correct{border-left-color:var(--ok)}
+.q.wrong{border-left-color:var(--bad)}
+.q .no{font-size:.76rem;font-weight:700;background:var(--accent-head);color:#fff;border-radius:6px;padding:1px 8px}
+.q .ask{font-size:1.02rem;font-weight:600;margin:7px 0 10px}
+.eq{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:1.05rem;font-family:ui-monospace,Consolas,monospace}
+.eq input{width:56px;padding:7px 4px;border:2px solid #cbd5e1;border-radius:8px;text-align:center;
+  font-family:inherit;font-size:1rem;background:#fff;color:var(--ink)}
+.eq input:focus{outline:none;border-color:var(--accent)}
+.eq input.ok{border-color:var(--ok);background:#ecfdf5}
+.eq input.bad{border-color:var(--bad);background:#fef2f2}
+.eq .f{font-weight:700}
+.eq .arrow{font-size:1.2rem;color:var(--accent);padding:0 4px}
+sub{font-size:.72em}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:9px}
+.fb{margin-top:8px;font-weight:700;font-size:.94rem;min-height:1.2em}
+.fb.ok{color:var(--ok)}.fb.bad{color:var(--bad)}
+.ans{background:var(--info-bg);border-left:4px solid var(--info-bd);border-radius:8px;padding:9px 12px;margin-top:8px;font-size:.93rem;display:none}
+.ans.show{display:block}
+.opts{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.opt{display:flex;gap:9px;align-items:flex-start;border:1.5px solid var(--line);background:var(--soft);
+  border-radius:var(--radius-sm);padding:9px 12px;cursor:pointer;font-size:.95rem;text-align:left;font-family:inherit;color:var(--ink);width:100%}
+.opt .k{font-weight:700;color:var(--accent-ink);flex-shrink:0}
+.opt.right{border-color:var(--ok);background:#ecfdf5}
+.opt.wrongpick{border-color:var(--bad);background:#fef2f2}
+.opt.locked{cursor:default}
+.score{position:sticky;top:56px;z-index:9;background:var(--accent-head);color:#fff;border-radius:var(--radius-sm);
+  padding:8px 14px;margin:6px 0 10px;font-weight:700;font-size:.9rem;display:flex;justify-content:space-between;gap:10px}
+
+/* ---------- เขียนโครงสร้าง ---------- */
+.draw{border:1px solid var(--line);border-radius:var(--radius-sm);background:#fff;margin:10px 0;overflow:hidden}
+.draw .head{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:8px 10px;background:var(--soft);border-bottom:1px solid var(--line)}
+.draw .head b{font-size:.9rem;color:var(--accent-head);margin-right:4px}
+.draw .head button{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:8px;
+  padding:5px 10px;font-size:.82rem;cursor:pointer;font-family:inherit;font-weight:600;min-height:32px}
+.draw .head button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.draw .cvwrap{position:relative;height:250px;background:
+   linear-gradient(#eef2f7 1px,transparent 1px) 0 0/100% 25px,
+   linear-gradient(90deg,#eef2f7 1px,transparent 1px) 0 0/25px 100%}
+.draw canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+.sol{padding:10px;border-top:1px dashed var(--line);display:none;background:var(--soft)}
+.sol.show{display:block}
+.sol svg{width:100%;max-width:560px;height:auto;display:block;margin:0 auto}
+.sol .cap{font-size:.86rem;color:var(--muted);text-align:center;margin-top:5px}
+@media(max-width:480px){.card{padding:12px}header h1{font-size:1.1rem}.wrap{padding:8px 9px 70px}
+  .eq{font-size:.95rem}.eq input{width:48px}}
+</style>
+</head>
+<body data-subject="chem">
+<div class="wrap">
+
+  <header>
+    <h1>⚗️ แบบฝึก ปฏิกิริยาไฮโดรคาร์บอน</h1>
+    <div class="chips">
+      <span class="chip hot">🔥 ดุลสมการเผาไหม้</span>
+      <span class="chip">🧪 แทนที่ · เติม</span>
+      <span class="chip">✏️ เขียนโครงสร้าง</span>
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <button class="tab-btn" data-tab="t0">📋 สรุปกฎ</button>
+    <button class="tab-btn" data-tab="t1">🔥 ดุลสมการเผาไหม้</button>
+    <button class="tab-btn" data-tab="t2">🧪 แทนที่ / เติม</button>
+    <button class="tab-btn" data-tab="t3">✏️ เขียนโครงสร้าง</button>
+    <button class="tab-btn" data-tab="t4">🎯 รวมมิตร</button>
+  </nav>
+
+  <!-- ================= สรุปกฎ ================= -->
+  <section id="t0" class="tab">
+    <div class="card">
+      <h2>📋 สูตรทั่วไป + จำนวนพันธะ</h2>
+      <table class="ref">
+        <tr><th>ชนิด</th><th>สูตรทั่วไป</th><th>พันธะ C–C</th><th>ตัวอย่าง C3</th></tr>
+        <tr><td><b>แอลเคน</b> (Alkane)</td><td>C<sub>n</sub>H<sub>2n+2</sub></td><td>เดี่ยวทั้งหมด (อิ่มตัว)</td><td>C<sub>3</sub>H<sub>8</sub> โพรเพน</td></tr>
+        <tr><td><b>แอลคีน</b> (Alkene)</td><td>C<sub>n</sub>H<sub>2n</sub></td><td>มีพันธะ<b>คู่</b> 1 ตำแหน่ง</td><td>C<sub>3</sub>H<sub>6</sub> โพรพีน</td></tr>
+        <tr><td><b>แอลไคน์</b> (Alkyne)</td><td>C<sub>n</sub>H<sub>2n−2</sub></td><td>มีพันธะ<b>สาม</b> 1 ตำแหน่ง</td><td>C<sub>3</sub>H<sub>4</sub> โพรไพน์</td></tr>
+      </table>
+      <div class="tip">💡 <b>จุดเดือดเมื่อ C เท่ากัน:</b> แอลไคน์ &gt; แอลเคน &gt; แอลคีน <span style="color:var(--muted)">[สไลด์ p.35]</span></div>
+    </div>
+
+    <div class="card">
+      <h2>🔥 1. ปฏิกิริยาการเผาไหม้ (Combustion)</h2>
+      <div class="info">
+        <b>เผาไหม้สมบูรณ์</b> (O<sub>2</sub> พอ) → <b>CO<sub>2</sub> + H<sub>2</sub>O + พลังงาน</b><br>
+        <b>เผาไหม้ไม่สมบูรณ์</b> (O<sub>2</sub> น้อย) → ได้ <b>CO</b> · formaldehyde · acetic acid <span style="color:var(--muted)">[p.10]</span>
+      </div>
+      <p><b>วิธีดุลเร็ว ๆ (ทำตามลำดับนี้ไม่มีพลาด):</b></p>
+      <ol style="margin:8px 0 8px 22px">
+        <li>ดุล <b>C</b> ก่อน → สัมประสิทธิ์ของ CO<sub>2</sub> = จำนวน C</li>
+        <li>ดุล <b>H</b> → สัมประสิทธิ์ของ H<sub>2</sub>O = จำนวน H ÷ 2</li>
+        <li>ดุล <b>O</b> ท้ายสุด → นับ O ฝั่งขวาทั้งหมด ÷ 2 = สัมประสิทธิ์ O<sub>2</sub></li>
+        <li>ถ้าได้เศษครึ่ง → <b>คูณทั้งสมการด้วย 2</b></li>
+      </ol>
+      <div class="tip">✅ <b>สูตรลัด</b><br>
+        แอลเคน C<sub>n</sub>H<sub>2n+2</sub> + <b>(3n+1)/2</b> O<sub>2</sub> → <b>n</b> CO<sub>2</sub> + <b>(n+1)</b> H<sub>2</sub>O<br>
+        แอลคีน C<sub>n</sub>H<sub>2n</sub> + <b>3n/2</b> O<sub>2</sub> → <b>n</b> CO<sub>2</sub> + <b>n</b> H<sub>2</sub>O<br>
+        แอลไคน์ C<sub>n</sub>H<sub>2n−2</sub> + <b>(3n−1)/2</b> O<sub>2</sub> → <b>n</b> CO<sub>2</sub> + <b>(n−1)</b> H<sub>2</sub>O</div>
+    </div>
+
+    <div class="card">
+      <h2>🧪 2. ปฏิกิริยาประจำแต่ละชนิด</h2>
+      <table class="ref">
+        <tr><th></th><th>แอลเคน</th><th>แอลคีน / แอลไคน์</th></tr>
+        <tr><td>ชนิดปฏิกิริยาเด่น</td><td><b>แทนที่</b> (Substitution)</td><td><b>เติม</b> (Addition)</td></tr>
+        <tr><td>ต้องมีแสง/ความร้อนไหม</td><td><b>ต้องมี</b> แสงสว่างหรือความร้อน</td><td><b>ไม่ต้อง</b> เกิดได้ทั้งมืดและสว่าง</td></tr>
+        <tr><td>ฟอกจางสี KMnO<sub>4</sub></td><td><b>ไม่ฟอก</b> ❌</td><td><b>ฟอกจางสี</b> ✅ (ได้ไกลคอล + ตะกอน MnO<sub>2</sub> สีน้ำตาล)</td></tr>
+        <tr><td>ฟอกสี Br<sub>2</sub> ในที่มืด</td><td>ไม่เกิด</td><td><b>เกิด</b> สีน้ำตาลแดงจางหายไป</td></tr>
+      </table>
+      <div class="warn">🎯 <b>ข้อสอบชอบถาม "จะแยกแอลเคนกับแอลคีนได้อย่างไร"</b><br>
+        ตอบ: หยด <b>Br<sub>2</sub> ในที่มืด</b> หรือ <b>KMnO<sub>4</sub></b> — ตัวที่<b>ฟอกจางสี</b>คือแอลคีน/แอลไคน์</div>
+      <p style="margin-top:10px"><b>ปฏิกิริยาการเติมของแอลคีน 4 แบบ</b> <span style="color:var(--muted)">[p.23–29]</span></p>
+      <table class="ref">
+        <tr><th>แบบ</th><th>เติมอะไร</th><th>ได้อะไร</th></tr>
+        <tr><td>2.1 Halogenation</td><td>X<sub>2</sub> (Cl<sub>2</sub>/Br<sub>2</sub>)</td><td>ได<b>ฮาโล</b>แอลเคน</td></tr>
+        <tr><td>2.2 Hydrogenation</td><td>H<sub>2</sub> (ตัวเร่ง Ni/Pt)</td><td><b>แอลเคน</b></td></tr>
+        <tr><td>2.3 Hydrohalogenation</td><td>HX (HCl/HBr/HI)</td><td><b>แอลคิลเฮไลด์</b></td></tr>
+        <tr><td>2.4 Hydration</td><td>H<sub>2</sub>O (เร่งด้วย H<sub>2</sub>SO<sub>4</sub>)</td><td><b>แอลกอฮอล์</b></td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= ดุลสมการเผาไหม้ ================= -->
+  <section id="t1" class="tab">
+    <div class="card">
+      <h2>🔥 ดุลสมการการเผาไหม้สมบูรณ์</h2>
+      <p class="sub">เติมตัวเลขสัมประสิทธิ์ลงในช่อง แล้วกดตรวจ — <b>ตอบเป็นจำนวนเต็มอย่างต่ำ หรือจะคูณ 2 ให้ไม่มีเศษก็ได้ ถูกทั้งคู่</b></p>
+      <div class="score"><span id="s1">ทำแล้ว 0</span><span id="p1">ถูก 0</span></div>
+      <div id="d1"></div>
+    </div>
+  </section>
+
+  <!-- ================= แทนที่ / เติม ================= -->
+  <section id="t2" class="tab">
+    <div class="card">
+      <h2>🧪 ปฏิกิริยาแทนที่ และ ปฏิกิริยาการเติม</h2>
+      <p class="sub">เลือกผลิตภัณฑ์ / เงื่อนไขให้ถูก</p>
+      <div class="score"><span id="s2">ทำแล้ว 0</span><span id="p2">ถูก 0</span></div>
+      <div id="d2"></div>
+    </div>
+  </section>
+
+  <!-- ================= เขียนโครงสร้าง ================= -->
+  <section id="t3" class="tab">
+    <div class="card">
+      <h2>✏️ ฝึกเขียนโครงสร้าง</h2>
+      <p class="sub">วาดในกรอบด้วยนิ้ว/ปากกา/เมาส์ แล้วกด <b>“ดูเฉลย”</b> มาเทียบว่าวาดครบไหม (H ครบทุกตัวหรือเปล่า)</p>
+      <div class="tip">✅ <b>เช็กตัวเองทุกครั้ง:</b> ① C ครบตามจำนวนไหม ② <b>C ทุกตัวต้องมี 4 พันธะ</b> ③ H ครบไหม ④ พันธะคู่/สามอยู่ตำแหน่งถูกไหม</div>
+      <div id="d3"></div>
+    </div>
+  </section>
+
+  <!-- ================= รวมมิตร ================= -->
+  <section id="t4" class="tab">
+    <div class="card">
+      <h2>🎯 ข้อสอบรวม</h2>
+      <p class="sub">คละทุกเรื่อง — สมบัติ · การทดสอบ · ปฏิกิริยา</p>
+      <div class="score"><span id="s4">ทำแล้ว 0</span><span id="p4">ถูก 0</span></div>
+      <div id="d4"></div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const KEY=['ก','ข','ค','ง','จ'];
+const st={1:{d:0,o:0},2:{d:0,o:0},4:{d:0,o:0}};
+const upd=n=>{$('#s'+n).textContent='ทำแล้ว '+st[n].d;$('#p'+n).textContent='ถูก '+st[n].o;};
+
+function openTab(id){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('show',t.id===id));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
+  /* ⚠️ ตอนโหลดหน้า แท็บที่ซ่อนอยู่มีความกว้าง 0 -> canvas จะถูกตั้งเป็น 1x1 วาดไม่ได้
+     พอสลับมาแท็บนี้ต้องสั่งวัดขนาดใหม่ (กรอบวาดทุกอันดักฟัง resize อยู่แล้ว)
+     ใช้ setTimeout ไม่ใช้ requestAnimationFrame เพราะ rAF "ไม่ยิงเลย" ถ้าหน้าถูกเปิดไว้เบื้องหลัง
+     (เช่นเปิดลิงก์ในแท็บใหม่แล้วยังไม่ได้สลับไปดู) แล้วกรอบวาดจะค้างที่ 1x1 */
+  setTimeout(()=>dispatchEvent(new Event('resize')),0);
+}
+$('#tabs').addEventListener('click',e=>{const b=e.target.closest('.tab-btn');if(b)openTab(b.dataset.tab);});
+
+/* ============================================================
+   1) ดุลสมการเผาไหม้
+   สูตร: CnH(m) + (n + m/4) O2 -> n CO2 + (m/2) H2O
+   ============================================================ */
+const F=(n,m)=>({n,m});
+const BURN=[
+ {name:'มีเทน (Methane)',       n:1,  m:4},
+ {name:'โพรเพน (Propane)',      n:3,  m:8},
+ {name:'บิวเทน (Butane)',       n:4,  m:10},
+ {name:'เพนเทน (Pentane)',      n:5,  m:12},
+ {name:'เฮกเซน (Hexane)',       n:6,  m:14},
+ {name:'ออกเทน (Octane)',       n:8,  m:18},
+ {name:'อีทีน/เอทิลีน (Ethene)', n:2,  m:4},
+ {name:'โพรพีน (Propene)',      n:3,  m:6},
+ {name:'เพนทีน (Pentene)',      n:5,  m:10},
+ {name:'อีไทน์/อะเซทิลีน (Ethyne)',n:2,m:2},
+ {name:'โพรไพน์ (Propyne)',     n:3,  m:4},
+ {name:'โดเดเคน (Dodecane)',    n:12, m:26}
+];
+function gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b];}return a;}
+function target(n,m){
+  /* คูณ 4 เพื่อกำจัดเศษ แล้วหารด้วย gcd -> อัตราส่วนอย่างต่ำ */
+  let a=4, o=4*n+m, c=4*n, w=2*m;
+  const g=[a,o,c,w].reduce((x,y)=>gcd(x,y));
+  return [a/g,o/g,c/g,w/g];
+}
+const sub=s=>s.replace(/(\d+)/g,'<sub>$1</sub>');
+$('#d1').innerHTML=BURN.map((b,i)=>{
+  const hc='C'+(b.n>1?b.n:'')+'H'+b.m;
+  return `<div class="q" data-i="${i}">
+    <span class="no">${i+1}</span>
+    <div class="ask">จงดุลสมการการเผาไหม้สมบูรณ์ของ <b>${b.name}</b></div>
+    <div class="eq">
+      <input type="text" data-c="0" inputmode="numeric"> <span class="f">${sub(hc)}</span>
+      <span>+</span>
+      <input type="text" data-c="1" inputmode="numeric"> <span class="f">O<sub>2</sub></span>
+      <span class="arrow">→</span>
+      <input type="text" data-c="2" inputmode="numeric"> <span class="f">CO<sub>2</sub></span>
+      <span>+</span>
+      <input type="text" data-c="3" inputmode="numeric"> <span class="f">H<sub>2</sub>O</span>
+    </div>
+    <div class="row"><button class="btn small" data-check>ตรวจ</button>
+      <button class="btn ghost small" data-show>ดูเฉลย</button></div>
+    <div class="fb"></div><div class="ans"></div>
+  </div>`;
+}).join('');
+
+function burnAnswer(b){
+  const t=target(b.n,b.m), hc='C'+(b.n>1?b.n:'')+'H'+b.m;
+  return `${t[0]===1?'':t[0]} ${sub(hc)} + ${t[1]} O<sub>2</sub> → ${t[2]} CO<sub>2</sub> + ${t[3]} H<sub>2</sub>O`;
+}
+$('#d1').addEventListener('click',e=>{
+  const q=e.target.closest('.q'); if(!q)return;
+  const b=BURN[+q.dataset.i], t=target(b.n,b.m);
+  const ins=[...q.querySelectorAll('input')], fb=q.querySelector('.fb'), ans=q.querySelector('.ans');
+  if(e.target.closest('[data-show]')){
+    ans.innerHTML='<b>เฉลย:</b> '+burnAnswer(b)+
+      `<br><span style="color:var(--muted)">ดุล C → CO₂ = ${b.n} · ดุล H → H₂O = ${b.m/2} · แล้วค่อยดุล O</span>`;
+    ans.classList.add('show'); return;
+  }
+  if(e.target.closest('[data-check]')){
+    if(q.dataset.done)return;
+    const v=ins.map(x=>x.value.trim());
+    if(v.some(x=>x==='')){fb.textContent='กรอกให้ครบทุกช่องก่อนนะ';fb.className='fb bad';return;}
+    const num=v.map(Number);
+    let ok = num.every(x=>Number.isInteger(x)&&x>0);
+    if(ok){ const k=num[0]/t[0]; ok = t.every((x,j)=>Math.abs(num[j]-x*k)<1e-9); }
+    ins.forEach((x,j)=>{ const k=num[0]/t[0]; x.classList.add(ok?'ok':'bad'); });
+    q.dataset.done=1; q.classList.add(ok?'correct':'wrong');
+    st[1].d++; if(ok)st[1].o++; upd(1);
+    fb.textContent = ok?'✓ ดุลถูกต้อง!':'✗ ยังไม่สมดุล';
+    fb.className='fb '+(ok?'ok':'bad');
+    ans.innerHTML='<b>เฉลย:</b> '+burnAnswer(b); ans.classList.add('show');
+  }
+});
+$('#d1').addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&e.target.matches('input')) e.target.closest('.q').querySelector('[data-check]').click();
+});
+
+/* ============================================================
+   2) แทนที่ / เติม  (ปรนัย)
+   ============================================================ */
+const RX=[
+ {q:'บิวเทน (C<sub>4</sub>H<sub>10</sub>) ทำปฏิกิริยากับ Cl<sub>2</sub> โดยมีแสงสว่าง จะได้ผลิตภัณฑ์ใด',
+  o:['C<sub>4</sub>H<sub>9</sub>Cl + HCl','C<sub>4</sub>H<sub>10</sub>Cl<sub>2</sub>','C<sub>4</sub>H<sub>8</sub> + 2HCl','ไม่เกิดปฏิกิริยา'],a:0,
+  e:'เป็น<b>ปฏิกิริยาแทนที่</b> — Cl เข้าไปแทน H หนึ่งตัว จึงได้ <b>C₄H₉Cl</b> และปล่อย <b>HCl</b> ออกมา<br>🎯 สังเกตว่า H หายไป 1 ตัวเสมอ (10 → 9)'},
+ {q:'ปฏิกิริยาแทนที่ของแอลเคน <b>จำเป็นต้องมีอะไร</b> จึงจะเกิดขึ้นได้',
+  o:['ตัวเร่งโลหะ Ni หรือ Pt','แสงสว่างหรือความร้อน','กรด H<sub>2</sub>SO<sub>4</sub>','ความดันสูง'],a:1,
+  e:'แอลเคนเสถียรมาก ต้องใช้ <b>แสงสว่าง (UV) หรือความร้อน</b> ไปสลายพันธะ Cl–Cl ก่อน<br>🎯 ต่างจากปฏิกิริยา<b>เติม</b>ของแอลคีน ที่เกิดได้<b>ทั้งในที่มืดและสว่าง โดยไม่ต้องมีตัวเร่ง</b>'},
+ {q:'อีทีน (C<sub>2</sub>H<sub>4</sub>) + Br<sub>2</sub> จะได้อะไร และสีของสารละลายเปลี่ยนอย่างไร',
+  o:['C<sub>2</sub>H<sub>4</sub>Br<sub>2</sub> — สีน้ำตาลแดงจางหายไป','C<sub>2</sub>H<sub>3</sub>Br + HBr — สีไม่เปลี่ยน',
+     'C<sub>2</sub>H<sub>4</sub>Br<sub>2</sub> — เกิดตะกอนสีน้ำตาล','ไม่เกิดปฏิกิริยาถ้าไม่มีแสง'],a:0,
+  e:'เป็น<b>ปฏิกิริยาเติม</b>ที่พันธะคู่ ได้ <b>1,2-dibromoethane</b> (ไม่มีสี)<br>Br₂ สีน้ำตาลแดง<b>จางหายไป</b> = ใช้เป็นการทดสอบว่ามีพันธะคู่ · เกิดได้แม้ในที่มืด'},
+ {q:'แอลคีนเติม H<sub>2</sub> โดยมีตัวเร่ง Ni จะได้สารประเภทใด',
+  o:['แอลไคน์','แอลกอฮอล์','แอลเคน','แอลคิลเฮไลด์'],a:2,
+  e:'Hydrogenation: H เข้าไปเติมที่พันธะคู่ทั้งสองข้าง → พันธะคู่กลายเป็นพันธะเดี่ยว → ได้ <b>แอลเคน</b> (อิ่มตัว)'},
+ {q:'แอลคีนเติมน้ำ (H<sub>2</sub>O) โดยมี H<sub>2</sub>SO<sub>4</sub> เป็นตัวเร่ง จะได้สารประเภทใด',
+  o:['แอลกอฮอล์','กรดคาร์บอกซิลิก','คีโตน','ไกลคอล'],a:0,
+  e:'Hydration → หมู่ <b>–OH</b> เข้าไปเกาะ ได้ <b>แอลกอฮอล์</b> (เช่น ethylene + H₂O → ethanol)'},
+ {q:'สารใดสามารถ<b>ฟอกจางสี</b>สารละลาย KMnO<sub>4</sub> ได้',
+  o:['เฮกเซน (C<sub>6</sub>H<sub>14</sub>)','เฮกซีน (C<sub>6</sub>H<sub>12</sub>)','มีเทน (CH<sub>4</sub>)','ทั้งสามชนิด'],a:1,
+  e:'เฉพาะสารที่มี<b>พันธะคู่/สาม</b> (แอลคีน แอลไคน์) จึงฟอกจางสี KMnO₄ ได้ → ได้<b>ไกลคอล</b> + ตะกอน MnO₂ สีน้ำตาล<br>🎯 แอลเคน<b>ไม่ฟอก</b> [p.17]'},
+ {q:'การเผาไหม้<b>ไม่สมบูรณ์</b>ของไฮโดรคาร์บอนจะได้ผลิตภัณฑ์ใด',
+  o:['CO<sub>2</sub> และ H<sub>2</sub>O เท่านั้น','แก๊ส CO, formaldehyde หรือ acetic acid','เฉพาะเขม่าคาร์บอน','ไม่เกิดปฏิกิริยา'],a:1,
+  e:'เมื่อ O₂ ไม่พอ จะเผาไม่หมด ได้ <b>CO (คาร์บอนมอนอกไซด์)</b> · formaldehyde · acetic acid [p.10]<br>🎯 CO คือแก๊สพิษที่ทำให้เสียชีวิตจากการจุดเตาในห้องปิด'},
+ {q:'เมื่อเปรียบเทียบที่จำนวน C เท่ากัน จุดเดือดเรียงจากมากไปน้อยอย่างไร',
+  o:['แอลเคน &gt; แอลคีน &gt; แอลไคน์','แอลไคน์ &gt; แอลเคน &gt; แอลคีน',
+     'แอลคีน &gt; แอลเคน &gt; แอลไคน์','เท่ากันทั้งหมด'],a:1,
+  e:'<b>แอลไคน์ &gt; แอลเคน &gt; แอลคีน</b> [สไลด์ p.35]<br>🎯 จำง่าย ๆ: “ไคน์–เคน–คีน”'},
+ {q:'แอลไคน์ที่มีพันธะสามอยู่ที่ C ตำแหน่งที่ 1 เมื่อทำปฏิกิริยากับ KMnO<sub>4</sub> จะได้อะไร',
+  o:['ไกลคอล','คีโตน','กรดคาร์บอกซิลิก กับ CO<sub>2</sub>','แอลกอฮอล์'],a:2,
+  e:'พันธะสาม<b>ปลายสาย</b> (ตำแหน่ง 1) → ได้ <b>กรดคาร์บอกซิลิก + CO₂</b><br>ถ้าพันธะสามอยู่<b>กลางสาย</b> (ตำแหน่ง 2) → ได้ <b>ไดคีโตน</b> [p.50]',x:1},
+ {q:'ปฏิกิริยาพอลิเมอไรเซชันของแอลคีนเกิดขึ้นตรงส่วนใดของโมเลกุล',
+  o:['ที่พันธะเดี่ยว C–C','ที่พันธะคู่ C=C','ที่พันธะ C–H','ที่ปลายสายเท่านั้น'],a:1,
+  e:'มอนอเมอร์ต่อกันตรง<b>พันธะคู่</b> ภายใต้อุณหภูมิและความดันสูง → เกิดเป็นพอลิเมอร์ เช่น ethene → polyethene [p.32]'}
+];
+$('#d2').innerHTML=RX.map((r,i)=>`
+ <div class="q" data-i="${i}"><span class="no">${i+1}</span>
+   <div class="ask">${r.q}</div>
+   <div class="opts">${r.o.map((o,j)=>`<button class="opt" data-p="${j}"><span class="k">${KEY[j]}.</span><span>${o}</span></button>`).join('')}</div>
+   <div class="fb"></div><div class="ans"></div></div>`).join('');
+function mcHandler(box,DATA,n){
+  box.addEventListener('click',e=>{
+    const q=e.target.closest('.q'); if(!q||q.dataset.done)return;
+    const b=e.target.closest('[data-p]'); if(!b)return;
+    const d=DATA[+q.dataset.i], pick=+b.dataset.p, ok=pick===d.a;
+    q.dataset.done=1; q.classList.add(ok?'correct':'wrong');
+    st[n].d++; if(ok)st[n].o++; upd(n);
+    q.querySelectorAll('.opt').forEach((o,j)=>{o.classList.add('locked');
+      if(j===d.a)o.classList.add('right'); else if(j===pick)o.classList.add('wrongpick');});
+    const fb=q.querySelector('.fb');
+    fb.textContent=ok?'✓ ถูกต้อง!':('✗ ยังไม่ใช่ — เฉลยคือข้อ '+KEY[d.a]);
+    fb.className='fb '+(ok?'ok':'bad');
+    q.querySelector('.ans').innerHTML='<b>อธิบาย:</b> '+d.e;
+    q.querySelector('.ans').classList.add('show');
+  });
+}
+mcHandler($('#d2'),RX,2);
+
+/* ============================================================
+   3) เขียนโครงสร้าง — วาดเอง แล้วเทียบกับ SVG เฉลย
+   ============================================================ */
+/* สร้างสูตรโครงสร้างแบบเส้น (H ครบทุกตัว) ของสายตรง */
+function chainSVG(n,opt){
+  opt=opt||{};
+  const type=opt.type||'ane';        /* ane | ene | yne */
+  const pos=opt.pos||1;              /* พันธะคู่/สามอยู่ระหว่าง C(pos) กับ C(pos+1) */
+  const subs=opt.subs||[];           /* [{at:1,group:'Br'}] แทน H หนึ่งตัวบน C ตัวนั้น */
+  const dx=104, x0=70, y=118, W=x0*2+dx*(n-1), H=210;
+  let s=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" font-family="Sarabun,sans-serif">`;
+  const L=(x1,y1,x2,y2)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#334155" stroke-width="2.2"/>`;
+  const T=(x,yy,t,col)=>`<text x="${x}" y="${yy}" text-anchor="middle" font-size="21" font-weight="600" fill="${col||'#0f172a'}">${t}</text>`;
+  const cx=i=>x0+dx*i;
+  /* พันธะระหว่าง C */
+  for(let i=0;i<n-1;i++){
+    const a=cx(i)+17, b=cx(i+1)-17;
+    const isMulti=(i+1===pos);
+    if(type==='ane'||!isMulti) s+=L(a,y,b,y);
+    else if(type==='ene'){ s+=L(a,y-5,b,y-5)+L(a,y+5,b,y+5); }
+    else { s+=L(a,y-8,b,y-8)+L(a,y,b,y)+L(a,y+8,b,y+8); }
+  }
+  /* จำนวน H ของแต่ละ C — คิดจาก "เวเลนซ์ 4" เสมอ ไม่ใช่ท่องว่าปลายสาย 3 กลางสาย 2
+     (ถ้าท่องแบบนั้น กรณี n=1 เช่นมีเทนจะได้ H แค่ 3 ตัว ซึ่งผิด ต้องเป็น 4) */
+  const hcount=i=>{
+    const bondsToC = (n===1) ? 0 : ((i===0||i===n-1) ? 1 : 2);
+    let h = 4 - bondsToC;
+    if(type!=='ane'){
+      const inBond = (i===pos-1||i===pos);
+      if(inBond) h -= (type==='ene'?1:2);
+    }
+    return Math.max(h,0);
+  };
+  for(let i=0;i<n;i++){
+    const x=cx(i);
+    s+=T(x,y+8,'C');
+    let h=hcount(i);
+    const mySubs=subs.filter(v=>v.at===i+1);
+    h-=mySubs.length;
+    const slots=[];                                     /* ตำแหน่งที่วาง H/หมู่แทนที่ */
+    if(i===0) slots.push([x-46,y+8,'side']);
+    if(i===n-1) slots.push([x+46,y+8,'side']);
+    slots.push([x,y-52,'up']); slots.push([x,y+70,'down']);
+    let k=0;
+    mySubs.forEach(v=>{ const sl=slots[k++]; if(!sl)return;
+      s+= (sl[2]==='up'?L(x,y-14,x,y-40):sl[2]==='down'?L(x,y+14,x,y+50):L(x+(sl[0]>x?15:-15),y,sl[0]+(sl[0]>x?-15:15),y));
+      s+=T(sl[0],sl[1],v.group,'#c2410c'); });
+    for(let j=0;j<h;j++){ const sl=slots[k++]; if(!sl)continue;
+      s+= (sl[2]==='up'?L(x,y-14,x,y-40):sl[2]==='down'?L(x,y+14,x,y+50):L(x+(sl[0]>x?15:-15),y,sl[0]+(sl[0]>x?-15:15),y));
+      s+=T(sl[0],sl[1],'H'); }
+  }
+  return s+'</svg>';
+}
+
+const DRAW=[
+ {t:'เพนเทน (Pentane) — C₅H₁₂', hint:'สายตรง 5 คาร์บอน พันธะเดี่ยวทั้งหมด', svg:()=>chainSVG(5),
+  cap:'C ปลายสายมี H 3 ตัว · C กลางสายมี H 2 ตัว → รวม H = 12'},
+ {t:'บิวเทน (Butane) — C₄H₁₀', hint:'สายตรง 4 คาร์บอน', svg:()=>chainSVG(4),
+  cap:'ตรวจว่า C ทุกตัวมีครบ 4 พันธะ'},
+ {t:'1-โบรโมเพนเทน (1-Bromopentane)', hint:'ผลจาก bromination ของเพนเทน — Br แทน H ที่ C ตัวที่ 1', svg:()=>chainSVG(5,{subs:[{at:1,group:'Br'}]}),
+  cap:'C₅H₁₁Br — H หายไป 1 ตัว ถูกแทนด้วย Br (เทียบโจทย์ที่เขียนไว้ในสไลด์ p.15 ข้อ 1)'},
+ {t:'คลอโรมีเทน (Chloromethane)', hint:'ผลจาก chlorination ของมีเทน', svg:()=>chainSVG(1,{subs:[{at:1,group:'Cl'}]}),
+  cap:'CH₃Cl — เกิดคู่กับ HCl เสมอ'},
+ {t:'อีทีน / เอทิลีน (Ethene) — C₂H₄', hint:'2 คาร์บอน มีพันธะคู่', svg:()=>chainSVG(2,{type:'ene',pos:1}),
+  cap:'พันธะคู่ทำให้ C แต่ละตัวเหลือ H เพียง 2 ตัว'},
+ {t:'โพรพีน (Propene) — C₃H₆', hint:'3 คาร์บอน พันธะคู่อยู่ระหว่าง C1–C2', svg:()=>chainSVG(3,{type:'ene',pos:1}),
+  cap:'C1 มี H 2 · C2 มี H 1 · C3 มี H 3 → รวม 6'},
+ {t:'1,2-ไดโบรโมอีเทน (1,2-Dibromoethane)', hint:'ผลจากอีทีนเติม Br₂ ที่พันธะคู่ — Br เกาะทั้งสอง C', svg:()=>chainSVG(2,{subs:[{at:1,group:'Br'},{at:2,group:'Br'}]}),
+  cap:'C₂H₄Br₂ — พันธะคู่หายกลายเป็นพันธะเดี่ยว (นี่คือเหตุผลที่สี Br₂ จางหาย)'},
+ {t:'อีไทน์ / อะเซทิลีน (Ethyne) — C₂H₂', hint:'2 คาร์บอน พันธะสาม', svg:()=>chainSVG(2,{type:'yne',pos:1}),
+  cap:'พันธะสามทำให้เหลือ H เพียงข้างละ 1 ตัว'},
+ {t:'โพรไพน์ (Propyne) — C₃H₄', hint:'3 คาร์บอน พันธะสามระหว่าง C1–C2', svg:()=>chainSVG(3,{type:'yne',pos:1}),
+  cap:'เทียบโจทย์ที่เขียนไว้ในสไลด์ p.46'},
+ {t:'อีเทน (Ethane) — C₂H₆', hint:'ผลจากอีทีนเติม H₂ (hydrogenation)', svg:()=>chainSVG(2),
+  cap:'พันธะคู่ → พันธะเดี่ยว จึงรับ H เพิ่มได้อีก 2 ตัว'}
+];
+$('#d3').innerHTML=DRAW.map((d,i)=>`
+ <div class="draw" data-i="${i}">
+   <div class="head">
+     <b>${i+1}. ${d.t}</b>
+     <span style="flex:1"></span>
+     <button data-pen class="on">✏️ ปากกา</button>
+     <button data-era>🧽 ยางลบ</button>
+     <button data-clear>ล้าง</button>
+     <button data-sol>👁️ ดูเฉลย</button>
+   </div>
+   <div style="padding:7px 10px;font-size:.86rem;color:var(--muted)">💡 ${d.hint}</div>
+   <div class="cvwrap"><canvas></canvas></div>
+   <div class="sol">${d.svg()}<div class="cap">${d.cap}</div></div>
+ </div>`).join('');
+
+document.querySelectorAll('.draw').forEach(box=>{
+  const cv=box.querySelector('canvas'), cx=cv.getContext('2d');
+  let strokes=[], cur=null, mode='pen', penSeen=0;
+  function fit(){
+    const w=cv.parentElement.clientWidth, h=cv.parentElement.clientHeight;
+    const dpr=Math.min(devicePixelRatio||1,2.5);
+    cv.width=Math.max(1,w*dpr); cv.height=Math.max(1,h*dpr); draw();
+  }
+  function draw(){
+    cx.clearRect(0,0,cv.width,cv.height);
+    const dpr=Math.min(devicePixelRatio||1,2.5);
+    cx.lineCap='round'; cx.lineJoin='round'; cx.strokeStyle='#1e293b';
+    strokes.forEach(s=>{ cx.lineWidth=2.4*dpr;
+      for(let i=1;i<s.length;i++){cx.beginPath();
+        cx.moveTo(s[i-1].x*cv.width,s[i-1].y*cv.height);
+        cx.lineTo(s[i].x*cv.width,s[i].y*cv.height);cx.stroke();} });
+  }
+  const pt=e=>{const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)/r.width,y:(e.clientY-r.top)/r.height};};
+  cv.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='pen')penSeen=Date.now();
+    if(e.pointerType==='touch'&&Date.now()-penSeen<1500)return;
+    const p=pt(e);
+    if(mode==='era'){ const keep=strokes.filter(s=>!s.some(q=>Math.hypot(q.x-p.x,q.y-p.y)<0.035));
+      if(keep.length!==strokes.length){strokes=keep;draw();} return; }
+    cur=[p]; strokes.push(cur); draw();
+    try{cv.setPointerCapture(e.pointerId)}catch(x){}
+  });
+  cv.addEventListener('pointermove',e=>{
+    if(e.pointerType==='touch'&&Date.now()-penSeen<1500)return;
+    const p=pt(e);
+    if(mode==='era'&&e.buttons){ const keep=strokes.filter(s=>!s.some(q=>Math.hypot(q.x-p.x,q.y-p.y)<0.035));
+      if(keep.length!==strokes.length){strokes=keep;draw();} return; }
+    if(!cur||!e.buttons)return; cur.push(p); draw();
+  });
+  const end=()=>{cur=null;};
+  cv.addEventListener('pointerup',end); cv.addEventListener('pointercancel',end); cv.addEventListener('pointerleave',end);
+  box.querySelector('.head').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    if(b.hasAttribute('data-pen')||b.hasAttribute('data-era')){
+      mode=b.hasAttribute('data-pen')?'pen':'era';
+      box.querySelectorAll('[data-pen],[data-era]').forEach(x=>x.classList.toggle('on',x===b));
+    }
+    if(b.hasAttribute('data-clear')){strokes=[];draw();}
+    if(b.hasAttribute('data-sol')) box.querySelector('.sol').classList.toggle('show');
+  });
+  addEventListener('resize',fit); fit();
+});
+
+/* ============================================================
+   4) รวมมิตร
+   ============================================================ */
+const MIX=[
+ {q:'สาร X เป็นแก๊ส ไม่ละลายน้ำ <b>ไม่ฟอกจางสี</b> KMnO<sub>4</sub> และทำปฏิกิริยากับ Cl<sub>2</sub> ได้<b>เมื่อมีแสง</b>เท่านั้น สาร X น่าจะเป็นอะไร',
+  o:['แอลคีน','แอลเคน','แอลไคน์','แอลกอฮอล์'],a:1,
+  e:'ครบ 3 ลักษณะของ<b>แอลเคน</b>: ไม่มีขั้ว (ไม่ละลายน้ำ) · ไม่ฟอกจางสี KMnO₄ · เกิดปฏิกิริยาแทนที่ที่ต้องใช้แสง'},
+ {q:'C<sub>5</sub>H<sub>12</sub> เผาไหม้สมบูรณ์ ต้องใช้ O<sub>2</sub> กี่โมลต่อไฮโดรคาร์บอน 1 โมล',
+  o:['5 โมล','6 โมล','8 โมล','11 โมล'],a:2,
+  e:'C₅H₁₂ + <b>8</b>O₂ → 5CO₂ + 6H₂O<br>คิดจาก O ฝั่งขวา = 5×2 + 6×1 = 16 อะตอม → ÷2 = <b>8 โมล O₂</b>'},
+ {q:'ไฮโดรคาร์บอนชนิดหนึ่งมี C 4 อะตอม และมีสูตร C<sub>4</sub>H<sub>6</sub> น่าจะเป็นสารประเภทใด',
+  o:['แอลเคน','แอลคีน','แอลไคน์','ไม่มีข้อถูก'],a:2,
+  e:'แทน n=4: แอลเคน C₄H₁₀ · แอลคีน C₄H₈ · <b>แอลไคน์ C₄H₆</b> ✓ (สูตร CₙH₂ₙ₋₂)'},
+ {q:'ต้องการแยกว่าขวดใดคือเฮกเซน ขวดใดคือเฮกซีน ควรใช้วิธีใด<b>ง่ายและเร็วที่สุด</b>',
+  o:['วัดจุดเดือด','หยดสารละลาย Br<sub>2</sub> แล้วดูการจางของสี','จุดไฟดู','ชั่งมวล'],a:1,
+  e:'หยด <b>Br₂ ในที่มืด</b> — <b>เฮกซีน</b> (มีพันธะคู่) จะเกิดปฏิกิริยาเติมทำให้<b>สีน้ำตาลแดงจางหาย</b> ส่วนเฮกเซนไม่เปลี่ยน<br>🎯 ต้องเน้นว่า “ในที่มืด” เพราะถ้ามีแสง แอลเคนจะเกิดปฏิกิริยาแทนที่และสีจางได้เหมือนกัน',x:1},
+ {q:'เผาไหม้ C<sub>6</sub>H<sub>14</sub> อย่างสมบูรณ์ ได้ CO<sub>2</sub> กี่โมล ต่อไฮโดรคาร์บอน 1 โมล',
+  o:['6 โมล','7 โมล','12 โมล','14 โมล'],a:0,
+  e:'จำนวน CO₂ = <b>จำนวน C</b> เสมอ = <b>6 โมล</b> (ส่วน H₂O = 14÷2 = 7 โมล)'},
+ {q:'ข้อใด<b>ไม่ใช่</b>ผลิตภัณฑ์ที่เป็นไปได้จากการเผาไหม้ไม่สมบูรณ์',
+  o:['CO','เขม่าคาร์บอน','CO<sub>2</sub> อย่างเดียวล้วน ๆ','formaldehyde'],a:2,
+  e:'ถ้าได้ CO₂ ล้วน ๆ แปลว่า<b>เผาไหม้สมบูรณ์</b>แล้ว — การเผาไหม้ไม่สมบูรณ์จะมี CO / เขม่า / สารอินทรีย์ปนออกมาเสมอ'}
+];
+$('#d4').innerHTML=MIX.map((r,i)=>`
+ <div class="q" data-i="${i}"><span class="no">${i+1}</span>
+   <div class="ask">${r.q}</div>
+   <div class="opts">${r.o.map((o,j)=>`<button class="opt" data-p="${j}"><span class="k">${KEY[j]}.</span><span>${o}</span></button>`).join('')}</div>
+   <div class="fb"></div><div class="ans"></div></div>`).join('');
+mcHandler($('#d4'),MIX,4);
+
+[1,2,4].forEach(upd);
+openTab('t0');
+</script>
+<!--KIT-UI v2.7 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<script>
+/* =============================================================================
+   _kit/ui-controls.js  —  KIT UI  v1.0
+   แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
+     🌙/☀️  โหมดมืด / สว่าง   (จำค่าไว้ใน localStorage)
+     A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
+     ✏️  ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
+     🧮  เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
+
+   ── วิธีใช้ ────────────────────────────────────────────────────────────────
+   ห้ามแก้โค้ดนี้ในไฟล์ widget!  แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
+       pwsh -File _kit/apply-ui.ps1
+   สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
+   (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
+
+   !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
+      เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
+
+   ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
+   ใส่แอตทริบิวต์ที่ tag body:  data-tools="pen,calc"  = บังคับเปิด
+                              data-tools="none"      = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
+   ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
+              หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
+   ============================================================================= */
+(function(){
+if(window.__KITUI__) return; window.__KITUI__='2.7';
+
+/* ---------- helper ---------- */
+const D=document, R=D.documentElement;
+const get=k=>{try{return localStorage.getItem('kitui-'+k)}catch(e){return null}};
+const set=(k,v)=>{try{localStorage.setItem('kitui-'+k,v)}catch(e){}};
+const el=(t,c,h)=>{const e=D.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
+
+/* =============================================================================
+   1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
+   ============================================================================= */
+const CSS=`
+/* ===== DARK TOKENS (คู่กับ _kit/design-tokens.css) ===== */
+:root[data-theme="dark"]{
+  --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
+  --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
+  --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
+  --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
+  --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
+}
+:root[data-theme="dark"] body{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f172a}
+:root[data-theme="dark"] body[data-subject="physics"]{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f1220}
+:root[data-theme="dark"] body[data-subject="bio"]{--accent:#4ade80;--accent-head:#bbf7d0;--accent-ink:#86efac;--accent-soft:#0f2a1a;--accent-bd:#256b41;--accent-chip:#14532d;--accent-ghost:#15803d;--bg:#0d1912}
+:root[data-theme="dark"] body[data-subject="chem"]{--accent:#fb923c;--accent-head:#fed7aa;--accent-ink:#fdba74;--accent-soft:#2b1a0c;--accent-bd:#8a3d12;--accent-chip:#6d2c10;--accent-ghost:#c2410c;--bg:#1a130c}
+:root[data-theme="dark"] body[data-subject="christ"]{--accent:#a78bfa;--accent-head:#ddd6fe;--accent-ink:#c4b5fd;--accent-soft:#241a3d;--accent-bd:#5b21b6;--accent-chip:#4c1d95;--accent-ghost:#6d28d9;--bg:#16121f}
+:root[data-theme="dark"] body[data-subject="islam"]{--accent:#2dd4bf;--accent-head:#99f6e4;--accent-ink:#5eead4;--accent-soft:#0d2b28;--accent-bd:#12615a;--accent-chip:#134e4a;--accent-ghost:#0f766e;--bg:#0c1917}
+:root[data-theme="dark"] body[data-subject="history"]{--accent:#fbbf24;--accent-head:#fde68a;--accent-ink:#fcd34d;--accent-soft:#2a1f0a;--accent-bd:#8a4b0c;--accent-chip:#6d3a0a;--accent-ghost:#b45309;--bg:#191509}
+:root[data-theme="dark"] body[data-subject="math"]{--accent:#38bdf8;--accent-head:#bae6fd;--accent-ink:#7dd3fc;--accent-soft:#0c2434;--accent-bd:#0b5a80;--accent-chip:#0c4a6e;--accent-ghost:#0369a1;--bg:#0b1620}
+:root[data-theme="dark"] body[data-subject="eng"]{--accent:#f472b6;--accent-head:#fbcfe8;--accent-ink:#f9a8d4;--accent-soft:#2e1122;--accent-bd:#8d1748;--accent-chip:#731839;--accent-ghost:#be185d;--bg:#1c0f16}
+:root[data-theme="dark"] body[data-subject="thai"]{--accent:#f87171;--accent-head:#fecaca;--accent-ink:#fca5a5;--accent-soft:#2d1414;--accent-bd:#8d2020;--accent-chip:#7f1d1d;--accent-ghost:#b91c1c;--bg:#1a0f0f}
+:root[data-theme="dark"] img,:root[data-theme="dark"] .svg-box{filter:brightness(.92)}
+/* ช่องกรอก/ดรอปดาวน์ที่ widget เก่ากำหนดพื้นขาวตายตัวไว้ */
+:root[data-theme="dark"] select,:root[data-theme="dark"] textarea,
+:root[data-theme="dark"] input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=color])
+{background-color:var(--soft);color:var(--ink);border-color:var(--line)}
+
+/* ===== แถบเครื่องมือลอย ===== */
+#kitui-bar{position:fixed;right:10px;bottom:10px;z-index:99990;display:flex;gap:6px;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
+#kitui-bar button{border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;
+  font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
+  align-items:center;justify-content:center;font-weight:700}
+#kitui-bar button:hover{background:var(--soft)}
+#kitui-bar button:active{transform:scale(.93)}
+#kitui-bar button.on{background:var(--accent);color:#fff}
+#kitui-bar .kitui-sep{width:1px;height:22px;background:var(--line);flex:0 0 1px}
+#kitui-bar .kitui-fs{font-size:11px;color:var(--muted);min-width:34px;text-align:center;font-weight:700}
+#kitui-bar.hidden > *:not(#kitui-grip){display:none}
+#kitui-grip{font-size:17px}
+
+/* ===== แผงลอย (ที่ทด / เครื่องคิดเลข) ===== */
+.kitui-sheet{position:fixed;left:0;right:0;bottom:0;z-index:99991;background:var(--card);
+  border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
+  display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
+  height:52vh;max-height:92vh;min-height:180px}
+.kitui-sheet.open{display:flex}
+.kitui-sheet.full{height:100vh;border-radius:0}
+.kitui-head{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--line);
+  flex-wrap:wrap;touch-action:none;cursor:ns-resize}
+.kitui-head b{font-size:.9rem;color:var(--accent-ink);margin-right:2px;white-space:nowrap}
+.kitui-head button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;
+  padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
+.kitui-head button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.kitui-head .kitui-spacer{flex:1}
+.kitui-sw{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;min-height:0}
+.kitui-sw.on{border-color:var(--ink);transform:scale(1.12)}
+.kitui-padwrap{flex:1;position:relative;overflow:hidden;background:var(--soft)}
+.kitui-padwrap canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+:root[data-theme="dark"] .kitui-padwrap{background:#0c1220}
+
+/* ===== เครื่องคิดเลข ===== */
+#kitui-calc{height:auto;max-height:90vh}
+.kitui-disp{padding:8px 12px;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);
+  border-bottom:1px solid var(--line)}
+.kitui-disp .ex{font-size:.95rem;color:var(--muted);min-height:1.3em;word-break:break-all}
+.kitui-disp .rs{font-size:1.6rem;font-weight:700;color:var(--accent-ink);word-break:break-all}
+.kitui-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:7px}
+.kitui-keys button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:9px;
+  font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
+.kitui-keys button:active{transform:scale(.95)}
+.kitui-keys button.fn{font-size:.8rem;color:var(--accent-ink)}
+.kitui-keys button.op{background:var(--accent-soft);color:var(--accent-ink)}
+.kitui-keys button.eq{background:var(--accent);color:#fff;grid-row:span 2}
+.kitui-keys button.del{background:var(--hot-bg);color:var(--hot-ink)}
+.kitui-keys button.w3{grid-column:span 3}
+@media(max-width:420px){.kitui-keys button{font-size:.88rem;min-height:40px}.kitui-keys button.fn{font-size:.72rem}}
+@media(min-width:760px){
+  .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
+  .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
+  #kitui-pad{width:560px}
+}
+@media print{#kitui-bar,.kitui-sheet{display:none!important}}
+`;
+const st=el('style'); st.id='kitui-style'; st.textContent=CSS; D.head.appendChild(st);
+
+/* -----------------------------------------------------------------------------
+   1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
+   widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
+   พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
+   แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
+   เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
+----------------------------------------------------------------------------- */
+/* สีพาสเทลสว่าง -> สีเข้มที่ยังคง "เฉดเดิม" ไว้ (เขียว=ถูก / แดง=ผิด ต้องยังแยกออก)
+   ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
+function darken(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
+  /* ⚠️ ห้ามใช้ saturation ของ HSL ตรง ๆ ตัดสิน: ที่ความสว่างเกือบ 1 ตัวหารจะเล็กมาก
+     ทำให้สีที่แทบเป็นสีขาว (เช่น #fdf8f4) ได้ค่าอิ่มสีสูงลิ่ว แล้วกลายเป็นสีน้ำตาลจัดตอนกดให้เข้ม
+     ให้ดูจาก "ช่วงห่างของแม่สี" (chroma) แทน แล้วแปลงเป็นความอิ่มสีแบบไล่ระดับ */
+  const s = Math.min(.45, Math.max(.08, d*4));
+  const l = d<.02 ? .13 : .17;                       /* เทา/ขาวล้วนให้เข้มกว่าสีนิดหน่อย */
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+function darkFix(){
+  const out=[], seen=new Set();
+  const take=r=>{
+    if(!r.style || !r.selectorText) return;
+    if(r.selectorText.indexOf('kitui')>-1) return;               /* ของเราเองใช้ token อยู่แล้ว */
+    const bg=r.style.backgroundColor;
+    if(!bg || bg.indexOf('var(')>-1) return;
+    const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
+    if(!m) return;
+    if(m[4]!==undefined && +m[4]<0.6) return;                    /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
+    const cr=+m[1], cg=+m[2], cb=+m[3];
+    if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return;       /* ไม่สว่างพอ ไม่ต้องยุ่ง */
+    const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
+    const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
+    let css='background-color:'+repl;
+    /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
+    const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
+    out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
+  };
+  /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
+        ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
+  const visit=rules=>{
+    for(let i=0;i<rules.length;i++){
+      const r=rules[i];
+      if(r.selectorText) take(r);
+      if(r.cssRules && r.cssRules.length) visit(r.cssRules);     /* @media / @supports / nesting */
+    }
+  };
+  for(let i=0;i<D.styleSheets.length;i++){
+    let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; }   /* ข้ามชีตข้ามโดเมน */
+    if(rr) visit(rr);
+  }
+  if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
+  return out.length;
+}
+try{ window.__KITUI_DARKFIX__ = (D.body.getAttribute('data-kit-theme')==='off') ? 'locked' : darkFix(); }
+catch(e){ window.__KITUI_DARKFIX__='err:'+e.message; }
+
+/* darkFix ข้างบนซ่อมได้เฉพาะสีที่เขียนตายตัวในไฟล์ CSS
+   แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
+   ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
+   จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
+const rgbOf=c=>{const m=c&&c.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null;};
+const lumOf=v=>v?(0.2126*v[0]+0.7152*v[1]+0.0722*v[2])/255:null;
+/* ตรงข้ามกับ darken(): ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
+   (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
+function lighten(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  if(d<0.04) return 'var(--ink)';                    /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
+  let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
+  const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
+  const s=Math.min(.92,Math.max(.55,s0)), l=.72;
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+const SKIP={CANVAS:1,IMG:1,VIDEO:1,SVG:1,IFRAME:1,PICTURE:1,OBJECT:1};
+const OBS_OPT={childList:true,subtree:true,attributes:true,attributeFilter:['class','style']};
+let patched=[], obs=null;
+function elementFix(){
+  /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
+        ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
+  if(obs) obs.disconnect();
+  try{ elementFixCore(); } finally { if(obs) obs.observe(D.body,OBS_OPT); }
+}
+function elementFixCore(){
+  if(D.body.getAttribute('data-kit-theme')==='off') return;   /* หน้าที่ล็อกธีมไว้ ห้ามไปยุ่งสี */
+  /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
+     ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
+     จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
+  if(R.getAttribute('data-theme')!=='dark'){
+    patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
+    patched=[];
+    return;
+  }
+  /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
+     ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
+  /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
+  const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
+  for(let i=0;i<all.length;i++){
+    const e=all[i];
+    if(e.id&&e.id.indexOf('kitui')===0) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(SKIP[e.tagName]) continue;                      /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
+    const s=getComputedStyle(e);
+    const bg=rgbOf(s.backgroundColor);
+    if(!bg || bg[3]<0.6) continue;                     /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
+    if(lumOf(bg)<0.72) continue;                       /* เข้มพออยู่แล้ว */
+    /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
+    e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
+    const fg=rgbOf(s.color);
+    if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important');  /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
+    patched.push(e);
+  }
+  /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
+     ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
+  const bgCache=new Map();
+  const effBg=n=>{
+    for(let p=n;p;p=p.parentElement){
+      if(bgCache.has(p)) return bgCache.get(p);
+      const b=rgbOf(getComputedStyle(p).backgroundColor);
+      if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
+    }
+    return null;
+  };
+  for(let i=2;i<all.length;i++){
+    const e=all[i];
+    if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(e.style.color) continue;                         /* จัดการไปแล้วในรอบแรก */
+    if(!e.textContent || !e.textContent.trim()) continue;
+    const fg=rgbOf(getComputedStyle(e).color);
+    if(!fg || lumOf(fg)>=0.45) continue;                 /* ตัวอักษรสว่างอยู่แล้ว */
+    const bg=effBg(e);
+    if(!bg || lumOf(bg)>=0.5) continue;                  /* พื้นยังสว่าง อ่านออกอยู่ */
+    e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
+    patched.push(e);
+  }
+}
+let efT=0;
+const scheduleFix=()=>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
+try{
+  obs=new MutationObserver(scheduleFix);
+  obs.observe(D.body,OBS_OPT);
+}catch(e){}
+
+/* =============================================================================
+   2) ธีม + ขนาดตัวอักษร
+   ============================================================================= */
+const FS=[.85,1,1.15,1.3,1.5], FSNAME=['เล็กสุด','เล็ก','ปกติ','ใหญ่','ใหญ่สุด'];
+let fsIdx=parseInt(get('fs')); if(isNaN(fsIdx)||fsIdx<0||fsIdx>4) fsIdx=1;
+let theme=get('theme') || (matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+
+/* หน้าที่ออกแบบธีมมาเองครบแล้ว (เช่น "หนังสือทบทวน" พื้นเข้มทั้งเล่ม) ให้ปิดระบบธีมของ KIT UI
+   ไม่งั้นโทเคน --bg/--ink ของเราจะไปทับสีที่หน้านั้นตั้งไว้ แล้วหน้าเพี้ยน
+   ใส่ที่ tag body:  data-kit-theme="off"   (ปุ่มปรับขนาดตัวอักษรยังใช้ได้ตามปกติ) */
+const themeLock = D.body.getAttribute('data-kit-theme')==='off';
+
+function applyTheme(){
+  if(themeLock) return;
+  R.setAttribute('data-theme',theme);
+  R.style.colorScheme = theme==='dark'?'dark':'light';   /* ให้ select/input เป็นสีเข้มด้วย */
+  const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
+  set('theme',theme);
+  clearTimeout(efT);                                   /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
+  if(typeof elementFix==='function') elementFix();
+  /* ⚠️ ห้ามอ้างถึงตัวแปรของส่วน "ที่ทด" ตรงนี้!
+     applyTheme() ถูกเรียกก่อนที่ `let pad` ในส่วนที่ 4 จะทำงาน → ชน temporal dead zone
+     แล้ว ReferenceError จะทำให้สคริปต์ตายทั้งก้อน (ปุ่มขนาดอักษร/ที่ทด/เครื่องคิดเลขหายหมด)
+     ใช้วิธียิง event แทน ใครสนใจค่อยไปดักฟังเอง */
+  try{ D.dispatchEvent(new CustomEvent('kitui-theme')); }catch(e){}
+}
+function applyFS(){
+  R.style.fontSize=(16*FS[fsIdx])+'px';
+  const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
+  set('fs',fsIdx);
+}
+
+/* =============================================================================
+   3) แถบเครื่องมือ
+   ============================================================================= */
+const subj=(D.body.getAttribute('data-subject')||'').toLowerCase();
+/* หลาย widget ไม่ได้ใส่ data-subject ที่ <body> → เดาจากโฟลเดอร์ที่ไฟล์อยู่ด้วย */
+const inPath=/\/(physics|math|chemist)\//i.test(decodeURIComponent(location.pathname));
+const tAttr=D.body.getAttribute('data-tools');
+const wantTools = tAttr!=null ? tAttr.toLowerCase()
+                : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
+const hasPen  = wantTools.includes('pen');
+const hasCalc = wantTools.includes('calc');
+
+const bar=el('div'); bar.id='kitui-bar';
+bar.innerHTML =
+  `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
+  (themeLock ? '' : `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button><span class="kitui-sep"></span>`)+
+  `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
+  `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
+  `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
+  (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
+  (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
+D.body.appendChild(bar);
+
+if(!themeLock) D.getElementById('kitui-theme').onclick=()=>{theme=theme==='dark'?'light':'dark';applyTheme();};
+D.getElementById('kitui-fsup').onclick=()=>{if(fsIdx<4){fsIdx++;applyFS();}};
+D.getElementById('kitui-fsdown').onclick=()=>{if(fsIdx>0){fsIdx--;applyFS();}};
+D.getElementById('kitui-grip').onclick=()=>bar.classList.toggle('hidden');
+applyTheme(); applyFS();
+
+/* ปิดแผงด้วยปุ่ม Esc */
+D.addEventListener('keydown',e=>{ if(e.key==='Escape') D.querySelectorAll('.kitui-sheet.open').forEach(s=>s.classList.remove('open')); });
+
+/* ลากหัวแผงเพื่อปรับความสูง */
+function makeResizable(sheet){
+  const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
+  head.addEventListener('pointerdown',e=>{
+    if(e.target.closest('button'))return;
+    drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect().height;head.setPointerCapture(e.pointerId);
+  });
+  head.addEventListener('pointermove',e=>{
+    if(!drag)return;
+    const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
+    sheet.classList.remove('full'); sheet.style.height=h+'px';
+    if(sheet.id==='kitui-pad') fitPad();
+  });
+  head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
+}
+
+/* =============================================================================
+   4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ  หลายหน้า  เซฟอัตโนมัติ
+   ============================================================================= */
+let pad,padCv,padCx,pages=[[]],pg=0,undone=[],histo=[];
+let tool='pen',color='#111827',width=2.4,penSeen=0;
+const COLORS=['#111827','#2563eb','#dc2626','#16a34a','#f59e0b'];
+const PADKEY='pad-'+location.pathname.split('/').pop();
+
+function buildPad(){
+  pad=el('div','kitui-sheet'); pad.id='kitui-pad';
+  pad.innerHTML=
+   `<div class="kitui-head">
+      <b>✏️ ที่ทด</b>
+      <button data-t="pen" class="on">🖊️</button>
+      <button data-t="hl">🖍️</button>
+      <button data-t="er">🧽</button>
+      ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
+      <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
+      <span class="kitui-spacer"></span>
+      <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
+      <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
+      <button id="kitui-pgadd">+ หน้า</button>
+      <button id="kitui-clear">ล้างหน้านี้</button>
+      <button id="kitui-full">⛶</button>
+      <button id="kitui-padclose">✕</button>
+    </div>
+    <div class="kitui-padwrap"><canvas></canvas></div>`;
+  D.body.appendChild(pad);
+  padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
+  makeResizable(pad);
+
+  pad.querySelector('.kitui-head').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
+  });
+  D.getElementById('kitui-undo').onclick=()=>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop(); draw(); save(); } };
+  D.getElementById('kitui-redo').onclick=()=>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop(); draw(); save(); } };
+  D.getElementById('kitui-clear').onclick=()=>{ snap(); pages[pg]=[]; draw(); save(); };
+  D.getElementById('kitui-pgadd').onclick=()=>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw(); save(); };
+  D.getElementById('kitui-pgprev').onclick=()=>{ if(pg>0){pg--;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-pgnext').onclick=()=>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-full').onclick=()=>{ pad.classList.toggle('full'); pad.style.height=''; fitPad(); };
+  D.getElementById('kitui-padclose').onclick=()=>pad.classList.remove('open');
+
+  /* ---- วาด ---- */
+  let cur=null;
+  padCv.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='pen') penSeen=Date.now();
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;   /* กันฝ่ามือแตะตอนใช้สไตลัส */
+    const p=pt(e);
+    if(tool==='er'){ snap(); erase(p); return; }
+    snap();
+    cur={c:color,w:width,hl:tool==='hl',pts:[p]};
+    pages[pg].push(cur); draw();
+    try{ padCv.setPointerCapture(e.pointerId); }catch(x){}  /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
+  });
+  padCv.addEventListener('pointermove',e=>{
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;
+    if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
+    if(!cur||!e.buttons)return;
+    /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
+    let evs=[e];
+    if(e.getCoalescedEvents){ const c=e.getCoalescedEvents(); if(c&&c.length) evs=c; }
+    evs.forEach(ev=>cur.pts.push(pt(ev)));
+    draw();
+  });
+  const end=()=>{ if(cur){cur=null;save();} };
+  padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
+  padCv.addEventListener('pointerleave',end);
+
+  addEventListener('resize',()=>{ if(pad.classList.contains('open')) fitPad(); });
+  D.addEventListener('kitui-theme',()=>draw());   /* สลับธีมแล้ววาดลายใหม่ เส้นดำ<->ขาวตามพื้น */
+  load(); fitPad();
+}
+function pt(e){
+  const r=padCv.getBoundingClientRect();
+  return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
+          p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5};   /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
+}
+function snap(){ histo.push(pages[pg].slice()); if(histo.length>60)histo.shift(); undone=[]; }
+function erase(p){
+  const r=padCv.getBoundingClientRect(), rad=18/r.width;
+  const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
+  if(keep.length!==pages[pg].length){ pages[pg]=keep; draw(); save(); }
+}
+function fitPad(){
+  const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
+  const dpr=Math.min(devicePixelRatio||1,2.5);
+  padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
+  draw();
+}
+function draw(){
+  const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
+  padCx.clearRect(0,0,W,H);
+  /* เส้นตารางจาง ๆ ให้เขียนตรง */
+  const dark=R.getAttribute('data-theme')==='dark';
+  padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
+  for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath();padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke();}
+  padCx.lineCap='round'; padCx.lineJoin='round';
+  pages[pg].forEach(s=>{
+    padCx.globalAlpha=s.hl?0.32:1;
+    padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
+    for(let i=1;i<s.pts.length;i++){
+      const a=s.pts[i-1],b=s.pts[i];
+      padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
+      padCx.beginPath(); padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke();
+    }
+    if(s.pts.length===1){ /* จุดเดียว */
+      padCx.fillStyle=padCx.strokeStyle; padCx.beginPath();
+      padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill();
+    }
+  });
+  padCx.globalAlpha=1;
+  const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
+}
+function save(){ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
+function load(){
+  try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
+}
+
+if(hasPen){
+  buildPad();
+  D.getElementById('kitui-penbtn').onclick=()=>{
+    const o=pad.classList.toggle('open');
+    D.getElementById('kitui-penbtn').classList.toggle('on',o);
+    if(o) fitPad();
+  };
+}
+
+/* =============================================================================
+   5) เครื่องคิดเลขวิทยาศาสตร์  (tokenizer → shunting-yard → RPN  ไม่ใช้ eval)
+   ============================================================================= */
+const FN={sin:1,cos:1,tan:1,asin:1,acos:1,atan:1,ln:1,log:1,sqrt:1,abs:1,exp:1};
+const PREC={'+':1,'-':1,'*':2,'/':2,'^':4,'u-':3};
+function tokenize(s){
+  s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
+  const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!()])/g; let m;
+  while((m=re.exec(s))) out.push(m[1]);
+  return out;
+}
+function toRPN(tk){
+  const out=[],op=[]; let prev=null;
+  for(let t of tk){
+    if(t==='**')t='^';
+    if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
+    else if(t==='PI'){ out.push(Math.PI); }
+    else if(t==='e'||t==='E'){ out.push(Math.E); }
+    else if(t==='ANS'){ out.push(ANS); }
+    else if(FN[t]){ op.push(t); }
+    else if(t==='('){ op.push(t); }
+    else if(t===')'){
+      while(op.length&&op[op.length-1]!=='(') out.push(op.pop());
+      if(!op.length) throw 0; op.pop();
+      if(op.length&&FN[op[op.length-1]]) out.push(op.pop());
+    }
+    else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
+    else if('+-*/^'.includes(t)){
+      let o=t;
+      const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
+      if(t==='-'&&unary) o='u-';
+      else if(t==='+'&&unary){ prev=t; continue; }
+      while(op.length){
+        const top=op[op.length-1];
+        if(top==='('||FN[top])break;
+        const rightAssoc=(o==='^'||o==='u-');
+        if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop()); else break;
+      }
+      op.push(o);
+    }
+    else throw 0;
+    prev=t;
+  }
+  while(op.length){ const o=op.pop(); if(o==='(')throw 0; out.push(o); }
+  return out;
+}
+function evalRPN(rpn,deg){
+  const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
+  const pop=()=>{ if(!st.length)throw 0; return st.pop(); };
+  for(const t of rpn){
+    if(typeof t==='number'){ st.push(t); continue; }
+    if(t==='fact'){ const n=pop(); if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
+    if(t==='pct'){ st.push(pop()/100); continue; }
+    if(t==='u-'){ st.push(-pop()); continue; }
+    if(FN[t]){
+      const a=pop();
+      st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
+             : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
+             : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
+             : t==='abs'?Math.abs(a) : Math.exp(a) );
+      continue;
+    }
+    const b=pop(),a=pop();
+    st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
+  }
+  if(st.length!==1) throw 0;
+  return st[0];
+}
+function calc(src,deg){ return evalRPN(toRPN(tokenize(src)),deg); }
+
+let ANS=0, expr='', calcSheet, isDeg=true;
+const KEYS=[
+ ['DEG','deg','fn'],['(','(',''],[')',')',''],['⌫','del','del'],['AC','ac','del'],
+ ['sin','sin(','fn'],['cos','cos(','fn'],['tan','tan(','fn'],['π','π','fn'],['÷','÷','op'],
+ ['sin⁻¹','asin(','fn'],['cos⁻¹','acos(','fn'],['tan⁻¹','atan(','fn'],['e','e','fn'],['×','×','op'],
+ ['ln','ln(','fn'],['log','log(','fn'],['√','√(','fn'],['xʸ','^','fn'],['−','−','op'],
+ ['7','7',''],['8','8',''],['9','9',''],['x!','!','fn'],['+','+','op'],
+ ['4','4',''],['5','5',''],['6','6',''],['%','%','fn'],['ANS','ANS','fn'],
+ ['1','1',''],['2','2',''],['3','3',''],['.','.',''],['=','eq','eq'],
+ ['0','0','w3'],['x²','^2','fn']
+];
+function buildCalc(){
+  calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
+  calcSheet.innerHTML=
+   `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
+      <button id="kitui-calcclose">✕</button></div>
+    <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
+    <div class="kitui-keys" id="kitui-keys">
+      ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
+    </div>`;
+  D.body.appendChild(calcSheet);
+  D.getElementById('kitui-calcclose').onclick=()=>calcSheet.classList.remove('open');
+  const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
+  const show=()=>{ ex.textContent=expr||' ';
+    try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
+    catch(e){ rs.style.opacity=.35; }
+  };
+  D.getElementById('kitui-keys').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
+    if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
+    if(k==='del'){ expr=expr.slice(0,-1); show(); return; }
+    if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show(); return; }
+    if(k==='eq'){
+      rs.style.opacity=1;
+      try{
+        const v=calc(expr,isDeg);
+        if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
+        if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
+        ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
+      }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
+      return;
+    }
+    expr+=k; show();
+  });
+}
+function fmt(v){
+  if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
+  if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
+  return String(Math.round(v*1e10)/1e10);
+}
+if(hasCalc){
+  buildCalc();
+  D.getElementById('kitui-calcbtn').onclick=()=>{
+    const o=calcSheet.classList.toggle('open');
+    D.getElementById('kitui-calcbtn').classList.toggle('on',o);
+  };
+}
+})();
+
+</script>
+<!--/KIT-UI-->
+</body>
+</html>
