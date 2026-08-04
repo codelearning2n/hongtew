@@ -2,52 +2,175 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Cheat Table — ระบบต่อมไร้ท่อ (Unit 20)</title>
 <style>
+/* ============================================================================
+   Cheat Table ฮอร์โมน — เวอร์ชันอ่านบนมือถือ
+   • ทุกตารางอยู่ในกล่องที่ "เลื่อนซ้าย-ขวา" ได้ และคอลัมน์แรกตรึงไว้
+   • แบ่งเป็นหมวด กดแท็บเลือกดูทีละหมวดได้
+   • สีทุกจุดมาจากตัวแปร + มีชุดของโหมดมืดเอง  ->  KIT UI จะไม่เข้ามาเดาสีให้
+     (darkFix ข้ามกฎที่ค่าเป็น var(...) และ elementFix ข้ามพื้นที่เข้มอยู่แล้ว)
+   • ขนาดตัวอักษรเป็น rem ทั้งหมด ปุ่ม A+ / A- ถึงจะทำงาน
+   ========================================================================== */
 @page { size: A4; margin: 9mm 8mm; }
-*{ box-sizing:border-box; margin:0; padding:0; }
+*{ box-sizing:border-box; margin:0; padding:0; -webkit-text-size-adjust:100%; }
 :root{
-  --ac:#e11d48; --acbg:#fff1f3; --acline:#fecdd3;
-  --ac2:#0369a1; --ac2bg:#eff6ff;
-  --ink:#1e293b; --mut:#64748b; --line:#e2e8f0; --hl:#fef08a; --warn:#b91c1c; --ok:#15803d;
+  --pg:#f1f5f9; --cd:#ffffff; --cd2:#f8fafc;
+  --tx:#1e293b; --strong:#0f172a; --mut:#64748b; --bd:#e2e8f0;
+  --ac:#e11d48; --acbg:#fff1f3; --acline:#fecdd3; --achd:#9f1239;
+  --ac2:#0369a1; --ac2bg:#eff6ff; --ac2line:#bfdbfe; --ac2hd:#075985;
+  --hl:#fef08a; --hlink:#713f12;
+  --warn:#b91c1c; --good:#15803d;
+  --wbg:#dbeafe; --wink:#1d4ed8; --lbg:#fef3c7; --link:#b45309;
+  --sh:0 1px 3px rgba(15,23,42,.07);
 }
-body{ font-family:'Leelawadee UI','Sarabun','Tahoma',sans-serif; color:var(--ink); font-size:9.2px; line-height:1.4; }
-.wrap{ max-width:196mm; margin:0 auto; }
-.cover{ text-align:center; padding:8px 0 6px; border-bottom:3px solid var(--ac); margin-bottom:9px; }
-.cover h1{ font-size:20px; color:#0f172a; }
-.cover .sub{ color:var(--mut); font-size:10.5px; margin-top:2px; }
-.cover .tag{ display:inline-block; font-size:8.5px; background:var(--acbg); color:var(--ac);
-  border:1px solid var(--acline); border-radius:20px; padding:2px 12px; margin-top:5px; }
-.sec{ margin:9px 0 4px; display:flex; align-items:center; gap:6px; page-break-after:avoid; }
-.sec .bar{ width:5px; height:15px; background:var(--ac); border-radius:3px; }
-.sec h2{ font-size:12.5px; color:var(--ac); }
-.sec h2 .en{ color:var(--mut); font-weight:400; font-size:9.5px; }
-.sec.blue .bar{ background:var(--ac2);} .sec.blue h2{ color:var(--ac2); }
-table{ width:100%; border-collapse:collapse; font-size:8.6px; page-break-inside:auto; }
-tr{ page-break-inside:avoid; }
-th,td{ border:1px solid var(--line); padding:2.5px 5px; text-align:left; vertical-align:top; }
-th{ background:var(--acbg); font-size:8.4px; color:#9f1239; }
-.blue th{ background:var(--ac2bg); color:#075985; }
-td .en,th .en{ color:var(--mut); font-style:normal; }
-tbody tr:nth-child(even){ background:#fafafa; }
-.gland{ font-weight:700; color:#0f172a; white-space:nowrap; }
-b{ color:#0f172a; }
-mark{ background:var(--hl); padding:0 2px; border-radius:2px; }
+:root[data-theme="dark"]{
+  --pg:#0b0f16; --cd:#151b24; --cd2:#1a212c;
+  --tx:#e6edf3; --strong:#f4f8fb; --mut:#95a3b3; --bd:#2c3644;
+  --ac:#fb7185; --acbg:#2b1119; --acline:#5c2131; --achd:#fda4af;
+  --ac2:#60a5fa; --ac2bg:#101d2c; --ac2line:#25405e; --ac2hd:#93c5fd;
+  --hl:#4a3a06; --hlink:#fde68a;
+  --warn:#fca5a5; --good:#86efac;
+  --wbg:#16304f; --wink:#93c5fd; --lbg:#3d2f08; --link:#fcd34d;
+  --sh:0 1px 3px rgba(0,0,0,.5);
+}
+html{ background:var(--pg); }
+body{
+  font-family:'Leelawadee UI','Sarabun','Noto Sans Thai','Tahoma',sans-serif;
+  background:var(--pg); color:var(--tx); line-height:1.55;
+  font-size:1rem; padding-bottom:4rem;
+}
+.wrap{ max-width:70rem; margin:0 auto; padding:0 .7rem; }
+
+/* ---------- หัวเรื่อง ---------- */
+.cover{ text-align:center; padding:1rem 0 .8rem; border-bottom:3px solid var(--ac); margin-bottom:.7rem; }
+.cover h1{ font-size:1.35rem; color:var(--strong); line-height:1.3; }
+.cover .sub{ color:var(--mut); font-size:.85rem; margin-top:.25rem; }
+.cover .tag{ display:inline-block; font-size:.75rem; background:var(--acbg); color:var(--ac);
+  border:1px solid var(--acline); border-radius:1.2rem; padding:.15rem .8rem; margin-top:.45rem; }
+
+/* ---------- แถบแท็บหมวด (ตรึงไว้บนสุด เลื่อนแนวนอนได้) ---------- */
+.tabs{
+  position:sticky; top:0; z-index:30; background:var(--pg);
+  margin:0 -.7rem; padding:.5rem .7rem; border-bottom:1px solid var(--bd);
+  display:flex; gap:.35rem; overflow-x:auto; -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+.tabs::-webkit-scrollbar{ display:none; }
+.tab{
+  flex:0 0 auto; font:inherit; font-size:.82rem; cursor:pointer; white-space:nowrap;
+  background:var(--cd); color:var(--tx); border:1px solid var(--bd);
+  border-radius:1.2rem; padding:.32rem .7rem; box-shadow:var(--sh);
+}
+.tab[aria-selected="true"]{ background:var(--ac); border-color:var(--ac); color:#fff; font-weight:700; }
+:root[data-theme="dark"] .tab[aria-selected="true"]{ color:#2b0d15; }
+
+.tools{ display:flex; gap:.4rem; align-items:center; margin:.55rem 0 .2rem; }
+.tools input{
+  flex:1; min-width:0; font:inherit; font-size:.85rem; color:var(--tx);
+  background:var(--cd); border:1px solid var(--bd); border-radius:.5rem; padding:.4rem .6rem;
+}
+.tools input::placeholder{ color:var(--mut); }
+.hint{ font-size:.72rem; color:var(--mut); margin:.15rem 0 .5rem; }
+.hint b{ color:var(--ac); }
+.count{ font-size:.75rem; color:var(--mut); white-space:nowrap; }
+
+/* ---------- หัวข้อหมวด ---------- */
+.sec{ margin:1.1rem 0 .4rem; display:flex; align-items:center; gap:.4rem; page-break-after:avoid; }
+.sec .bar{ width:.28rem; height:1.05rem; background:var(--ac); border-radius:.2rem; flex:0 0 auto; }
+.sec h2{ font-size:1rem; color:var(--ac); line-height:1.3; }
+.sec h2 .en{ color:var(--mut); font-weight:400; font-size:.8rem; }
+.sec.blue .bar{ background:var(--ac2); } .sec.blue h2{ color:var(--ac2); }
+
+/* ---------- กล่องตารางที่เลื่อนได้ ---------- */
+.tw{
+  overflow-x:auto; -webkit-overflow-scrolling:touch;
+  border:1px solid var(--bd); border-radius:.6rem; background:var(--cd); box-shadow:var(--sh);
+}
+.tw::-webkit-scrollbar{ height:.5rem; }
+.tw::-webkit-scrollbar-thumb{ background:var(--bd); border-radius:.5rem; }
+table{ width:100%; border-collapse:separate; border-spacing:0; font-size:.82rem; }
+th,td{ border-bottom:1px solid var(--bd); border-right:1px solid var(--bd);
+  padding:.42rem .55rem; text-align:left; vertical-align:top; }
+th:last-child,td:last-child{ border-right:0; }
+tbody tr:last-child td{ border-bottom:0; }
+thead th{ background:var(--acbg); color:var(--achd); font-size:.8rem; position:sticky; top:0; z-index:2; }
+.blue thead th{ background:var(--ac2bg); color:var(--ac2hd); }
+tbody tr:nth-child(even) td{ background:var(--cd2); }
+/* คอลัมน์แรกตรึงไว้ — เลื่อนดูขวาแล้วยังรู้ว่าอยู่แถวไหน */
+th:first-child,td:first-child{ position:sticky; left:0; z-index:1; background:var(--cd);
+  border-right:1px solid var(--bd); }
+tbody tr:nth-child(even) td:first-child{ background:var(--cd2); }
+thead th:first-child{ z-index:3; background:var(--acbg); }
+.blue thead th:first-child{ background:var(--ac2bg); }
+
+.gland{ font-weight:700; color:var(--strong); }
+.en{ color:var(--mut); font-style:normal; font-size:.95em; }
+b{ color:var(--strong); }
+mark{ background:var(--hl); color:var(--hlink); padding:0 .15rem; border-radius:.15rem; }
 .up{ color:var(--warn); font-weight:700; } .down{ color:var(--ac2); font-weight:700; }
-.pill{ display:inline-block; font-size:7.6px; font-weight:700; padding:0 4px; border-radius:4px; }
-.w{ background:#dbeafe; color:#1d4ed8;} .l{ background:#fef3c7; color:#b45309;}
-.grid2{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-.grid3{ display:grid; grid-template-columns:1.15fr 1fr; gap:8px; }
-.note{ font-size:8.4px; background:var(--acbg); border:1px solid var(--acline); border-radius:6px; padding:5px 8px; margin-top:4px; }
-.note ul{ list-style:none; } .note li{ padding-left:11px; position:relative; margin:1px 0; }
-.note li:before{ content:"⚠"; position:absolute; left:0; font-size:7px; color:var(--warn); }
-.kw{ margin-top:5px; }
-.chip{ display:inline-block; font-size:8px; border-radius:5px; padding:1px 6px; margin:2px 2px 0 0;
-  background:var(--acbg); color:#9f1239; border:1px solid var(--acline); }
-.foot{ text-align:center; color:var(--mut); font-size:8px; margin-top:10px; padding-top:5px; border-top:1px solid var(--line); }
+.pill{ display:inline-block; font-size:.72rem; font-weight:700; padding:0 .3rem; border-radius:.3rem; }
+.w{ background:var(--wbg); color:var(--wink); } .l{ background:var(--lbg); color:var(--link); }
+
+/* min-width:0 จำเป็น! ค่าเริ่มต้นของลูก grid คือ auto = ห้ามหดเล็กกว่าเนื้อหา
+   ตารางข้างในมี min-width อยู่ ถ้าไม่ใส่ ตัวกล่องจะยืดตามตารางแทนที่จะให้เลื่อน -> ล้นจอ */
+.grid2{ display:grid; grid-template-columns:1fr; gap:.6rem; }
+.grid2>*{ min-width:0; }
+@media (min-width:56rem){ .grid2{ grid-template-columns:1fr 1fr; } .grid2 .sec:first-child{ margin-top:.6rem; } }
+
+.note{ font-size:.85rem; background:var(--acbg); border:1px solid var(--acline);
+  border-radius:.6rem; padding:.6rem .8rem; }
+.note ul{ list-style:none; }
+.note li{ padding-left:1.1rem; position:relative; margin:.3rem 0; }
+.note li:before{ content:"⚠"; position:absolute; left:0; top:.05rem; font-size:.75rem; color:var(--warn); }
+.kw{ margin-top:.8rem; }
+.kw .lbl{ font-size:.75rem; color:var(--mut); font-weight:700; }
+.chip{ display:inline-block; font-size:.75rem; border-radius:.35rem; padding:.1rem .45rem; margin:.2rem .2rem 0 0;
+  background:var(--acbg); color:var(--achd); border:1px solid var(--acline); }
+.foot{ text-align:center; color:var(--mut); font-size:.75rem; margin-top:1.2rem; padding-top:.6rem;
+  border-top:1px solid var(--bd); }
+.empty{ display:none; text-align:center; color:var(--mut); font-size:.9rem; padding:2rem .5rem; }
+section[hidden]{ display:none; }
+
+/* จอเล็ก: บังคับความกว้างขั้นต่ำของตาราง ไม่งั้นตัวหนังสือจะถูกบีบเป็นเส้นเดียว */
+@media (max-width:52rem){
+  table{ min-width:38rem; }
+  table.narrow{ min-width:26rem; }
+  th:first-child,td:first-child{ min-width:5.5rem; max-width:7rem; }
+}
+@media (min-width:52rem){
+  th:first-child,td:first-child{ position:static; }
+}
+
+/* ---------- พิมพ์ลงกระดาษ: กลับไปเป็นแบบ A4 แน่น ๆ เหมือนเดิม ----------
+   ⚠️ ห้ามเขียนสีสว่างตรง ๆ ในบล็อกนี้!
+   darkFix ของ KIT UI ไล่อ่านกฎ "ในทุก @media" แล้วเอาไปสร้างกฎโหมดมืดใหม่แบบ "ไม่มี @media ครอบ"
+   สีของหน้าพิมพ์จึงรั่วมาทับหน้าจอในโหมดมืด (เคยทำให้หัวตารางกลายเป็นสีน้ำตาลขุ่น)
+   ทางแก้: ที่นี่แค่ "ทับค่าตัวแปร" ให้กลับเป็นชุดสว่าง กฎอื่นใช้ var() หมด darkFix จะข้ามให้เอง */
+@media print{
+  :root,:root[data-theme="dark"]{
+    --pg:#ffffff; --cd:#ffffff; --cd2:#fafafa;
+    --tx:#1e293b; --strong:#0f172a; --mut:#64748b; --bd:#e2e8f0;
+    --ac:#e11d48; --acbg:#fff1f3; --acline:#fecdd3; --achd:#9f1239;
+    --ac2:#0369a1; --ac2bg:#eff6ff; --ac2line:#bfdbfe; --ac2hd:#075985;
+    --hl:#fef08a; --hlink:#713f12; --warn:#b91c1c; --good:#15803d;
+    --wbg:#dbeafe; --wink:#1d4ed8; --lbg:#fef3c7; --link:#b45309; --sh:none;
+  }
+  html,body{ font-size:9.2px; }
+  .tabs,.tools,.hint,.empty,#kitui-bar{ display:none !important; }
+  .wrap{ max-width:196mm; padding:0; }
+  section[hidden]{ display:block !important; }
+  .tw{ overflow:visible; border:0; border-radius:0; }
+  table{ min-width:0 !important; font-size:8.6px; }
+  th,td{ padding:2.5px 5px; position:static !important; }
+  tr{ page-break-inside:avoid; }
+  .grid2{ grid-template-columns:1fr 1fr; }
+  .cover h1{ font-size:20px; } .sec h2{ font-size:12.5px; }
+}
 </style>
 </head>
-<body>
+<body data-subject="bio">
 <div class="wrap">
 
   <div class="cover">
@@ -56,107 +179,207 @@ mark{ background:var(--hl); padding:0 2px; border-radius:2px; }
     <div class="tag">สรุปจากสไลด์ Dr. Wipasiri Soonthornchai (93 สไลด์) · เน้นจุดออกสอบ + จุดหลอก</div>
   </div>
 
-  <!-- MASTER TABLE -->
-  <div class="sec"><span class="bar"></span><h2>ตารางหลัก: ต่อม → ฮอร์โมน → หน้าที่ <span class="en">(ออกสอบบ่อยที่สุด 🎯)</span></h2></div>
-  <table>
-    <tr><th style="width:16%">ต่อม</th><th style="width:26%">ฮอร์โมน</th><th>หน้าที่หลัก</th></tr>
-    <tr><td class="gland">Hypothalamus<br><span class="en">ไฮโพทาลามัส</span></td><td>Releasing H: <b>GnRH, TRH, CRH, GHRH</b> · Inhibiting H: <b>GHIH, PIH</b> (dopamine)<br>+ <b>สร้าง</b> ADH, Oxytocin</td><td>ควบคุมการหลั่งฮอร์โมนของ<b>ต่อมใต้สมอง</b> (สั่งการต่อมไร้ท่ออื่นผ่าน pituitary)</td></tr>
-    <tr><td class="gland">Anterior<br>pituitary<br><span class="en">ใต้สมอง<br>ส่วนหน้า</span></td><td><b>FSH, LH</b> (gonadotropic)<br><b>TSH</b><br><b>ACTH</b><br><b>GH</b> (growth hormone)<br><b>Prolactin</b> · <b>Endorphin</b></td><td>กระตุ้นอวัยวะสืบพันธุ์ (รังไข่/อัณฑะ)<br>กระตุ้น<b>ไทรอยด์</b><br>กระตุ้น<b>adrenal cortex</b><br>กระตุ้นการเจริญเติบโต (กระดูกยาว)<br>สร้างน้ำนม · ระงับปวด/เพิ่มความสุข</td></tr>
-    <tr><td class="gland">Posterior<br>pituitary<br><span class="en">ใต้สมอง<br>ส่วนหลัง</span></td><td><b>ADH</b> (vasopressin)<br><b>Oxytocin</b><br><span class="up">*เก็บ+หลั่ง ไม่ได้สร้างเอง</span></td><td>ADH: ไต<b>ดูดน้ำกลับ</b> + หลอดเลือดหดตัว<br>Oxytocin: มดลูกบีบตัว + ขับน้ำนม</td></tr>
-    <tr><td class="gland">Pineal<br><span class="en">ไพเนียล</span></td><td><b>Melatonin</b></td><td>นาฬิกาชีวภาพ (มืด→หลั่งมาก) · ยับยั้งอวัยวะสืบพันธุ์โตเร็วก่อนวัย</td></tr>
-    <tr><td class="gland">Thyroid<br><span class="en">ไทรอยด์</span></td><td><b>Thyroxine (T4)</b> = iodine 4 · <b>T3</b> = iodine 3<br><b>Calcitonin</b></td><td>คุม<b>เมแทบอลิซึม</b> + การเจริญเติบโตร่างกาย/สมอง + อัตราหัวใจ<br>Calcitonin: <span class="down">ลด Ca²⁺ ในเลือด</span> (สะสมที่กระดูก)</td></tr>
-    <tr><td class="gland">Parathyroid<br><span class="en">พาราไทรอยด์</span></td><td><b>Parathormone (PTH)</b></td><td><span class="up">เพิ่ม Ca²⁺ ในเลือด</span> (สลายจากกระดูก + ดูดกลับที่ไต/ลำไส้)</td></tr>
-    <tr><td class="gland">Thymus<br><span class="en">ไทมัส</span></td><td><b>Thymosin</b></td><td>พัฒนา <b>T-lymphocyte</b> → ระบบภูมิคุ้มกัน</td></tr>
-    <tr><td class="gland">Adrenal<br>cortex<br><span class="en">หมวกไต<br>ส่วนนอก</span></td><td><b>Cortisol</b> (glucocorticoid)<br><b>Aldosterone</b> (mineralocorticoid)</td><td>Cortisol: <span class="up">เพิ่มน้ำตาลในเลือด</span> (ตอนเครียด), มากไป→กดภูมิ<br>Aldosterone: ไตดูด <b>Na⁺+น้ำ</b> กลับ, ขับ <b>K⁺</b></td></tr>
-    <tr><td class="gland">Adrenal<br>medulla<br><span class="en">หมวกไต<br>ส่วนใน</span></td><td><b>Epinephrine</b> (adrenaline)<br><b>Norepinephrine</b></td><td><mark>สู้หรือหนี (fight-or-flight)</mark> · สลาย glycogen→<span class="up">เพิ่มน้ำตาล</span> · หัวใจเต้นเร็ว+ความดันเพิ่ม (คุมโดย sympathetic)</td></tr>
-    <tr><td class="gland">Pancreas<br><span class="en">ตับอ่อน<br>(islets of<br>Langerhans)</span></td><td><b>Insulin</b> (β-cells)<br><b>Glucagon</b> (α-cells)<br><span class="en">*คุมด้วยระดับน้ำตาล ไม่ใช่ pituitary</span></td><td>Insulin: <span class="down">ลดน้ำตาลในเลือด</span> (เก็บเป็นไกลโคเจน)<br>Glucagon: <span class="up">เพิ่มน้ำตาลในเลือด</span> (สลายไกลโคเจน) — <b>ตรงข้ามกัน</b></td></tr>
-    <tr><td class="gland">Testes<br><span class="en">อัณฑะ</span></td><td><b>Testosterone</b> (androgen)<br><span class="en">LH→Leydig cell, FSH→Sertoli cell</span></td><td>ลักษณะเพศชาย (ลูกกระเดือก, ขน, ไหล่กว้าง) + คุมการสร้างอสุจิ</td></tr>
-    <tr><td class="gland">Ovaries<br><span class="en">รังไข่</span></td><td><b>Estrogen</b> (จาก follicle)<br><b>Progesterone</b> (จาก corpus luteum)</td><td>Estrogen: ลักษณะเพศหญิง · Progesterone: เตรียม/คงการตั้งครรภ์ (รอบ ~28 วัน)</td></tr>
-  </table>
-
-  <div class="grid3" style="margin-top:8px">
-    <div>
-      <div class="sec blue"><span class="bar"></span><h2>อวัยวะอื่นที่หลั่งฮอร์โมน</h2></div>
-      <table class="blue">
-        <tr><th>อวัยวะ</th><th>ฮอร์โมน → หน้าที่</th></tr>
-        <tr><td class="gland">กระเพาะอาหาร</td><td><b>Gastrin</b> → กระตุ้นหลั่งเอนไซม์ + กรด HCl</td></tr>
-        <tr><td class="gland">ลำไส้เล็ก<br>(duodenum)</td><td><b>Secretin</b> → ตับอ่อนหลั่ง NaHCO₃<br><b>CCK</b> → ตับอ่อนหลั่งเอนไซม์ + บีบถุงน้ำดี</td></tr>
-        <tr><td class="gland">ไต (kidney)</td><td><b>Erythropoietin (EPO)</b> → กระตุ้นสร้างเม็ดเลือดแดง</td></tr>
-        <tr><td class="gland">รก (placenta)</td><td><b>hCG</b> → หลังฝังตัว ~6 วัน, กระตุ้น corpus luteum สร้าง progesterone (ใช้ตรวจตั้งครรภ์)</td></tr>
-      </table>
-    </div>
-    <div>
-      <div class="sec"><span class="bar"></span><h2>ฮอร์โมน 3 ชนิด + ตัวรับ</h2></div>
-      <table>
-        <tr><th>ชนิด</th><th>ตัวอย่าง</th><th>ละลาย</th></tr>
-        <tr><td><b>Peptide/Protein</b></td><td>FSH, LH, GH, ADH, insulin</td><td><span class="pill w">น้ำ</span></td></tr>
-        <tr><td><b>Amine</b></td><td>epinephrine <span class="pill w">น้ำ</span> · <b>thyroxine</b> <span class="pill l">ไขมัน</span></td><td>ทั้งคู่</td></tr>
-        <tr><td><b>Steroid</b> (จาก cholesterol)</td><td>estrogen, testosterone, progesterone, cortisol</td><td><span class="pill l">ไขมัน</span></td></tr>
-      </table>
-      <table style="margin-top:4px">
-        <tr><th>กลไก</th><th>ละลายน้ำ <span class="pill w">water</span></th><th>ละลายไขมัน <span class="pill l">lipid</span></th></tr>
-        <tr><td>ผ่านเยื่อหุ้มเซลล์</td><td class="up">ผ่านไม่ได้</td><td class="down">ผ่านได้</td></tr>
-        <tr><td><b>ตัวรับ (receptor) อยู่ที่</b></td><td><b>เยื่อหุ้มเซลล์</b></td><td><b>ในไซโทพลาซึม</b></td></tr>
-      </table>
-    </div>
+  <!-- แท็บเลือกหมวด -->
+  <div class="tabs" role="tablist" id="tabs">
+    <button class="tab" role="tab" data-cat="all"     aria-selected="true">📚 ทั้งหมด</button>
+    <button class="tab" role="tab" data-cat="main"    aria-selected="false">🧠 ต่อมหลัก</button>
+    <button class="tab" role="tab" data-cat="other"   aria-selected="false">🫁 อวัยวะอื่น</button>
+    <button class="tab" role="tab" data-cat="type"    aria-selected="false">🧪 ชนิด + ตัวรับ</button>
+    <button class="tab" role="tab" data-cat="disease" aria-selected="false">🤒 โรค</button>
+    <button class="tab" role="tab" data-cat="dm"      aria-selected="false">🍬 เบาหวาน</button>
+    <button class="tab" role="tab" data-cat="fb"      aria-selected="false">🔁 Feedback</button>
+    <button class="tab" role="tab" data-cat="trap"    aria-selected="false">⚠️ จุดหลอก</button>
   </div>
 
-  <!-- DISEASES (page 2 likely) -->
-  <div class="sec"><span class="bar"></span><h2>โรคจากฮอร์โมนผิดปกติ <span class="en">(ตารางสอบ 🎯)</span></h2></div>
-  <table>
-    <tr><th style="width:16%">โรค</th><th style="width:20%">ฮอร์โมน / สาเหตุ</th><th>อาการเด่น</th></tr>
-    <tr><td class="gland">Cretinism</td><td>thyroxine <span class="down">ต่ำ</span> ในเด็ก (hypothyroid / ขาด iodine)</td><td>ร่างกาย+สมองโตช้า เตี้ยแคระ แขนขาสั้น สติปัญญาบกพร่อง</td></tr>
-    <tr><td class="gland">Myxedema</td><td>thyroxine <span class="down">ต่ำ</span> ในผู้ใหญ่</td><td>เหนื่อยง่าย น้ำหนักเพิ่ม ทนหนาวไม่ได้ บวมหน้า/มือ/เท้า ผิวแห้ง ความจำเสื่อม</td></tr>
-    <tr><td class="gland">Simple goiter<br>(คอพอกธรรมดา)</td><td>thyroxine <span class="down">ต่ำ</span> — <mark>ขาด iodine</mark></td><td>สร้าง thyroxine ไม่ได้ → ไม่มีตัวยับยั้ง TSH → <b>ต่อมโต (คอโต)</b> แต่ยัง hypothyroid</td></tr>
-    <tr><td class="gland">Toxic goiter<br>(คอพอกเป็นพิษ)</td><td>thyroxine <span class="up">สูง</span> (hyperthyroid)</td><td>เมแทบอลิซึมสูง เหงื่อออกง่าย กินเท่าไรไม่อ้วน <b>ตาโปน</b></td></tr>
-    <tr><td class="gland">Cushing's<br>syndrome</td><td><b>cortisol</b> <span class="up">สูง</span> (มักจากยา corticosteroid)</td><td>น้ำตาลสูง แขนขาลีบ <b>พุงยื่น หน้ากลมคล้ายพระจันทร์</b> หนอกที่ต้นคอ ผิวบางแตกลาย</td></tr>
-    <tr><td class="gland">Gigantism / Dwarfism</td><td><b>GH</b> <span class="up">สูง</span> / <span class="down">ต่ำ</span> ใน<b>เด็ก</b></td><td>ตัวสูงใหญ่ผิดปกติ (ยักษ์) / ตัวเตี้ยแคระ</td></tr>
-    <tr><td class="gland">Acromegaly</td><td><b>GH</b> <span class="up">สูง</span> ใน<b>ผู้ใหญ่</b></td><td>กระดูกใบหน้า/มือ/เท้า/นิ้วใหญ่ ผิวหยาบหนา ข้อต่อบวม</td></tr>
-    <tr><td class="gland">Diabetes Mellitus<br>(เบาหวาน)</td><td><b>insulin</b> ผิดปกติ</td><td>น้ำตาลในเลือดสูง <b>ปัสสาวะมาก/บ่อย</b> กระหายน้ำ น้ำหนักลดเร็ว ตาพร่า ติดเชื้อง่าย</td></tr>
-  </table>
+  <div class="tools">
+    <input id="q" type="search" placeholder="🔍 พิมพ์ค้นหา เช่น insulin, ไทรอยด์, ตาโปน" autocomplete="off">
+    <span class="count" id="cnt"></span>
+  </div>
+  <div class="hint">👉 ตารางกว้างกว่าจอ <b>ลากซ้าย-ขวาได้</b> · คอลัมน์แรกตรึงไว้ให้ไม่หลงแถว</div>
 
-  <div class="grid2" style="margin-top:8px">
-    <div>
+  <!-- ═══════════ ต่อมหลัก ═══════════ -->
+  <section data-cat="main">
+    <div class="sec"><span class="bar"></span><h2>ตารางหลัก: ต่อม → ฮอร์โมน → หน้าที่ <span class="en">(ออกสอบบ่อยที่สุด 🎯)</span></h2></div>
+    <div class="tw"><table>
+      <thead><tr><th style="width:16%">ต่อม</th><th style="width:28%">ฮอร์โมน</th><th>หน้าที่หลัก</th></tr></thead>
+      <tbody>
+      <tr><td class="gland">Hypothalamus<br><span class="en">ไฮโพทาลามัส</span></td><td>Releasing H: <b>GnRH, TRH, CRH, GHRH</b> · Inhibiting H: <b>GHIH, PIH</b> (dopamine)<br>+ <b>สร้าง</b> ADH, Oxytocin</td><td>ควบคุมการหลั่งฮอร์โมนของ<b>ต่อมใต้สมอง</b> (สั่งการต่อมไร้ท่ออื่นผ่าน pituitary)</td></tr>
+      <tr><td class="gland">Anterior pituitary<br><span class="en">ใต้สมองส่วนหน้า</span></td><td><b>FSH, LH</b> (gonadotropic)<br><b>TSH</b><br><b>ACTH</b><br><b>GH</b> (growth hormone)<br><b>Prolactin</b> · <b>Endorphin</b></td><td>กระตุ้นอวัยวะสืบพันธุ์ (รังไข่/อัณฑะ)<br>กระตุ้น<b>ไทรอยด์</b><br>กระตุ้น<b>adrenal cortex</b><br>กระตุ้นการเจริญเติบโต (กระดูกยาว)<br>สร้างน้ำนม · ระงับปวด/เพิ่มความสุข</td></tr>
+      <tr><td class="gland">Posterior pituitary<br><span class="en">ใต้สมองส่วนหลัง</span></td><td><b>ADH</b> (vasopressin)<br><b>Oxytocin</b><br><span class="up">*เก็บ+หลั่ง ไม่ได้สร้างเอง</span></td><td>ADH: ไต<b>ดูดน้ำกลับ</b> + หลอดเลือดหดตัว<br>Oxytocin: มดลูกบีบตัว + ขับน้ำนม</td></tr>
+      <tr><td class="gland">Pineal<br><span class="en">ไพเนียล</span></td><td><b>Melatonin</b></td><td>นาฬิกาชีวภาพ (มืด→หลั่งมาก) · ยับยั้งอวัยวะสืบพันธุ์โตเร็วก่อนวัย</td></tr>
+      <tr><td class="gland">Thyroid<br><span class="en">ไทรอยด์</span></td><td><b>Thyroxine (T4)</b> = iodine 4 · <b>T3</b> = iodine 3<br><b>Calcitonin</b></td><td>คุม<b>เมแทบอลิซึม</b> + การเจริญเติบโตร่างกาย/สมอง + อัตราหัวใจ<br>Calcitonin: <span class="down">ลด Ca²⁺ ในเลือด</span> (สะสมที่กระดูก)</td></tr>
+      <tr><td class="gland">Parathyroid<br><span class="en">พาราไทรอยด์</span></td><td><b>Parathormone (PTH)</b></td><td><span class="up">เพิ่ม Ca²⁺ ในเลือด</span> (สลายจากกระดูก + ดูดกลับที่ไต/ลำไส้)</td></tr>
+      <tr><td class="gland">Thymus<br><span class="en">ไทมัส</span></td><td><b>Thymosin</b></td><td>พัฒนา <b>T-lymphocyte</b> → ระบบภูมิคุ้มกัน</td></tr>
+      <tr><td class="gland">Adrenal cortex<br><span class="en">หมวกไตส่วนนอก</span></td><td><b>Cortisol</b> (glucocorticoid)<br><b>Aldosterone</b> (mineralocorticoid)</td><td>Cortisol: <span class="up">เพิ่มน้ำตาลในเลือด</span> (ตอนเครียด), มากไป→กดภูมิ<br>Aldosterone: ไตดูด <b>Na⁺+น้ำ</b> กลับ, ขับ <b>K⁺</b></td></tr>
+      <tr><td class="gland">Adrenal medulla<br><span class="en">หมวกไตส่วนใน</span></td><td><b>Epinephrine</b> (adrenaline)<br><b>Norepinephrine</b></td><td><mark>สู้หรือหนี (fight-or-flight)</mark> · สลาย glycogen→<span class="up">เพิ่มน้ำตาล</span> · หัวใจเต้นเร็ว+ความดันเพิ่ม (คุมโดย sympathetic)</td></tr>
+      <tr><td class="gland">Pancreas<br><span class="en">ตับอ่อน (islets of Langerhans)</span></td><td><b>Insulin</b> (β-cells)<br><b>Glucagon</b> (α-cells)<br><span class="en">*คุมด้วยระดับน้ำตาล ไม่ใช่ pituitary</span></td><td>Insulin: <span class="down">ลดน้ำตาลในเลือด</span> (เก็บเป็นไกลโคเจน)<br>Glucagon: <span class="up">เพิ่มน้ำตาลในเลือด</span> (สลายไกลโคเจน) — <b>ตรงข้ามกัน</b></td></tr>
+      <tr><td class="gland">Testes<br><span class="en">อัณฑะ</span></td><td><b>Testosterone</b> (androgen)<br><span class="en">LH→Leydig cell, FSH→Sertoli cell</span></td><td>ลักษณะเพศชาย (ลูกกระเดือก, ขน, ไหล่กว้าง) + คุมการสร้างอสุจิ</td></tr>
+      <tr><td class="gland">Ovaries<br><span class="en">รังไข่</span></td><td><b>Estrogen</b> (จาก follicle)<br><b>Progesterone</b> (จาก corpus luteum)</td><td>Estrogen: ลักษณะเพศหญิง · Progesterone: เตรียม/คงการตั้งครรภ์ (รอบ ~28 วัน)</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- ═══════════ อวัยวะอื่น ═══════════ -->
+  <section data-cat="other">
+    <div class="sec blue"><span class="bar"></span><h2>อวัยวะอื่นที่หลั่งฮอร์โมน</h2></div>
+    <div class="tw"><table class="blue">
+      <thead><tr><th style="width:24%">อวัยวะ</th><th>ฮอร์โมน → หน้าที่</th></tr></thead>
+      <tbody>
+      <tr><td class="gland">กระเพาะอาหาร</td><td><b>Gastrin</b> → กระตุ้นหลั่งเอนไซม์ + กรด HCl</td></tr>
+      <tr><td class="gland">ลำไส้เล็ก<br><span class="en">(duodenum)</span></td><td><b>Secretin</b> → ตับอ่อนหลั่ง NaHCO₃<br><b>CCK</b> → ตับอ่อนหลั่งเอนไซม์ + บีบถุงน้ำดี</td></tr>
+      <tr><td class="gland">ไต (kidney)</td><td><b>Erythropoietin (EPO)</b> → กระตุ้นสร้างเม็ดเลือดแดง</td></tr>
+      <tr><td class="gland">รก (placenta)</td><td><b>hCG</b> → หลังฝังตัว ~6 วัน, กระตุ้น corpus luteum สร้าง progesterone (ใช้ตรวจตั้งครรภ์)</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- ═══════════ ชนิด + ตัวรับ ═══════════ -->
+  <section data-cat="type">
+    <div class="sec"><span class="bar"></span><h2>ฮอร์โมน 3 ชนิด + ตัวรับ</h2></div>
+    <div class="tw"><table>
+      <thead><tr><th style="width:28%">ชนิด</th><th>ตัวอย่าง</th><th style="width:16%">ละลาย</th></tr></thead>
+      <tbody>
+      <tr><td><b>Peptide/Protein</b></td><td>FSH, LH, GH, ADH, insulin</td><td><span class="pill w">น้ำ</span></td></tr>
+      <tr><td><b>Amine</b></td><td>epinephrine <span class="pill w">น้ำ</span> · <b>thyroxine</b> <span class="pill l">ไขมัน</span></td><td>ทั้งคู่</td></tr>
+      <tr><td><b>Steroid</b> <span class="en">(จาก cholesterol)</span></td><td>estrogen, testosterone, progesterone, cortisol</td><td><span class="pill l">ไขมัน</span></td></tr>
+      </tbody>
+    </table></div>
+    <div class="tw" style="margin-top:.5rem"><table class="narrow">
+      <thead><tr><th style="width:34%">กลไก</th><th>ละลายน้ำ <span class="pill w">water</span></th><th>ละลายไขมัน <span class="pill l">lipid</span></th></tr></thead>
+      <tbody>
+      <tr><td>ผ่านเยื่อหุ้มเซลล์</td><td class="up">ผ่านไม่ได้</td><td class="down">ผ่านได้</td></tr>
+      <tr><td><b>ตัวรับ (receptor) อยู่ที่</b></td><td><b>เยื่อหุ้มเซลล์</b></td><td><b>ในไซโทพลาซึม</b></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- ═══════════ โรค ═══════════ -->
+  <section data-cat="disease">
+    <div class="sec"><span class="bar"></span><h2>โรคจากฮอร์โมนผิดปกติ <span class="en">(ตารางสอบ 🎯)</span></h2></div>
+    <div class="tw"><table>
+      <thead><tr><th style="width:17%">โรค</th><th style="width:23%">ฮอร์โมน / สาเหตุ</th><th>อาการเด่น</th></tr></thead>
+      <tbody>
+      <tr><td class="gland">Cretinism</td><td>thyroxine <span class="down">ต่ำ</span> ในเด็ก (hypothyroid / ขาด iodine)</td><td>ร่างกาย+สมองโตช้า เตี้ยแคระ แขนขาสั้น สติปัญญาบกพร่อง</td></tr>
+      <tr><td class="gland">Myxedema</td><td>thyroxine <span class="down">ต่ำ</span> ในผู้ใหญ่</td><td>เหนื่อยง่าย น้ำหนักเพิ่ม ทนหนาวไม่ได้ บวมหน้า/มือ/เท้า ผิวแห้ง ความจำเสื่อม</td></tr>
+      <tr><td class="gland">Simple goiter<br><span class="en">(คอพอกธรรมดา)</span></td><td>thyroxine <span class="down">ต่ำ</span> — <mark>ขาด iodine</mark></td><td>สร้าง thyroxine ไม่ได้ → ไม่มีตัวยับยั้ง TSH → <b>ต่อมโต (คอโต)</b> แต่ยัง hypothyroid</td></tr>
+      <tr><td class="gland">Toxic goiter<br><span class="en">(คอพอกเป็นพิษ)</span></td><td>thyroxine <span class="up">สูง</span> (hyperthyroid)</td><td>เมแทบอลิซึมสูง เหงื่อออกง่าย กินเท่าไรไม่อ้วน <b>ตาโปน</b></td></tr>
+      <tr><td class="gland">Cushing's syndrome</td><td><b>cortisol</b> <span class="up">สูง</span> (มักจากยา corticosteroid)</td><td>น้ำตาลสูง แขนขาลีบ <b>พุงยื่น หน้ากลมคล้ายพระจันทร์</b> หนอกที่ต้นคอ ผิวบางแตกลาย</td></tr>
+      <tr><td class="gland">Gigantism / Dwarfism</td><td><b>GH</b> <span class="up">สูง</span> / <span class="down">ต่ำ</span> ใน<b>เด็ก</b></td><td>ตัวสูงใหญ่ผิดปกติ (ยักษ์) / ตัวเตี้ยแคระ</td></tr>
+      <tr><td class="gland">Acromegaly</td><td><b>GH</b> <span class="up">สูง</span> ใน<b>ผู้ใหญ่</b></td><td>กระดูกใบหน้า/มือ/เท้า/นิ้วใหญ่ ผิวหยาบหนา ข้อต่อบวม</td></tr>
+      <tr><td class="gland">Diabetes Mellitus<br><span class="en">(เบาหวาน)</span></td><td><b>insulin</b> ผิดปกติ</td><td>น้ำตาลในเลือดสูง <b>ปัสสาวะมาก/บ่อย</b> กระหายน้ำ น้ำหนักลดเร็ว ตาพร่า ติดเชื้อง่าย</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <div class="grid2">
+    <!-- ═══════════ เบาหวาน 2 ชนิด ═══════════ -->
+    <section data-cat="dm">
       <div class="sec blue"><span class="bar"></span><h2>เบาหวาน 2 ชนิด</h2></div>
-      <table class="blue">
-        <tr><th></th><th>Type I</th><th>Type II</th></tr>
+      <div class="tw"><table class="blue narrow">
+        <thead><tr><th style="width:30%"></th><th>Type I</th><th>Type II</th></tr></thead>
+        <tbody>
         <tr><td class="gland">β-cells / insulin</td><td>ผลิต insulin <b>ไม่พอ</b></td><td>ผลิตได้<b>ปกติ</b></td></tr>
         <tr><td class="gland">Receptor</td><td>ปกติ</td><td><b>ผิดปกติ</b> (ไม่ตอบสนอง)</td></tr>
         <tr><td class="gland">สัดส่วน</td><td>ส่วนน้อย</td><td><mark>~90% ของผู้ป่วย</mark></td></tr>
-      </table>
-    </div>
-    <div>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- ═══════════ Feedback ═══════════ -->
+    <section data-cat="fb">
       <div class="sec"><span class="bar"></span><h2>Feedback control</h2></div>
-      <table>
-        <tr><th>แบบ</th><th>ตัวอย่าง</th></tr>
-        <tr><td class="gland">Negative<br>(ยับยั้ง, พบบ่อยสุด)</td><td>TSH→thyroxine (มากพอ→ยับยั้ง TSH) · insulin↔glucagon · calcitonin↔PTH</td></tr>
-        <tr><td class="gland">Positive<br>(กระตุ้น)</td><td><b>Oxytocin</b> (เด็กดูดนม→หลั่งมากขึ้น) · <b>Estrogen</b> ก่อนตกไข่→<b>LH surge</b>→ตกไข่</td></tr>
-      </table>
+      <div class="tw"><table>
+        <thead><tr><th style="width:28%">แบบ</th><th>ตัวอย่าง</th></tr></thead>
+        <tbody>
+        <tr><td class="gland">Negative<br><span class="en">(ยับยั้ง, พบบ่อยสุด)</span></td><td>TSH→thyroxine (มากพอ→ยับยั้ง TSH) · insulin↔glucagon · calcitonin↔PTH</td></tr>
+        <tr><td class="gland">Positive<br><span class="en">(กระตุ้น)</span></td><td><b>Oxytocin</b> (เด็กดูดนม→หลั่งมากขึ้น) · <b>Estrogen</b> ก่อนตกไข่→<b>LH surge</b>→ตกไข่</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+  </div>
+
+  <!-- ═══════════ จุดหลอก ═══════════ -->
+  <section data-cat="trap">
+    <div class="sec"><span class="bar"></span><h2>⚠️ จุดหลอก &amp; คู่ตรงข้าม <span class="en">(อ่านก่อนเข้าห้องสอบ)</span></h2></div>
+    <div class="note">
+      <ul>
+        <li><b>Posterior pituitary ไม่ได้สร้าง</b> ADH/Oxytocin เอง — <b>hypothalamus สร้าง</b> แล้วมาเก็บ+หลั่งที่นี่</li>
+        <li><b>Insulin ลดน้ำตาล (β-cell) / Glucagon เพิ่มน้ำตาล (α-cell)</b> — อย่าสลับ</li>
+        <li><b>Calcitonin สะสม Ca ที่กระดูก (ลดในเลือด) / PTH สลาย Ca จากกระดูก (เพิ่มในเลือด)</b> = คู่ antagonistic</li>
+        <li><b>Simple goiter = hypothyroid (ขาด iodine) / Toxic goiter = hyperthyroid</b> — คอโตเหมือนกันแต่ตรงข้าม</li>
+        <li><b>T4 มี iodine 4 / T3 มี iodine 3</b> — และ T4 ถูกเปลี่ยนเป็น T3 ที่เซลล์เป้าหมาย</li>
+        <li><b>Thyroxine เป็น amine แต่ละลายในไขมัน</b> (ต่างจาก amine ตัวอื่นที่ละลายน้ำ) → receptor อยู่ในเซลล์</li>
+        <li><b>เบาหวานส่วนใหญ่ ~90% = Type II</b> (receptor เสีย ไม่ใช่ผลิต insulin ไม่ได้)</li>
+        <li><b>Adrenal cortex = mesoderm / medulla = ectoderm</b> (คนละต้นกำเนิด embryo)</li>
+      </ul>
     </div>
-  </div>
+  </section>
 
-  <!-- TRAPS -->
-  <div class="sec"><span class="bar"></span><h2>⚠️ จุดหลอก &amp; คู่ตรงข้าม <span class="en">(อ่านก่อนเข้าห้องสอบ)</span></h2></div>
-  <div class="note">
-    <ul>
-      <li><b>Posterior pituitary ไม่ได้สร้าง</b> ADH/Oxytocin เอง — <b>hypothalamus สร้าง</b> แล้วมาเก็บ+หลั่งที่นี่</li>
-      <li><b>Insulin ลดน้ำตาล (β-cell) / Glucagon เพิ่มน้ำตาล (α-cell)</b> — อย่าสลับ</li>
-      <li><b>Calcitonin สะสม Ca ที่กระดูก (ลดในเลือด) / PTH สลาย Ca จากกระดูก (เพิ่มในเลือด)</b> = คู่ antagonistic</li>
-      <li><b>Simple goiter = hypothyroid (ขาด iodine) / Toxic goiter = hyperthyroid</b> — คอโตเหมือนกันแต่ตรงข้าม</li>
-      <li><b>T4 มี iodine 4 / T3 มี iodine 3</b> — และ T4 ถูกเปลี่ยนเป็น T3 ที่เซลล์เป้าหมาย</li>
-      <li><b>Thyroxine เป็น amine แต่ละลายในไขมัน</b> (ต่างจาก amine ตัวอื่นที่ละลายน้ำ) → receptor อยู่ในเซลล์</li>
-      <li><b>เบาหวานส่วนใหญ่ ~90% = Type II</b> (receptor เสีย ไม่ใช่ผลิต insulin ไม่ได้)</li>
-      <li><b>Adrenal cortex = mesoderm / medulla = ectoderm</b> (คนละต้นกำเนิด embryo)</li>
-    </ul>
-  </div>
+  <div class="empty" id="empty">ไม่พบคำที่ค้นในหมวดนี้ — ลองกดแท็บ <b>📚 ทั้งหมด</b> หรือเปลี่ยนคำค้น</div>
 
-  <div class="kw"><b style="font-size:8px;color:var(--mut)">KEYWORDS:</b>
+  <div class="kw">
+    <span class="lbl">KEYWORDS:</span>
     <span class="chip">Endocrine gland</span><span class="chip">Target cell / receptor</span><span class="chip">Hypothalamus–Pituitary</span><span class="chip">Negative / Positive feedback</span><span class="chip">Antagonistic (Insulin/Glucagon, Calcitonin/PTH)</span><span class="chip">Water- vs Lipid-soluble</span><span class="chip">Fight-or-flight</span><span class="chip">Hypo/Hyperthyroid</span><span class="chip">islets of Langerhans</span>
   </div>
 
   <div class="foot">🧫 Cheat Table ระบบต่อมไร้ท่อ (Unit 20) · สรุปจากสไลด์ Dr. Wipasiri Soonthornchai · คู่กับสรุปเต็ม Unit20_ระบบต่อมไร้ท่อ_สรุปเต็ม.md + สื่อฝึก hormone.html</div>
 
 </div>
+
+<script>
+(function(){
+  var secs  = [].slice.call(document.querySelectorAll('section[data-cat]'));
+  var tabs  = [].slice.call(document.querySelectorAll('.tab'));
+  var q     = document.getElementById('q');
+  var cnt   = document.getElementById('cnt');
+  var empty = document.getElementById('empty');
+  var cat   = 'all';
+
+  /* เก็บข้อความของแต่ละแถวไว้ล่วงหน้า จะได้ไม่ต้องอ่าน DOM ซ้ำทุกตัวอักษรที่พิมพ์ */
+  var rows = [].slice.call(document.querySelectorAll('tbody tr')).map(function(tr){
+    return { el:tr, txt:(tr.textContent||'').toLowerCase(), sec:tr.closest('section') };
+  });
+  /* แถวใน .note ไม่ใช่ตาราง แต่ก็ควรค้นเจอด้วย */
+  var lis = [].slice.call(document.querySelectorAll('.note li')).map(function(li){
+    return { el:li, txt:(li.textContent||'').toLowerCase(), sec:li.closest('section') };
+  });
+  var items = rows.concat(lis);
+
+  function render(){
+    var kw = q.value.trim().toLowerCase();
+    var hitBySec = new Map();
+
+    items.forEach(function(it){
+      var ok = !kw || it.txt.indexOf(kw) > -1;
+      it.el.hidden = !ok;
+      if(ok) hitBySec.set(it.sec, (hitBySec.get(it.sec)||0) + 1);
+    });
+
+    var shown = 0, total = 0;
+    secs.forEach(function(s){
+      var inCat = (cat === 'all' || s.getAttribute('data-cat') === cat);
+      var hits  = hitBySec.get(s) || 0;
+      s.hidden  = !(inCat && hits > 0);
+      if(inCat){ total += hits; if(!s.hidden) shown += hits; }
+    });
+
+    empty.style.display = (total === 0) ? 'block' : 'none';
+    cnt.textContent = kw ? (shown + ' รายการ') : '';
+  }
+
+  tabs.forEach(function(t){
+    t.onclick = function(){
+      tabs.forEach(function(x){ x.setAttribute('aria-selected', x === t ? 'true' : 'false'); });
+      cat = t.getAttribute('data-cat');
+      render();
+      /* เลื่อนขึ้นให้เห็นหัวหมวดที่เพิ่งเลือก (ไม่ใช้ scrollIntoView เพราะแถบแท็บตรึงอยู่ทับ) */
+      window.scrollTo({ top: Math.max(0, document.querySelector('.tabs').offsetTop - 4), behavior:'smooth' });
+    };
+  });
+  q.oninput = render;
+  render();
+})();
+</script>
 <!--KIT-UI v2.7 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>
 /* =============================================================================

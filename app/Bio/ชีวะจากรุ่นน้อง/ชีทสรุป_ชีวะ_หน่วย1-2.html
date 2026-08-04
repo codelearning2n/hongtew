@@ -2,89 +2,195 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ชีทสรุปชีววิทยา หน่วย 1–2</title>
 <style>
+/* ============================================================================
+   ชีทสรุปชีวะ หน่วย 1–2 — เวอร์ชันอ่านบนมือถือ
+   เดิมไฟล์นี้ทำไว้สำหรับ "พิมพ์ลง A4" อย่างเดียว (กว้าง 196mm, ตัวอักษร 9.4px,
+   ไม่มี meta viewport) มือถือจึงย่อทั้งแผ่นจนอ่านไม่ออก
+
+   กติกาที่ต้องรักษาไว้ (เคยพลาดมาแล้วในไฟล์ Cheat Table ฮอร์โมน):
+   ① ห้ามตั้งชื่อตัวแปรทับ token กลางของ _kit  (--card --ink --line --ok --bg --muted)
+      เพราะ KIT UI แทรกสไตล์เข้า <head> ตอนรัน = มาทีหลัง สเปคเท่ากัน แล้วชนะเรา
+   ② ในบล็อก @media print ห้ามเขียนสีสว่างตรง ๆ — darkFix อ่านกฎในทุก @media
+      แล้วสร้างกฎโหมดมืด "แบบไม่มี @media ครอบ" สีหน้ากระดาษจะรั่วมาทับหน้าจอ
+      ที่นี่จึงทับแค่ "ค่าตัวแปร" ส่วนกฎอื่นใช้ var() หมด darkFix จะข้ามให้เอง
+   ③ ขนาดตัวอักษรเป็น rem ทั้งหมด ปุ่ม A+/A− ถึงจะทำงาน
+   ========================================================================== */
 @page { size: A4; margin: 10mm 9mm; }
-*{ box-sizing:border-box; margin:0; padding:0; }
+*{ box-sizing:border-box; margin:0; padding:0; -webkit-text-size-adjust:100%; }
 :root{
-  --u1:#0d9488; --u1bg:#ecfdf7; --u1line:#99f6e4;
-  --u2:#6d28d9; --u2bg:#f5f3ff; --u2line:#ddd6fe;
-  --ink:#1e293b; --mut:#64748b; --line:#e2e8f0;
-  --hl:#fef08a; --warn:#dc2626;
+  --u1:#0d9488; --u1bg:#ecfdf7; --u1bd:#99f6e4; --u1chip:#0f766e;
+  --u2:#6d28d9; --u2bg:#f5f3ff; --u2bd:#ddd6fe; --u2chip:#5b21b6;
+  --pg:#eef2f6; --cd:#ffffff; --soft:#f8fafc;
+  --tx:#1e293b; --strong:#0f172a; --mut:#64748b; --bd:#e2e8f0;
+  --hl:#fef08a; --hlink:#713f12; --warn:#dc2626;
+  --chipbg:#f1f5f9; --chipink:#334155;
+  --gbg:#dcfce7; --gink:#15803d; --rbg:#fee2e2; --rink:#b91c1c; --bbg:#dbeafe; --bink:#1d4ed8;
+  --cabg:#fff7ed; --cabd:#fed7aa;
+  --sh:0 1px 3px rgba(15,23,42,.07);
 }
+:root[data-theme="dark"]{
+  --u1:#2dd4bf; --u1bg:#0d2b28; --u1bd:#13635b; --u1chip:#5eead4;
+  --u2:#a78bfa; --u2bg:#241a3d; --u2bd:#4c1d95; --u2chip:#c4b5fd;
+  --pg:#0b0f16; --cd:#151b24; --soft:#1a212c;
+  --tx:#e6edf3; --strong:#f4f8fb; --mut:#95a3b3; --bd:#2c3644;
+  --hl:#4a3a06; --hlink:#fde68a; --warn:#fca5a5;
+  --chipbg:#1e2836; --chipink:#cbd5e1;
+  --gbg:#0f2e1c; --gink:#86efac; --rbg:#3a1414; --rink:#fca5a5; --bbg:#16304f; --bink:#93c5fd;
+  --cabg:#2c1a08; --cabd:#7c4a12;
+  --sh:0 1px 3px rgba(0,0,0,.5);
+}
+html{ background:var(--pg); }
 body{
-  font-family:'Leelawadee UI','Sarabun','Tahoma',sans-serif;
-  color:var(--ink); font-size:9.4px; line-height:1.45; background:#fff;
+  font-family:'Leelawadee UI','Sarabun','Noto Sans Thai','Tahoma',sans-serif;
+  color:var(--tx); font-size:1rem; line-height:1.55; background:var(--pg); padding-bottom:4rem;
 }
-.wrap{ max-width:196mm; margin:0 auto; }
+.wrap{ max-width:70rem; margin:0 auto; padding:0 .7rem; }
 
 /* header */
-.cover{ text-align:center; padding:10px 0 8px; border-bottom:3px solid var(--u1); margin-bottom:10px; }
-.cover h1{ font-size:22px; color:#0f172a; letter-spacing:.3px; }
-.cover .sub{ color:var(--mut); font-size:11px; margin-top:3px; }
-.cover .tag{ display:inline-block; font-size:9px; background:var(--u1bg); color:var(--u1);
-  border:1px solid var(--u1line); border-radius:20px; padding:2px 12px; margin-top:6px; }
+.cover{ text-align:center; padding:1rem 0 .7rem; border-bottom:3px solid var(--u1); margin-bottom:.5rem; }
+.cover h1{ font-size:1.35rem; color:var(--strong); line-height:1.3; }
+.cover .sub{ color:var(--mut); font-size:.85rem; margin-top:.25rem; }
+.cover .tag{ display:inline-block; font-size:.75rem; background:var(--u1bg); color:var(--u1);
+  border:1px solid var(--u1bd); border-radius:1.2rem; padding:.15rem .8rem; margin-top:.45rem; }
+
+/* แถบเลือกหน่วย + ช่องค้นหา */
+.toolbar{ position:sticky; top:0; z-index:30; background:var(--pg);
+  margin:0 -.7rem; padding:.5rem .7rem; border-bottom:1px solid var(--bd); }
+.tabs{ display:flex; gap:.35rem; overflow-x:auto; scrollbar-width:none; }
+.tabs::-webkit-scrollbar{ display:none; }
+.tab{ flex:0 0 auto; font:inherit; font-size:.82rem; cursor:pointer; white-space:nowrap;
+  background:var(--cd); color:var(--tx); border:1px solid var(--bd);
+  border-radius:1.2rem; padding:.32rem .7rem; box-shadow:var(--sh); }
+.tab[aria-selected="true"]{ background:var(--u1); border-color:var(--u1); color:var(--cd); font-weight:700; }
+.tab[data-unit="2"][aria-selected="true"]{ background:var(--u2); border-color:var(--u2); }
+.row2{ display:flex; gap:.4rem; align-items:center; margin-top:.4rem; }
+.row2 input{ flex:1; min-width:0; font:inherit; font-size:.85rem; color:var(--tx);
+  background:var(--cd); border:1px solid var(--bd); border-radius:.5rem; padding:.4rem .6rem; }
+.row2 input::placeholder{ color:var(--mut); }
+.cnt{ font-size:.75rem; color:var(--mut); white-space:nowrap; }
+.empty{ display:none; text-align:center; color:var(--mut); font-size:.9rem; padding:2rem .5rem; }
 
 /* unit banner */
-.ubanner{ display:flex; align-items:center; gap:8px; margin:14px 0 8px; page-break-after:avoid; }
-.ubanner .num{ font-size:15px; font-weight:700; color:#fff; width:30px; height:30px;
-  border-radius:8px; display:flex; align-items:center; justify-content:center; }
-.ubanner h2{ font-size:15px; }
-.ubanner .en{ color:var(--mut); font-weight:400; font-size:10px; }
+.ubanner{ display:flex; align-items:center; gap:.5rem; margin:1.1rem 0 .5rem; page-break-after:avoid; }
+.ubanner .num{ font-size:1rem; font-weight:700; color:#fff; width:1.9rem; height:1.9rem; flex:0 0 auto;
+  border-radius:.5rem; display:flex; align-items:center; justify-content:center; }
+.ubanner h2{ font-size:1.02rem; line-height:1.3; }
+.ubanner .en{ color:var(--mut); font-weight:400; font-size:.8rem; }
 .u1 .num{ background:var(--u1);} .u2 .num{ background:var(--u2);}
 .u1 h2{ color:var(--u1);} .u2 h2{ color:var(--u2);}
+:root[data-theme="dark"] .ubanner .num{ color:#0b0f16; }
 
-/* card grid */
-.grid{ display:grid; grid-template-columns:1fr 1fr; gap:7px; }
-.grid.three{ grid-template-columns:1fr 1fr 1fr; }
-.card{ border:1px solid var(--line); border-radius:8px; padding:7px 9px; background:#fff;
-  page-break-inside:avoid; }
-.card.span2{ grid-column:span 2; }
-.card h3{ font-size:10.5px; margin-bottom:4px; display:flex; align-items:center; gap:5px; }
+/* card grid — มือถือคอลัมน์เดียว จอกว้างค่อยแบ่ง */
+.grid{ display:grid; grid-template-columns:1fr; gap:.55rem; }
+.grid>*{ min-width:0; }                 /* ลูก grid ห้ามยืดตามตารางข้างใน ไม่งั้นล้นจอ */
+.card{ border:1px solid var(--bd); border-radius:.55rem; padding:.55rem .7rem; background:var(--cd);
+  box-shadow:var(--sh); page-break-inside:avoid; }
+.card h3{ font-size:.98rem; margin-bottom:.35rem; display:flex; align-items:center; gap:.35rem; line-height:1.35; }
 .u1 .card{ border-left:3px solid var(--u1); }
 .u2 .card{ border-left:3px solid var(--u2); }
 .u1 .card h3{ color:var(--u1);} .u2 .card h3{ color:var(--u2);}
-.card .ico{ font-size:12px; }
+.card .ico{ font-size:1.05rem; flex:0 0 auto; }
+@media (min-width:52rem){
+  .grid{ grid-template-columns:1fr 1fr; gap:.6rem; }
+  .grid.three{ grid-template-columns:1fr 1fr 1fr; }
+  .card.span2{ grid-column:span 2; }
+}
 
 ul{ list-style:none; }
-li{ padding-left:11px; position:relative; margin:1.5px 0; }
+li{ padding-left:.75rem; position:relative; margin:.18rem 0; }
 li:before{ content:"›"; position:absolute; left:0; color:var(--mut); font-weight:700; }
-.tight li{ margin:1px 0; }
+.tight li{ margin:.12rem 0; }
 
 /* keyword chips */
-.kw{ margin-top:5px; padding-top:4px; border-top:1px dashed var(--line); }
-.kw .lbl{ font-size:8px; color:var(--mut); font-weight:700; letter-spacing:.5px; }
-.chip{ display:inline-block; font-size:8.4px; border-radius:5px; padding:1px 6px; margin:2px 2px 0 0;
-  background:#f1f5f9; color:#334155; border:1px solid #e2e8f0; }
-.u1 .chip{ background:var(--u1bg); border-color:var(--u1line); color:#0f766e; }
-.u2 .chip{ background:var(--u2bg); border-color:var(--u2line); color:#5b21b6; }
-b{ color:#0f172a; } .en{ color:var(--mut); font-style:normal; }
-mark{ background:var(--hl); padding:0 2px; border-radius:2px; }
+.kw{ margin-top:.45rem; padding-top:.35rem; border-top:1px dashed var(--bd); }
+.kw .lbl{ font-size:.72rem; color:var(--mut); font-weight:700; letter-spacing:.03em; }
+.chip{ display:inline-block; font-size:.76rem; border-radius:.35rem; padding:.08rem .4rem; margin:.15rem .15rem 0 0;
+  background:var(--chipbg); color:var(--chipink); border:1px solid var(--bd); }
+.u1 .chip{ background:var(--u1bg); border-color:var(--u1bd); color:var(--u1chip); }
+.u2 .chip{ background:var(--u2bg); border-color:var(--u2bd); color:var(--u2chip); }
+b{ color:var(--strong); } .en{ color:var(--mut); font-style:normal; }
+mark{ background:var(--hl); color:var(--hlink); padding:0 .15rem; border-radius:.15rem; }
 .warn{ color:var(--warn); font-weight:700; }
+.ok{ color:var(--gink); font-weight:700; }
 
-/* mini table */
-table{ width:100%; border-collapse:collapse; font-size:8.6px; margin-top:3px; }
-th,td{ border:1px solid var(--line); padding:2px 4px; text-align:left; vertical-align:top; }
-th{ background:#f8fafc; font-size:8.4px; }
-.u1 th{ background:var(--u1bg);} .u2 th{ background:var(--u2bg);}
+/* ตาราง: อยู่ในกล่องเลื่อนซ้าย-ขวาของตัวเอง (ตัว .tw ใส่ให้ตอนรันด้วยสคริปต์ท้ายไฟล์) */
+.tw{ overflow-x:auto; -webkit-overflow-scrolling:touch; margin-top:.35rem;
+  border:1px solid var(--bd); border-radius:.4rem; }
+.tw::-webkit-scrollbar{ height:.45rem; }
+.tw::-webkit-scrollbar-thumb{ background:var(--bd); border-radius:.5rem; }
+table{ width:100%; border-collapse:separate; border-spacing:0; font-size:.8rem; }
+th,td{ border-bottom:1px solid var(--bd); border-right:1px solid var(--bd);
+  padding:.3rem .45rem; text-align:left; vertical-align:top; }
+th:last-child,td:last-child{ border-right:0; }
+tr:last-child td{ border-bottom:0; }
+th{ background:var(--soft); font-size:.78rem; color:var(--strong); }
+.u1 th{ background:var(--u1bg); color:var(--u1chip); }
+.u2 th{ background:var(--u2bg); color:var(--u2chip); }
+@media (max-width:52rem){ table{ min-width:26rem; } }
 
-.pill{ display:inline-block; font-size:8px; font-weight:700; padding:0 5px; border-radius:4px; }
-.g{ background:#dcfce7; color:#15803d;} .r{ background:#fee2e2; color:#b91c1c;} .b{ background:#dbeafe; color:#1d4ed8;}
+.pill{ display:inline-block; font-size:.74rem; font-weight:700; padding:0 .35rem; border-radius:.3rem; }
+.g{ background:var(--gbg); color:var(--gink);} .r{ background:var(--rbg); color:var(--rink);} .b{ background:var(--bbg); color:var(--bink);}
 
-.foot{ text-align:center; color:var(--mut); font-size:8px; margin-top:12px; padding-top:6px; border-top:1px solid var(--line); }
-.flow{ font-size:8.8px; }
+.callout{ font-size:.82rem; color:var(--warn); margin:-.2rem 0 .6rem;
+  padding:.35rem .6rem; background:var(--cabg); border:1px solid var(--cabd); border-radius:.4rem; }
+.foot{ text-align:center; color:var(--mut); font-size:.75rem; margin-top:1.2rem; padding-top:.6rem; border-top:1px solid var(--bd); }
+.flow{ font-size:.88rem; }
 .flow b{ color:var(--u2); }
-.eq{ font-family:'Consolas','Courier New',monospace; background:#f8fafc; border:1px solid var(--line);
-  border-radius:4px; padding:1px 4px; font-size:8.6px; }
+.eq{ font-family:'Consolas','Courier New',monospace; background:var(--soft); border:1px solid var(--bd);
+  border-radius:.3rem; padding:.05rem .3rem; font-size:.82rem; }
+section[hidden]{ display:none; }
+
+/* ---------- พิมพ์ลงกระดาษ: กลับไปเป็น A4 แน่น ๆ เหมือนต้นฉบับ ---------- */
+@media print{
+  :root,:root[data-theme="dark"]{
+    --u1:#0d9488; --u1bg:#ecfdf7; --u1bd:#99f6e4; --u1chip:#0f766e;
+    --u2:#6d28d9; --u2bg:#f5f3ff; --u2bd:#ddd6fe; --u2chip:#5b21b6;
+    --pg:#ffffff; --cd:#ffffff; --soft:#f8fafc;
+    --tx:#1e293b; --strong:#0f172a; --mut:#64748b; --bd:#e2e8f0;
+    --hl:#fef08a; --hlink:#713f12; --warn:#dc2626;
+    --chipbg:#f1f5f9; --chipink:#334155;
+    --gbg:#dcfce7; --gink:#15803d; --rbg:#fee2e2; --rink:#b91c1c; --bbg:#dbeafe; --bink:#1d4ed8;
+    --cabg:#fff7ed; --cabd:#fed7aa; --sh:none;
+  }
+  html,body{ font-size:9.4px; }
+  .toolbar,.empty,#kitui-bar{ display:none !important; }
+  .wrap{ max-width:196mm; padding:0; }
+  section[hidden]{ display:block !important; }
+  .grid{ grid-template-columns:1fr 1fr; gap:7px; }
+  .grid.three{ grid-template-columns:1fr 1fr 1fr; }
+  .card.span2{ grid-column:span 2; }
+  .card{ padding:7px 9px; } .card h3{ font-size:10.5px; }
+  .tw{ overflow:visible; border:0; border-radius:0; }
+  table{ min-width:0 !important; font-size:8.6px; }
+  th,td{ padding:2px 4px; }
+  .ubanner{ margin:14px 0 8px; } .ubanner h2{ font-size:15px; }
+  .cover h1{ font-size:22px; }
+  :root[data-theme="dark"] .ubanner .num{ color:#fff; }
+}
 </style>
 </head>
-<body>
+<body data-subject="bio">
 <div class="wrap">
 
   <div class="cover">
     <h1>🧬 ชีทสรุปชีววิทยา — หน่วย 1 &amp; 2</h1>
     <div class="sub">ธรรมชาติของสิ่งมีชีวิต · การศึกษาชีววิทยา · เคมีที่เป็นพื้นฐานของสิ่งมีชีวิต</div>
     <div class="tag">สรุปจากสไลด์ ครูสุทัศน์ บุญเลิศ · เน้น Keyword ไทย–อังกฤษ · อ่านก่อนสอบ</div>
+  </div>
+
+  <div class="toolbar">
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" data-unit="all" aria-selected="true">📚 ทั้งหมด</button>
+      <button class="tab" role="tab" data-unit="1"   aria-selected="false">1️⃣ ธรรมชาติของสิ่งมีชีวิต</button>
+      <button class="tab" role="tab" data-unit="2"   aria-selected="false">2️⃣ เคมีพื้นฐานของชีวิต</button>
+    </div>
+    <div class="row2">
+      <input id="q" type="search" placeholder="🔍 ค้นหา เช่น เอนไซม์, DNA, พันธะไฮโดรเจน" autocomplete="off">
+      <span class="cnt" id="cnt"></span>
+    </div>
   </div>
 
   <!-- ============ UNIT 1 ============ -->
@@ -118,7 +224,7 @@ th{ background:#f8fafc; font-size:8.4px; }
 
     <div class="card">
       <h3><span class="ico">🔁</span>สืบพันธุ์แบบไม่อาศัยเพศ <span class="en">(Asexual)</span></h3>
-      <div style="font-size:8.6px;color:var(--mut)">ไม่รวมเซลล์สืบพันธุ์ · แบ่งเซลล์แบบ <b>Mitosis</b> · ลูกเหมือนพ่อแม่</div>
+      <div style="font-size:.85rem;color:var(--mut)">ไม่รวมเซลล์สืบพันธุ์ · แบ่งเซลล์แบบ <b>Mitosis</b> · ลูกเหมือนพ่อแม่</div>
       <table>
         <tr><th>วิธี</th><th>ตัวอย่าง</th></tr>
         <tr><td>แบ่งตัว 2 ส่วน <span class="en">Binary fission</span></td><td>อะมีบา ยูกลีนา พารามีเซียม แบคทีเรีย</td></tr>
@@ -142,7 +248,7 @@ th{ background:#f8fafc; font-size:8.4px; }
       <ul class="tight">
         <li>ปฏิกิริยาชีวเคมีในเซลล์ มี <b>เอนไซม์</b> เป็นตัวเร่ง</li>
         <li><b>Catabolism</b> = <span class="warn">สลาย</span>สาร → ได้พลังงาน+ความร้อน</li>
-        <li><b>Anabolism</b> = <span style="color:#15803d;font-weight:700">สร้าง</span>สาร (ใช้พลังงานจาก catabolism)</li>
+        <li><b>Anabolism</b> = <span class="ok">สร้าง</span>สาร (ใช้พลังงานจาก catabolism)</li>
       </ul>
     </div>
 
@@ -284,7 +390,7 @@ th{ background:#f8fafc; font-size:8.4px; }
         <tr><td><b>เหล็ก Fe</b></td><td>องค์ประกอบ <b>ฮีโมโกลบิน</b> · ไมโอโกลบิน</td></tr>
         <tr><td><b>ไอโอดีน I</b></td><td>ส่วนของฮอร์โมน <b>ไทรอกซิน</b> (ต่อมไทรอยด์)</td></tr>
       </table>
-      <div style="font-size:7.8px;color:var(--warn);margin-top:2px">* สไลด์พิมพ์ "แคลเซียม" ซ้ำ แต่หน้าที่คือ <b>โซเดียม (Na)</b></div>
+      <div style="font-size:.78rem;color:var(--warn);margin-top:2px">* สไลด์พิมพ์ "แคลเซียม" ซ้ำ แต่หน้าที่คือ <b>โซเดียม (Na)</b></div>
     </div>
 
     <div class="card">
@@ -302,10 +408,10 @@ th{ background:#f8fafc; font-size:8.4px; }
 
     <div class="card span2">
       <h3><span class="ico">🍚</span>คาร์โบไฮเดรต <span class="en">(Carbohydrate)</span> — สารอาหารให้พลังงานหลัก</h3>
-      <div style="font-size:8.8px;margin-bottom:3px">ธาตุ <b>C : H : O = 1 : 2 : 1</b> · สูตร <span class="eq">(CH₂O)n</span> · แบ่งตามจำนวนหน่วยน้ำตาล 3 ประเภท</div>
+      <div style="font-size:.88rem;margin-bottom:3px">ธาตุ <b>C : H : O = 1 : 2 : 1</b> · สูตร <span class="eq">(CH₂O)n</span> · แบ่งตามจำนวนหน่วยน้ำตาล 3 ประเภท</div>
       <div class="grid three" style="gap:7px">
         <div>
-          <h3 style="font-size:9.5px">① น้ำตาลโมเลกุลเดี่ยว <span class="en">Monosaccharide</span></h3>
+          <h3 style="font-size:.95rem">① น้ำตาลโมเลกุลเดี่ยว <span class="en">Monosaccharide</span></h3>
           <ul class="tight">
             <li>เล็กสุด รสหวาน ละลายน้ำดี · C 3–7 อะตอม</li>
             <li><b>C5 Pentose:</b> Ribose (RNA, ATP), Deoxyribose (DNA)</li>
@@ -315,7 +421,7 @@ th{ background:#f8fafc; font-size:8.4px; }
           </ul>
         </div>
         <div>
-          <h3 style="font-size:9.5px">② น้ำตาลโมเลกุลคู่ <span class="en">Di/Oligosaccharide</span></h3>
+          <h3 style="font-size:.95rem">② น้ำตาลโมเลกุลคู่ <span class="en">Di/Oligosaccharide</span></h3>
           <ul class="tight">
             <li>2–10 โมเลกุล เชื่อมด้วย <b>พันธะไกลโคซิดิก</b> <span class="en">(Glycosidic)</span></li>
             <li>Disaccharide สูตร <span class="eq">C₁₂H₂₂O₁₁</span> · เกิดจากปฏิกิริยา <b>Dehydration</b></li>
@@ -325,7 +431,7 @@ th{ background:#f8fafc; font-size:8.4px; }
           </ul>
         </div>
         <div>
-          <h3 style="font-size:9.5px">③ น้ำตาลโมเลกุลใหญ่ <span class="en">Polysaccharide</span></h3>
+          <h3 style="font-size:.95rem">③ น้ำตาลโมเลกุลใหญ่ <span class="en">Polysaccharide</span></h3>
           <ul class="tight">
             <li>11–1,000 โมเลกุล · ของแข็ง ไม่ละลายน้ำ ไม่หวาน</li>
             <li><b>สะสม:</b> แป้ง (Starch, พืช) · <b>Glycogen</b> (สัตว์-ตับ/กล้ามเนื้อ) → หน่วยย่อย <b>α-Glucose</b></li>
@@ -351,7 +457,7 @@ th{ background:#f8fafc; font-size:8.4px; }
     <div class="num">2</div>
     <div><h2>สารชีวโมเลกุล (ต่อ) — โปรตีน · ไขมัน · กรดนิวคลีอิก <span class="en">Protein · Lipid · Nucleic acid</span></h2></div>
   </div>
-  <div style="font-size:8.4px;color:var(--warn);margin:-4px 0 8px;padding:3px 8px;background:#fff7ed;border:1px solid #fed7aa;border-radius:6px">
+  <div class="callout">
     ⚠️ <b>หน้านี้เป็นเนื้อหาเสริมจากหลักสูตร ม.6 มาตรฐาน (สสวท.)</b> เพื่อให้ครบชุดชีวโมเลกุล — สไลด์ชุดที่รุ่นน้องส่งมาลงรายละเอียดเฉพาะคาร์โบไฮเดรต (แต่พันธะทั้ง 4 อยู่ในสไลด์ทบทวนก่อนเรียนแล้ว)
   </div>
 
@@ -424,7 +530,7 @@ th{ background:#f8fafc; font-size:8.4px; }
         <tr><td><b>ไขมัน</b> <span class="warn">*</span></td><td>กลีเซอรอล + กรดไขมัน</td><td>เอสเทอร์ <span class="en">Ester</span></td><td>C H O</td><td>Sudan III</td></tr>
         <tr><td><b>กรดนิวคลีอิก</b></td><td>นิวคลีโอไทด์</td><td>ฟอสโฟไดเอสเทอร์ <span class="en">Phosphodiester</span></td><td>C H O N <b>P</b></td><td>—</td></tr>
       </table>
-      <div style="font-size:8px;color:var(--warn);margin-top:3px">
+      <div style="font-size:.8rem;color:var(--warn);margin-top:3px">
         <span class="warn">*กับดักข้อสอบ:</span> "สารชีวโมเลกุล<b>ทุกชนิด</b>เป็นพอลิเมอร์" → <b>ผิด!</b> <b>ไขมันไม่ใช่พอลิเมอร์แท้</b> (ไม่ได้เกิดจากมอนอเมอร์ซ้ำ ๆ ต่อกัน) · ส่วนอีก 3 ชนิดเป็นพอลิเมอร์ · <b>พันธะทั้ง 4 เป็นพันธะโคเวเลนต์เหมือนกันหมด</b>
       </div>
     </div>
@@ -437,6 +543,82 @@ th{ background:#f8fafc; font-size:8.4px; }
   </div>
 
 </div>
+
+<script>
+(function(){
+  var wrap = document.querySelector('.wrap');
+  var $  = function(s){ return document.querySelector(s); };
+  var $$ = function(s){ return [].slice.call(document.querySelectorAll(s)); };
+
+  /* ── ทุกตารางเข้ากล่องเลื่อนซ้าย-ขวาของตัวเอง ────────────────────────────
+     ทำตอนรันแทนการไปแก้ HTML ทีละจุด จะได้ไม่ต้องแตะเนื้อหาสรุปเลย (เสี่ยงพิมพ์ผิด) */
+  $$('table').forEach(function(t){
+    if (t.parentNode.classList.contains('tw')) return;
+    var box = document.createElement('div');
+    box.className = 'tw';
+    t.parentNode.insertBefore(box, t);
+    box.appendChild(t);
+  });
+
+  /* ── จัดกลุ่มเนื้อหาเป็น "หน่วย" ─────────────────────────────────────────
+     โครงเดิมเป็น <div.ubanner> แล้วตามด้วยกล่องเนื้อหาแบบพี่น้องกัน ไม่ได้ครอบไว้
+     ตรงนี้จึงห่อให้เป็น <section data-unit> ตอนรัน เพื่อให้ซ่อน/โชว์ทั้งชุดได้ */
+  var sections = [];
+  var cur = null;
+  [].slice.call(wrap.children).forEach(function(n){
+    if (n.classList.contains('cover') || n.classList.contains('toolbar') || n.classList.contains('foot')) return;
+    if (n.classList.contains('ubanner')){
+      cur = document.createElement('section');
+      cur.setAttribute('data-unit', n.classList.contains('u1') ? '1' : '2');
+      wrap.insertBefore(cur, n);
+      sections.push(cur);
+    }
+    if (cur) cur.appendChild(n);
+  });
+
+  var empty = document.createElement('div');
+  empty.className = 'empty';
+  empty.innerHTML = 'ไม่พบคำที่ค้นในหน่วยนี้ — ลองกด <b>📚 ทั้งหมด</b> หรือเปลี่ยนคำค้น';
+  wrap.insertBefore(empty, $('.foot'));
+
+  /* เก็บข้อความของแต่ละการ์ดไว้ล่วงหน้า จะได้ไม่ต้องอ่าน DOM ซ้ำทุกตัวอักษรที่พิมพ์ */
+  var cards = $$('.card').map(function(c){
+    return { el:c, txt:(c.textContent||'').toLowerCase(), sec:c.closest('section') };
+  });
+
+  var unit = 'all', q = $('#q'), cnt = $('#cnt');
+
+  function render(){
+    var kw = q.value.trim().toLowerCase();
+    var hit = new Map();
+    cards.forEach(function(c){
+      var ok = !kw || c.txt.indexOf(kw) > -1;
+      c.el.hidden = !ok;
+      if (ok) hit.set(c.sec, (hit.get(c.sec)||0) + 1);
+    });
+    var shown = 0;
+    sections.forEach(function(s){
+      var inUnit = (unit === 'all' || s.getAttribute('data-unit') === unit);
+      var n = hit.get(s) || 0;
+      s.hidden = !(inUnit && n > 0);
+      if (!s.hidden) shown += n;
+    });
+    empty.style.display = shown ? 'none' : 'block';
+    cnt.textContent = kw ? (shown + ' การ์ด') : '';
+  }
+
+  $$('.tab').forEach(function(t){
+    t.onclick = function(){
+      $$('.tab').forEach(function(x){ x.setAttribute('aria-selected', x === t ? 'true' : 'false'); });
+      unit = t.getAttribute('data-unit');
+      render();
+      window.scrollTo({ top: Math.max(0, $('.toolbar').offsetTop - 4), behavior:'smooth' });
+    };
+  });
+  q.oninput = render;
+  render();
+})();
+</script>
 <!--KIT-UI v2.7 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>
 /* =============================================================================
