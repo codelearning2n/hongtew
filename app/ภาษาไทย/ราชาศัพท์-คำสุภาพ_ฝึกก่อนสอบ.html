@@ -143,6 +143,8 @@ tbody tr:nth-child(even) td{ background:var(--cd2); }
 .btn{ font:inherit; font-size:.9rem; cursor:pointer; border-radius:.45rem; padding:.45rem .9rem;
   border:1px solid var(--ac); background:var(--ac); color:var(--cd); font-weight:700; }
 .btn.ghost{ background:transparent; color:var(--ac); }
+.btn[disabled]{ opacity:.45; cursor:not-allowed; }
+.hintline{ font-size:.8rem; color:var(--mut); margin-top:.35rem; }
 .btnrow{ display:flex; gap:.4rem; flex-wrap:wrap; margin-top:.6rem; }
 .fb{ margin-top:.6rem; padding:.55rem .7rem; border-radius:.45rem; font-size:.9rem; display:none; }
 .fb.ok{ display:block; background:var(--goodbg); border:1px solid var(--good); color:var(--good); }
@@ -445,10 +447,11 @@ tbody tr:nth-child(even) td{ background:var(--cd2); }
     </div>
     <div id="quizbox"></div>
     <div class="btnrow">
-      <button class="btn" id="b-next">ข้อต่อไป →</button>
+      <button class="btn" id="b-next" disabled>ข้อต่อไป →</button>
       <button class="btn ghost" id="b-end">🏁 จบ &amp; ดูผล</button>
       <button class="btn ghost" id="b-reset">ล้างสถิติ</button>
     </div>
+    <div class="hintline" id="b-hint">↑ ตอบข้อนี้ก่อน แล้วปุ่ม “ข้อต่อไป” จะกดได้</div>
     <div id="result"></div>
   </section>
 
@@ -696,7 +699,9 @@ function newQ(){
   var h='<div class="q"><div class="qhead"><span class="qtopic">'+TOPICS[cur.topic]+'</span>'+
         '<span>ข้อที่ '+(stats.n+1)+'</span></div><div class="qtext">'+cur.q+'</div>';
   if(cur.fmt==='fill'){
-    h+='<input class="tin" id="ans" placeholder="พิมพ์คำตอบแล้วกด Enter" autocomplete="off">';
+    /* ต้องมีปุ่มตรวจด้วย ไม่ใช่ Enter อย่างเดียว — คีย์บอร์ดมือถือบางรุ่นไม่มีปุ่ม Enter ให้กด */
+    h+='<input class="tin" id="ans" placeholder="พิมพ์คำตอบ" autocomplete="off">'+
+       '<div class="btnrow"><button class="btn" id="chk">ตรวจคำตอบ</button></div>';
   }else{
     var o = cur.fmt==='tf' ? ['ถูก','ผิด'] : cur.opts;
     h+='<div class="opts">'+o.map(function(x){
@@ -705,29 +710,40 @@ function newQ(){
   }
   h+='<div class="fb"></div></div>';
   $('#quizbox').innerHTML=h;
+  $('#b-next').disabled=true;            /* ต้องตอบก่อนถึงจะไปข้อต่อไปได้ */
+  $('#b-hint').style.display='';
   var inp=document.getElementById('ans');
   if(inp){ inp.focus(); inp.onkeydown=function(e){ if(e.key==='Enter') grade(inp.value); }; }
 }
 var norm=function(s){ return (s||'').replace(/[\s​·]/g,'').trim(); };
+/* ⚠️ ต้องค้นเฉพาะใน #quizbox เท่านั้น!
+   ในหน้านี้มี .fb / .opt อยู่หลายที่ (แบบฝึก "ทรง" และชุดข้อสอบ)
+   ถ้าใช้ document.querySelector('.fb') เฉย ๆ จะได้กล่องของ "แบบฝึกทรง" ซึ่งอยู่ก่อนในหน้า
+   -> เฉลยไปโผล่ในกล่องที่ซ่อนอยู่ ผู้ใช้กด Enter แล้วเหมือนไม่มีอะไรเกิดขึ้น (บั๊กที่เจ้าของแจ้ง) */
+var qbox=function(){ return document.getElementById('quizbox'); };
+var q1=function(s){ return qbox().querySelector(s); };
+var qA=function(s){ return [].slice.call(qbox().querySelectorAll(s)); };
 function grade(val){
   if(answered) return; answered=true;
   var ok;
   if(cur.fmt==='multi'){
-    var got=$$('.opt.sel').map(function(b){return b.getAttribute('data-v');});
+    var got=qA('.opt.sel').map(function(b){return b.getAttribute('data-v');});
     ok = got.length===cur.ans.length && cur.ans.every(function(a){return got.indexOf(a)>-1;});
-    $$('.opt').forEach(function(b){
+    qA('.opt').forEach(function(b){
       var v=b.getAttribute('data-v');
       b.classList.remove('sel');
       b.classList.add(cur.ans.indexOf(v)>-1?'right':(got.indexOf(v)>-1?'wrong':''));
       b.disabled=true;
     });
+    var sub=document.getElementById('sub'); if(sub) sub.disabled=true;
   }else if(cur.fmt==='fill'){
     ok = norm(val)===norm(cur.ans) ||
          cur.ans.split('·').some(function(a){return norm(a)===norm(val);});
     document.getElementById('ans').disabled=true;
+    var chk=document.getElementById('chk'); if(chk) chk.disabled=true;
   }else{
     ok = val===cur.ans;
-    $$('.opt').forEach(function(b){
+    qA('.opt').forEach(function(b){
       var v=b.getAttribute('data-v');
       if(v===cur.ans) b.classList.add('right');
       else if(v===val) b.classList.add('wrong');
@@ -739,10 +755,12 @@ function grade(val){
   var t=stats.t[cur.topic]||(stats.t[cur.topic]={n:0,ok:0});
   t.n++; if(ok) t.ok++;
   save(); paint();
-  var fb=$('.fb');
+  var fb=q1('.fb');
   fb.className='fb '+(ok?'ok':'bad');
   fb.innerHTML=(ok?'✓ ถูกต้อง!':'✗ ยังไม่ใช่ — เฉลย: <b>'+(cur.fmt==='multi'?cur.ans.join(' · '):cur.ans)+'</b>')+
     '<div class="why">'+cur.why+'</div>';
+  $('#b-next').disabled=false;
+  $('#b-hint').style.display='none';
 }
 $('#quizbox').addEventListener('click',function(e){
   var b=e.target.closest('.opt');
@@ -751,6 +769,7 @@ $('#quizbox').addEventListener('click',function(e){
     grade(b.getAttribute('data-v')); return;
   }
   if(e.target.id==='sub') grade();
+  if(e.target.id==='chk'){ var i=document.getElementById('ans'); grade(i?i.value:''); }
 });
 $('#b-next').onclick=newQ;
 $('#b-reset').onclick=function(){
