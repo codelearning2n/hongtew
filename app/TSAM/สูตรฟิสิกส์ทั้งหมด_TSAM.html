@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>สูตรฟิสิกส์ทั้งหมดที่ออกสอบ TSAM — เรียงง่ายไปยาก</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-text-size-adjust:100%}
+:root{
+  --pg:#f4f5f7;--cd:#fff;--cd2:#f7f9fb;--tx:#232830;--strong:#0f1319;--mut:#646d7a;--bd:#e0e4ea;
+  --ac:#2660c4;--acbg:#e8f0fd;--acbd:#bcd2f4;--achd:#1b4894;
+  --warn:#a8420d;--warnbg:#fdf1e9;--warnbd:#f2cdb2;
+  --g:#0d7a4f;--gbg:#e7f6ee;--y:#8a6104;--ybg:#fbf3e0;--r:#a32d55;--rbg:#fceef3;
+  --hl:#fde68a;--hlink:#5e4708;--sh:0 1px 3px rgba(15,25,45,.08);
+}
+:root[data-theme="dark"]{
+  --pg:#080a0e;--cd:#131820;--cd2:#1a212b;--tx:#e6eaf0;--strong:#f7f9fc;--mut:#98a3b3;--bd:#26303d;
+  --ac:#6da6ff;--acbg:#0c1e3a;--acbd:#1d3d6e;--achd:#a3c8ff;
+  --warn:#f9a97e;--warnbg:#2e1509;--warnbd:#5f2f14;
+  --g:#4bd6a0;--gbg:#07271b;--y:#e8c05a;--ybg:#2a2107;--r:#f291b0;--rbg:#2e0f1c;
+  --hl:#453a06;--hlink:#fde68a;--sh:0 1px 3px rgba(0,0,0,.55);
+}
+html{background:var(--pg)}
+body{font-family:'Leelawadee UI','Sarabun','Noto Sans Thai',Tahoma,sans-serif;
+  background:var(--pg);color:var(--tx);line-height:1.55;font-size:1rem;padding-bottom:3rem}
+.wrap{max-width:54rem;margin:0 auto;padding:0 .7rem}
+.cover{text-align:center;padding:.9rem 0 .6rem;border-bottom:3px solid var(--ac);margin-bottom:.7rem}
+.cover h1{font-size:1.25rem;color:var(--strong);line-height:1.3}
+.cover .sub{color:var(--mut);font-size:.82rem;margin-top:.2rem}
+.when{display:inline-block;margin-top:.4rem;font-size:.78rem;background:var(--acbg);color:var(--achd);
+  border:1px solid var(--acbd);border-radius:1.2rem;padding:.15rem .8rem}
+.tier{margin-bottom:1rem}
+.tierhd{display:flex;justify-content:space-between;align-items:baseline;gap:.5rem;
+  border-radius:.5rem;padding:.4rem .7rem;margin-bottom:.15rem}
+.tierhd h2{font-size:1.02rem}
+.tq{font-size:.78rem;white-space:nowrap}
+.t1 .tierhd{background:var(--gbg)} .t1 .tierhd h2,.t1 .tq{color:var(--g)}
+.t2 .tierhd{background:var(--ybg)} .t2 .tierhd h2,.t2 .tq{color:var(--y)}
+.t3 .tierhd{background:var(--rbg)} .t3 .tierhd h2,.t3 .tq{color:var(--r)}
+.tiernote{font-size:.8rem;color:var(--mut);padding:0 .7rem .45rem}
+.topic{background:var(--cd);border:1px solid var(--bd);border-radius:.55rem;
+  padding:.6rem .75rem;margin-bottom:.5rem;box-shadow:var(--sh);page-break-inside:avoid}
+.t1 .topic{border-left:4px solid var(--g)}
+.t2 .topic{border-left:4px solid var(--y)}
+.t3 .topic{border-left:4px solid var(--r)}
+.topic h3{font-size:.98rem;color:var(--strong);display:flex;justify-content:space-between;
+  align-items:baseline;gap:.5rem;flex-wrap:wrap;margin-bottom:.3rem}
+.topic h3 .n{font-size:.73rem;color:var(--mut);font-weight:400;white-space:nowrap}
+.lb{font-size:.8rem;color:var(--mut);margin:.45rem 0 .05rem}
+.f{background:var(--cd2);border:1px solid var(--bd);border-radius:.35rem;
+  padding:.3rem .55rem;margin:.15rem 0;overflow-x:auto;-webkit-overflow-scrolling:touch}
+math{font-family:'Cambria Math','Latin Modern Math','STIX Two Math',serif;
+  font-size:1.12rem;color:var(--strong)}
+.trap{background:var(--warnbg);border:1px solid var(--warnbd);border-radius:.4rem;
+  padding:.35rem .55rem;margin-top:.4rem;font-size:.85rem;color:var(--tx)}
+.trap b{color:var(--warn)}
+.foot{text-align:center;color:var(--mut);font-size:.75rem;margin-top:1.2rem;
+  padding-top:.6rem;border-top:1px solid var(--bd)}
+@media print{
+  :root,:root[data-theme="dark"]{
+    --pg:#fff;--cd:#fff;--cd2:#fafbfc;--tx:#232830;--strong:#0f1319;--mut:#646d7a;--bd:#e0e4ea;
+    --ac:#2660c4;--acbg:#e8f0fd;--acbd:#bcd2f4;--achd:#1b4894;--warn:#a8420d;--warnbg:#fdf1e9;
+    --warnbd:#f2cdb2;--g:#0d7a4f;--gbg:#e7f6ee;--y:#8a6104;--ybg:#fbf3e0;--r:#a32d55;--rbg:#fceef3;
+    --hl:#fde68a;--hlink:#5e4708;--sh:none}
+  #kitui-bar{display:none!important}
+  body{font-size:10.5px}
+  .topic{margin-bottom:.3rem;padding:.35rem .5rem}
+  math{font-size:1rem}
+}
+</style>
+</head>
+<body data-subject="physics">
+<div class="wrap">
+  <div class="cover">
+    <h1>📐 สูตรฟิสิกส์ทั้งหมดที่ออกสอบ</h1>
+    <div class="sub">TSAM AP-Test '70 · 16 ส่วน · 84 ข้อ · เรียงจากง่ายไปยาก</div>
+    <div class="when">เสาร์ 8 ส.ค. 69 · 08:00–11:00 · ห้อง SC1101 · ที่นั่ง 2</div>
+  </div>
+<div class="tier t1">
+<div class="tierhd"><h2>ระดับ 1 · เก็บให้ได้ก่อน — โซนเขียว</h2><span class="tq">34 ข้อ</span></div>
+<p class="tiernote">7 หัวข้อนี้คือ 40% ของข้อสอบ ทำถูกหมดผ่านสบาย ถ้าเวลาไม่พอให้อ่านแค่ส่วนนี้</p>
+<div class="topic">
+<h3>① จลนศาสตร์ <span class="n">5 ข้อ · ส่วนที่ 1</span></h3>
+<div class="lb">โจทย์ให้มา 3 ตัว เลือกสูตรที่ไม่มีตัวที่ไม่ถาม</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>v</mi><mo>&#x0003D;</mo><mi>u</mi><mo>&#x0002B;</mo><mi>a</mi><mi>t</mi></mrow></math></div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>s</mi><mo>&#x0003D;</mo><mi>u</mi><mi>t</mi><mo>&#x0002B;</mo><mstyle displaystyle="false" scriptlevel="0"><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mstyle><mi>a</mi><msup><mi>t</mi><mrow><mn>2</mn></mrow></msup></mrow></math></div>
+<div class="lb">ไม่มี t — ใช้บ่อยสุด</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msup><mi>v</mi><mrow><mn>2</mn></mrow></msup><mo>&#x0003D;</mo><msup><mi>u</mi><mrow><mn>2</mn></mrow></msup><mo>&#x0002B;</mo><mn>2</mn><mi>a</mi><mi>s</mi></mrow></math></div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>s</mi><mo>&#x0003D;</mo><mstyle displaystyle="false" scriptlevel="0"><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mstyle><mo stretchy="false">&#x00028;</mo><mi>u</mi><mo>&#x0002B;</mo><mi>v</mi><mo stretchy="false">&#x00029;</mo><mi>t</mi></mrow></math></div>
+<div class="lb">โพรเจกไทล์ แยกแกน x กับ y</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>x</mi><mo>&#x0003D;</mo><mi>u</mi><mi>cos</mi><mi>&#x003B8;</mi><mo>&#x000B7;</mo><mi>t</mi><mspace width="2em" /><mi>y</mi><mo>&#x0003D;</mo><mi>u</mi><mi>sin</mi><mi>&#x003B8;</mi><mo>&#x000B7;</mo><mi>t</mi><mo>&#x02212;</mo><mstyle displaystyle="false" scriptlevel="0"><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mstyle><mi>g</mi><msup><mi>t</mi><mrow><mn>2</mn></mrow></msup></mrow></math></div>
+<div class="lb">ระยะไกลสุด และ สูงสุด</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>R</mi><mo>&#x0003D;</mo><mfrac><mrow><msup><mi>u</mi><mrow><mn>2</mn></mrow></msup><mi>sin</mi><mn>2</mn><mi>&#x003B8;</mi></mrow><mrow><mi>g</mi></mrow></mfrac><mspace width="2em" /><mi>H</mi><mo>&#x0003D;</mo><mfrac><mrow><msup><mi>u</mi><mrow><mn>2</mn></mrow></msup><msup><mi>sin</mi><mrow><mn>2</mn></mrow></msup><mi>&#x003B8;</mi></mrow><mrow><mn>2</mn><mi>g</mi></mrow></mfrac></mrow></math></div>
+<div class="lb">วงกลม</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>v</mi><mo>&#x0003D;</mo><mfrac><mrow><mn>2</mn><mi>&#x003C0;</mi><mi>r</mi></mrow><mrow><mi>T</mi></mrow></mfrac><mspace width="2em" /><msub><mi>a</mi><mi>c</mi></msub><mo>&#x0003D;</mo><mfrac><mrow><msup><mi>v</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><mi>r</mi></mrow></mfrac><mo>&#x0003D;</mo><msup><mi>&#x003C9;</mi><mrow><mn>2</mn></mrow></msup><mi>r</mi></mrow></math></div>
+<div class="trap"><b>⚠</b> กราฟ v–t: ความชัน = ความเร่ง · พื้นที่ใต้กราฟ = การกระจัด</div>
+<div class="trap"><b>⚠</b> ตกอิสระ u = 0, a = g · ที่จุดสูงสุด v = 0 แต่ a ยังเท่ากับ g</div>
+</div>
+<div class="topic">
+<h3>② แรงและกฎนิวตัน <span class="n">5 ข้อ · ส่วนที่ 2</span></h3>
+<div class="lb">กฎข้อ 2</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mstyle displaystyle="false" scriptlevel="0"><mo>&#x02211;</mo><mi>F</mi><mo>&#x0003D;</mo><mi>m</mi><mi>a</mi></mstyle></mrow></math></div>
+<div class="lb">น้ำหนัก</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>W</mi><mo>&#x0003D;</mo><mi>m</mi><mi>g</mi></mrow></math></div>
+<div class="lb">ความเสียดทาน สถิต / จลน์</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>f</mi><mi>s</mi></msub><mo>&#x02264;</mo><msub><mi>&#x003BC;</mi><mi>s</mi></msub><mi>N</mi><mspace width="2em" /><msub><mi>f</mi><mi>k</mi></msub><mo>&#x0003D;</mo><msub><mi>&#x003BC;</mi><mi>k</mi></msub><mi>N</mi></mrow></math></div>
+<div class="lb">ลิฟต์ / ตาชั่ง</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>N</mi><mo>&#x0003D;</mo><mi>m</mi><mo stretchy="false">&#x00028;</mo><mi>g</mi><mi>&#x000B1;</mi><mi>a</mi><mo stretchy="false">&#x00029;</mo></mrow></math></div>
+<div class="lb">พื้นเอียงมุม θ</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>m</mi><mi>g</mi><mi>sin</mi><mi>&#x003B8;</mi><mo>&#x02212;</mo><mi>&#x003BC;</mi><mi>m</mi><mi>g</mi><mi>cos</mi><mi>&#x003B8;</mi><mo>&#x0003D;</mo><mi>m</mi><mi>a</mi></mrow></math></div>
+<div class="lb">แรงดึงดูดระหว่างมวล</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>F</mi><mo>&#x0003D;</mo><mfrac><mrow><mi>G</mi><msub><mi>m</mi><mn>1</mn></msub><msub><mi>m</mi><mn>2</mn></msub></mrow><mrow><msup><mi>r</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac></mrow></math></div>
+<div class="trap"><b>⚠</b> N ไม่ได้เท่ากับ mg เสมอ — บนพื้นเอียง N = mg cos θ</div>
+<div class="trap"><b>⚠</b> แรงกิริยา–ปฏิกิริยาอยู่คนละวัตถุ ห้ามเอามาหักล้างกัน</div>
+</div>
+<div class="topic">
+<h3>③ โมเมนตัม <span class="n">3 ข้อ · ส่วนที่ 3</span></h3>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>p</mi><mo>&#x0003D;</mo><mi>m</mi><mi>v</mi></mrow></math></div>
+<div class="lb">การดล</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>J</mi><mo>&#x0003D;</mo><mi>F</mi><mi>&#x00394;</mi><mi>t</mi><mo>&#x0003D;</mo><mi>&#x00394;</mi><mi>p</mi><mo>&#x0003D;</mo><mi>m</mi><mi>v</mi><mo>&#x02212;</mo><mi>m</mi><mi>u</mi></mrow></math></div>
+<div class="lb">อนุรักษ์โมเมนตัม ใช้ได้ทั้งชนยืดหยุ่นและไม่ยืดหยุ่น</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>m</mi><mn>1</mn></msub><msub><mi>u</mi><mn>1</mn></msub><mo>&#x0002B;</mo><msub><mi>m</mi><mn>2</mn></msub><msub><mi>u</mi><mn>2</mn></msub><mo>&#x0003D;</mo><msub><mi>m</mi><mn>1</mn></msub><msub><mi>v</mi><mn>1</mn></msub><mo>&#x0002B;</mo><msub><mi>m</mi><mn>2</mn></msub><msub><mi>v</mi><mn>2</mn></msub></mrow></math></div>
+<div class="lb">ชนแบบไม่ยืดหยุ่นสมบูรณ์ (ติดกันไป)</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>v</mi><mo>&#x0003D;</mo><mfrac><mrow><msub><mi>m</mi><mn>1</mn></msub><msub><mi>u</mi><mn>1</mn></msub><mo>&#x0002B;</mo><msub><mi>m</mi><mn>2</mn></msub><msub><mi>u</mi><mn>2</mn></msub></mrow><mrow><msub><mi>m</mi><mn>1</mn></msub><mo>&#x0002B;</mo><msub><mi>m</mi><mn>2</mn></msub></mrow></mfrac></mrow></math></div>
+<div class="lb">ชนแบบยืดหยุ่น เพิ่มอีกสมการ</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>u</mi><mn>1</mn></msub><mo>&#x02212;</mo><msub><mi>u</mi><mn>2</mn></msub><mo>&#x0003D;</mo><mo>&#x02212;</mo><mo stretchy="false">&#x00028;</mo><msub><mi>v</mi><mn>1</mn></msub><mo>&#x02212;</mo><msub><mi>v</mi><mn>2</mn></msub><mo stretchy="false">&#x00029;</mo></mrow></math></div>
+<div class="trap"><b>⚠</b> ชนยืดหยุ่นเท่านั้นที่อนุรักษ์พลังงานจลน์ · ชนไม่ยืดหยุ่นพลังงานหายไปเป็นความร้อน</div>
+<div class="trap"><b>⚠</b> โมเมนตัมเป็นเวกเตอร์ ทิศตรงข้ามต้องใส่เครื่องหมายลบ</div>
+</div>
+<div class="topic">
+<h3>④ งานและพลังงาน <span class="n">5 ข้อ · ส่วนที่ 4</span></h3>
+<div class="lb">งาน</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>W</mi><mo>&#x0003D;</mo><mi>F</mi><mi>s</mi><mi>cos</mi><mi>&#x003B8;</mi></mrow></math></div>
+<div class="lb">พลังงานจลน์</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>E</mi><mi>k</mi></msub><mo>&#x0003D;</mo><mstyle displaystyle="false" scriptlevel="0"><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mstyle><mi>m</mi><msup><mi>v</mi><mrow><mn>2</mn></mrow></msup></mrow></math></div>
+<div class="lb">พลังงานศักย์ โน้มถ่วง / สปริง</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>E</mi><mi>p</mi></msub><mo>&#x0003D;</mo><mi>m</mi><mi>g</mi><mi>h</mi><mspace width="2em" /><msub><mi>E</mi><mi>p</mi></msub><mo>&#x0003D;</mo><mstyle displaystyle="false" scriptlevel="0"><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mstyle><mi>k</mi><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup></mrow></math></div>
+<div class="lb">ทฤษฎีบทงาน–พลังงาน</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>W</mi><mrow><mtext>รวม</mtext></mrow></msub><mo>&#x0003D;</mo><mi>&#x00394;</mi><msub><mi>E</mi><mi>k</mi></msub></mrow></math></div>
+<div class="lb">อนุรักษ์พลังงานกล</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mstyle displaystyle="false" scriptlevel="0"><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mstyle><mi>m</mi><msup><mi>u</mi><mrow><mn>2</mn></mrow></msup><mo>&#x0002B;</mo><mi>m</mi><mi>g</mi><msub><mi>h</mi><mn>1</mn></msub><mo>&#x0003D;</mo><mstyle displaystyle="false" scriptlevel="0"><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mstyle><mi>m</mi><msup><mi>v</mi><mrow><mn>2</mn></mrow></msup><mo>&#x0002B;</mo><mi>m</mi><mi>g</mi><msub><mi>h</mi><mn>2</mn></msub></mrow></math></div>
+<div class="lb">กำลัง</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>P</mi><mo>&#x0003D;</mo><mfrac><mrow><mi>W</mi></mrow><mrow><mi>t</mi></mrow></mfrac><mo>&#x0003D;</mo><mi>F</mi><mi>v</mi></mrow></math></div>
+<div class="lb">ประสิทธิภาพ</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&#x003B7;</mi><mo>&#x0003D;</mo><mfrac><mrow><msub><mi>W</mi><mrow><mi>o</mi><mi>u</mi><mi>t</mi></mrow></msub></mrow><mrow><msub><mi>W</mi><mrow><mi>i</mi><mi>n</mi></mrow></msub></mrow></mfrac><mo>&#x000D7;</mo><mn>100</mn><mi>&#x00025;</mi></mrow></math></div>
+<div class="trap"><b>⚠</b> งานของแรงตั้งฉากกับการเคลื่อนที่ = 0 (เช่น แรงสู่ศูนย์กลาง แรงปกติ)</div>
+<div class="trap"><b>⚠</b> มีแรงเสียดทานเมื่อไหร่ พลังงานกลไม่อนุรักษ์ ต้องใช้ W = ΔE</div>
+</div>
+<div class="topic">
+<h3>⑩ แสงเชิงเรขาคณิต <span class="n">5 ข้อ · ส่วนที่ 10</span></h3>
+<div class="lb">กระจก/เลนส์</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mfrac><mrow><mn>1</mn></mrow><mrow><mi>f</mi></mrow></mfrac><mo>&#x0003D;</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mi>s</mi></mrow></mfrac><mo>&#x0002B;</mo><mfrac><mrow><mn>1</mn></mrow><mrow><msup><mi>s</mi><mi>&#x02032;</mi></msup></mrow></mfrac></mrow></math></div>
+<div class="lb">กำลังขยาย</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>m</mi><mo>&#x0003D;</mo><mfrac><mrow><msup><mi>s</mi><mi>&#x02032;</mi></msup></mrow><mrow><mi>s</mi></mrow></mfrac><mo>&#x0003D;</mo><mfrac><mrow><msup><mi>y</mi><mi>&#x02032;</mi></msup></mrow><mrow><mi>y</mi></mrow></mfrac></mrow></math></div>
+<div class="lb">กระจกทรงกลม</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>f</mi><mo>&#x0003D;</mo><mfrac><mrow><mi>R</mi></mrow><mrow><mn>2</mn></mrow></mfrac></mrow></math></div>
+<div class="lb">การหักเห สเนลล์</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>n</mi><mn>1</mn></msub><mi>sin</mi><msub><mi>&#x003B8;</mi><mn>1</mn></msub><mo>&#x0003D;</mo><msub><mi>n</mi><mn>2</mn></msub><mi>sin</mi><msub><mi>&#x003B8;</mi><mn>2</mn></msub></mrow></math></div>
+<div class="lb">ดรรชนีหักเห</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>n</mi><mo>&#x0003D;</mo><mfrac><mrow><mi>c</mi></mrow><mrow><mi>v</mi></mrow></mfrac><mo>&#x0003D;</mo><mfrac><mrow><msub><mi>&#x003BB;</mi><mrow><mtext>อากาศ</mtext></mrow></msub></mrow><mrow><msub><mi>&#x003BB;</mi><mrow><mtext>ตัวกลาง</mtext></mrow></msub></mrow></mfrac></mrow></math></div>
+<div class="lb">มุมวิกฤต (จากหนาไปบาง)</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>sin</mi><msub><mi>&#x003B8;</mi><mi>c</mi></msub><mo>&#x0003D;</mo><mfrac><mrow><msub><mi>n</mi><mn>2</mn></msub></mrow><mrow><msub><mi>n</mi><mn>1</mn></msub></mrow></mfrac></mrow></math></div>
+<div class="lb">กำลังเลนส์ หน่วยไดออปเตอร์</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>P</mi><mo>&#x0003D;</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mi>f</mi></mrow></mfrac></mrow></math></div>
+<div class="trap"><b>⚠</b> เว้า f เป็น + · นูน f เป็น − (กระจก) · เลนส์นูน f เป็น + · เลนส์เว้า f เป็น −</div>
+<div class="trap"><b>⚠</b> ภาพจริง s′ เป็น + · ภาพเสมือน s′ เป็น −</div>
+</div>
+<div class="topic">
+<h3>⑫ ไฟฟ้ากระแสตรง <span class="n">6 ข้อ · ส่วนที่ 12</span></h3>
+<div class="lb">กระแส</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>I</mi><mo>&#x0003D;</mo><mfrac><mrow><mi>Q</mi></mrow><mrow><mi>t</mi></mrow></mfrac></mrow></math></div>
+<div class="lb">กฎของโอห์ม</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>V</mi><mo>&#x0003D;</mo><mi>I</mi><mi>R</mi></mrow></math></div>
+<div class="lb">ความต้านทานของเส้นลวด</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>R</mi><mo>&#x0003D;</mo><mfrac><mrow><mi>&#x003C1;</mi><mi>L</mi></mrow><mrow><mi>A</mi></mrow></mfrac></mrow></math></div>
+<div class="lb">ต่ออนุกรม</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>R</mi><mrow><mtext>รวม</mtext></mrow></msub><mo>&#x0003D;</mo><msub><mi>R</mi><mn>1</mn></msub><mo>&#x0002B;</mo><msub><mi>R</mi><mn>2</mn></msub><mo>&#x0002B;</mo><mo>&#x022EF;</mo></mrow></math></div>
+<div class="lb">ต่อขนาน</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mfrac><mrow><mn>1</mn></mrow><mrow><msub><mi>R</mi><mrow><mtext>รวม</mtext></mrow></msub></mrow></mfrac><mo>&#x0003D;</mo><mfrac><mrow><mn>1</mn></mrow><mrow><msub><mi>R</mi><mn>1</mn></msub></mrow></mfrac><mo>&#x0002B;</mo><mfrac><mrow><mn>1</mn></mrow><mrow><msub><mi>R</mi><mn>2</mn></msub></mrow></mfrac><mo>&#x0002B;</mo><mo>&#x022EF;</mo></mrow></math></div>
+<div class="lb">กำลังไฟฟ้า</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>P</mi><mo>&#x0003D;</mo><mi>V</mi><mi>I</mi><mo>&#x0003D;</mo><msup><mi>I</mi><mrow><mn>2</mn></mrow></msup><mi>R</mi><mo>&#x0003D;</mo><mfrac><mrow><msup><mi>V</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><mi>R</mi></mrow></mfrac></mrow></math></div>
+<div class="lb">แรงเคลื่อนไฟฟ้ากับความต้านทานภายใน</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&#x02130;</mi><mo>&#x0003D;</mo><mi>I</mi><mo stretchy="false">&#x00028;</mo><mi>R</mi><mo>&#x0002B;</mo><mi>r</mi><mo stretchy="false">&#x00029;</mo></mrow></math></div>
+<div class="lb">เคิร์ชฮอฟฟ์ จุดต่อ / วงรอบ</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mstyle displaystyle="false" scriptlevel="0"><mo>&#x02211;</mo><msub><mi>I</mi><mrow><mtext>เข้า</mtext></mrow></msub><mo>&#x0003D;</mo><mo>&#x02211;</mo><msub><mi>I</mi><mrow><mtext>ออก</mtext></mrow></msub><mspace width="2em" /><mo>&#x02211;</mo><mi>&#x02130;</mi><mo>&#x0003D;</mo><mo>&#x02211;</mo><mi>I</mi><mi>R</mi></mstyle></mrow></math></div>
+<div class="lb">วีตสโตนสมดุล (กระแสกลางสะพาน = 0)</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mfrac><mrow><msub><mi>R</mi><mn>1</mn></msub></mrow><mrow><msub><mi>R</mi><mn>2</mn></msub></mrow></mfrac><mo>&#x0003D;</mo><mfrac><mrow><msub><mi>R</mi><mn>3</mn></msub></mrow><mrow><msub><mi>R</mi><mn>4</mn></msub></mrow></mfrac></mrow></math></div>
+<div class="trap"><b>⚠</b> ต่อขนานได้ค่ารวม น้อยกว่า ตัวที่น้อยที่สุดเสมอ — เช็คคำตอบด้วยข้อนี้ได้</div>
+<div class="trap"><b>⚠</b> โจทย์ถามแรงดันคร่อมตัวใด ต้องหากระแสที่ผ่านตัวนั้นก่อน ไม่ใช่กระแสรวม</div>
+</div>
+<div class="topic">
+<h3>⑨ คลื่นกล เสียง ดอปเปลอร์ บีตส์ <span class="n">5 ข้อ · ส่วนที่ 9</span></h3>
+<div class="lb">สมการคลื่น ใช้ได้ทุกคลื่น</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>v</mi><mo>&#x0003D;</mo><mi>f</mi><mi>&#x003BB;</mi><mspace width="2em" /><mi>f</mi><mo>&#x0003D;</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mi>T</mi></mrow></mfrac></mrow></math></div>
+<div class="lb">คลื่นในเส้นเชือก</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>v</mi><mo>&#x0003D;</mo><msqrt><mrow><mfrac><mrow><mi>T</mi></mrow><mrow><mi>&#x003BC;</mi></mrow></mfrac></mrow></msqrt></mrow></math></div>
+<div class="lb">อัตราเร็วเสียงในอากาศ (t เป็น °C)</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>v</mi><mo>&#x0003D;</mo><mn>331</mn><mo>&#x0002B;</mo><mn>0.6</mn><mi>t</mi></mrow></math></div>
+<div class="lb">ความเข้มเสียง</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>I</mi><mo>&#x0003D;</mo><mfrac><mrow><mi>P</mi></mrow><mrow><mn>4</mn><mi>&#x003C0;</mi><msup><mi>r</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac></mrow></math></div>
+<div class="lb">ระดับความเข้มเสียง</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&#x003B2;</mi><mo>&#x0003D;</mo><mn>10</mn><mi>log</mi><mfrac><mrow><mi>I</mi></mrow><mrow><msub><mi>I</mi><mn>0</mn></msub></mrow></mfrac><mspace width="2em" /><msub><mi>I</mi><mn>0</mn></msub><mo>&#x0003D;</mo><msup><mn>10</mn><mrow><mo>&#x02212;</mo><mn>12</mn></mrow></msup><mtext>&#x000A0;</mtext><msup><mtext>W/m</mtext><mn>2</mn></msup></mrow></math></div>
+<div class="lb">บีตส์</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>f</mi><mi>b</mi></msub><mo>&#x0003D;</mo><mo stretchy="false">&#x0007C;</mo><msub><mi>f</mi><mn>1</mn></msub><mo>&#x02212;</mo><msub><mi>f</mi><mn>2</mn></msub><mo stretchy="false">&#x0007C;</mo></mrow></math></div>
+<div class="lb">ดอปเปลอร์</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msup><mi>f</mi><mi>&#x02032;</mi></msup><mo>&#x0003D;</mo><mi>f</mi><mrow><mo stretchy="true" fence="true" form="prefix">&#x00028;</mo><mfrac><mrow><mi>v</mi><mi>&#x000B1;</mi><msub><mi>v</mi><mi>o</mi></msub></mrow><mrow><mi>v</mi><mo>&#x02213;</mo><msub><mi>v</mi><mi>s</mi></msub></mrow></mfrac><mo stretchy="true" fence="true" form="postfix">&#x00029;</mo></mrow></mrow></math></div>
+<div class="lb">เส้นเชือก 2 ปลายตรึง / ท่อปลายเปิด 2 ข้าง</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>f</mi><mi>n</mi></msub><mo>&#x0003D;</mo><mfrac><mrow><mi>n</mi><mi>v</mi></mrow><mrow><mn>2</mn><mi>L</mi></mrow></mfrac><mo>&#x0002C;</mo><mspace width="1em" /><mi>n</mi><mo>&#x0003D;</mo><mn>1</mn><mo>&#x0002C;</mo><mn>2</mn><mo>&#x0002C;</mo><mn>3</mn><mo>&#x0002C;</mo><mo>&#x02026;</mo></mrow></math></div>
+<div class="lb">ท่อปลายปิดข้างเดียว (เลขคี่เท่านั้น)</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>f</mi><mi>n</mi></msub><mo>&#x0003D;</mo><mfrac><mrow><mi>n</mi><mi>v</mi></mrow><mrow><mn>4</mn><mi>L</mi></mrow></mfrac><mo>&#x0002C;</mo><mspace width="1em" /><mi>n</mi><mo>&#x0003D;</mo><mn>1</mn><mo>&#x0002C;</mo><mn>3</mn><mo>&#x0002C;</mo><mn>5</mn><mo>&#x0002C;</mo><mo>&#x02026;</mo></mrow></math></div>
+<div class="trap"><b>⚠</b> ดอปเปลอร์: เข้าหากันความถี่เพิ่ม — จำแค่นี้แล้วเลือกเครื่องหมายให้ผลออกมาเพิ่ม</div>
+<div class="trap"><b>⚠</b> ความเข้มเพิ่ม 10 เท่า → β เพิ่ม 10 dB (ไม่ใช่ 10 เท่า)</div>
+</div>
+</div>
+<div class="tier t2">
+<div class="tierhd"><h2>ระดับ 2 · ปานกลาง — สูตรเยอะแต่ตรงไปตรงมา</h2><span class="tq">22 ข้อ</span></div>
+<p class="tiernote">แทนค่าลงสูตรได้เลยไม่ต้องคิดซับซ้อน อุณหพลศาสตร์ออก 8 ข้อ มากที่สุดในข้อสอบ</p>
+<div class="topic">
+<h3>⑤ การเคลื่อนที่แบบหมุน <span class="n">4 ข้อ · ส่วนที่ 5</span></h3>
+<div class="lb">เชื่อมเชิงเส้นกับเชิงมุม</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>s</mi><mo>&#x0003D;</mo><mi>r</mi><mi>&#x003B8;</mi><mspace width="2em" /><mi>v</mi><mo>&#x0003D;</mo><mi>r</mi><mi>&#x003C9;</mi><mspace width="2em" /><msub><mi>a</mi><mi>t</mi></msub><mo>&#x0003D;</mo><mi>r</mi><mi>&#x003B1;</mi></mrow></math></div>
+<div class="lb">สูตรหมุน ล้อกับสูตรเส้นตรง</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&#x003C9;</mi><mo>&#x0003D;</mo><msub><mi>&#x003C9;</mi><mn>0</mn></msub><mo>&#x0002B;</mo><mi>&#x003B1;</mi><mi>t</mi><mspace width="2em" /><mi>&#x003B8;</mi><mo>&#x0003D;</mo><msub><mi>&#x003C9;</mi><mn>0</mn></msub><mi>t</mi><mo>&#x0002B;</mo><mstyle displaystyle="false" scriptlevel="0"><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mstyle><mi>&#x003B1;</mi><msup><mi>t</mi><mrow><mn>2</mn></mrow></msup></mrow></math></div>
+<div class="lb">ทอร์ก</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&#x003C4;</mi><mo>&#x0003D;</mo><mi>r</mi><mi>F</mi><mi>sin</mi><mi>&#x003B8;</mi><mo>&#x0003D;</mo><mi>I</mi><mi>&#x003B1;</mi></mrow></math></div>
+<div class="lb">โมเมนต์ความเฉื่อย</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>I</mi><mrow><mtext>จุดมวล</mtext></mrow></msub><mo>&#x0003D;</mo><mi>m</mi><msup><mi>r</mi><mrow><mn>2</mn></mrow></msup><mspace width="1em" /><msub><mi>I</mi><mrow><mtext>ห่วง</mtext></mrow></msub><mo>&#x0003D;</mo><mi>M</mi><msup><mi>R</mi><mrow><mn>2</mn></mrow></msup><mspace width="1em" /><msub><mi>I</mi><mrow><mtext>ทรงกระบอกตัน</mtext></mrow></msub><mo>&#x0003D;</mo><mstyle displaystyle="false" scriptlevel="0"><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mstyle><mi>M</mi><msup><mi>R</mi><mrow><mn>2</mn></mrow></msup></mrow></math></div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>I</mi><mrow><mtext>ทรงกลมตัน</mtext></mrow></msub><mo>&#x0003D;</mo><mstyle displaystyle="false" scriptlevel="0"><mfrac><mrow><mn>2</mn></mrow><mrow><mn>5</mn></mrow></mfrac></mstyle><mi>M</mi><msup><mi>R</mi><mrow><mn>2</mn></mrow></msup><mspace width="1em" /><msub><mi>I</mi><mrow><mtext>แท่งยาว&#x000A0;แกนกลาง</mtext></mrow></msub><mo>&#x0003D;</mo><mstyle displaystyle="false" scriptlevel="0"><mfrac><mrow><mn>1</mn></mrow><mrow><mn>12</mn></mrow></mfrac></mstyle><mi>M</mi><msup><mi>L</mi><mrow><mn>2</mn></mrow></msup></mrow></math></div>
+<div class="lb">โมเมนตัมเชิงมุม อนุรักษ์เมื่อไม่มีทอร์กภายนอก</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>L</mi><mo>&#x0003D;</mo><mi>I</mi><mi>&#x003C9;</mi></mrow></math></div>
+<div class="lb">พลังงานจลน์ของการกลิ้ง</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>E</mi><mi>k</mi></msub><mo>&#x0003D;</mo><mstyle displaystyle="false" scriptlevel="0"><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mstyle><mi>m</mi><msup><mi>v</mi><mrow><mn>2</mn></mrow></msup><mo>&#x0002B;</mo><mstyle displaystyle="false" scriptlevel="0"><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mstyle><mi>I</mi><msup><mi>&#x003C9;</mi><mrow><mn>2</mn></mrow></msup></mrow></math></div>
+<div class="lb">สมดุล</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mstyle displaystyle="false" scriptlevel="0"><mo>&#x02211;</mo><mi>F</mi><mo>&#x0003D;</mo><mn>0</mn><mspace width="2em" /><mo>&#x02211;</mo><mi>&#x003C4;</mi><mo>&#x0003D;</mo><mn>0</mn></mstyle></mrow></math></div>
+<div class="trap"><b>⚠</b> นักสเก็ตหุบแขน → I ลด → ω เพิ่ม (L คงที่) แต่พลังงานจลน์ เพิ่ม เพราะออกแรงดึงแขน</div>
+<div class="trap"><b>⚠</b> ทรงกลมกลิ้งลงพื้นเอียงถึงพื้นช้ากว่าไถลลื่น เพราะพลังงานส่วนหนึ่งไปเป็นการหมุน</div>
+</div>
+<div class="topic">
+<h3>⑥ การสั่น SHM <span class="n">5 ข้อ · ส่วนที่ 6</span></h3>
+<div class="lb">การกระจัด</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>x</mi><mo>&#x0003D;</mo><mi>A</mi><mi>cos</mi><mo stretchy="false">&#x00028;</mo><mi>&#x003C9;</mi><mi>t</mi><mo>&#x0002B;</mo><mi>&#x003D5;</mi><mo stretchy="false">&#x00029;</mo></mrow></math></div>
+<div class="lb">ความเร็ว</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>v</mi><mo>&#x0003D;</mo><mo>&#x02212;</mo><mi>A</mi><mi>&#x003C9;</mi><mi>sin</mi><mo stretchy="false">&#x00028;</mo><mi>&#x003C9;</mi><mi>t</mi><mo>&#x0002B;</mo><mi>&#x003D5;</mi><mo stretchy="false">&#x00029;</mo><mspace width="2em" /><msub><mi>v</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub><mo>&#x0003D;</mo><mi>A</mi><mi>&#x003C9;</mi></mrow></math></div>
+<div class="lb">ความเร่ง ทิศตรงข้ามกับ x เสมอ</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>a</mi><mo>&#x0003D;</mo><mo>&#x02212;</mo><msup><mi>&#x003C9;</mi><mrow><mn>2</mn></mrow></msup><mi>x</mi><mspace width="2em" /><msub><mi>a</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub><mo>&#x0003D;</mo><mi>A</mi><msup><mi>&#x003C9;</mi><mrow><mn>2</mn></mrow></msup></mrow></math></div>
+<div class="lb">ความเร็วที่ตำแหน่ง x ใด ๆ</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>v</mi><mo>&#x0003D;</mo><mi>&#x003C9;</mi><msqrt><mrow><msup><mi>A</mi><mrow><mn>2</mn></mrow></msup><mo>&#x02212;</mo><msup><mi>x</mi><mrow><mn>2</mn></mrow></msup></mrow></msqrt></mrow></math></div>
+<div class="lb">มวลติดสปริง</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>T</mi><mo>&#x0003D;</mo><mn>2</mn><mi>&#x003C0;</mi><msqrt><mrow><mfrac><mrow><mi>m</mi></mrow><mrow><mi>k</mi></mrow></mfrac></mrow></msqrt></mrow></math></div>
+<div class="lb">ลูกตุ้มอย่างง่าย — ไม่ขึ้นกับมวล</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>T</mi><mo>&#x0003D;</mo><mn>2</mn><mi>&#x003C0;</mi><msqrt><mrow><mfrac><mrow><mi>L</mi></mrow><mrow><mi>g</mi></mrow></mfrac></mrow></msqrt></mrow></math></div>
+<div class="lb">พลังงานรวม</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>E</mi><mo>&#x0003D;</mo><mstyle displaystyle="false" scriptlevel="0"><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mstyle><mi>k</mi><msup><mi>A</mi><mrow><mn>2</mn></mrow></msup><mo>&#x0003D;</mo><mstyle displaystyle="false" scriptlevel="0"><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mstyle><mi>m</mi><msubsup><mi>v</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow><mrow><mn>2</mn></mrow></msubsup></mrow></math></div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&#x003C9;</mi><mo>&#x0003D;</mo><mn>2</mn><mi>&#x003C0;</mi><mi>f</mi><mo>&#x0003D;</mo><mfrac><mrow><mn>2</mn><mi>&#x003C0;</mi></mrow><mrow><mi>T</mi></mrow></mfrac></mrow></math></div>
+<div class="trap"><b>⚠</b> ที่จุดสมดุล v สูงสุด แต่ a = 0 · ที่จุดปลาย v = 0 แต่ a สูงสุด</div>
+<div class="trap"><b>⚠</b> คาบของลูกตุ้มไม่ขึ้นกับมวลและแอมพลิจูด (ถ้ามุมเล็ก) — โจทย์ชอบหลอกด้วยการเปลี่ยนมวล</div>
+</div>
+<div class="topic">
+<h3>⑦ ของไหลและความยืดหยุ่น <span class="n">5 ข้อ · ส่วนที่ 7</span></h3>
+<div class="lb">ความหนาแน่น</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&#x003C1;</mi><mo>&#x0003D;</mo><mfrac><mrow><mi>m</mi></mrow><mrow><mi>V</mi></mrow></mfrac></mrow></math></div>
+<div class="lb">ความดันในของเหลว ลึก h</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>P</mi><mo>&#x0003D;</mo><mi>&#x003C1;</mi><mi>g</mi><mi>h</mi><mspace width="2em" /><msub><mi>P</mi><mrow><mtext>สัมบูรณ์</mtext></mrow></msub><mo>&#x0003D;</mo><msub><mi>P</mi><mn>0</mn></msub><mo>&#x0002B;</mo><mi>&#x003C1;</mi><mi>g</mi><mi>h</mi></mrow></math></div>
+<div class="lb">ปาสคาล</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mfrac><mrow><msub><mi>F</mi><mn>1</mn></msub></mrow><mrow><msub><mi>A</mi><mn>1</mn></msub></mrow></mfrac><mo>&#x0003D;</mo><mfrac><mrow><msub><mi>F</mi><mn>2</mn></msub></mrow><mrow><msub><mi>A</mi><mn>2</mn></msub></mrow></mfrac></mrow></math></div>
+<div class="lb">แรงลอยตัว อาร์คิมิดีส</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>F</mi><mi>B</mi></msub><mo>&#x0003D;</mo><msub><mi>&#x003C1;</mi><mrow><mtext>ของเหลว</mtext></mrow></msub><mspace width="0.167em" /><mi>g</mi><mspace width="0.167em" /><msub><mi>V</mi><mrow><mtext>จม</mtext></mrow></msub></mrow></math></div>
+<div class="lb">วัตถุลอยนิ่ง</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mfrac><mrow><msub><mi>&#x003C1;</mi><mrow><mtext>วัตถุ</mtext></mrow></msub></mrow><mrow><msub><mi>&#x003C1;</mi><mrow><mtext>ของเหลว</mtext></mrow></msub></mrow></mfrac><mo>&#x0003D;</mo><mfrac><mrow><msub><mi>V</mi><mrow><mtext>จม</mtext></mrow></msub></mrow><mrow><msub><mi>V</mi><mrow><mtext>ทั้งก้อน</mtext></mrow></msub></mrow></mfrac></mrow></math></div>
+<div class="lb">สมการความต่อเนื่อง</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>A</mi><mn>1</mn></msub><msub><mi>v</mi><mn>1</mn></msub><mo>&#x0003D;</mo><msub><mi>A</mi><mn>2</mn></msub><msub><mi>v</mi><mn>2</mn></msub><mo>&#x0003D;</mo><mi>Q</mi></mrow></math></div>
+<div class="lb">แบร์นูลลี</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>P</mi><mo>&#x0002B;</mo><mstyle displaystyle="false" scriptlevel="0"><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mstyle><mi>&#x003C1;</mi><msup><mi>v</mi><mrow><mn>2</mn></mrow></msup><mo>&#x0002B;</mo><mi>&#x003C1;</mi><mi>g</mi><mi>h</mi><mo>&#x0003D;</mo><mtext>ค่าคงที่</mtext></mrow></math></div>
+<div class="lb">ทอร์ริเชลลี น้ำพุ่งจากรูลึก h</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>v</mi><mo>&#x0003D;</mo><msqrt><mrow><mn>2</mn><mi>g</mi><mi>h</mi></mrow></msqrt></mrow></math></div>
+<div class="lb">แรงตึงผิว · สโตกส์</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>F</mi><mo>&#x0003D;</mo><mi>&#x003B3;</mi><mi>L</mi><mspace width="2em" /><mi>F</mi><mo>&#x0003D;</mo><mn>6</mn><mi>&#x003C0;</mi><mi>&#x003B7;</mi><mi>r</mi><mi>v</mi></mrow></math></div>
+<div class="lb">ความเค้น · ความเครียด · มอดูลัสของยัง</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&#x003C3;</mi><mo>&#x0003D;</mo><mfrac><mrow><mi>F</mi></mrow><mrow><mi>A</mi></mrow></mfrac><mspace width="2em" /><mi>&#x003B5;</mi><mo>&#x0003D;</mo><mfrac><mrow><mi>&#x00394;</mi><mi>L</mi></mrow><mrow><msub><mi>L</mi><mn>0</mn></msub></mrow></mfrac><mspace width="2em" /><mi>Y</mi><mo>&#x0003D;</mo><mfrac><mrow><mi>&#x003C3;</mi></mrow><mrow><mi>&#x003B5;</mi></mrow></mfrac><mo>&#x0003D;</mo><mfrac><mrow><mi>F</mi><msub><mi>L</mi><mn>0</mn></msub></mrow><mrow><mi>A</mi><mi>&#x00394;</mi><mi>L</mi></mrow></mfrac></mrow></math></div>
+<div class="trap"><b>⚠</b> ท่อแคบลง → v เพิ่ม → P ลดลง (ไม่ใช่เพิ่ม)</div>
+<div class="trap"><b>⚠</b> ρ ในแรงลอยตัวคือของของเหลว ไม่ใช่ของวัตถุ · V คือส่วนที่จมเท่านั้น</div>
+<div class="trap"><b>⚠</b> A ในสูตรความเค้นคือพื้นที่หน้าตัด โจทย์ให้เส้นผ่านศูนย์กลางมา ต้องหาร 2 ก่อน</div>
+</div>
+<div class="topic">
+<h3>⑧ อุณหพลศาสตร์ <span class="n">8 ข้อ · ส่วนที่ 8</span></h3>
+<div class="lb">ความร้อนเปลี่ยนอุณหภูมิ / เปลี่ยนสถานะ</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>Q</mi><mo>&#x0003D;</mo><mi>m</mi><mi>c</mi><mi>&#x00394;</mi><mi>T</mi><mspace width="2em" /><mi>Q</mi><mo>&#x0003D;</mo><mi>m</mi><mi>L</mi></mrow></math></div>
+<div class="lb">สมดุลความร้อน</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>Q</mi><mrow><mtext>คาย</mtext></mrow></msub><mo>&#x0003D;</mo><msub><mi>Q</mi><mrow><mtext>รับ</mtext></mrow></msub></mrow></math></div>
+<div class="lb">การนำความร้อน</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mfrac><mrow><mi>Q</mi></mrow><mrow><mi>t</mi></mrow></mfrac><mo>&#x0003D;</mo><mfrac><mrow><mi>k</mi><mi>A</mi><mi>&#x00394;</mi><mi>T</mi></mrow><mrow><mi>L</mi></mrow></mfrac></mrow></math></div>
+<div class="lb">การแผ่รังสี สเตฟาน–โบลต์ซมันน์</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mfrac><mrow><mi>Q</mi></mrow><mrow><mi>t</mi></mrow></mfrac><mo>&#x0003D;</mo><mi>e</mi><mi>&#x003C3;</mi><mi>A</mi><msup><mi>T</mi><mrow><mn>4</mn></mrow></msup></mrow></math></div>
+<div class="lb">กฎแก๊สรวม</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mfrac><mrow><msub><mi>P</mi><mn>1</mn></msub><msub><mi>V</mi><mn>1</mn></msub></mrow><mrow><msub><mi>T</mi><mn>1</mn></msub></mrow></mfrac><mo>&#x0003D;</mo><mfrac><mrow><msub><mi>P</mi><mn>2</mn></msub><msub><mi>V</mi><mn>2</mn></msub></mrow><mrow><msub><mi>T</mi><mn>2</mn></msub></mrow></mfrac></mrow></math></div>
+<div class="lb">แก๊สอุดมคติ</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>P</mi><mi>V</mi><mo>&#x0003D;</mo><mi>n</mi><mi>R</mi><mi>T</mi><mo>&#x0003D;</mo><mi>N</mi><mi>k</mi><mi>T</mi><mspace width="2em" /><mi>n</mi><mo>&#x0003D;</mo><mfrac><mrow><mi>m</mi></mrow><mrow><mi>M</mi></mrow></mfrac></mrow></math></div>
+<div class="lb">ทฤษฎีจลน์</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>P</mi><mi>V</mi><mo>&#x0003D;</mo><mstyle displaystyle="false" scriptlevel="0"><mfrac><mrow><mn>1</mn></mrow><mrow><mn>3</mn></mrow></mfrac></mstyle><mi>N</mi><mi>m</mi><msup><mover><mrow><mi>v</mi></mrow><mo stretchy="true">&#x000AF;</mo></mover><mrow><mn>2</mn></mrow></msup><mspace width="2em" /><mi>P</mi><mo>&#x0003D;</mo><mstyle displaystyle="false" scriptlevel="0"><mfrac><mrow><mn>1</mn></mrow><mrow><mn>3</mn></mrow></mfrac></mstyle><mi>&#x003C1;</mi><msup><mover><mrow><mi>v</mi></mrow><mo stretchy="true">&#x000AF;</mo></mover><mrow><mn>2</mn></mrow></msup></mrow></math></div>
+<div class="lb">อัตราเร็วราก-กำลังสอง-เฉลี่ย</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>v</mi><mrow><mi>r</mi><mi>m</mi><mi>s</mi></mrow></msub><mo>&#x0003D;</mo><msqrt><mrow><mfrac><mrow><mn>3</mn><mi>R</mi><mi>T</mi></mrow><mrow><mi>M</mi></mrow></mfrac></mrow></msqrt><mo>&#x0003D;</mo><msqrt><mrow><mfrac><mrow><mn>3</mn><mi>k</mi><mi>T</mi></mrow><mrow><mi>m</mi></mrow></mfrac></mrow></msqrt><mo>&#x0003D;</mo><msqrt><mrow><mfrac><mrow><mn>3</mn><mi>P</mi></mrow><mrow><mi>&#x003C1;</mi></mrow></mfrac></mrow></msqrt></mrow></math></div>
+<div class="lb">พลังงานจลน์เฉลี่ยต่อโมเลกุล · พลังงานภายใน (แก๊สอะตอมเดี่ยว)</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mover><mrow><mi>E</mi></mrow><mo stretchy="true">&#x000AF;</mo></mover><mi>k</mi></msub><mo>&#x0003D;</mo><mstyle displaystyle="false" scriptlevel="0"><mfrac><mrow><mn>3</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mstyle><mi>k</mi><mi>T</mi><mspace width="2em" /><mi>U</mi><mo>&#x0003D;</mo><mstyle displaystyle="false" scriptlevel="0"><mfrac><mrow><mn>3</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mstyle><mi>n</mi><mi>R</mi><mi>T</mi></mrow></math></div>
+<div class="lb">กฎข้อที่หนึ่ง</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&#x00394;</mi><mi>U</mi><mo>&#x0003D;</mo><mi>Q</mi><mo>&#x02212;</mo><mi>W</mi></mrow></math></div>
+<div class="lb">งานที่ความดันคงที่ / อุณหภูมิคงที่</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>W</mi><mo>&#x0003D;</mo><mi>P</mi><mi>&#x00394;</mi><mi>V</mi><mspace width="2em" /><mi>W</mi><mo>&#x0003D;</mo><mi>n</mi><mi>R</mi><mi>T</mi><mi>ln</mi><mfrac><mrow><msub><mi>V</mi><mn>2</mn></msub></mrow><mrow><msub><mi>V</mi><mn>1</mn></msub></mrow></mfrac></mrow></math></div>
+<div class="lb">ประสิทธิภาพเครื่องยนต์ความร้อน · คาร์โนต์</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&#x003B7;</mi><mo>&#x0003D;</mo><mn>1</mn><mo>&#x02212;</mo><mfrac><mrow><msub><mi>Q</mi><mi>c</mi></msub></mrow><mrow><msub><mi>Q</mi><mi>h</mi></msub></mrow></mfrac><mspace width="2em" /><msub><mi>&#x003B7;</mi><mrow><mtext>carnot</mtext></mrow></msub><mo>&#x0003D;</mo><mn>1</mn><mo>&#x02212;</mo><mfrac><mrow><msub><mi>T</mi><mi>c</mi></msub></mrow><mrow><msub><mi>T</mi><mi>h</mi></msub></mrow></mfrac></mrow></math></div>
+<div class="trap"><b>⚠</b> T ต้องเป็นเคลวินเสมอ (K = °C + 273) — ข้อที่พลาดบ่อยที่สุดของบทนี้</div>
+<div class="trap"><b>⚠</b> ช่วงเปลี่ยนสถานะอุณหภูมิไม่เปลี่ยน ใช้ Q = mL เท่านั้น</div>
+<div class="trap"><b>⚠</b> อุณหภูมิเพิ่ม 2 เท่า → Ek เพิ่ม 2 เท่า แต่ v_rms เพิ่มแค่ √2 เท่า</div>
+<div class="trap"><b>⚠</b> อะเดียแบติก Q = 0 → ΔU = −W · ไอโซเทอร์มอล ΔU = 0 → Q = W</div>
+</div>
+</div>
+<div class="tier t3">
+<div class="tierhd"><h2>ระดับ 3 · ยาก — ต้องเลือกสูตรให้ถูกก่อน</h2><span class="tq">28 ข้อ</span></div>
+<p class="tiernote">ส่วนนี้ 1 ใน 3 ของข้อสอบ ถ้าอ่านไม่ทันให้จำแค่สูตรหลักบรรทัดแรกของแต่ละหัวข้อ</p>
+<div class="topic">
+<h3>⑪ ไฟฟ้าสถิต <span class="n">6 ข้อ · ส่วนที่ 11</span></h3>
+<div class="lb">คูลอมบ์</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>F</mi><mo>&#x0003D;</mo><mfrac><mrow><mi>k</mi><msub><mi>q</mi><mn>1</mn></msub><msub><mi>q</mi><mn>2</mn></msub></mrow><mrow><msup><mi>r</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mspace width="2em" /><mi>k</mi><mo>&#x0003D;</mo><mn>9</mn><mo>&#x000D7;</mo><msup><mn>10</mn><mrow><mn>9</mn></mrow></msup></mrow></math></div>
+<div class="lb">สนามไฟฟ้า</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>E</mi><mo>&#x0003D;</mo><mfrac><mrow><mi>F</mi></mrow><mrow><mi>q</mi></mrow></mfrac><mo>&#x0003D;</mo><mfrac><mrow><mi>k</mi><mi>Q</mi></mrow><mrow><msup><mi>r</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac></mrow></math></div>
+<div class="lb">สนามสม่ำเสมอระหว่างแผ่นคู่ขนาน</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>E</mi><mo>&#x0003D;</mo><mfrac><mrow><mi>V</mi></mrow><mrow><mi>d</mi></mrow></mfrac></mrow></math></div>
+<div class="lb">ศักย์ไฟฟ้า (สเกลาร์ บวกกันตรง ๆ ได้)</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>V</mi><mo>&#x0003D;</mo><mfrac><mrow><mi>k</mi><mi>Q</mi></mrow><mrow><mi>r</mi></mrow></mfrac></mrow></math></div>
+<div class="lb">งานในการย้ายประจุ</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>W</mi><mo>&#x0003D;</mo><mi>q</mi><mi>&#x00394;</mi><mi>V</mi></mrow></math></div>
+<div class="lb">ฟลักซ์ · กฎของเกาส์</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&#x003A6;</mi><mo>&#x0003D;</mo><mi>E</mi><mi>A</mi><mi>cos</mi><mi>&#x003B8;</mi><mspace width="2em" /><mi>&#x003A6;</mi><mo>&#x0003D;</mo><mfrac><mrow><msub><mi>Q</mi><mrow><mtext>ใน</mtext></mrow></msub></mrow><mrow><msub><mi>&#x003B5;</mi><mn>0</mn></msub></mrow></mfrac></mrow></math></div>
+<div class="lb">ตัวเก็บประจุ</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>C</mi><mo>&#x0003D;</mo><mfrac><mrow><mi>Q</mi></mrow><mrow><mi>V</mi></mrow></mfrac><mspace width="2em" /><mi>C</mi><mo>&#x0003D;</mo><mfrac><mrow><msub><mi>&#x003B5;</mi><mn>0</mn></msub><mi>A</mi></mrow><mrow><mi>d</mi></mrow></mfrac></mrow></math></div>
+<div class="lb">ต่ออนุกรม / ขนาน — สลับกับตัวต้านทาน</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mfrac><mrow><mn>1</mn></mrow><mrow><mi>C</mi></mrow></mfrac><mo>&#x0003D;</mo><mo>&#x02211;</mo><mfrac><mrow><mn>1</mn></mrow><mrow><msub><mi>C</mi><mi>i</mi></msub></mrow></mfrac><mspace width="2em" /><mi>C</mi><mo>&#x0003D;</mo><mo>&#x02211;</mo><msub><mi>C</mi><mi>i</mi></msub></mrow></math></div>
+<div class="lb">พลังงานสะสม</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>U</mi><mo>&#x0003D;</mo><mstyle displaystyle="false" scriptlevel="0"><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mstyle><mi>C</mi><msup><mi>V</mi><mrow><mn>2</mn></mrow></msup><mo>&#x0003D;</mo><mstyle displaystyle="false" scriptlevel="0"><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mstyle><mi>Q</mi><mi>V</mi><mo>&#x0003D;</mo><mfrac><mrow><msup><mi>Q</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><mn>2</mn><mi>C</mi></mrow></mfrac></mrow></math></div>
+<div class="trap"><b>⚠</b> สนามไฟฟ้าเป็นเวกเตอร์ ต้องรวมแบบเวกเตอร์ · ศักย์เป็นสเกลาร์ บวกลบธรรมดา</div>
+<div class="trap"><b>⚠</b> ตัวเก็บประจุต่ออนุกรม–ขนาน สูตรสลับกับตัวต้านทาน — จุดที่พลาดกันมากที่สุด</div>
+</div>
+<div class="topic">
+<h3>⑬ สนามแม่เหล็ก <span class="n">5 ข้อ · ส่วนที่ 13</span></h3>
+<div class="lb">แรงบนประจุเคลื่อนที่</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>F</mi><mo>&#x0003D;</mo><mi>q</mi><mi>v</mi><mi>B</mi><mi>sin</mi><mi>&#x003B8;</mi></mrow></math></div>
+<div class="lb">แรงบนลวดนำกระแส</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>F</mi><mo>&#x0003D;</mo><mi>B</mi><mi>I</mi><mi>L</mi><mi>sin</mi><mi>&#x003B8;</mi></mrow></math></div>
+<div class="lb">ประจุวิ่งเป็นวงกลมในสนาม</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>r</mi><mo>&#x0003D;</mo><mfrac><mrow><mi>m</mi><mi>v</mi></mrow><mrow><mi>q</mi><mi>B</mi></mrow></mfrac><mspace width="2em" /><mi>T</mi><mo>&#x0003D;</mo><mfrac><mrow><mn>2</mn><mi>&#x003C0;</mi><mi>m</mi></mrow><mrow><mi>q</mi><mi>B</mi></mrow></mfrac></mrow></math></div>
+<div class="lb">ลวดตรงยาว</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>B</mi><mo>&#x0003D;</mo><mfrac><mrow><msub><mi>&#x003BC;</mi><mn>0</mn></msub><mi>I</mi></mrow><mrow><mn>2</mn><mi>&#x003C0;</mi><mi>r</mi></mrow></mfrac><mspace width="2em" /><msub><mi>&#x003BC;</mi><mn>0</mn></msub><mo>&#x0003D;</mo><mn>4</mn><mi>&#x003C0;</mi><mo>&#x000D7;</mo><msup><mn>10</mn><mrow><mo>&#x02212;</mo><mn>7</mn></mrow></msup></mrow></math></div>
+<div class="lb">ขดลวดวงกลม · โซเลนอยด์</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>B</mi><mo>&#x0003D;</mo><mfrac><mrow><msub><mi>&#x003BC;</mi><mn>0</mn></msub><mi>I</mi></mrow><mrow><mn>2</mn><mi>R</mi></mrow></mfrac><mspace width="2em" /><mi>B</mi><mo>&#x0003D;</mo><msub><mi>&#x003BC;</mi><mn>0</mn></msub><mi>n</mi><mi>I</mi></mrow></math></div>
+<div class="lb">แรงระหว่างลวดขนาน 2 เส้น</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mfrac><mrow><mi>F</mi></mrow><mrow><mi>L</mi></mrow></mfrac><mo>&#x0003D;</mo><mfrac><mrow><msub><mi>&#x003BC;</mi><mn>0</mn></msub><msub><mi>I</mi><mn>1</mn></msub><msub><mi>I</mi><mn>2</mn></msub></mrow><mrow><mn>2</mn><mi>&#x003C0;</mi><mi>d</mi></mrow></mfrac></mrow></math></div>
+<div class="lb">ทอร์กบนขดลวด</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&#x003C4;</mi><mo>&#x0003D;</mo><mi>N</mi><mi>B</mi><mi>I</mi><mi>A</mi><mi>sin</mi><mi>&#x003B8;</mi></mrow></math></div>
+<div class="trap"><b>⚠</b> แรงแม่เหล็กตั้งฉากกับความเร็วเสมอ → ไม่ทำงาน อัตราเร็วไม่เปลี่ยน เปลี่ยนแค่ทิศ</div>
+<div class="trap"><b>⚠</b> ประจุวิ่งขนานกับ B (θ = 0) แรงเป็นศูนย์</div>
+</div>
+<div class="topic">
+<h3>⑭ การเหนี่ยวนำแม่เหล็กไฟฟ้า และ RLC <span class="n">5 ข้อ · ส่วนที่ 14</span></h3>
+<div class="lb">ฟลักซ์แม่เหล็ก</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&#x003A6;</mi><mo>&#x0003D;</mo><mi>B</mi><mi>A</mi><mi>cos</mi><mi>&#x003B8;</mi></mrow></math></div>
+<div class="lb">กฎฟาราเดย์–เลนซ์</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&#x02130;</mi><mo>&#x0003D;</mo><mo>&#x02212;</mo><mi>N</mi><mfrac><mrow><mi>d</mi><mi>&#x003A6;</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac></mrow></math></div>
+<div class="lb">แท่งตัวนำเคลื่อนที่ตัดสนาม</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&#x02130;</mi><mo>&#x0003D;</mo><mi>B</mi><mi>L</mi><mi>v</mi></mrow></math></div>
+<div class="lb">ตัวเหนี่ยวนำ</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&#x02130;</mi><mo>&#x0003D;</mo><mo>&#x02212;</mo><mi>L</mi><mfrac><mrow><mi>d</mi><mi>I</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mspace width="2em" /><mi>U</mi><mo>&#x0003D;</mo><mstyle displaystyle="false" scriptlevel="0"><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mstyle><mi>L</mi><msup><mi>I</mi><mrow><mn>2</mn></mrow></msup></mrow></math></div>
+<div class="lb">หม้อแปลง</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mfrac><mrow><msub><mi>V</mi><mn>1</mn></msub></mrow><mrow><msub><mi>V</mi><mn>2</mn></msub></mrow></mfrac><mo>&#x0003D;</mo><mfrac><mrow><msub><mi>N</mi><mn>1</mn></msub></mrow><mrow><msub><mi>N</mi><mn>2</mn></msub></mrow></mfrac><mo>&#x0003D;</mo><mfrac><mrow><msub><mi>I</mi><mn>2</mn></msub></mrow><mrow><msub><mi>I</mi><mn>1</mn></msub></mrow></mfrac></mrow></math></div>
+<div class="lb">ค่ายังผล</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>V</mi><mrow><mi>r</mi><mi>m</mi><mi>s</mi></mrow></msub><mo>&#x0003D;</mo><mfrac><mrow><msub><mi>V</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub></mrow><mrow><msqrt><mrow><mn>2</mn></mrow></msqrt></mrow></mfrac><mspace width="2em" /><msub><mi>I</mi><mrow><mi>r</mi><mi>m</mi><mi>s</mi></mrow></msub><mo>&#x0003D;</mo><mfrac><mrow><msub><mi>I</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub></mrow><mrow><msqrt><mrow><mn>2</mn></mrow></msqrt></mrow></mfrac></mrow></math></div>
+<div class="lb">ความต้านทานเชิงความถี่</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>X</mi><mi>L</mi></msub><mo>&#x0003D;</mo><mi>&#x003C9;</mi><mi>L</mi><mspace width="2em" /><msub><mi>X</mi><mi>C</mi></msub><mo>&#x0003D;</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mi>&#x003C9;</mi><mi>C</mi></mrow></mfrac></mrow></math></div>
+<div class="lb">อิมพีแดนซ์</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>Z</mi><mo>&#x0003D;</mo><msqrt><mrow><msup><mi>R</mi><mrow><mn>2</mn></mrow></msup><mo>&#x0002B;</mo><mo stretchy="false">&#x00028;</mo><msub><mi>X</mi><mi>L</mi></msub><mo>&#x02212;</mo><msub><mi>X</mi><mi>C</mi></msub><msup><mo stretchy="false">&#x00029;</mo><mrow><mn>2</mn></mrow></msup></mrow></msqrt></mrow></math></div>
+<div class="lb">ความถี่กำทอน (X_L = X_C)</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>f</mi><mn>0</mn></msub><mo>&#x0003D;</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn><mi>&#x003C0;</mi><msqrt><mrow><mi>L</mi><mi>C</mi></mrow></msqrt></mrow></mfrac></mrow></math></div>
+<div class="trap"><b>⚠</b> เครื่องหมายลบในกฎฟาราเดย์คือกฎของเลนซ์ — กระแสเหนี่ยวนำต้านการเปลี่ยนแปลงเสมอ</div>
+<div class="trap"><b>⚠</b> หม้อแปลงเพิ่มแรงดันแล้วกระแสต้องลด กำลังเท่าเดิม</div>
+</div>
+<div class="topic">
+<h3>⑮ คลื่นแม่เหล็กไฟฟ้า แทรกสอด เลี้ยวเบน <span class="n">5 ข้อ · ส่วนที่ 15</span></h3>
+<div class="lb">อัตราเร็วแสง</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>c</mi><mo>&#x0003D;</mo><mfrac><mrow><mn>1</mn></mrow><mrow><msqrt><mrow><msub><mi>&#x003BC;</mi><mn>0</mn></msub><msub><mi>&#x003B5;</mi><mn>0</mn></msub></mrow></msqrt></mrow></mfrac><mo>&#x0003D;</mo><mn>3</mn><mo>&#x000D7;</mo><msup><mn>10</mn><mrow><mn>8</mn></mrow></msup><mtext>&#x000A0;</mtext><mtext>m/s</mtext><mo>&#x0003D;</mo><mi>f</mi><mi>&#x003BB;</mi></mrow></math></div>
+<div class="lb">สลิตคู่ของยัง แนวสว่าง / แนวมืด</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>d</mi><mi>sin</mi><mi>&#x003B8;</mi><mo>&#x0003D;</mo><mi>n</mi><mi>&#x003BB;</mi><mspace width="2em" /><mi>d</mi><mi>sin</mi><mi>&#x003B8;</mi><mo>&#x0003D;</mo><mo stretchy="false">&#x00028;</mo><mi>n</mi><mo>&#x02212;</mo><mstyle displaystyle="false" scriptlevel="0"><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mstyle><mo stretchy="false">&#x00029;</mo><mi>&#x003BB;</mi></mrow></math></div>
+<div class="lb">ระยะระหว่างแถบสว่าง บนฉากห่าง L</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&#x00394;</mi><mi>y</mi><mo>&#x0003D;</mo><mfrac><mrow><mi>&#x003BB;</mi><mi>L</mi></mrow><mrow><mi>d</mi></mrow></mfrac></mrow></math></div>
+<div class="lb">สลิตเดี่ยว แถบมืด</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>a</mi><mi>sin</mi><mi>&#x003B8;</mi><mo>&#x0003D;</mo><mi>n</mi><mi>&#x003BB;</mi></mrow></math></div>
+<div class="lb">เกรตติง N เส้นต่อเมตร</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>d</mi><mo>&#x0003D;</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mi>N</mi></mrow></mfrac></mrow></math></div>
+<div class="lb">โพลาไรซ์ กฎของมาลูส</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>I</mi><mo>&#x0003D;</mo><msub><mi>I</mi><mn>0</mn></msub><msup><mi>cos</mi><mrow><mn>2</mn></mrow></msup><mi>&#x003B8;</mi></mrow></math></div>
+<div class="trap"><b>⚠</b> สลิตคู่ n λ = สว่าง แต่สลิตเดี่ยว n λ = มืด — สลับกัน จำสับกันบ่อยมาก</div>
+<div class="trap"><b>⚠</b> แถบกว้างขึ้นเมื่อ λ มากขึ้น หรือ d แคบลง</div>
+</div>
+<div class="topic">
+<h3>⑯ ฟิสิกส์ยุคใหม่ <span class="n">7 ข้อ · ส่วนที่ 16</span></h3>
+<div class="lb">พลังงานโฟตอน</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>E</mi><mo>&#x0003D;</mo><mi>h</mi><mi>f</mi><mo>&#x0003D;</mo><mfrac><mrow><mi>h</mi><mi>c</mi></mrow><mrow><mi>&#x003BB;</mi></mrow></mfrac><mspace width="2em" /><mi>h</mi><mo>&#x0003D;</mo><mn>6.63</mn><mo>&#x000D7;</mo><msup><mn>10</mn><mrow><mo>&#x02212;</mo><mn>34</mn></mrow></msup></mrow></math></div>
+<div class="lb">โฟโตอิเล็กทริก</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>h</mi><mi>f</mi><mo>&#x0003D;</mo><mi>W</mi><mo>&#x0002B;</mo><msub><mi>E</mi><mrow><mi>k</mi><mo>&#x0002C;</mo><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub><mspace width="2em" /><mi>W</mi><mo>&#x0003D;</mo><mi>h</mi><msub><mi>f</mi><mn>0</mn></msub><mspace width="2em" /><msub><mi>E</mi><mrow><mi>k</mi><mo>&#x0002C;</mo><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub><mo>&#x0003D;</mo><mi>e</mi><msub><mi>V</mi><mi>s</mi></msub></mrow></math></div>
+<div class="lb">ความยาวคลื่นเดอบรอยล์</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&#x003BB;</mi><mo>&#x0003D;</mo><mfrac><mrow><mi>h</mi></mrow><mrow><mi>p</mi></mrow></mfrac><mo>&#x0003D;</mo><mfrac><mrow><mi>h</mi></mrow><mrow><mi>m</mi><mi>v</mi></mrow></mfrac></mrow></math></div>
+<div class="lb">คอมป์ตัน</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&#x00394;</mi><mi>&#x003BB;</mi><mo>&#x0003D;</mo><mfrac><mrow><mi>h</mi></mrow><mrow><msub><mi>m</mi><mi>e</mi></msub><mi>c</mi></mrow></mfrac><mo stretchy="false">&#x00028;</mo><mn>1</mn><mo>&#x02212;</mo><mi>cos</mi><mi>&#x003B8;</mi><mo stretchy="false">&#x00029;</mo></mrow></math></div>
+<div class="lb">อะตอมโบร์</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>E</mi><mi>n</mi></msub><mo>&#x0003D;</mo><mo>&#x02212;</mo><mfrac><mrow><mn>13.6</mn></mrow><mrow><msup><mi>n</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac><mtext>&#x000A0;</mtext><mtext>eV</mtext><mspace width="2em" /><msub><mi>r</mi><mi>n</mi></msub><mo>&#x0003D;</mo><msup><mi>n</mi><mrow><mn>2</mn></mrow></msup><mo stretchy="false">&#x00028;</mo><mn>0.53</mn><mo>&#x000D7;</mo><msup><mn>10</mn><mrow><mo>&#x02212;</mo><mn>10</mn></mrow></msup><mo stretchy="false">&#x00029;</mo><mtext>&#x000A0;</mtext><mtext>m</mtext></mrow></math></div>
+<div class="lb">สเปกตรัมไฮโดรเจน</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mfrac><mrow><mn>1</mn></mrow><mrow><mi>&#x003BB;</mi></mrow></mfrac><mo>&#x0003D;</mo><mi>R</mi><mrow><mo stretchy="true" fence="true" form="prefix">&#x00028;</mo><mfrac><mrow><mn>1</mn></mrow><mrow><msubsup><mi>n</mi><mn>1</mn><mrow><mn>2</mn></mrow></msubsup></mrow></mfrac><mo>&#x02212;</mo><mfrac><mrow><mn>1</mn></mrow><mrow><msubsup><mi>n</mi><mn>2</mn><mrow><mn>2</mn></mrow></msubsup></mrow></mfrac><mo stretchy="true" fence="true" form="postfix">&#x00029;</mo></mrow><mo>&#x0002C;</mo><mspace width="1em" /><mi>R</mi><mo>&#x0003D;</mo><mn>1.097</mn><mo>&#x000D7;</mo><msup><mn>10</mn><mrow><mn>7</mn></mrow></msup></mrow></math></div>
+<div class="lb">สมมูลมวล–พลังงาน</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>E</mi><mo>&#x0003D;</mo><mi>m</mi><msup><mi>c</mi><mrow><mn>2</mn></mrow></msup><mspace width="2em" /><mn>1</mn><mspace width="0.167em" /><mi>u</mi><mo>&#x0003D;</mo><mn>931.5</mn><mtext>&#x000A0;</mtext><mtext>MeV</mtext></mrow></math></div>
+<div class="lb">สัมพัทธภาพ</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&#x003B3;</mi><mo>&#x0003D;</mo><mfrac><mrow><mn>1</mn></mrow><mrow><msqrt><mrow><mn>1</mn><mo>&#x02212;</mo><msup><mi>v</mi><mrow><mn>2</mn></mrow></msup><mo>&#x0002F;</mo><msup><mi>c</mi><mrow><mn>2</mn></mrow></msup></mrow></msqrt></mrow></mfrac><mspace width="2em" /><mi>t</mi><mo>&#x0003D;</mo><mi>&#x003B3;</mi><msub><mi>t</mi><mn>0</mn></msub><mspace width="2em" /><mi>L</mi><mo>&#x0003D;</mo><mfrac><mrow><msub><mi>L</mi><mn>0</mn></msub></mrow><mrow><mi>&#x003B3;</mi></mrow></mfrac></mrow></math></div>
+<div class="lb">การสลายกัมมันตรังสี</div>
+<div class="f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>N</mi><mo>&#x0003D;</mo><msub><mi>N</mi><mn>0</mn></msub><msup><mrow><mo stretchy="true" fence="true" form="prefix">&#x00028;</mo><mstyle displaystyle="false" scriptlevel="0"><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mstyle><mo stretchy="true" fence="true" form="postfix">&#x00029;</mo></mrow><mrow><mi>t</mi><mo>&#x0002F;</mo><msub><mi>T</mi><mrow><mn>1</mn><mo>&#x0002F;</mo><mn>2</mn></mrow></msub></mrow></msup><mspace width="2em" /><mi>&#x003BB;</mi><mo>&#x0003D;</mo><mfrac><mrow><mi>ln</mi><mn>2</mn></mrow><mrow><msub><mi>T</mi><mrow><mn>1</mn><mo>&#x0002F;</mo><mn>2</mn></mrow></msub></mrow></mfrac></mrow></math></div>
+<div class="trap"><b>⚠</b> โฟโตอิเล็กทริกขึ้นกับ ความถี่ ไม่ใช่ความเข้ม — เพิ่มความเข้มได้อิเล็กตรอนเยอะขึ้นแต่พลังงานเท่าเดิม</div>
+<div class="trap"><b>⚠</b> E_n เป็นค่าลบ · ยิ่ง n มาก ยิ่งเข้าใกล้ 0 · ต้องใช้ 1/n₁² − 1/n₂² โดย n₁ &lt; n₂</div>
+<div class="trap"><b>⚠</b> เวลาและความยาวสัมพัทธภาพ: เวลา ยืด (คูณ γ) แต่ความยาว หด (หาร γ)</div>
+</div>
+</div>
+  <div class="foot">สูตรเขียนด้วย LaTeX แปลงเป็น MathML ตอนสร้างไฟล์ · เบราว์เซอร์วาดเอง ไม่ต้องต่อเน็ต<br>
+  อ้างอิงสัดส่วนข้อสอบจาก TSAM/index.html · 7 ส.ค. 2569</div>
+</div>
+<!--KIT-UI v2.7 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<script>
+/* =============================================================================
+   _kit/ui-controls.js  —  KIT UI  v1.0
+   แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
+     🌙/☀️  โหมดมืด / สว่าง   (จำค่าไว้ใน localStorage)
+     A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
+     ✏️  ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
+     🧮  เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
+
+   ── วิธีใช้ ────────────────────────────────────────────────────────────────
+   ห้ามแก้โค้ดนี้ในไฟล์ widget!  แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
+       pwsh -File _kit/apply-ui.ps1
+   สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
+   (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
+
+   !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
+      เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
+
+   ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
+   ใส่แอตทริบิวต์ที่ tag body:  data-tools="pen,calc"  = บังคับเปิด
+                              data-tools="none"      = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
+   ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
+              หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
+   ============================================================================= */
+(function(){
+if(window.__KITUI__) return; window.__KITUI__='2.7';
+
+/* ---------- helper ---------- */
+const D=document, R=D.documentElement;
+const get=k=>{try{return localStorage.getItem('kitui-'+k)}catch(e){return null}};
+const set=(k,v)=>{try{localStorage.setItem('kitui-'+k,v)}catch(e){}};
+const el=(t,c,h)=>{const e=D.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
+
+/* =============================================================================
+   1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
+   ============================================================================= */
+const CSS=`
+/* ===== DARK TOKENS (คู่กับ _kit/design-tokens.css) ===== */
+:root[data-theme="dark"]{
+  --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
+  --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
+  --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
+  --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
+  --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
+}
+:root[data-theme="dark"] body{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f172a}
+:root[data-theme="dark"] body[data-subject="physics"]{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f1220}
+:root[data-theme="dark"] body[data-subject="bio"]{--accent:#4ade80;--accent-head:#bbf7d0;--accent-ink:#86efac;--accent-soft:#0f2a1a;--accent-bd:#256b41;--accent-chip:#14532d;--accent-ghost:#15803d;--bg:#0d1912}
+:root[data-theme="dark"] body[data-subject="chem"]{--accent:#fb923c;--accent-head:#fed7aa;--accent-ink:#fdba74;--accent-soft:#2b1a0c;--accent-bd:#8a3d12;--accent-chip:#6d2c10;--accent-ghost:#c2410c;--bg:#1a130c}
+:root[data-theme="dark"] body[data-subject="christ"]{--accent:#a78bfa;--accent-head:#ddd6fe;--accent-ink:#c4b5fd;--accent-soft:#241a3d;--accent-bd:#5b21b6;--accent-chip:#4c1d95;--accent-ghost:#6d28d9;--bg:#16121f}
+:root[data-theme="dark"] body[data-subject="islam"]{--accent:#2dd4bf;--accent-head:#99f6e4;--accent-ink:#5eead4;--accent-soft:#0d2b28;--accent-bd:#12615a;--accent-chip:#134e4a;--accent-ghost:#0f766e;--bg:#0c1917}
+:root[data-theme="dark"] body[data-subject="history"]{--accent:#fbbf24;--accent-head:#fde68a;--accent-ink:#fcd34d;--accent-soft:#2a1f0a;--accent-bd:#8a4b0c;--accent-chip:#6d3a0a;--accent-ghost:#b45309;--bg:#191509}
+:root[data-theme="dark"] body[data-subject="math"]{--accent:#38bdf8;--accent-head:#bae6fd;--accent-ink:#7dd3fc;--accent-soft:#0c2434;--accent-bd:#0b5a80;--accent-chip:#0c4a6e;--accent-ghost:#0369a1;--bg:#0b1620}
+:root[data-theme="dark"] body[data-subject="eng"]{--accent:#f472b6;--accent-head:#fbcfe8;--accent-ink:#f9a8d4;--accent-soft:#2e1122;--accent-bd:#8d1748;--accent-chip:#731839;--accent-ghost:#be185d;--bg:#1c0f16}
+:root[data-theme="dark"] body[data-subject="thai"]{--accent:#f87171;--accent-head:#fecaca;--accent-ink:#fca5a5;--accent-soft:#2d1414;--accent-bd:#8d2020;--accent-chip:#7f1d1d;--accent-ghost:#b91c1c;--bg:#1a0f0f}
+:root[data-theme="dark"] img,:root[data-theme="dark"] .svg-box{filter:brightness(.92)}
+/* ช่องกรอก/ดรอปดาวน์ที่ widget เก่ากำหนดพื้นขาวตายตัวไว้ */
+:root[data-theme="dark"] select,:root[data-theme="dark"] textarea,
+:root[data-theme="dark"] input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=color])
+{background-color:var(--soft);color:var(--ink);border-color:var(--line)}
+
+/* ===== แถบเครื่องมือลอย ===== */
+#kitui-bar{position:fixed;right:10px;bottom:10px;z-index:99990;display:flex;gap:6px;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
+#kitui-bar button{border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;
+  font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
+  align-items:center;justify-content:center;font-weight:700}
+#kitui-bar button:hover{background:var(--soft)}
+#kitui-bar button:active{transform:scale(.93)}
+#kitui-bar button.on{background:var(--accent);color:#fff}
+#kitui-bar .kitui-sep{width:1px;height:22px;background:var(--line);flex:0 0 1px}
+#kitui-bar .kitui-fs{font-size:11px;color:var(--muted);min-width:34px;text-align:center;font-weight:700}
+#kitui-bar.hidden > *:not(#kitui-grip){display:none}
+#kitui-grip{font-size:17px}
+
+/* ===== แผงลอย (ที่ทด / เครื่องคิดเลข) ===== */
+.kitui-sheet{position:fixed;left:0;right:0;bottom:0;z-index:99991;background:var(--card);
+  border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
+  display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
+  height:52vh;max-height:92vh;min-height:180px}
+.kitui-sheet.open{display:flex}
+.kitui-sheet.full{height:100vh;border-radius:0}
+.kitui-head{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--line);
+  flex-wrap:wrap;touch-action:none;cursor:ns-resize}
+.kitui-head b{font-size:.9rem;color:var(--accent-ink);margin-right:2px;white-space:nowrap}
+.kitui-head button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;
+  padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
+.kitui-head button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.kitui-head .kitui-spacer{flex:1}
+.kitui-sw{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;min-height:0}
+.kitui-sw.on{border-color:var(--ink);transform:scale(1.12)}
+.kitui-padwrap{flex:1;position:relative;overflow:hidden;background:var(--soft)}
+.kitui-padwrap canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+:root[data-theme="dark"] .kitui-padwrap{background:#0c1220}
+
+/* ===== เครื่องคิดเลข ===== */
+#kitui-calc{height:auto;max-height:90vh}
+.kitui-disp{padding:8px 12px;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);
+  border-bottom:1px solid var(--line)}
+.kitui-disp .ex{font-size:.95rem;color:var(--muted);min-height:1.3em;word-break:break-all}
+.kitui-disp .rs{font-size:1.6rem;font-weight:700;color:var(--accent-ink);word-break:break-all}
+.kitui-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:7px}
+.kitui-keys button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:9px;
+  font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
+.kitui-keys button:active{transform:scale(.95)}
+.kitui-keys button.fn{font-size:.8rem;color:var(--accent-ink)}
+.kitui-keys button.op{background:var(--accent-soft);color:var(--accent-ink)}
+.kitui-keys button.eq{background:var(--accent);color:#fff;grid-row:span 2}
+.kitui-keys button.del{background:var(--hot-bg);color:var(--hot-ink)}
+.kitui-keys button.w3{grid-column:span 3}
+@media(max-width:420px){.kitui-keys button{font-size:.88rem;min-height:40px}.kitui-keys button.fn{font-size:.72rem}}
+@media(min-width:760px){
+  .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
+  .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
+  #kitui-pad{width:560px}
+}
+@media print{#kitui-bar,.kitui-sheet{display:none!important}}
+`;
+const st=el('style'); st.id='kitui-style'; st.textContent=CSS; D.head.appendChild(st);
+
+/* -----------------------------------------------------------------------------
+   1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
+   widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
+   พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
+   แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
+   เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
+----------------------------------------------------------------------------- */
+/* สีพาสเทลสว่าง -> สีเข้มที่ยังคง "เฉดเดิม" ไว้ (เขียว=ถูก / แดง=ผิด ต้องยังแยกออก)
+   ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
+function darken(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
+  /* ⚠️ ห้ามใช้ saturation ของ HSL ตรง ๆ ตัดสิน: ที่ความสว่างเกือบ 1 ตัวหารจะเล็กมาก
+     ทำให้สีที่แทบเป็นสีขาว (เช่น #fdf8f4) ได้ค่าอิ่มสีสูงลิ่ว แล้วกลายเป็นสีน้ำตาลจัดตอนกดให้เข้ม
+     ให้ดูจาก "ช่วงห่างของแม่สี" (chroma) แทน แล้วแปลงเป็นความอิ่มสีแบบไล่ระดับ */
+  const s = Math.min(.45, Math.max(.08, d*4));
+  const l = d<.02 ? .13 : .17;                       /* เทา/ขาวล้วนให้เข้มกว่าสีนิดหน่อย */
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+function darkFix(){
+  const out=[], seen=new Set();
+  const take=r=>{
+    if(!r.style || !r.selectorText) return;
+    if(r.selectorText.indexOf('kitui')>-1) return;               /* ของเราเองใช้ token อยู่แล้ว */
+    const bg=r.style.backgroundColor;
+    if(!bg || bg.indexOf('var(')>-1) return;
+    const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
+    if(!m) return;
+    if(m[4]!==undefined && +m[4]<0.6) return;                    /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
+    const cr=+m[1], cg=+m[2], cb=+m[3];
+    if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return;       /* ไม่สว่างพอ ไม่ต้องยุ่ง */
+    const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
+    const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
+    let css='background-color:'+repl;
+    /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
+    const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
+    out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
+  };
+  /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
+        ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
+  const visit=rules=>{
+    for(let i=0;i<rules.length;i++){
+      const r=rules[i];
+      if(r.selectorText) take(r);
+      if(r.cssRules && r.cssRules.length) visit(r.cssRules);     /* @media / @supports / nesting */
+    }
+  };
+  for(let i=0;i<D.styleSheets.length;i++){
+    let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; }   /* ข้ามชีตข้ามโดเมน */
+    if(rr) visit(rr);
+  }
+  if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
+  return out.length;
+}
+try{ window.__KITUI_DARKFIX__ = (D.body.getAttribute('data-kit-theme')==='off') ? 'locked' : darkFix(); }
+catch(e){ window.__KITUI_DARKFIX__='err:'+e.message; }
+
+/* darkFix ข้างบนซ่อมได้เฉพาะสีที่เขียนตายตัวในไฟล์ CSS
+   แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
+   ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
+   จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
+const rgbOf=c=>{const m=c&&c.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null;};
+const lumOf=v=>v?(0.2126*v[0]+0.7152*v[1]+0.0722*v[2])/255:null;
+/* ตรงข้ามกับ darken(): ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
+   (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
+function lighten(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  if(d<0.04) return 'var(--ink)';                    /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
+  let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
+  const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
+  const s=Math.min(.92,Math.max(.55,s0)), l=.72;
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+const SKIP={CANVAS:1,IMG:1,VIDEO:1,SVG:1,IFRAME:1,PICTURE:1,OBJECT:1};
+const OBS_OPT={childList:true,subtree:true,attributes:true,attributeFilter:['class','style']};
+let patched=[], obs=null;
+function elementFix(){
+  /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
+        ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
+  if(obs) obs.disconnect();
+  try{ elementFixCore(); } finally { if(obs) obs.observe(D.body,OBS_OPT); }
+}
+function elementFixCore(){
+  if(D.body.getAttribute('data-kit-theme')==='off') return;   /* หน้าที่ล็อกธีมไว้ ห้ามไปยุ่งสี */
+  /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
+     ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
+     จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
+  if(R.getAttribute('data-theme')!=='dark'){
+    patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
+    patched=[];
+    return;
+  }
+  /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
+     ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
+  /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
+  const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
+  for(let i=0;i<all.length;i++){
+    const e=all[i];
+    if(e.id&&e.id.indexOf('kitui')===0) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(SKIP[e.tagName]) continue;                      /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
+    const s=getComputedStyle(e);
+    const bg=rgbOf(s.backgroundColor);
+    if(!bg || bg[3]<0.6) continue;                     /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
+    if(lumOf(bg)<0.72) continue;                       /* เข้มพออยู่แล้ว */
+    /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
+    e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
+    const fg=rgbOf(s.color);
+    if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important');  /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
+    patched.push(e);
+  }
+  /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
+     ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
+  const bgCache=new Map();
+  const effBg=n=>{
+    for(let p=n;p;p=p.parentElement){
+      if(bgCache.has(p)) return bgCache.get(p);
+      const b=rgbOf(getComputedStyle(p).backgroundColor);
+      if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
+    }
+    return null;
+  };
+  for(let i=2;i<all.length;i++){
+    const e=all[i];
+    if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(e.style.color) continue;                         /* จัดการไปแล้วในรอบแรก */
+    if(!e.textContent || !e.textContent.trim()) continue;
+    const fg=rgbOf(getComputedStyle(e).color);
+    if(!fg || lumOf(fg)>=0.45) continue;                 /* ตัวอักษรสว่างอยู่แล้ว */
+    const bg=effBg(e);
+    if(!bg || lumOf(bg)>=0.5) continue;                  /* พื้นยังสว่าง อ่านออกอยู่ */
+    e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
+    patched.push(e);
+  }
+}
+let efT=0;
+const scheduleFix=()=>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
+try{
+  obs=new MutationObserver(scheduleFix);
+  obs.observe(D.body,OBS_OPT);
+}catch(e){}
+
+/* =============================================================================
+   2) ธีม + ขนาดตัวอักษร
+   ============================================================================= */
+const FS=[.85,1,1.15,1.3,1.5], FSNAME=['เล็กสุด','เล็ก','ปกติ','ใหญ่','ใหญ่สุด'];
+let fsIdx=parseInt(get('fs')); if(isNaN(fsIdx)||fsIdx<0||fsIdx>4) fsIdx=1;
+let theme=get('theme') || (matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+
+/* หน้าที่ออกแบบธีมมาเองครบแล้ว (เช่น "หนังสือทบทวน" พื้นเข้มทั้งเล่ม) ให้ปิดระบบธีมของ KIT UI
+   ไม่งั้นโทเคน --bg/--ink ของเราจะไปทับสีที่หน้านั้นตั้งไว้ แล้วหน้าเพี้ยน
+   ใส่ที่ tag body:  data-kit-theme="off"   (ปุ่มปรับขนาดตัวอักษรยังใช้ได้ตามปกติ) */
+const themeLock = D.body.getAttribute('data-kit-theme')==='off';
+
+function applyTheme(){
+  if(themeLock) return;
+  R.setAttribute('data-theme',theme);
+  R.style.colorScheme = theme==='dark'?'dark':'light';   /* ให้ select/input เป็นสีเข้มด้วย */
+  const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
+  set('theme',theme);
+  clearTimeout(efT);                                   /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
+  if(typeof elementFix==='function') elementFix();
+  /* ⚠️ ห้ามอ้างถึงตัวแปรของส่วน "ที่ทด" ตรงนี้!
+     applyTheme() ถูกเรียกก่อนที่ `let pad` ในส่วนที่ 4 จะทำงาน → ชน temporal dead zone
+     แล้ว ReferenceError จะทำให้สคริปต์ตายทั้งก้อน (ปุ่มขนาดอักษร/ที่ทด/เครื่องคิดเลขหายหมด)
+     ใช้วิธียิง event แทน ใครสนใจค่อยไปดักฟังเอง */
+  try{ D.dispatchEvent(new CustomEvent('kitui-theme')); }catch(e){}
+}
+function applyFS(){
+  R.style.fontSize=(16*FS[fsIdx])+'px';
+  const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
+  set('fs',fsIdx);
+}
+
+/* =============================================================================
+   3) แถบเครื่องมือ
+   ============================================================================= */
+const subj=(D.body.getAttribute('data-subject')||'').toLowerCase();
+/* หลาย widget ไม่ได้ใส่ data-subject ที่ <body> → เดาจากโฟลเดอร์ที่ไฟล์อยู่ด้วย */
+const inPath=/\/(physics|math|chemist)\//i.test(decodeURIComponent(location.pathname));
+const tAttr=D.body.getAttribute('data-tools');
+const wantTools = tAttr!=null ? tAttr.toLowerCase()
+                : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
+const hasPen  = wantTools.includes('pen');
+const hasCalc = wantTools.includes('calc');
+
+const bar=el('div'); bar.id='kitui-bar';
+bar.innerHTML =
+  `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
+  (themeLock ? '' : `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button><span class="kitui-sep"></span>`)+
+  `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
+  `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
+  `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
+  (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
+  (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
+D.body.appendChild(bar);
+
+if(!themeLock) D.getElementById('kitui-theme').onclick=()=>{theme=theme==='dark'?'light':'dark';applyTheme();};
+D.getElementById('kitui-fsup').onclick=()=>{if(fsIdx<4){fsIdx++;applyFS();}};
+D.getElementById('kitui-fsdown').onclick=()=>{if(fsIdx>0){fsIdx--;applyFS();}};
+D.getElementById('kitui-grip').onclick=()=>bar.classList.toggle('hidden');
+applyTheme(); applyFS();
+
+/* ปิดแผงด้วยปุ่ม Esc */
+D.addEventListener('keydown',e=>{ if(e.key==='Escape') D.querySelectorAll('.kitui-sheet.open').forEach(s=>s.classList.remove('open')); });
+
+/* ลากหัวแผงเพื่อปรับความสูง */
+function makeResizable(sheet){
+  const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
+  head.addEventListener('pointerdown',e=>{
+    if(e.target.closest('button'))return;
+    drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect().height;head.setPointerCapture(e.pointerId);
+  });
+  head.addEventListener('pointermove',e=>{
+    if(!drag)return;
+    const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
+    sheet.classList.remove('full'); sheet.style.height=h+'px';
+    if(sheet.id==='kitui-pad') fitPad();
+  });
+  head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
+}
+
+/* =============================================================================
+   4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ  หลายหน้า  เซฟอัตโนมัติ
+   ============================================================================= */
+let pad,padCv,padCx,pages=[[]],pg=0,undone=[],histo=[];
+let tool='pen',color='#111827',width=2.4,penSeen=0;
+const COLORS=['#111827','#2563eb','#dc2626','#16a34a','#f59e0b'];
+const PADKEY='pad-'+location.pathname.split('/').pop();
+
+function buildPad(){
+  pad=el('div','kitui-sheet'); pad.id='kitui-pad';
+  pad.innerHTML=
+   `<div class="kitui-head">
+      <b>✏️ ที่ทด</b>
+      <button data-t="pen" class="on">🖊️</button>
+      <button data-t="hl">🖍️</button>
+      <button data-t="er">🧽</button>
+      ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
+      <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
+      <span class="kitui-spacer"></span>
+      <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
+      <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
+      <button id="kitui-pgadd">+ หน้า</button>
+      <button id="kitui-clear">ล้างหน้านี้</button>
+      <button id="kitui-full">⛶</button>
+      <button id="kitui-padclose">✕</button>
+    </div>
+    <div class="kitui-padwrap"><canvas></canvas></div>`;
+  D.body.appendChild(pad);
+  padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
+  makeResizable(pad);
+
+  pad.querySelector('.kitui-head').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
+  });
+  D.getElementById('kitui-undo').onclick=()=>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop(); draw(); save(); } };
+  D.getElementById('kitui-redo').onclick=()=>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop(); draw(); save(); } };
+  D.getElementById('kitui-clear').onclick=()=>{ snap(); pages[pg]=[]; draw(); save(); };
+  D.getElementById('kitui-pgadd').onclick=()=>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw(); save(); };
+  D.getElementById('kitui-pgprev').onclick=()=>{ if(pg>0){pg--;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-pgnext').onclick=()=>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-full').onclick=()=>{ pad.classList.toggle('full'); pad.style.height=''; fitPad(); };
+  D.getElementById('kitui-padclose').onclick=()=>pad.classList.remove('open');
+
+  /* ---- วาด ---- */
+  let cur=null;
+  padCv.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='pen') penSeen=Date.now();
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;   /* กันฝ่ามือแตะตอนใช้สไตลัส */
+    const p=pt(e);
+    if(tool==='er'){ snap(); erase(p); return; }
+    snap();
+    cur={c:color,w:width,hl:tool==='hl',pts:[p]};
+    pages[pg].push(cur); draw();
+    try{ padCv.setPointerCapture(e.pointerId); }catch(x){}  /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
+  });
+  padCv.addEventListener('pointermove',e=>{
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;
+    if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
+    if(!cur||!e.buttons)return;
+    /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
+    let evs=[e];
+    if(e.getCoalescedEvents){ const c=e.getCoalescedEvents(); if(c&&c.length) evs=c; }
+    evs.forEach(ev=>cur.pts.push(pt(ev)));
+    draw();
+  });
+  const end=()=>{ if(cur){cur=null;save();} };
+  padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
+  padCv.addEventListener('pointerleave',end);
+
+  addEventListener('resize',()=>{ if(pad.classList.contains('open')) fitPad(); });
+  D.addEventListener('kitui-theme',()=>draw());   /* สลับธีมแล้ววาดลายใหม่ เส้นดำ<->ขาวตามพื้น */
+  load(); fitPad();
+}
+function pt(e){
+  const r=padCv.getBoundingClientRect();
+  return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
+          p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5};   /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
+}
+function snap(){ histo.push(pages[pg].slice()); if(histo.length>60)histo.shift(); undone=[]; }
+function erase(p){
+  const r=padCv.getBoundingClientRect(), rad=18/r.width;
+  const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
+  if(keep.length!==pages[pg].length){ pages[pg]=keep; draw(); save(); }
+}
+function fitPad(){
+  const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
+  const dpr=Math.min(devicePixelRatio||1,2.5);
+  padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
+  draw();
+}
+function draw(){
+  const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
+  padCx.clearRect(0,0,W,H);
+  /* เส้นตารางจาง ๆ ให้เขียนตรง */
+  const dark=R.getAttribute('data-theme')==='dark';
+  padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
+  for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath();padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke();}
+  padCx.lineCap='round'; padCx.lineJoin='round';
+  pages[pg].forEach(s=>{
+    padCx.globalAlpha=s.hl?0.32:1;
+    padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
+    for(let i=1;i<s.pts.length;i++){
+      const a=s.pts[i-1],b=s.pts[i];
+      padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
+      padCx.beginPath(); padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke();
+    }
+    if(s.pts.length===1){ /* จุดเดียว */
+      padCx.fillStyle=padCx.strokeStyle; padCx.beginPath();
+      padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill();
+    }
+  });
+  padCx.globalAlpha=1;
+  const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
+}
+function save(){ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
+function load(){
+  try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
+}
+
+if(hasPen){
+  buildPad();
+  D.getElementById('kitui-penbtn').onclick=()=>{
+    const o=pad.classList.toggle('open');
+    D.getElementById('kitui-penbtn').classList.toggle('on',o);
+    if(o) fitPad();
+  };
+}
+
+/* =============================================================================
+   5) เครื่องคิดเลขวิทยาศาสตร์  (tokenizer → shunting-yard → RPN  ไม่ใช้ eval)
+   ============================================================================= */
+const FN={sin:1,cos:1,tan:1,asin:1,acos:1,atan:1,ln:1,log:1,sqrt:1,abs:1,exp:1};
+const PREC={'+':1,'-':1,'*':2,'/':2,'^':4,'u-':3};
+function tokenize(s){
+  s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
+  const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!()])/g; let m;
+  while((m=re.exec(s))) out.push(m[1]);
+  return out;
+}
+function toRPN(tk){
+  const out=[],op=[]; let prev=null;
+  for(let t of tk){
+    if(t==='**')t='^';
+    if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
+    else if(t==='PI'){ out.push(Math.PI); }
+    else if(t==='e'||t==='E'){ out.push(Math.E); }
+    else if(t==='ANS'){ out.push(ANS); }
+    else if(FN[t]){ op.push(t); }
+    else if(t==='('){ op.push(t); }
+    else if(t===')'){
+      while(op.length&&op[op.length-1]!=='(') out.push(op.pop());
+      if(!op.length) throw 0; op.pop();
+      if(op.length&&FN[op[op.length-1]]) out.push(op.pop());
+    }
+    else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
+    else if('+-*/^'.includes(t)){
+      let o=t;
+      const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
+      if(t==='-'&&unary) o='u-';
+      else if(t==='+'&&unary){ prev=t; continue; }
+      while(op.length){
+        const top=op[op.length-1];
+        if(top==='('||FN[top])break;
+        const rightAssoc=(o==='^'||o==='u-');
+        if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop()); else break;
+      }
+      op.push(o);
+    }
+    else throw 0;
+    prev=t;
+  }
+  while(op.length){ const o=op.pop(); if(o==='(')throw 0; out.push(o); }
+  return out;
+}
+function evalRPN(rpn,deg){
+  const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
+  const pop=()=>{ if(!st.length)throw 0; return st.pop(); };
+  for(const t of rpn){
+    if(typeof t==='number'){ st.push(t); continue; }
+    if(t==='fact'){ const n=pop(); if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
+    if(t==='pct'){ st.push(pop()/100); continue; }
+    if(t==='u-'){ st.push(-pop()); continue; }
+    if(FN[t]){
+      const a=pop();
+      st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
+             : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
+             : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
+             : t==='abs'?Math.abs(a) : Math.exp(a) );
+      continue;
+    }
+    const b=pop(),a=pop();
+    st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
+  }
+  if(st.length!==1) throw 0;
+  return st[0];
+}
+function calc(src,deg){ return evalRPN(toRPN(tokenize(src)),deg); }
+
+let ANS=0, expr='', calcSheet, isDeg=true;
+const KEYS=[
+ ['DEG','deg','fn'],['(','(',''],[')',')',''],['⌫','del','del'],['AC','ac','del'],
+ ['sin','sin(','fn'],['cos','cos(','fn'],['tan','tan(','fn'],['π','π','fn'],['÷','÷','op'],
+ ['sin⁻¹','asin(','fn'],['cos⁻¹','acos(','fn'],['tan⁻¹','atan(','fn'],['e','e','fn'],['×','×','op'],
+ ['ln','ln(','fn'],['log','log(','fn'],['√','√(','fn'],['xʸ','^','fn'],['−','−','op'],
+ ['7','7',''],['8','8',''],['9','9',''],['x!','!','fn'],['+','+','op'],
+ ['4','4',''],['5','5',''],['6','6',''],['%','%','fn'],['ANS','ANS','fn'],
+ ['1','1',''],['2','2',''],['3','3',''],['.','.',''],['=','eq','eq'],
+ ['0','0','w3'],['x²','^2','fn']
+];
+function buildCalc(){
+  calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
+  calcSheet.innerHTML=
+   `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
+      <button id="kitui-calcclose">✕</button></div>
+    <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
+    <div class="kitui-keys" id="kitui-keys">
+      ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
+    </div>`;
+  D.body.appendChild(calcSheet);
+  D.getElementById('kitui-calcclose').onclick=()=>calcSheet.classList.remove('open');
+  const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
+  const show=()=>{ ex.textContent=expr||' ';
+    try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
+    catch(e){ rs.style.opacity=.35; }
+  };
+  D.getElementById('kitui-keys').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
+    if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
+    if(k==='del'){ expr=expr.slice(0,-1); show(); return; }
+    if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show(); return; }
+    if(k==='eq'){
+      rs.style.opacity=1;
+      try{
+        const v=calc(expr,isDeg);
+        if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
+        if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
+        ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
+      }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
+      return;
+    }
+    expr+=k; show();
+  });
+}
+function fmt(v){
+  if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
+  if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
+  return String(Math.round(v*1e10)/1e10);
+}
+if(hasCalc){
+  buildCalc();
+  D.getElementById('kitui-calcbtn').onclick=()=>{
+    const o=calcSheet.classList.toggle('open');
+    D.getElementById('kitui-calcbtn').classList.toggle('on',o);
+  };
+}
+})();
+
+</script>
+<!--/KIT-UI-->
+</body>
+</html>

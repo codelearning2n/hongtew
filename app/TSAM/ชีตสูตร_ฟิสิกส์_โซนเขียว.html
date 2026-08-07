@@ -2,184 +2,202 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>ห้องติว ม.6 — เลือกวิชาที่จะฝึก</title>
-<meta name="description" content="รวมข้อสอบฝึก สื่อการสอน และสรุปทุกวิชา ม.6 เปิดในเบราว์เซอร์ได้เลย">
-<meta name="theme-color" content="#4f46e5">
-<!-- ไม่ให้เสิร์ชเอนจินเก็บไปทำดัชนี = คนแปลกหน้าค้นหาไม่เจอ (คู่กับ robots.txt)
-     ย้ำ: กันการ "ค้นเจอ" เท่านั้น ใครได้ลิงก์ไปแล้วยังเปิดได้อยู่ดี -->
-<meta name="robots" content="noindex,nofollow">
-<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ชีตสูตรฟิสิกส์ — โซนเขียว 34 ข้อ (TSAM '70)</title>
 <style>
+/* ชีตอ่านก่อนเข้าห้องสอบ — ทำเพื่ออ่านบนมือถือและพิมพ์ลงกระดาษได้
+   กติกาเดิม: ชื่อตัวแปรห้ามชน token ของ _kit · rem ทั้งหมด · @media print ทับแค่ตัวแปร */
+*{box-sizing:border-box;margin:0;padding:0;-webkit-text-size-adjust:100%}
 :root{
-  --font:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
-  --bg:#eef2f7;--ink:#1e293b;--muted:#64748b;--line:#e2e8f0;--card:#fff;--soft:#f8fafc;
-  --shadow:0 1px 4px rgba(15,23,42,.08);--ok:#059669;--bad:#dc2626;
-  --warn-bg:#fff7ed;--warn-bd:#f97316;--tip-bg:#ecfdf5;--tip-bd:#10b981;
-  --info-bg:#eff6ff;--info-bd:#3b82f6;--hot-bg:#fee2e2;--hot-ink:#b91c1c;
-  --badge-bg:#fef9c3;--badge-ink:#854d0e;
-  --radius:14px;--radius-sm:10px;--radius-pill:999px;
-  --accent:#4f46e5;--accent-head:#312e81;--accent-ink:#3730a3;--accent-soft:#eef2ff;
-  --accent-bd:#c7d2fe;--accent-chip:#e0e7ff;--accent-ghost:#a5b4fc;
+  --pg:#f3f6f4;--cd:#fff;--cd2:#f8fbf9;--tx:#1e2a24;--strong:#0c1512;--mut:#5f6f68;--bd:#dde5e0;
+  --ac:#0d7a4f;--acbg:#e7f6ee;--acbd:#b3e0c9;--achd:#0a5c3b;
+  --warn:#b45309;--warnbg:#fdf4e7;--warnbd:#f0d9ac;
+  --hl:#fde68a;--hlink:#5e4708;--sh:0 1px 3px rgba(12,30,22,.08);
 }
-/* สีประจำวิชา — ใช้ตอนวาดการ์ด */
-.s-bio    {--c:#16a34a;--cs:#f0fdf4;--cb:#bbf7d0}
-.s-physics{--c:#4f46e5;--cs:#eef2ff;--cb:#c7d2fe}
-.s-math   {--c:#0284c7;--cs:#f0f9ff;--cb:#bae6fd}
-.s-chem   {--c:#ea7317;--cs:#fff7ed;--cb:#fed7aa}
-.s-christ {--c:#7c3aed;--cs:#f5f3ff;--cb:#ddd6fe}
-.s-islam  {--c:#0d9488;--cs:#f0fdfa;--cb:#99f6e4}
-.s-history{--c:#b45309;--cs:#fffbeb;--cb:#fde68a}
-.s-eng    {--c:#db2777;--cs:#fdf2f8;--cb:#fbcfe8}
-.s-thai   {--c:#dc2626;--cs:#fef2f2;--cb:#fecaca}
-.s-tsam   {--c:#475569;--cs:#f4f6f8;--cb:#cbd5e1}
-:root[data-theme="dark"] .s-bio{--cs:#0f2a1a;--cb:#256b41;--c:#4ade80}
-:root[data-theme="dark"] .s-physics{--cs:#1e1b4b;--cb:#3f3a8f;--c:#818cf8}
-:root[data-theme="dark"] .s-math{--cs:#0c2434;--cb:#0b5a80;--c:#38bdf8}
-:root[data-theme="dark"] .s-chem{--cs:#2b1a0c;--cb:#8a3d12;--c:#fb923c}
-:root[data-theme="dark"] .s-christ{--cs:#241a3d;--cb:#5b21b6;--c:#a78bfa}
-:root[data-theme="dark"] .s-islam{--cs:#0d2b28;--cb:#12615a;--c:#2dd4bf}
-:root[data-theme="dark"] .s-history{--cs:#2a1f0a;--cb:#8a4b0c;--c:#fbbf24}
-:root[data-theme="dark"] .s-eng{--cs:#2e1122;--cb:#8d1748;--c:#f472b6}
-:root[data-theme="dark"] .s-thai{--cs:#2d1414;--cb:#8d2020;--c:#f87171}
-:root[data-theme="dark"] .s-tsam{--cs:#171d26;--cb:#41506a;--c:#a9b8cc}
-
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.6;
-     padding-bottom:calc(64px + env(safe-area-inset-bottom))}
-.wrap{max-width:940px;margin:0 auto;padding:14px 14px 30px}
-
-.hero{background:linear-gradient(135deg,var(--accent) 0%,#7c3aed 100%);color:#fff;border-radius:18px;
-      padding:22px 20px;margin-bottom:14px;box-shadow:var(--shadow)}
-.hero h1{font-size:1.5rem;line-height:1.35;margin-bottom:4px}
-.hero p{opacity:.92;font-size:.95rem}
-.hero .stat{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:.85rem;font-weight:600}
-.hero .stat span{background:rgba(255,255,255,.2);padding:4px 12px;border-radius:999px;backdrop-filter:blur(4px)}
-
-.tools{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 6px}
-#q{flex:1;min-width:190px;padding:12px 14px;border:1.5px solid var(--line);border-radius:var(--radius-sm);
-   font-family:inherit;font-size:1rem;background:var(--card);color:var(--ink)}
-#q:focus{outline:none;border-color:var(--accent)}
-.chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 4px}
-.chip{border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:var(--radius-pill);
-      padding:7px 14px;font-size:.88rem;font-weight:600;cursor:pointer;font-family:inherit;min-height:38px}
-.chip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
-.chip .n{opacity:.6;font-size:.76rem;margin-left:3px}
-
-h2.sec{font-size:1.05rem;margin:20px 0 8px;color:var(--accent-head);display:flex;align-items:center;gap:8px}
-h2.sec .line{flex:1;height:1px;background:var(--line)}
-
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
-a.card{display:flex;flex-direction:column;gap:5px;background:var(--card);border:1px solid var(--line);
-  border-left:5px solid var(--c,var(--accent));border-radius:var(--radius);padding:13px 14px;
-  text-decoration:none;color:inherit;box-shadow:var(--shadow);min-height:86px}
-a.card:hover{border-color:var(--c);transform:translateY(-2px);transition:.15s}
-a.card:active{transform:scale(.985)}
-a.card .t{font-weight:600;font-size:.97rem;line-height:1.4}
-a.card .m{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:.76rem;color:var(--muted);margin-top:auto}
-a.card .k{background:var(--cs);color:var(--c);border-radius:6px;padding:1px 8px;font-weight:700}
-
-.note{background:var(--info-bg);border-left:4px solid var(--info-bd);border-radius:10px;padding:12px 14px;
-      margin:16px 0;font-size:.9rem}
-.warn{background:var(--warn-bg);border-left:4px solid var(--warn-bd);border-radius:10px;padding:12px 14px;
-      margin:16px 0;font-size:.9rem}
-.empty{text-align:center;color:var(--muted);padding:40px 12px}
-footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:26px;line-height:1.8}
-@media(max-width:480px){.wrap{padding:10px 10px 24px}.hero{padding:18px 16px}.hero h1{font-size:1.25rem}
-  .grid{grid-template-columns:1fr}}
+:root[data-theme="dark"]{
+  --pg:#080d0b;--cd:#111a15;--cd2:#17211c;--tx:#e3ede8;--strong:#f3faf6;--mut:#94a69d;--bd:#25322b;
+  --ac:#4bd6a0;--acbg:#07271b;--acbd:#155941;--achd:#7fe8bf;
+  --warn:#fcd34d;--warnbg:#2b2008;--warnbd:#5c4315;
+  --hl:#453a06;--hlink:#fde68a;--sh:0 1px 3px rgba(0,0,0,.55);
+}
+html{background:var(--pg)}
+body{font-family:'Leelawadee UI','Sarabun','Noto Sans Thai',Tahoma,sans-serif;
+  background:var(--pg);color:var(--tx);line-height:1.6;font-size:1rem;padding-bottom:3rem}
+.wrap{max-width:52rem;margin:0 auto;padding:0 .7rem}
+.cover{text-align:center;padding:.9rem 0 .6rem;border-bottom:3px solid var(--ac);margin-bottom:.6rem}
+.cover h1{font-size:1.25rem;color:var(--strong);line-height:1.3}
+.cover .sub{color:var(--mut);font-size:.82rem;margin-top:.2rem}
+.when{display:inline-block;margin-top:.4rem;font-size:.78rem;background:var(--acbg);color:var(--achd);
+  border:1px solid var(--acbd);border-radius:1.2rem;padding:.15rem .8rem}
+.topic{background:var(--cd);border:1px solid var(--bd);border-left:4px solid var(--ac);
+  border-radius:.55rem;padding:.65rem .8rem;margin-bottom:.6rem;box-shadow:var(--sh);
+  page-break-inside:avoid}
+.topic h2{font-size:1rem;color:var(--achd);display:flex;justify-content:space-between;
+  align-items:baseline;gap:.5rem;flex-wrap:wrap}
+.topic h2 .n{font-size:.75rem;color:var(--mut);font-weight:400;white-space:nowrap}
+.f{font-family:'Cambria Math','Georgia',serif;background:var(--cd2);border:1px solid var(--bd);
+  border-radius:.35rem;padding:.35rem .55rem;margin:.35rem 0;font-size:1.02rem;color:var(--strong);
+  overflow-x:auto;white-space:nowrap}
+ul{margin:.3rem 0 .2rem 1.15rem}li{margin:.22rem 0}
+b{color:var(--strong)}
+mark{background:var(--hl);color:var(--hlink);padding:0 .15rem;border-radius:.15rem}
+.trap{background:var(--warnbg);border:1px solid var(--warnbd);border-radius:.4rem;
+  padding:.4rem .6rem;margin-top:.4rem;font-size:.88rem;color:var(--tx)}
+.trap b{color:var(--warn)}
+.skip{background:var(--cd);border:1px dashed var(--bd);border-radius:.55rem;padding:.6rem .8rem;
+  margin:.8rem 0;color:var(--mut);font-size:.9rem}
+.plan{background:var(--acbg);border:1px solid var(--acbd);border-radius:.55rem;padding:.6rem .8rem;margin-bottom:.7rem}
+.plan table{width:100%;border-collapse:collapse;font-size:.85rem}
+.plan td{padding:.2rem .3rem;border-bottom:1px solid var(--acbd)}
+.plan tr:last-child td{border-bottom:0}
+.foot{text-align:center;color:var(--mut);font-size:.75rem;margin-top:1.2rem;padding-top:.6rem;border-top:1px solid var(--bd)}
+@media print{
+  :root,:root[data-theme="dark"]{
+    --pg:#fff;--cd:#fff;--cd2:#fafafa;--tx:#1e2a24;--strong:#0c1512;--mut:#5f6f68;--bd:#dde5e0;
+    --ac:#0d7a4f;--acbg:#e7f6ee;--acbd:#b3e0c9;--achd:#0a5c3b;--warn:#b45309;--warnbg:#fdf4e7;
+    --warnbd:#f0d9ac;--hl:#fde68a;--hlink:#5e4708;--sh:none}
+  #kitui-bar,.plan{display:none!important}
+  body{font-size:11.5px}
+  .topic{margin-bottom:.35rem;padding:.4rem .55rem}
+}
 </style>
 </head>
-<body data-subject="physics" data-tools="none">
+<body data-subject="physics">
 <div class="wrap">
 
-  <div class="hero">
-    <h1>📚 ห้องติว ม.6</h1>
-    <p>ข้อสอบฝึก · สื่อจำลอง · สรุป — กดเข้าได้เลย ไม่ต้องล็อกอิน ไม่ต้องติดตั้ง</p>
-    <div class="stat">
-      <span id="stTotal">— หน้า</span>
-      <span id="stSubj">— วิชา</span>
-      <span>เล่นบนมือถือได้</span>
-    </div>
+  <div class="cover">
+    <h1>⚡ ชีตสูตรฟิสิกส์ — โซนเขียว</h1>
+    <div class="sub">TSAM AP-Test '70 · เก็บ 34 จาก 84 ข้อ (40%) ด้วย 7 หัวข้อนี้</div>
+    <div class="when">เสาร์ 8 ส.ค. 69 · 08:00–11:00 · ห้อง SC1101 · ที่นั่ง 2</div>
   </div>
 
-  <div class="tools">
-    <input id="q" type="text" placeholder="🔍 พิมพ์ค้นหา เช่น ฮอร์โมน, วงจรไฟฟ้า, ข้อสอบ">
+  <div class="plan">
+    <b>แผนคืนนี้ — อ่านตามนี้พอ</b>
+    <table>
+      <tr><td>18:00–18:50</td><td>จลนศาสตร์ + นิวตัน</td><td style="text-align:right">10 ข้อ</td></tr>
+      <tr><td>19:00–19:50</td><td>โมเมนตัม + งาน-พลังงาน</td><td style="text-align:right">8 ข้อ</td></tr>
+      <tr><td>20:00–20:50</td><td>คลื่นกล + แสง</td><td style="text-align:right">10 ข้อ</td></tr>
+      <tr><td>21:00–21:50</td><td>ไฟฟ้ากระแสตรง</td><td style="text-align:right">6 ข้อ</td></tr>
+      <tr><td>22:00–22:30</td><td>อ่านชีตนี้รวดเดียวอีกรอบ</td><td style="text-align:right">—</td></tr>
+      <tr><td><b>23:00</b></td><td colspan="2"><b>นอน</b> — สอบ 8 โมง ต้องตื่น 6 โมง</td></tr>
+    </table>
   </div>
 
-  <div class="chips" id="kindRow">
-    <button class="chip on" data-kind="all">ทั้งหมด</button>
-    <button class="chip" data-kind="exam">📝 ข้อสอบ/เกมฝึก</button>
-    <button class="chip" data-kind="sim">🔬 สื่อจำลอง/3D</button>
-    <button class="chip" data-kind="note">📄 สรุป/ชีต</button>
-  </div>
-  <div class="chips" id="subjRow"></div>
-
-  <div id="list"></div>
-
-  <div class="note" id="hintTools">
-    💡 <b>ในหน้าเรียนทุกหน้ามีปุ่ม ⚙️ มุมขวาล่าง</b> — กดเพื่อ <b>สลับโหมดมืด/สว่าง</b> และ <b>ปรับขนาดตัวหนังสือ</b><br>
-    หน้าของ <b>คณิต · ฟิสิกส์ · เคมี</b> จะมีเพิ่มอีก 2 ปุ่ม: <b>✏️ ที่ทด</b> (เขียนด้วยนิ้ว/ปากกา มีหลายหน้า เซฟให้อัตโนมัติ)
-    และ <b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b>
+  <!-- ① จลนศาสตร์ -->
+  <div class="topic">
+    <h2>① จลนศาสตร์ <span class="n">5 ข้อ · เก็บฟรี</span></h2>
+    <div class="f">v = u + at &nbsp;·&nbsp; s = ut + ½at² &nbsp;·&nbsp; v² = u² + 2as &nbsp;·&nbsp; s = ½(u+v)t</div>
+    <ul>
+      <li><b>โจทย์บอกอะไรมา 3 ตัว → เลือกสูตรที่ไม่มีตัวที่โจทย์ไม่ถาม</b> (นี่คือเทคนิคทั้งหมดของบทนี้)</li>
+      <li><b>กราฟ v–t:</b> ความชัน = ความเร่ง · <mark>พื้นที่ใต้กราฟ = การกระจัด</mark></li>
+      <li>ตกอิสระ: u = 0, a = g = 9.8 (หรือ 10) m/s² · ขึ้นสูงสุด v = 0</li>
+      <li>โพรเจกไทล์: <b>แกน x กับ y คิดแยกกัน</b> เวลาเท่านั้นที่ใช้ร่วม · x: a=0 · y: a=−g</li>
+    </ul>
+    <div class="trap"><b>กับดัก:</b> ทิศทาง! ขึ้นเป็นบวก ลงเป็นลบ ต้องเลือกแล้วใช้ให้ตลอดข้อ</div>
   </div>
 
-  <footer>
-    ทำไว้ใช้เองและแบ่งเพื่อน · เนื้อหาสรุปจากคาบเรียน ม.6<br>
-    เจอตรงไหนผิดบอกได้ จะได้แก้
-  </footer>
+  <!-- ② นิวตัน -->
+  <div class="topic">
+    <h2>② แรงและกฎนิวตัน <span class="n">5 ข้อ</span></h2>
+    <div class="f">ΣF = ma &nbsp;·&nbsp; f<sub>s,max</sub> = μ<sub>s</sub>N &nbsp;·&nbsp; f<sub>k</sub> = μ<sub>k</sub>N &nbsp;·&nbsp; W = mg</div>
+    <ul>
+      <li><b>วาด free-body diagram ก่อนเสมอ</b> แล้วค่อยแตกแรงตามแกน</li>
+      <li><b>พื้นเอียงมุม θ:</b> ขนานพื้น = mg sin θ · ตั้งฉากพื้น = mg cos θ → N = mg cos θ</li>
+      <li>ลิฟต์: ขึ้นเร่ง → N = m(g+a) หนักขึ้น · ลงเร่ง → N = m(g−a) เบาลง</li>
+      <li>เชือกพาดรอก มวล m₁ m₂: a = (m₁−m₂)g / (m₁+m₂)</li>
+    </ul>
+    <div class="trap"><b>กับดัก:</b> N ไม่ได้เท่ากับ mg เสมอ! บนพื้นเอียงหรือในลิฟต์ต้องคิดใหม่ทุกครั้ง</div>
+  </div>
+
+  <!-- ③ โมเมนตัม -->
+  <div class="topic">
+    <h2>③ โมเมนตัม <span class="n">3 ข้อ</span></h2>
+    <div class="f">p = mv &nbsp;·&nbsp; J = FΔt = Δp &nbsp;·&nbsp; Σp<sub>ก่อน</sub> = Σp<sub>หลัง</sub></div>
+    <ul>
+      <li><b>โมเมนตัมอนุรักษ์เสมอในการชน</b> (ถ้าไม่มีแรงภายนอก) — ใช้ได้ทั้งยืดหยุ่นและไม่ยืดหยุ่น</li>
+      <li><b>ชนแบบยืดหยุ่น</b> → พลังงานจลน์อนุรักษ์ด้วย</li>
+      <li><b>ชนแบบไม่ยืดหยุ่นสมบูรณ์</b> → ติดกันไปด้วยกัน: m₁u₁ + m₂u₂ = (m₁+m₂)v</li>
+    </ul>
+    <div class="trap"><b>กับดัก:</b> โมเมนตัมเป็นเวกเตอร์ — ชนคนละทิศต้อง<b>ใส่เครื่องหมายลบ</b></div>
+  </div>
+
+  <!-- ④ งานและพลังงาน -->
+  <div class="topic">
+    <h2>④ งานและพลังงาน <span class="n">5 ข้อ</span></h2>
+    <div class="f">W = Fd cos θ &nbsp;·&nbsp; KE = ½mv² &nbsp;·&nbsp; PE = mgh &nbsp;·&nbsp; P = W/t = Fv</div>
+    <ul>
+      <li><b>อนุรักษ์พลังงานกล:</b> KE + PE คงที่ (ถ้าไม่มีแรงเสียดทาน) → ½mu² + mgh₁ = ½mv² + mgh₂</li>
+      <li>งาน–พลังงานจลน์: W<sub>รวม</sub> = ΔKE</li>
+      <li>สปริง: PE = ½kx²</li>
+    </ul>
+    <div class="trap"><b>กับดัก:</b> θ ใน W = Fd cos θ คือมุมระหว่าง<b>แรงกับการกระจัด</b> ไม่ใช่มุมพื้นเอียง ·
+      แรงตั้งฉากกับการเคลื่อนที่ <b>ทำงาน = 0</b> (เช่น แรง N, แรงสู่ศูนย์กลาง)</div>
+  </div>
+
+  <!-- ⑤ คลื่นกล -->
+  <div class="topic">
+    <h2>⑤ คลื่นกล <span class="n">5 ข้อ</span></h2>
+    <div class="f">v = fλ &nbsp;·&nbsp; T = 1/f &nbsp;·&nbsp; f<sub>บีต</sub> = |f₁ − f₂|</div>
+    <ul>
+      <li><b>คลื่นนิ่ง:</b> ระยะระหว่างปมถึงปมถัดไป = <mark>λ/2</mark> (ไม่ใช่ λ)</li>
+      <li>เส้นเชือก/ท่อปลายเปิดสองด้าน: L = nλ/2 → f = nv/2L</li>
+      <li>ท่อปลายปิดข้างเดียว: L = nλ/4 (n เป็นเลขคี่เท่านั้น)</li>
+      <li>ดอปเพลอร์: เข้าหากัน → ความถี่<b>สูงขึ้น</b> · ห่างออก → <b>ต่ำลง</b></li>
+    </ul>
+    <div class="trap"><b>กับดัก:</b> เปลี่ยนตัวกลาง → <b>ความถี่คงเดิมเสมอ</b> ที่เปลี่ยนคือ v กับ λ</div>
+  </div>
+
+  <!-- ⑥ แสง -->
+  <div class="topic">
+    <h2>⑥ แสง <span class="n">5 ข้อ</span></h2>
+    <div class="f">n₁ sin θ₁ = n₂ sin θ₂ &nbsp;·&nbsp; 1/f = 1/u + 1/v &nbsp;·&nbsp; m = −v/u &nbsp;·&nbsp; n = c/v</div>
+    <ul>
+      <li>มุมวัดจาก<b>เส้นปกติ</b> (เส้นตั้งฉากผิว) ไม่ใช่จากผิว</li>
+      <li><b>มุมวิกฤต:</b> sin θ<sub>c</sub> = n₂/n₁ — เกิดสะท้อนกลับหมดได้เมื่อไปจาก<b>ตัวกลางหนาแน่นกว่า → บางกว่า</b>เท่านั้น</li>
+      <li>เลนส์นูน/กระจกเว้า f เป็นบวก · เลนส์เว้า/กระจกนูน f เป็นลบ</li>
+      <li>ภาพจริงหัวกลับ (m ติดลบ) · ภาพเสมือนหัวตั้ง (m เป็นบวก)</li>
+    </ul>
+    <div class="trap"><b>กับดัก:</b> เครื่องหมาย! จำสั้น ๆ ว่า <b>ภาพจริงอยู่คนละฝั่งกับวัตถุ</b> แล้วเซ็ตเครื่องหมายตามนั้น</div>
+  </div>
+
+  <!-- ⑦ ไฟฟ้ากระแสตรง -->
+  <div class="topic">
+    <h2>⑦ ไฟฟ้ากระแสตรง <span class="n">6 ข้อ · เยอะสุดในโซนเขียว</span></h2>
+    <div class="f">V = IR &nbsp;·&nbsp; P = VI = I²R = V²/R &nbsp;·&nbsp; E = I(R + r)</div>
+    <ul>
+      <li><b>อนุกรม:</b> R<sub>รวม</sub> = R₁+R₂ · <b>กระแสเท่ากันทุกตัว</b> · แรงดันแบ่งกัน</li>
+      <li><b>ขนาน:</b> 1/R<sub>รวม</sub> = 1/R₁ + 1/R₂ · <b>แรงดันเท่ากันทุกตัว</b> · กระแสแบ่งกัน</li>
+      <li>สองตัวขนาน ใช้สูตรลัด: R = R₁R₂/(R₁+R₂)</li>
+      <li><b>Kirchhoff:</b> ที่จุดต่อ กระแสเข้า = กระแสออก · รอบวงปิด ผลรวมแรงดัน = 0</li>
+      <li><b>วีตสโตนสมดุล</b> (ไม่มีกระแสผ่านกัลวานอมิเตอร์): R₁/R₂ = R₃/R₄</li>
+      <li>แอมมิเตอร์ต่อ<b>อนุกรม</b> (ความต้านทานต่ำ) · โวลต์มิเตอร์ต่อ<b>ขนาน</b> (ความต้านทานสูง)</li>
+    </ul>
+    <div class="trap"><b>กับดัก:</b> ถ้าโจทย์มี <b>r (ความต้านทานภายในแบตเตอรี่)</b> อย่าลืมบวก —
+      แรงดันที่วัดได้จริงคือ V = E − Ir ไม่ใช่ E</div>
+  </div>
+
+  <div class="skip">
+    🔴 <b>คืนนี้ข้ามไปเลย ไม่ต้องเสียดาย</b> — อุณหพลศาสตร์ (8 ข้อ) และ การเหนี่ยวนำ/RLC (5 ข้อ)
+    รวม 13 ข้อ = 15% ของข้อสอบ ใช้เวลาเยอะแต่ได้น้อย
+    <br>🟡 ถ้าเหลือเวลาค่อยแตะ SHM (T = 2π√(m/k), T = 2π√(L/g)) กับ ของไหล (P = ρgh, แรงลอยตัว = ρ<sub>ของเหลว</sub>Vg)
+  </div>
+
+  <div class="topic" style="border-left-color:var(--warn)">
+    <h2 style="color:var(--warn)">✅ เช็กลิสต์เช้าพรุ่งนี้</h2>
+    <ul>
+      <li><b>บัตรประจำตัวผู้เข้าสอบ</b> (ปริ๊นต์ไว้หรือยัง?) + <b>บัตรประชาชน</b></li>
+      <li>ดินสอ 2B · ยางลบ · ปากกา · <b>เครื่องคิดเลข</b> (เช็กถ่านด้วย)</li>
+      <li>ห้อง <b>SC1101 ชั้น 1 อาคารคณะวิทยาศาสตร์ ม.พะเยา</b> · ที่นั่ง <b>2</b></li>
+      <li>สอบ <b>08:00</b> → ถึงก่อน <b>07:30</b> · ตื่น 06:00</li>
+      <li>กินข้าวเช้า — สอบ 3 ชั่วโมงเต็ม หิวกลางคันเสียสมาธิ</li>
+    </ul>
+  </div>
+
+  <div class="foot">
+    ⚡ ชีตนี้ครอบคลุมเฉพาะ <b>โซนเขียว 34 ข้อ</b> จาก blueprint TSAM '70 · ทำจาก <code>TSAM/study-plan-tsam.html</code><br>
+    อยากดูละเอียดกว่านี้ เปิดวิดเจ็ตเต็มในโฟลเดอร์ TSAM ได้เลย
+  </div>
 </div>
-
-<script src="catalog.js"></script>
-<script>
-const LIST = window.CATALOG || [];
-const $ = s=>document.querySelector(s);
-let fKind='all', fSubj='all', fQ='';
-
-/* ---- ชิปวิชา ---- */
-const subjects=[...new Set(LIST.map(x=>x.subj))];
-$('#subjRow').innerHTML = `<button class="chip on" data-subj="all">ทุกวิชา</button>` +
-  subjects.map(s=>{
-    const one=LIST.find(x=>x.subj===s);
-    return `<button class="chip" data-subj="${s}">${one.icon} ${s}<span class="n">${LIST.filter(x=>x.subj===s).length}</span></button>`;
-  }).join('');
-
-$('#stTotal').textContent = LIST.length+' หน้า';
-$('#stSubj').textContent  = subjects.length+' วิชา';
-
-function pass(x){
-  if(fKind!=='all' && x.kind!==fKind) return false;
-  if(fSubj!=='all' && x.subj!==fSubj) return false;
-  if(fQ && !(x.title+' '+x.subj+' '+x.path).toLowerCase().includes(fQ)) return false;
-  return true;
-}
-const KIND={exam:'ข้อสอบ',sim:'สื่อจำลอง',note:'สรุป'};
-
-function render(){
-  const rows=LIST.filter(pass);
-  if(!LIST.length){
-    $('#list').innerHTML=`<div class="warn">ยังไม่มีรายการ — ต้องรัน <code>pwsh -File site/build.ps1</code> ก่อน
-      เพื่อคัดลอกหน้าเรียนเข้ามาและสร้าง <code>catalog.js</code></div>`; return;
-  }
-  if(!rows.length){ $('#list').innerHTML='<div class="empty">ไม่เจอที่ค้นหา ลองพิมพ์สั้นลง</div>'; return; }
-  let html='';
-  for(const s of subjects){
-    const g=rows.filter(x=>x.subj===s); if(!g.length) continue;
-    html += `<h2 class="sec">${g[0].icon} ${s} <span class="line"></span>
-             <span style="font-size:.8rem;font-weight:600;color:var(--muted)">${g.length}</span></h2>
-             <div class="grid">` +
-      g.map(x=>`<a class="card s-${x.key}" href="${x.path}">
-                  <div class="t">${x.title}</div>
-                  <div class="m"><span class="k">${KIND[x.kind]}</span></div>
-                </a>`).join('') + `</div>`;
-  }
-  $('#list').innerHTML=html;
-}
-$('#kindRow').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;
-  fKind=b.dataset.kind; $('#kindRow').querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c===b)); render();});
-$('#subjRow').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;
-  fSubj=b.dataset.subj; $('#subjRow').querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c===b)); render();});
-$('#q').addEventListener('input',e=>{fQ=e.target.value.trim().toLowerCase();render();});
-render();
-</script>
 <!--KIT-UI v2.7 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>
 /* =============================================================================
