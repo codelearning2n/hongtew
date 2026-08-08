@@ -6,25 +6,25 @@
 <title>ข้อสอบ Unit 20 ระบบต่อมไร้ท่อ — คลังข้อสอบ + ฟิลเตอร์</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
 <!-- ============================================================
-     Unit20_ข้อสอบ_ฟิลเตอร์.html
-     คลังข้อสอบบท 20 (ระบบต่อมไร้ท่อ) รวมจาก
-       - Unit20_ข้อสอบฝึก_เฉลย.md
-       - Unit20_ข้อสอบเจาะ_แหล่งสร้าง-คู่ตรงข้าม-โรค_เฉลย.md
-     สไตล์ = _kit/design-tokens.css (data-subject="bio")
-     ไฟล์เดียวจบ · ออฟไลน์ได้ · มือถือเล่นได้
-     ============================================================ -->
+ Unit20_ข้อสอบ_ฟิลเตอร์.html
+ คลังข้อสอบบท 20 (ระบบต่อมไร้ท่อ) รวมจาก
+ - Unit20_ข้อสอบฝึก_เฉลย.md
+ - Unit20_ข้อสอบเจาะ_แหล่งสร้าง-คู่ตรงข้าม-โรค_เฉลย.md
+ สไตล์ = _kit/design-tokens.css (data-subject="bio")
+ ไฟล์เดียวจบ · ออฟไลน์ได้ · มือถือเล่นได้
+ ============================================================ -->
 <style>
 :root{
-  --font:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
-  --bg:#eef2f7;--ink:#1e293b;--muted:#64748b;--line:#e2e8f0;--card:#fff;--soft:#f8fafc;
-  --shadow:0 1px 4px rgba(15,23,42,.08);
-  --ok:#059669;--bad:#dc2626;
-  --warn-bg:#fff7ed;--warn-bd:#f97316;--tip-bg:#ecfdf5;--tip-bd:#10b981;
-  --info-bg:#eff6ff;--info-bd:#3b82f6;--steps-bg:#fffbeb;--steps-bd:#fcd34d;--steps-dash:#fde68a;
-  --hot-bg:#fee2e2;--hot-ink:#b91c1c;--badge-bg:#fef9c3;--badge-ink:#854d0e;
-  --radius:14px;--radius-sm:10px;--radius-pill:999px;
-  --accent:#4f46e5;--accent-head:#312e81;--accent-ink:#3730a3;--accent-soft:#eef2ff;
-  --accent-bd:#c7d2fe;--accent-chip:#e0e7ff;--accent-ghost:#a5b4fc;
+ --font:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
+ --bg:#eef2f7;--ink:#1e293b;--muted:#64748b;--line:#e2e8f0;--card:#fff;--soft:#f8fafc;
+ --shadow:0 1px 4px rgba(15,23,42,.08);
+ --ok:#059669;--bad:#dc2626;
+ --warn-bg:#fff7ed;--warn-bd:#f97316;--tip-bg:#ecfdf5;--tip-bd:#10b981;
+ --info-bg:#eff6ff;--info-bd:#3b82f6;--steps-bg:#fffbeb;--steps-bd:#fcd34d;--steps-dash:#fde68a;
+ --hot-bg:#fee2e2;--hot-ink:#b91c1c;--badge-bg:#fef9c3;--badge-ink:#854d0e;
+ --radius:14px;--radius-sm:10px;--radius-pill:999px;
+ --accent:#4f46e5;--accent-head:#312e81;--accent-ink:#3730a3;--accent-soft:#eef2ff;
+ --accent-bd:#c7d2fe;--accent-chip:#e0e7ff;--accent-ghost:#a5b4fc;
 }
 body[data-subject="bio"]{--accent:#16a34a;--accent-head:#14532d;--accent-ink:#166534;--accent-soft:#f0fdf4;--accent-bd:#bbf7d0;--accent-chip:#dcfce7;--accent-ghost:#86efac;--bg:#f0f4ef}
 
@@ -56,7 +56,7 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
 .f-label:first-child{margin-top:0}
 .f-row{display:flex;flex-wrap:wrap;gap:6px}
 .fchip{border:1.5px solid var(--accent-bd);background:#fff;color:var(--accent-ink);border-radius:var(--radius-pill);
-  padding:6px 13px;font-size:.87rem;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px}
+ padding:6px 13px;font-size:.87rem;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px}
 .fchip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
 .fchip .n{font-size:.75rem;opacity:.75;font-weight:700}
 .fchip.trap{border-color:#fca5a5;color:#b91c1c}
@@ -67,7 +67,7 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
 /* ---------- แถบคะแนน sticky ---------- */
 .scorebar{position:sticky;top:0;z-index:20;background:var(--bg);padding:8px 0 6px;margin-bottom:4px}
 .scorebar .inner{background:var(--accent-head);color:#fff;border-radius:var(--radius-sm);padding:9px 14px;
-  display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;font-size:.88rem;font-weight:600}
+ display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;font-size:.88rem;font-weight:600}
 .scorebar .pct{font-size:1.05rem;font-weight:700}
 .bar{height:6px;background:rgba(255,255,255,.25);border-radius:99px;overflow:hidden;flex:1;min-width:80px}
 .bar > i{display:block;height:100%;width:0;background:#4ade80;transition:width .25s}
@@ -84,7 +84,7 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
 .q-text{font-size:1rem;font-weight:500;margin-bottom:10px;white-space:pre-line}
 .opts{display:flex;flex-direction:column;gap:6px}
 .opt{display:flex;gap:8px;align-items:flex-start;border:1.5px solid var(--line);background:var(--soft);
-  border-radius:var(--radius-sm);padding:9px 12px;cursor:pointer;font-size:.94rem;text-align:left;font-family:inherit;color:var(--ink);width:100%}
+ border-radius:var(--radius-sm);padding:9px 12px;cursor:pointer;font-size:.94rem;text-align:left;font-family:inherit;color:var(--ink);width:100%}
 .opt:hover{border-color:var(--accent-ghost)}
 .opt .k{font-weight:700;color:var(--accent-ink);flex-shrink:0}
 .opt.sel{border-color:var(--accent);background:var(--accent-soft)}
@@ -108,7 +108,7 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
 
 /* ---------- ข้อเลือกหลายคำตอบ ---------- */
 .opt .box{width:20px;height:20px;border:2px solid #94a3b8;border-radius:5px;flex-shrink:0;margin-top:1px;
-  display:flex;align-items:center;justify-content:center;font-size:.8rem;color:#fff;line-height:1}
+ display:flex;align-items:center;justify-content:center;font-size:.8rem;color:#fff;line-height:1}
 .opt.sel .box{background:var(--accent);border-color:var(--accent)}
 .opt.right .box{background:var(--ok);border-color:var(--ok)}
 .opt.wrongpick .box{background:var(--bad);border-color:var(--bad)}
@@ -121,7 +121,7 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
 .blanks{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:7px}
 .blk{display:flex;align-items:center;gap:7px}
 .blk .bn{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-size:.8rem;font-weight:700;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0}
+ display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .blk input{flex:1;min-width:0;padding:8px 10px;border:2px solid #cbd5e1;border-radius:8px;font-family:inherit;font-size:.92rem}
 .blk input:focus{outline:none;border-color:var(--accent)}
 .blk input.ok{border-color:var(--ok);background:#ecfdf5}
@@ -136,106 +136,106 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
 <body data-subject="bio">
 <div class="wrap">
 
-  <header>
-    <h1>🧪 ข้อสอบ Unit 20 — ระบบต่อมไร้ท่อ (ฮอร์โมน)</h1>
-    <div class="chips">
-      <span class="chip hot">🎯 จุดเน้น: ตำแหน่งตัวรับ</span>
-      <span class="chip" id="totalChip">— ข้อ</span>
-      <span class="chip">🪤 = ข้อกับดัก</span>
-    </div>
-  </header>
+ <header>
+ <h1>🧪 ข้อสอบ Unit 20 — ระบบต่อมไร้ท่อ (ฮอร์โมน)</h1>
+ <div class="chips">
+ <span class="chip hot">🎯 จุดเน้น: ตำแหน่งตัวรับ</span>
+ <span class="chip" id="totalChip">— ข้อ</span>
+ <span class="chip">🪤 = ข้อกับดัก</span>
+ </div>
+ </header>
 
-  <div class="filters">
-    <div class="f-label">📂 หมวดหมู่เนื้อหา</div>
-    <div class="f-row" id="catRow"></div>
+ <div class="filters">
+ <div class="f-label">📂 หมวดหมู่เนื้อหา</div>
+ <div class="f-row" id="catRow"></div>
 
-    <div class="f-label">✍️ รูปแบบข้อสอบ</div>
-    <div class="f-row" id="typeRow"></div>
+ <div class="f-label">✍️ รูปแบบข้อสอบ</div>
+ <div class="f-row" id="typeRow"></div>
 
-    <div class="f-label">⚡ ตัวกรองเร็ว</div>
-    <div class="f-row">
-      <button class="fchip trap" data-quick="trap">🪤 เฉพาะข้อกับดัก</button>
-      <button class="fchip" data-quick="wrong">❌ เฉพาะข้อที่ตอบผิด</button>
-      <button class="fchip" data-quick="todo">⬜ เฉพาะข้อที่ยังไม่ได้ทำ</button>
-    </div>
+ <div class="f-label">⚡ ตัวกรองเร็ว</div>
+ <div class="f-row">
+ <button class="fchip trap" data-quick="trap">🪤 เฉพาะข้อกับดัก</button>
+ <button class="fchip" data-quick="wrong">❌ เฉพาะข้อที่ตอบผิด</button>
+ <button class="fchip" data-quick="todo">⬜ เฉพาะข้อที่ยังไม่ได้ทำ</button>
+ </div>
 
-    <div class="f-tools">
-      <input type="text" id="search" placeholder="🔍 ค้นหาคำในโจทย์ เช่น cortisol, คอพอก">
-      <button class="btn ghost small" id="btnShuffle">🔀 สุ่มลำดับ</button>
-      <button class="btn ghost small" id="btnMode">📄 โหมด: ดูทั้งหมด</button>
-      <button class="btn ghost small" id="btnReset">♻️ ล้างคำตอบ</button>
-    </div>
-  </div>
+ <div class="f-tools">
+ <input type="text" id="search" placeholder="🔍 ค้นหาคำในโจทย์ เช่น cortisol, คอพอก">
+ <button class="btn ghost small" id="btnShuffle">🔀 สุ่มลำดับ</button>
+ <button class="btn ghost small" id="btnMode">📄 โหมด: ดูทั้งหมด</button>
+ <button class="btn ghost small" id="btnReset">♻️ ล้างคำตอบ</button>
+ </div>
+ </div>
 
-  <div class="scorebar">
-    <div class="inner">
-      <span id="shown">แสดง 0 ข้อ</span>
-      <div class="bar"><i id="barFill"></i></div>
-      <span class="pct" id="pct">0 / 0</span>
-    </div>
-  </div>
+ <div class="scorebar">
+ <div class="inner">
+ <span id="shown">แสดง 0 ข้อ</span>
+ <div class="bar"><i id="barFill"></i></div>
+ <span class="pct" id="pct">0 / 0</span>
+ </div>
+ </div>
 
-  <div id="list"></div>
-  <div class="navbar" id="navbar" style="display:none">
-    <button class="btn ghost small" id="prevBtn">‹ ก่อนหน้า</button>
-    <span class="pos" id="pos">1 / 1</span>
-    <button class="btn ghost small" id="nextBtn">ถัดไป ›</button>
-  </div>
+ <div id="list"></div>
+ <div class="navbar" id="navbar" style="display:none">
+ <button class="btn ghost small" id="prevBtn">‹ ก่อนหน้า</button>
+ <span class="pos" id="pos">1 / 1</span>
+ <button class="btn ghost small" id="nextBtn">ถัดไป ›</button>
+ </div>
 
-  <div class="card">
-    <h2>📌 กติกาที่ต้องจำก่อนทำ</h2>
-    <div class="tip">💡 <b>ตัวรับอยู่ไหน:</b> ฮอร์โมน<b>ละลายน้ำ</b> (peptide ทุกตัว + amine อย่าง epinephrine) ผ่านเยื่อหุ้มเซลล์ไม่ได้ → <b>ตัวรับที่ผิวเซลล์</b> · ฮอร์โมน<b>ละลายไขมัน</b> (steroid ทุกตัว + <b>thyroxine</b>) ผ่านเข้าไปได้ → <b>ตัวรับในเซลล์</b><br>สูตรจำ: <b>steroid + thyroxine = ในเซลล์ · ที่เหลือ = ผิวเซลล์</b></div>
-    <div class="warn">⚠️ <b>กับดักที่ออกซ้ำ:</b> ADH/oxytocin <b>สร้าง</b>ที่ hypothalamus แต่ <b>หลั่ง</b>ที่ posterior pituitary · β-cell = insulin (ลดน้ำตาล) / α-cell = glucagon (เพิ่มน้ำตาล) · Simple goiter = hypo / Toxic goiter = hyper · Cretinism (เด็ก) / Myxedema (ผู้ใหญ่) · Gigantism (เด็ก) / Acromegaly (ผู้ใหญ่)</div>
-    <p class="sub" style="margin:8px 0 0">ที่มา: <code>2026 บทที่ 20 ระบบต่อมไร้ท่อ.pdf</code> (Wipasiri Soonthornchai, PhD) · รวมข้อสอบจาก <code>Unit20_ข้อสอบฝึก_เฉลย.md</code> + <code>Unit20_ข้อสอบเจาะ_แหล่งสร้าง-คู่ตรงข้าม-โรค_เฉลย.md</code></p>
-  </div>
+ <div class="card">
+ <h2>📌 กติกาที่ต้องจำก่อนทำ</h2>
+ <div class="tip">💡 <b>ตัวรับอยู่ไหน:</b> ฮอร์โมน<b>ละลายน้ำ</b> (peptide ทุกตัว + amine อย่าง epinephrine) ผ่านเยื่อหุ้มเซลล์ไม่ได้ → <b>ตัวรับที่ผิวเซลล์</b> · ฮอร์โมน<b>ละลายไขมัน</b> (steroid ทุกตัว + <b>thyroxine</b>) ผ่านเข้าไปได้ → <b>ตัวรับในเซลล์</b><br>สูตรจำ: <b>steroid + thyroxine = ในเซลล์ · ที่เหลือ = ผิวเซลล์</b></div>
+ <div class="warn">⚠️ <b>กับดักที่ออกซ้ำ:</b> ADH/oxytocin <b>สร้าง</b>ที่ hypothalamus แต่ <b>หลั่ง</b>ที่ posterior pituitary · β-cell = insulin (ลดน้ำตาล) / α-cell = glucagon (เพิ่มน้ำตาล) · Simple goiter = hypo / Toxic goiter = hyper · Cretinism (เด็ก) / Myxedema (ผู้ใหญ่) · Gigantism (เด็ก) / Acromegaly (ผู้ใหญ่)</div>
+ <p class="sub" style="margin:8px 0 0">ที่มา: <code>2026 บทที่ 20 ระบบต่อมไร้ท่อ.pdf</code> รวมข้อสอบจาก <code>Unit20_ข้อสอบฝึก_เฉลย.md</code> + <code>Unit20_ข้อสอบเจาะ_แหล่งสร้าง-คู่ตรงข้าม-โรค_เฉลย.md</code></p>
+ </div>
 
 </div>
 
 <script>
 /* ============================================================
-   1) นิยามหมวดหมู่ + รูปแบบ
-   ============================================================ */
+ 1) นิยามหมวดหมู่ + รูปแบบ
+ ============================================================ */
 const CATS={
-  source:{n:'แหล่งสร้าง (ต่อม→ฮอร์โมน)',i:'🏭'},
-  func:{n:'หน้าที่ฮอร์โมน',i:'⚙️'},
-  recep:{n:'ตำแหน่งตัวรับ 🎯',i:'📍'},
-  anta:{n:'คู่ตรงข้าม',i:'⚖️'},
-  dis:{n:'โรคจากฮอร์โมน',i:'🩺'},
-  fb:{n:'Feedback & โครงสร้าง',i:'🔁'}
+ source:{n:'แหล่งสร้าง (ต่อม→ฮอร์โมน)',i:'🏭'},
+ func:{n:'หน้าที่ฮอร์โมน',i:'⚙️'},
+ recep:{n:'ตำแหน่งตัวรับ 🎯',i:'📍'},
+ anta:{n:'คู่ตรงข้าม',i:'⚖️'},
+ dis:{n:'โรคจากฮอร์โมน',i:'🩺'},
+ fb:{n:'Feedback & โครงสร้าง',i:'🔁'}
 };
 const TYPES={sel:'จับคู่',mc:'ปรนัย',multi:'เลือกหลายข้อ',label:'ดูรูปเติมคำ',tf:'ถูก/ผิด',fill:'เติมคำ',open:'เขียนตอบ'};
 
 /* ชุดตัวเลือกสำหรับข้อจับคู่ */
 const POOL={
  gland:['Hypothalamus (ไฮโพทาลามัส)','Anterior pituitary (ใต้สมองส่วนหน้า)','Posterior pituitary (ใต้สมองส่วนหลัง)',
-        'Pineal (ไพเนียล)','Thyroid (ไทรอยด์)','Parathyroid (พาราไทรอยด์)','Thymus (ไทมัส)',
-        'Adrenal cortex (หมวกไตส่วนนอก)','Adrenal medulla (หมวกไตส่วนใน)','Pancreas (ตับอ่อน)',
-        'Testis (อัณฑะ)','Ovary (รังไข่)','Stomach (กระเพาะอาหาร)','Duodenum (ลำไส้เล็ก)',
-        'Kidney (ไต)','Placenta (รก)'],
+ 'Pineal (ไพเนียล)','Thyroid (ไทรอยด์)','Parathyroid (พาราไทรอยด์)','Thymus (ไทมัส)',
+ 'Adrenal cortex (หมวกไตส่วนนอก)','Adrenal medulla (หมวกไตส่วนใน)','Pancreas (ตับอ่อน)',
+ 'Testis (อัณฑะ)','Ovary (รังไข่)','Stomach (กระเพาะอาหาร)','Duodenum (ลำไส้เล็ก)',
+ 'Kidney (ไต)','Placenta (รก)'],
  cause:['thyroxine ต่ำ (เด็ก)','thyroxine ต่ำ (ผู้ใหญ่)','thyroxine ต่ำ (ขาด iodine)','thyroxine สูง (hyperthyroid)',
-        'cortisol สูง','GH สูง (เด็ก)','GH สูง (ผู้ใหญ่)','GH ต่ำ (เด็ก)','insulin ผิดปกติ']
+ 'cortisol สูง','GH สูง (เด็ก)','GH สูง (ผู้ใหญ่)','GH ต่ำ (เด็ก)','insulin ผิดปกติ']
 };
 /* ชุดตัวเลือกมาตรฐานของข้อ "ตำแหน่งตัวรับ" */
 const R4=['ละลายน้ำ → ตัวรับที่ผิวเซลล์','ละลายน้ำ → ตัวรับในเซลล์','ละลายไขมัน → ตัวรับที่ผิวเซลล์','ละลายไขมัน → ตัวรับในเซลล์'];
 
 /* ============================================================
-   ภาพประกอบสำหรับข้อ "ดูรูปเติมคำ"  (วาดเป็น SVG เองทั้งหมด
-   ไม่ได้ก๊อปรูปจากที่ไหน จึงเปิดออฟไลน์ได้และไม่ติดลิขสิทธิ์)
-   ============================================================ */
+ ภาพประกอบสำหรับข้อ "ดูรูปเติมคำ" (วาดเป็น SVG เองทั้งหมด
+ ไม่ได้ก๊อปรูปจากที่ไหน จึงเปิดออฟไลน์ได้และไม่ติดลิขสิทธิ์)
+ ============================================================ */
 const NUM=(x,y,n)=>'<circle cx="'+x+'" cy="'+y+'" r="13" fill="#16a34a"/>'+
-  '<text x="'+x+'" y="'+(y+5)+'" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">'+n+'</text>';
+ '<text x="'+x+'" y="'+(y+5)+'" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">'+n+'</text>';
 const LN=(x1,y1,x2,y2)=>'<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="#64748b" stroke-width="1.6"/>'+
-  '<circle cx="'+x1+'" cy="'+y1+'" r="2.6" fill="#334155"/>';
+ '<circle cx="'+x1+'" cy="'+y1+'" r="2.6" fill="#334155"/>';
 const BOX=(x,y,w,h,fill,txt,sz)=>'<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="9" fill="'+fill+'" stroke="#475569" stroke-width="1.4"/>'+
-  '<text x="'+(x+w/2)+'" y="'+(y+h/2+5)+'" text-anchor="middle" font-size="'+(sz||14)+'" font-weight="600" fill="#0f172a">'+txt+'</text>';
+ '<text x="'+(x+w/2)+'" y="'+(y+h/2+5)+'" text-anchor="middle" font-size="'+(sz||14)+'" font-weight="600" fill="#0f172a">'+txt+'</text>';
 
 /* --- รูปที่ 1: ตำแหน่งต่อมไร้ท่อในร่างกาย --- */
 const SVG_BODY='<svg viewBox="0 0 470 600" xmlns="http://www.w3.org/2000/svg">'+
  '<g fill="#f7dbc9" stroke="#e0b49b" stroke-width="1.4">'+
-  '<ellipse cx="235" cy="58" rx="42" ry="50"/><rect x="217" y="98" width="36" height="34"/>'+
-  '<path d="M160,130 Q235,108 310,130 L322,246 Q322,296 292,326 L178,326 Q148,296 148,246 Z"/>'+
-  '<rect x="112" y="136" width="33" height="196" rx="16"/><rect x="325" y="136" width="33" height="196" rx="16"/>'+
-  '<rect x="182" y="320" width="43" height="252" rx="20"/><rect x="245" y="320" width="43" height="252" rx="20"/>'+
+ '<ellipse cx="235" cy="58" rx="42" ry="50"/><rect x="217" y="98" width="36" height="34"/>'+
+ '<path d="M160,130 Q235,108 310,130 L322,246 Q322,296 292,326 L178,326 Q148,296 148,246 Z"/>'+
+ '<rect x="112" y="136" width="33" height="196" rx="16"/><rect x="325" y="136" width="33" height="196" rx="16"/>'+
+ '<rect x="182" y="320" width="43" height="252" rx="20"/><rect x="245" y="320" width="43" height="252" rx="20"/>'+
  '</g>'+
  '<ellipse cx="235" cy="52" rx="29" ry="30" fill="#e8cbb0" stroke="#c9a487" stroke-width="1.2"/>'+
  '<circle cx="250" cy="42" r="4.5" fill="#8b5cf6"/>'+
@@ -259,13 +259,13 @@ const SVG_BODY='<svg viewBox="0 0 470 600" xmlns="http://www.w3.org/2000/svg">'+
 const SVG_PIT='<svg viewBox="0 0 460 300" xmlns="http://www.w3.org/2000/svg">'+
  '<defs><marker id="ah" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">'+
  '<path d="M0,0 L7,3 L0,6 z" fill="#475569"/></marker></defs>'+
- BOX(150,14,160,44,'#fde68a','?  (1)')+
+ BOX(150,14,160,44,'#fde68a','? (1)')+
  '<line x1="200" y1="58" x2="130" y2="140" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>'+
  '<line x1="262" y1="58" x2="330" y2="140" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>'+
  '<text x="104" y="104" font-size="13" fill="#0f172a" font-weight="600">ส่งสาร (2)</text>'+
  '<text x="300" y="104" font-size="13" fill="#0f172a" font-weight="600">ส่งตาม (5)</text>'+
- BOX(28,144,180,44,'#bfdbfe','?  (3)')+
- BOX(252,144,180,44,'#bbf7d0','?  (4)')+
+ BOX(28,144,180,44,'#bfdbfe','? (3)')+
+ BOX(252,144,180,44,'#bbf7d0','? (4)')+
  '<text x="118" y="214" text-anchor="middle" font-size="12.5" fill="#334155">หลั่ง TSH · ACTH · FSH · LH · GH</text>'+
  '<text x="342" y="214" text-anchor="middle" font-size="12.5" fill="#334155">หลั่ง ADH · oxytocin</text>'+
  '<text x="342" y="234" text-anchor="middle" font-size="12" fill="#b91c1c" font-weight="700">(เก็บ+หลั่ง ไม่ได้สร้างเอง)</text>'+
@@ -293,8 +293,8 @@ const SVG_FB='<svg viewBox="0 0 460 330" xmlns="http://www.w3.org/2000/svg">'+
  '</svg>';
 
 /* ============================================================
-   2) คลังข้อสอบ  (c=หมวด, t=รูปแบบ, q=โจทย์, o=ตัวเลือก, a=เฉลย, e=คำอธิบาย, x=กับดัก)
-   ============================================================ */
+ 2) คลังข้อสอบ (c=หมวด, t=รูปแบบ, q=โจทย์, o=ตัวเลือก, a=เฉลย, e=คำอธิบาย, x=กับดัก)
+ ============================================================ */
 const BANK=[
 /* ---------- A. แหล่งสร้าง : จับคู่ ---------- */
 {c:'source',t:'sel',p:'gland',q:'Insulin สร้างจากต่อม/อวัยวะใด',a:'Pancreas (ตับอ่อน)',e:'สร้างจาก <b>β-cell</b> ของ islets of Langerhans ในตับอ่อน'},
@@ -542,15 +542,15 @@ const BANK=[
 /* ---------- G. เลือกหลายข้อ (เลือกได้มากกว่า 1 คำตอบ) ---------- */
 {c:'fb',t:'multi',q:'พิจารณากลไกต่อไปนี้ ว่ากลไกใดเข้ากับ <b>positive feedback</b>',
  o:['Oxytocin กระตุ้นการบีบตัวของมดลูก และทำให้มีการหลั่ง oxytocin เพิ่มขึ้นอีก',
-    'T3/T4 สูงแล้วทำให้ TSH ลดลง',
-    'Estrogen ที่สูงมากก่อนตกไข่ กระตุ้นให้เกิด LH surge จนตกไข่',
-    'แคลเซียมสูง กระตุ้น calcitonin ให้ดึงแคลเซียมกลับสู่ปกติ'],a:[0,2],x:1,
+ 'T3/T4 สูงแล้วทำให้ TSH ลดลง',
+ 'Estrogen ที่สูงมากก่อนตกไข่ กระตุ้นให้เกิด LH surge จนตกไข่',
+ 'แคลเซียมสูง กระตุ้น calcitonin ให้ดึงแคลเซียมกลับสู่ปกติ'],a:[0,2],x:1,
  e:'positive feedback = <b>ผลที่เกิดยิ่งเสริมให้กระตุ้นแรงขึ้นอีก</b> จนจบด้วยเหตุการณ์หนึ่ง (คลอด / ตกไข่)<br>ส่วนข้อ ข และ ง เป็นการ<b>ดึงค่ากลับสู่สมดุล</b> = negative feedback'},
 {c:'fb',t:'multi',q:'ข้อความใดเกี่ยวกับเส้นทาง hypothalamus → ต่อมใต้สมอง <b>ถูกต้อง</b>',
  o:['releasing / inhibiting hormone ทำหน้าที่ควบคุมการหลั่งฮอร์โมนจาก anterior pituitary',
-    'ADH และ oxytocin เกี่ยวข้องกับ posterior pituitary โดยถูกลำเลียงมาตาม neurosecretory cell',
-    'releasing hormone คือฮอร์โมนที่ยับยั้งการหลั่งจาก anterior pituitary',
-    'oxytocin ทำหน้าที่หลักในการควบคุมสมดุลน้ำในเลือด'],a:[0,1],x:1,
+ 'ADH และ oxytocin เกี่ยวข้องกับ posterior pituitary โดยถูกลำเลียงมาตาม neurosecretory cell',
+ 'releasing hormone คือฮอร์โมนที่ยับยั้งการหลั่งจาก anterior pituitary',
+ 'oxytocin ทำหน้าที่หลักในการควบคุมสมดุลน้ำในเลือด'],a:[0,1],x:1,
  e:'ผิดตรงไหน: <b>ข้อ ค</b> — releasing = <b>กระตุ้น</b> (ตัวยับยั้งคือ inhibiting hormone) · <b>ข้อ ง</b> — ตัวคุมสมดุลน้ำคือ <b>ADH</b> ไม่ใช่ oxytocin'},
 {c:'anta',t:'multi',q:'ฮอร์โมนใดบ้างที่ทำให้ระดับน้ำตาลในเลือด <b>เพิ่มขึ้น</b>',
  o:['Glucagon','Insulin','Cortisol','Adrenaline (epinephrine)'],a:[0,2,3],
@@ -569,60 +569,60 @@ const BANK=[
  e:'Acromegaly เกิดจาก <b>GH</b> สูงในผู้ใหญ่ ไม่เกี่ยวกับ thyroxine · อีก 3 ข้อคือ thyroxine ต่ำทั้งหมด (เด็ก / ผู้ใหญ่ / ขาด iodine)'},
 {c:'anta',t:'multi',q:'ข้อใดถูกต้องเกี่ยวกับ <b>calcitonin</b> และ <b>parathormone</b>',
  o:['calcitonin ลดระดับแคลเซียมในเลือด','ทั้งสองตัวสร้างจากต่อมเดียวกัน',
-    'PTH หลั่งเมื่อแคลเซียมในเลือดต่ำ','PTH สลายแคลเซียมออกจากกระดูก'],a:[0,2,3],x:1,
+ 'PTH หลั่งเมื่อแคลเซียมในเลือดต่ำ','PTH สลายแคลเซียมออกจากกระดูก'],a:[0,2,3],x:1,
  e:'🪤 ข้อ ข ผิด — calcitonin มาจาก <b>ไทรอยด์</b> · PTH มาจาก <b>พาราไทรอยด์</b> คนละต่อมกัน'},
 {c:'recep',t:'multi',q:'ข้อใดถูกต้องเกี่ยวกับฮอร์โมนกลุ่ม <b>สเตียรอยด์</b>',
  o:['สังเคราะห์มาจาก cholesterol','ละลายในไขมัน จึงผ่านเยื่อหุ้มเซลล์ได้',
-    'ออกฤทธิ์โดยเข้าไปควบคุมการถอดรหัส DNA สร้างโปรตีนใหม่',
-    'ออกฤทธิ์เร็วมากผ่าน second messenger (cAMP)'],a:[0,1,2],
+ 'ออกฤทธิ์โดยเข้าไปควบคุมการถอดรหัส DNA สร้างโปรตีนใหม่',
+ 'ออกฤทธิ์เร็วมากผ่าน second messenger (cAMP)'],a:[0,1,2],
  e:'ข้อ ง เป็นวิธีของฮอร์โมน<b>ละลายน้ำ</b> (เร็วแต่สั้น) · สเตียรอยด์ออกฤทธิ์<b>ช้ากว่าแต่ผลอยู่นาน</b>'},
 {c:'fb',t:'multi',q:'ข้อใดเป็นลักษณะของ <b>negative feedback</b>',
  o:['ดึงค่าที่เปลี่ยนไปให้กลับเข้าสู่ช่วงสมดุล','ผลลัพธ์ปลายทางย้อนไปยับยั้งการหลั่งฮอร์โมนต้นทาง',
-    'ยิ่งเกิดผลลัพธ์ ยิ่งเสริมให้กระตุ้นแรงขึ้นเรื่อย ๆ','เป็นรูปแบบที่พบมากที่สุดในระบบฮอร์โมน'],a:[0,1,3],
+ 'ยิ่งเกิดผลลัพธ์ ยิ่งเสริมให้กระตุ้นแรงขึ้นเรื่อย ๆ','เป็นรูปแบบที่พบมากที่สุดในระบบฮอร์โมน'],a:[0,1,3],
  e:'ข้อ ค คือนิยามของ <b>positive</b> feedback'},
 
 /* ---------- H. ปรนัยแนววิเคราะห์บทบาท ---------- */
 {c:'fb',t:'mc',q:'ถ้าร่างกายมีแนวโน้มสูญเสียน้ำมากและต้องการลดการสูญเสียน้ำ ข้อใด <b>สอดคล้อง</b> กับบทบาทของเส้นทาง hypothalamus → posterior pituitary มากที่สุด',
  o:['hypothalamus กระตุ้นการหลั่ง oxytocin เพื่อเพิ่มการบีบตัวของมดลูก',
-    'posterior pituitary ปล่อย ADH เพื่อช่วยดูดน้ำกลับเข้าสู่หลอดเลือด',
-    'hypothalamus หลั่ง inhibiting hormone เพื่อยับยั้งการทำงานของไตโดยตรง',
-    'anterior pituitary หลั่ง releasing hormone เพื่อให้ระดับ oxytocin เพิ่มขึ้นในกระแสเลือด'],a:1,
+ 'posterior pituitary ปล่อย ADH เพื่อช่วยดูดน้ำกลับเข้าสู่หลอดเลือด',
+ 'hypothalamus หลั่ง inhibiting hormone เพื่อยับยั้งการทำงานของไตโดยตรง',
+ 'anterior pituitary หลั่ง releasing hormone เพื่อให้ระดับ oxytocin เพิ่มขึ้นในกระแสเลือด'],a:1,
  e:'ADH = antidiuretic hormone แปลตรงตัวว่า "ต้านการขับปัสสาวะ" → ดูดน้ำกลับที่ท่อขดส่วนปลาย+ท่อรวม → เสียน้ำน้อยลง<br>ข้อ ง ผิดซ้อน 2 ชั้น: releasing hormone มาจาก hypothalamus (ไม่ใช่ anterior) และ oxytocin ไม่เกี่ยวกับสมดุลน้ำ',x:1},
 {c:'fb',t:'mc',q:'ในภาวะที่ "ค่าฮอร์โมนปลายทาง" เพิ่มขึ้น แล้วไปทำให้ "ฮอร์โมนต้นทางที่กระตุ้นการสร้าง" ลดลง แบบนี้จัดเป็น feedback แบบใด',
  o:['Negative feedback เพราะช่วยดึงค่ากลับเข้าสู่ช่วงสมดุล','Positive feedback เพราะทำให้การกระตุ้นเพิ่มขึ้นเรื่อย ๆ',
-    'No feedback เพราะไม่มีความสัมพันธ์ระหว่างผลย้อนกลับกับการสร้างฮอร์โมน','Cyclic feedback เพราะเกิดเป็นวงจรที่ไม่เกี่ยวกับการยับยั้ง'],a:0,
+ 'No feedback เพราะไม่มีความสัมพันธ์ระหว่างผลย้อนกลับกับการสร้างฮอร์โมน','Cyclic feedback เพราะเกิดเป็นวงจรที่ไม่เกี่ยวกับการยับยั้ง'],a:0,
  e:'"ผลย้อนกลับไป<b>ยับยั้ง</b>การกระตุ้นเดิม ทำให้ค่ากลับสู่สมดุล" คือนิยามของ negative feedback ตรงตัว เช่น thyroxine สูง → ยับยั้ง TSH'},
 
 /* ---------- I. ดูรูปเติมคำ ---------- */
 {c:'source',t:'label',img:SVG_BODY,q:'ดูแผนภาพร่างกาย แล้วเติมชื่อ <b>ต่อมไร้ท่อ</b> ตามหมายเลข (พิมพ์ไทยหรืออังกฤษก็ได้)',
  bl:[{n:1,a:['pineal','pinealgland','ไพเนียล','ต่อมไพเนียล']},
-     {n:2,a:['hypothalamus','ไฮโพทาลามัส','ไฮโปทาลามัส','ไฮโพธาลามัส']},
-     {n:3,a:['pituitary','pituitarygland','ต่อมใต้สมอง','ใต้สมอง','พิทูอิทารี']},
-     {n:4,a:['thyroid','thyroidgland','ไทรอยด์','ต่อมไทรอยด์']},
-     {n:5,a:['thymus','ไทมัส','ต่อมไทมัส']},
-     {n:6,a:['adrenal','adrenalgland','adrenalglands','หมวกไต','ต่อมหมวกไต']},
-     {n:7,a:['pancreas','ตับอ่อน']},
-     {n:8,a:['testis','testes','ovary','ovaries','gonad','อัณฑะ','รังไข่','อวัยวะสืบพันธุ์']}],
+ {n:2,a:['hypothalamus','ไฮโพทาลามัส','ไฮโปทาลามัส','ไฮโพธาลามัส']},
+ {n:3,a:['pituitary','pituitarygland','ต่อมใต้สมอง','ใต้สมอง','พิทูอิทารี']},
+ {n:4,a:['thyroid','thyroidgland','ไทรอยด์','ต่อมไทรอยด์']},
+ {n:5,a:['thymus','ไทมัส','ต่อมไทมัส']},
+ {n:6,a:['adrenal','adrenalgland','adrenalglands','หมวกไต','ต่อมหมวกไต']},
+ {n:7,a:['pancreas','ตับอ่อน']},
+ {n:8,a:['testis','testes','ovary','ovaries','gonad','อัณฑะ','รังไข่','อวัยวะสืบพันธุ์']}],
  e:'เรียงจากบนลงล่าง: <b>ไพเนียล → ไฮโพทาลามัส → ต่อมใต้สมอง → ไทรอยด์ → ไทมัส → หมวกไต → ตับอ่อน → อัณฑะ/รังไข่</b><br>🪤 พาราไทรอยด์ไม่ได้อยู่ในภาพนี้เพราะมันซ่อนอยู่<b>ด้านหลัง</b>ต่อมไทรอยด์ (4 ต่อม)'},
 {c:'fb',t:'label',img:SVG_PIT,q:'เติมชื่อในแผนภาพเส้นทาง hypothalamus → ต่อมใต้สมอง',
  bl:[{n:1,a:['hypothalamus','ไฮโพทาลามัส','ไฮโปทาลามัส']},
-     {n:2,a:['releasinghormone','releasing/inhibitinghormone','inhibitinghormone','releasinghormones','releasing','ฮอร์โมนกระตุ้น','รีลีสซิงฮอร์โมน']},
-     {n:3,a:['anteriorpituitary','anterior','ต่อมใต้สมองส่วนหน้า','ส่วนหน้า','ใต้สมองส่วนหน้า']},
-     {n:4,a:['posteriorpituitary','posterior','ต่อมใต้สมองส่วนหลัง','ส่วนหลัง','ใต้สมองส่วนหลัง']},
-     {n:5,a:['neurosecretorycell','neurosecretorycells','neurosecretory','เซลล์ประสาท','แอกซอน','axon','เส้นประสาท']}],
+ {n:2,a:['releasinghormone','releasing/inhibitinghormone','inhibitinghormone','releasinghormones','releasing','ฮอร์โมนกระตุ้น','รีลีสซิงฮอร์โมน']},
+ {n:3,a:['anteriorpituitary','anterior','ต่อมใต้สมองส่วนหน้า','ส่วนหน้า','ใต้สมองส่วนหน้า']},
+ {n:4,a:['posteriorpituitary','posterior','ต่อมใต้สมองส่วนหลัง','ส่วนหลัง','ใต้สมองส่วนหลัง']},
+ {n:5,a:['neurosecretorycell','neurosecretorycells','neurosecretory','เซลล์ประสาท','แอกซอน','axon','เส้นประสาท']}],
  x:1,
  e:'ซ้าย = <b>anterior</b> ถูกสั่งด้วย <b>releasing / inhibiting hormone</b> ที่ไหลมาตามหลอดเลือด<br>ขวา = <b>posterior</b> ได้ ADH/oxytocin มาตาม <b>neurosecretory cell</b> (ใยประสาท) แล้ว<b>แค่เก็บกับหลั่ง ไม่ได้สร้างเอง</b> 🪤'},
 {c:'fb',t:'label',img:SVG_FB,q:'เติมชื่อฮอร์โมนและชนิดของ feedback ในวงจรควบคุมไทรอยด์ (ลูกศรน้ำเงินประ = ย้อนกลับไปยับยั้ง)',
  bl:[{n:1,a:['trh','ทีอาร์เอช']},
-     {n:2,a:['tsh','ทีเอสเอช']},
-     {n:3,a:['thyroxine','t4','t3','t3/t4','t4/t3','ไทรอกซิน','ธัยรอกซิน']},
-     {n:4,a:['negativefeedback','negative','ยับยั้ง','ฟีดแบ็กเชิงลบ','feedbackเชิงลบ','เชิงลบ']}],
+ {n:2,a:['tsh','ทีเอสเอช']},
+ {n:3,a:['thyroxine','t4','t3','t3/t4','t4/t3','ไทรอกซิน','ธัยรอกซิน']},
+ {n:4,a:['negativefeedback','negative','ยับยั้ง','ฟีดแบ็กเชิงลบ','feedbackเชิงลบ','เชิงลบ']}],
  e:'TRH (hypothalamus) → TSH (ต่อมใต้สมองส่วนหน้า) → thyroxine (ไทรอยด์) → เร่งเมแทบอลิซึมของเซลล์<br>เมื่อ thyroxine สูงพอ จะย้อนไป<b>ยับยั้ง 2 จุด</b> ทั้ง TSH และ TRH = <b>negative feedback</b><br>🪤 ขาดไอโอดีน → สร้าง thyroxine ไม่ได้ → ตัวยับยั้งหาย → TSH พุ่งค้าง → ต่อมโต = คอพอก'}
 ];
 
 /* ============================================================
-   3) สถานะ + ตัวช่วย
-   ============================================================ */
+ 3) สถานะ + ตัวช่วย
+ ============================================================ */
 BANK.forEach((q,i)=>{q.id=i;q.state=null;q.pick=null;});
 let order=BANK.map(q=>q.id);
 let filt={cat:new Set(Object.keys(CATS)),ty:new Set(Object.keys(TYPES)),quick:null,search:''};
@@ -631,290 +631,290 @@ let single=false,cur=0;
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
 const KEY=['ก','ข','ค','ง','จ','ฉ'];
-const norm=s=>(s||'').toLowerCase().replace(/[\s\-().·]/g,'');
+const norm=s=>(s||'').toLowerCase.replace(/[\s\-.·]/g,'');
 function fillOK(q,v){const n=norm(v);return n.length>0 && q.a.some(a=>n.includes(norm(a)));}
 /* ข้อเติมคำจากรูปต้องเทียบแบบ "ตรงกันพอดี" ไม่ใช่ contains
-   ไม่งั้นพิมพ์ "parathyroid" จะผ่านข้อที่เฉลยว่า "thyroid" */
+ ไม่งั้นพิมพ์ "parathyroid" จะผ่านข้อที่เฉลยว่า "thyroid" */
 function labelOK(b,v){const n=norm(v);return n.length>0 && b.a.some(a=>norm(a)===n);}
 
 /* ---- สร้างชิปฟิลเตอร์ ---- */
-function buildChips(){
-  $('#catRow').innerHTML=Object.entries(CATS).map(([k,v])=>{
-    const n=BANK.filter(q=>q.c===k).length;
-    return `<button class="fchip on" data-cat="${k}">${v.i} ${v.n} <span class="n">${n}</span></button>`;
-  }).join('');
-  $('#typeRow').innerHTML=Object.entries(TYPES).map(([k,v])=>{
-    const n=BANK.filter(q=>q.t===k).length;
-    return `<button class="fchip on" data-ty="${k}">${v} <span class="n">${n}</span></button>`;
-  }).join('');
-  $('#totalChip').textContent=BANK.length+' ข้อ';
+function buildChips{
+ $('#catRow').innerHTML=Object.entries(CATS).map(([k,v])=>{
+ const n=BANK.filter(q=>q.c===k).length;
+ return `<button class="fchip on" data-cat="${k}">${v.i} ${v.n} <span class="n">${n}</span></button>`;
+ }).join('');
+ $('#typeRow').innerHTML=Object.entries(TYPES).map(([k,v])=>{
+ const n=BANK.filter(q=>q.t===k).length;
+ return `<button class="fchip on" data-ty="${k}">${v} <span class="n">${n}</span></button>`;
+ }).join('');
+ $('#totalChip').textContent=BANK.length+' ข้อ';
 }
 
 /* ---- ตัวกรอง ---- */
 function pass(q){
-  if(!filt.cat.has(q.c))return false;
-  if(!filt.ty.has(q.t))return false;
-  if(filt.quick==='trap'&&!q.x)return false;
-  if(filt.quick==='wrong'&&q.state!=='wrong')return false;
-  if(filt.quick==='todo'&&q.state!==null)return false;
-  if(filt.search){
-    const blTxt=(q.bl||[]).map(b=>b.a.join(' ')).join(' ');
-    const ansTxt=(q.t==='fill'||q.t==='sel')?(q.a.join?q.a.join(' '):q.a):'';
-    const hay=(q.q+' '+(q.o||[]).join(' ')+' '+(q.e||'')+' '+ansTxt+' '+blTxt).toLowerCase();
-    if(!hay.includes(filt.search))return false;
-  }
-  return true;
+ if(!filt.cat.has(q.c))return false;
+ if(!filt.ty.has(q.t))return false;
+ if(filt.quick==='trap'&&!q.x)return false;
+ if(filt.quick==='wrong'&&q.state!=='wrong')return false;
+ if(filt.quick==='todo'&&q.state!==null)return false;
+ if(filt.search){
+ const blTxt=(q.bl||[]).map(b=>b.a.join(' ')).join(' ');
+ const ansTxt=(q.t==='fill'||q.t==='sel')?(q.a.join?q.a.join(' '):q.a):'';
+ const hay=(q.q+' '+(q.o||[]).join(' ')+' '+(q.e||'')+' '+ansTxt+' '+blTxt).toLowerCase;
+ if(!hay.includes(filt.search))return false;
+ }
+ return true;
 }
-const visible=()=>order.map(i=>BANK[i]).filter(pass);
+const visible==>order.map(i=>BANK[i]).filter(pass);
 
 /* ============================================================
-   4) วาดข้อสอบ
-   ============================================================ */
+ 4) วาดข้อสอบ
+ ============================================================ */
 function qHTML(q,no){
-  const st=q.state==='ok'?'correct':q.state==='wrong'?'wrong':'';
-  let body='';
-  if(q.t==='mc'||q.t==='tf'){
-    const opts=q.t==='tf'?['ถูก','ผิด']:q.o;
-    const ansIdx=q.t==='tf'?(q.a?0:1):q.a;
-    body=`<div class="opts ${q.t==='tf'?'tfrow':''}">`+opts.map((o,i)=>{
-      let cls='opt';
-      if(q.state){cls+=' locked';
-        if(i===ansIdx)cls+=' right';
-        else if(i===q.pick)cls+=' wrongpick';
-      }else if(q.pick===i)cls+=' sel';
-      return `<button class="${cls}" data-pick="${i}">${q.t==='tf'?'':`<span class="k">${KEY[i]}.</span>`}<span>${o}</span></button>`;
-    }).join('')+`</div>`;
-  }
-  else if(q.t==='sel'){
-    const pool=POOL[q.p];
-    body=`<div class="ansrow"><select data-sel ${q.state?'disabled':''}>
-      <option value="">— เลือกคำตอบ —</option>
-      ${pool.map(o=>`<option ${q.pick===o?'selected':''}>${o}</option>`).join('')}
-      </select>${q.state?'':'<button class="btn small" data-check>ตรวจ</button>'}</div>`;
-  }
-  else if(q.t==='fill'){
-    body=`<div class="ansrow"><input type="text" data-fill placeholder="พิมพ์คำตอบ" value="${q.pick?esc(q.pick):''}" ${q.state?'disabled':''}>
-      ${q.state?'':'<button class="btn small" data-check>ตรวจ</button>'}</div>`;
-  }
-  else if(q.t==='multi'){
-    const picked=q.pick||[];
-    body=`<div class="multi-hint">☑️ เลือกได้มากกว่า 1 ข้อ — ต้องเลือกให้ครบและไม่เกิน จึงจะนับว่าถูก</div>
-      <div class="opts">`+q.o.map((o,i)=>{
-        let cls='opt';
-        const isAns=q.a.indexOf(i)>-1, isPick=picked.indexOf(i)>-1;
-        if(q.state){ cls+=' locked';
-          if(isAns&&isPick)cls+=' right';
-          else if(!isAns&&isPick)cls+=' wrongpick';
-          else if(isAns&&!isPick)cls+=' missed';
-        } else if(isPick) cls+=' sel';
-        const mark=q.state? (isAns?'✓':(isPick?'✗':'')) : (isPick?'✓':'');
-        return `<button class="${cls}" data-mpick="${i}"><span class="box">${mark}</span><span>${o}</span></button>`;
-      }).join('')+`</div>`+
-      (q.state?'':`<div class="ansrow" style="margin-top:8px"><button class="btn small" data-check>ตรวจคำตอบ</button></div>`);
-  }
-  else if(q.t==='label'){
-    const p=q.pick||[];
-    body=`<div class="dgwrap">${q.img}</div><div class="blanks">`+
-      q.bl.map((b,i)=>{
-        const done=q.state, right=done&&labelOK(b,p[i]);
-        return `<div class="blk"><span class="bn">${b.n}</span>
-          <input type="text" data-b="${i}" placeholder="เติมคำตอบ" value="${p[i]?esc(p[i]):''}"
-            class="${done?(right?'ok':'bad'):''}" ${done?'disabled':''}>
-          ${done&&!right?`<span class="sol">= ${b.a[0]}</span>`:''}</div>`;
-      }).join('')+`</div>`+
-      (q.state?'':`<div class="ansrow" style="margin-top:9px"><button class="btn small" data-check>ตรวจคำตอบ</button></div>`);
-  }
-  else if(q.t==='open'){
-    body=`<div class="ansrow"><button class="btn ghost small" data-model>📖 ดูแนวคำตอบ</button></div>
-      <div class="model">${q.e}</div>`;
-  }
-  const fbTxt=q.state==='ok'?'✓ ถูกต้อง!':q.state==='wrong'?('✗ ยังไม่ใช่ — เฉลย: '+answerText(q)):'';
-  return `<div class="q ${st}" data-id="${q.id}">
-    <div class="q-head">
-      <span class="q-no">${no}</span>
-      <span class="q-tag">${CATS[q.c].i} ${CATS[q.c].n}</span>
-      <span class="q-tag ty">${TYPES[q.t]}</span>
-      ${q.x?'<span class="q-tag tr">🪤 กับดัก</span>':''}
-    </div>
-    <div class="q-text">${q.q}</div>
-    ${body}
-    <div class="fb ${q.state==='ok'?'ok':q.state==='wrong'?'bad':''}">${fbTxt}</div>
-    ${q.t!=='open'?`<div class="exp ${q.state?'show':''}"><b>อธิบาย:</b> ${q.e}</div>`:''}
-  </div>`;
+ const st=q.state==='ok'?'correct':q.state==='wrong'?'wrong':'';
+ let body='';
+ if(q.t==='mc'||q.t==='tf'){
+ const opts=q.t==='tf'?['ถูก','ผิด']:q.o;
+ const ansIdx=q.t==='tf'?(q.a?0:1):q.a;
+ body=`<div class="opts ${q.t==='tf'?'tfrow':''}">`+opts.map((o,i)=>{
+ let cls='opt';
+ if(q.state){cls+=' locked';
+ if(i===ansIdx)cls+=' right';
+ else if(i===q.pick)cls+=' wrongpick';
+ }else if(q.pick===i)cls+=' sel';
+ return `<button class="${cls}" data-pick="${i}">${q.t==='tf'?'':`<span class="k">${KEY[i]}.</span>`}<span>${o}</span></button>`;
+ }).join('')+`</div>`;
+ }
+ else if(q.t==='sel'){
+ const pool=POOL[q.p];
+ body=`<div class="ansrow"><select data-sel ${q.state?'disabled':''}>
+ <option value="">— เลือกคำตอบ</option>
+ ${pool.map(o=>`<option ${q.pick===o?'selected':''}>${o}</option>`).join('')}
+ </select>${q.state?'':'<button class="btn small" data-check>ตรวจ</button>'}</div>`;
+ }
+ else if(q.t==='fill'){
+ body=`<div class="ansrow"><input type="text" data-fill placeholder="พิมพ์คำตอบ" value="${q.pick?esc(q.pick):''}" ${q.state?'disabled':''}>
+ ${q.state?'':'<button class="btn small" data-check>ตรวจ</button>'}</div>`;
+ }
+ else if(q.t==='multi'){
+ const picked=q.pick||[];
+ body=`<div class="multi-hint">☑️ เลือกได้มากกว่า 1 ข้อ — ต้องเลือกให้ครบและไม่เกิน จึงจะนับว่าถูก</div>
+ <div class="opts">`+q.o.map((o,i)=>{
+ let cls='opt';
+ const isAns=q.a.indexOf(i)>-1, isPick=picked.indexOf(i)>-1;
+ if(q.state){ cls+=' locked';
+ if(isAns&&isPick)cls+=' right';
+ else if(!isAns&&isPick)cls+=' wrongpick';
+ else if(isAns&&!isPick)cls+=' missed';
+ } else if(isPick) cls+=' sel';
+ const mark=q.state? (isAns?'✓':(isPick?'✗':'')) : (isPick?'✓':'');
+ return `<button class="${cls}" data-mpick="${i}"><span class="box">${mark}</span><span>${o}</span></button>`;
+ }).join('')+`</div>`+
+ (q.state?'':`<div class="ansrow" style="margin-top:8px"><button class="btn small" data-check>ตรวจคำตอบ</button></div>`);
+ }
+ else if(q.t==='label'){
+ const p=q.pick||[];
+ body=`<div class="dgwrap">${q.img}</div><div class="blanks">`+
+ q.bl.map((b,i)=>{
+ const done=q.state, right=done&&labelOK(b,p[i]);
+ return `<div class="blk"><span class="bn">${b.n}</span>
+ <input type="text" data-b="${i}" placeholder="เติมคำตอบ" value="${p[i]?esc(p[i]):''}"
+ class="${done?(right?'ok':'bad'):''}" ${done?'disabled':''}>
+ ${done&&!right?`<span class="sol">= ${b.a[0]}</span>`:''}</div>`;
+ }).join('')+`</div>`+
+ (q.state?'':`<div class="ansrow" style="margin-top:9px"><button class="btn small" data-check>ตรวจคำตอบ</button></div>`);
+ }
+ else if(q.t==='open'){
+ body=`<div class="ansrow"><button class="btn ghost small" data-model>📖 ดูแนวคำตอบ</button></div>
+ <div class="model">${q.e}</div>`;
+ }
+ const fbTxt=q.state==='ok'?'✓ ถูกต้อง!':q.state==='wrong'?('✗ ยังไม่ใช่ — เฉลย: '+answerText(q)):'';
+ return `<div class="q ${st}" data-id="${q.id}">
+ <div class="q-head">
+ <span class="q-no">${no}</span>
+ <span class="q-tag">${CATS[q.c].i} ${CATS[q.c].n}</span>
+ <span class="q-tag ty">${TYPES[q.t]}</span>
+ ${q.x?'<span class="q-tag tr">🪤 กับดัก</span>':''}
+ </div>
+ <div class="q-text">${q.q}</div>
+ ${body}
+ <div class="fb ${q.state==='ok'?'ok':q.state==='wrong'?'bad':''}">${fbTxt}</div>
+ ${q.t!=='open'?`<div class="exp ${q.state?'show':''}"><b>อธิบาย:</b> ${q.e}</div>`:''}
+ </div>`;
 }
 function answerText(q){
-  if(q.t==='tf')return q.a?'ถูก':'ผิด';
-  if(q.t==='mc')return KEY[q.a]+'. '+q.o[q.a];
-  if(q.t==='sel')return q.a;
-  if(q.t==='fill')return q.a[0];
-  if(q.t==='multi')return q.a.map(i=>KEY[i]).join(' และ ');
-  if(q.t==='label')return q.bl.map(b=>b.n+'='+b.a[0]).join(' · ');
-  return '';
+ if(q.t==='tf')return q.a?'ถูก':'ผิด';
+ if(q.t==='mc')return KEY[q.a]+'. '+q.o[q.a];
+ if(q.t==='sel')return q.a;
+ if(q.t==='fill')return q.a[0];
+ if(q.t==='multi')return q.a.map(i=>KEY[i]).join(' และ ');
+ if(q.t==='label')return q.bl.map(b=>b.n+'='+b.a[0]).join(' · ');
+ return '';
 }
 
-function render(){
-  const vis=visible();
-  const list=$('#list');
-  if(!vis.length){
-    list.innerHTML='<div class="empty">ไม่มีข้อสอบที่ตรงกับตัวกรอง<br>ลองเปิดหมวดเพิ่ม หรือกดตัวกรองเร็วออก</div>';
-    $('#navbar').style.display='none';
-  }else if(single){
-    if(cur>=vis.length)cur=0;
-    list.innerHTML=qHTML(vis[cur],cur+1);
-    $('#navbar').style.display='flex';
-    $('#pos').textContent=(cur+1)+' / '+vis.length;
-    $('#prevBtn').disabled=cur===0;
-    $('#nextBtn').disabled=cur===vis.length-1;
-  }else{
-    list.innerHTML=vis.map((q,i)=>qHTML(q,i+1)).join('');
-    $('#navbar').style.display='none';
-  }
-  $('#shown').textContent='แสดง '+vis.length+' ข้อ';
-  const auto=BANK.filter(q=>q.t!=='open');
-  const done=auto.filter(q=>q.state).length, ok=auto.filter(q=>q.state==='ok').length;
-  $('#pct').textContent=ok+' / '+done+(done?'  ('+Math.round(ok/done*100)+'%)':'');
-  $('#barFill').style.width=(done?ok/auto.length*100:0)+'%';
+function render{
+ const vis=visible;
+ const list=$('#list');
+ if(!vis.length){
+ list.innerHTML='<div class="empty">ไม่มีข้อสอบที่ตรงกับตัวกรอง<br>ลองเปิดหมวดเพิ่ม หรือกดตัวกรองเร็วออก</div>';
+ $('#navbar').style.display='none';
+ }else if(single){
+ if(cur>=vis.length)cur=0;
+ list.innerHTML=qHTML(vis[cur],cur+1);
+ $('#navbar').style.display='flex';
+ $('#pos').textContent=(cur+1)+' / '+vis.length;
+ $('#prevBtn').disabled=cur===0;
+ $('#nextBtn').disabled=cur===vis.length-1;
+ }else{
+ list.innerHTML=vis.map((q,i)=>qHTML(q,i+1)).join('');
+ $('#navbar').style.display='none';
+ }
+ $('#shown').textContent='แสดง '+vis.length+' ข้อ';
+ const auto=BANK.filter(q=>q.t!=='open');
+ const done=auto.filter(q=>q.state).length, ok=auto.filter(q=>q.state==='ok').length;
+ $('#pct').textContent=ok+' / '+done+(done?' ('+Math.round(ok/done*100)+'%)':'');
+ $('#barFill').style.width=(done?ok/auto.length*100:0)+'%';
 }
 
 /* ============================================================
-   5) ตรวจคำตอบ
-   ============================================================ */
+ 5) ตรวจคำตอบ
+ ============================================================ */
 function grade(q,correct,pick){
-  q.pick=pick; q.state=correct?'ok':'wrong';
+ q.pick=pick; q.state=correct?'ok':'wrong';
 }
 $('#list').addEventListener('click',e=>{
-  const card=e.target.closest('.q'); if(!card)return;
-  const q=BANK[+card.dataset.id];
-  const opt=e.target.closest('[data-pick]');
-  if(opt&&!q.state){
-    const i=+opt.dataset.pick;
-    const ansIdx=q.t==='tf'?(q.a?0:1):q.a;
-    grade(q,i===ansIdx,i); render(); return;
-  }
-  /* เลือกหลายข้อ: กดสลับติ๊ก ยังไม่ตรวจจนกว่าจะกดปุ่มตรวจ */
-  const mopt=e.target.closest('[data-mpick]');
-  if(mopt&&!q.state){
-    const i=+mopt.dataset.mpick;
-    const cur=(q.pick||[]).slice();
-    const at=cur.indexOf(i);
-    if(at>-1)cur.splice(at,1); else cur.push(i);
-    q.pick=cur;
-    /* อย่าเรียก render() ที่วาดใหม่ทั้ง 100+ ข้อ แค่ติ๊ก 1 ครั้ง — บนมือถือจะหน่วงและเด้งตำแหน่ง
-       สลับคลาสเฉพาะปุ่มที่กดพอ */
-    const on=at<0;
-    mopt.classList.toggle('sel',on);
-    mopt.querySelector('.box').textContent = on?'✓':'';
-    return;
-  }
-  if(e.target.closest('[data-model]')){
-    card.querySelector('.model').classList.toggle('show'); return;
-  }
-  if(e.target.closest('[data-check]')){
-    if(q.t==='sel'){
-      const v=card.querySelector('[data-sel]').value;
-      if(!v)return;
-      grade(q,v===q.a,v);
-    }else if(q.t==='fill'){
-      const v=card.querySelector('[data-fill]').value;
-      if(!v.trim())return;
-      grade(q,fillOK(q,v),v);
-    }else if(q.t==='multi'){
-      const p=(q.pick||[]).slice();
-      if(!p.length)return;                       /* ยังไม่ได้เลือกอะไรเลย */
-      const a=q.a.slice().sort((x,y)=>x-y), s=p.slice().sort((x,y)=>x-y);
-      grade(q, a.length===s.length && a.every((v,i)=>v===s[i]), p);
-    }else if(q.t==='label'){
-      const vals=[...card.querySelectorAll('[data-b]')].map(el=>el.value);
-      if(!vals.some(v=>v.trim()))return;          /* ยังไม่ได้กรอกสักช่อง */
-      grade(q, q.bl.every((b,i)=>labelOK(b,vals[i])), vals);
-    }
-    render(); return;
-  }
+ const card=e.target.closest('.q'); if(!card)return;
+ const q=BANK[+card.dataset.id];
+ const opt=e.target.closest('[data-pick]');
+ if(opt&&!q.state){
+ const i=+opt.dataset.pick;
+ const ansIdx=q.t==='tf'?(q.a?0:1):q.a;
+ grade(q,i===ansIdx,i); render; return;
+ }
+ /* เลือกหลายข้อ: กดสลับติ๊ก ยังไม่ตรวจจนกว่าจะกดปุ่มตรวจ */
+ const mopt=e.target.closest('[data-mpick]');
+ if(mopt&&!q.state){
+ const i=+mopt.dataset.mpick;
+ const cur=(q.pick||[]).slice;
+ const at=cur.indexOf(i);
+ if(at>-1)cur.splice(at,1); else cur.push(i);
+ q.pick=cur;
+ /* อย่าเรียก render ที่วาดใหม่ทั้ง 100+ ข้อ แค่ติ๊ก 1 ครั้ง — บนมือถือจะหน่วงและเด้งตำแหน่ง
+ สลับคลาสเฉพาะปุ่มที่กดพอ */
+ const on=at<0;
+ mopt.classList.toggle('sel',on);
+ mopt.querySelector('.box').textContent = on?'✓':'';
+ return;
+ }
+ if(e.target.closest('[data-model]')){
+ card.querySelector('.model').classList.toggle('show'); return;
+ }
+ if(e.target.closest('[data-check]')){
+ if(q.t==='sel'){
+ const v=card.querySelector('[data-sel]').value;
+ if(!v)return;
+ grade(q,v===q.a,v);
+ }else if(q.t==='fill'){
+ const v=card.querySelector('[data-fill]').value;
+ if(!v.trim)return;
+ grade(q,fillOK(q,v),v);
+ }else if(q.t==='multi'){
+ const p=(q.pick||[]).slice;
+ if(!p.length)return; /* ยังไม่ได้เลือกอะไรเลย */
+ const a=q.a.slice.sort((x,y)=>x-y), s=p.slice.sort((x,y)=>x-y);
+ grade(q, a.length===s.length && a.every((v,i)=>v===s[i]), p);
+ }else if(q.t==='label'){
+ const vals=[...card.querySelectorAll('[data-b]')].map(el=>el.value);
+ if(!vals.some(v=>v.trim))return; /* ยังไม่ได้กรอกสักช่อง */
+ grade(q, q.bl.every((b,i)=>labelOK(b,vals[i])), vals);
+ }
+ render; return;
+ }
 });
 /* เก็บสิ่งที่พิมพ์ไว้ทันที ไม่งั้นถ้ามีการ re-render (เช่นไปติ๊กข้ออื่น) คำที่กรอกค้างไว้จะหาย */
 $('#list').addEventListener('input',e=>{
-  if(!e.target.matches('[data-b]'))return;
-  const card=e.target.closest('.q'); const q=BANK[+card.dataset.id];
-  q.pick=[...card.querySelectorAll('[data-b]')].map(x=>x.value);
+ if(!e.target.matches('[data-b]'))return;
+ const card=e.target.closest('.q'); const q=BANK[+card.dataset.id];
+ q.pick=[...card.querySelectorAll('[data-b]')].map(x=>x.value);
 });
 $('#list').addEventListener('keydown',e=>{
-  if(e.key!=='Enter')return;
-  if(e.target.matches('[data-fill]')||e.target.matches('[data-b]')){
-    const b=e.target.closest('.q').querySelector('[data-check]'); if(b)b.click();
-  }
+ if(e.key!=='Enter')return;
+ if(e.target.matches('[data-fill]')||e.target.matches('[data-b]')){
+ const b=e.target.closest('.q').querySelector('[data-check]'); if(b)b.click;
+ }
 });
 
 /* ============================================================
-   6) ฟิลเตอร์ + เครื่องมือ
-   ============================================================ */
+ 6) ฟิลเตอร์ + เครื่องมือ
+ ============================================================ */
 $('#catRow').addEventListener('click',e=>{
-  const b=e.target.closest('[data-cat]'); if(!b)return;
-  const k=b.dataset.cat;
-  filt.cat.has(k)?filt.cat.delete(k):filt.cat.add(k);
-  b.classList.toggle('on'); cur=0; render();
+ const b=e.target.closest('[data-cat]'); if(!b)return;
+ const k=b.dataset.cat;
+ filt.cat.has(k)?filt.cat.delete(k):filt.cat.add(k);
+ b.classList.toggle('on'); cur=0; render;
 });
 $('#typeRow').addEventListener('click',e=>{
-  const b=e.target.closest('[data-ty]'); if(!b)return;
-  const k=b.dataset.ty;
-  filt.ty.has(k)?filt.ty.delete(k):filt.ty.add(k);
-  b.classList.toggle('on'); cur=0; render();
+ const b=e.target.closest('[data-ty]'); if(!b)return;
+ const k=b.dataset.ty;
+ filt.ty.has(k)?filt.ty.delete(k):filt.ty.add(k);
+ b.classList.toggle('on'); cur=0; render;
 });
 document.querySelectorAll('[data-quick]').forEach(b=>{
-  b.addEventListener('click',()=>{
-    const k=b.dataset.quick;
-    const turnOn = filt.quick!==k;
-    filt.quick = turnOn?k:null;
-    document.querySelectorAll('[data-quick]').forEach(x=>x.classList.toggle('on',x.dataset.quick===filt.quick));
-    cur=0; render();
-  });
+ b.addEventListener('click',=>{
+ const k=b.dataset.quick;
+ const turnOn = filt.quick!==k;
+ filt.quick = turnOn?k:null;
+ document.querySelectorAll('[data-quick]').forEach(x=>x.classList.toggle('on',x.dataset.quick===filt.quick));
+ cur=0; render;
+ });
 });
-$('#search').addEventListener('input',e=>{filt.search=e.target.value.trim().toLowerCase();cur=0;render();});
-$('#btnShuffle').addEventListener('click',()=>{
-  for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];}
-  cur=0; render();
+$('#search').addEventListener('input',e=>{filt.search=e.target.value.trim.toLowerCase;cur=0;render;});
+$('#btnShuffle').addEventListener('click',=>{
+ for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random*(i+1));[order[i],order[j]]=[order[j],order[i]];}
+ cur=0; render;
 });
-$('#btnMode').addEventListener('click',()=>{
-  single=!single; cur=0;
-  $('#btnMode').textContent=single?'🃏 โหมด: ทีละข้อ':'📄 โหมด: ดูทั้งหมด';
-  render(); window.scrollTo({top:0,behavior:'smooth'});
+$('#btnMode').addEventListener('click',=>{
+ single=!single; cur=0;
+ $('#btnMode').textContent=single?'🃏 โหมด: ทีละข้อ':'📄 โหมด: ดูทั้งหมด';
+ render; window.scrollTo({top:0,behavior:'smooth'});
 });
-$('#btnReset').addEventListener('click',()=>{
-  BANK.forEach(q=>{q.state=null;q.pick=null;});
-  filt.quick=null;
-  document.querySelectorAll('[data-quick]').forEach(x=>x.classList.remove('on'));
-  cur=0; render();
+$('#btnReset').addEventListener('click',=>{
+ BANK.forEach(q=>{q.state=null;q.pick=null;});
+ filt.quick=null;
+ document.querySelectorAll('[data-quick]').forEach(x=>x.classList.remove('on'));
+ cur=0; render;
 });
-$('#prevBtn').addEventListener('click',()=>{if(cur>0){cur--;render();window.scrollTo({top:0,behavior:'smooth'});}});
-$('#nextBtn').addEventListener('click',()=>{const v=visible();if(cur<v.length-1){cur++;render();window.scrollTo({top:0,behavior:'smooth'});}});
+$('#prevBtn').addEventListener('click',=>{if(cur>0){cur--;render;window.scrollTo({top:0,behavior:'smooth'});}});
+$('#nextBtn').addEventListener('click',=>{const v=visible;if(cur<v.length-1){cur++;render;window.scrollTo({top:0,behavior:'smooth'});}});
 
-buildChips(); render();
+buildChips; render;
 </script>
 <!--KIT-UI v2.7 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>
 /* =============================================================================
-   _kit/ui-controls.js  —  KIT UI  v1.0
-   แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
-     🌙/☀️  โหมดมืด / สว่าง   (จำค่าไว้ใน localStorage)
-     A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
-     ✏️  ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
-     🧮  เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
+ _kit/ui-controls.js — KIT UI v1.0
+ แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
+ 🌙/☀️ โหมดมืด / สว่าง (จำค่าไว้ใน localStorage)
+ A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
+ ✏️ ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
+ 🧮 เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
 
-   ── วิธีใช้ ────────────────────────────────────────────────────────────────
-   ห้ามแก้โค้ดนี้ในไฟล์ widget!  แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
-       pwsh -File _kit/apply-ui.ps1
-   สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
-   (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
+ ── วิธีใช้ ────────────────────────────────────────────────────────────────
+ ห้ามแก้โค้ดนี้ในไฟล์ widget! แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
+ pwsh -File _kit/apply-ui.ps1
+ สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
+ (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
 
-   !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
-      เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
+ !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
+ เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
 
-   ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
-   ใส่แอตทริบิวต์ที่ tag body:  data-tools="pen,calc"  = บังคับเปิด
-                              data-tools="none"      = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
-   ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
-              หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
-   ============================================================================= */
-(function(){
+ ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
+ ใส่แอตทริบิวต์ที่ tag body: data-tools="pen,calc" = บังคับเปิด
+ data-tools="none" = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
+ ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
+ หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
+ ============================================================================= */
+(function{
 if(window.__KITUI__) return; window.__KITUI__='2.7';
 
 /* ---------- helper ---------- */
@@ -924,16 +924,16 @@ const set=(k,v)=>{try{localStorage.setItem('kitui-'+k,v)}catch(e){}};
 const el=(t,c,h)=>{const e=D.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
 
 /* =============================================================================
-   1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
-   ============================================================================= */
+ 1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
+ ============================================================================= */
 const CSS=`
 /* ===== DARK TOKENS (คู่กับ _kit/design-tokens.css) ===== */
 :root[data-theme="dark"]{
-  --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
-  --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
-  --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
-  --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
-  --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
+ --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
+ --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
+ --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
+ --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
+ --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
 }
 :root[data-theme="dark"] body{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f172a}
 :root[data-theme="dark"] body[data-subject="physics"]{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f1220}
@@ -953,11 +953,11 @@ const CSS=`
 
 /* ===== แถบเครื่องมือลอย ===== */
 #kitui-bar{position:fixed;right:10px;bottom:10px;z-index:99990;display:flex;gap:6px;align-items:center;
-  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
-  box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
+ background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
+ box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
 #kitui-bar button{border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;
-  font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
-  align-items:center;justify-content:center;font-weight:700}
+ font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
+ align-items:center;justify-content:center;font-weight:700}
 #kitui-bar button:hover{background:var(--soft)}
 #kitui-bar button:active{transform:scale(.93)}
 #kitui-bar button.on{background:var(--accent);color:#fff}
@@ -968,16 +968,16 @@ const CSS=`
 
 /* ===== แผงลอย (ที่ทด / เครื่องคิดเลข) ===== */
 .kitui-sheet{position:fixed;left:0;right:0;bottom:0;z-index:99991;background:var(--card);
-  border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
-  display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
-  height:52vh;max-height:92vh;min-height:180px}
+ border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
+ display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
+ height:52vh;max-height:92vh;min-height:180px}
 .kitui-sheet.open{display:flex}
 .kitui-sheet.full{height:100vh;border-radius:0}
 .kitui-head{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--line);
-  flex-wrap:wrap;touch-action:none;cursor:ns-resize}
+ flex-wrap:wrap;touch-action:none;cursor:ns-resize}
 .kitui-head b{font-size:.9rem;color:var(--accent-ink);margin-right:2px;white-space:nowrap}
 .kitui-head button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;
-  padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
+ padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
 .kitui-head button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
 .kitui-head .kitui-spacer{flex:1}
 .kitui-sw{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;min-height:0}
@@ -989,12 +989,12 @@ const CSS=`
 /* ===== เครื่องคิดเลข ===== */
 #kitui-calc{height:auto;max-height:90vh}
 .kitui-disp{padding:8px 12px;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);
-  border-bottom:1px solid var(--line)}
+ border-bottom:1px solid var(--line)}
 .kitui-disp .ex{font-size:.95rem;color:var(--muted);min-height:1.3em;word-break:break-all}
 .kitui-disp .rs{font-size:1.6rem;font-weight:700;color:var(--accent-ink);word-break:break-all}
 .kitui-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:7px}
 .kitui-keys button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:9px;
-  font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
+ font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
 .kitui-keys button:active{transform:scale(.95)}
 .kitui-keys button.fn{font-size:.8rem;color:var(--accent-ink)}
 .kitui-keys button.op{background:var(--accent-soft);color:var(--accent-ink)}
@@ -1003,446 +1003,446 @@ const CSS=`
 .kitui-keys button.w3{grid-column:span 3}
 @media(max-width:420px){.kitui-keys button{font-size:.88rem;min-height:40px}.kitui-keys button.fn{font-size:.72rem}}
 @media(min-width:760px){
-  .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
-  .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
-  #kitui-pad{width:560px}
+ .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
+ .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
+ #kitui-pad{width:560px}
 }
 @media print{#kitui-bar,.kitui-sheet{display:none!important}}
 `;
 const st=el('style'); st.id='kitui-style'; st.textContent=CSS; D.head.appendChild(st);
 
 /* -----------------------------------------------------------------------------
-   1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
-   widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
-   พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
-   แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
-   เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
+ 1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
+ widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
+ พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
+ แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
+ เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
 ----------------------------------------------------------------------------- */
 /* สีพาสเทลสว่าง -> สีเข้มที่ยังคง "เฉดเดิม" ไว้ (เขียว=ถูก / แดง=ผิด ต้องยังแยกออก)
-   ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
+ ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
 function darken(cr,cg,cb){
-  const r=cr/255,g=cg/255,b=cb/255;
-  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
-  let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
-  /* ⚠️ ห้ามใช้ saturation ของ HSL ตรง ๆ ตัดสิน: ที่ความสว่างเกือบ 1 ตัวหารจะเล็กมาก
-     ทำให้สีที่แทบเป็นสีขาว (เช่น #fdf8f4) ได้ค่าอิ่มสีสูงลิ่ว แล้วกลายเป็นสีน้ำตาลจัดตอนกดให้เข้ม
-     ให้ดูจาก "ช่วงห่างของแม่สี" (chroma) แทน แล้วแปลงเป็นความอิ่มสีแบบไล่ระดับ */
-  const s = Math.min(.45, Math.max(.08, d*4));
-  const l = d<.02 ? .13 : .17;                       /* เทา/ขาวล้วนให้เข้มกว่าสีนิดหน่อย */
-  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
-  let rr,gg,bb;
-  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
-  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
-  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+ const r=cr/255,g=cg/255,b=cb/255;
+ const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+ let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
+ /* ⚠️ ห้ามใช้ saturation ของ HSL ตรง ๆ ตัดสิน: ที่ความสว่างเกือบ 1 ตัวหารจะเล็กมาก
+ ทำให้สีที่แทบเป็นสีขาว (เช่น #fdf8f4) ได้ค่าอิ่มสีสูงลิ่ว แล้วกลายเป็นสีน้ำตาลจัดตอนกดให้เข้ม
+ ให้ดูจาก "ช่วงห่างของแม่สี" (chroma) แทน แล้วแปลงเป็นความอิ่มสีแบบไล่ระดับ */
+ const s = Math.min(.45, Math.max(.08, d*4));
+ const l = d<.02 ? .13 : .17; /* เทา/ขาวล้วนให้เข้มกว่าสีนิดหน่อย */
+ const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+ let rr,gg,bb;
+ if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+ else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+ return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
 }
-function darkFix(){
-  const out=[], seen=new Set();
-  const take=r=>{
-    if(!r.style || !r.selectorText) return;
-    if(r.selectorText.indexOf('kitui')>-1) return;               /* ของเราเองใช้ token อยู่แล้ว */
-    const bg=r.style.backgroundColor;
-    if(!bg || bg.indexOf('var(')>-1) return;
-    const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
-    if(!m) return;
-    if(m[4]!==undefined && +m[4]<0.6) return;                    /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
-    const cr=+m[1], cg=+m[2], cb=+m[3];
-    if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return;       /* ไม่สว่างพอ ไม่ต้องยุ่ง */
-    const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
-    const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
-    let css='background-color:'+repl;
-    /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
-    const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
-    if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
-    out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
-  };
-  /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
-        ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
-  const visit=rules=>{
-    for(let i=0;i<rules.length;i++){
-      const r=rules[i];
-      if(r.selectorText) take(r);
-      if(r.cssRules && r.cssRules.length) visit(r.cssRules);     /* @media / @supports / nesting */
-    }
-  };
-  for(let i=0;i<D.styleSheets.length;i++){
-    let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; }   /* ข้ามชีตข้ามโดเมน */
-    if(rr) visit(rr);
-  }
-  if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
-  return out.length;
+function darkFix{
+ const out=[], seen=new Set;
+ const take=r=>{
+ if(!r.style || !r.selectorText) return;
+ if(r.selectorText.indexOf('kitui')>-1) return; /* ของเราเองใช้ token อยู่แล้ว */
+ const bg=r.style.backgroundColor;
+ if(!bg || bg.indexOf('var(')>-1) return;
+ const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
+ if(!m) return;
+ if(m[4]!==undefined && +m[4]<0.6) return; /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
+ const cr=+m[1], cg=+m[2], cb=+m[3];
+ if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return; /* ไม่สว่างพอ ไม่ต้องยุ่ง */
+ const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
+ const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
+ let css='background-color:'+repl;
+ /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
+ const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+ if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
+ out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
+ };
+ /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
+ ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
+ const visit=rules=>{
+ for(let i=0;i<rules.length;i++){
+ const r=rules[i];
+ if(r.selectorText) take(r);
+ if(r.cssRules && r.cssRules.length) visit(r.cssRules); /* @media / @supports / nesting */
+ }
+ };
+ for(let i=0;i<D.styleSheets.length;i++){
+ let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; } /* ข้ามชีตข้ามโดเมน */
+ if(rr) visit(rr);
+ }
+ if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
+ return out.length;
 }
-try{ window.__KITUI_DARKFIX__ = (D.body.getAttribute('data-kit-theme')==='off') ? 'locked' : darkFix(); }
+try{ window.__KITUI_DARKFIX__ = (D.body.getAttribute('data-kit-theme')==='off') ? 'locked' : darkFix; }
 catch(e){ window.__KITUI_DARKFIX__='err:'+e.message; }
 
 /* darkFix ข้างบนซ่อมได้เฉพาะสีที่เขียนตายตัวในไฟล์ CSS
-   แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
-   ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
-   จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
+ แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
+ ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
+ จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
 const rgbOf=c=>{const m=c&&c.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null;};
 const lumOf=v=>v?(0.2126*v[0]+0.7152*v[1]+0.0722*v[2])/255:null;
-/* ตรงข้ามกับ darken(): ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
-   (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
+/* ตรงข้ามกับ darken: ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
+ (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
 function lighten(cr,cg,cb){
-  const r=cr/255,g=cg/255,b=cb/255;
-  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
-  if(d<0.04) return 'var(--ink)';                    /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
-  let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
-  const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
-  const s=Math.min(.92,Math.max(.55,s0)), l=.72;
-  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
-  let rr,gg,bb;
-  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
-  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
-  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+ const r=cr/255,g=cg/255,b=cb/255;
+ const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+ if(d<0.04) return 'var(--ink)'; /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
+ let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
+ const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
+ const s=Math.min(.92,Math.max(.55,s0)), l=.72;
+ const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+ let rr,gg,bb;
+ if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+ else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+ return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
 }
 const SKIP={CANVAS:1,IMG:1,VIDEO:1,SVG:1,IFRAME:1,PICTURE:1,OBJECT:1};
 const OBS_OPT={childList:true,subtree:true,attributes:true,attributeFilter:['class','style']};
 let patched=[], obs=null;
-function elementFix(){
-  /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
-        ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
-  if(obs) obs.disconnect();
-  try{ elementFixCore(); } finally { if(obs) obs.observe(D.body,OBS_OPT); }
+function elementFix{
+ /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
+ ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
+ if(obs) obs.disconnect;
+ try{ elementFixCore; } finally { if(obs) obs.observe(D.body,OBS_OPT); }
 }
-function elementFixCore(){
-  if(D.body.getAttribute('data-kit-theme')==='off') return;   /* หน้าที่ล็อกธีมไว้ ห้ามไปยุ่งสี */
-  /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
-     ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
-     จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
-  if(R.getAttribute('data-theme')!=='dark'){
-    patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
-    patched=[];
-    return;
-  }
-  /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
-     ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
-  /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
-  const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
-  for(let i=0;i<all.length;i++){
-    const e=all[i];
-    if(e.id&&e.id.indexOf('kitui')===0) continue;
-    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
-    if(SKIP[e.tagName]) continue;                      /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
-    const s=getComputedStyle(e);
-    const bg=rgbOf(s.backgroundColor);
-    if(!bg || bg[3]<0.6) continue;                     /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
-    if(lumOf(bg)<0.72) continue;                       /* เข้มพออยู่แล้ว */
-    /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
-    e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
-    const fg=rgbOf(s.color);
-    if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important');  /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
-    patched.push(e);
-  }
-  /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
-     ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
-  const bgCache=new Map();
-  const effBg=n=>{
-    for(let p=n;p;p=p.parentElement){
-      if(bgCache.has(p)) return bgCache.get(p);
-      const b=rgbOf(getComputedStyle(p).backgroundColor);
-      if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
-    }
-    return null;
-  };
-  for(let i=2;i<all.length;i++){
-    const e=all[i];
-    if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
-    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
-    if(e.style.color) continue;                         /* จัดการไปแล้วในรอบแรก */
-    if(!e.textContent || !e.textContent.trim()) continue;
-    const fg=rgbOf(getComputedStyle(e).color);
-    if(!fg || lumOf(fg)>=0.45) continue;                 /* ตัวอักษรสว่างอยู่แล้ว */
-    const bg=effBg(e);
-    if(!bg || lumOf(bg)>=0.5) continue;                  /* พื้นยังสว่าง อ่านออกอยู่ */
-    e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
-    patched.push(e);
-  }
+function elementFixCore{
+ if(D.body.getAttribute('data-kit-theme')==='off') return; /* หน้าที่ล็อกธีมไว้ ห้ามไปยุ่งสี */
+ /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
+ ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
+ จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
+ if(R.getAttribute('data-theme')!=='dark'){
+ patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
+ patched=[];
+ return;
+ }
+ /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
+ ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
+ /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
+ const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
+ for(let i=0;i<all.length;i++){
+ const e=all[i];
+ if(e.id&&e.id.indexOf('kitui')===0) continue;
+ if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+ if(SKIP[e.tagName]) continue; /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
+ const s=getComputedStyle(e);
+ const bg=rgbOf(s.backgroundColor);
+ if(!bg || bg[3]<0.6) continue; /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
+ if(lumOf(bg)<0.72) continue; /* เข้มพออยู่แล้ว */
+ /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
+ e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
+ const fg=rgbOf(s.color);
+ if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important'); /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
+ patched.push(e);
+ }
+ /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
+ ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
+ const bgCache=new Map;
+ const effBg=n=>{
+ for(let p=n;p;p=p.parentElement){
+ if(bgCache.has(p)) return bgCache.get(p);
+ const b=rgbOf(getComputedStyle(p).backgroundColor);
+ if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
+ }
+ return null;
+ };
+ for(let i=2;i<all.length;i++){
+ const e=all[i];
+ if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
+ if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+ if(e.style.color) continue; /* จัดการไปแล้วในรอบแรก */
+ if(!e.textContent || !e.textContent.trim) continue;
+ const fg=rgbOf(getComputedStyle(e).color);
+ if(!fg || lumOf(fg)>=0.45) continue; /* ตัวอักษรสว่างอยู่แล้ว */
+ const bg=effBg(e);
+ if(!bg || lumOf(bg)>=0.5) continue; /* พื้นยังสว่าง อ่านออกอยู่ */
+ e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
+ patched.push(e);
+ }
 }
 let efT=0;
-const scheduleFix=()=>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
+const scheduleFix==>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
 try{
-  obs=new MutationObserver(scheduleFix);
-  obs.observe(D.body,OBS_OPT);
+ obs=new MutationObserver(scheduleFix);
+ obs.observe(D.body,OBS_OPT);
 }catch(e){}
 
 /* =============================================================================
-   2) ธีม + ขนาดตัวอักษร
-   ============================================================================= */
+ 2) ธีม + ขนาดตัวอักษร
+ ============================================================================= */
 const FS=[.85,1,1.15,1.3,1.5], FSNAME=['เล็กสุด','เล็ก','ปกติ','ใหญ่','ใหญ่สุด'];
 let fsIdx=parseInt(get('fs')); if(isNaN(fsIdx)||fsIdx<0||fsIdx>4) fsIdx=1;
 let theme=get('theme') || (matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
 
 /* หน้าที่ออกแบบธีมมาเองครบแล้ว (เช่น "หนังสือทบทวน" พื้นเข้มทั้งเล่ม) ให้ปิดระบบธีมของ KIT UI
-   ไม่งั้นโทเคน --bg/--ink ของเราจะไปทับสีที่หน้านั้นตั้งไว้ แล้วหน้าเพี้ยน
-   ใส่ที่ tag body:  data-kit-theme="off"   (ปุ่มปรับขนาดตัวอักษรยังใช้ได้ตามปกติ) */
+ ไม่งั้นโทเคน --bg/--ink ของเราจะไปทับสีที่หน้านั้นตั้งไว้ แล้วหน้าเพี้ยน
+ ใส่ที่ tag body: data-kit-theme="off" (ปุ่มปรับขนาดตัวอักษรยังใช้ได้ตามปกติ) */
 const themeLock = D.body.getAttribute('data-kit-theme')==='off';
 
-function applyTheme(){
-  if(themeLock) return;
-  R.setAttribute('data-theme',theme);
-  R.style.colorScheme = theme==='dark'?'dark':'light';   /* ให้ select/input เป็นสีเข้มด้วย */
-  const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
-  set('theme',theme);
-  clearTimeout(efT);                                   /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
-  if(typeof elementFix==='function') elementFix();
-  /* ⚠️ ห้ามอ้างถึงตัวแปรของส่วน "ที่ทด" ตรงนี้!
-     applyTheme() ถูกเรียกก่อนที่ `let pad` ในส่วนที่ 4 จะทำงาน → ชน temporal dead zone
-     แล้ว ReferenceError จะทำให้สคริปต์ตายทั้งก้อน (ปุ่มขนาดอักษร/ที่ทด/เครื่องคิดเลขหายหมด)
-     ใช้วิธียิง event แทน ใครสนใจค่อยไปดักฟังเอง */
-  try{ D.dispatchEvent(new CustomEvent('kitui-theme')); }catch(e){}
+function applyTheme{
+ if(themeLock) return;
+ R.setAttribute('data-theme',theme);
+ R.style.colorScheme = theme==='dark'?'dark':'light'; /* ให้ select/input เป็นสีเข้มด้วย */
+ const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
+ set('theme',theme);
+ clearTimeout(efT); /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
+ if(typeof elementFix==='function') elementFix;
+ /* ⚠️ ห้ามอ้างถึงตัวแปรของส่วน "ที่ทด" ตรงนี้!
+ applyTheme ถูกเรียกก่อนที่ `let pad` ในส่วนที่ 4 จะทำงาน → ชน temporal dead zone
+ แล้ว ReferenceError จะทำให้สคริปต์ตายทั้งก้อน (ปุ่มขนาดอักษร/ที่ทด/เครื่องคิดเลขหายหมด)
+ ใช้วิธียิง event แทน ใครสนใจค่อยไปดักฟังเอง */
+ try{ D.dispatchEvent(new CustomEvent('kitui-theme')); }catch(e){}
 }
-function applyFS(){
-  R.style.fontSize=(16*FS[fsIdx])+'px';
-  const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
-  set('fs',fsIdx);
+function applyFS{
+ R.style.fontSize=(16*FS[fsIdx])+'px';
+ const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
+ set('fs',fsIdx);
 }
 
 /* =============================================================================
-   3) แถบเครื่องมือ
-   ============================================================================= */
-const subj=(D.body.getAttribute('data-subject')||'').toLowerCase();
+ 3) แถบเครื่องมือ
+ ============================================================================= */
+const subj=(D.body.getAttribute('data-subject')||'').toLowerCase;
 /* หลาย widget ไม่ได้ใส่ data-subject ที่ <body> → เดาจากโฟลเดอร์ที่ไฟล์อยู่ด้วย */
 const inPath=/\/(physics|math|chemist)\//i.test(decodeURIComponent(location.pathname));
 const tAttr=D.body.getAttribute('data-tools');
-const wantTools = tAttr!=null ? tAttr.toLowerCase()
-                : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
-const hasPen  = wantTools.includes('pen');
+const wantTools = tAttr!=null ? tAttr.toLowerCase
+ : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
+const hasPen = wantTools.includes('pen');
 const hasCalc = wantTools.includes('calc');
 
 const bar=el('div'); bar.id='kitui-bar';
 bar.innerHTML =
-  `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
-  (themeLock ? '' : `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button><span class="kitui-sep"></span>`)+
-  `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
-  `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
-  `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
-  (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
-  (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
+ `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
+ (themeLock ? '' : `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button><span class="kitui-sep"></span>`)+
+ `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
+ `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
+ `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
+ (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
+ (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
 D.body.appendChild(bar);
 
-if(!themeLock) D.getElementById('kitui-theme').onclick=()=>{theme=theme==='dark'?'light':'dark';applyTheme();};
-D.getElementById('kitui-fsup').onclick=()=>{if(fsIdx<4){fsIdx++;applyFS();}};
-D.getElementById('kitui-fsdown').onclick=()=>{if(fsIdx>0){fsIdx--;applyFS();}};
-D.getElementById('kitui-grip').onclick=()=>bar.classList.toggle('hidden');
-applyTheme(); applyFS();
+if(!themeLock) D.getElementById('kitui-theme').onclick==>{theme=theme==='dark'?'light':'dark';applyTheme;};
+D.getElementById('kitui-fsup').onclick==>{if(fsIdx<4){fsIdx++;applyFS;}};
+D.getElementById('kitui-fsdown').onclick==>{if(fsIdx>0){fsIdx--;applyFS;}};
+D.getElementById('kitui-grip').onclick==>bar.classList.toggle('hidden');
+applyTheme; applyFS;
 
 /* ปิดแผงด้วยปุ่ม Esc */
 D.addEventListener('keydown',e=>{ if(e.key==='Escape') D.querySelectorAll('.kitui-sheet.open').forEach(s=>s.classList.remove('open')); });
 
 /* ลากหัวแผงเพื่อปรับความสูง */
 function makeResizable(sheet){
-  const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
-  head.addEventListener('pointerdown',e=>{
-    if(e.target.closest('button'))return;
-    drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect().height;head.setPointerCapture(e.pointerId);
-  });
-  head.addEventListener('pointermove',e=>{
-    if(!drag)return;
-    const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
-    sheet.classList.remove('full'); sheet.style.height=h+'px';
-    if(sheet.id==='kitui-pad') fitPad();
-  });
-  head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
+ const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
+ head.addEventListener('pointerdown',e=>{
+ if(e.target.closest('button'))return;
+ drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect.height;head.setPointerCapture(e.pointerId);
+ });
+ head.addEventListener('pointermove',e=>{
+ if(!drag)return;
+ const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
+ sheet.classList.remove('full'); sheet.style.height=h+'px';
+ if(sheet.id==='kitui-pad') fitPad;
+ });
+ head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
 }
 
 /* =============================================================================
-   4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ  หลายหน้า  เซฟอัตโนมัติ
-   ============================================================================= */
+ 4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ หลายหน้า เซฟอัตโนมัติ
+ ============================================================================= */
 let pad,padCv,padCx,pages=[[]],pg=0,undone=[],histo=[];
 let tool='pen',color='#111827',width=2.4,penSeen=0;
 const COLORS=['#111827','#2563eb','#dc2626','#16a34a','#f59e0b'];
-const PADKEY='pad-'+location.pathname.split('/').pop();
+const PADKEY='pad-'+location.pathname.split('/').pop;
 
-function buildPad(){
-  pad=el('div','kitui-sheet'); pad.id='kitui-pad';
-  pad.innerHTML=
-   `<div class="kitui-head">
-      <b>✏️ ที่ทด</b>
-      <button data-t="pen" class="on">🖊️</button>
-      <button data-t="hl">🖍️</button>
-      <button data-t="er">🧽</button>
-      ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
-      <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
-      <span class="kitui-spacer"></span>
-      <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
-      <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
-      <button id="kitui-pgadd">+ หน้า</button>
-      <button id="kitui-clear">ล้างหน้านี้</button>
-      <button id="kitui-full">⛶</button>
-      <button id="kitui-padclose">✕</button>
-    </div>
-    <div class="kitui-padwrap"><canvas></canvas></div>`;
-  D.body.appendChild(pad);
-  padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
-  makeResizable(pad);
+function buildPad{
+ pad=el('div','kitui-sheet'); pad.id='kitui-pad';
+ pad.innerHTML=
+ `<div class="kitui-head">
+ <b>✏️ ที่ทด</b>
+ <button data-t="pen" class="on">🖊️</button>
+ <button data-t="hl">🖍️</button>
+ <button data-t="er">🧽</button>
+ ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
+ <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
+ <span class="kitui-spacer"></span>
+ <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
+ <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
+ <button id="kitui-pgadd">+ หน้า</button>
+ <button id="kitui-clear">ล้างหน้านี้</button>
+ <button id="kitui-full">⛶</button>
+ <button id="kitui-padclose">✕</button>
+ </div>
+ <div class="kitui-padwrap"><canvas></canvas></div>`;
+ D.body.appendChild(pad);
+ padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
+ makeResizable(pad);
 
-  pad.querySelector('.kitui-head').addEventListener('click',e=>{
-    const b=e.target.closest('button'); if(!b)return;
-    if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
-    if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
-    if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
-  });
-  D.getElementById('kitui-undo').onclick=()=>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop(); draw(); save(); } };
-  D.getElementById('kitui-redo').onclick=()=>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop(); draw(); save(); } };
-  D.getElementById('kitui-clear').onclick=()=>{ snap(); pages[pg]=[]; draw(); save(); };
-  D.getElementById('kitui-pgadd').onclick=()=>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw(); save(); };
-  D.getElementById('kitui-pgprev').onclick=()=>{ if(pg>0){pg--;histo=[];undone=[];draw();} };
-  D.getElementById('kitui-pgnext').onclick=()=>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw();} };
-  D.getElementById('kitui-full').onclick=()=>{ pad.classList.toggle('full'); pad.style.height=''; fitPad(); };
-  D.getElementById('kitui-padclose').onclick=()=>pad.classList.remove('open');
+ pad.querySelector('.kitui-head').addEventListener('click',e=>{
+ const b=e.target.closest('button'); if(!b)return;
+ if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
+ if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
+ if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
+ });
+ D.getElementById('kitui-undo').onclick==>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop; draw; save; } };
+ D.getElementById('kitui-redo').onclick==>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop; draw; save; } };
+ D.getElementById('kitui-clear').onclick==>{ snap; pages[pg]=[]; draw; save; };
+ D.getElementById('kitui-pgadd').onclick==>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw; save; };
+ D.getElementById('kitui-pgprev').onclick==>{ if(pg>0){pg--;histo=[];undone=[];draw;} };
+ D.getElementById('kitui-pgnext').onclick==>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw;} };
+ D.getElementById('kitui-full').onclick==>{ pad.classList.toggle('full'); pad.style.height=''; fitPad; };
+ D.getElementById('kitui-padclose').onclick==>pad.classList.remove('open');
 
-  /* ---- วาด ---- */
-  let cur=null;
-  padCv.addEventListener('pointerdown',e=>{
-    if(e.pointerType==='pen') penSeen=Date.now();
-    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;   /* กันฝ่ามือแตะตอนใช้สไตลัส */
-    const p=pt(e);
-    if(tool==='er'){ snap(); erase(p); return; }
-    snap();
-    cur={c:color,w:width,hl:tool==='hl',pts:[p]};
-    pages[pg].push(cur); draw();
-    try{ padCv.setPointerCapture(e.pointerId); }catch(x){}  /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
-  });
-  padCv.addEventListener('pointermove',e=>{
-    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;
-    if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
-    if(!cur||!e.buttons)return;
-    /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
-    let evs=[e];
-    if(e.getCoalescedEvents){ const c=e.getCoalescedEvents(); if(c&&c.length) evs=c; }
-    evs.forEach(ev=>cur.pts.push(pt(ev)));
-    draw();
-  });
-  const end=()=>{ if(cur){cur=null;save();} };
-  padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
-  padCv.addEventListener('pointerleave',end);
+ /* ---- วาด ---- */
+ let cur=null;
+ padCv.addEventListener('pointerdown',e=>{
+ if(e.pointerType==='pen') penSeen=Date.now;
+ if(e.pointerType==='touch' && Date.now-penSeen<1500) return; /* กันฝ่ามือแตะตอนใช้สไตลัส */
+ const p=pt(e);
+ if(tool==='er'){ snap; erase(p); return; }
+ snap;
+ cur={c:color,w:width,hl:tool==='hl',pts:[p]};
+ pages[pg].push(cur); draw;
+ try{ padCv.setPointerCapture(e.pointerId); }catch(x){} /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
+ });
+ padCv.addEventListener('pointermove',e=>{
+ if(e.pointerType==='touch' && Date.now-penSeen<1500) return;
+ if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
+ if(!cur||!e.buttons)return;
+ /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
+ let evs=[e];
+ if(e.getCoalescedEvents){ const c=e.getCoalescedEvents; if(c&&c.length) evs=c; }
+ evs.forEach(ev=>cur.pts.push(pt(ev)));
+ draw;
+ });
+ const end==>{ if(cur){cur=null;save;} };
+ padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
+ padCv.addEventListener('pointerleave',end);
 
-  addEventListener('resize',()=>{ if(pad.classList.contains('open')) fitPad(); });
-  D.addEventListener('kitui-theme',()=>draw());   /* สลับธีมแล้ววาดลายใหม่ เส้นดำ<->ขาวตามพื้น */
-  load(); fitPad();
+ addEventListener('resize',=>{ if(pad.classList.contains('open')) fitPad; });
+ D.addEventListener('kitui-theme',=>draw); /* สลับธีมแล้ววาดลายใหม่ เส้นดำ<->ขาวตามพื้น */
+ load; fitPad;
 }
 function pt(e){
-  const r=padCv.getBoundingClientRect();
-  return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
-          p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5};   /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
+ const r=padCv.getBoundingClientRect;
+ return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
+ p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5}; /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
 }
-function snap(){ histo.push(pages[pg].slice()); if(histo.length>60)histo.shift(); undone=[]; }
+function snap{ histo.push(pages[pg].slice); if(histo.length>60)histo.shift; undone=[]; }
 function erase(p){
-  const r=padCv.getBoundingClientRect(), rad=18/r.width;
-  const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
-  if(keep.length!==pages[pg].length){ pages[pg]=keep; draw(); save(); }
+ const r=padCv.getBoundingClientRect, rad=18/r.width;
+ const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
+ if(keep.length!==pages[pg].length){ pages[pg]=keep; draw; save; }
 }
-function fitPad(){
-  const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
-  const dpr=Math.min(devicePixelRatio||1,2.5);
-  padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
-  draw();
+function fitPad{
+ const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
+ const dpr=Math.min(devicePixelRatio||1,2.5);
+ padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
+ draw;
 }
-function draw(){
-  const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
-  padCx.clearRect(0,0,W,H);
-  /* เส้นตารางจาง ๆ ให้เขียนตรง */
-  const dark=R.getAttribute('data-theme')==='dark';
-  padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
-  for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath();padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke();}
-  padCx.lineCap='round'; padCx.lineJoin='round';
-  pages[pg].forEach(s=>{
-    padCx.globalAlpha=s.hl?0.32:1;
-    padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
-    for(let i=1;i<s.pts.length;i++){
-      const a=s.pts[i-1],b=s.pts[i];
-      padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
-      padCx.beginPath(); padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke();
-    }
-    if(s.pts.length===1){ /* จุดเดียว */
-      padCx.fillStyle=padCx.strokeStyle; padCx.beginPath();
-      padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill();
-    }
-  });
-  padCx.globalAlpha=1;
-  const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
+function draw{
+ const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
+ padCx.clearRect(0,0,W,H);
+ /* เส้นตารางจาง ๆ ให้เขียนตรง */
+ const dark=R.getAttribute('data-theme')==='dark';
+ padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
+ for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath;padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke;}
+ padCx.lineCap='round'; padCx.lineJoin='round';
+ pages[pg].forEach(s=>{
+ padCx.globalAlpha=s.hl?0.32:1;
+ padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
+ for(let i=1;i<s.pts.length;i++){
+ const a=s.pts[i-1],b=s.pts[i];
+ padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
+ padCx.beginPath; padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke;
+ }
+ if(s.pts.length===1){ /* จุดเดียว */
+ padCx.fillStyle=padCx.strokeStyle; padCx.beginPath;
+ padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill;
+ }
+ });
+ padCx.globalAlpha=1;
+ const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
 }
-function save(){ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
-function load(){
-  try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
+function save{ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
+function load{
+ try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
 }
 
 if(hasPen){
-  buildPad();
-  D.getElementById('kitui-penbtn').onclick=()=>{
-    const o=pad.classList.toggle('open');
-    D.getElementById('kitui-penbtn').classList.toggle('on',o);
-    if(o) fitPad();
-  };
+ buildPad;
+ D.getElementById('kitui-penbtn').onclick==>{
+ const o=pad.classList.toggle('open');
+ D.getElementById('kitui-penbtn').classList.toggle('on',o);
+ if(o) fitPad;
+ };
 }
 
 /* =============================================================================
-   5) เครื่องคิดเลขวิทยาศาสตร์  (tokenizer → shunting-yard → RPN  ไม่ใช้ eval)
-   ============================================================================= */
+ 5) เครื่องคิดเลขวิทยาศาสตร์ (tokenizer → shunting-yard → RPN ไม่ใช้ eval)
+ ============================================================================= */
 const FN={sin:1,cos:1,tan:1,asin:1,acos:1,atan:1,ln:1,log:1,sqrt:1,abs:1,exp:1};
 const PREC={'+':1,'-':1,'*':2,'/':2,'^':4,'u-':3};
 function tokenize(s){
-  s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
-  const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!()])/g; let m;
-  while((m=re.exec(s))) out.push(m[1]);
-  return out;
+ s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
+ const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!])/g; let m;
+ while((m=re.exec(s))) out.push(m[1]);
+ return out;
 }
 function toRPN(tk){
-  const out=[],op=[]; let prev=null;
-  for(let t of tk){
-    if(t==='**')t='^';
-    if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
-    else if(t==='PI'){ out.push(Math.PI); }
-    else if(t==='e'||t==='E'){ out.push(Math.E); }
-    else if(t==='ANS'){ out.push(ANS); }
-    else if(FN[t]){ op.push(t); }
-    else if(t==='('){ op.push(t); }
-    else if(t===')'){
-      while(op.length&&op[op.length-1]!=='(') out.push(op.pop());
-      if(!op.length) throw 0; op.pop();
-      if(op.length&&FN[op[op.length-1]]) out.push(op.pop());
-    }
-    else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
-    else if('+-*/^'.includes(t)){
-      let o=t;
-      const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
-      if(t==='-'&&unary) o='u-';
-      else if(t==='+'&&unary){ prev=t; continue; }
-      while(op.length){
-        const top=op[op.length-1];
-        if(top==='('||FN[top])break;
-        const rightAssoc=(o==='^'||o==='u-');
-        if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop()); else break;
-      }
-      op.push(o);
-    }
-    else throw 0;
-    prev=t;
-  }
-  while(op.length){ const o=op.pop(); if(o==='(')throw 0; out.push(o); }
-  return out;
+ const out=[],op=[]; let prev=null;
+ for(let t of tk){
+ if(t==='**')t='^';
+ if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
+ else if(t==='PI'){ out.push(Math.PI); }
+ else if(t==='e'||t==='E'){ out.push(Math.E); }
+ else if(t==='ANS'){ out.push(ANS); }
+ else if(FN[t]){ op.push(t); }
+ else if(t==='('){ op.push(t); }
+ else if(t===')'){
+ while(op.length&&op[op.length-1]!=='(') out.push(op.pop);
+ if(!op.length) throw 0; op.pop;
+ if(op.length&&FN[op[op.length-1]]) out.push(op.pop);
+ }
+ else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
+ else if('+-*/^'.includes(t)){
+ let o=t;
+ const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
+ if(t==='-'&&unary) o='u-';
+ else if(t==='+'&&unary){ prev=t; continue; }
+ while(op.length){
+ const top=op[op.length-1];
+ if(top==='('||FN[top])break;
+ const rightAssoc=(o==='^'||o==='u-');
+ if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop); else break;
+ }
+ op.push(o);
+ }
+ else throw 0;
+ prev=t;
+ }
+ while(op.length){ const o=op.pop; if(o==='(')throw 0; out.push(o); }
+ return out;
 }
 function evalRPN(rpn,deg){
-  const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
-  const pop=()=>{ if(!st.length)throw 0; return st.pop(); };
-  for(const t of rpn){
-    if(typeof t==='number'){ st.push(t); continue; }
-    if(t==='fact'){ const n=pop(); if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
-    if(t==='pct'){ st.push(pop()/100); continue; }
-    if(t==='u-'){ st.push(-pop()); continue; }
-    if(FN[t]){
-      const a=pop();
-      st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
-             : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
-             : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
-             : t==='abs'?Math.abs(a) : Math.exp(a) );
-      continue;
-    }
-    const b=pop(),a=pop();
-    st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
-  }
-  if(st.length!==1) throw 0;
-  return st[0];
+ const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
+ const pop==>{ if(!st.length)throw 0; return st.pop; };
+ for(const t of rpn){
+ if(typeof t==='number'){ st.push(t); continue; }
+ if(t==='fact'){ const n=pop; if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
+ if(t==='pct'){ st.push(pop/100); continue; }
+ if(t==='u-'){ st.push(-pop); continue; }
+ if(FN[t]){
+ const a=pop;
+ st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
+ : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
+ : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
+ : t==='abs'?Math.abs(a) : Math.exp(a) );
+ continue;
+ }
+ const b=pop,a=pop;
+ st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
+ }
+ if(st.length!==1) throw 0;
+ return st[0];
 }
 function calc(src,deg){ return evalRPN(toRPN(tokenize(src)),deg); }
 
@@ -1457,53 +1457,53 @@ const KEYS=[
  ['1','1',''],['2','2',''],['3','3',''],['.','.',''],['=','eq','eq'],
  ['0','0','w3'],['x²','^2','fn']
 ];
-function buildCalc(){
-  calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
-  calcSheet.innerHTML=
-   `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
-      <button id="kitui-calcclose">✕</button></div>
-    <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
-    <div class="kitui-keys" id="kitui-keys">
-      ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
-    </div>`;
-  D.body.appendChild(calcSheet);
-  D.getElementById('kitui-calcclose').onclick=()=>calcSheet.classList.remove('open');
-  const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
-  const show=()=>{ ex.textContent=expr||' ';
-    try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
-    catch(e){ rs.style.opacity=.35; }
-  };
-  D.getElementById('kitui-keys').addEventListener('click',e=>{
-    const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
-    if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
-    if(k==='del'){ expr=expr.slice(0,-1); show(); return; }
-    if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show(); return; }
-    if(k==='eq'){
-      rs.style.opacity=1;
-      try{
-        const v=calc(expr,isDeg);
-        if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
-        if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
-        ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
-      }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
-      return;
-    }
-    expr+=k; show();
-  });
+function buildCalc{
+ calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
+ calcSheet.innerHTML=
+ `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
+ <button id="kitui-calcclose">✕</button></div>
+ <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
+ <div class="kitui-keys" id="kitui-keys">
+ ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
+ </div>`;
+ D.body.appendChild(calcSheet);
+ D.getElementById('kitui-calcclose').onclick==>calcSheet.classList.remove('open');
+ const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
+ const show==>{ ex.textContent=expr||' ';
+ try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
+ catch(e){ rs.style.opacity=.35; }
+ };
+ D.getElementById('kitui-keys').addEventListener('click',e=>{
+ const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
+ if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
+ if(k==='del'){ expr=expr.slice(0,-1); show; return; }
+ if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show; return; }
+ if(k==='eq'){
+ rs.style.opacity=1;
+ try{
+ const v=calc(expr,isDeg);
+ if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
+ if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
+ ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
+ }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
+ return;
+ }
+ expr+=k; show;
+ });
 }
 function fmt(v){
-  if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
-  if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
-  return String(Math.round(v*1e10)/1e10);
+ if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
+ if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
+ return String(Math.round(v*1e10)/1e10);
 }
 if(hasCalc){
-  buildCalc();
-  D.getElementById('kitui-calcbtn').onclick=()=>{
-    const o=calcSheet.classList.toggle('open');
-    D.getElementById('kitui-calcbtn').classList.toggle('on',o);
-  };
+ buildCalc;
+ D.getElementById('kitui-calcbtn').onclick==>{
+ const o=calcSheet.classList.toggle('open');
+ D.getElementById('kitui-calcbtn').classList.toggle('on',o);
+ };
 }
-})();
+});
 
 </script>
 <!--/KIT-UI-->

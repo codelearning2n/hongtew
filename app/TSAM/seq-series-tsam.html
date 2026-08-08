@@ -3,44 +3,44 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>ลำดับและอนุกรม — ติว TSAM (สไตล์ ดร.ปรียาพร)</title>
+<title>ลำดับและอนุกรม — ติว TSAM</title>
 <style>
 :root{
-  --bg-0:#0a0d18; --ink:#f2f4ff; --muted:#9aa2cf; --line:rgba(255,255,255,.09);
-  --accent:#5cc8ff; --accent-2:#a371f7; --gold:#ffd166; --good:#5ee6a8; --bad:#f85149; --pink:#ff79c6;
-  --glass:linear-gradient(180deg,rgba(40,46,90,.50),rgba(16,20,46,.55));
-  --glass-2:linear-gradient(180deg,rgba(52,58,108,.55),rgba(24,28,62,.62));
-  --shadow:0 22px 55px -24px rgba(0,0,0,.78); --ring:0 0 0 1px rgba(255,255,255,.06);
-  --grad-text:linear-gradient(120deg,#ffffff,#bcd4ff 45%,#b6a4ff);
-  --grad-fill:linear-gradient(90deg,var(--accent),var(--accent-2));
-  --r-md:14px; --r-lg:18px; --r-xl:24px; --r-pill:999px; --ease:cubic-bezier(.2,.7,.3,1);
+ --bg-0:#0a0d18; --ink:#f2f4ff; --muted:#9aa2cf; --line:rgba(255,255,255,.09);
+ --accent:#5cc8ff; --accent-2:#a371f7; --gold:#ffd166; --good:#5ee6a8; --bad:#f85149; --pink:#ff79c6;
+ --glass:linear-gradient(180deg,rgba(40,46,90,.50),rgba(16,20,46,.55));
+ --glass-2:linear-gradient(180deg,rgba(52,58,108,.55),rgba(24,28,62,.62));
+ --shadow:0 22px 55px -24px rgba(0,0,0,.78); --ring:0 0 0 1px rgba(255,255,255,.06);
+ --grad-text:linear-gradient(120deg,#ffffff,#bcd4ff 45%,#b6a4ff);
+ --grad-fill:linear-gradient(90deg,var(--accent),var(--accent-2));
+ --r-md:14px; --r-lg:18px; --r-xl:24px; --r-pill:999px; --ease:cubic-bezier(.2,.7,.3,1);
 }
 *{box-sizing:border-box} html,body{margin:0}
 body{color:var(--ink);line-height:1.6;padding:16px 12px 44px;
-  font-family:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
-  background:
-    radial-gradient(820px 520px at 8% -12%,rgba(92,120,255,.20),transparent 55%),
-    radial-gradient(720px 520px at 98% -6%,rgba(124,92,255,.22),transparent 52%),
-    radial-gradient(760px 680px at 55% 122%,rgba(40,110,210,.16),transparent 55%),
-    var(--bg-0);
-  background-attachment:fixed;min-height:100vh}
+ font-family:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
+ background:
+ radial-gradient(820px 520px at 8% -12%,rgba(92,120,255,.20),transparent 55%),
+ radial-gradient(720px 520px at 98% -6%,rgba(124,92,255,.22),transparent 52%),
+ radial-gradient(760px 680px at 55% 122%,rgba(40,110,210,.16),transparent 55%),
+ var(--bg-0);
+ background-attachment:fixed;min-height:100vh}
 ::selection{background:rgba(92,200,255,.35)}
 .wrap{max-width:880px;margin:0 auto}
 .hero{position:relative;overflow:hidden;background:var(--glass-2);border:1px solid var(--line);
-  border-radius:var(--r-xl);padding:22px 20px 18px;margin-bottom:14px;
-  box-shadow:var(--shadow),var(--ring),inset 0 1px 0 rgba(255,255,255,.08)}
+ border-radius:var(--r-xl);padding:22px 20px 18px;margin-bottom:14px;
+ box-shadow:var(--shadow),var(--ring),inset 0 1px 0 rgba(255,255,255,.08)}
 .hero::after{content:"";position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(640px 240px at 102% -10%,rgba(124,92,255,.28),transparent 60%)}
+ background:radial-gradient(640px 240px at 102% -10%,rgba(124,92,255,.28),transparent 60%)}
 .hero h1{margin:.1rem 0;font-size:clamp(1.3rem,4.5vw,1.95rem);line-height:1.2}
 .grad-text{background:var(--grad-text);-webkit-background-clip:text;background-clip:text;color:transparent}
 .lead{color:var(--muted);margin:.35rem 0 0;font-size:.9rem}
 .pill{display:inline-block;font-size:.72rem;font-weight:700;color:var(--gold);
-  background:rgba(255,209,102,.1);border:1px solid rgba(255,209,102,.25);padding:2px 9px;border-radius:7px}
+ background:rgba(255,209,102,.1);border:1px solid rgba(255,209,102,.25);padding:2px 9px;border-radius:7px}
 
 .tabs{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 8px;margin-bottom:12px;-webkit-overflow-scrolling:touch}
 .tabs::-webkit-scrollbar{height:6px}.tabs::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:9px}
 .tab{flex:0 0 auto;white-space:nowrap;cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.04);
-  color:var(--muted);font-family:inherit;font-weight:700;font-size:.88rem;padding:10px 14px;border-radius:var(--r-pill);transition:all .15s var(--ease)}
+ color:var(--muted);font-family:inherit;font-weight:700;font-size:.88rem;padding:10px 14px;border-radius:var(--r-pill);transition:all .15s var(--ease)}
 .tab:hover{color:var(--ink);border-color:rgba(92,200,255,.4)}
 .tab.active{background:var(--grad-fill);color:#0a1020;border-color:transparent;box-shadow:0 10px 22px -10px rgba(92,140,255,.7)}
 .tab .n{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,.18);font-size:.76rem;margin-right:6px}
@@ -49,7 +49,7 @@ body{color:var(--ink);line-height:1.6;padding:16px 12px 44px;
 .tab.star.active{background:linear-gradient(135deg,#ffd166,#ff9f6b)}
 
 .card{position:relative;background:var(--glass);border:1px solid var(--line);border-radius:var(--r-lg);
-  padding:16px;margin-bottom:14px;box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.05)}
+ padding:16px;margin-bottom:14px;box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.05)}
 .card h2{margin:0 0 4px;font-size:1.12rem}.card h2 .ic{margin-right:6px}
 .card h3{margin:16px 0 7px;font-size:1rem;color:var(--accent)}
 .sub{color:var(--muted);font-size:.87rem;margin:0 0 12px}
@@ -58,7 +58,7 @@ body{color:var(--ink);line-height:1.6;padding:16px 12px 44px;
 
 /* formula box (prof style) */
 .def{background:linear-gradient(180deg,rgba(92,200,255,.1),rgba(163,113,247,.06));border:1px solid rgba(92,200,255,.28);
-  border-radius:var(--r-md);padding:13px 15px;margin:10px 0}
+ border-radius:var(--r-md);padding:13px 15px;margin:10px 0}
 .def .tag{display:inline-block;font-size:.72rem;font-weight:800;color:#0a1020;background:var(--gold);padding:2px 9px;border-radius:6px;margin-bottom:7px}
 .formula{font-size:1.25rem;text-align:center;margin:8px 0;font-family:'Cambria Math','Sarabun',serif;line-height:1.7}
 .k{font-family:'Cambria Math','Sarabun',serif;font-style:italic}
@@ -142,8 +142,8 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .theory ul,.theory ol{margin:0;padding:4px 18px 14px 30px;font-size:.9rem}.theory li{margin:6px 0}.theory b{color:var(--accent)}
 
 /* แก้ contrast 2026-08-08: ปุ่มเดิมเป็นตัวอักษรขาวบนไล่เฉด #5cc8ff->#a371f7 ได้ 2.60
-   สลับเป็นตัวอักษรสีเข้มบนปุ่มสว่าง ได้ 8.0 โดยไม่ต้องเปลี่ยนสีแบรนด์
-   .lbl เดิมใช้ --accent-2 (#a371f7) บนพื้นการ์ด ได้ 4.15 -> ใช้ม่วงสว่างขึ้น */
+ สลับเป็นตัวอักษรสีเข้มบนปุ่มสว่าง ได้ 8.0 โดยไม่ต้องเปลี่ยนสีแบรนด์
+ .lbl เดิมใช้ --accent-2 (#a371f7) บนพื้นการ์ด ได้ 4.15 -> ใช้ม่วงสว่างขึ้น */
 .btn{color:#080b14}
 /* ต้องเจาะจงเท่ากฎเดิม .ex .exq .lbl ไม่งั้นโดนทับ */
 .lbl,.ex .exq .lbl{color:#c9adff}
@@ -151,601 +151,601 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 </head>
 <body>
 <div class="wrap">
-  <div class="hero">
-    <span class="pill">ติว TSAM '70 · คณิต · เก็บ 🟢 ลำดับ-อนุกรม (6 ข้อ)</span>
-    <h1><span class="grad-text">ลำดับและอนุกรม</span></h1>
-    <p class="lead">สอนละเอียดทุกหัวข้อ ตามแนว <b>ดร.ปรียาพร สารถี</b> (ค33201) — มีสูตร เทคนิคจำ (รวม
-      <b style="color:var(--gold)">ส่วนชนะ/เศษชนะ</b>) ตัวอย่างทำให้ดูทีละขั้น + ฝึกเอง 👇</p>
-  </div>
+ <div class="hero">
+ <span class="pill">ติว TSAM '70 · คณิต · เก็บ 🟢 ลำดับ-อนุกรม (6 ข้อ)</span>
+ <h1><span class="grad-text">ลำดับและอนุกรม</span></h1>
+ <p class="lead">สอนละเอียดทุกหัวข้อ มีสูตร เทคนิคจำ (รวม
+ <b style="color:var(--gold)">ส่วนชนะ/เศษชนะ</b>) ตัวอย่างทำให้ดูทีละขั้น + ฝึกเอง 👇</p>
+ </div>
 
-  <div class="tabs" id="tabs">
-    <button class="tab active" data-p="0"><span class="n">1</span>ลำดับ &amp; ชนิด</button>
-    <button class="tab star" data-p="1"><span class="n">★</span>ลิมิต (ส่วนชนะ/เศษชนะ)</button>
-    <button class="tab" data-p="2"><span class="n">3</span>ซิกม่า Σ</button>
-    <button class="tab" data-p="3"><span class="n">4</span>อนุกรม</button>
-    <button class="tab" data-p="4"><span class="n">5</span>อนุกรมอนันต์</button>
-  </div>
+ <div class="tabs" id="tabs">
+ <button class="tab active" data-p="0"><span class="n">1</span>ลำดับ &amp; ชนิด</button>
+ <button class="tab star" data-p="1"><span class="n">★</span>ลิมิต (ส่วนชนะ/เศษชนะ)</button>
+ <button class="tab" data-p="2"><span class="n">3</span>ซิกม่า Σ</button>
+ <button class="tab" data-p="3"><span class="n">4</span>อนุกรม</button>
+ <button class="tab" data-p="4"><span class="n">5</span>อนุกรมอนันต์</button>
+ </div>
 
-  <!-- ===== TAB 1: SEQUENCES ===== -->
-  <section class="panel active" id="p0">
-    <div class="card">
-      <h2><span class="ic">🔢</span>ลำดับคืออะไร</h2>
-      <p class="sub">ลำดับ = ชุดตัวเลขเรียงกันมีกฎ · พจน์ที่ n เขียนว่า <span class="k">a<sub>n</sub></span> (พจน์ทั่วไป / general term)
-        มี "..." ต่อท้าย = <b>ลำดับอนันต์</b>, ถ้าจบ = <b>ลำดับจำกัด</b></p>
-      <div class="ex"><div class="exq"><span class="lbl">ตัวอย่างที่ 2 (อ.)</span>กำหนด a<sub>n</sub> = 2n² − 3n จงหา a₁ และ a₂</div>
-        <div class="exbody"><span class="reveal" data-t="ex2">▸ ดูวิธีทำ</span><div id="ex2" style="display:none">
-          <div class="step">a₁ = 2(1)² − 3(1) = 2 − 3 = <b>−1</b><span class="why">แทน n=1</span></div>
-          <div class="step">a₂ = 2(2)² − 3(2) = 8 − 6 = <b>2</b><span class="why">แทน n=2</span></div>
-        </div></div>
-      </div>
+ <!-- ===== TAB 1: SEQUENCES ===== -->
+ <section class="panel active" id="p0">
+ <div class="card">
+ <h2><span class="ic">🔢</span>ลำดับคืออะไร</h2>
+ <p class="sub">ลำดับ = ชุดตัวเลขเรียงกันมีกฎ · พจน์ที่ n เขียนว่า <span class="k">a<sub>n</sub></span> (พจน์ทั่วไป / general term)
+ มี "..." ต่อท้าย = <b>ลำดับอนันต์</b>, ถ้าจบ = <b>ลำดับจำกัด</b></p>
+ <div class="ex"><div class="exq"><span class="lbl">ตัวอย่างที่ 2 (อ.)</span>กำหนด a<sub>n</sub> = 2n² − 3n จงหา a₁ และ a₂</div>
+ <div class="exbody"><span class="reveal" data-t="ex2">▸ ดูวิธีทำ</span><div id="ex2" style="display:none">
+ <div class="step">a₁ = 2(1)² − 3(1) = 2 − 3 = <b>−1</b><span class="why">แทน n=1</span></div>
+ <div class="step">a₂ = 2(2)² − 3(2) = 8 − 6 = <b>2</b><span class="why">แทน n=2</span></div>
+ </div></div>
+ </div>
 
-      <h3>ลองเล่น: ลำดับเลขคณิต vs เรขาคณิต</h3>
-      <p class="sub">ลากดูว่าเปลี่ยน a₁, d/r แล้วลำดับวิ่งยังไง — เลขคณิต<b>บวกเพิ่มคงที่</b> (เส้นตรง) · เรขาคณิต<b>คูณคงที่</b> (โค้งชัน)</p>
-      <div class="seg" id="sq-type" style="margin-bottom:8px">
-        <button class="on" data-t="ari">เลขคณิต (+d)</button>
-        <button data-t="geo">เรขาคณิต (×r)</button>
-      </div>
-      <div class="cv-wrap"><canvas id="cv-seq"></canvas></div>
-      <div class="row" style="gap:14px">
-        <div class="ctrl" style="flex:1 1 130px"><div class="lab"><span>พจน์แรก a₁</span><b id="sq-a1v">2</b></div>
-          <input type="range" id="sq-a1" min="-10" max="10" value="2" step="1"></div>
-        <div class="ctrl" style="flex:1 1 130px"><div class="lab"><span id="sq-plab">ผลต่างร่วม d</span><b id="sq-pv">3</b></div>
-          <input type="range" id="sq-p" min="-50" max="50" value="30" step="1"></div>
-      </div>
-      <div class="def"><span class="tag">พจน์ทั่วไป</span>
-        <div class="formula" id="sq-gen">a<sub>n</sub> = 2 + (n−1)(3)</div>
-        <div style="text-align:center;color:var(--muted);font-size:.85rem" id="sq-terms">2, 5, 8, 11, …</div>
-      </div>
-    </div>
+ <h3>ลองเล่น: ลำดับเลขคณิต vs เรขาคณิต</h3>
+ <p class="sub">ลากดูว่าเปลี่ยน a₁, d/r แล้วลำดับวิ่งยังไง — เลขคณิต<b>บวกเพิ่มคงที่</b> (เส้นตรง) · เรขาคณิต<b>คูณคงที่</b> (โค้งชัน)</p>
+ <div class="seg" id="sq-type" style="margin-bottom:8px">
+ <button class="on" data-t="ari">เลขคณิต (+d)</button>
+ <button data-t="geo">เรขาคณิต (×r)</button>
+ </div>
+ <div class="cv-wrap"><canvas id="cv-seq"></canvas></div>
+ <div class="row" style="gap:14px">
+ <div class="ctrl" style="flex:1 1 130px"><div class="lab"><span>พจน์แรก a₁</span><b id="sq-a1v">2</b></div>
+ <input type="range" id="sq-a1" min="-10" max="10" value="2" step="1"></div>
+ <div class="ctrl" style="flex:1 1 130px"><div class="lab"><span id="sq-plab">ผลต่างร่วม d</span><b id="sq-pv">3</b></div>
+ <input type="range" id="sq-p" min="-50" max="50" value="30" step="1"></div>
+ </div>
+ <div class="def"><span class="tag">พจน์ทั่วไป</span>
+ <div class="formula" id="sq-gen">a<sub>n</sub> = 2 + (n−1)(3)</div>
+ <div style="text-align:center;color:var(--muted);font-size:.85rem" id="sq-terms">2, 5, 8, 11, …</div>
+ </div>
+ </div>
 
-    <div class="card">
-      <h2><span class="ic">📐</span>สูตรที่ต้องจำ — ชนิดของลำดับ</h2>
-      <div class="def"><span class="tag">เลขคณิต (Arithmetic)</span> เพิ่ม/ลดคงที่โดย<b>การบวก</b> d
-        <div class="formula"><span class="hl2">a<sub>n</sub> = a₁ + (n−1)d</span> &nbsp;,&nbsp; d = a<sub>n+1</sub> − a<sub>n</sub></div>
-      </div>
-      <div class="def"><span class="tag">เรขาคณิต (Geometric)</span> เพิ่ม/ลดคงที่โดย<b>การคูณ</b> r
-        <div class="formula"><span class="hl2">a<sub>n</sub> = a₁·r<sup>n−1</sup></span> &nbsp;,&nbsp; r = a<sub>n+1</sub> / a<sub>n</sub></div>
-      </div>
-      <div class="def"><span class="tag">ฮาร์มอนิก (Harmonic)</span> ลำดับที่<b>ส่วนกลับ</b> (1/a<sub>n</sub>) เป็นเลขคณิต
-        <div class="formula">b<sub>n</sub> = 1/a<sub>n</sub> เป็นเลขคณิต</div>
-      </div>
-      <div class="note gold"><b>เทคนิค อ.:</b> เจอลำดับ → ลองลบคู่ติดกัน (ได้ d เท่ากัน = เลขคณิต) ถ้าไม่ ลองหารคู่ติดกัน (ได้ r เท่ากัน = เรขาคณิต)
-        ถ้ายังไม่ ลองกลับเศษส่วน 1/a<sub>n</sub> แล้วเช็คว่าเป็นเลขคณิตไหม (= ฮาร์มอนิก)</div>
+ <div class="card">
+ <h2><span class="ic">📐</span>สูตรที่ต้องจำ — ชนิดของลำดับ</h2>
+ <div class="def"><span class="tag">เลขคณิต (Arithmetic)</span> เพิ่ม/ลดคงที่โดย<b>การบวก</b> d
+ <div class="formula"><span class="hl2">a<sub>n</sub> = a₁ + (n−1)d</span> &nbsp;,&nbsp; d = a<sub>n+1</sub> − a<sub>n</sub></div>
+ </div>
+ <div class="def"><span class="tag">เรขาคณิต (Geometric)</span> เพิ่ม/ลดคงที่โดย<b>การคูณ</b> r
+ <div class="formula"><span class="hl2">a<sub>n</sub> = a₁·r<sup>n−1</sup></span> &nbsp;,&nbsp; r = a<sub>n+1</sub> / a<sub>n</sub></div>
+ </div>
+ <div class="def"><span class="tag">ฮาร์มอนิก (Harmonic)</span> ลำดับที่<b>ส่วนกลับ</b> (1/a<sub>n</sub>) เป็นเลขคณิต
+ <div class="formula">b<sub>n</sub> = 1/a<sub>n</sub> เป็นเลขคณิต</div>
+ </div>
+ <div class="note gold"><b>เทคนิค อ.:</b> เจอลำดับ → ลองลบคู่ติดกัน (ได้ d เท่ากัน = เลขคณิต) ถ้าไม่ ลองหารคู่ติดกัน (ได้ r เท่ากัน = เรขาคณิต)
+ ถ้ายังไม่ ลองกลับเศษส่วน 1/a<sub>n</sub> แล้วเช็คว่าเป็นเลขคณิตไหม (= ฮาร์มอนิก)</div>
 
-      <div class="ex"><div class="exq"><span class="lbl">ตัวอย่างที่ 12 (อ.)</span>ลำดับเลขคณิต มี a₄ = 20 และ a₁₀ = 38 จงหาพจน์ทั่วไป</div>
-        <div class="exbody"><span class="reveal" data-t="ex12">▸ ดูวิธีทำ</span><div id="ex12" style="display:none">
-          <div class="step">a₄ = a₁+3d = 20 ... (1) &nbsp; , &nbsp; a₁₀ = a₁+9d = 38 ... (2)<span class="why">เขียนสองสมการจากสูตร a<sub>n</sub>=a₁+(n−1)d</span></div>
-          <div class="step">(2)−(1): 6d = 18 → <b>d = 3</b><span class="why">ลบกันกำจัด a₁</span></div>
-          <div class="step">แทนใน (1): a₁ + 3(3) = 20 → a₁ = 11</div>
-          <div class="step"><b>a<sub>n</sub> = 11 + (n−1)(3) = 3n + 8</b></div>
-        </div></div>
-      </div>
-      <div class="ex"><div class="exq"><span class="lbl">ตัวอย่างที่ 24 (อ.)</span>ลำดับเรขาคณิต มี a₃ = 2 และ a₇ = 2592 จงหาพจน์ทั่วไป</div>
-        <div class="exbody"><span class="reveal" data-t="ex24">▸ ดูวิธีทำ</span><div id="ex24" style="display:none">
-          <div class="step">a₃ = a₁r² = 2 ... (1) &nbsp; , &nbsp; a₇ = a₁r⁶ = 2592 ... (2)</div>
-          <div class="step">(2)÷(1): r⁴ = 2592/2 = 1296 → r⁴ = 6⁴ → <b>r = 6</b><span class="why">หารกำจัด a₁ — เรขาใช้ "หาร" (ต่างจากเลขคณิตที่ "ลบ")</span></div>
-          <div class="step">a₁(6²) = 2 → a₁ = 2/36 = 1/18</div>
-          <div class="step"><b>a<sub>n</sub> = (1/18)·6<sup>n−1</sup></b></div>
-        </div></div>
-      </div>
-    </div>
+ <div class="ex"><div class="exq"><span class="lbl">ตัวอย่างที่ 12 (อ.)</span>ลำดับเลขคณิต มี a₄ = 20 และ a₁₀ = 38 จงหาพจน์ทั่วไป</div>
+ <div class="exbody"><span class="reveal" data-t="ex12">▸ ดูวิธีทำ</span><div id="ex12" style="display:none">
+ <div class="step">a₄ = a₁+3d = 20 ... (1) &nbsp; , &nbsp; a₁₀ = a₁+9d = 38 ... (2)<span class="why">เขียนสองสมการจากสูตร a<sub>n</sub>=a₁+(n−1)d</span></div>
+ <div class="step">(2)−(1): 6d = 18 → <b>d = 3</b><span class="why">ลบกันกำจัด a₁</span></div>
+ <div class="step">แทนใน (1): a₁ + 3(3) = 20 → a₁ = 11</div>
+ <div class="step"><b>a<sub>n</sub> = 11 + (n−1)(3) = 3n + 8</b></div>
+ </div></div>
+ </div>
+ <div class="ex"><div class="exq"><span class="lbl">ตัวอย่างที่ 24 (อ.)</span>ลำดับเรขาคณิต มี a₃ = 2 และ a₇ = 2592 จงหาพจน์ทั่วไป</div>
+ <div class="exbody"><span class="reveal" data-t="ex24">▸ ดูวิธีทำ</span><div id="ex24" style="display:none">
+ <div class="step">a₃ = a₁r² = 2 ... (1) &nbsp; , &nbsp; a₇ = a₁r⁶ = 2592 ... (2)</div>
+ <div class="step">(2)÷(1): r⁴ = 2592/2 = 1296 → r⁴ = 6⁴ → <b>r = 6</b><span class="why">หารกำจัด a₁ — เรขาใช้ "หาร" (ต่างจากเลขคณิตที่ "ลบ")</span></div>
+ <div class="step">a₁(6²) = 2 → a₁ = 2/36 = 1/18</div>
+ <div class="step"><b>a<sub>n</sub> = (1/18)·6<sup>n−1</sup></b></div>
+ </div></div>
+ </div>
+ </div>
 
-    <div class="card">
-      <h3 style="margin-top:0">✏️ ฝึกโจทย์ — ลำดับ</h3>
-      <div class="seg gold" id="d0-cat" style="margin-bottom:10px">
-        <button class="on" data-c="all">รวม</button>
-        <button data-c="ari">เลขคณิต</button>
-        <button data-c="geo">เรขาคณิต</button>
-        <button data-c="har">ฮาร์มอนิก</button>
-      </div>
-      <div class="q" id="d0-q">—</div><ol class="steps" id="d0-steps"></ol><div id="d0-hints"></div>
-      <div class="row" style="margin-top:12px">
-        <button class="btn sm" id="d0-step">ขั้นต่อไป ▸</button>
-        <button class="btn gold sm" id="d0-hint">💡 ขอนัย</button>
-        <button class="btn ghost sm" id="d0-new">🎲 ข้อใหม่</button>
-      </div>
-    </div>
-  </section>
+ <div class="card">
+ <h3 style="margin-top:0">✏️ ฝึกโจทย์ — ลำดับ</h3>
+ <div class="seg gold" id="d0-cat" style="margin-bottom:10px">
+ <button class="on" data-c="all">รวม</button>
+ <button data-c="ari">เลขคณิต</button>
+ <button data-c="geo">เรขาคณิต</button>
+ <button data-c="har">ฮาร์มอนิก</button>
+ </div>
+ <div class="q" id="d0-q">—</div><ol class="steps" id="d0-steps"></ol><div id="d0-hints"></div>
+ <div class="row" style="margin-top:12px">
+ <button class="btn sm" id="d0-step">ขั้นต่อไป ▸</button>
+ <button class="btn gold sm" id="d0-hint">💡 ขอนัย</button>
+ <button class="btn ghost sm" id="d0-new">🎲 ข้อใหม่</button>
+ </div>
+ </div>
+ </section>
 
-  <!-- ===== TAB 2: LIMIT (star) ===== -->
-  <section class="panel" id="p1">
-    <div class="card">
-      <h2><span class="ic">⭐</span>ลิมิตของลำดับอนันต์ — "ส่วนชนะ / เศษชนะ / เสมอ"</h2>
-      <p class="sub">ถาม "พอ n วิ่งไป ∞ แล้ว a<sub>n</sub> เข้าหาเลขอะไร" · ถ้าได้เลขจริง = <b>ลู่เข้า</b> (convergent),
-        ถ้าหาค่าไม่ได้/พุ่ง ∞ = <b>ลู่ออก</b> (divergent)</p>
+ <!-- ===== TAB 2: LIMIT (star) ===== -->
+ <section class="panel" id="p1">
+ <div class="card">
+ <h2><span class="ic">⭐</span>ลิมิตของลำดับอนันต์ — "ส่วนชนะ / เศษชนะ / เสมอ"</h2>
+ <p class="sub">ถาม "พอ n วิ่งไป ∞ แล้ว a<sub>n</sub> เข้าหาเลขอะไร" · ถ้าได้เลขจริง = <b>ลู่เข้า</b> (convergent),
+ ถ้าหาค่าไม่ได้/พุ่ง ∞ = <b>ลู่ออก</b> (divergent)</p>
 
-      <h3>กฎพื้นฐาน 3 ข้อ (จดจากบอร์ด อ.)</h3>
-      <div class="def"><div class="formula"><span class="k">lim<sub>n→∞</sub> C = C</span></div>
-        <div style="text-align:center;color:var(--muted);font-size:.85rem">ค่าคงที่ → ตัวมันเอง · เช่น lim 2 = 2</div></div>
-      <div class="def"><div class="formula"><span class="k">lim<sub>n→∞</sub> n<sup>k</sup> = หาค่าไม่ได้</span> (k&gt;0)</div>
-        <div style="text-align:center;color:var(--muted);font-size:.85rem">n ยกกำลังบวก → พุ่ง ∞ (ลู่ออก) · เช่น lim n⁴ = หาค่าไม่ได้</div></div>
-      <div class="def"><div class="formula"><span class="k">lim<sub>n→∞</sub> 1/n<sup>k</sup> = 0</span> (k&gt;0)</div>
-        <div style="text-align:center;color:var(--muted);font-size:.85rem">1 หารด้วยตัวโตขึ้นเรื่อยๆ → 0 · เช่น lim 1/n⁴ = 0</div></div>
-    </div>
+ <h3>กฎพื้นฐาน 3 ข้อ (จดจากบอร์ด อ.)</h3>
+ <div class="def"><div class="formula"><span class="k">lim<sub>n→∞</sub> C = C</span></div>
+ <div style="text-align:center;color:var(--muted);font-size:.85rem">ค่าคงที่ → ตัวมันเอง · เช่น lim 2 = 2</div></div>
+ <div class="def"><div class="formula"><span class="k">lim<sub>n→∞</sub> n<sup>k</sup> = หาค่าไม่ได้</span> (k&gt;0)</div>
+ <div style="text-align:center;color:var(--muted);font-size:.85rem">n ยกกำลังบวก → พุ่ง ∞ (ลู่ออก) · เช่น lim n⁴ = หาค่าไม่ได้</div></div>
+ <div class="def"><div class="formula"><span class="k">lim<sub>n→∞</sub> 1/n<sup>k</sup> = 0</span> (k&gt;0)</div>
+ <div style="text-align:center;color:var(--muted);font-size:.85rem">1 หารด้วยตัวโตขึ้นเรื่อยๆ → 0 · เช่น lim 1/n⁴ = 0</div></div>
+ </div>
 
-    <div class="card">
-      <h2><span class="ic">⚖️</span>เครื่องตัดสิน "ส่วนชนะ/เศษชนะ" (ลองเล่น)</h2>
-      <p class="sub">เศษส่วนพหุนาม → ดูแค่ <b>ดีกรีสูงสุด</b> บนกับล่าง ตัวไหนชนะ ลองปรับดีกรี/สัมประสิทธิ์ดูคำตัดสินสดๆ</p>
-      <div class="decider">
-        <div class="frac">
-          <div class="top">
-            <input class="numin" id="lc-a" type="number" value="9" step="1"> n<sup><b id="lc-pd">4</b></sup> <span style="color:var(--muted)">+ พจน์เล็กๆ</span>
-            <span class="deg"><button id="lc-pm">−</button><span class="val">เศษ ดีกรี <b id="lc-pv">4</b></span><button id="lc-pp">+</button></span>
-          </div>
-          <div class="bar"></div>
-          <div class="bot">
-            <input class="numin" id="lc-b" type="number" value="1" step="1"> n<sup><b id="lc-qd">4</b></sup> <span style="color:var(--muted)">+ พจน์เล็กๆ</span>
-            <span class="deg"><button id="lc-qm">−</button><span class="val">ส่วน ดีกรี <b id="lc-qv">4</b></span><button id="lc-qp">+</button></span>
-          </div>
-        </div>
-        <div class="verdict tie" id="lc-verdict">เสมอ → เศษ/ส่วน<span class="big" id="lc-ans">= 9/1 = 9</span></div>
-        <table class="checktab" id="lc-check"><thead><tr><th>แทน n =</th><th>ค่าโดยประมาณ</th></tr></thead><tbody></tbody></table>
-      </div>
-      <div class="note gold"><b>สรุปกฎทอง:</b>
-        <b style="color:var(--bad)">เศษชนะ</b> (ดีกรีบน&gt;ล่าง) → หาค่าไม่ได้ (ลู่ออก ∞) ·
-        <b style="color:var(--good)">ส่วนชนะ</b> (ดีกรีล่าง&gt;บน) → 0 ·
-        <b style="color:var(--gold)">เสมอ</b> (ดีกรีเท่ากัน) → เอาสัมประสิทธิ์ตัวหน้า เศษ/ส่วน</div>
-    </div>
+ <div class="card">
+ <h2><span class="ic">⚖️</span>เครื่องตัดสิน "ส่วนชนะ/เศษชนะ" (ลองเล่น)</h2>
+ <p class="sub">เศษส่วนพหุนาม → ดูแค่ <b>ดีกรีสูงสุด</b> บนกับล่าง ตัวไหนชนะ ลองปรับดีกรี/สัมประสิทธิ์ดูคำตัดสินสดๆ</p>
+ <div class="decider">
+ <div class="frac">
+ <div class="top">
+ <input class="numin" id="lc-a" type="number" value="9" step="1"> n<sup><b id="lc-pd">4</b></sup> <span style="color:var(--muted)">+ พจน์เล็กๆ</span>
+ <span class="deg"><button id="lc-pm">−</button><span class="val">เศษ ดีกรี <b id="lc-pv">4</b></span><button id="lc-pp">+</button></span>
+ </div>
+ <div class="bar"></div>
+ <div class="bot">
+ <input class="numin" id="lc-b" type="number" value="1" step="1"> n<sup><b id="lc-qd">4</b></sup> <span style="color:var(--muted)">+ พจน์เล็กๆ</span>
+ <span class="deg"><button id="lc-qm">−</button><span class="val">ส่วน ดีกรี <b id="lc-qv">4</b></span><button id="lc-qp">+</button></span>
+ </div>
+ </div>
+ <div class="verdict tie" id="lc-verdict">เสมอ → เศษ/ส่วน<span class="big" id="lc-ans">= 9/1 = 9</span></div>
+ <table class="checktab" id="lc-check"><thead><tr><th>แทน n =</th><th>ค่าโดยประมาณ</th></tr></thead><tbody></tbody></table>
+ </div>
+ <div class="note gold"><b>สรุปกฎทอง:</b>
+ <b style="color:var(--bad)">เศษชนะ</b> (ดีกรีบน&gt;ล่าง) → หาค่าไม่ได้ (ลู่ออก ∞) ·
+ <b style="color:var(--good)">ส่วนชนะ</b> (ดีกรีล่าง&gt;บน) → 0 ·
+ <b style="color:var(--gold)">เสมอ</b> (ดีกรีเท่ากัน) → เอาสัมประสิทธิ์ตัวหน้า เศษ/ส่วน</div>
+ </div>
 
-    <div class="card">
-      <h3 style="margin-top:0">ตัวอย่างจากบอร์ด อ.</h3>
-      <div class="ex"><div class="exq"><span class="lbl">เศษส่วน • ส่วนชนะ</span>lim<sub>n→∞</sub> (n³ + 4)/(n⁴ + n²)</div>
-        <div class="exbody"><span class="reveal" data-t="exl1">▸ ดูวิธีทำ</span><div id="exl1" style="display:none">
-          <div class="step">ดีกรีบน = 3, ดีกรีล่าง = 4 → <b style="color:var(--good)">ส่วนชนะ</b><span class="why">ตัวล่างโตเร็วกว่า</span></div>
-          <div class="step">ส่วนชนะ → <b>= 0</b> (ลู่เข้า)<span class="why">เหมือน 1/n → 0</span></div>
-        </div></div>
-      </div>
-      <div class="ex"><div class="exq"><span class="lbl">เศษส่วน • เสมอ</span>lim<sub>n→∞</sub> (9n⁴ + 700)/(n⁴ + n²)</div>
-        <div class="exbody"><span class="reveal" data-t="exl2">▸ ดูวิธีทำ</span><div id="exl2" style="display:none">
-          <div class="step">ดีกรีบน = 4 = ดีกรีล่าง → <b style="color:var(--gold)">เสมอ</b></div>
-          <div class="step">เอาสัมประสิทธิ์ตัวหน้า เศษ/ส่วน = 9/1 → <b>= 9</b><span class="why">พจน์ 700 กับ n² เล็กเมื่อเทียบ n⁴ ตัดทิ้งได้</span></div>
-        </div></div>
-      </div>
-      <div class="ex"><div class="exq"><span class="lbl">เศษชนะ</span>lim<sub>n→∞</sub> (2n³ + 1)/(n² + 5)</div>
-        <div class="exbody"><span class="reveal" data-t="exl3">▸ ดูวิธีทำ</span><div id="exl3" style="display:none">
-          <div class="step">ดีกรีบน = 3 &gt; ล่าง = 2 → <b style="color:var(--bad)">เศษชนะ</b></div>
-          <div class="step">เศษชนะ → <b>หาค่าไม่ได้ (ลู่ออก, → ∞)</b></div>
-        </div></div>
-      </div>
-      <div class="ex"><div class="exq"><span class="lbl">ระวัง! สลับเครื่องหมาย</span>lim<sub>n→∞</sub> (−1)<sup>n+1</sup> (เช่น 1, −1, 1, −1, …)</div>
-        <div class="exbody"><span class="reveal" data-t="exl4">▸ ดูวิธีทำ</span><div id="exl4" style="display:none">
-          <div class="step">ค่ามันเด้งไป-มา 1, −1, 1, −1 ไม่เข้าหาเลขใดเลข</div>
-          <div class="step"><b>หาค่าไม่ได้ → ลู่ออก</b><span class="why">(หน้าที่หนูจดไว้สีแดง) เพราะเปลี่ยนไปเรื่อยๆ ไม่นิ่ง</span></div>
-        </div></div>
-      </div>
-    </div>
+ <div class="card">
+ <h3 style="margin-top:0">ตัวอย่างจากบอร์ด อ.</h3>
+ <div class="ex"><div class="exq"><span class="lbl">เศษส่วน • ส่วนชนะ</span>lim<sub>n→∞</sub> (n³ + 4)/(n⁴ + n²)</div>
+ <div class="exbody"><span class="reveal" data-t="exl1">▸ ดูวิธีทำ</span><div id="exl1" style="display:none">
+ <div class="step">ดีกรีบน = 3, ดีกรีล่าง = 4 → <b style="color:var(--good)">ส่วนชนะ</b><span class="why">ตัวล่างโตเร็วกว่า</span></div>
+ <div class="step">ส่วนชนะ → <b>= 0</b> (ลู่เข้า)<span class="why">เหมือน 1/n → 0</span></div>
+ </div></div>
+ </div>
+ <div class="ex"><div class="exq"><span class="lbl">เศษส่วน • เสมอ</span>lim<sub>n→∞</sub> (9n⁴ + 700)/(n⁴ + n²)</div>
+ <div class="exbody"><span class="reveal" data-t="exl2">▸ ดูวิธีทำ</span><div id="exl2" style="display:none">
+ <div class="step">ดีกรีบน = 4 = ดีกรีล่าง → <b style="color:var(--gold)">เสมอ</b></div>
+ <div class="step">เอาสัมประสิทธิ์ตัวหน้า เศษ/ส่วน = 9/1 → <b>= 9</b><span class="why">พจน์ 700 กับ n² เล็กเมื่อเทียบ n⁴ ตัดทิ้งได้</span></div>
+ </div></div>
+ </div>
+ <div class="ex"><div class="exq"><span class="lbl">เศษชนะ</span>lim<sub>n→∞</sub> (2n³ + 1)/(n² + 5)</div>
+ <div class="exbody"><span class="reveal" data-t="exl3">▸ ดูวิธีทำ</span><div id="exl3" style="display:none">
+ <div class="step">ดีกรีบน = 3 &gt; ล่าง = 2 → <b style="color:var(--bad)">เศษชนะ</b></div>
+ <div class="step">เศษชนะ → <b>หาค่าไม่ได้ (ลู่ออก, → ∞)</b></div>
+ </div></div>
+ </div>
+ <div class="ex"><div class="exq"><span class="lbl">ระวัง! สลับเครื่องหมาย</span>lim<sub>n→∞</sub> (−1)<sup>n+1</sup> (เช่น 1, −1, 1, −1, …)</div>
+ <div class="exbody"><span class="reveal" data-t="exl4">▸ ดูวิธีทำ</span><div id="exl4" style="display:none">
+ <div class="step">ค่ามันเด้งไป-มา 1, −1, 1, −1 ไม่เข้าหาเลขใดเลข</div>
+ <div class="step"><b>หาค่าไม่ได้ → ลู่ออก</b><span class="why">(หน้าที่หนูจดไว้สีแดง) เพราะเปลี่ยนไปเรื่อยๆ ไม่นิ่ง</span></div>
+ </div></div>
+ </div>
+ </div>
 
-    <div class="card">
-      <h3 style="margin-top:0">✏️ ฝึกโจทย์ — ลิมิตของลำดับ</h3>
-      <div class="q" id="d1-q">—</div><ol class="steps" id="d1-steps"></ol><div id="d1-hints"></div>
-      <div class="row" style="margin-top:12px">
-        <button class="btn sm" id="d1-step">ขั้นต่อไป ▸</button>
-        <button class="btn gold sm" id="d1-hint">💡 ขอนัย</button>
-        <button class="btn ghost sm" id="d1-new">🎲 ข้อใหม่</button>
-      </div>
-    </div>
-  </section>
+ <div class="card">
+ <h3 style="margin-top:0">✏️ ฝึกโจทย์ — ลิมิตของลำดับ</h3>
+ <div class="q" id="d1-q">—</div><ol class="steps" id="d1-steps"></ol><div id="d1-hints"></div>
+ <div class="row" style="margin-top:12px">
+ <button class="btn sm" id="d1-step">ขั้นต่อไป ▸</button>
+ <button class="btn gold sm" id="d1-hint">💡 ขอนัย</button>
+ <button class="btn ghost sm" id="d1-new">🎲 ข้อใหม่</button>
+ </div>
+ </div>
+ </section>
 
-  <!-- ===== TAB 3: SIGMA ===== -->
-  <section class="panel" id="p2">
-    <div class="card">
-      <h2><span class="ic">Σ</span>สัญลักษณ์ซิกม่า — "หลายตัวบวกกัน เขียนสั้นๆ"</h2>
-      <p class="sub"><span class="k">∑<sub>i=1</sub><sup>n</sup> a<sub>i</sub></span> = a₁ + a₂ + … + a<sub>n</sub> · ตัวล่าง=เริ่มที่ i เท่าไร, ตัวบน=จบที่เท่าไร</p>
-      <div class="def"><span class="tag">สมบัติของ Σ</span>
-        <div class="formula">∑<sub>i=1</sub><sup>n</sup> c = <span class="hl2">n·c</span></div>
-        <div class="formula">∑<sub>i=1</sub><sup>n</sup> c·a<sub>i</sub> = <span class="hl2">c·∑a<sub>i</sub></span> &nbsp;(ดึงค่าคงที่ออกได้)</div>
-        <div class="formula">∑(a<sub>i</sub> ± b<sub>i</sub>) = <span class="hl2">∑a<sub>i</sub> ± ∑b<sub>i</sub></span></div>
-      </div>
-      <div class="def"><span class="tag">สูตรผลบวกสำเร็จ (ใช้บ่อย)</span>
-        <div class="formula">∑<sub>i=1</sub><sup>n</sup> i = <span class="hl">n(n+1)/2</span></div>
-        <div class="formula">∑<sub>i=1</sub><sup>n</sup> i² = <span class="hl">n(n+1)(2n+1)/6</span></div>
-        <div class="formula">∑<sub>i=1</sub><sup>n</sup> i³ = <span class="hl">[n(n+1)/2]²</span></div>
-      </div>
-      <div class="ex"><div class="exq"><span class="lbl">ตัวอย่างที่ 36 (อ.)</span>หาค่า ∑<sub>i=3</sub><sup>6</sup> (i² + 1)</div>
-        <div class="exbody"><span class="reveal" data-t="exs1">▸ ดูวิธีทำ</span><div id="exs1" style="display:none">
-          <div class="step">แทน i = 3,4,5,6 ทีละตัว<span class="why">เริ่ม 3 จบ 6 = 4 พจน์</span></div>
-          <div class="step">(3²+1)+(4²+1)+(5²+1)+(6²+1) = 10 + 17 + 26 + 37</div>
-          <div class="step"><b>= 90</b></div>
-        </div></div>
-      </div>
-      <div class="ex"><div class="exq"><span class="lbl">ตัวอย่างที่ 37 (อ.)</span>เขียน 1 + 4 + 9 + 16 + 25 + 36 ในรูป ∑</div>
-        <div class="exbody"><span class="reveal" data-t="exs2">▸ ดูวิธีทำ</span><div id="exs2" style="display:none">
-          <div class="step">สังเกต: 1², 2², 3², …, 6² → พจน์ทั่วไป i²<span class="why">มองหาแพตเทิร์น</span></div>
-          <div class="step">มี 6 พจน์ เริ่ม i=1 → <b>∑<sub>i=1</sub><sup>6</sup> i²</b></div>
-        </div></div>
-      </div>
-    </div>
-    <div class="card">
-      <h3 style="margin-top:0">✏️ ฝึกโจทย์ — ซิกม่า</h3>
-      <div class="q" id="d2-q">—</div><ol class="steps" id="d2-steps"></ol><div id="d2-hints"></div>
-      <div class="row" style="margin-top:12px">
-        <button class="btn sm" id="d2-step">ขั้นต่อไป ▸</button>
-        <button class="btn gold sm" id="d2-hint">💡 ขอนัย</button>
-        <button class="btn ghost sm" id="d2-new">🎲 ข้อใหม่</button>
-      </div>
-    </div>
-  </section>
+ <!-- ===== TAB 3: SIGMA ===== -->
+ <section class="panel" id="p2">
+ <div class="card">
+ <h2><span class="ic">Σ</span>สัญลักษณ์ซิกม่า — "หลายตัวบวกกัน เขียนสั้นๆ"</h2>
+ <p class="sub"><span class="k">∑<sub>i=1</sub><sup>n</sup> a<sub>i</sub></span> = a₁ + a₂ + … + a<sub>n</sub> · ตัวล่าง=เริ่มที่ i เท่าไร, ตัวบน=จบที่เท่าไร</p>
+ <div class="def"><span class="tag">สมบัติของ Σ</span>
+ <div class="formula">∑<sub>i=1</sub><sup>n</sup> c = <span class="hl2">n·c</span></div>
+ <div class="formula">∑<sub>i=1</sub><sup>n</sup> c·a<sub>i</sub> = <span class="hl2">c·∑a<sub>i</sub></span> &nbsp;(ดึงค่าคงที่ออกได้)</div>
+ <div class="formula">∑(a<sub>i</sub> ± b<sub>i</sub>) = <span class="hl2">∑a<sub>i</sub> ± ∑b<sub>i</sub></span></div>
+ </div>
+ <div class="def"><span class="tag">สูตรผลบวกสำเร็จ (ใช้บ่อย)</span>
+ <div class="formula">∑<sub>i=1</sub><sup>n</sup> i = <span class="hl">n(n+1)/2</span></div>
+ <div class="formula">∑<sub>i=1</sub><sup>n</sup> i² = <span class="hl">n(n+1)(2n+1)/6</span></div>
+ <div class="formula">∑<sub>i=1</sub><sup>n</sup> i³ = <span class="hl">[n(n+1)/2]²</span></div>
+ </div>
+ <div class="ex"><div class="exq"><span class="lbl">ตัวอย่างที่ 36 (อ.)</span>หาค่า ∑<sub>i=3</sub><sup>6</sup> (i² + 1)</div>
+ <div class="exbody"><span class="reveal" data-t="exs1">▸ ดูวิธีทำ</span><div id="exs1" style="display:none">
+ <div class="step">แทน i = 3,4,5,6 ทีละตัว<span class="why">เริ่ม 3 จบ 6 = 4 พจน์</span></div>
+ <div class="step">(3²+1)+(4²+1)+(5²+1)+(6²+1) = 10 + 17 + 26 + 37</div>
+ <div class="step"><b>= 90</b></div>
+ </div></div>
+ </div>
+ <div class="ex"><div class="exq"><span class="lbl">ตัวอย่างที่ 37 (อ.)</span>เขียน 1 + 4 + 9 + 16 + 25 + 36 ในรูป ∑</div>
+ <div class="exbody"><span class="reveal" data-t="exs2">▸ ดูวิธีทำ</span><div id="exs2" style="display:none">
+ <div class="step">สังเกต: 1², 2², 3², …, 6² → พจน์ทั่วไป i²<span class="why">มองหาแพตเทิร์น</span></div>
+ <div class="step">มี 6 พจน์ เริ่ม i=1 → <b>∑<sub>i=1</sub><sup>6</sup> i²</b></div>
+ </div></div>
+ </div>
+ </div>
+ <div class="card">
+ <h3 style="margin-top:0">✏️ ฝึกโจทย์ — ซิกม่า</h3>
+ <div class="q" id="d2-q">—</div><ol class="steps" id="d2-steps"></ol><div id="d2-hints"></div>
+ <div class="row" style="margin-top:12px">
+ <button class="btn sm" id="d2-step">ขั้นต่อไป ▸</button>
+ <button class="btn gold sm" id="d2-hint">💡 ขอนัย</button>
+ <button class="btn ghost sm" id="d2-new">🎲 ข้อใหม่</button>
+ </div>
+ </div>
+ </section>
 
-  <!-- ===== TAB 4: SERIES ===== -->
-  <section class="panel" id="p3">
-    <div class="card">
-      <h2><span class="ic">➕</span>อนุกรม — เอาพจน์ในลำดับมาบวกกัน</h2>
-      <p class="sub"><span class="k">S<sub>n</sub></span> = ผลบวก n พจน์แรก = a₁ + a₂ + … + a<sub>n</sub></p>
-      <div class="def"><span class="tag">อนุกรมเลขคณิต</span> เทคนิค อ.: "จับคู่หัว-ท้ายให้ผลบวกเท่ากัน"
-        <div class="formula"><span class="hl2">S<sub>n</sub> = (n/2)(a₁ + a<sub>n</sub>)</span></div>
-        <div class="formula">หรือ S<sub>n</sub> = (n/2)[2a₁ + (n−1)d]</div>
-        <div style="text-align:center;color:var(--muted);font-size:.85rem">ใช้สูตรบนเมื่อรู้พจน์แรก-สุดท้าย · ใช้สูตรล่างเมื่อรู้ a₁ กับ d</div>
-      </div>
-      <div class="def"><span class="tag">อนุกรมเรขาคณิต</span>
-        <div class="formula"><span class="hl2">S<sub>n</sub> = a₁(r<sup>n</sup> − 1)/(r − 1)</span> &nbsp;(r ≠ 1)</div>
-        <div style="text-align:center;color:var(--muted);font-size:.85rem">ถ้า r&lt;1 พลิกเป็น a₁(1 − r<sup>n</sup>)/(1 − r) ให้เลขบวกอ่านง่าย</div>
-      </div>
-      <div class="ex"><div class="exq"><span class="lbl">ตัวอย่างที่ 53 (อ.)</span>หาผลบวก 7 พจน์แรกของอนุกรมจากลำดับ 7, 15, 23, …</div>
-        <div class="exbody"><span class="reveal" data-t="exr1">▸ ดูวิธีทำ</span><div id="exr1" style="display:none">
-          <div class="step">เลขคณิต a₁=7, d=8 → หา a₇ = 7+(7−1)(8) = 7+48 = 55</div>
-          <div class="step">S₇ = (7/2)(a₁+a₇) = (7/2)(7+55) = (7/2)(62)</div>
-          <div class="step"><b>= 7 × 31 = 217</b></div>
-        </div></div>
-      </div>
-      <div class="ex"><div class="exq"><span class="lbl">ตัวอย่างที่ 55 (อ.)</span>หาค่า 2 + 6 + 10 + … + 38</div>
-        <div class="exbody"><span class="reveal" data-t="exr2">▸ ดูวิธีทำ</span><div id="exr2" style="display:none">
-          <div class="step">a₁=2, d=4, a<sub>n</sub>=38 → หา n: 38 = 2+(n−1)4 → 36=4(n−1) → n=10</div>
-          <div class="step">S₁₀ = (10/2)(2+38) = 5(40)</div>
-          <div class="step"><b>= 200</b></div>
-        </div></div>
-      </div>
-      <div class="ex"><div class="exq"><span class="lbl">ตัวอย่างที่ 61 (อ.)</span>หาผลบวก 8 พจน์แรกของ 1, 2, 4, 8, …</div>
-        <div class="exbody"><span class="reveal" data-t="exr3">▸ ดูวิธีทำ</span><div id="exr3" style="display:none">
-          <div class="step">เรขาคณิต a₁=1, r=2, n=8</div>
-          <div class="step">S₈ = a₁(r⁸−1)/(r−1) = 1(2⁸−1)/(2−1) = (256−1)/1</div>
-          <div class="step"><b>= 255</b></div>
-        </div></div>
-      </div>
-    </div>
-    <div class="card">
-      <h3 style="margin-top:0">✏️ ฝึกโจทย์ — อนุกรม</h3>
-      <div class="seg gold" id="d3-cat" style="margin-bottom:10px">
-        <button class="on" data-c="all">รวม</button>
-        <button data-c="ari">เลขคณิต</button>
-        <button data-c="geo">เรขาคณิต</button>
-      </div>
-      <div class="q" id="d3-q">—</div><ol class="steps" id="d3-steps"></ol><div id="d3-hints"></div>
-      <div class="row" style="margin-top:12px">
-        <button class="btn sm" id="d3-step">ขั้นต่อไป ▸</button>
-        <button class="btn gold sm" id="d3-hint">💡 ขอนัย</button>
-        <button class="btn ghost sm" id="d3-new">🎲 ข้อใหม่</button>
-      </div>
-    </div>
-  </section>
+ <!-- ===== TAB 4: SERIES ===== -->
+ <section class="panel" id="p3">
+ <div class="card">
+ <h2><span class="ic">➕</span>อนุกรม — เอาพจน์ในลำดับมาบวกกัน</h2>
+ <p class="sub"><span class="k">S<sub>n</sub></span> = ผลบวก n พจน์แรก = a₁ + a₂ + … + a<sub>n</sub></p>
+ <div class="def"><span class="tag">อนุกรมเลขคณิต</span> เทคนิค อ.: "จับคู่หัว-ท้ายให้ผลบวกเท่ากัน"
+ <div class="formula"><span class="hl2">S<sub>n</sub> = (n/2)(a₁ + a<sub>n</sub>)</span></div>
+ <div class="formula">หรือ S<sub>n</sub> = (n/2)[2a₁ + (n−1)d]</div>
+ <div style="text-align:center;color:var(--muted);font-size:.85rem">ใช้สูตรบนเมื่อรู้พจน์แรก-สุดท้าย · ใช้สูตรล่างเมื่อรู้ a₁ กับ d</div>
+ </div>
+ <div class="def"><span class="tag">อนุกรมเรขาคณิต</span>
+ <div class="formula"><span class="hl2">S<sub>n</sub> = a₁(r<sup>n</sup> − 1)/(r − 1)</span> &nbsp;(r ≠ 1)</div>
+ <div style="text-align:center;color:var(--muted);font-size:.85rem">ถ้า r&lt;1 พลิกเป็น a₁(1 − r<sup>n</sup>)/(1 − r) ให้เลขบวกอ่านง่าย</div>
+ </div>
+ <div class="ex"><div class="exq"><span class="lbl">ตัวอย่างที่ 53 (อ.)</span>หาผลบวก 7 พจน์แรกของอนุกรมจากลำดับ 7, 15, 23, …</div>
+ <div class="exbody"><span class="reveal" data-t="exr1">▸ ดูวิธีทำ</span><div id="exr1" style="display:none">
+ <div class="step">เลขคณิต a₁=7, d=8 → หา a₇ = 7+(7−1)(8) = 7+48 = 55</div>
+ <div class="step">S₇ = (7/2)(a₁+a₇) = (7/2)(7+55) = (7/2)(62)</div>
+ <div class="step"><b>= 7 × 31 = 217</b></div>
+ </div></div>
+ </div>
+ <div class="ex"><div class="exq"><span class="lbl">ตัวอย่างที่ 55 (อ.)</span>หาค่า 2 + 6 + 10 + … + 38</div>
+ <div class="exbody"><span class="reveal" data-t="exr2">▸ ดูวิธีทำ</span><div id="exr2" style="display:none">
+ <div class="step">a₁=2, d=4, a<sub>n</sub>=38 → หา n: 38 = 2+(n−1)4 → 36=4(n−1) → n=10</div>
+ <div class="step">S₁₀ = (10/2)(2+38) = 5(40)</div>
+ <div class="step"><b>= 200</b></div>
+ </div></div>
+ </div>
+ <div class="ex"><div class="exq"><span class="lbl">ตัวอย่างที่ 61 (อ.)</span>หาผลบวก 8 พจน์แรกของ 1, 2, 4, 8, …</div>
+ <div class="exbody"><span class="reveal" data-t="exr3">▸ ดูวิธีทำ</span><div id="exr3" style="display:none">
+ <div class="step">เรขาคณิต a₁=1, r=2, n=8</div>
+ <div class="step">S₈ = a₁(r⁸−1)/(r−1) = 1(2⁸−1)/(2−1) = (256−1)/1</div>
+ <div class="step"><b>= 255</b></div>
+ </div></div>
+ </div>
+ </div>
+ <div class="card">
+ <h3 style="margin-top:0">✏️ ฝึกโจทย์ — อนุกรม</h3>
+ <div class="seg gold" id="d3-cat" style="margin-bottom:10px">
+ <button class="on" data-c="all">รวม</button>
+ <button data-c="ari">เลขคณิต</button>
+ <button data-c="geo">เรขาคณิต</button>
+ </div>
+ <div class="q" id="d3-q">—</div><ol class="steps" id="d3-steps"></ol><div id="d3-hints"></div>
+ <div class="row" style="margin-top:12px">
+ <button class="btn sm" id="d3-step">ขั้นต่อไป ▸</button>
+ <button class="btn gold sm" id="d3-hint">💡 ขอนัย</button>
+ <button class="btn ghost sm" id="d3-new">🎲 ข้อใหม่</button>
+ </div>
+ </div>
+ </section>
 
-  <!-- ===== TAB 5: INFINITE ===== -->
-  <section class="panel" id="p4">
-    <div class="card">
-      <h2><span class="ic">∞</span>อนุกรมอนันต์ — บวกไม่จบ แต่บางทีได้เลขจริง!</h2>
-      <p class="sub">ดูผลบวกย่อย S<sub>n</sub> เมื่อ n→∞ · ถ้า <b>lim S<sub>n</sub> = S</b> (เลขจริง) = <b>ลู่เข้า</b> หาผลบวกได้ ·
-        ถ้าหาไม่ได้ = <b>ลู่ออก</b></p>
-      <div class="def"><span class="tag">เช็คเร็ว (เงื่อนไขจำเป็น)</span>
-        <div class="formula">ถ้า lim<sub>n→∞</sub> a<sub>n</sub> ≠ 0 → <b style="color:var(--bad)">ลู่ออกแน่นอน</b></div>
-        <div style="text-align:center;color:var(--muted);font-size:.85rem">เช่น 1+3+5+… พจน์ไม่เข้า 0 → ลู่ออก · (แต่ a<sub>n</sub>→0 ยังไม่การันตีลู่เข้า)</div>
-      </div>
-      <div class="def"><span class="tag">★ เรขาคณิตอนันต์ (ออกสอบบ่อยสุด)</span>
-        <div class="formula">ถ้า <span class="hl">|r| &lt; 1</span> → ลู่เข้า &nbsp; <span class="hl2">S = a₁/(1 − r)</span></div>
-        <div class="formula">ถ้า |r| ≥ 1 → <b style="color:var(--bad)">ลู่ออก</b></div>
-      </div>
+ <!-- ===== TAB 5: INFINITE ===== -->
+ <section class="panel" id="p4">
+ <div class="card">
+ <h2><span class="ic">∞</span>อนุกรมอนันต์ — บวกไม่จบ แต่บางทีได้เลขจริง!</h2>
+ <p class="sub">ดูผลบวกย่อย S<sub>n</sub> เมื่อ n→∞ · ถ้า <b>lim S<sub>n</sub> = S</b> (เลขจริง) = <b>ลู่เข้า</b> หาผลบวกได้ ·
+ ถ้าหาไม่ได้ = <b>ลู่ออก</b></p>
+ <div class="def"><span class="tag">เช็คเร็ว (เงื่อนไขจำเป็น)</span>
+ <div class="formula">ถ้า lim<sub>n→∞</sub> a<sub>n</sub> ≠ 0 → <b style="color:var(--bad)">ลู่ออกแน่นอน</b></div>
+ <div style="text-align:center;color:var(--muted);font-size:.85rem">เช่น 1+3+5+… พจน์ไม่เข้า 0 → ลู่ออก · (แต่ a<sub>n</sub>→0 ยังไม่การันตีลู่เข้า)</div>
+ </div>
+ <div class="def"><span class="tag">★ เรขาคณิตอนันต์ (ออกสอบบ่อยสุด)</span>
+ <div class="formula">ถ้า <span class="hl">r| &lt; 1</span> → ลู่เข้า &nbsp; <span class="hl2">S = a₁/(1 − r)</span></div>
+ <div class="formula">ถ้า |r| ≥ 1 → <b style="color:var(--bad)">ลู่ออก</b></div>
+ </div>
 
-      <h3>ลองเล่น: เลื่อน r ดูว่าลู่เข้าหรือระเบิด</h3>
-      <div class="cv-wrap"><canvas id="cv-inf"></canvas></div>
-      <div class="row" style="gap:14px">
-        <div class="ctrl" style="flex:1 1 130px"><div class="lab"><span>พจน์แรก a₁</span><b id="if-a1v">1</b></div>
-          <input type="range" id="if-a1" min="-6" max="6" value="1" step="1"></div>
-        <div class="ctrl" style="flex:1 1 130px"><div class="lab"><span>อัตราส่วน r</span><b id="if-rv">0.50</b></div>
-          <input type="range" id="if-r" min="-130" max="130" value="50" step="1"></div>
-      </div>
-      <div class="read">
-        <div class="stat ok"><div class="t">สถานะ</div><div class="v" id="if-state" style="font-size:1rem">—</div></div>
-        <div class="stat g"><div class="t">ผลบวกอนันต์ S</div><div class="v" id="if-sum">—</div></div>
-      </div>
-      <div class="note" id="if-note"></div>
+ <h3>ลองเล่น: เลื่อน r ดูว่าลู่เข้าหรือระเบิด</h3>
+ <div class="cv-wrap"><canvas id="cv-inf"></canvas></div>
+ <div class="row" style="gap:14px">
+ <div class="ctrl" style="flex:1 1 130px"><div class="lab"><span>พจน์แรก a₁</span><b id="if-a1v">1</b></div>
+ <input type="range" id="if-a1" min="-6" max="6" value="1" step="1"></div>
+ <div class="ctrl" style="flex:1 1 130px"><div class="lab"><span>อัตราส่วน r</span><b id="if-rv">0.50</b></div>
+ <input type="range" id="if-r" min="-130" max="130" value="50" step="1"></div>
+ </div>
+ <div class="read">
+ <div class="stat ok"><div class="t">สถานะ</div><div class="v" id="if-state" style="font-size:1rem">—</div></div>
+ <div class="stat g"><div class="t">ผลบวกอนันต์ S</div><div class="v" id="if-sum">—</div></div>
+ </div>
+ <div class="note" id="if-note"></div>
 
-      <div class="ex"><div class="exq"><span class="lbl">ตัวอย่างที่ 71-2 (อ.)</span>3/10 + 3/100 + 3/1000 + … หาผลบวก</div>
-        <div class="exbody"><span class="reveal" data-t="exi1">▸ ดูวิธีทำ</span><div id="exi1" style="display:none">
-          <div class="step">เรขาคณิต a₁ = 3/10, r = (3/100)/(3/10) = 1/10<span class="why">|r|=0.1 &lt; 1 → ลู่เข้า</span></div>
-          <div class="step">S = a₁/(1−r) = (3/10)/(1 − 1/10) = (3/10)/(9/10)</div>
-          <div class="step"><b>= 3/9 = 1/3</b><span class="why">นี่คือเหตุผลว่าทำไม 0.333… = 1/3</span></div>
-        </div></div>
-      </div>
-      <div class="ex"><div class="exq"><span class="lbl">ลู่ออก</span>1 + 3 + 5 + … + (2n−1) + …</div>
-        <div class="exbody"><span class="reveal" data-t="exi2">▸ ดูวิธีทำ</span><div id="exi2" style="display:none">
-          <div class="step">นี่คือเลขคณิต (d=2) พจน์ a<sub>n</sub>=2n−1 → lim a<sub>n</sub> = ∞ ≠ 0</div>
-          <div class="step"><b>ลู่ออก</b> (อนุกรมเลขคณิตอนันต์ลู่ออกเสมอ ยกเว้นทุกพจน์เป็น 0)</div>
-        </div></div>
-      </div>
-    </div>
-    <div class="card">
-      <h3 style="margin-top:0">✏️ ฝึกโจทย์ — อนุกรมอนันต์</h3>
-      <div class="q" id="d4-q">—</div><ol class="steps" id="d4-steps"></ol><div id="d4-hints"></div>
-      <div class="row" style="margin-top:12px">
-        <button class="btn sm" id="d4-step">ขั้นต่อไป ▸</button>
-        <button class="btn gold sm" id="d4-hint">💡 ขอนัย</button>
-        <button class="btn ghost sm" id="d4-new">🎲 ข้อใหม่</button>
-      </div>
-    </div>
-  </section>
+ <div class="ex"><div class="exq"><span class="lbl">ตัวอย่างที่ 71-2 (อ.)</span>3/10 + 3/100 + 3/1000 + … หาผลบวก</div>
+ <div class="exbody"><span class="reveal" data-t="exi1">▸ ดูวิธีทำ</span><div id="exi1" style="display:none">
+ <div class="step">เรขาคณิต a₁ = 3/10, r = (3/100)/(3/10) = 1/10<span class="why">r|=0.1 &lt; 1 → ลู่เข้า</span></div>
+ <div class="step">S = a₁/(1−r) = (3/10)/(1 − 1/10) = (3/10)/(9/10)</div>
+ <div class="step"><b>= 3/9 = 1/3</b><span class="why">นี่คือเหตุผลว่าทำไม 0.333… = 1/3</span></div>
+ </div></div>
+ </div>
+ <div class="ex"><div class="exq"><span class="lbl">ลู่ออก</span>1 + 3 + 5 + … + (2n−1) + …</div>
+ <div class="exbody"><span class="reveal" data-t="exi2">▸ ดูวิธีทำ</span><div id="exi2" style="display:none">
+ <div class="step">นี่คือเลขคณิต (d=2) พจน์ a<sub>n</sub>=2n−1 → lim a<sub>n</sub> = ∞ ≠ 0</div>
+ <div class="step"><b>ลู่ออก</b> (อนุกรมเลขคณิตอนันต์ลู่ออกเสมอ ยกเว้นทุกพจน์เป็น 0)</div>
+ </div></div>
+ </div>
+ </div>
+ <div class="card">
+ <h3 style="margin-top:0">✏️ ฝึกโจทย์ — อนุกรมอนันต์</h3>
+ <div class="q" id="d4-q">—</div><ol class="steps" id="d4-steps"></ol><div id="d4-hints"></div>
+ <div class="row" style="margin-top:12px">
+ <button class="btn sm" id="d4-step">ขั้นต่อไป ▸</button>
+ <button class="btn gold sm" id="d4-hint">💡 ขอนัย</button>
+ <button class="btn ghost sm" id="d4-new">🎲 ข้อใหม่</button>
+ </div>
+ </div>
+ </section>
 
-  <p class="foot">ติว TSAM '70 · เนื้อหาตามแนว ดร.ปรียาพร สารถี (ค33201) · ไฟล์เดียวจบ ·
-    กลับไป <a href="study-plan-tsam.html">ตารางแผน</a> · <a href="calculus-tsam.html">แคลคูลัส</a></p>
+ <p class="foot">ติว TSAM '70 · ไฟล์เดียวจบ ·
+ กลับไป <a href="study-plan-tsam.html">ตารางแผน</a> · <a href="calculus-tsam.html">แคลคูลัส</a></p>
 </div>
 
 <script>
 "use strict";
 function gid(id){return document.getElementById(id);}
-function fmt(v,d){if(!isFinite(v))return '∞';return (+v.toFixed(d==null?2:d)).toString();}
+function fmt(v,d){if(!isFinite(v))return '∞';return (+v.toFixed(d==null?2:d)).toString;}
 /* canvas */
 function setupCanvas(cv,ratio){const dpr=Math.max(1,window.devicePixelRatio||1);
-  const w=cv.clientWidth,h=Math.round(w*(ratio||0.6));cv.width=w*dpr;cv.height=h*dpr;cv.style.height=h+'px';
-  const ctx=cv.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);return {ctx,w,h};}
+ const w=cv.clientWidth,h=Math.round(w*(ratio||0.6));cv.width=w*dpr;cv.height=h*dpr;cv.style.height=h+'px';
+ const ctx=cv.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);return {ctx,w,h};}
 
 /* ===== reveal toggles ===== */
-document.querySelectorAll('.reveal').forEach(r=>r.onclick=()=>{
-  const el=gid(r.dataset.t);const open=el.style.display!=='none';
-  el.style.display=open?'none':'block';r.textContent=(open?'▸ ดูวิธีทำ':'▾ ซ่อนวิธีทำ');
+document.querySelectorAll('.reveal').forEach(r=>r.onclick==>{
+ const el=gid(r.dataset.t);const open=el.style.display!=='none';
+ el.style.display=open?'none':'block';r.textContent=(open?'▸ ดูวิธีทำ':'▾ ซ่อนวิธีทำ');
 });
 
 /* ===== TAB 1: sequence plotter ===== */
 let sqType='ari';
 const sqCv=gid('cv-seq');
 function sqTerm(n,a1,p){return sqType==='ari'? a1+(n-1)*p : a1*Math.pow(p,n-1);}
-function drawSeq(){
-  const a1=+gid('sq-a1').value, p= sqType==='ari'? +gid('sq-p').value/10 : +gid('sq-p').value/100*2;
-  // for geo, map slider -50..50 → r about -1..1 *2 => -2..2 ; clamp
-  let r=p;
-  gid('sq-a1v').textContent=a1;
-  gid('sq-pv').textContent= sqType==='ari'? fmt(p,1): fmt(r,2);
-  gid('sq-plab').textContent= sqType==='ari'?'ผลต่างร่วม d':'อัตราส่วน r';
-  const N=10;
-  const vals=[];for(let n=1;n<=N;n++)vals.push(sqTerm(n,a1,sqType==='ari'?p:r));
-  const {ctx,w,h}=setupCanvas(sqCv,0.55);
-  let ymin=Math.min(0,...vals), ymax=Math.max(1,...vals);
-  if(!isFinite(ymin)||!isFinite(ymax)||Math.abs(ymax)>1e6){ymin=-50;ymax=50;}
-  const pad=ymax-ymin||1; ymin-=pad*0.12; ymax+=pad*0.12;
-  const padL=8,padR=8,padT=12,padB=22;
-  const X=n=>padL+(n-1)/(N-1)*(w-padL-padR);
-  const Y=y=>h-padB-(y-ymin)/(ymax-ymin)*(h-padT-padB);
-  // axis baseline (y=0)
-  ctx.strokeStyle='rgba(255,255,255,.2)';ctx.lineWidth=1;
-  if(ymin<0&&ymax>0){ctx.beginPath();ctx.moveTo(padL,Y(0));ctx.lineTo(w-padR,Y(0));ctx.stroke();}
-  // connecting line
-  ctx.strokeStyle='rgba(163,113,247,.5)';ctx.lineWidth=2;ctx.beginPath();
-  vals.forEach((v,i)=>{const x=X(i+1),y=Y(v);i?ctx.lineTo(x,y):ctx.moveTo(x,y);});ctx.stroke();
-  // dots + values
-  vals.forEach((v,i)=>{const x=X(i+1),y=Y(v);
-    ctx.fillStyle='#5cc8ff';ctx.beginPath();ctx.arc(x,y,4.5,0,7);ctx.fill();
-    if(i<6||i===N-1){ctx.fillStyle='#9aa2cf';ctx.font='10px Sarabun';ctx.textAlign='center';
-      ctx.fillText(Math.abs(v)<1000?fmt(v,Math.abs(v)<10?1:0):v.toExponential(0),x,y-8);}
-  });
-  ctx.fillStyle='#9aa2cf';ctx.font='10px Sarabun';ctx.textAlign='center';
-  for(let i=0;i<N;i++)ctx.fillText('a'+(i+1),X(i+1),h-7);
-  // formula + terms
-  if(sqType==='ari'){gid('sq-gen').innerHTML='a<sub>n</sub> = '+a1+' + (n−1)('+fmt(p,1)+')';}
-  else{gid('sq-gen').innerHTML='a<sub>n</sub> = '+a1+' · ('+fmt(r,2)+')<sup>n−1</sup>';}
-  gid('sq-terms').textContent=vals.slice(0,5).map(v=>fmt(v,2)).join(', ')+', …';
+function drawSeq{
+ const a1=+gid('sq-a1').value, p= sqType==='ari'? +gid('sq-p').value/10 : +gid('sq-p').value/100*2;
+ // for geo, map slider -50..50 → r about -1..1 *2 => -2..2 ; clamp
+ let r=p;
+ gid('sq-a1v').textContent=a1;
+ gid('sq-pv').textContent= sqType==='ari'? fmt(p,1): fmt(r,2);
+ gid('sq-plab').textContent= sqType==='ari'?'ผลต่างร่วม d':'อัตราส่วน r';
+ const N=10;
+ const vals=[];for(let n=1;n<=N;n++)vals.push(sqTerm(n,a1,sqType==='ari'?p:r));
+ const {ctx,w,h}=setupCanvas(sqCv,0.55);
+ let ymin=Math.min(0,...vals), ymax=Math.max(1,...vals);
+ if(!isFinite(ymin)||!isFinite(ymax)||Math.abs(ymax)>1e6){ymin=-50;ymax=50;}
+ const pad=ymax-ymin||1; ymin-=pad*0.12; ymax+=pad*0.12;
+ const padL=8,padR=8,padT=12,padB=22;
+ const X=n=>padL+(n-1)/(N-1)*(w-padL-padR);
+ const Y=y=>h-padB-(y-ymin)/(ymax-ymin)*(h-padT-padB);
+ // axis baseline (y=0)
+ ctx.strokeStyle='rgba(255,255,255,.2)';ctx.lineWidth=1;
+ if(ymin<0&&ymax>0){ctx.beginPath;ctx.moveTo(padL,Y(0));ctx.lineTo(w-padR,Y(0));ctx.stroke;}
+ // connecting line
+ ctx.strokeStyle='rgba(163,113,247,.5)';ctx.lineWidth=2;ctx.beginPath;
+ vals.forEach((v,i)=>{const x=X(i+1),y=Y(v);i?ctx.lineTo(x,y):ctx.moveTo(x,y);});ctx.stroke;
+ // dots + values
+ vals.forEach((v,i)=>{const x=X(i+1),y=Y(v);
+ ctx.fillStyle='#5cc8ff';ctx.beginPath;ctx.arc(x,y,4.5,0,7);ctx.fill;
+ if(i<6||i===N-1){ctx.fillStyle='#9aa2cf';ctx.font='10px Sarabun';ctx.textAlign='center';
+ ctx.fillText(Math.abs(v)<1000?fmt(v,Math.abs(v)<10?1:0):v.toExponential(0),x,y-8);}
+ });
+ ctx.fillStyle='#9aa2cf';ctx.font='10px Sarabun';ctx.textAlign='center';
+ for(let i=0;i<N;i++)ctx.fillText('a'+(i+1),X(i+1),h-7);
+ // formula + terms
+ if(sqType==='ari'){gid('sq-gen').innerHTML='a<sub>n</sub> = '+a1+' + (n−1)('+fmt(p,1)+')';}
+ else{gid('sq-gen').innerHTML='a<sub>n</sub> = '+a1+' · ('+fmt(r,2)+')<sup>n−1</sup>';}
+ gid('sq-terms').textContent=vals.slice(0,5).map(v=>fmt(v,2)).join(', ')+', …';
 }
 ['sq-a1','sq-p'].forEach(id=>gid(id).addEventListener('input',drawSeq));
-document.querySelectorAll('#sq-type button').forEach(b=>b.onclick=()=>{
-  document.querySelectorAll('#sq-type button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
-  sqType=b.dataset.t;
-  const sp=gid('sq-p');
-  if(sqType==='geo'){sp.min=-130;sp.max=130;sp.value=75;} else {sp.min=-50;sp.max=50;sp.value=30;}
-  drawSeq();
+document.querySelectorAll('#sq-type button').forEach(b=>b.onclick==>{
+ document.querySelectorAll('#sq-type button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+ sqType=b.dataset.t;
+ const sp=gid('sq-p');
+ if(sqType==='geo'){sp.min=-130;sp.max=130;sp.value=75;} else {sp.min=-50;sp.max=50;sp.value=30;}
+ drawSeq;
 });
 
 /* ===== TAB 2: limit decider ===== */
 let lcP=4, lcQ=4;
 function clampDeg(v){return Math.max(0,Math.min(6,v));}
-function drawDecider(){
-  const a=+gid('lc-a').value||0, b=+gid('lc-b').value||0;
-  gid('lc-pv').textContent=lcP;gid('lc-qv').textContent=lcQ;gid('lc-pd').textContent=lcP;gid('lc-qd').textContent=lcQ;
-  const vd=gid('lc-verdict'), ans=gid('lc-ans');
-  vd.className='verdict';
-  if(lcP>lcQ){vd.classList.add('win-top');vd.childNodes[0].nodeValue='เศษชนะ → หาค่าไม่ได้ ';ans.textContent='= ลู่ออก (→ ±∞)';}
-  else if(lcP<lcQ){vd.classList.add('win-bot');vd.childNodes[0].nodeValue='ส่วนชนะ → ';ans.textContent='= 0';}
-  else{vd.classList.add('tie');vd.childNodes[0].nodeValue='เสมอ → เศษ/ส่วน ';
-    const val=b!==0?a/b:NaN;ans.textContent='= '+a+'/'+b+(isFinite(val)?' = '+fmt(val,3):'');}
-  // numeric check table
-  const tb=gid('lc-check').querySelector('tbody');tb.innerHTML='';
-  [1,10,100,1000].forEach(n=>{
-    const top=a*Math.pow(n,lcP), bot=b*Math.pow(n,lcQ);
-    const val=bot!==0?top/bot:NaN;
-    const tr=document.createElement('tr');
-    tr.innerHTML='<td>n = '+n+'</td><td>'+(Math.abs(val)>1e6?val.toExponential(2):fmt(val,4))+'</td>';
-    tb.appendChild(tr);
-  });
+function drawDecider{
+ const a=+gid('lc-a').value||0, b=+gid('lc-b').value||0;
+ gid('lc-pv').textContent=lcP;gid('lc-qv').textContent=lcQ;gid('lc-pd').textContent=lcP;gid('lc-qd').textContent=lcQ;
+ const vd=gid('lc-verdict'), ans=gid('lc-ans');
+ vd.className='verdict';
+ if(lcP>lcQ){vd.classList.add('win-top');vd.childNodes[0].nodeValue='เศษชนะ → หาค่าไม่ได้ ';ans.textContent='= ลู่ออก (→ ±∞)';}
+ else if(lcP<lcQ){vd.classList.add('win-bot');vd.childNodes[0].nodeValue='ส่วนชนะ → ';ans.textContent='= 0';}
+ else{vd.classList.add('tie');vd.childNodes[0].nodeValue='เสมอ → เศษ/ส่วน ';
+ const val=b!==0?a/b:NaN;ans.textContent='= '+a+'/'+b+(isFinite(val)?' = '+fmt(val,3):'');}
+ // numeric check table
+ const tb=gid('lc-check').querySelector('tbody');tb.innerHTML='';
+ [1,10,100,1000].forEach(n=>{
+ const top=a*Math.pow(n,lcP), bot=b*Math.pow(n,lcQ);
+ const val=bot!==0?top/bot:NaN;
+ const tr=document.createElement('tr');
+ tr.innerHTML='<td>n = '+n+'</td><td>'+(Math.abs(val)>1e6?val.toExponential(2):fmt(val,4))+'</td>';
+ tb.appendChild(tr);
+ });
 }
-gid('lc-pp').onclick=()=>{lcP=clampDeg(lcP+1);drawDecider();};
-gid('lc-pm').onclick=()=>{lcP=clampDeg(lcP-1);drawDecider();};
-gid('lc-qp').onclick=()=>{lcQ=clampDeg(lcQ+1);drawDecider();};
-gid('lc-qm').onclick=()=>{lcQ=clampDeg(lcQ-1);drawDecider();};
+gid('lc-pp').onclick==>{lcP=clampDeg(lcP+1);drawDecider;};
+gid('lc-pm').onclick==>{lcP=clampDeg(lcP-1);drawDecider;};
+gid('lc-qp').onclick==>{lcQ=clampDeg(lcQ+1);drawDecider;};
+gid('lc-qm').onclick==>{lcQ=clampDeg(lcQ-1);drawDecider;};
 ['lc-a','lc-b'].forEach(id=>gid(id).addEventListener('input',drawDecider));
 
 /* ===== TAB 5: infinite geometric ===== */
 const ifCv=gid('cv-inf');
-function drawInf(){
-  const a1=+gid('if-a1').value, r=+gid('if-r').value/100;
-  gid('if-a1v').textContent=a1;gid('if-rv').textContent=fmt(r,2);
-  const N=14, S=[]; let acc=0;
-  for(let n=1;n<=N;n++){acc+=a1*Math.pow(r,n-1);S.push(acc);}
-  const conv=Math.abs(r)<1;
-  const Sinf=conv?a1/(1-r):NaN;
-  const {ctx,w,h}=setupCanvas(ifCv,0.5);
-  let ymin=Math.min(0,...S.filter(isFinite)), ymax=Math.max(1,...S.filter(isFinite));
-  if(!isFinite(ymin)||Math.abs(ymax)>1e7||Math.abs(ymin)>1e7){ymin=Math.min(0,a1*3);ymax=Math.max(1,a1*6);}
-  const pad=(ymax-ymin)||1;ymin-=pad*0.12;ymax+=pad*0.12;
-  const padL=8,padR=8,padT=10,padB=20;
-  const X=n=>padL+(n-1)/(N-1)*(w-padL-padR);
-  const Y=y=>h-padB-(y-ymin)/(ymax-ymin)*(h-padT-padB);
-  if(ymin<0&&ymax>0){ctx.strokeStyle='rgba(255,255,255,.2)';ctx.beginPath();ctx.moveTo(padL,Y(0));ctx.lineTo(w-padR,Y(0));ctx.stroke();}
-  // limit line
-  if(conv){ctx.strokeStyle='rgba(94,230,168,.6)';ctx.setLineDash([5,4]);ctx.beginPath();ctx.moveTo(padL,Y(Sinf));ctx.lineTo(w-padR,Y(Sinf));ctx.stroke();ctx.setLineDash([]);
-    ctx.fillStyle='#5ee6a8';ctx.font='11px Sarabun';ctx.textAlign='left';ctx.fillText('S = '+fmt(Sinf,2),padL+4,Y(Sinf)-5);}
-  // partial sums
-  ctx.strokeStyle=conv?'#5cc8ff':'#f85149';ctx.lineWidth=2;ctx.beginPath();
-  S.forEach((v,i)=>{if(!isFinite(v))return;const x=X(i+1),y=Y(Math.max(ymin,Math.min(ymax,v)));i?ctx.lineTo(x,y):ctx.moveTo(x,y);});ctx.stroke();
-  S.forEach((v,i)=>{if(!isFinite(v))return;ctx.fillStyle=conv?'#5cc8ff':'#f85149';ctx.beginPath();ctx.arc(X(i+1),Y(Math.max(ymin,Math.min(ymax,v))),3.5,0,7);ctx.fill();});
-  ctx.fillStyle='#9aa2cf';ctx.font='10px Sarabun';ctx.textAlign='center';ctx.fillText('S₁',X(1),h-6);ctx.fillText('S₁₄',X(N),h-6);
-  gid('if-state').textContent=conv?'ลู่เข้า ✓':'ลู่ออก ✗';
-  gid('if-state').style.color=conv?'#5ee6a8':'#f85149';
-  gid('if-sum').textContent=conv?fmt(Sinf,3):'หาไม่ได้';
-  const note=gid('if-note');
-  if(conv){note.className='note good';note.innerHTML='<b>|r| = '+fmt(Math.abs(r),2)+' &lt; 1</b> → ผลบวกย่อยลู่เข้าหา S = a₁/(1−r) = '+a1+'/(1−'+fmt(r,2)+') = <b>'+fmt(Sinf,3)+'</b>';}
-  else{note.className='note';note.style.borderColor='rgba(248,81,73,.4)';note.innerHTML='<b style="color:#f85149">|r| = '+fmt(Math.abs(r),2)+' ≥ 1</b> → พจน์ไม่เล็กลง ผลบวกระเบิด <b>ลู่ออก</b> หาผลบวกอนันต์ไม่ได้';}
+function drawInf{
+ const a1=+gid('if-a1').value, r=+gid('if-r').value/100;
+ gid('if-a1v').textContent=a1;gid('if-rv').textContent=fmt(r,2);
+ const N=14, S=[]; let acc=0;
+ for(let n=1;n<=N;n++){acc+=a1*Math.pow(r,n-1);S.push(acc);}
+ const conv=Math.abs(r)<1;
+ const Sinf=conv?a1/(1-r):NaN;
+ const {ctx,w,h}=setupCanvas(ifCv,0.5);
+ let ymin=Math.min(0,...S.filter(isFinite)), ymax=Math.max(1,...S.filter(isFinite));
+ if(!isFinite(ymin)||Math.abs(ymax)>1e7||Math.abs(ymin)>1e7){ymin=Math.min(0,a1*3);ymax=Math.max(1,a1*6);}
+ const pad=(ymax-ymin)||1;ymin-=pad*0.12;ymax+=pad*0.12;
+ const padL=8,padR=8,padT=10,padB=20;
+ const X=n=>padL+(n-1)/(N-1)*(w-padL-padR);
+ const Y=y=>h-padB-(y-ymin)/(ymax-ymin)*(h-padT-padB);
+ if(ymin<0&&ymax>0){ctx.strokeStyle='rgba(255,255,255,.2)';ctx.beginPath;ctx.moveTo(padL,Y(0));ctx.lineTo(w-padR,Y(0));ctx.stroke;}
+ // limit line
+ if(conv){ctx.strokeStyle='rgba(94,230,168,.6)';ctx.setLineDash([5,4]);ctx.beginPath;ctx.moveTo(padL,Y(Sinf));ctx.lineTo(w-padR,Y(Sinf));ctx.stroke;ctx.setLineDash([]);
+ ctx.fillStyle='#5ee6a8';ctx.font='11px Sarabun';ctx.textAlign='left';ctx.fillText('S = '+fmt(Sinf,2),padL+4,Y(Sinf)-5);}
+ // partial sums
+ ctx.strokeStyle=conv?'#5cc8ff':'#f85149';ctx.lineWidth=2;ctx.beginPath;
+ S.forEach((v,i)=>{if(!isFinite(v))return;const x=X(i+1),y=Y(Math.max(ymin,Math.min(ymax,v)));i?ctx.lineTo(x,y):ctx.moveTo(x,y);});ctx.stroke;
+ S.forEach((v,i)=>{if(!isFinite(v))return;ctx.fillStyle=conv?'#5cc8ff':'#f85149';ctx.beginPath;ctx.arc(X(i+1),Y(Math.max(ymin,Math.min(ymax,v))),3.5,0,7);ctx.fill;});
+ ctx.fillStyle='#9aa2cf';ctx.font='10px Sarabun';ctx.textAlign='center';ctx.fillText('S₁',X(1),h-6);ctx.fillText('S₁₄',X(N),h-6);
+ gid('if-state').textContent=conv?'ลู่เข้า ✓':'ลู่ออก ✗';
+ gid('if-state').style.color=conv?'#5ee6a8':'#f85149';
+ gid('if-sum').textContent=conv?fmt(Sinf,3):'หาไม่ได้';
+ const note=gid('if-note');
+ if(conv){note.className='note good';note.innerHTML='<b>r| = '+fmt(Math.abs(r),2)+' &lt; 1</b> → ผลบวกย่อยลู่เข้าหา S = a₁/(1−r) = '+a1+'/(1−'+fmt(r,2)+') = <b>'+fmt(Sinf,3)+'</b>';}
+ else{note.className='note';note.style.borderColor='rgba(248,81,73,.4)';note.innerHTML='<b style="color:#f85149">r| = '+fmt(Math.abs(r),2)+' ≥ 1</b> → พจน์ไม่เล็กลง ผลบวกระเบิด <b>ลู่ออก</b> หาผลบวกอนันต์ไม่ได้';}
 }
 ['if-a1','if-r'].forEach(id=>gid(id).addEventListener('input',drawInf));
 
 /* ===== drill engine ===== */
 function makeDrill(cfg){
-  let cur=null,shown=0,hintShown=0,cat='all';
-  function pool(){return cat==='all'?cfg.bank:cfg.bank.filter(p=>p.cat===cat);}
-  function pick(){const P=pool();cur=P[Math.floor(Math.random()*P.length)];shown=0;hintShown=0;
-    cfg.qEl.innerHTML=cur.q;cfg.stepsEl.innerHTML='';cfg.hintsEl.innerHTML='';
-    cfg.btnStep.disabled=false;cfg.btnStep.textContent='ขั้นต่อไป ▸';cfg.btnHint.disabled=false;}
-  cfg.btnStep.onclick=()=>{if(!cur)return;if(shown<cur.steps.length){const li=document.createElement('li');const s=cur.steps[shown];
-    li.innerHTML=s.t+(s.why?`<span class="why">${s.why}</span>`:'');cfg.stepsEl.appendChild(li);shown++;
-    if(shown>=cur.steps.length){cfg.btnStep.textContent='✓ ครบแล้ว';cfg.btnStep.disabled=true;}}};
-  cfg.btnHint.onclick=()=>{if(!cur)return;const hs=cur.hints;if(hintShown<hs.length){const d=document.createElement('div');
-    const isAns=hintShown===hs.length-1;d.className=isAns?'ans':'hint';
-    d.innerHTML=isAns?('<b>เฉลย:</b> '+hs[hintShown]):(`<b>นัยที่ ${hintShown+1}:</b> `+hs[hintShown]);
-    cfg.hintsEl.appendChild(d);hintShown++;if(hintShown>=hs.length)cfg.btnHint.disabled=true;}};
-  cfg.btnNew.onclick=()=>pick();
-  (cfg.catBtns||[]).forEach(b=>b.onclick=()=>{cfg.catBtns.forEach(x=>x.classList.remove('on'));b.classList.add('on');cat=b.dataset.c;pick();});
-  pick();
+ let cur=null,shown=0,hintShown=0,cat='all';
+ function pool{return cat==='all'?cfg.bank:cfg.bank.filter(p=>p.cat===cat);}
+ function pick{const P=pool;cur=P[Math.floor(Math.random*P.length)];shown=0;hintShown=0;
+ cfg.qEl.innerHTML=cur.q;cfg.stepsEl.innerHTML='';cfg.hintsEl.innerHTML='';
+ cfg.btnStep.disabled=false;cfg.btnStep.textContent='ขั้นต่อไป ▸';cfg.btnHint.disabled=false;}
+ cfg.btnStep.onclick==>{if(!cur)return;if(shown<cur.steps.length){const li=document.createElement('li');const s=cur.steps[shown];
+ li.innerHTML=s.t+(s.why?`<span class="why">${s.why}</span>`:'');cfg.stepsEl.appendChild(li);shown++;
+ if(shown>=cur.steps.length){cfg.btnStep.textContent='✓ ครบแล้ว';cfg.btnStep.disabled=true;}}};
+ cfg.btnHint.onclick==>{if(!cur)return;const hs=cur.hints;if(hintShown<hs.length){const d=document.createElement('div');
+ const isAns=hintShown===hs.length-1;d.className=isAns?'ans':'hint';
+ d.innerHTML=isAns?('<b>เฉลย:</b> '+hs[hintShown]):(`<b>นัยที่ ${hintShown+1}:</b> `+hs[hintShown]);
+ cfg.hintsEl.appendChild(d);hintShown++;if(hintShown>=hs.length)cfg.btnHint.disabled=true;}};
+ cfg.btnNew.onclick==>pick;
+ (cfg.catBtns||[]).forEach(b=>b.onclick==>{cfg.catBtns.forEach(x=>x.classList.remove('on'));b.classList.add('on');cat=b.dataset.c;pick;});
+ pick;
 }
 
 /* ---- bank: sequences ---- */
 makeDrill({bank:[
-  {cat:'ari',q:'ลำดับเลขคณิต 100, 97, 94, … จงหาพจน์ที่ 21',
-   steps:[{t:'a₁=100, d = 97−100 = −3',why:'d = พจน์ขวา − พจน์ซ้าย'},
-     {t:'a₂₁ = a₁+(21−1)d = 100+20(−3) = 100−60',why:'สูตร aₙ=a₁+(n−1)d'},{t:'<b>a₂₁ = 40</b>'}],
-   hints:['หา d ก่อน (ลบคู่ติดกัน)','a₂₁=100+20(−3)','40']},
-  {cat:'ari',q:'ลำดับเลขคณิต a₃ = 11 และ a₈ = 21 จงหาพจน์ทั่วไป',
-   steps:[{t:'a₃=a₁+2d=11 ...(1) , a₈=a₁+7d=21 ...(2)'},
-     {t:'(2)−(1): 5d=10 → d=2',why:'ลบกำจัด a₁'},
-     {t:'a₁+2(2)=11 → a₁=7'},{t:'<b>aₙ = 7+(n−1)2 = 2n+5</b>'}],
-   hints:['ตั้ง 2 สมการจาก a₃,a₈','5d=10 → d=2, a₁=7','aₙ = 2n+5']},
-  {cat:'ari',q:'จงหาว่าตั้งแต่ 100 ถึง 500 มีจำนวนที่หารด้วย 7 ลงตัวกี่จำนวน',
-   steps:[{t:'ตัวแรกที่หาร 7 ลง ≥100 คือ 105, ตัวสุดท้าย ≤500 คือ 497',why:'105=7×15, 497=7×71'},
-     {t:'เป็นเลขคณิต a₁=105, d=7, aₙ=497',why:''},
-     {t:'497 = 105+(n−1)7 → 392=7(n−1) → n−1=56',why:''},{t:'<b>n = 57 จำนวน</b>'}],
-   hints:['หาตัวแรก/ตัวสุดท้ายที่หาร 7 ลงตัว (105, 497)','497=105+(n−1)7','57 จำนวน']},
-  {cat:'geo',q:'ลำดับเรขาคณิต a₁=3, a₄=−24 จงหาอัตราส่วนร่วม r',
-   steps:[{t:'a₄ = a₁r³ → −24 = 3r³',why:'สูตร aₙ=a₁r^(n−1)'},
-     {t:'r³ = −8 → r = −2',why:'รากที่สามของ −8'},{t:'<b>r = −2</b>'}],
-   hints:['a₄=a₁r³','r³=−24/3=−8','r = −2']},
-  {cat:'geo',q:'ลำดับเรขาคณิต a₃=2, a₇=2592 จงหา r (r>0)',
-   steps:[{t:'a₃=a₁r²=2 , a₇=a₁r⁶=2592'},
-     {t:'หารกัน: r⁴ = 2592/2 = 1296 = 6⁴',why:'เรขา "หาร" กำจัด a₁ (ต่างจากเลขคณิตที่ "ลบ")'},
-     {t:'<b>r = 6</b>'}],
-   hints:['หาร a₇/a₃ กำจัด a₁','r⁴=1296=6⁴','r = 6']},
-  {cat:'har',q:'ลำดับฮาร์มอนิก aₙ มี a₂ = 1/3 และ a₃ = 1/5 จงหา a₁',
-   steps:[{t:'พลิกส่วนกลับ bₙ=1/aₙ → b₂=3, b₃=5 เป็นเลขคณิต',why:'นิยามฮาร์มอนิก: 1/aₙ เป็นเลขคณิต'},
-     {t:'d = b₃−b₂ = 5−3 = 2 → b₁ = b₂−d = 3−2 = 1'},
-     {t:'a₁ = 1/b₁ = <b>1/1 = 1</b>',why:'พลิกกลับเป็น aₙ'}],
-   hints:['ฮาร์มอนิก → พลิกเป็น 1/aₙ ให้เป็นเลขคณิตก่อน','b: 3,5 → d=2 → b₁=1','a₁ = 1']},
+ {cat:'ari',q:'ลำดับเลขคณิต 100, 97, 94, … จงหาพจน์ที่ 21',
+ steps:[{t:'a₁=100, d = 97−100 = −3',why:'d = พจน์ขวา − พจน์ซ้าย'},
+ {t:'a₂₁ = a₁+(21−1)d = 100+20(−3) = 100−60',why:'สูตร aₙ=a₁+(n−1)d'},{t:'<b>a₂₁ = 40</b>'}],
+ hints:['หา d ก่อน (ลบคู่ติดกัน)','a₂₁=100+20(−3)','40']},
+ {cat:'ari',q:'ลำดับเลขคณิต a₃ = 11 และ a₈ = 21 จงหาพจน์ทั่วไป',
+ steps:[{t:'a₃=a₁+2d=11 ...(1) , a₈=a₁+7d=21 ...(2)'},
+ {t:'(2)−(1): 5d=10 → d=2',why:'ลบกำจัด a₁'},
+ {t:'a₁+2(2)=11 → a₁=7'},{t:'<b>aₙ = 7+(n−1)2 = 2n+5</b>'}],
+ hints:['ตั้ง 2 สมการจาก a₃,a₈','5d=10 → d=2, a₁=7','aₙ = 2n+5']},
+ {cat:'ari',q:'จงหาว่าตั้งแต่ 100 ถึง 500 มีจำนวนที่หารด้วย 7 ลงตัวกี่จำนวน',
+ steps:[{t:'ตัวแรกที่หาร 7 ลง ≥100 คือ 105, ตัวสุดท้าย ≤500 คือ 497',why:'105=7×15, 497=7×71'},
+ {t:'เป็นเลขคณิต a₁=105, d=7, aₙ=497',why:''},
+ {t:'497 = 105+(n−1)7 → 392=7(n−1) → n−1=56',why:''},{t:'<b>n = 57 จำนวน</b>'}],
+ hints:['หาตัวแรก/ตัวสุดท้ายที่หาร 7 ลงตัว (105, 497)','497=105+(n−1)7','57 จำนวน']},
+ {cat:'geo',q:'ลำดับเรขาคณิต a₁=3, a₄=−24 จงหาอัตราส่วนร่วม r',
+ steps:[{t:'a₄ = a₁r³ → −24 = 3r³',why:'สูตร aₙ=a₁r^(n−1)'},
+ {t:'r³ = −8 → r = −2',why:'รากที่สามของ −8'},{t:'<b>r = −2</b>'}],
+ hints:['a₄=a₁r³','r³=−24/3=−8','r = −2']},
+ {cat:'geo',q:'ลำดับเรขาคณิต a₃=2, a₇=2592 จงหา r (r>0)',
+ steps:[{t:'a₃=a₁r²=2 , a₇=a₁r⁶=2592'},
+ {t:'หารกัน: r⁴ = 2592/2 = 1296 = 6⁴',why:'เรขา "หาร" กำจัด a₁ (ต่างจากเลขคณิตที่ "ลบ")'},
+ {t:'<b>r = 6</b>'}],
+ hints:['หาร a₇/a₃ กำจัด a₁','r⁴=1296=6⁴','r = 6']},
+ {cat:'har',q:'ลำดับฮาร์มอนิก aₙ มี a₂ = 1/3 และ a₃ = 1/5 จงหา a₁',
+ steps:[{t:'พลิกส่วนกลับ bₙ=1/aₙ → b₂=3, b₃=5 เป็นเลขคณิต',why:'นิยามฮาร์มอนิก: 1/aₙ เป็นเลขคณิต'},
+ {t:'d = b₃−b₂ = 5−3 = 2 → b₁ = b₂−d = 3−2 = 1'},
+ {t:'a₁ = 1/b₁ = <b>1/1 = 1</b>',why:'พลิกกลับเป็น aₙ'}],
+ hints:['ฮาร์มอนิก → พลิกเป็น 1/aₙ ให้เป็นเลขคณิตก่อน','b: 3,5 → d=2 → b₁=1','a₁ = 1']},
 ], qEl:gid('d0-q'),stepsEl:gid('d0-steps'),hintsEl:gid('d0-hints'),btnStep:gid('d0-step'),btnHint:gid('d0-hint'),btnNew:gid('d0-new'),catBtns:[...document.querySelectorAll('#d0-cat button')]});
 
 /* ---- bank: limit ---- */
 makeDrill({bank:[
-  {q:'หา lim<sub>n→∞</sub> (5n² + 3n)/(2n² + 7)',
-   steps:[{t:'ดีกรีบน = 2 = ดีกรีล่าง → <b style="color:var(--gold)">เสมอ</b>'},
-     {t:'เอาสัมประสิทธิ์ตัวหน้า เศษ/ส่วน = 5/2',why:'พจน์ 3n, 7 เล็กกว่า n² ตัดทิ้ง'},{t:'<b>= 5/2</b>'}],
-   hints:['เทียบดีกรีบน-ล่าง','เสมอ → 5/2','5/2']},
-  {q:'หา lim<sub>n→∞</sub> (n + 1)/(n³ + 2)',
-   steps:[{t:'ดีกรีบน = 1 &lt; ล่าง = 3 → <b style="color:var(--good)">ส่วนชนะ</b>'},
-     {t:'ส่วนชนะ → <b>= 0</b>'}],
-   hints:['บนดีกรี 1, ล่างดีกรี 3','ส่วนชนะ → 0','0']},
-  {q:'หา lim<sub>n→∞</sub> (4n³ + n)/(n² + 1)',
-   steps:[{t:'ดีกรีบน = 3 &gt; ล่าง = 2 → <b style="color:var(--bad)">เศษชนะ</b>'},
-     {t:'เศษชนะ → <b>หาค่าไม่ได้ (ลู่ออก → ∞)</b>'}],
-   hints:['บนดีกรีสูงกว่าล่าง','เศษชนะ → หาค่าไม่ได้','ลู่ออก (∞)']},
-  {q:'หา lim<sub>n→∞</sub> (3 − 2/n + 5/n²)',
-   steps:[{t:'แยกทีละพจน์: lim 3 = 3, lim 2/n = 0, lim 5/n² = 0',why:'ใช้กฎ lim C=C และ lim 1/nᵏ=0'},
-     {t:'<b>= 3 − 0 + 0 = 3</b>'}],
-   hints:['lim ของค่าคงที่ = ตัวมัน, lim 1/nᵏ = 0','3−0+0','3']},
-  {q:'อนุกรม Sₙ = (n²+3)/(2n²+1) จงหา lim Sₙ (ผลบวกอนันต์)',
-   steps:[{t:'ดีกรีบน=ล่าง=2 → เสมอ → 1/2',why:'สัมประสิทธิ์ตัวหน้า 1/2'},
-     {t:'<b>ลู่เข้า, ผลบวก = 1/2</b>'}],
-   hints:['เสมอ → เศษ/ส่วน','1/2','ผลบวก = 1/2']},
+ {q:'หา lim<sub>n→∞</sub> (5n² + 3n)/(2n² + 7)',
+ steps:[{t:'ดีกรีบน = 2 = ดีกรีล่าง → <b style="color:var(--gold)">เสมอ</b>'},
+ {t:'เอาสัมประสิทธิ์ตัวหน้า เศษ/ส่วน = 5/2',why:'พจน์ 3n, 7 เล็กกว่า n² ตัดทิ้ง'},{t:'<b>= 5/2</b>'}],
+ hints:['เทียบดีกรีบน-ล่าง','เสมอ → 5/2','5/2']},
+ {q:'หา lim<sub>n→∞</sub> (n + 1)/(n³ + 2)',
+ steps:[{t:'ดีกรีบน = 1 &lt; ล่าง = 3 → <b style="color:var(--good)">ส่วนชนะ</b>'},
+ {t:'ส่วนชนะ → <b>= 0</b>'}],
+ hints:['บนดีกรี 1, ล่างดีกรี 3','ส่วนชนะ → 0','0']},
+ {q:'หา lim<sub>n→∞</sub> (4n³ + n)/(n² + 1)',
+ steps:[{t:'ดีกรีบน = 3 &gt; ล่าง = 2 → <b style="color:var(--bad)">เศษชนะ</b>'},
+ {t:'เศษชนะ → <b>หาค่าไม่ได้ (ลู่ออก → ∞)</b>'}],
+ hints:['บนดีกรีสูงกว่าล่าง','เศษชนะ → หาค่าไม่ได้','ลู่ออก (∞)']},
+ {q:'หา lim<sub>n→∞</sub> (3 − 2/n + 5/n²)',
+ steps:[{t:'แยกทีละพจน์: lim 3 = 3, lim 2/n = 0, lim 5/n² = 0',why:'ใช้กฎ lim C=C และ lim 1/nᵏ=0'},
+ {t:'<b>= 3 − 0 + 0 = 3</b>'}],
+ hints:['lim ของค่าคงที่ = ตัวมัน, lim 1/nᵏ = 0','3−0+0','3']},
+ {q:'อนุกรม Sₙ = (n²+3)/(2n²+1) จงหา lim Sₙ (ผลบวกอนันต์)',
+ steps:[{t:'ดีกรีบน=ล่าง=2 → เสมอ → 1/2',why:'สัมประสิทธิ์ตัวหน้า 1/2'},
+ {t:'<b>ลู่เข้า, ผลบวก = 1/2</b>'}],
+ hints:['เสมอ → เศษ/ส่วน','1/2','ผลบวก = 1/2']},
 ], qEl:gid('d1-q'),stepsEl:gid('d1-steps'),hintsEl:gid('d1-hints'),btnStep:gid('d1-step'),btnHint:gid('d1-hint'),btnNew:gid('d1-new')});
 
 /* ---- bank: sigma ---- */
 makeDrill({bank:[
-  {q:'หาค่า ∑<sub>i=1</sub><sup>5</sup> (2i + 1)',
-   steps:[{t:'แยกสมบัติ: ∑(2i+1) = 2∑i + ∑1',why:'ดึงค่าคงที่ + แยกผลบวก'},
-     {t:'∑<sub>i=1</sub><sup>5</sup> i = 5(6)/2 = 15 , ∑<sub>i=1</sub><sup>5</sup> 1 = 5'},
-     {t:'= 2(15) + 5 = <b>35</b>'}],
-   hints:['แยกเป็น 2∑i + ∑1','∑i=15, ∑1=5','2(15)+5 = 35']},
-  {q:'หาค่า ∑<sub>i=1</sub><sup>10</sup> i²',
-   steps:[{t:'สูตร ∑i² = n(n+1)(2n+1)/6'},
-     {t:'= 10(11)(21)/6 = 2310/6'},{t:'<b>= 385</b>'}],
-   hints:['ใช้สูตร n(n+1)(2n+1)/6','10·11·21/6','385']},
-  {q:'เขียน 5 + 8 + 11 + … + 38 ในรูป ∑',
-   steps:[{t:'เลขคณิต a₁=5, d=3 → พจน์ทั่วไป aᵢ = 5+(i−1)3 = 3i+2'},
-     {t:'หาจำนวนพจน์: 38 = 3i+2 → i=12'},{t:'<b>∑<sub>i=1</sub><sup>12</sup> (3i+2)</b>'}],
-   hints:['หาพจน์ทั่วไป (เลขคณิต 3i+2)','38=3i+2 → 12 พจน์','∑(3i+2), i=1 ถึง 12']},
+ {q:'หาค่า ∑<sub>i=1</sub><sup>5</sup> (2i + 1)',
+ steps:[{t:'แยกสมบัติ: ∑(2i+1) = 2∑i + ∑1',why:'ดึงค่าคงที่ + แยกผลบวก'},
+ {t:'∑<sub>i=1</sub><sup>5</sup> i = 5(6)/2 = 15 , ∑<sub>i=1</sub><sup>5</sup> 1 = 5'},
+ {t:'= 2(15) + 5 = <b>35</b>'}],
+ hints:['แยกเป็น 2∑i + ∑1','∑i=15, ∑1=5','2(15)+5 = 35']},
+ {q:'หาค่า ∑<sub>i=1</sub><sup>10</sup> i²',
+ steps:[{t:'สูตร ∑i² = n(n+1)(2n+1)/6'},
+ {t:'= 10(11)(21)/6 = 2310/6'},{t:'<b>= 385</b>'}],
+ hints:['ใช้สูตร n(n+1)(2n+1)/6','10·11·21/6','385']},
+ {q:'เขียน 5 + 8 + 11 + … + 38 ในรูป ∑',
+ steps:[{t:'เลขคณิต a₁=5, d=3 → พจน์ทั่วไป aᵢ = 5+(i−1)3 = 3i+2'},
+ {t:'หาจำนวนพจน์: 38 = 3i+2 → i=12'},{t:'<b>∑<sub>i=1</sub><sup>12</sup> (3i+2)</b>'}],
+ hints:['หาพจน์ทั่วไป (เลขคณิต 3i+2)','38=3i+2 → 12 พจน์','∑(3i+2), i=1 ถึง 12']},
 ], qEl:gid('d2-q'),stepsEl:gid('d2-steps'),hintsEl:gid('d2-hints'),btnStep:gid('d2-step'),btnHint:gid('d2-hint'),btnNew:gid('d2-new')});
 
 /* ---- bank: series ---- */
 makeDrill({bank:[
-  {cat:'ari',q:'หาผลบวก 12 พจน์แรกของ 4 + 1 + (−2) + (−5) + …',
-   steps:[{t:'เลขคณิต a₁=4, d=−3, n=12'},
-     {t:'Sₙ = (n/2)[2a₁+(n−1)d] = (12/2)[2(4)+11(−3)]'},
-     {t:'= 6[8−33] = 6(−25)',why:''},{t:'<b>= −150</b>'}],
-   hints:['ใช้ S=(n/2)[2a₁+(n−1)d]','6[8−33]=6(−25)','−150']},
-  {cat:'ari',q:'หาค่า 2 + 6 + 10 + … + 38',
-   steps:[{t:'a₁=2, d=4, aₙ=38 → หา n: 38=2+(n−1)4 → n=10'},
-     {t:'S₁₀ = (10/2)(a₁+aₙ) = 5(2+38)'},{t:'= 5(40) = <b>200</b>'}],
-   hints:['หา n ก่อนจากพจน์สุดท้าย (n=10)','S=(n/2)(a₁+aₙ)=5(40)','200']},
-  {cat:'geo',q:'หาผลบวก 8 พจน์แรกของ 1, 2, 4, 8, …',
-   steps:[{t:'เรขาคณิต a₁=1, r=2, n=8'},
-     {t:'Sₙ = a₁(rⁿ−1)/(r−1) = 1(2⁸−1)/(2−1)'},{t:'= (256−1)/1 = <b>255</b>'}],
-   hints:['ใช้ S=a₁(rⁿ−1)/(r−1)','(2⁸−1)/1','255']},
-  {cat:'geo',q:'หาผลบวก 6 พจน์แรกของ 3, 6, 12, 24, …',
-   steps:[{t:'a₁=3, r=2, n=6'},
-     {t:'S₆ = 3(2⁶−1)/(2−1) = 3(64−1)/1'},{t:'= 3(63) = <b>189</b>'}],
-   hints:['S=a₁(rⁿ−1)/(r−1)','3(64−1)','189']},
+ {cat:'ari',q:'หาผลบวก 12 พจน์แรกของ 4 + 1 + (−2) + (−5) + …',
+ steps:[{t:'เลขคณิต a₁=4, d=−3, n=12'},
+ {t:'Sₙ = (n/2)[2a₁+(n−1)d] = (12/2)[2(4)+11(−3)]'},
+ {t:'= 6[8−33] = 6(−25)',why:''},{t:'<b>= −150</b>'}],
+ hints:['ใช้ S=(n/2)[2a₁+(n−1)d]','6[8−33]=6(−25)','−150']},
+ {cat:'ari',q:'หาค่า 2 + 6 + 10 + … + 38',
+ steps:[{t:'a₁=2, d=4, aₙ=38 → หา n: 38=2+(n−1)4 → n=10'},
+ {t:'S₁₀ = (10/2)(a₁+aₙ) = 5(2+38)'},{t:'= 5(40) = <b>200</b>'}],
+ hints:['หา n ก่อนจากพจน์สุดท้าย (n=10)','S=(n/2)(a₁+aₙ)=5(40)','200']},
+ {cat:'geo',q:'หาผลบวก 8 พจน์แรกของ 1, 2, 4, 8, …',
+ steps:[{t:'เรขาคณิต a₁=1, r=2, n=8'},
+ {t:'Sₙ = a₁(rⁿ−1)/(r−1) = 1(2⁸−1)/(2−1)'},{t:'= (256−1)/1 = <b>255</b>'}],
+ hints:['ใช้ S=a₁(rⁿ−1)/(r−1)','(2⁸−1)/1','255']},
+ {cat:'geo',q:'หาผลบวก 6 พจน์แรกของ 3, 6, 12, 24, …',
+ steps:[{t:'a₁=3, r=2, n=6'},
+ {t:'S₆ = 3(2⁶−1)/(2−1) = 3(64−1)/1'},{t:'= 3(63) = <b>189</b>'}],
+ hints:['S=a₁(rⁿ−1)/(r−1)','3(64−1)','189']},
 ], qEl:gid('d3-q'),stepsEl:gid('d3-steps'),hintsEl:gid('d3-hints'),btnStep:gid('d3-step'),btnHint:gid('d3-hint'),btnNew:gid('d3-new'),catBtns:[...document.querySelectorAll('#d3-cat button')]});
 
 /* ---- bank: infinite ---- */
 makeDrill({bank:[
-  {q:'หาผลบวกอนันต์ 8 + 4 + 2 + 1 + …',
-   steps:[{t:'เรขาคณิต a₁=8, r = 4/8 = 1/2',why:'|r|=0.5 < 1 → ลู่เข้า'},
-     {t:'S = a₁/(1−r) = 8/(1−1/2) = 8/(1/2)'},{t:'<b>= 16</b>'}],
-   hints:['หา r ก่อน (1/2), เช็ค |r|<1','S=8/(1/2)','16']},
-  {q:'หาผลบวกอนันต์ 3/10 + 3/100 + 3/1000 + …',
-   steps:[{t:'a₁=3/10, r=1/10 (|r|<1 ลู่เข้า)'},
-     {t:'S = (3/10)/(1−1/10) = (3/10)/(9/10)'},{t:'<b>= 1/3</b>',why:'นี่คือ 0.333… = 1/3'}],
-   hints:['r = 1/10','S=(3/10)/(9/10)','1/3']},
-  {q:'อนุกรม 2 + 4 + 8 + 16 + … เป็นลู่เข้าหรือลู่ออก?',
-   steps:[{t:'เรขาคณิต r = 2 → |r| = 2 ≥ 1'},
-     {t:'<b>ลู่ออก</b> หาผลบวกอนันต์ไม่ได้',why:'พจน์ยิ่งใหญ่ขึ้น ผลบวกระเบิด'}],
-   hints:['เช็ค |r| เทียบ 1','|r|=2 ≥ 1','ลู่ออก']},
-  {q:'หาผลบวกอนันต์ของเรขาคณิตที่ a₁ = 12, r = −1/3',
-   steps:[{t:'|r| = 1/3 < 1 → ลู่เข้า (r ลบได้ ขอแค่ |r|<1)'},
-     {t:'S = 12/(1−(−1/3)) = 12/(4/3)'},{t:'<b>= 9</b>'}],
-   hints:['r ลบก็ลู่เข้าได้ถ้า |r|<1','S=12/(4/3)','9']},
+ {q:'หาผลบวกอนันต์ 8 + 4 + 2 + 1 + …',
+ steps:[{t:'เรขาคณิต a₁=8, r = 4/8 = 1/2',why:'|r|=0.5 < 1 → ลู่เข้า'},
+ {t:'S = a₁/(1−r) = 8/(1−1/2) = 8/(1/2)'},{t:'<b>= 16</b>'}],
+ hints:['หา r ก่อน (1/2), เช็ค |r|<1','S=8/(1/2)','16']},
+ {q:'หาผลบวกอนันต์ 3/10 + 3/100 + 3/1000 + …',
+ steps:[{t:'a₁=3/10, r=1/10 (|r|<1 ลู่เข้า)'},
+ {t:'S = (3/10)/(1−1/10) = (3/10)/(9/10)'},{t:'<b>= 1/3</b>',why:'นี่คือ 0.333… = 1/3'}],
+ hints:['r = 1/10','S=(3/10)/(9/10)','1/3']},
+ {q:'อนุกรม 2 + 4 + 8 + 16 + … เป็นลู่เข้าหรือลู่ออก?',
+ steps:[{t:'เรขาคณิต r = 2 → |r| = 2 ≥ 1'},
+ {t:'<b>ลู่ออก</b> หาผลบวกอนันต์ไม่ได้',why:'พจน์ยิ่งใหญ่ขึ้น ผลบวกระเบิด'}],
+ hints:['เช็ค |r| เทียบ 1','|r|=2 ≥ 1','ลู่ออก']},
+ {q:'หาผลบวกอนันต์ของเรขาคณิตที่ a₁ = 12, r = −1/3',
+ steps:[{t:'|r| = 1/3 < 1 → ลู่เข้า (r ลบได้ ขอแค่ |r|<1)'},
+ {t:'S = 12/(1−(−1/3)) = 12/(4/3)'},{t:'<b>= 9</b>'}],
+ hints:['r ลบก็ลู่เข้าได้ถ้า |r|<1','S=12/(4/3)','9']},
 ], qEl:gid('d4-q'),stepsEl:gid('d4-steps'),hintsEl:gid('d4-hints'),btnStep:gid('d4-step'),btnHint:gid('d4-hint'),btnNew:gid('d4-new')});
 
 /* ===== tab switching ===== */
 const drawers={0:drawSeq,1:drawDecider,4:drawInf};
-document.querySelectorAll('#tabs .tab').forEach(t=>t.onclick=()=>{
-  document.querySelectorAll('#tabs .tab').forEach(x=>x.classList.remove('active'));
-  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
-  t.classList.add('active');const i=+t.dataset.p;gid('p'+i).classList.add('active');
-  if(drawers[i])drawers[i]();
+document.querySelectorAll('#tabs .tab').forEach(t=>t.onclick==>{
+ document.querySelectorAll('#tabs .tab').forEach(x=>x.classList.remove('active'));
+ document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+ t.classList.add('active');const i=+t.dataset.p;gid('p'+i).classList.add('active');
+ if(drawers[i])drawers[i];
 });
-function redrawActive(){const a=document.querySelector('.panel.active').id;
-  if(a==='p0')drawSeq();else if(a==='p1')drawDecider();else if(a==='p4')drawInf();}
-window.addEventListener('resize',()=>requestAnimationFrame(redrawActive));
-drawSeq();drawDecider();drawInf();
+function redrawActive{const a=document.querySelector('.panel.active').id;
+ if(a==='p0')drawSeq;else if(a==='p1')drawDecider;else if(a==='p4')drawInf;}
+window.addEventListener('resize',=>requestAnimationFrame(redrawActive));
+drawSeq;drawDecider;drawInf;
 </script>
 </body>
 </html>
