@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>คณิตเก็บตก TSAM — อธิบายง่ายสุดๆ</title>
+<style>
+:root{
+  --bg-0:#0a0d18; --ink:#f2f4ff; --muted:#9aa2cf; --line:rgba(255,255,255,.09);
+  --accent:#5cc8ff; --accent-2:#a371f7; --gold:#ffd166; --good:#5ee6a8; --bad:#f85149;
+  --glass:linear-gradient(180deg,rgba(40,46,90,.50),rgba(16,20,46,.55));
+  --glass-2:linear-gradient(180deg,rgba(52,58,108,.55),rgba(24,28,62,.62));
+  --shadow:0 22px 55px -24px rgba(0,0,0,.78); --ring:0 0 0 1px rgba(255,255,255,.06);
+  --grad-text:linear-gradient(120deg,#ffffff,#bcd4ff 45%,#b6a4ff);
+  --grad-fill:linear-gradient(90deg,var(--accent),var(--accent-2));
+  --r-md:14px; --r-lg:18px; --r-xl:24px; --r-pill:999px; --ease:cubic-bezier(.2,.7,.3,1);
+}
+*{box-sizing:border-box} html,body{margin:0}
+body{color:var(--ink);line-height:1.6;padding:16px 12px 44px;
+  font-family:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
+  background:
+    radial-gradient(820px 520px at 8% -12%,rgba(92,120,255,.20),transparent 55%),
+    radial-gradient(720px 520px at 98% -6%,rgba(124,92,255,.22),transparent 52%),
+    radial-gradient(760px 680px at 55% 122%,rgba(40,110,210,.16),transparent 55%),
+    var(--bg-0);
+  background-attachment:fixed;min-height:100vh}
+::selection{background:rgba(92,200,255,.35)}
+.wrap{max-width:880px;margin:0 auto}
+.hero{position:relative;overflow:hidden;background:var(--glass-2);border:1px solid var(--line);
+  border-radius:var(--r-xl);padding:22px 20px 18px;margin-bottom:14px;box-shadow:var(--shadow),var(--ring),inset 0 1px 0 rgba(255,255,255,.08)}
+.hero::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(640px 240px at 102% -10%,rgba(124,92,255,.28),transparent 60%)}
+.hero h1{margin:.1rem 0;font-size:clamp(1.3rem,4.5vw,1.95rem);line-height:1.2}
+.grad-text{background:var(--grad-text);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:var(--muted);margin:.35rem 0 0;font-size:.9rem}
+.pill{display:inline-block;font-size:.72rem;font-weight:700;color:var(--gold);background:rgba(255,209,102,.1);border:1px solid rgba(255,209,102,.25);padding:2px 9px;border-radius:7px}
+
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 8px;margin-bottom:12px;-webkit-overflow-scrolling:touch}
+.tabs::-webkit-scrollbar{height:6px}.tabs::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:9px}
+.tab{flex:0 0 auto;white-space:nowrap;cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--muted);font-family:inherit;font-weight:700;font-size:.88rem;padding:10px 14px;border-radius:var(--r-pill);transition:all .15s var(--ease)}
+.tab:hover{color:var(--ink);border-color:rgba(92,200,255,.4)}
+.tab.active{background:var(--grad-fill);color:#0a1020;border-color:transparent;box-shadow:0 10px 22px -10px rgba(92,140,255,.7)}
+.tab .n{margin-right:5px}
+
+.card{position:relative;background:var(--glass);border:1px solid var(--line);border-radius:var(--r-lg);padding:16px;margin-bottom:14px;box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.05)}
+.card h2{margin:0 0 4px;font-size:1.12rem}.card h2 .ic{margin-right:6px}
+.card h3{margin:16px 0 7px;font-size:1rem;color:var(--accent)}
+.sub{color:var(--muted);font-size:.87rem;margin:0 0 12px}
+.panel{display:none}.panel.active{display:block;animation:rise .35s var(--ease) both}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.k{font-family:'Cambria Math','Sarabun',serif;font-style:italic}sup{font-size:.72em}sub{font-size:.72em}
+
+/* kid-simple callout */
+.kid{background:linear-gradient(180deg,rgba(94,230,168,.12),rgba(92,200,255,.06));border:1px solid rgba(94,230,168,.3);border-radius:var(--r-md);padding:13px 15px;margin:10px 0;font-size:.95rem}
+.kid .h{font-weight:800;color:var(--good);margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.kid b{color:var(--gold)}
+
+.def{background:linear-gradient(180deg,rgba(92,200,255,.1),rgba(163,113,247,.06));border:1px solid rgba(92,200,255,.28);border-radius:var(--r-md);padding:13px 15px;margin:10px 0}
+.def .tag{display:inline-block;font-size:.72rem;font-weight:800;color:#0a1020;background:var(--gold);padding:2px 9px;border-radius:6px;margin-bottom:7px}
+.formula{font-size:1.2rem;text-align:center;margin:8px 0;font-family:'Cambria Math','Sarabun',serif;line-height:1.7}
+.hl{background:rgba(255,209,102,.28);border-radius:4px;padding:0 3px}.hl2{background:rgba(92,200,255,.28);border-radius:4px;padding:0 3px}
+.note{background:rgba(92,200,255,.08);border:1px solid rgba(92,200,255,.22);border-radius:var(--r-md);padding:11px 13px;font-size:.88rem;margin-top:12px}
+.note.gold{background:rgba(255,209,102,.08);border-color:rgba(255,209,102,.25)}.note b{color:var(--accent)}.note.gold b{color:var(--gold)}
+
+.ex{border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;margin:10px 0;background:rgba(255,255,255,.03)}
+.ex .exq{padding:11px 14px;font-weight:700;font-size:.96rem;background:rgba(163,113,247,.1);border-bottom:1px solid var(--line)}
+.ex .exq .lbl{color:var(--accent-2);font-size:.78rem;display:block;margin-bottom:2px}
+.ex .exbody{padding:4px 14px 12px}
+.ex .step{padding:8px 0;border-bottom:1px dashed var(--line);font-size:.94rem}.ex .step:last-child{border-bottom:none}
+.ex .step .why{display:block;color:var(--muted);font-size:.8rem;margin-top:2px}
+.reveal{cursor:pointer;color:var(--gold);font-weight:700;font-size:.88rem;user-select:none;padding:6px 0;display:inline-block}
+
+.cv-wrap{position:relative;width:100%;background:rgba(8,10,22,.55);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;touch-action:none}
+canvas{display:block;width:100%;height:auto}
+.ctrl{margin:12px 0}.ctrl .lab{display:flex;justify-content:space-between;align-items:baseline;font-size:.88rem;margin-bottom:5px}
+.ctrl .lab b{color:var(--accent);font-weight:800;font-size:1rem;font-variant-numeric:tabular-nums}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:7px;border-radius:9px;background:rgba(255,255,255,.12);outline:none;margin:0}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:var(--accent);cursor:pointer;border:3px solid #0a0d18;box-shadow:0 4px 12px rgba(92,200,255,.5)}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--accent);cursor:pointer;border:3px solid #0a0d18}
+.seg{display:inline-flex;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:var(--r-pill);padding:3px;gap:2px;flex-wrap:wrap}
+.seg button{border:none;background:transparent;color:var(--muted);font-family:inherit;font-weight:700;font-size:.85rem;padding:7px 13px;border-radius:var(--r-pill);cursor:pointer;transition:.12s}
+.seg button.on{background:var(--grad-fill);color:#0a1020}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.read{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.stat{flex:1 1 120px;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:var(--r-md);padding:10px 12px}
+.stat .t{font-size:.74rem;color:var(--muted)}.stat .v{font-size:1.2rem;font-weight:800;font-variant-numeric:tabular-nums;margin-top:2px}
+.stat.a .v{color:var(--accent)}.stat.g .v{color:var(--gold)}.stat.ok .v{color:var(--good)}
+
+.btn{border:none;cursor:pointer;font-family:inherit;font-weight:700;font-size:.92rem;color:#fff;padding:10px 16px;border-radius:var(--r-md);background:var(--grad-fill);box-shadow:0 12px 26px -12px rgba(92,140,255,.7);transition:transform .15s var(--ease)}
+.btn:hover{transform:translateY(-1px)}.btn.gold{background:linear-gradient(135deg,#ffd166,#ff9f6b);color:#1a1205}
+.btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--line);box-shadow:none}
+.btn.sm{padding:8px 13px;font-size:.84rem}.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.q{font-size:1.05rem;font-weight:700;margin:6px 0 12px;line-height:1.5}
+.steps{list-style:none;padding:0;margin:0}
+.steps li{background:rgba(255,255,255,.04);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;padding:10px 12px;margin-bottom:8px;font-size:.95rem;animation:rise .3s var(--ease) both}
+.steps li .why{display:block;color:var(--muted);font-size:.8rem;margin-top:3px}
+.hint{background:rgba(255,209,102,.08);border:1px solid rgba(255,209,102,.25);border-radius:8px;padding:10px 12px;margin-top:8px;font-size:.9rem;animation:rise .3s var(--ease) both}.hint b{color:var(--gold)}
+.ans{background:rgba(94,230,168,.1);border:1px solid rgba(94,230,168,.4);border-radius:8px;padding:12px;margin-top:10px;font-size:1rem;animation:rise .3s var(--ease) both}.ans b{color:var(--good)}
+.foot{color:var(--muted);text-align:center;font-size:.82rem;margin-top:20px}.foot a{color:var(--accent)}
+.frozen{display:inline-block;background:rgba(92,200,255,.16);border:1px dashed var(--accent);border-radius:8px;padding:3px 10px;font-weight:700;color:var(--accent);margin:2px}
+.bigres{text-align:center;font-size:1.35rem;font-weight:800;color:var(--good);margin:10px 0;font-family:'Cambria Math','Sarabun',serif}
+
+/* แก้ contrast 2026-08-08: ปุ่มเดิมเป็นตัวอักษรขาวบนไล่เฉด #5cc8ff->#a371f7 ได้ 2.60
+   สลับเป็นตัวอักษรสีเข้มบนปุ่มสว่าง ได้ 8.0 โดยไม่ต้องเปลี่ยนสีแบรนด์
+   .lbl เดิมใช้ --accent-2 (#a371f7) บนพื้นการ์ด ได้ 4.15 -> ใช้ม่วงสว่างขึ้น */
+.btn{color:#080b14}
+/* ต้องเจาะจงเท่ากฎเดิม .ex .exq .lbl ไม่งั้นโดนทับ */
+.lbl,.ex .exq .lbl{color:#c9adff}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <span class="pill">ติว TSAM '70 · คณิตเก็บตก · อธิบายง่ายระดับประถม</span>
+    <h1><span class="grad-text">คณิตเก็บตก — อธิบายง่ายสุดๆ</span></h1>
+    <p class="lead">3 บทที่เหลือ เล่าด้วยของจริงรอบตัว: <b style="color:var(--good)">โดมิโน</b> (อุปนัย),
+      <b style="color:var(--good)">ตัดเค้กเป็นชิ้น</b> (ปริพันธ์เชิงตัวเลข), <b style="color:var(--good)">เดินบนภูเขา</b> (หลายตัวแปร) 👇</p>
+  </div>
+
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-p="0"><span class="n">🁢</span>อุปนัย (โดมิโน)</button>
+    <button class="tab" data-p="1"><span class="n">🍰</span>ปริพันธ์เชิงตัวเลข</button>
+    <button class="tab" data-p="2"><span class="n">⛰️</span>อนุพันธ์ย่อย</button>
+    <button class="tab" data-p="3"><span class="n">🧶</span>สมการเชิงอนุพันธ์</button>
+  </div>
+
+  <!-- ===== TAB 1: INDUCTION ===== -->
+  <section class="panel active" id="p0">
+    <div class="card">
+      <h2><span class="ic">🁢</span>อุปนัยเชิงคณิต = "ล้มโดมิโน"</h2>
+      <div class="kid"><div class="h">🧒 อธิบายแบบเด็กประถม</div>
+        นึกถึงโดมิโนเรียงยาวเป็นล้านตัว เราอยากรู้ว่า "ล้มหมดทุกตัวไหม" ไม่ต้องไปดูทีละตัวให้เมื่อย แค่เช็ค 2 อย่าง:<br>
+        ① <b>ผลักตัวแรกล้มได้จริง</b> (เริ่มต้น n=1) &nbsp; ② <b>ทุกตัวที่ล้ม จะชนตัวถัดไปให้ล้มต่อ</b> (k ล้ม → k+1 ล้ม)<br>
+        ถ้าทั้ง 2 ข้อจริง → <b>ล้มหมดทุกตัวแน่นอน!</b> นั่นแหละคืออุปนัย</div>
+
+      <div class="cv-wrap"><canvas id="cv-dom"></canvas></div>
+      <div class="row" style="margin-top:10px">
+        <button class="btn" id="dom-go">👉 ผลักโดมิโนตัวแรก!</button>
+        <button class="btn ghost sm" id="dom-reset">ตั้งใหม่</button>
+      </div>
+      <div class="note good" id="dom-msg" style="display:none"></div>
+    </div>
+
+    <div class="card">
+      <h2><span class="ic">📝</span>เขียนพิสูจน์ยังไง (3 ขั้นตายตัว)</h2>
+      <div class="def"><span class="tag">สูตรท่อง 3 ขั้น</span>
+        <ol style="margin:6px 0 0;padding-left:20px;font-size:.95rem">
+          <li><b>ขั้นฐาน (Basis):</b> แทน n=1 แล้วเช็คว่าจริง ← ผลักตัวแรก</li>
+          <li><b>ขั้นสมมติ (Hypothesis):</b> สมมติว่า n=k จริง ← เชื่อว่าตัวที่ k ล้ม</li>
+          <li><b>ขั้นพิสูจน์ (Step):</b> ใช้ข้อ 2 ทำให้ n=k+1 จริง ← ตัว k ชนตัว k+1 ล้ม</li>
+        </ol>
+      </div>
+      <div class="ex"><div class="exq"><span class="lbl">ตัวอย่างคลาสสิก</span>พิสูจน์ว่า 1+2+3+…+n = n(n+1)/2</div>
+        <div class="exbody"><span class="reveal" data-t="exi1">▸ ดูวิธีทำทีละขั้น</span><div id="exi1" style="display:none">
+          <div class="step"><b>ขั้นฐาน n=1:</b> ซ้าย = 1 , ขวา = 1(2)/2 = 1 → เท่ากัน ✓<span class="why">ผลักตัวแรกล้มได้</span></div>
+          <div class="step"><b>ขั้นสมมติ n=k:</b> สมมติ 1+2+…+k = k(k+1)/2 (เชื่อก่อนว่าจริง)</div>
+          <div class="step"><b>ขั้นพิสูจน์ n=k+1:</b> เอาสมมติมา +(k+1) ทั้งสองข้าง<span class="why">เพิ่มพจน์ถัดไป</span></div>
+          <div class="step">ซ้าย = [k(k+1)/2] + (k+1) = (k+1)[k/2 + 1] = (k+1)(k+2)/2</div>
+          <div class="step">ขวา (แทน k+1 ในสูตร) = (k+1)(k+2)/2 → <b>เท่ากัน! ✓</b><span class="why">ตัว k ชนตัว k+1 ล้มได้ → จบ พิสูจน์เสร็จ</span></div>
+        </div></div>
+      </div>
+      <div class="note gold"><b>เคล็ดสอบ:</b> ขั้นพิสูจน์เกือบทุกข้อ = "เอาสมการขั้นสมมติมา บวก/คูณ พจน์ถัดไป (k+1) ทั้งสองข้าง" แล้วจัดรูปให้เหมือนสูตรที่แทน k+1</div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">✏️ ฝึกโจทย์ — อุปนัย</h3>
+      <div class="q" id="d0-q">—</div><ol class="steps" id="d0-steps"></ol><div id="d0-hints"></div>
+      <div class="row" style="margin-top:12px">
+        <button class="btn sm" id="d0-step">ขั้นต่อไป ▸</button>
+        <button class="btn gold sm" id="d0-hint">💡 ขอนัย</button>
+        <button class="btn ghost sm" id="d0-new">🎲 ข้อใหม่</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TAB 2: NUMERICAL INTEGRATION ===== -->
+  <section class="panel" id="p1">
+    <div class="card">
+      <h2><span class="ic">🍰</span>ปริพันธ์เชิงตัวเลข = "ตัดพื้นที่เป็นชิ้นแล้วบวก"</h2>
+      <div class="kid"><div class="h">🧒 อธิบายแบบเด็กประถม</div>
+        อยากรู้พื้นที่ใต้เส้นโค้งเบี้ยวๆ ที่หาสูตรตรงๆ ยาก? ก็<b>หั่นมันเป็นชิ้นแคบๆ</b> เหมือนหั่นขนมเค้ก
+        แต่ละชิ้นทำเป็นรูปง่ายๆ (สี่เหลี่ยมคางหมู) ที่หาพื้นที่ได้ แล้ว<b>บวกทุกชิ้นรวมกัน</b> →
+        ยิ่งหั่นชิ้นเยอะ (n มาก) ยิ่งใกล้พื้นที่จริง! ลองเลื่อน n ดู</div>
+
+      <div class="seg" id="ni-fn" style="margin-bottom:8px">
+        <button class="on" data-f="0">x²</button>
+        <button data-f="1">sin x</button>
+        <button data-f="2">√x</button>
+        <button data-f="3">1/x</button>
+      </div>
+      <div class="seg gold" id="ni-mode" style="margin-bottom:8px">
+        <button class="on" data-m="trap">คางหมู (Trapezoid)</button>
+        <button data-m="simp">ซิมป์สัน (Simpson)</button>
+      </div>
+      <div class="cv-wrap"><canvas id="cv-ni"></canvas></div>
+      <div class="ctrl"><div class="lab"><span>จำนวนชิ้น n</span><b id="ni-nv">4</b></div>
+        <input type="range" id="ni-n" min="2" max="40" value="4" step="2"></div>
+      <div class="read">
+        <div class="stat a"><div class="t">ค่าประมาณ</div><div class="v" id="ni-approx">—</div></div>
+        <div class="stat ok"><div class="t">ค่าจริง</div><div class="v" id="ni-true">—</div></div>
+        <div class="stat g"><div class="t">ผิดพลาด</div><div class="v" id="ni-err">—</div></div>
+      </div>
+      <div class="def"><span class="tag">สูตรคางหมู (Trapezoid)</span>
+        <div class="formula">∫ ≈ <span class="hl2">(h/2)</span>[y₀ + 2y₁ + 2y₂ + … + 2y<sub>n−1</sub> + y<sub>n</sub>]</div>
+        <div style="text-align:center;color:var(--muted);font-size:.83rem">ตัวริม×1 ตัวกลาง×2 · h = (b−a)/n = ความกว้างชิ้น</div>
+      </div>
+      <div class="def"><span class="tag">สูตรซิมป์สัน (Simpson, n เป็นคู่)</span>
+        <div class="formula">∫ ≈ <span class="hl2">(h/3)</span>[y₀ + 4y₁ + 2y₂ + 4y₃ + … + 4y<sub>n−1</sub> + y<sub>n</sub>]</div>
+        <div style="text-align:center;color:var(--muted);font-size:.83rem">ริม×1 · คี่×4 · คู่×2 (แม่นกว่าคางหมูมาก เพราะใช้เส้นโค้งพาราโบลา)</div>
+      </div>
+      <div class="note gold"><b>เทียบให้เห็น:</b> ลองเลข n เท่ากันแล้วสลับคางหมู↔ซิมป์สัน — ช่อง "ผิดพลาด" ของซิมป์สันจะเล็กกว่ามาก</div>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">✏️ ฝึกโจทย์ — ปริพันธ์เชิงตัวเลข</h3>
+      <div class="q" id="d1-q">—</div><ol class="steps" id="d1-steps"></ol><div id="d1-hints"></div>
+      <div class="row" style="margin-top:12px">
+        <button class="btn sm" id="d1-step">ขั้นต่อไป ▸</button>
+        <button class="btn gold sm" id="d1-hint">💡 ขอนัย</button>
+        <button class="btn ghost sm" id="d1-new">🎲 ข้อใหม่</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TAB 3: PARTIAL DERIVATIVES ===== -->
+  <section class="panel" id="p2">
+    <div class="card">
+      <h2><span class="ic">⛰️</span>อนุพันธ์ย่อย = "เดินบนภูเขา ทีละทิศ"</h2>
+      <div class="kid"><div class="h">🧒 อธิบายแบบเด็กประถม</div>
+        ฟังก์ชัน 2 ตัวแปร f(x,y) เหมือน<b>ความสูงของภูเขา</b> ที่ขึ้นกับว่าเรายืนตรงไหน (x = ทิศตะวันออก, y = ทิศเหนือ)<br>
+        <b>∂f/∂x</b> = "ถ้าเดินไปทาง x อย่างเดียว (ทิศเหนือหยุดนิ่ง) พื้นชันแค่ไหน" → เลยต้อง <b>แช่แข็ง y ให้เป็นค่าคงที่</b> แล้วดิฟ x ตามปกติ<br>
+        <b>∂f/∂y</b> = สลับกัน: แช่แข็ง x แล้วดิฟ y</div>
+
+      <div class="seg" id="pd-fn" style="margin-bottom:8px">
+        <button class="on" data-f="0">x²y + y³</button>
+        <button data-f="1">x³ + x²y²</button>
+        <button data-f="2">5x²y³</button>
+        <button data-f="3">x² + xy + y²</button>
+      </div>
+      <div class="seg gold" id="pd-var" style="margin-bottom:10px">
+        <button class="on" data-v="x">∂/∂x (แช่แข็ง y)</button>
+        <button data-v="y">∂/∂y (แช่แข็ง x)</button>
+      </div>
+      <div class="def">
+        <div style="text-align:center;font-size:1.15rem;margin-bottom:6px">f(x,y) = <b id="pd-f" class="k">x²y + y³</b></div>
+        <div style="text-align:center" id="pd-freeze"></div>
+        <div id="pd-stepwrap" style="margin-top:10px"></div>
+        <div class="bigres" id="pd-res">—</div>
+      </div>
+      <div class="note gold"><b>กฎเหล็ก:</b> ตัวแปรที่ "แช่แข็ง" ให้คิดเป็นแค่ตัวเลขธรรมดา (เช่น y เป็น 5) — พจน์ที่มีแต่ตัวแช่แข็งล้วน อนุพันธ์เป็น <b>0</b> (เพราะเป็นค่าคงที่)</div>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">✏️ ฝึกโจทย์ — อนุพันธ์ย่อย</h3>
+      <div class="q" id="d2-q">—</div><ol class="steps" id="d2-steps"></ol><div id="d2-hints"></div>
+      <div class="row" style="margin-top:12px">
+        <button class="btn sm" id="d2-step">ขั้นต่อไป ▸</button>
+        <button class="btn gold sm" id="d2-hint">💡 ขอนัย</button>
+        <button class="btn ghost sm" id="d2-new">🎲 ข้อใหม่</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TAB 4: DIFFERENTIAL EQUATIONS ===== -->
+  <section class="panel" id="p3">
+    <div class="card">
+      <h2><span class="ic">🧶</span>สมการเชิงอนุพันธ์ = "แยกของพันกัน แล้วคลี่"</h2>
+      <div class="kid"><div class="h">🧒 อธิบายแบบเด็กประถม</div>
+        สมการที่มี <b>dy/dx</b> (อัตราการเปลี่ยน) ปนกันอยู่ — เป้าหมายคือหา y ออกมาเป็นฟังก์ชันของ x<br>
+        วิธีง่ายสุด (แยกตัวแปร) เหมือน<b>แยกถุงเท้าคนละสี</b>: จับ <b>y ทั้งหมดไปข้างซ้าย</b>, <b>x ทั้งหมดไปข้างขวา</b>
+        แล้ว<b>ใส่ ∫ (อินทิเกรต) ทั้งสองข้าง</b> → ได้คำตอบ! (อย่าลืม +C)</div>
+
+      <div class="def"><span class="tag">3 ขั้น แยกตัวแปร</span>
+        <ol style="margin:6px 0 0;padding-left:20px;font-size:.95rem">
+          <li>ย้าย: <span class="k">dy/dx = (ก้อน x)(ก้อน y)</span> → <span class="k">(1/ก้อน y) dy = (ก้อน x) dx</span></li>
+          <li>อินทิเกรตทั้งสองข้าง: <span class="k">∫ … dy = ∫ … dx</span></li>
+          <li>ใส่ +C ข้างเดียวพอ แล้วจัดรูปหา y</li>
+        </ol>
+      </div>
+      <div class="ex"><div class="exq"><span class="lbl">แบบที่เจอบ่อยสุด</span>แก้ dy/dx = ky (การเติบโต/สลายตัว เช่น ประชากร, สารกัมมันตรังสี)</div>
+        <div class="exbody"><span class="reveal" data-t="exd1">▸ ดูวิธีทำ</span><div id="exd1" style="display:none">
+          <div class="step">แยก: (1/y) dy = k dx<span class="why">y ไปซ้าย, x(กับ k) ไปขวา</span></div>
+          <div class="step">∫(1/y)dy = ∫k dx → ln|y| = kx + C</div>
+          <div class="step">ยกกำลัง e ทั้งสองข้าง: y = e^(kx+C) = e^C · e^(kx)</div>
+          <div class="step"><b>y = A·e^(kx)</b> (ให้ A = e^C เป็นค่าคงที่)<span class="why">นี่คือสูตรการเติบโตแบบทวีคูณ</span></div>
+        </div></div>
+      </div>
+      <div class="ex"><div class="exq"><span class="lbl">แยกตัวแปรตรงๆ</span>แก้ dy/dx = x/y</div>
+        <div class="exbody"><span class="reveal" data-t="exd2">▸ ดูวิธีทำ</span><div id="exd2" style="display:none">
+          <div class="step">แยก: y dy = x dx<span class="why">คูณ y ไขว้ขึ้นมา</span></div>
+          <div class="step">∫y dy = ∫x dx → y²/2 = x²/2 + C</div>
+          <div class="step"><b>y² = x² + C′</b> (คูณ 2 ตลอด, C′=2C)</div>
+        </div></div>
+      </div>
+      <div class="ex"><div class="exq"><span class="lbl">ง่ายสุด (อินทิเกรตตรงๆ)</span>แก้ dy/dx = 6x² + 2</div>
+        <div class="exbody"><span class="reveal" data-t="exd3">▸ ดูวิธีทำ</span><div id="exd3" style="display:none">
+          <div class="step">ข้างขวาไม่มี y → แค่อินทิเกรตข้างขวา: y = ∫(6x²+2)dx</div>
+          <div class="step"><b>y = 2x³ + 2x + C</b></div>
+        </div></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">✏️ ฝึกโจทย์ — สมการเชิงอนุพันธ์</h3>
+      <div class="q" id="d3-q">—</div><ol class="steps" id="d3-steps"></ol><div id="d3-hints"></div>
+      <div class="row" style="margin-top:12px">
+        <button class="btn sm" id="d3-step">ขั้นต่อไป ▸</button>
+        <button class="btn gold sm" id="d3-hint">💡 ขอนัย</button>
+        <button class="btn ghost sm" id="d3-new">🎲 ข้อใหม่</button>
+      </div>
+    </div>
+  </section>
+
+  <p class="foot">ติว TSAM '70 · อธิบายง่ายระดับประถม · ไฟล์เดียวจบ ·
+    กลับ <a href="study-plan-tsam.html">ตารางแผน</a> · <a href="calculus-tsam.html">แคลคูลัส</a> · <a href="seq-series-tsam.html">ลำดับ/อนุกรม</a></p>
+</div>
+
+<script>
+"use strict";
+function gid(id){return document.getElementById(id);}
+function fmt(v,d){if(!isFinite(v))return '∞';return (+v.toFixed(d==null?3:d)).toString();}
+function setupCanvas(cv,ratio){const dpr=Math.max(1,window.devicePixelRatio||1);
+  const w=cv.clientWidth,h=Math.round(w*(ratio||0.55));cv.width=w*dpr;cv.height=h*dpr;cv.style.height=h+'px';
+  const ctx=cv.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);return {ctx,w,h};}
+document.querySelectorAll('.reveal').forEach(r=>r.onclick=()=>{const el=gid(r.dataset.t);const op=el.style.display!=='none';
+  el.style.display=op?'none':'block';r.textContent=op?'▸ ดูวิธีทำ':'▾ ซ่อนวิธีทำ';});
+
+/* ===== TAB 1: dominoes ===== */
+const NDOM=9; let fallen=new Array(NDOM).fill(false), domTimer=null;
+const domCv=gid('cv-dom');
+function drawDom(){
+  const {ctx,w,h}=setupCanvas(domCv,0.42);
+  const gap=w/(NDOM+1), baseY=h-18, dw=Math.min(gap*0.34,16), dh=h*0.46;
+  ctx.strokeStyle='rgba(255,255,255,.2)';ctx.beginPath();ctx.moveTo(0,baseY);ctx.lineTo(w,baseY);ctx.stroke();
+  for(let i=0;i<NDOM;i++){
+    const x=gap*(i+1);
+    ctx.save();ctx.translate(x,baseY);
+    const ang=fallen[i]?Math.PI/2*0.92:0;
+    ctx.rotate(ang);
+    const grd=ctx.createLinearGradient(0,-dh,0,0);
+    grd.addColorStop(0, fallen[i]?'#5ee6a8':'#5cc8ff');grd.addColorStop(1, fallen[i]?'#33a67a':'#3a7fd0');
+    ctx.fillStyle=grd;ctx.strokeStyle='rgba(255,255,255,.25)';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.rect(-dw/2,-dh,dw,dh);ctx.fill();ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,.5)';ctx.beginPath();ctx.arc(0,-dh*0.7,dw*0.16,0,7);ctx.fill();
+    ctx.restore();
+    ctx.fillStyle='#9aa2cf';ctx.font='11px Sarabun';ctx.textAlign='center';
+    ctx.fillText(i===0?'n=1':(i===NDOM-1?'n=k+1':''),x,h-3);
+  }
+}
+function pushDom(){
+  if(domTimer)return;
+  let i=0; gid('dom-msg').style.display='none';
+  domTimer=setInterval(()=>{
+    if(i>=NDOM){clearInterval(domTimer);domTimer=null;
+      gid('dom-msg').style.display='block';
+      gid('dom-msg').innerHTML='✅ <b>ล้มหมดทุกตัว!</b> เพราะ ① ตัวแรกล้มได้ (ฐาน n=1) และ ② ทุกตัวชนตัวถัดไป (k→k+1) — นี่คือหลักการอุปนัยเป๊ะๆ';
+      return;}
+    fallen[i]=true;drawDom();i++;
+  },230);
+}
+gid('dom-go').onclick=pushDom;
+gid('dom-reset').onclick=()=>{if(domTimer){clearInterval(domTimer);domTimer=null;}fallen.fill(false);gid('dom-msg').style.display='none';drawDom();};
+
+/* ===== TAB 2: numerical integration ===== */
+const niFns=[
+  {f:x=>x*x, F:x=>x*x*x/3, a:0,b:3, view:[-.3,3.3,-1,10], name:'x²'},
+  {f:x=>Math.sin(x), F:x=>-Math.cos(x), a:0,b:Math.PI, view:[-.3,Math.PI+.3,-.2,1.2], name:'sin x'},
+  {f:x=>Math.sqrt(x), F:x=>2/3*Math.pow(x,1.5), a:0,b:4, view:[-.3,4.3,-.3,2.3], name:'√x'},
+  {f:x=>1/x, F:x=>Math.log(x), a:1,b:4, view:[0,4.4,-.2,1.2], name:'1/x'},
+];
+let niI=0, niMode='trap';
+const niCv=gid('cv-ni');
+function drawNI(){
+  const F=niFns[niI]; let n=+gid('ni-n').value; if(niMode==='simp'&&n%2)n++;
+  const {ctx,w,h}=setupCanvas(niCv,0.55);
+  const v=F.view, padL=8,padR=8,padT=10,padB=22;
+  const X=x=>padL+(x-v[0])/(v[1]-v[0])*(w-padL-padR), Y=y=>h-padB-(y-v[2])/(v[3]-v[2])*(h-padT-padB);
+  ctx.strokeStyle='rgba(255,255,255,.2)';ctx.beginPath();ctx.moveTo(padL,Y(0));ctx.lineTo(w-padR,Y(0));ctx.stroke();
+  const a=F.a,b=F.b,hh=(b-a)/n;
+  // strips
+  for(let i=0;i<n;i++){
+    const x0=a+i*hh, x1=x0+hh, y0=F.f(x0), y1=F.f(x1);
+    ctx.fillStyle='rgba(92,200,255,.18)';ctx.strokeStyle='rgba(92,200,255,.6)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(X(x0),Y(0));ctx.lineTo(X(x0),Y(y0));ctx.lineTo(X(x1),Y(y1));ctx.lineTo(X(x1),Y(0));ctx.closePath();ctx.fill();ctx.stroke();
+  }
+  // curve
+  ctx.strokeStyle='#ffd166';ctx.lineWidth=2.4;ctx.beginPath();let st=false;
+  for(let i=0;i<=120;i++){const x=v[0]+(v[1]-v[0])*i/120,y=F.f(x);if(!isFinite(y)||y>v[3]*2){st=false;continue;}const px=X(x),py=Y(y);st?ctx.lineTo(px,py):ctx.moveTo(px,py);st=true;}
+  ctx.stroke();
+  // compute
+  let approx=0;
+  if(niMode==='trap'){let s=F.f(a)+F.f(b);for(let i=1;i<n;i++)s+=2*F.f(a+i*hh);approx=hh/2*s;}
+  else{let s=F.f(a)+F.f(b);for(let i=1;i<n;i++)s+=(i%2?4:2)*F.f(a+i*hh);approx=hh/3*s;}
+  const tru=F.F(b)-F.F(a), err=Math.abs(approx-tru);
+  gid('ni-nv').textContent=n;
+  gid('ni-approx').textContent=fmt(approx,4);gid('ni-true').textContent=fmt(tru,4);
+  gid('ni-err').textContent=fmt(err,4);
+  gid('ni-err').parentElement.querySelector('.v').style.color=err<0.01?'#5ee6a8':err<0.2?'#ffd166':'#f85149';
+}
+['ni-n'].forEach(id=>gid(id).addEventListener('input',drawNI));
+document.querySelectorAll('#ni-fn button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#ni-fn button').forEach(x=>x.classList.remove('on'));b.classList.add('on');niI=+b.dataset.f;drawNI();});
+document.querySelectorAll('#ni-mode button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#ni-mode button').forEach(x=>x.classList.remove('on'));b.classList.add('on');niMode=b.dataset.m;drawNI();});
+
+/* ===== TAB 3: partial derivatives ===== */
+const pdFns=[
+  {f:'x²y + y³',
+   x:{steps:['แช่แข็ง y (มองเป็นเลข) → ดิฟแต่ x','x²y → (2x)y = 2xy  ·  y³ → 0 (มีแต่ y ล้วน = ค่าคงที่)'], res:'2xy'},
+   y:{steps:['แช่แข็ง x → ดิฟแต่ y','x²y → x²(1) = x²  ·  y³ → 3y²'], res:'x² + 3y²'}},
+  {f:'x³ + x²y²',
+   x:{steps:['แช่แข็ง y → ดิฟ x','x³ → 3x²  ·  x²y² → (2x)y² = 2xy²'], res:'3x² + 2xy²'},
+   y:{steps:['แช่แข็ง x → ดิฟ y','x³ → 0 (ไม่มี y)  ·  x²y² → x²(2y) = 2x²y'], res:'2x²y'}},
+  {f:'5x²y³',
+   x:{steps:['แช่แข็ง y → ดิฟ x','5y³ คือค่าคงที่คูณ x² → 5y³(2x) = 10xy³'], res:'10xy³'},
+   y:{steps:['แช่แข็ง x → ดิฟ y','5x² คือค่าคงที่คูณ y³ → 5x²(3y²) = 15x²y²'], res:'15x²y²'}},
+  {f:'x² + xy + y²',
+   x:{steps:['แช่แข็ง y → ดิฟ x','x² → 2x  ·  xy → (1)y = y  ·  y² → 0'], res:'2x + y'},
+   y:{steps:['แช่แข็ง x → ดิฟ y','x² → 0  ·  xy → x(1) = x  ·  y² → 2y'], res:'x + 2y'}},
+];
+let pdI=0, pdV='x';
+function drawPD(){
+  const F=pdFns[pdI], d=F[pdV];
+  gid('pd-f').textContent=F.f;
+  gid('pd-freeze').innerHTML = pdV==='x'
+    ? '<span class="frozen">🧊 แช่แข็ง y (เป็นค่าคงที่)</span> แล้วดิฟ x'
+    : '<span class="frozen">🧊 แช่แข็ง x (เป็นค่าคงที่)</span> แล้วดิฟ y';
+  gid('pd-stepwrap').innerHTML = d.steps.map(s=>'<div style="font-size:.92rem;padding:5px 0;border-bottom:1px dashed var(--line)">• '+s+'</div>').join('');
+  gid('pd-res').innerHTML = (pdV==='x'?'∂f/∂x = ':'∂f/∂y = ') + d.res;
+}
+document.querySelectorAll('#pd-fn button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#pd-fn button').forEach(x=>x.classList.remove('on'));b.classList.add('on');pdI=+b.dataset.f;drawPD();});
+document.querySelectorAll('#pd-var button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#pd-var button').forEach(x=>x.classList.remove('on'));b.classList.add('on');pdV=b.dataset.v;drawPD();});
+
+/* ===== drill engine ===== */
+function makeDrill(cfg){
+  let cur=null,shown=0,hintShown=0,cat='all';
+  function pool(){return cat==='all'?cfg.bank:cfg.bank.filter(p=>p.cat===cat);}
+  function pick(){const P=pool();cur=P[Math.floor(Math.random()*P.length)];shown=0;hintShown=0;
+    cfg.qEl.innerHTML=cur.q;cfg.stepsEl.innerHTML='';cfg.hintsEl.innerHTML='';
+    cfg.btnStep.disabled=false;cfg.btnStep.textContent='ขั้นต่อไป ▸';cfg.btnHint.disabled=false;}
+  cfg.btnStep.onclick=()=>{if(!cur)return;if(shown<cur.steps.length){const li=document.createElement('li');const s=cur.steps[shown];
+    li.innerHTML=s.t+(s.why?`<span class="why">${s.why}</span>`:'');cfg.stepsEl.appendChild(li);shown++;
+    if(shown>=cur.steps.length){cfg.btnStep.textContent='✓ ครบแล้ว';cfg.btnStep.disabled=true;}}};
+  cfg.btnHint.onclick=()=>{if(!cur)return;const hs=cur.hints;if(hintShown<hs.length){const dv=document.createElement('div');
+    const isAns=hintShown===hs.length-1;dv.className=isAns?'ans':'hint';
+    dv.innerHTML=isAns?('<b>เฉลย:</b> '+hs[hintShown]):(`<b>นัยที่ ${hintShown+1}:</b> `+hs[hintShown]);
+    cfg.hintsEl.appendChild(dv);hintShown++;if(hintShown>=hs.length)cfg.btnHint.disabled=true;}};
+  cfg.btnNew.onclick=()=>pick();
+  (cfg.catBtns||[]).forEach(b=>b.onclick=()=>{cfg.catBtns.forEach(x=>x.classList.remove('on'));b.classList.add('on');cat=b.dataset.c;pick();});
+  pick();
+}
+
+/* induction drill */
+makeDrill({bank:[
+  {q:'พิสูจน์ว่า 2+4+6+…+2n = n(n+1) จริงทุก n',
+   steps:[{t:'ขั้นฐาน n=1: ซ้าย=2, ขวา=1(2)=2 → เท่ากัน ✓'},
+     {t:'ขั้นสมมติ n=k: 2+4+…+2k = k(k+1)'},
+     {t:'ขั้นพิสูจน์ n=k+1: บวก 2(k+1) ทั้งสองข้าง',why:'เพิ่มพจน์ถัดไป'},
+     {t:'ซ้าย = k(k+1)+2(k+1) = (k+1)(k+2)',why:'ดึง (k+1) ออก'},
+     {t:'ขวา (แทน k+1) = (k+1)(k+2) → <b>เท่ากัน จบ ✓</b>'}],
+   hints:['เริ่มเช็ค n=1 ก่อน','สมมติ n=k จริง แล้วบวก 2(k+1)','(k+1)(k+2) ทั้งสองข้าง → จริง']},
+  {q:'พิสูจน์ว่า 1+3+5+…+(2n−1) = n² (ผลบวกเลขคี่)',
+   steps:[{t:'ขั้นฐาน n=1: ซ้าย=1, ขวา=1²=1 ✓'},
+     {t:'ขั้นสมมติ n=k: 1+3+…+(2k−1) = k²'},
+     {t:'n=k+1: บวก (2(k+1)−1) = (2k+1) ทั้งสองข้าง'},
+     {t:'ซ้าย = k² + (2k+1) = (k+1)²',why:'k²+2k+1 = กำลังสองสมบูรณ์'},
+     {t:'ขวา (แทน k+1) = (k+1)² → <b>จริง ✓</b>'}],
+   hints:['เช็ค n=1','บวกพจน์ถัดไป 2k+1','k²+2k+1=(k+1)²']},
+  {q:'พิสูจน์ว่า n < 2ⁿ ทุกจำนวนนับ n',
+   steps:[{t:'ขั้นฐาน n=1: 1 < 2¹=2 ✓'},
+     {t:'ขั้นสมมติ n=k: k < 2ᵏ'},
+     {t:'n=k+1: อยากได้ k+1 < 2^(k+1)',why:''},
+     {t:'จาก k<2ᵏ → k+1 ≤ 2ᵏ+1 ≤ 2ᵏ+2ᵏ = 2^(k+1)',why:'เพราะ 1≤2ᵏ'},
+     {t:'<b>k+1 < 2^(k+1) ✓ จบ</b>'}],
+   hints:['ฐาน n=1','ใช้ k<2ᵏ แล้วบวก 1','2ᵏ+1 ≤ 2ᵏ+2ᵏ = 2^(k+1)']},
+], qEl:gid('d0-q'),stepsEl:gid('d0-steps'),hintsEl:gid('d0-hints'),btnStep:gid('d0-step'),btnHint:gid('d0-hint'),btnNew:gid('d0-new')});
+
+/* numerical integration drill */
+makeDrill({bank:[
+  {q:'ใช้กฎคางหมู n=2 ช่วง ประมาณ ∫₀² x² dx (ค่าจริง = 8/3 ≈ 2.667)',
+   steps:[{t:'h = (2−0)/2 = 1 → จุด x = 0, 1, 2',why:'แบ่ง 2 ชิ้น'},
+     {t:'y = f(0)=0, f(1)=1, f(2)=4'},
+     {t:'คางหมู = (h/2)[y₀+2y₁+y₂] = (1/2)[0+2(1)+4]'},
+     {t:'= (1/2)(6) = <b>3</b>',why:'ใกล้ค่าจริง 2.667 (เพิ่ม n จะใกล้ขึ้น)'}],
+   hints:['หา h และจุดก่อน','(h/2)[ริม + 2×กลาง]','(1/2)(0+2+4)=3']},
+  {q:'ใช้กฎซิมป์สัน n=2 ประมาณ ∫₀² x² dx',
+   steps:[{t:'h=1, จุด 0,1,2 ; y = 0,1,4'},
+     {t:'ซิมป์สัน = (h/3)[y₀+4y₁+y₂] = (1/3)[0+4(1)+4]'},
+     {t:'= (1/3)(8) = <b>8/3 ≈ 2.667</b>',why:'ตรงเป๊ะ! ซิมป์สันแม่นพหุนามดีกรี≤3 พอดี'}],
+   hints:['ซิมป์สัน ตัวกลางคี่ ×4','(1/3)[0+4+4]','8/3 = 2.667 (เป๊ะ)']},
+  {q:'กฎคางหมู ต่างจากซิมป์สันยังไง (ตอบสั้นๆ)',
+   steps:[{t:'คางหมู: ลากเส้นตรงเชื่อมยอดแต่ละชิ้น (ง่าย แต่หยาบ)'},
+     {t:'ซิมป์สัน: ใช้เส้นโค้งพาราโบลาทับ 3 จุด (แม่นกว่ามาก)'},
+     {t:'<b>ซิมป์สันต้องใช้ n เป็นจำนวนคู่</b> เสมอ'}],
+   hints:['คางหมู=เส้นตรง','ซิมป์สัน=พาราโบลา','ซิมป์สัน n ต้องคู่']},
+], qEl:gid('d1-q'),stepsEl:gid('d1-steps'),hintsEl:gid('d1-hints'),btnStep:gid('d1-step'),btnHint:gid('d1-hint'),btnNew:gid('d1-new')});
+
+/* partial derivative drill */
+makeDrill({bank:[
+  {q:'หา ∂f/∂x เมื่อ f = x³y + 4y²',
+   steps:[{t:'แช่แข็ง y (เป็นค่าคงที่) → ดิฟแต่ x'},
+     {t:'x³y → (3x²)y = 3x²y  ·  4y² → 0 (ไม่มี x)'},
+     {t:'<b>∂f/∂x = 3x²y</b>'}],
+   hints:['y คงที่ พจน์ที่ไม่มี x หายเป็น 0','x³y → 3x²y','3x²y']},
+  {q:'หา ∂f/∂y เมื่อ f = x³y + 4y²',
+   steps:[{t:'แช่แข็ง x → ดิฟแต่ y'},
+     {t:'x³y → x³(1) = x³  ·  4y² → 8y'},
+     {t:'<b>∂f/∂y = x³ + 8y</b>'}],
+   hints:['x คงที่','x³y→x³, 4y²→8y','x³ + 8y']},
+  {q:'หา ∂f/∂x เมื่อ f = 2x²y³ + 7x',
+   steps:[{t:'แช่แข็ง y → ดิฟ x'},
+     {t:'2x²y³ → 2y³(2x)=4xy³  ·  7x → 7'},
+     {t:'<b>∂f/∂x = 4xy³ + 7</b>'}],
+   hints:['2y³ เป็นค่าคงที่คูณ x²','2y³·2x=4xy³, 7x→7','4xy³ + 7']},
+], qEl:gid('d2-q'),stepsEl:gid('d2-steps'),hintsEl:gid('d2-hints'),btnStep:gid('d2-step'),btnHint:gid('d2-hint'),btnNew:gid('d2-new')});
+
+/* DE drill */
+makeDrill({bank:[
+  {q:'แก้สมการ dy/dx = 3x²',
+   steps:[{t:'ขวาไม่มี y → อินทิเกรตข้างขวาตรงๆ'},
+     {t:'y = ∫3x² dx'},{t:'<b>y = x³ + C</b>'}],
+   hints:['ไม่มี y ก็แค่อินทิเกรต x','∫3x² = x³','y = x³ + C']},
+  {q:'แก้สมการ dy/dx = 2y (แยกตัวแปร)',
+   steps:[{t:'แยก: (1/y)dy = 2dx',why:'y ซ้าย x ขวา'},
+     {t:'∫(1/y)dy = ∫2dx → ln|y| = 2x + C'},
+     {t:'<b>y = Ae²ˣ</b>',why:'ยก e ทั้งสองข้าง'}],
+   hints:['(1/y)dy = 2dx','ln|y|=2x+C','y = Ae^(2x)']},
+  {q:'แก้สมการ dy/dx = xy',
+   steps:[{t:'แยก: (1/y)dy = x dx'},
+     {t:'∫(1/y)dy = ∫x dx → ln|y| = x²/2 + C'},
+     {t:'<b>y = A·e^(x²/2)</b>'}],
+   hints:['(1/y)dy = x dx','ln|y| = x²/2 + C','y = Ae^(x²/2)']},
+  {q:'แก้สมการ dy/dx = y/x',
+   steps:[{t:'แยก: (1/y)dy = (1/x)dx'},
+     {t:'ln|y| = ln|x| + C'},
+     {t:'<b>y = Ax</b>',why:'ยก e: y = e^C·x = Ax'}],
+   hints:['(1/y)dy=(1/x)dx','ln|y|=ln|x|+C','y = Ax']},
+], qEl:gid('d3-q'),stepsEl:gid('d3-steps'),hintsEl:gid('d3-hints'),btnStep:gid('d3-step'),btnHint:gid('d3-hint'),btnNew:gid('d3-new')});
+
+/* ===== tab switching ===== */
+const drawers={0:drawDom,1:drawNI};
+document.querySelectorAll('#tabs .tab').forEach(t=>t.onclick=()=>{
+  document.querySelectorAll('#tabs .tab').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');const i=+t.dataset.p;gid('p'+i).classList.add('active');
+  if(drawers[i])drawers[i]();
+});
+function redrawActive(){const a=document.querySelector('.panel.active').id;if(a==='p0')drawDom();else if(a==='p1')drawNI();}
+window.addEventListener('resize',()=>requestAnimationFrame(redrawActive));
+drawDom();drawNI();drawPD();
+</script>
+</body>
+</html>

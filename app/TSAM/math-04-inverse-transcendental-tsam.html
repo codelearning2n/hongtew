@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>คณิต ส่วน 4 — ฟังก์ชันผกผัน &amp; อดิศัย · คลังโจทย์ ง่าย→โหด | TSAM</title>
+<style>
+:root{
+  --bg-0:#0a0d18; --ink:#f2f4ff; --muted:#9aa2cf; --line:rgba(255,255,255,.09);
+  --accent:#5cc8ff; --accent-2:#a371f7; --gold:#ffd166; --good:#5ee6a8; --bad:#f85149; --hot:#ff7a59;
+  --d1:#5ee6a8; --d2:#ffd166; --d3:#ff9f43; --d4:#f85149;
+  --glass:linear-gradient(180deg,rgba(40,46,90,.50),rgba(16,20,46,.55));
+  --glass-2:linear-gradient(180deg,rgba(52,58,108,.55),rgba(24,28,62,.62));
+  --shadow:0 22px 55px -24px rgba(0,0,0,.78); --ring:0 0 0 1px rgba(255,255,255,.06);
+  --grad-text:linear-gradient(120deg,#ffffff,#bcd4ff 45%,#b6a4ff);
+  --grad-fill:linear-gradient(90deg,var(--accent),var(--accent-2));
+  --r-md:14px; --r-lg:18px; --r-xl:24px; --r-pill:999px; --ease:cubic-bezier(.2,.7,.3,1);
+}
+*{box-sizing:border-box} html,body{margin:0}
+body{color:var(--ink);line-height:1.6;padding:16px 12px 48px;
+  font-family:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
+  background:
+    radial-gradient(820px 520px at 8% -12%,rgba(92,120,255,.20),transparent 55%),
+    radial-gradient(720px 520px at 98% -6%,rgba(124,92,255,.22),transparent 52%),
+    radial-gradient(760px 680px at 55% 122%,rgba(40,110,210,.16),transparent 55%),
+    var(--bg-0);
+  background-attachment:fixed;min-height:100vh}
+::selection{background:rgba(92,200,255,.35)}
+.wrap{max-width:880px;margin:0 auto}
+.hero{position:relative;overflow:hidden;background:var(--glass-2);border:1px solid var(--line);
+  border-radius:var(--r-xl);padding:22px 20px 18px;margin-bottom:14px;
+  box-shadow:var(--shadow),var(--ring),inset 0 1px 0 rgba(255,255,255,.08)}
+.hero::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(640px 240px at 102% -10%,rgba(92,200,255,.22),transparent 60%)}
+.hero h1{margin:.1rem 0;font-size:clamp(1.3rem,4.5vw,1.9rem);line-height:1.2}
+.grad-text{background:var(--grad-text);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:var(--muted);margin:.35rem 0 0;font-size:.9rem}
+.pill{display:inline-block;font-size:.7rem;font-weight:700;color:var(--gold);
+  background:rgba(255,209,102,.1);border:1px solid rgba(255,209,102,.25);padding:2px 9px;border-radius:7px}
+.card{position:relative;background:var(--glass);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:16px;margin-bottom:14px;box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.05)}
+h2{margin:0 0 6px;font-size:1.08rem}
+h3{margin:12px 0 4px;font-size:.95rem;color:var(--accent)}
+.sub{color:var(--muted);font-size:.85rem}
+code,.fx{font-family:'Cascadia Code',ui-monospace,monospace;background:rgba(0,0,0,.28);
+  padding:1px 6px;border-radius:6px;color:#cfe3ff;font-size:.9em}
+.acc-head{display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
+.acc-head .chev{transition:transform .25s var(--ease)}
+.acc.open .chev{transform:rotate(90deg)}
+.acc-body{display:none;margin-top:10px}
+.acc.open .acc-body{display:block;animation:rise .3s var(--ease) both}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin-top:6px}
+.fbox{background:rgba(8,10,22,.5);border:1px solid var(--line);border-radius:var(--r-md);padding:10px 12px}
+.fbox b{color:var(--gold);font-size:.9rem}
+.fbox .fx{display:inline-block;margin:3px 0;font-size:.9rem}
+.fbox small{color:var(--muted);display:block;font-size:.8rem}
+.filters{display:flex;flex-wrap:wrap;gap:7px;margin:2px 0 8px}
+.flabel{width:100%;font-size:.76rem;color:var(--muted);font-weight:700;margin-top:6px}
+.chip{cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--muted);
+  font-family:inherit;font-weight:700;font-size:.82rem;padding:7px 13px;border-radius:var(--r-pill);
+  transition:all .15s var(--ease)}
+.chip:hover{color:var(--ink);border-color:rgba(92,200,255,.4)}
+.chip.on{color:#0a1020;border-color:transparent}
+.chip.on.all{background:var(--grad-fill)}
+.chip.on.d1{background:var(--d1)} .chip.on.d2{background:var(--d2)}
+.chip.on.d3{background:var(--d3)} .chip.on.d4{background:var(--d4);color:#fff}
+.chip.on.sub{background:linear-gradient(90deg,#7aa2ff,#a371f7)}
+.tool{cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--ink);
+  font-family:inherit;font-weight:700;font-size:.82rem;padding:7px 13px;border-radius:var(--r-pill)}
+.tool:hover{border-color:var(--accent)}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+.stat{flex:1;min-width:90px;background:rgba(8,10,22,.5);border:1px solid var(--line);border-radius:var(--r-md);
+  padding:8px 10px;text-align:center}
+.stat b{display:block;font-size:1.25rem;line-height:1.1}
+.stat small{color:var(--muted);font-size:.72rem}
+.bar{height:8px;border-radius:9px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:8px}
+.bar>i{display:block;height:100%;width:0;background:var(--grad-fill);transition:width .4s var(--ease)}
+.qtop{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.badges{display:flex;gap:6px;flex-wrap:wrap}
+.badge{font-size:.72rem;font-weight:800;padding:2px 9px;border-radius:var(--r-pill);border:1px solid transparent}
+.badge.d1{color:var(--d1);border-color:var(--d1);background:rgba(94,230,168,.1)}
+.badge.d2{color:var(--d2);border-color:var(--d2);background:rgba(255,209,102,.1)}
+.badge.d3{color:var(--d3);border-color:var(--d3);background:rgba(255,159,67,.12)}
+.badge.d4{color:var(--d4);border-color:var(--d4);background:rgba(248,81,73,.12)}
+.badge.sb{color:#bcd4ff;border-color:rgba(188,212,255,.35);background:rgba(122,162,255,.1)}
+.qnum{color:var(--muted);font-size:.8rem;font-weight:700}
+.qtext{font-size:1.05rem;margin:12px 0 12px;line-height:1.55}
+.choices{display:grid;gap:8px}
+.choice{display:flex;gap:10px;align-items:flex-start;cursor:pointer;border:1px solid var(--line);
+  background:rgba(255,255,255,.035);border-radius:var(--r-md);padding:11px 13px;font-size:.98rem;
+  transition:all .12s var(--ease);text-align:left;color:var(--ink);font-family:inherit;width:100%}
+.choice:hover:not(:disabled){border-color:var(--accent);background:rgba(92,200,255,.06)}
+.choice .k{flex:0 0 auto;width:22px;height:22px;border-radius:6px;display:grid;place-items:center;
+  background:rgba(255,255,255,.08);font-size:.8rem;font-weight:800}
+.choice.correct{border-color:var(--good);background:rgba(94,230,168,.13)}
+.choice.correct .k{background:var(--good);color:#062}
+.choice.wrong{border-color:var(--bad);background:rgba(248,81,73,.13)}
+.choice.wrong .k{background:var(--bad);color:#fff}
+.choice:disabled{cursor:default;opacity:.95}
+.fb{margin-top:12px;padding:11px 13px;border-radius:var(--r-md);font-size:.92rem;display:none}
+.fb.show{display:block;animation:rise .25s var(--ease) both}
+.fb.ok{background:rgba(94,230,168,.1);border:1px solid rgba(94,230,168,.3)}
+.fb.no{background:rgba(248,81,73,.1);border:1px solid rgba(248,81,73,.3)}
+.act{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.steps{margin-top:10px;display:none}
+.steps.show{display:block}
+.step{background:rgba(8,10,22,.5);border-left:3px solid var(--accent);border-radius:0 10px 10px 0;
+  padding:8px 12px;margin:7px 0;font-size:.92rem;animation:rise .25s var(--ease) both}
+.step .fx{background:rgba(0,0,0,.35)}
+.hintbox{margin-top:8px}
+.hint{background:rgba(255,209,102,.08);border:1px solid rgba(255,209,102,.25);border-radius:10px;
+  padding:8px 12px;margin:6px 0;font-size:.9rem;color:#ffe9b0;animation:rise .25s var(--ease) both}
+.nav{display:flex;gap:8px;justify-content:space-between;margin-top:14px}
+.empty{text-align:center;color:var(--muted);padding:30px 10px}
+.homelink{text-align:center;font-size:.82rem}
+.homelink a{color:var(--accent);text-decoration:none;font-weight:700}
+/* geometric intuition */
+.geotabs{display:flex;gap:7px;overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+.geotabs::-webkit-scrollbar{height:5px}.geotabs::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:9px}
+.geotab{flex:0 0 auto;white-space:nowrap;cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.04);
+  color:var(--muted);font-family:inherit;font-weight:700;font-size:.82rem;padding:7px 12px;border-radius:var(--r-pill);transition:all .15s var(--ease)}
+.geotab:hover{color:var(--ink);border-color:rgba(92,200,255,.4)}
+.geotab.on{background:var(--grad-fill);color:#0a1020;border-color:transparent}
+.cvwrap{position:relative;width:100%;background:rgba(8,10,22,.55);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;margin-top:8px}
+#geocanvas{display:block;width:100%;height:auto}
+.georow{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:.85rem;color:var(--muted)}
+.georow input[type=range]{flex:1;accent-color:var(--accent)}
+.georow .val{font-family:ui-monospace,monospace;color:var(--gold);min-width:70px;text-align:right}
+.geocap{margin-top:10px;background:rgba(8,10,22,.4);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:.9rem;color:#dfe6ff;line-height:1.55}
+.geocap b{color:var(--gold)}
+.whybox{background:linear-gradient(180deg,rgba(255,209,102,.12),rgba(255,209,102,.04));border:1px solid rgba(255,209,102,.35);
+  border-radius:var(--r-md);padding:9px 12px;margin:0 0 8px;font-size:.93rem;color:#ffe9b0}
+.whybox b{color:var(--gold)}
+@media(max-width:520px){.stat b{font-size:1.1rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero">
+  <span class="pill">TSAM · คณิต ส่วนที่ 4/12</span>
+  <h1><span class="grad-text">ฟังก์ชันผกผัน &amp; ฟังก์ชันอดิศัย</span></h1>
+  <p class="lead">inverse · exp/log · ln · ตรีโกณผกผัน · ไฮเพอร์โบลิก — คลังโจทย์ไล่ระดับ <b style="color:var(--d1)">ง่าย</b> → <b style="color:var(--d2)">กลาง</b> → <b style="color:var(--d3)">ยาก</b> → <b style="color:var(--d4)">โหด</b> · เฉลยทีละสเต็ป + นัยใบ้ · จำคะแนนอัตโนมัติ</p>
+</div>
+
+<div class="card acc" id="essence">
+  <div class="acc-head" onclick="document.getElementById('essence').classList.toggle('open')">
+    <h2 style="margin:0">🎯 แก่นแท้ 30 วินาที — สูตรที่ต้องมีในหัว</h2>
+    <span class="chev">▶</span>
+  </div>
+  <div class="acc-body">
+    <div class="fgrid">
+      <div class="fbox"><b>ฟังก์ชันผกผัน</b>
+        <small>หา f⁻¹: สลับ x↔y แล้วแก้หา y</small>
+        <small>กราฟ f⁻¹ = สะท้อน f ผ่านเส้น <span class="fx">y = x</span></small>
+        <span class="fx">(f⁻¹)'(b) = 1 / f'(a)</span> <small>เมื่อ f(a)=b</small></div>
+      <div class="fbox"><b>exp ↔ log (ผกผันกัน)</b>
+        <span class="fx">e^(ln x) = x</span> <span class="fx">ln(eˣ) = x</span>
+        <small>ln(ab)=ln a+ln b · ln(a/b)=ln a−ln b</small>
+        <small>ln(aⁿ) = n·ln a · log_a x = ln x/ln a</small></div>
+      <div class="fbox"><b>อนุพันธ์ exp/log</b>
+        <span class="fx">(eˣ)' = eˣ</span> <span class="fx">(aˣ)' = aˣ ln a</span><br>
+        <span class="fx">(ln x)' = 1/x</span> <span class="fx">(log_a x)' = 1/(x ln a)</span></div>
+      <div class="fbox"><b>ปริพันธ์ที่เจอบ่อย</b>
+        <span class="fx">∫1/x dx = ln|x|+C</span><br>
+        <span class="fx">∫1/(1+x²) dx = arctan x + C</span><br>
+        <span class="fx">∫1/√(1−x²) dx = arcsin x + C</span></div>
+      <div class="fbox"><b>ตรีโกณผกผัน (อนุพันธ์)</b>
+        <span class="fx">(arcsin x)' = 1/√(1−x²)</span><br>
+        <span class="fx">(arccos x)' = −1/√(1−x²)</span><br>
+        <span class="fx">(arctan x)' = 1/(1+x²)</span>
+        <small>ค่า: arcsin1=π/2, arctan1=π/4</small></div>
+      <div class="fbox"><b>ไฮเพอร์โบลิก</b>
+        <small>sinh x=(eˣ−e⁻ˣ)/2 · cosh x=(eˣ+e⁻ˣ)/2</small>
+        <span class="fx">cosh²x − sinh²x = 1</span><br>
+        <span class="fx">(sinh)'=cosh · (cosh)'=sinh · (tanh)'=sech²x</span></div>
+      <div class="fbox"><b>เทคนิคเด็ด: log diff</b>
+        <small>เจอ xˣ หรือฐาน/เลขชี้เป็นตัวแปร → ใส่ ln สองข้างก่อนค่อยดิฟ</small>
+        <span class="fx">y=xˣ → ln y=x ln x → y'=xˣ(ln x+1)</span></div>
+      <div class="fbox"><b>กับดักที่ออกบ่อย</b>
+        <small>• (aˣ)' ≠ x·aˣ⁻¹ (นั่นคือกฎกำลัง ใช้กับ xⁿ)</small>
+        <small>• แก้สมการ log ต้องเช็คโดเมน (ตัวใน log &gt; 0)</small>
+        <small>• arccos' ติดลบ, arcsin' บวก</small></div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>🎨 แก่นแท้เชิงเรขาคณิต — เห็นภาพว่า "ทำไม"</h2>
+  <p class="sub">เลือกหัวข้อ แล้ว<b>ลากสไลเดอร์</b>ดูว่าเกิดอะไรขึ้น — เข้าใจที่มา ไม่ใช่ท่องสูตร</p>
+  <div class="geotabs" id="geotabs">
+    <button class="geotab on" data-g="reflect">🪞 ผกผัน = สะท้อน y=x</button>
+    <button class="geotab" data-g="slope">📈 eˣ: ชัน = สูง</button>
+    <button class="geotab" data-g="area">📉 ln = พื้นที่ใต้ 1/x</button>
+    <button class="geotab" data-g="tri">🔺 arctan จากสามเหลี่ยม</button>
+    <button class="geotab" data-g="hyp">⭕ วงกลม vs ไฮเพอร์โบลา</button>
+  </div>
+  <div class="cvwrap"><canvas id="geocanvas"></canvas></div>
+  <div class="georow" id="georow">
+    <span id="geoslabel"></span>
+    <input type="range" id="georange">
+    <span class="val" id="geoval"></span>
+  </div>
+  <div class="geocap" id="geocap"></div>
+</div>
+
+<div class="card">
+  <div class="filters">
+    <div class="flabel">ระดับความยาก (on demand)</div>
+    <button class="chip on all" data-d="all">ทั้งหมด</button>
+    <button class="chip d1" data-d="1">🟢 ง่าย</button>
+    <button class="chip d2" data-d="2">🟡 กลาง</button>
+    <button class="chip d3" data-d="3">🟠 ยาก</button>
+    <button class="chip d4" data-d="4">🔴 โหด</button>
+    <div class="flabel">หัวข้อย่อย</div>
+    <button class="chip sub on" data-s="all">ทุกหัวข้อ</button>
+    <button class="chip sub" data-s="inv">ฟังก์ชันผกผัน</button>
+    <button class="chip sub" data-s="exp">exp / log</button>
+    <button class="chip sub" data-s="expd">อนุพันธ์/ปริพันธ์ exp-log</button>
+    <button class="chip sub" data-s="itrig">ตรีโกณผกผัน</button>
+    <button class="chip sub" data-s="hyp">ไฮเพอร์โบลิก</button>
+    <div class="flabel" style="display:flex;gap:7px;align-items:center;width:100%;justify-content:space-between">
+      <span>เครื่องมือ</span>
+      <span style="display:flex;gap:7px">
+        <button class="tool" id="shuffle">🔀 สลับข้อ</button>
+        <button class="tool" id="reset">↺ ล้างคะแนน</button>
+      </span>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stat"><b id="st-seen">0</b><small>ทำแล้ว / <span id="st-total">0</span></small></div>
+    <div class="stat"><b id="st-correct" style="color:var(--good)">0</b><small>ตอบถูก</small></div>
+    <div class="stat"><b id="st-pct">0%</b><small>ความแม่น</small></div>
+    <div class="stat"><b id="st-pos">–</b><small>ข้อที่</small></div>
+  </div>
+  <div class="bar"><i id="progbar"></i></div>
+</div>
+
+<div class="card" id="quizcard">
+  <div class="empty" id="qempty" style="display:none">ไม่มีข้อในตัวกรองนี้ 🤔<br>ลองเลือกความยาก/หัวข้ออื่น</div>
+  <div id="qbody">
+  <div class="qtop">
+    <div class="badges" id="badges"></div>
+    <div class="qnum" id="qnum"></div>
+  </div>
+  <div class="qtext" id="qtext"></div>
+  <div class="choices" id="choices"></div>
+  <div class="fb" id="fb"></div>
+  <div class="act">
+    <button class="tool" id="btn-steps" style="display:none">🪜 ดูขั้นตอน</button>
+    <button class="tool" id="btn-hint">💡 ขอนัยใบ้</button>
+  </div>
+  <div class="hintbox" id="hintbox"></div>
+  <div class="steps" id="steps"></div>
+  <div class="nav">
+    <button class="tool" id="prev">‹ ก่อนหน้า</button>
+    <button class="tool" id="next">ถัดไป ›</button>
+  </div>
+  </div><!-- /qbody -->
+</div>
+
+<div class="card homelink">
+  🔢 คณิต ส่วนที่ 4 จาก 12 — ตอนนี้คณิตครบ 12/12 ส่วนแล้ว · <a href="index.html">‹ กลับหน้ารวม</a>
+</div>
+
+</div>
+
+<script>
+const SUB={inv:'ฟังก์ชันผกผัน',exp:'exp/log',expd:'อนุพันธ์-ปริพันธ์',itrig:'ตรีโกณผกผัน',hyp:'ไฮเพอร์โบลิก'};
+const DNAME={1:'ง่าย',2:'กลาง',3:'ยาก',4:'โหด'};
+const PROBLEMS=[
+/* ---------- ง่าย ---------- */
+{id:'m01',sub:'inv',diff:1,q:'ถ้า f(x) = 2x + 3 แล้ว f⁻¹(x) เท่ากับข้อใด?',ch:['(x − 3)/2','2x − 3','(x + 3)/2','1/(2x + 3)'],a:0,
+ hints:['ตั้ง y = 2x + 3 แล้วสลับ x กับ y','แก้หา y'],
+ steps:['ให้ y = 2x + 3','สลับตัวแปร: x = 2y + 3','แก้หา y: y = (x − 3)/2 → f⁻¹(x) = (x−3)/2']},
+{id:'m02',sub:'inv',diff:1,q:'กราฟของ f⁻¹ เป็นภาพสะท้อนของกราฟ f ผ่านเส้นใด?',ch:['y = 0 (แกน x)','x = 0 (แกน y)','y = x','y = −x'],a:2,
+ hints:['ผกผัน = สลับบทบาท x กับ y','เส้นที่ x = y'],
+ steps:['ฟังก์ชันผกผันสลับพิกัด (a,b) → (b,a)','การสลับนี้คือการสะท้อนผ่านเส้น y = x']},
+{id:'m03',sub:'exp',diff:1,q:'log₂ 8 มีค่าเท่าใด?',ch:['2','3','4','8'],a:1,
+ hints:['ถามว่า 2 ยกกำลังเท่าไรได้ 8','2³ = ?'],
+ steps:['log₂ 8 = จำนวนที่ทำให้ 2^? = 8','2³ = 8','∴ log₂ 8 = 3']},
+{id:'m04',sub:'exp',diff:1,q:'ln 1 มีค่าเท่าใด?',ch:['0','1','e','ไม่นิยาม'],a:0,
+ hints:['ln 1 = log ฐาน e ของ 1','e ยกกำลังเท่าไรได้ 1'],
+ steps:['ln 1 = จำนวนที่ทำให้ e^? = 1','e⁰ = 1','∴ ln 1 = 0']},
+{id:'m05',sub:'exp',diff:1,q:'e⁰ มีค่าเท่าใด?',ch:['0','1','e','∞'],a:1,
+ hints:['อะไรก็ตาม (≠0) ยกกำลัง 0','= 1 เสมอ'],
+ steps:['จำนวนใดๆ (ไม่เป็น 0) ยกกำลัง 0 = 1','∴ e⁰ = 1']},
+{id:'m06',sub:'expd',diff:1,q:'d/dx (eˣ) เท่ากับข้อใด?',ch:['x·eˣ⁻¹','eˣ','1','eˣ/x'],a:1,
+ hints:['eˣ พิเศษ: ดิฟแล้วได้ตัวเดิม','อย่าใช้กฎกำลัง'],
+ steps:['eˣ เป็นฟังก์ชันที่อนุพันธ์ = ตัวมันเอง','d/dx eˣ = eˣ']},
+{id:'m07',sub:'expd',diff:1,q:'d/dx (ln x) เท่ากับข้อใด?',ch:['1/x','ln x','x','−1/x²'],a:0,
+ hints:['อนุพันธ์ของ ln x เป็นสูตรพื้นฐาน','= ส่วนกลับของ x'],
+ steps:['<span class=\"fx\">d/dx ln x = 1/x</span> (x > 0)','ที่มา: ln คือพื้นที่สะสมใต้ 1/x — อัตราที่พื้นที่โตก็คือความสูงของกราฟ 1/x ตรงนั้นพอดี (FTC)']},
+{id:'m08',sub:'itrig',diff:1,q:'arcsin(1) มีค่าเท่าใด (เรเดียน)?',ch:['0','π/4','π/2','π'],a:2,
+ hints:['ถามว่า sin ของมุมใด = 1','มุมนั้นในช่วง [−π/2, π/2]'],
+ steps:['arcsin 1 = มุมที่ sin = 1','sin(π/2) = 1','∴ arcsin 1 = π/2']},
+{id:'m09',sub:'itrig',diff:1,q:'arctan(1) มีค่าเท่าใด (เรเดียน)?',ch:['π/6','π/4','π/3','π/2'],a:1,
+ hints:['tan ของมุมใด = 1','มุม 45°'],
+ steps:['arctan 1 = มุมที่ tan = 1','tan(π/4) = 1','∴ arctan 1 = π/4']},
+{id:'m10',sub:'exp',diff:1,q:'log₁₀ 1000 มีค่าเท่าใด?',ch:['2','3','4','10'],a:1,
+ hints:['10 ยกกำลังเท่าไรได้ 1000','10³'],
+ steps:['1000 = 10³','∴ log₁₀ 1000 = 3']},
+/* ---------- กลาง ---------- */
+{id:'m11',sub:'exp',diff:2,q:'แก้สมการ 2ˣ = 32 ได้ x เท่าใด?',ch:['4','5','6','16'],a:1,
+ hints:['เขียน 32 เป็นเลขยกกำลังฐาน 2','32 = 2^?'],
+ steps:['32 = 2⁵','2ˣ = 2⁵ → x = 5']},
+{id:'m12',sub:'exp',diff:2,q:'ln(e⁵) มีค่าเท่าใด?',ch:['5','e⁵','ln 5','5e'],a:0,
+ hints:['ln กับ e เป็นผกผันกัน','ln(eᵃ) = a'],
+ steps:['ln(eˣ) = x','∴ ln(e⁵) = 5']},
+{id:'m13',sub:'exp',diff:2,q:'e^(ln 7) มีค่าเท่าใด?',ch:['7','ln 7','e⁷','1'],a:0,
+ hints:['e^(ln a) = a','ผกผันหักล้างกัน'],
+ steps:['e^(ln a) = a','∴ e^(ln 7) = 7']},
+{id:'m14',sub:'exp',diff:2,q:'log 20 + log 5 มีค่าเท่าใด (ฐาน 10)?',ch:['1','2','log 25','log 4'],a:1,
+ hints:['log a + log b = log(ab)','20 × 5 = 100'],
+ steps:['log 20 + log 5 = log(20×5) = log 100','100 = 10² → log 100 = 2']},
+{id:'m15',sub:'expd',diff:2,q:'d/dx (e^(3x)) เท่ากับข้อใด?',ch:['e^(3x)','3e^(3x)','3x·e^(3x)','e^(3x)/3'],a:1,
+ hints:['กฎลูกโซ่: ดิฟข้างในคูณเข้าไป','ข้างใน = 3x, อนุพันธ์ = 3'],
+ steps:['d/dx e^(u) = e^(u)·u′','u = 3x → u′ = 3','= 3e^(3x)']},
+{id:'m16',sub:'expd',diff:2,q:'d/dx (ln 2x) เท่ากับข้อใด?',ch:['1/(2x)','2/x','1/x','2'],a:2,
+ hints:['ln(2x) = ln 2 + ln x','หรือใช้กฎลูกโซ่'],
+ steps:['วิธีเร็ว: ln 2x = ln 2 + ln x → ดิฟ = 0 + 1/x','(ลูกโซ่: (1/2x)·2 = 1/x)','= 1/x']},
+{id:'m17',sub:'expd',diff:2,q:'d/dx (x·eˣ) เท่ากับข้อใด?',ch:['eˣ','eˣ(1 + x)','x·eˣ','1 + eˣ'],a:1,
+ hints:['กฎผลคูณ: u′v + uv′','u = x, v = eˣ'],
+ steps:['(x·eˣ)′ = (1)eˣ + x(eˣ)','= eˣ + x·eˣ','= eˣ(1 + x)']},
+{id:'m18',sub:'itrig',diff:2,q:'d/dx (arctan x) เท่ากับข้อใด?',ch:['1/√(1−x²)','1/(1+x²)','−1/(1+x²)','1/x'],a:1,
+ hints:['สูตรมาตรฐานของ arctan','ตัวส่วนมี 1 + x²'],
+ steps:['<span class=\"fx\">(arctan x)′ = 1/(1 + x²)</span>','ที่มา: y = arctan x → tan y = x → sec²y·y′ = 1 → y′ = 1/sec²y = 1/(1+tan²y) = 1/(1+x²)']},
+{id:'m19',sub:'itrig',diff:2,q:'d/dx (arcsin x) เท่ากับข้อใด?',ch:['1/√(1−x²)','−1/√(1−x²)','1/(1+x²)','1/√(x²−1)'],a:0,
+ hints:['arcsin เป็นบวก','ตัวส่วนมี √(1 − x²)'],
+ steps:['<span class=\"fx\">(arcsin x)′ = 1/√(1 − x²)</span>','ที่มา: sin y = x → cos y·y′ = 1 → y′ = 1/cos y = 1/√(1−sin²y) = 1/√(1−x²) — จำคู่: arcsin ราก, arctan ไม่มีราก']},
+{id:'m20',sub:'inv',diff:2,q:'ให้ f(x) = x³ ค่าของ (f⁻¹)′(8) เท่ากับข้อใด?',ch:['1/12','12','1/3','1/8'],a:0,
+ hints:['สูตร (f⁻¹)′(b) = 1/f′(a) เมื่อ f(a)=b','หา a จาก a³ = 8 ก่อน'],
+ steps:['f(a) = 8 → a³ = 8 → a = 2','f′(x) = 3x² → f′(2) = 12','(f⁻¹)′(8) = 1/f′(2) = 1/12']},
+{id:'m21',sub:'exp',diff:2,q:'แก้สมการ log₃ x = 4 ได้ x เท่าใด?',ch:['12','27','64','81'],a:3,
+ hints:['เปลี่ยนรูปเป็น x = 3^4','ยกกำลัง'],
+ steps:['log₃ x = 4 ↔ x = 3⁴','3⁴ = 81','∴ x = 81']},
+{id:'m22',sub:'hyp',diff:2,q:'cosh²x − sinh²x มีค่าเท่าใด?',ch:['0','1','−1','2 sinh x'],a:1,
+ hints:['เอกลักษณ์ไฮเพอร์โบลิก คู่กับ sin²+cos²=1','แต่เป็นเครื่องหมายลบ'],
+ steps:['จากนิยาม cosh²x − sinh²x','= [(eˣ+e⁻ˣ)² − (eˣ−e⁻ˣ)²]/4 = 1','(เอกลักษณ์หลักของไฮเพอร์โบลิก)']},
+/* ---------- ยาก ---------- */
+{id:'m23',sub:'expd',diff:3,q:'∫ (1/x) dx เท่ากับข้อใด?',ch:['ln|x| + C','1/x² + C','−1/x² + C','x ln x + C'],a:0,
+ hints:['เป็นกรณีพิเศษ กฎกำลังใช้ไม่ได้ (n=−1)','ปฏิยานุพันธ์ของ 1/x'],
+ steps:['∫xⁿ dx ใช้ไม่ได้เมื่อ n = −1','∫(1/x) dx = ln|x| + C']},
+{id:'m24',sub:'expd',diff:3,q:'∫ 1/(1 + x²) dx เท่ากับข้อใด?',ch:['arcsin x + C','arctan x + C','ln(1+x²) + C','1/(1+x²)² + C'],a:1,
+ hints:['ย้อนจากอนุพันธ์ของตรีโกณผกผัน','(arctan x)′ = 1/(1+x²)'],
+ steps:['เพราะ d/dx arctan x = 1/(1 + x²)','∴ ∫1/(1+x²) dx = arctan x + C']},
+{id:'m25',sub:'expd',diff:3,q:'d/dx (2ˣ) เท่ากับข้อใด?',ch:['x·2ˣ⁻¹','2ˣ','2ˣ ln 2','2ˣ/ln 2'],a:2,
+ hints:['ฐานคงที่ ตัวชี้กำลังเป็นตัวแปร → (aˣ)′ = aˣ ln a','ไม่ใช่กฎกำลัง'],
+ steps:['(aˣ)′ = aˣ ln a','a = 2 → (2ˣ)′ = 2ˣ ln 2']},
+{id:'m26',sub:'expd',diff:3,q:'d/dx ln(x² + 1) เท่ากับข้อใด?',ch:['1/(x²+1)','2x/(x²+1)','2x','x²/(x²+1)'],a:1,
+ hints:['กฎลูกโซ่: (1/ข้างใน)·(ดิฟข้างใน)','ข้างใน = x²+1'],
+ steps:['d/dx ln(u) = u′/u','u = x²+1 → u′ = 2x','= 2x/(x² + 1)']},
+{id:'m27',sub:'itrig',diff:3,q:'d/dx (arccos x) เท่ากับข้อใด?',ch:['1/√(1−x²)','−1/√(1−x²)','−1/(1+x²)','1/(1+x²)'],a:1,
+ hints:['arccos เหมือน arcsin แต่ติดลบ','มี √(1 − x²)'],
+ steps:['(arccos x)′ = −1/√(1 − x²)','(เป็นค่าลบของ arcsin′)']},
+{id:'m28',sub:'hyp',diff:3,q:'d/dx (cosh x) เท่ากับข้อใด?',ch:['sinh x','−sinh x','cosh x','sech²x'],a:0,
+ hints:['ต่างจากตรีโกณ: ไม่มีเครื่องหมายลบ','(cosh)′ = sinh'],
+ steps:['จากนิยาม cosh x = (eˣ+e⁻ˣ)/2','ดิฟได้ (eˣ−e⁻ˣ)/2 = sinh x']},
+{id:'m29',sub:'inv',diff:3,q:'ถ้า f(2) = 5 และ f′(2) = 4 แล้ว (f⁻¹)′(5) เท่ากับข้อใด?',ch:['4','1/4','5','1/5'],a:1,
+ hints:['ใช้ (f⁻¹)′(b) = 1/f′(a) เมื่อ f(a)=b','ที่นี่ a=2, b=5'],
+ steps:['f(2) = 5 → a = 2, b = 5','(f⁻¹)′(5) = 1/f′(2) = 1/4']},
+{id:'m30',sub:'expd',diff:3,q:'d/dx (e^(x²)) เท่ากับข้อใด?',ch:['e^(x²)','2x·e^(x²)','x²·e^(x²−1)','2x·e^(2x)'],a:1,
+ hints:['ลูกโซ่: e^(u)·u′','u = x² → u′ = 2x'],
+ steps:['d/dx e^(u) = e^(u)·u′','u = x² → u′ = 2x','= 2x·e^(x²)']},
+{id:'m31',sub:'exp',diff:3,q:'แก้สมการ e^(2x) = 5 ได้ x เท่าใด?',ch:['ln 5','(ln 5)/2','ln 10','2 ln 5'],a:1,
+ hints:['ใส่ ln สองข้าง','ln(e^(2x)) = 2x'],
+ steps:['ln ทั้งสองข้าง: 2x = ln 5','x = (ln 5)/2']},
+{id:'m32',sub:'expd',diff:3,q:'d/dx ln(sin x) เท่ากับข้อใด?',ch:['tan x','cot x','1/sin x','cos x'],a:1,
+ hints:['ลูกโซ่: (1/sin x)·(sin x)′','(sin x)′ = cos x'],
+ steps:['d/dx ln(u) = u′/u, u = sin x','= cos x / sin x','= cot x']},
+/* ---------- โหด ---------- */
+{id:'m33',sub:'expd',diff:4,q:'d/dx (xˣ) เท่ากับข้อใด?',ch:['x·xˣ⁻¹','xˣ ln x','xˣ (ln x + 1)','xˣ'],a:2,
+ hints:['ทั้งฐานและเลขชี้เป็นตัวแปร → ใช้ logarithmic differentiation','ใส่ ln สองข้างก่อน'],
+ steps:['ให้ y = xˣ → ln y = x ln x','ดิฟ: y′/y = (1)ln x + x(1/x) = ln x + 1','y′ = xˣ(ln x + 1)']},
+{id:'m34',sub:'expd',diff:4,q:'∫₁^e (1/x) dx มีค่าเท่าใด?',ch:['0','1','e − 1','e'],a:1,
+ hints:['ปฏิยานุพันธ์ = ln|x|','แทนขอบเขต e และ 1'],
+ steps:['∫(1/x)dx = ln x','[ln x]₁^e = ln e − ln 1','= 1 − 0 = 1']},
+{id:'m35',sub:'itrig',diff:4,q:'d/dx arctan(2x) เท่ากับข้อใด?',ch:['2/(1 + 4x²)','1/(1 + 4x²)','2/(1 + 2x²)','1/(1 + 2x²)'],a:0,
+ hints:['ลูกโซ่: [1/(1+u²)]·u′, u = 2x','u² = 4x², u′ = 2'],
+ steps:['d/dx arctan(u) = u′/(1 + u²)','u = 2x → u′ = 2, u² = 4x²','= 2/(1 + 4x²)']},
+{id:'m36',sub:'hyp',diff:4,q:'d/dx (tanh x) เท่ากับข้อใด?',ch:['sech²x','−csch²x','sinh x','cosh²x'],a:0,
+ hints:['คู่ขนานกับ (tan x)′ = sec²x','ของไฮเพอร์โบลิกใช้ sech²x'],
+ steps:['tanh x = sinh x/cosh x','ดิฟด้วยกฎผลหาร → (cosh²−sinh²)/cosh²x','= 1/cosh²x = sech²x']},
+{id:'m37',sub:'expd',diff:4,q:'lim (x→0) (eˣ − 1)/x มีค่าเท่าใด?',ch:['0','1','e','∞'],a:1,
+ hints:['รูป 0/0 → ใช้โลปิตาล หรือนิยามอนุพันธ์ของ eˣ ที่ 0','(eˣ)′ = eˣ, ที่ 0 = 1'],
+ steps:['รูป 0/0 → โลปิตาล: lim eˣ/1','แทน x=0: e⁰/1 = 1','(คือความชันของ eˣ ที่จุด x=0)']},
+{id:'m38',sub:'expd',diff:4,q:'d/dx (ln x / x) เท่ากับข้อใด?',ch:['(1 − ln x)/x²','(ln x − 1)/x²','1/x²','(1 + ln x)/x²'],a:0,
+ hints:['กฎผลหาร (u′v − uv′)/v²','u = ln x, v = x'],
+ steps:['u=ln x (u′=1/x), v=x (v′=1)','[(1/x)(x) − (ln x)(1)]/x² = (1 − ln x)/x²']},
+{id:'m39',sub:'inv',diff:4,q:'ให้ f(x) = eˣ + x (สังเกต f(0) = 1) ค่าของ (f⁻¹)′(1) เท่ากับข้อใด?',ch:['1','1/2','2','e'],a:1,
+ hints:['หา a ที่ f(a) = 1 → a = 0','(f⁻¹)′(1) = 1/f′(0)'],
+ steps:['f(0) = e⁰ + 0 = 1 → a = 0','f′(x) = eˣ + 1 → f′(0) = 1 + 1 = 2','(f⁻¹)′(1) = 1/f′(0) = 1/2']},
+{id:'m40',sub:'exp',diff:4,q:'แก้สมการ log₂ x + log₂(x − 2) = 3 ได้ x เท่าใด?',ch:['x = 4','x = 8','x = 2','x = −2 และ 4'],a:0,
+ hints:['รวม log: log₂[x(x−2)] = 3','แล้วเช็คโดเมน x > 2'],
+ steps:['log₂[x(x−2)] = 3 → x(x−2) = 2³ = 8','x² − 2x − 8 = 0 → (x−4)(x+2) = 0','x = 4 หรือ −2 แต่ต้อง x > 2 → x = 4']},
+];
+
+/* สัญชาตญาณ/แก่นแท้ต่อข้อ — โผล่ก่อนสูตรตอนกดดูขั้นตอน */
+const WHY={
+m01:'ผกผัน = "ทำย้อนกลับทีละชั้น": f คูณ 2 แล้วบวก 3 → f⁻¹ ต้องลบ 3 ก่อน แล้วค่อยหาร 2 (ย้อนลำดับ)',
+m02:'สลับ x↔y = พลิกกระดาษข้ามเส้น y=x พอดี จุด (a,b) กลายเป็น (b,a)',
+m03:'log คือ "ถามหาเลขชี้กำลัง": 2 ต้องยกกำลังกี่ครั้งถึงได้ 8',
+m04:'log ของ 1 = 0 ทุกฐาน เพราะ (อะไรก็ได้)⁰ = 1',
+m05:'ยกกำลัง 0 = "ยังไม่ได้คูณอะไรเลย" = 1 (ตัวตั้งต้นของการคูณ)',
+m06:'eˣ พิเศษตรงที่ "ความชัน = ความสูงของตัวเอง" ทุกจุด → ดิฟแล้วได้ตัวเดิม (ดูแท็บ 📈)',
+m07:'ln x โตช้าลงเรื่อยๆ ความชันที่ตำแหน่ง x คือ 1/x — ยิ่ง x ใหญ่ กราฟยิ่งแบน',
+m08:'arcsin = ถามมุมกลับ: sin ของมุมไหน = 1 → มุมชี้ตรงขึ้น 90° = π/2',
+m09:'arctan 1 = มุมที่ tan = 1 = สามเหลี่ยมด้านเท่ากันสองข้าง = 45° (ดูแท็บ 🔺)',
+m10:'log ฐาน 10 ≈ นับจำนวนศูนย์: 1000 มี 3 ศูนย์ → 3',
+m11:'2ˣ = 32 = "คูณ 2 กี่ครั้งได้ 32": 2·2·2·2·2 → 5 ครั้ง',
+m12:'ln กับ e หักล้างกันเหมือนถอดเสื้อที่เพิ่งใส่ → เหลือเลขชี้กำลัง 5',
+m13:'e^(ln 7): ยกกำลัง e กับ ln เป็นตรงข้ามกัน หักล้าง → 7',
+m14:'log แปลง "คูณ" เป็น "บวก": log20 + log5 = log(20×5) = log100',
+m15:'กฎลูกโซ่ = "ดิฟเปลือกนอก × ดิฟไส้ใน"; ไส้ 3x ดิฟได้ 3 หลุดออกมาคูณ',
+m16:'ln(2x) = ln2 + ln x ; ln2 เป็นค่าคงที่ดิฟแล้วหาย เหลือ 1/x (ตัวคูณข้างในไม่เปลี่ยนความชันของ log)',
+m17:'กฎผลคูณ: "ดิฟตัวหน้า×คงตัวหลัง + คงตัวหน้า×ดิฟตัวหลัง"',
+m18:'1/(1+x²) มาจากสามเหลี่ยมของมุม arctan: ด้าน 1 กับ x, ด้านตรงข้ามมุมฉาก √(1+x²) (ดูแท็บ 🔺)',
+m19:'arcsin′ พุ่งสูงใกล้ x=±1 เพราะตรงขอบวงกลมมุมเปลี่ยนไวมาก',
+m20:'จุดสะท้อนพลิกความชัน: f ชัน 12 → f⁻¹ ที่จุดคู่กันจะชันแค่ 1/12 (ดูแท็บ 🪞)',
+m21:'log₃ x = 4 คือถาม "3⁴ เท่ากับเท่าไร" ตรงๆ',
+m22:'cosh²−sinh² = 1 คือสมการไฮเพอร์โบลา x²−y²=1 : จุด (cosh,sinh) วิ่งบนไฮเพอร์โบลา (ดูแท็บ ⭕)',
+m23:'1/x เป็นข้อยกเว้นเดียวของกฎกำลัง — ปฏิยานุพันธ์คือ ln = พื้นที่ใต้ 1/x (ดูแท็บ 📉)',
+m24:'อ่านสูตรอนุพันธ์ย้อนกลับ: อะไรดิฟแล้วได้ 1/(1+x²)? คำตอบคือ arctan',
+m25:'aˣ ดิฟแล้วได้ตัวเดิม × "ln ของฐาน" ; eˣ เป็นกรณีพิเศษเพราะ ln e = 1 พอดี',
+m26:'ลูกโซ่ของ ln: ความชัน = (ดิฟไส้)/(ไส้) = 2x/(x²+1)',
+m27:'arccos ลดลงเมื่อ x เพิ่ม (มุมหุบลง) → อนุพันธ์จึงติดลบ (ตรงข้าม arcsin)',
+m28:'cosh/sinh ดิฟสลับกันไปมาโดย "ไม่มีเครื่องหมายลบ" (ต่างจาก cos/sin) เพราะสร้างจาก eˣ ล้วน',
+m29:'ภาพกระจก: ที่ f ชัน 4 อีกฝั่งเส้น y=x จะชัน 1/4',
+m30:'ลูกโซ่: e^(ไส้) × ดิฟไส้ (2x) ; เปลือก e ไม่เปลี่ยนรูปตอนดิฟ',
+m31:'ใส่ ln ทั้งสองข้างเพื่อ "ดึงตัวแปรลงมาจากเลขชี้กำลัง" → 2x = ln5',
+m32:'ลูกโซ่ ln(sin x): (ดิฟไส้ = cos x)/(ไส้ = sin x) = cot x',
+m33:'xˣ มีตัวแปรทั้งฐานและกำลัง → ใส่ ln ก่อน "ปลดล็อกทั้งคู่พร้อมกัน" (log diff)',
+m34:'∫₁ᵉ 1/x = พื้นที่ใต้ 1/x จาก 1 ถึง e = 1 พอดี — นี่คือ "นิยามของ e" เลย (ดูแท็บ 📉)',
+m35:'ลูกโซ่ arctan(2x): ไส้ 2x ดิฟได้ 2 คูณออกมา, ตัวส่วนใช้ (2x)² = 4x²',
+m36:'tanh′ = sech²x เหมือน tan′ = sec²x เป๊ะ แค่ย้ายไปตระกูลไฮเพอร์โบลิก',
+m37:'(eˣ−1)/x เมื่อ x→0 คือ "ความชันของ eˣ ตรงจุดเริ่มต้น" = 1 (นิยามอนุพันธ์)',
+m38:'กฎผลหาร: (บน′×ล่าง − บน×ล่าง′)/ล่าง² ; แทน u=ln x, v=x',
+m39:'หา a ที่ f(a)=1 ก่อน (ได้ a=0) แล้วพลิกความชัน: 1/f′(0) = 1/2',
+m40:'รวม log เป็นก้อนเดียวก่อน แล้วอย่าลืมเงื่อนไข "ตัวใน log ต้อง > 0" → ตัด x=−2 ทิ้ง',
+};
+
+/* กระจายตำแหน่งคำตอบ ก-ง (หมุนตัวเลือกตามลำดับข้อ) */
+PROBLEMS.forEach((p,i)=>{const r=i%4;if(r){const c=p.ch;p.ch=c.map((_,k)=>c[(k+r)%4]);p.a=(p.a-r+4)%4;}});
+
+const KEY='tsam_math04_inv_v2';
+let state={done:{},correct:{}};
+try{const s=JSON.parse(localStorage.getItem(KEY));if(s){state=s;}}catch(e){}
+let fDiff='all', fSub='all', order=[], pos=0;
+
+function saveState(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+function buildOrder(){
+  order=PROBLEMS.filter(p=>(fDiff==='all'||p.diff==+fDiff)&&(fSub==='all'||p.sub===fSub)).map(p=>p.id);
+  pos=0;
+}
+function shuffle(){for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];}pos=0;render();}
+
+const $=id=>document.getElementById(id);
+function updateStats(){
+  const ids=PROBLEMS.map(p=>p.id);
+  const seen=ids.filter(i=>state.done[i]).length;
+  const corr=ids.filter(i=>state.correct[i]).length;
+  $('st-seen').textContent=seen;
+  $('st-total').textContent=PROBLEMS.length;
+  $('st-correct').textContent=corr;
+  $('st-pct').textContent=seen?Math.round(corr/seen*100)+'%':'0%';
+  $('progbar').style.width=(seen/PROBLEMS.length*100)+'%';
+}
+function render(){
+  updateStats();
+  document.querySelectorAll('.chip[data-d]').forEach(c=>c.classList.toggle('on',c.dataset.d===fDiff));
+  document.querySelectorAll('.chip[data-s]').forEach(c=>c.classList.toggle('on',c.dataset.s===fSub));
+  if(!order.length){$('qbody').style.display='none';$('qempty').style.display='';$('st-pos').textContent='–';return;}
+  $('qbody').style.display='';$('qempty').style.display='none';
+  if(pos<0)pos=0; if(pos>=order.length)pos=order.length-1;
+  const p=PROBLEMS.find(x=>x.id===order[pos]);
+  $('st-pos').textContent=(pos+1)+'/'+order.length;
+  $('badges').innerHTML=`<span class="badge d${p.diff}">${['','🟢','🟡','🟠','🔴'][p.diff]} ${DNAME[p.diff]}</span><span class="badge sb">${SUB[p.sub]}</span>`;
+  $('qnum').textContent='ข้อ '+(pos+1)+' / '+order.length;
+  $('qtext').textContent=p.q;
+  const answered=state.done[p.id];
+  const picked=answered?answered.pick:null;
+  const ch=$('choices');ch.innerHTML='';
+  p.ch.forEach((c,i)=>{
+    const b=document.createElement('button');
+    b.className='choice';b.innerHTML=`<span class="k">${'กขคง'[i]}</span><span>${c}</span>`;
+    if(answered){b.disabled=true;
+      if(i===p.a)b.classList.add('correct');
+      if(i===picked&&picked!==p.a)b.classList.add('wrong');
+    }else{b.onclick=()=>pick(p,i);}
+    ch.appendChild(b);
+  });
+  const fb=$('fb');
+  if(answered){
+    const ok=picked===p.a;
+    fb.className='fb show '+(ok?'ok':'no');
+    fb.innerHTML=ok?'✅ ถูกต้อง! ตอบข้อ '+'กขคง'[p.a]:'❌ ยังไม่ใช่ — คำตอบที่ถูกคือข้อ '+'กขคง'[p.a]+' ('+p.ch[p.a]+')';
+    $('btn-steps').style.display='';
+  }else{fb.className='fb';fb.innerHTML='';$('btn-steps').style.display='none';}
+  $('hintbox').innerHTML='';$('hintbox').dataset.n='0';
+  $('steps').className='steps';$('steps').innerHTML='';
+}
+function pick(p,i){
+  state.done[p.id]={pick:i};
+  if(i===p.a)state.correct[p.id]=1; else delete state.correct[p.id];
+  saveState();render();
+}
+function showSteps(){
+  const p=PROBLEMS.find(x=>x.id===order[pos]);
+  const box=$('steps');box.className='steps show';box.innerHTML='';
+  if(WHY[p.id]){const w=document.createElement('div');w.className='whybox';w.innerHTML='🔑 <b>แก่นแท้:</b> '+WHY[p.id];box.appendChild(w);}
+  const h=document.createElement('h3');h.style.margin='4px 0 0';h.textContent='วิธีทำ';box.appendChild(h);
+  p.steps.forEach((s,i)=>{const d=document.createElement('div');d.className='step';d.style.animationDelay=(i*.08)+'s';d.innerHTML=s;box.appendChild(d);});
+}
+function showHint(){
+  const p=PROBLEMS.find(x=>x.id===order[pos]);
+  const box=$('hintbox');let n=+(box.dataset.n||0);
+  if(n>=p.hints.length){const d=document.createElement('div');d.className='hint';d.innerHTML='ℹ️ นัยหมดแล้ว — ลองกด "ดูขั้นตอน" ถ้ายังติด';box.appendChild(d);box.dataset.n=n+1;return;}
+  const d=document.createElement('div');d.className='hint';d.innerHTML='💡 นัยที่ '+(n+1)+': '+p.hints[n];box.appendChild(d);box.dataset.n=n+1;
+}
+
+document.querySelectorAll('.chip[data-d]').forEach(c=>c.onclick=()=>{fDiff=c.dataset.d;buildOrder();render();});
+document.querySelectorAll('.chip[data-s]').forEach(c=>c.onclick=()=>{fSub=c.dataset.s;buildOrder();render();});
+$('shuffle').onclick=shuffle;
+$('reset').onclick=()=>{if(confirm('ล้างคะแนนและประวัติการทำข้อทั้งหมด?')){state={done:{},correct:{}};saveState();render();}};
+$('next').onclick=()=>{if(pos<order.length-1){pos++;render();}};
+$('prev').onclick=()=>{if(pos>0){pos--;render();}};
+$('btn-steps').onclick=showSteps;
+$('btn-hint').onclick=showHint;
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')$('next').click();if(e.key==='ArrowLeft')$('prev').click();});
+
+/* ========== การ์ดแก่นแท้เชิงเรขาคณิต ========== */
+(function(){
+const cv=$('geocanvas'),cap=$('geocap'),rng=$('georange'),slab=$('geoslabel'),sval=$('geoval');
+if(!cv)return;
+let panel='reflect';
+const CFG={
+ reflect:{min:.1,max:4,step:.05,def:1.6,label:'a ='},
+ slope:{min:-1.5,max:1.5,step:.05,def:.6,label:'x ='},
+ area:{min:1,max:4,step:.02,def:2.72,label:'X ='},
+ tri:{min:.2,max:4,step:.05,def:1,label:'x ='},
+ hyp:{min:-1.4,max:1.4,step:.02,def:.7,label:'t ='},
+};
+function fit(){const w=cv.parentElement.clientWidth||600,h=300,dpr=Math.min(2,window.devicePixelRatio||1);
+ cv.width=w*dpr;cv.height=h*dpr;cv.style.height=h+'px';const ctx=cv.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);return{ctx,w,h};}
+function mk(w,h,x0,x1,y0,y1,pad,ox){pad=pad==null?34:pad;ox=ox||0;
+ return{X:x=>ox+pad+(x-x0)/(x1-x0)*(w-2*pad),Y:y=>h-pad-(y-y0)/(y1-y0)*(h-2*pad)};}
+function axes(ctx,M,w,h,x0,x1,y0,y1){ctx.strokeStyle='rgba(255,255,255,.16)';ctx.lineWidth=1;
+ const yz=(y0<=0&&y1>=0)?M.Y(0):M.Y(y0),xz=(x0<=0&&x1>=0)?M.X(0):M.X(x0);
+ ctx.beginPath();ctx.moveTo(M.X(x0),yz);ctx.lineTo(M.X(x1),yz);ctx.stroke();
+ ctx.beginPath();ctx.moveTo(xz,M.Y(y1));ctx.lineTo(xz,M.Y(y0));ctx.stroke();}
+function curve(ctx,M,f,a,b,col,wd){ctx.strokeStyle=col;ctx.lineWidth=wd||2.4;ctx.beginPath();let fst=true;
+ for(let i=0;i<=220;i++){const x=a+(b-a)*i/220,y=f(x);if(!isFinite(y)||Math.abs(y)>1e4){fst=true;continue;}
+  const px=M.X(x),py=M.Y(y);if(fst){ctx.moveTo(px,py);fst=false;}else ctx.lineTo(px,py);}ctx.stroke();}
+function dash(ctx,x1,y1,x2,y2,col){ctx.save();ctx.setLineDash([5,4]);ctx.strokeStyle=col;ctx.lineWidth=1.4;
+ ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.restore();}
+function dot(ctx,x,y,col,r){ctx.fillStyle=col;ctx.beginPath();ctx.arc(x,y,r||5,0,7);ctx.fill();
+ ctx.strokeStyle='rgba(0,0,0,.4)';ctx.lineWidth=1.2;ctx.stroke();}
+function label(ctx,x,y,t,col){ctx.fillStyle=col||'#dfe6ff';ctx.font='600 12px sans-serif';ctx.fillText(t,x,y);}
+const C_M='#5cc8ff',C_P='#a371f7',C_G='#ffd166',C_R='#ff7a59';
+
+function drawReflect(ctx,w,h,a){
+ const x0=-.5,x1=4.5,y0=-.5,y1=4.5,M=mk(w,h,x0,x1,y0,y1);
+ axes(ctx,M,w,h,x0,x1,y0,y1);
+ dash(ctx,M.X(0),M.Y(0),M.X(4.5),M.Y(4.5),'rgba(255,255,255,.4)');label(ctx,M.X(4)-6,M.Y(4)-8,'y=x','rgba(255,255,255,.55)');
+ curve(ctx,M,x=>Math.sqrt(x),0,4.5,C_M);label(ctx,M.X(3.7),M.Y(Math.sqrt(3.7))-8,'f=√x',C_M);
+ curve(ctx,M,x=>x*x,0,2.12,C_P);label(ctx,M.X(1.6)+6,M.Y(1.6*1.6),'f⁻¹=x²',C_P);
+ const P=[a,Math.sqrt(a)],Q=[Math.sqrt(a),a];
+ dash(ctx,M.X(P[0]),M.Y(P[1]),M.X(Q[0]),M.Y(Q[1]),'rgba(255,209,102,.7)');
+ dot(ctx,M.X(P[0]),M.Y(P[1]),C_M);dot(ctx,M.X(Q[0]),M.Y(Q[1]),C_P);
+ const sf=1/(2*Math.sqrt(a)),si=2*Math.sqrt(a);
+ cap.innerHTML='จุด <b>('+a.toFixed(2)+', '+Math.sqrt(a).toFixed(2)+')</b> บน √x สะท้อนข้ามเส้น y=x เป็น <b>('+Math.sqrt(a).toFixed(2)+', '+a.toFixed(2)+')</b> บน x² · ความชัน √x ตรงนี้ = '+sf.toFixed(2)+' ส่วนคู่สะท้อนชัน = '+si.toFixed(2)+' → <b>กลับเศษส่วนกัน</b> นี่แหละ (f⁻¹)′ = 1/f′';
+}
+function drawSlope(ctx,w,h,x){
+ const x0=-1.7,x1=1.8,y0=-.4,y1=5.4,M=mk(w,h,x0,x1,y0,y1);
+ axes(ctx,M,w,h,x0,x1,y0,y1);
+ curve(ctx,M,t=>Math.exp(t),-1.7,1.7,C_M);label(ctx,M.X(1.25),M.Y(Math.exp(1.25))+2,'y=eˣ',C_M);
+ const yv=Math.exp(x),m=yv;
+ dash(ctx,M.X(x),M.Y(0),M.X(x),M.Y(yv),C_G);
+ // tangent short
+ ctx.strokeStyle=C_R;ctx.lineWidth=2;ctx.beginPath();
+ const t0=x-.7,t1=x+.7;ctx.moveTo(M.X(t0),M.Y(yv+m*(t0-x)));ctx.lineTo(M.X(t1),M.Y(yv+m*(t1-x)));ctx.stroke();
+ dot(ctx,M.X(x),M.Y(yv),C_G);
+ label(ctx,M.X(x)+6,M.Y(yv/2),'สูง '+yv.toFixed(2),C_G);
+ cap.innerHTML='ที่ x = '+x.toFixed(2)+' : ความสูง eˣ = <b>'+yv.toFixed(2)+'</b> และความชันเส้นสัมผัส (เส้นส้ม) = <b>'+m.toFixed(2)+'</b> — เท่ากันเป๊ะทุกจุด! เพราะงั้น <b>(eˣ)′ = eˣ</b>';
+}
+function drawArea(ctx,w,h,X){
+ const x0=0,x1=4.3,y0=0,y1=3,M=mk(w,h,x0,x1,y0,y1);
+ axes(ctx,M,w,h,x0,x1,y0,y1);
+ // shaded area 1..X under 1/x
+ ctx.fillStyle='rgba(92,200,255,.22)';ctx.beginPath();ctx.moveTo(M.X(1),M.Y(0));
+ for(let i=0;i<=120;i++){const xx=1+(X-1)*i/120;ctx.lineTo(M.X(xx),M.Y(1/xx));}
+ ctx.lineTo(M.X(X),M.Y(0));ctx.closePath();ctx.fill();
+ curve(ctx,M,t=>1/t,.34,4.3,C_M);label(ctx,M.X(3.4),M.Y(1/3.4)-8,'y=1/x',C_M);
+ dash(ctx,M.X(Math.E),M.Y(0),M.X(Math.E),M.Y(1/Math.E),'rgba(255,209,102,.6)');label(ctx,M.X(Math.E)-6,M.Y(1/Math.E)-8,'e',C_G);
+ cap.innerHTML='พื้นที่ใต้ 1/x จาก 1 ถึง '+X.toFixed(2)+' = <b>ln '+X.toFixed(2)+' = '+Math.log(X).toFixed(3)+'</b> · พอ X = e ≈ 2.72 พื้นที่ = 1 พอดี → นั่นคือ<b>นิยามของ ln และของ e</b>';
+}
+function drawTri(ctx,w,h,x){
+ const x0=-.35,x1=2.4,y0=-.5,y1=4.4,M=mk(w,h,x0,x1,y0,y1);
+ axes(ctx,M,w,h,x0,x1,y0,y1);
+ const A=[0,0],B=[1,0],Cc=[1,x];
+ ctx.strokeStyle=C_M;ctx.lineWidth=2.4;ctx.beginPath();
+ ctx.moveTo(M.X(A[0]),M.Y(A[1]));ctx.lineTo(M.X(B[0]),M.Y(B[1]));ctx.lineTo(M.X(Cc[0]),M.Y(Cc[1]));ctx.closePath();ctx.stroke();
+ // right angle mark at B
+ ctx.strokeStyle='rgba(255,255,255,.5)';ctx.lineWidth=1.2;const s=10;
+ ctx.strokeRect(M.X(1)-s,M.Y(0)-s,s,s);
+ dot(ctx,M.X(Cc[0]),M.Y(Cc[1]),C_G,4);
+ label(ctx,(M.X(0)+M.X(1))/2-6,M.Y(0)+16,'1',C_M);
+ label(ctx,M.X(1)+6,(M.Y(0)+M.Y(x))/2,'x = '+x.toFixed(2),C_G);
+ label(ctx,(M.X(0)+M.X(1))/2-30,(M.Y(0)+M.Y(x))/2-4,'√(1+x²)',C_P);
+ label(ctx,M.X(0)+14,M.Y(0)-8,'θ',C_R);
+ cap.innerHTML='มุม θ = arctan('+x.toFixed(2)+') = <b>'+(Math.atan(x)*180/Math.PI).toFixed(1)+'°</b> · ด้านตรงข้ามมุมฉาก = √(1+x²) = '+Math.sqrt(1+x*x).toFixed(2)+' · อนุพันธ์ dθ/dx = <b>1/(1+x²)</b> = 1/(ด้านฉาก)² — โผล่มาจากสามเหลี่ยมนี้เอง';
+}
+function drawHyp(ctx,w,h,t){
+ // left: circle, right: hyperbola
+ const LM=mk(w/2,h,-1.5,1.5,-1.5,1.5,26,0);
+ axes(ctx,LM,w/2,h,-1.5,1.5,-1.5,1.5);
+ ctx.strokeStyle=C_M;ctx.lineWidth=2.2;ctx.beginPath();
+ for(let i=0;i<=120;i++){const a=-Math.PI+2*Math.PI*i/120;const px=LM.X(Math.cos(a)),py=LM.Y(Math.sin(a));i?ctx.lineTo(px,py):ctx.moveTo(px,py);}ctx.stroke();
+ dot(ctx,LM.X(Math.cos(t)),LM.Y(Math.sin(t)),C_G);
+ label(ctx,LM.X(-1.4),LM.Y(1.35),'x²+y²=1',C_M);label(ctx,10,h-10,'วงกลม (cos t, sin t)','#9aa2cf');
+ const RM=mk(w/2,h,-.3,3,-2.3,2.3,26,w/2);
+ axes(ctx,RM,w/2,h,-.3,3,-2.3,2.3);
+ ctx.strokeStyle=C_P;ctx.lineWidth=2.2;ctx.beginPath();
+ for(let i=0;i<=120;i++){const s=-1.7+3.4*i/120;const px=RM.X(Math.cosh(s)),py=RM.Y(Math.sinh(s));i?ctx.lineTo(px,py):ctx.moveTo(px,py);}ctx.stroke();
+ dot(ctx,RM.X(Math.cosh(t)),RM.Y(Math.sinh(t)),C_G);
+ label(ctx,RM.X(.2),RM.Y(2.1),'x²−y²=1',C_P);label(ctx,w/2+10,h-10,'ไฮเพอร์โบลา (cosh t, sinh t)','#9aa2cf');
+ cap.innerHTML='ที่ t = '+t.toFixed(2)+' : ซ้าย (cos, sin) = ('+Math.cos(t).toFixed(2)+', '+Math.sin(t).toFixed(2)+') บนวงกลม · ขวา (cosh, sinh) = ('+Math.cosh(t).toFixed(2)+', '+Math.sinh(t).toFixed(2)+') บนไฮเพอร์โบลา — ชื่อ "ไฮเพอร์โบลิก" มาจากตรงนี้';
+}
+const DRAW={reflect:drawReflect,slope:drawSlope,area:drawArea,tri:drawTri,hyp:drawHyp};
+function draw(){const {ctx,w,h}=fit();ctx.clearRect(0,0,w,h);DRAW[panel](ctx,w,h,parseFloat(rng.value));
+ sval.textContent=parseFloat(rng.value).toFixed(2);}
+function setPanel(p){panel=p;const c=CFG[p];rng.min=c.min;rng.max=c.max;rng.step=c.step;rng.value=c.def;slab.textContent=c.label;
+ document.querySelectorAll('.geotab').forEach(b=>b.classList.toggle('on',b.dataset.g===p));draw();}
+document.querySelectorAll('.geotab').forEach(b=>b.onclick=()=>setPanel(b.dataset.g));
+rng.oninput=draw;
+window.addEventListener('resize',()=>{clearTimeout(window._grz);window._grz=setTimeout(draw,150);});
+setPanel('reflect');
+})();
+
+buildOrder();render();
+</script>
+</body>
+</html>

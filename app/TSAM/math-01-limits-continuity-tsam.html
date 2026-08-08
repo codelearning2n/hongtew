@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>คณิต ส่วน 1 — ลิมิต &amp; ความต่อเนื่อง · คลังโจทย์ ง่าย→โหด | TSAM</title>
+<style>
+:root{
+  --bg-0:#0a0d18; --ink:#f2f4ff; --muted:#9aa2cf; --line:rgba(255,255,255,.09);
+  --accent:#5cc8ff; --accent-2:#a371f7; --gold:#ffd166; --good:#5ee6a8; --bad:#f85149; --hot:#ff7a59;
+  --d1:#5ee6a8; --d2:#ffd166; --d3:#ff9f43; --d4:#f85149;
+  --glass:linear-gradient(180deg,rgba(40,46,90,.50),rgba(16,20,46,.55));
+  --glass-2:linear-gradient(180deg,rgba(52,58,108,.55),rgba(24,28,62,.62));
+  --shadow:0 22px 55px -24px rgba(0,0,0,.78); --ring:0 0 0 1px rgba(255,255,255,.06);
+  --grad-text:linear-gradient(120deg,#ffffff,#bcd4ff 45%,#b6a4ff);
+  --grad-fill:linear-gradient(90deg,var(--accent),var(--accent-2));
+  --r-md:14px; --r-lg:18px; --r-xl:24px; --r-pill:999px; --ease:cubic-bezier(.2,.7,.3,1);
+}
+*{box-sizing:border-box} html,body{margin:0}
+body{color:var(--ink);line-height:1.6;padding:16px 12px 48px;
+  font-family:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
+  background:
+    radial-gradient(820px 520px at 8% -12%,rgba(92,120,255,.20),transparent 55%),
+    radial-gradient(720px 520px at 98% -6%,rgba(124,92,255,.22),transparent 52%),
+    radial-gradient(760px 680px at 55% 122%,rgba(40,110,210,.16),transparent 55%),
+    var(--bg-0);
+  background-attachment:fixed;min-height:100vh}
+::selection{background:rgba(92,200,255,.35)}
+.wrap{max-width:880px;margin:0 auto}
+.hero{position:relative;overflow:hidden;background:var(--glass-2);border:1px solid var(--line);
+  border-radius:var(--r-xl);padding:22px 20px 18px;margin-bottom:14px;
+  box-shadow:var(--shadow),var(--ring),inset 0 1px 0 rgba(255,255,255,.08)}
+.hero::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(640px 240px at 102% -10%,rgba(92,200,255,.22),transparent 60%)}
+.hero h1{margin:.1rem 0;font-size:clamp(1.3rem,4.5vw,1.9rem);line-height:1.2}
+.grad-text{background:var(--grad-text);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:var(--muted);margin:.35rem 0 0;font-size:.9rem}
+.pill{display:inline-block;font-size:.7rem;font-weight:700;color:var(--gold);
+  background:rgba(255,209,102,.1);border:1px solid rgba(255,209,102,.25);padding:2px 9px;border-radius:7px}
+.card{position:relative;background:var(--glass);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:16px;margin-bottom:14px;box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.05)}
+h2{margin:0 0 6px;font-size:1.08rem}
+h3{margin:12px 0 4px;font-size:.95rem;color:var(--accent)}
+.sub{color:var(--muted);font-size:.85rem}
+code,.fx{font-family:'Cascadia Code',ui-monospace,monospace;background:rgba(0,0,0,.28);
+  padding:1px 6px;border-radius:6px;color:#cfe3ff;font-size:.9em}
+.acc-head{display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
+.acc-head .chev{transition:transform .25s var(--ease)}
+.acc.open .chev{transform:rotate(90deg)}
+.acc-body{display:none;margin-top:10px}
+.acc.open .acc-body{display:block;animation:rise .3s var(--ease) both}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin-top:6px}
+.fbox{background:rgba(8,10,22,.5);border:1px solid var(--line);border-radius:var(--r-md);padding:10px 12px}
+.fbox b{color:var(--gold);font-size:.9rem}
+.fbox .fx{display:inline-block;margin:3px 0;font-size:.9rem}
+.fbox small{color:var(--muted);display:block;font-size:.8rem}
+.filters{display:flex;flex-wrap:wrap;gap:7px;margin:2px 0 8px}
+.flabel{width:100%;font-size:.76rem;color:var(--muted);font-weight:700;margin-top:6px}
+.chip{cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--muted);
+  font-family:inherit;font-weight:700;font-size:.82rem;padding:7px 13px;border-radius:var(--r-pill);
+  transition:all .15s var(--ease)}
+.chip:hover{color:var(--ink);border-color:rgba(92,200,255,.4)}
+.chip.on{color:#0a1020;border-color:transparent}
+.chip.on.all{background:var(--grad-fill)}
+.chip.on.d1{background:var(--d1)} .chip.on.d2{background:var(--d2)}
+.chip.on.d3{background:var(--d3)} .chip.on.d4{background:var(--d4);color:#fff}
+.chip.on.sub{background:linear-gradient(90deg,#7aa2ff,#a371f7)}
+.tool{cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--ink);
+  font-family:inherit;font-weight:700;font-size:.82rem;padding:7px 13px;border-radius:var(--r-pill)}
+.tool:hover{border-color:var(--accent)}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+.stat{flex:1;min-width:90px;background:rgba(8,10,22,.5);border:1px solid var(--line);border-radius:var(--r-md);
+  padding:8px 10px;text-align:center}
+.stat b{display:block;font-size:1.25rem;line-height:1.1}
+.stat small{color:var(--muted);font-size:.72rem}
+.bar{height:8px;border-radius:9px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:8px}
+.bar>i{display:block;height:100%;width:0;background:var(--grad-fill);transition:width .4s var(--ease)}
+.qtop{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.badges{display:flex;gap:6px;flex-wrap:wrap}
+.badge{font-size:.72rem;font-weight:800;padding:2px 9px;border-radius:var(--r-pill);border:1px solid transparent}
+.badge.d1{color:var(--d1);border-color:var(--d1);background:rgba(94,230,168,.1)}
+.badge.d2{color:var(--d2);border-color:var(--d2);background:rgba(255,209,102,.1)}
+.badge.d3{color:var(--d3);border-color:var(--d3);background:rgba(255,159,67,.12)}
+.badge.d4{color:var(--d4);border-color:var(--d4);background:rgba(248,81,73,.12)}
+.badge.sb{color:#bcd4ff;border-color:rgba(188,212,255,.35);background:rgba(122,162,255,.1)}
+.qnum{color:var(--muted);font-size:.8rem;font-weight:700}
+.qtext{font-size:1.05rem;margin:12px 0 12px;line-height:1.55}
+.choices{display:grid;gap:8px}
+.choice{display:flex;gap:10px;align-items:flex-start;cursor:pointer;border:1px solid var(--line);
+  background:rgba(255,255,255,.035);border-radius:var(--r-md);padding:11px 13px;font-size:.98rem;
+  transition:all .12s var(--ease);text-align:left;color:var(--ink);font-family:inherit;width:100%}
+.choice:hover:not(:disabled){border-color:var(--accent);background:rgba(92,200,255,.06)}
+.choice .k{flex:0 0 auto;width:22px;height:22px;border-radius:6px;display:grid;place-items:center;
+  background:rgba(255,255,255,.08);font-size:.8rem;font-weight:800}
+.choice.correct{border-color:var(--good);background:rgba(94,230,168,.13)}
+.choice.correct .k{background:var(--good);color:#062}
+.choice.wrong{border-color:var(--bad);background:rgba(248,81,73,.13)}
+.choice.wrong .k{background:var(--bad);color:#fff}
+.choice:disabled{cursor:default;opacity:.95}
+.fb{margin-top:12px;padding:11px 13px;border-radius:var(--r-md);font-size:.92rem;display:none}
+.fb.show{display:block;animation:rise .25s var(--ease) both}
+.fb.ok{background:rgba(94,230,168,.1);border:1px solid rgba(94,230,168,.3)}
+.fb.no{background:rgba(248,81,73,.1);border:1px solid rgba(248,81,73,.3)}
+.act{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.steps{margin-top:10px;display:none}
+.steps.show{display:block}
+.step{background:rgba(8,10,22,.5);border-left:3px solid var(--accent);border-radius:0 10px 10px 0;
+  padding:8px 12px;margin:7px 0;font-size:.92rem;animation:rise .25s var(--ease) both}
+.step .fx{background:rgba(0,0,0,.35)}
+.hintbox{margin-top:8px}
+.hint{background:rgba(255,209,102,.08);border:1px solid rgba(255,209,102,.25);border-radius:10px;
+  padding:8px 12px;margin:6px 0;font-size:.9rem;color:#ffe9b0;animation:rise .25s var(--ease) both}
+.nav{display:flex;gap:8px;justify-content:space-between;margin-top:14px}
+.empty{text-align:center;color:var(--muted);padding:30px 10px}
+.homelink{text-align:center;font-size:.82rem}
+.homelink a{color:var(--accent);text-decoration:none;font-weight:700}
+.geotabs{display:flex;gap:7px;overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+.geotabs::-webkit-scrollbar{height:5px}.geotabs::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:9px}
+.geotab{flex:0 0 auto;white-space:nowrap;cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.04);
+  color:var(--muted);font-family:inherit;font-weight:700;font-size:.82rem;padding:7px 12px;border-radius:var(--r-pill);transition:all .15s var(--ease)}
+.geotab:hover{color:var(--ink);border-color:rgba(92,200,255,.4)}
+.geotab.on{background:var(--grad-fill);color:#0a1020;border-color:transparent}
+.cvwrap{position:relative;width:100%;background:rgba(8,10,22,.55);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;margin-top:8px}
+#geocanvas{display:block;width:100%;height:auto}
+.georow{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:.85rem;color:var(--muted)}
+.georow input[type=range]{flex:1;accent-color:var(--accent)}
+.georow .val{font-family:ui-monospace,monospace;color:var(--gold);min-width:70px;text-align:right}
+.geocap{margin-top:10px;background:rgba(8,10,22,.4);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:.9rem;color:#dfe6ff;line-height:1.55}
+.geocap b{color:var(--gold)}
+.whybox{background:linear-gradient(180deg,rgba(255,209,102,.12),rgba(255,209,102,.04));border:1px solid rgba(255,209,102,.35);
+  border-radius:var(--r-md);padding:9px 12px;margin:0 0 8px;font-size:.93rem;color:#ffe9b0}
+.whybox b{color:var(--gold)}
+@media(max-width:520px){.stat b{font-size:1.1rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero">
+  <span class="pill">TSAM · คณิต ส่วนที่ 1/12</span>
+  <h1><span class="grad-text">ลิมิต &amp; ความต่อเนื่อง</span></h1>
+  <p class="lead">ลิมิตจากกราฟ · กฎลิมิต · ลิมิตที่อนันต์ · ความต่อเนื่อง · เส้นกำกับ · โลปิตาล — คลังโจทย์ <b style="color:var(--d1)">ง่าย</b> → <b style="color:var(--d2)">กลาง</b> → <b style="color:var(--d3)">ยาก</b> → <b style="color:var(--d4)">โหด</b> · เฉลยทีละสเต็ป + แก่นแท้ทุกข้อ</p>
+</div>
+
+<div class="card acc" id="essence">
+  <div class="acc-head" onclick="document.getElementById('essence').classList.toggle('open')">
+    <h2 style="margin:0">🎯 แก่นแท้ 30 วินาที — สูตรที่ต้องมีในหัว</h2>
+    <span class="chev">▶</span>
+  </div>
+  <div class="acc-body">
+    <div class="fgrid">
+      <div class="fbox"><b>ลิมิตคืออะไรกันแน่</b>
+        <small>ค่าที่ f(x) "เข้าใกล้" เมื่อ x เข้าใกล้ a — <b>ไม่สนใจ</b>ว่าที่ x=a จริงๆ เป็นอะไร (มีรู/ไม่นิยามก็ได้)</small>
+        <small>ลิมิตมี ⟺ ซ้าย = ขวา</small></div>
+      <div class="fbox"><b>เจอ 0/0 ทำไง (ตามลำดับ)</b>
+        <small>① แยกตัวประกอบแล้วตัด ② คูณคอนจูเกต (มี √) ③ ใช้ sin x/x → 1 ④ โลปิตาล (ดิฟบน-ล่างแยกกัน)</small></div>
+      <div class="fbox"><b>ลิมิตที่อนันต์ (ดูดีกรี)</b>
+        <small>ดีกรีบน &lt; ล่าง → 0 · ดีกรีเท่า → สัมประสิทธิ์นำหารกัน · บน &gt; ล่าง → ±∞</small></div>
+      <div class="fbox"><b>ตรีโกณที่ต้องจำ</b>
+        <span class="fx">lim sin x/x = 1</span> <span class="fx">lim tan x/x = 1</span><br>
+        <span class="fx">lim (1−cos x)/x² = ½</span><br>
+        <small>sin(kx)/x → k · sin(ax)/sin(bx) → a/b</small></div>
+      <div class="fbox"><b>ความต่อเนื่องที่ x = a (3 เงื่อนไข)</b>
+        <small>① f(a) นิยาม ② lim มีจริง (ซ้าย=ขวา) ③ lim = f(a)</small>
+        <small>ขาดข้อไหนก็ไม่ต่อเนื่อง — รู = ขาด ①/③, กระโดด = ขาด ②</small></div>
+      <div class="fbox"><b>เส้นกำกับ (asymptote)</b>
+        <small>ตั้ง: ตัวส่วน = 0 (หลังตัดตัวประกอบร่วมแล้ว!)</small>
+        <small>นอน: lim ที่ x→±∞ · เฉียง: ดีกรีบนมากกว่าล่างอยู่ 1 (หารยาว)</small></div>
+      <div class="fbox"><b>โลปิตาล</b>
+        <small>ใช้ได้เฉพาะรูป 0/0 หรือ ∞/∞ เท่านั้น</small>
+        <span class="fx">lim f/g = lim f′/g′</span>
+        <small>ดิฟ "แยกกัน" บน-ล่าง (ไม่ใช่กฎผลหาร!) ยังไม่หลุดก็ทำซ้ำ</small></div>
+      <div class="fbox"><b>กับดักที่ออกบ่อย</b>
+        <small>• |x−a|/(x−a): ซ้าย = −1, ขวา = +1 → ลิมิตไม่มี</small>
+        <small>• √(x²) = |x| → ที่ −∞ ต้องติดลบ</small>
+        <small>• รูตัดได้ (removable) ≠ กระโดด (jump)</small></div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>🎨 แก่นแท้เชิงเรขาคณิต — เห็นภาพว่า "ทำไม"</h2>
+  <p class="sub">เลือกหัวข้อ แล้ว<b>ลากสไลเดอร์</b>ดูว่าเกิดอะไรขึ้น — เข้าใจที่มา ไม่ใช่ท่องสูตร</p>
+  <div class="geotabs" id="geotabs">
+    <button class="geotab on" data-g="approach">🎯 ลิมิต = บีบเข้าจากสองฝั่ง</button>
+    <button class="geotab" data-g="jump">⚡ ซ้าย≠ขวา = ไม่มีลิมิต</button>
+    <button class="geotab" data-g="asym">♾️ ลิมิตอนันต์ = เส้นกำกับ</button>
+    <button class="geotab" data-g="cont">🧱 ความต่อเนื่อง = อุดรูพอดี</button>
+    <button class="geotab" data-g="lhop">🏁 โลปิตาล = แข่งความชัน</button>
+  </div>
+  <div class="cvwrap"><canvas id="geocanvas"></canvas></div>
+  <div class="georow" id="georow">
+    <span id="geoslabel"></span>
+    <input type="range" id="georange">
+    <span class="val" id="geoval"></span>
+  </div>
+  <div class="geocap" id="geocap"></div>
+</div>
+
+<div class="card">
+  <div class="filters">
+    <div class="flabel">ระดับความยาก (on demand)</div>
+    <button class="chip on all" data-d="all">ทั้งหมด</button>
+    <button class="chip d1" data-d="1">🟢 ง่าย</button>
+    <button class="chip d2" data-d="2">🟡 กลาง</button>
+    <button class="chip d3" data-d="3">🟠 ยาก</button>
+    <button class="chip d4" data-d="4">🔴 โหด</button>
+    <div class="flabel">หัวข้อย่อย</div>
+    <button class="chip sub on" data-s="all">ทุกหัวข้อ</button>
+    <button class="chip sub" data-s="basic">ลิมิตพื้นฐาน/กราฟ</button>
+    <button class="chip sub" data-s="zero">รูป 0/0</button>
+    <button class="chip sub" data-s="inf">ลิมิตอนันต์/เส้นกำกับ</button>
+    <button class="chip sub" data-s="cont">ความต่อเนื่อง</button>
+    <button class="chip sub" data-s="lhop">โลปิตาล/ตรีโกณ</button>
+    <div class="flabel" style="display:flex;gap:7px;align-items:center;width:100%;justify-content:space-between">
+      <span>เครื่องมือ</span>
+      <span style="display:flex;gap:7px">
+        <button class="tool" id="shuffle">🔀 สลับข้อ</button>
+        <button class="tool" id="reset">↺ ล้างคะแนน</button>
+      </span>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stat"><b id="st-seen">0</b><small>ทำแล้ว / <span id="st-total">0</span></small></div>
+    <div class="stat"><b id="st-correct" style="color:var(--good)">0</b><small>ตอบถูก</small></div>
+    <div class="stat"><b id="st-pct">0%</b><small>ความแม่น</small></div>
+    <div class="stat"><b id="st-pos">–</b><small>ข้อที่</small></div>
+  </div>
+  <div class="bar"><i id="progbar"></i></div>
+</div>
+
+<div class="card" id="quizcard">
+  <div class="empty" id="qempty" style="display:none">ไม่มีข้อในตัวกรองนี้ 🤔<br>ลองเลือกความยาก/หัวข้ออื่น</div>
+  <div id="qbody">
+  <div class="qtop">
+    <div class="badges" id="badges"></div>
+    <div class="qnum" id="qnum"></div>
+  </div>
+  <div class="qtext" id="qtext"></div>
+  <div class="choices" id="choices"></div>
+  <div class="fb" id="fb"></div>
+  <div class="act">
+    <button class="tool" id="btn-steps" style="display:none">🪜 ดูขั้นตอน</button>
+    <button class="tool" id="btn-hint">💡 ขอนัยใบ้</button>
+  </div>
+  <div class="hintbox" id="hintbox"></div>
+  <div class="steps" id="steps"></div>
+  <div class="nav">
+    <button class="tool" id="prev">‹ ก่อนหน้า</button>
+    <button class="tool" id="next">ถัดไป ›</button>
+  </div>
+  </div><!-- /qbody -->
+</div>
+
+<div class="card homelink">
+  🔢 คณิต ส่วนที่ 1 จาก 12 · ทฤษฎีเสริม: <a href="calculus-tsam.html">calculus-tsam</a> · <a href="index.html">‹ กลับหน้ารวม</a>
+</div>
+
+</div>
+
+<script>
+const SUB={basic:'พื้นฐาน/กราฟ',zero:'รูป 0/0',inf:'อนันต์/เส้นกำกับ',cont:'ความต่อเนื่อง',lhop:'โลปิตาล/ตรีโกณ'};
+const DNAME={1:'ง่าย',2:'กลาง',3:'ยาก',4:'โหด'};
+const PROBLEMS=[
+/* ---------- ง่าย ---------- */
+{id:'L01',sub:'basic',diff:1,q:'lim (x→2) ของ 3x + 1 เท่ากับข้อใด?',ch:['5','6','7','ไม่มีลิมิต'],a:2,
+ hints:['ฟังก์ชันพหุนามต่อเนื่องทุกจุด','แทนค่าได้เลย'],
+ steps:['พหุนามต่อเนื่อง → แทนค่าตรงๆ','3(2) + 1 = 7']},
+{id:'L02',sub:'zero',diff:1,q:'lim (x→3) ของ (x² − 9)/(x − 3) เท่ากับข้อใด?',ch:['0','3','6','ไม่มีลิมิต'],a:2,
+ hints:['แทน 3 ได้ 0/0 → ต้องแยกตัวประกอบ','x²−9 = (x−3)(x+3)'],
+ steps:['แทนตรงได้ 0/0 → แยกตัวประกอบ','(x−3)(x+3)/(x−3) = x+3 (เมื่อ x≠3)','lim = 3+3 = 6']},
+{id:'L03',sub:'inf',diff:1,q:'lim (x→∞) ของ 1/x เท่ากับข้อใด?',ch:['0','1','∞','ไม่มีลิมิต'],a:0,
+ hints:['ส่วนโตขึ้นเรื่อยๆ','1 หารด้วยจำนวนมหึมา'],
+ steps:['x โตไม่หยุด → 1/x เล็กลงเรื่อยๆ','เข้าใกล้ 0 (นี่คือเส้นกำกับนอน y=0)']},
+{id:'L04',sub:'lhop',diff:1,q:'lim (x→0) ของ sin x / x เท่ากับข้อใด?',ch:['0','1','∞','π'],a:1,
+ hints:['ลิมิตตรีโกณที่ต้องจำที่สุด','ใกล้ 0 sin x ≈ x'],
+ steps:['ใกล้ 0 กราฟ sin x แนบกับเส้น y=x','อัตราส่วนจึงเข้าใกล้ 1','lim sin x/x = 1 (ท่องเลย)']},
+{id:'L05',sub:'cont',diff:1,q:'f ต่อเนื่องที่ x = a ต้องครบกี่เงื่อนไข อะไรบ้าง?',ch:['1: แค่ f(a) นิยาม','2: ลิมิตซ้าย = ขวา','3: f(a) นิยาม, lim มี, lim = f(a)','ไม่มีเงื่อนไขตายตัว'],a:2,
+ hints:['มากกว่า 2 เงื่อนไข','ลิมิตมีอย่างเดียวไม่พอ ต้องเท่าค่าฟังก์ชันด้วย'],
+ steps:['① f(a) ต้องนิยาม','② lim (x→a) ต้องมีจริง (ซ้าย=ขวา)','③ ลิมิตต้องเท่ากับ f(a) — ครบ 3 ข้อ']},
+{id:'L06',sub:'basic',diff:1,q:'lim (x→1) ของค่าคงที่ 5 เท่ากับข้อใด?',ch:['0','1','5','ไม่มีลิมิต'],a:2,
+ hints:['ฟังก์ชันคงที่ไม่ขยับ','เข้าใกล้อะไรก็ได้ 5'],
+ steps:['f(x)=5 เป็นเส้นแนวนอน','ไม่ว่า x เข้าใกล้ไหน ค่าคือ 5']},
+{id:'L07',sub:'basic',diff:1,q:'กราฟมี "รู" ที่ x = 2 (f(2) ไม่นิยาม) แต่สองฝั่งวิ่งเข้าค่าเดียวกัน = 4 แล้ว lim (x→2) f(x) เป็นอย่างไร?',ch:['ไม่มี เพราะ f(2) ไม่นิยาม','= 4','= 2','= 0'],a:1,
+ hints:['ลิมิตไม่สนใจค่าที่จุดนั้นจริงๆ','สนแค่ "เข้าใกล้อะไร"'],
+ steps:['ลิมิตดูพฤติกรรม "รอบๆ" จุด ไม่ใช่ที่จุด','สองฝั่งเข้า 4 เหมือนกัน → lim = 4','(f(2) ไม่นิยามก็ไม่เกี่ยว — นี่คือหัวใจของลิมิต)']},
+{id:'L08',sub:'inf',diff:1,q:'lim (x→∞) ของ (2x + 1)/(x + 3) เท่ากับข้อใด?',ch:['0','1','2','∞'],a:2,
+ hints:['ดีกรีบน = ดีกรีล่าง','ดูสัมประสิทธิ์นำ'],
+ steps:['ดีกรีเท่ากัน (1 กับ 1)','ลิมิต = สัมประสิทธิ์นำหารกัน = 2/1','= 2 (เส้นกำกับนอน y=2)']},
+{id:'L09',sub:'inf',diff:1,q:'lim (x→0⁺) ของ 1/x เท่ากับข้อใด?',ch:['0','1','+∞','−∞'],a:2,
+ hints:['เข้าจากฝั่งขวา = x เป็นบวกจิ๋วๆ','1 หารบวกจิ๋ว = ?'],
+ steps:['x→0⁺ คือ x บวกเล็กมาก เช่น 0.001','1/0.001 = 1000 → ยิ่งเล็กยิ่งพุ่ง','= +∞ (เส้นกำกับตั้ง x=0)']},
+{id:'L10',sub:'cont',diff:1,q:'lim (x→0⁺) ของ |x|/x เท่ากับข้อใด?',ch:['−1','0','1','ไม่มีลิมิต'],a:2,
+ hints:['ฝั่งขวา x > 0 → |x| = x','x/x = ?'],
+ steps:['x > 0: |x| = x','|x|/x = x/x = 1','ลิมิตขวา = 1 (ฝั่งซ้ายจะเป็น −1)']},
+/* ---------- กลาง ---------- */
+{id:'L11',sub:'zero',diff:2,q:'lim (x→2) ของ (x² − 4)/(x − 2) เท่ากับข้อใด?',ch:['2','4','0','ไม่มีลิมิต'],a:1,
+ hints:['0/0 → แยกตัวประกอบ','x²−4 = (x−2)(x+2)'],
+ steps:['(x−2)(x+2)/(x−2) = x+2','แทน x=2 → 4']},
+{id:'L12',sub:'inf',diff:2,q:'lim (x→∞) ของ (3x² + 1)/(x² − 5) เท่ากับข้อใด?',ch:['0','1','3','∞'],a:2,
+ hints:['ดีกรีเท่ากัน','สัมประสิทธิ์นำ 3 กับ 1'],
+ steps:['ดีกรีบน = ล่าง = 2','ลิมิต = 3/1 = 3']},
+{id:'L13',sub:'inf',diff:2,q:'lim (x→∞) ของ (x + 1)/(x² + 1) เท่ากับข้อใด?',ch:['0','1','∞','1/2'],a:0,
+ hints:['ดีกรีบน (1) < ดีกรีล่าง (2)','ล่างโตเร็วกว่ามาก'],
+ steps:['ดีกรีล่างสูงกว่า → ตัวส่วนโตทิ้งห่าง','ลิมิต = 0']},
+{id:'L14',sub:'inf',diff:2,q:'lim (x→∞) ของ x²/(x + 1) เท่ากับข้อใด?',ch:['0','1','+∞','2'],a:2,
+ hints:['ดีกรีบน (2) > ล่าง (1)','บนโตเร็วกว่า'],
+ steps:['ดีกรีบนสูงกว่า → เศษโตทิ้งห่าง','ลิมิต = +∞ (ไม่มีเส้นกำกับนอน)']},
+{id:'L15',sub:'zero',diff:2,q:'lim (x→4) ของ (√x − 2)/(x − 4) เท่ากับข้อใด?',ch:['0','1/2','1/4','ไม่มีลิมิต'],a:2,
+ hints:['0/0 ที่มีรูท → คูณคอนจูเกต (√x + 2)','x−4 = (√x−2)(√x+2)'],
+ steps:['คูณบน-ล่างด้วย (√x+2)','บน: x−4 → ตัดกับล่าง เหลือ 1/(√x+2)','แทน x=4: 1/(2+2) = 1/4']},
+{id:'L16',sub:'cont',diff:2,q:'f(x) = kx + 1 เมื่อ x < 2 และ f(x) = x² เมื่อ x ≥ 2 หา k ที่ทำให้ f ต่อเนื่องที่ x = 2',ch:['k = 1','k = 3/2','k = 2','k = 4'],a:1,
+ hints:['ต่อเนื่อง = สองสูตรต้องต่อกันพอดีที่ x=2','k(2)+1 = 2²'],
+ steps:['ลิมิตซ้าย = 2k+1, ลิมิตขวา = f(2) = 4','ต่อเนื่อง: 2k+1 = 4','k = 3/2']},
+{id:'L17',sub:'lhop',diff:2,q:'lim (x→0) ของ sin 3x / x เท่ากับข้อใด?',ch:['1','3','1/3','0'],a:1,
+ hints:['sin(kx)/x → k','จัดรูปเป็น 3·[sin3x/3x]'],
+ steps:['sin3x/x = 3·(sin3x/3x)','วงเล็บ → 1','= 3']},
+{id:'L18',sub:'lhop',diff:2,q:'lim (x→0) ของ tan x / x เท่ากับข้อใด?',ch:['0','1','∞','π/4'],a:1,
+ hints:['tan = sin/cos','แยกเป็น (sinx/x)·(1/cosx)'],
+ steps:['tanx/x = (sinx/x)·(1/cosx)','→ 1 · 1/1','= 1']},
+{id:'L19',sub:'inf',diff:2,q:'เส้นกำกับตั้ง (vertical asymptote) ของ f(x) = 1/(x − 3) คือข้อใด?',ch:['x = 0','x = 3','y = 3','y = 0'],a:1,
+ hints:['เส้นกำกับตั้ง = ค่า x ที่ตัวส่วนเป็น 0','เขียนเป็น x = ...'],
+ steps:['ตัวส่วน = 0: x−3 = 0 → x = 3','ใกล้ x=3 ฟังก์ชันพุ่ง ±∞ → เส้นกำกับตั้ง x = 3']},
+{id:'L20',sub:'inf',diff:2,q:'เส้นกำกับนอน (horizontal asymptote) ของ f(x) = (2x + 1)/(x − 1) คือข้อใด?',ch:['y = 1','y = 2','x = 1','y = −1'],a:1,
+ hints:['เส้นกำกับนอน = lim ที่ x→∞','ดีกรีเท่ากัน → สัมประสิทธิ์นำ'],
+ steps:['lim x→∞ = 2/1 = 2','เส้นกำกับนอน y = 2']},
+{id:'L21',sub:'cont',diff:2,q:'จุดไม่ต่อเนื่องแบบ "ดึงออกได้" (removable) คือแบบใด?',ch:['กราฟกระโดดคนละระดับ','กราฟพุ่งขึ้น ∞','ลิมิตมีจริง แต่ f(a) ไม่นิยามหรือไม่เท่าลิมิต (รู)','ลิมิตซ้ายไม่เท่าขวา'],a:2,
+ hints:['"ดึงออกได้" = ซ่อมได้ด้วยการเติมจุดเดียว','ลิมิตต้องมีอยู่แล้ว'],
+ steps:['removable = มี "รู" จุดเดียว: ลิมิตมีจริง','แค่เติม/แก้ค่า f(a) ให้เท่าลิมิต ก็ต่อเนื่องทันที','ถ้ากระโดด (ซ้าย≠ขวา) ซ่อมไม่ได้ = jump']},
+{id:'L22',sub:'zero',diff:2,q:'lim (x→5) ของ (x² − 25)/(x − 5) เท่ากับข้อใด?',ch:['5','10','25','0'],a:1,
+ hints:['แบบเดียวกับ (x²−4)/(x−2)','แยกตัวประกอบ'],
+ steps:['(x−5)(x+5)/(x−5) = x+5','แทน 5 → 10']},
+/* ---------- ยาก ---------- */
+{id:'L23',sub:'lhop',diff:3,q:'lim (x→0) ของ (1 − cos x)/x² เท่ากับข้อใด?',ch:['0','1/2','1','2'],a:1,
+ hints:['สูตรตรีโกณที่ควรจำ หรือใช้โลปิตาล 2 รอบ','โลปิตาล: sinx/2x'],
+ steps:['0/0 → โลปิตาล: lim sinx/2x','= (1/2)·lim sinx/x = (1/2)(1)','= 1/2']},
+{id:'L24',sub:'lhop',diff:3,q:'lim (x→0) ของ sin 5x / sin 2x เท่ากับข้อใด?',ch:['1','5/2','2/5','10'],a:1,
+ hints:['sin(ax)/sin(bx) → a/b','คูณ-หารด้วย x'],
+ steps:['= (sin5x/5x)·(2x/sin2x)·(5/2)','สองวงเล็บแรก → 1','= 5/2']},
+{id:'L25',sub:'inf',diff:3,q:'lim (x→∞) ของ √(x² + 1) / x เท่ากับข้อใด?',ch:['0','1','−1','∞'],a:1,
+ hints:['ดึง x ออกจากรูท: √(x²+1) = x√(1+1/x²) เมื่อ x>0','1/x² → 0'],
+ steps:['√(x²+1) = |x|·√(1+1/x²); x→+∞ ใช้ |x| = x','อัตราส่วน = √(1+1/x²) → √1','= 1']},
+{id:'L26',sub:'inf',diff:3,q:'lim (x→−∞) ของ √(x² + 1) / x เท่ากับข้อใด?',ch:['1','0','−1','∞'],a:2,
+ hints:['ระวัง! √(x²) = |x| ไม่ใช่ x','x ติดลบ → |x| = −x'],
+ steps:['x→−∞: |x| = −x','√(x²+1)/x = (−x)√(1+1/x²)/x = −√(1+1/x²)','→ −1 (กับดักเครื่องหมายที่ออกสอบบ่อย)']},
+{id:'L27',sub:'cont',diff:3,q:'f(x) = (x² − 1)/(x − 1) เมื่อ x ≠ 1 และ f(1) = c หา c ที่ทำให้ f ต่อเนื่องที่ x = 1',ch:['c = 0','c = 1','c = 2','ค่าใดก็ได้'],a:2,
+ hints:['ต่อเนื่อง = c ต้องเท่ากับลิมิต','ลิมิตหาจากแยกตัวประกอบ'],
+ steps:['lim = (x−1)(x+1)/(x−1) = x+1 → 2','ต่อเนื่องเมื่อ f(1) = ลิมิต','c = 2 (คือ "อุดรู" พอดี)']},
+{id:'L28',sub:'cont',diff:3,q:'lim (x→2) ของ |x − 2|/(x − 2) เท่ากับข้อใด?',ch:['1','−1','0','ไม่มีลิมิต'],a:3,
+ hints:['เช็คซ้าย-ขวาแยกกัน','ฝั่งซ้าย |x−2| = −(x−2)'],
+ steps:['ขวา (x>2): (x−2)/(x−2) = 1','ซ้าย (x<2): −(x−2)/(x−2) = −1','ซ้าย ≠ ขวา → ลิมิตไม่มี (กระโดด)']},
+{id:'L29',sub:'basic',diff:3,q:'lim (x→0) ของ x²·sin(1/x) เท่ากับข้อใด?',ch:['ไม่มี เพราะ sin(1/x) แกว่ง','0','1','∞'],a:1,
+ hints:['ทฤษฎีบทแซนด์วิช (squeeze)','−x² ≤ x²sin(1/x) ≤ x²'],
+ steps:['sin(1/x) แกว่งใน [−1,1] เสมอ','−x² ≤ x²sin(1/x) ≤ x²','สองข้างบีบเข้า 0 → ตรงกลางโดนบีบ = 0']},
+{id:'L30',sub:'inf',diff:3,q:'เส้นกำกับเฉียง (oblique) ของ f(x) = (x² + 1)/x คือข้อใด?',ch:['y = x','y = x + 1','x = 0 เท่านั้น','ไม่มี'],a:0,
+ hints:['ดีกรีบนมากกว่าล่างอยู่ 1 → มีเส้นเฉียง','แยกเศษ: (x²+1)/x = x + 1/x'],
+ steps:['(x²+1)/x = x + 1/x','เมื่อ x→∞ พจน์ 1/x → 0','กราฟแนบเส้น y = x → เส้นกำกับเฉียง']},
+{id:'L31',sub:'inf',diff:3,q:'lim (x→∞) ของ (5x³ − 2x)/(2x³ + 7) เท่ากับข้อใด?',ch:['0','5/2','2/5','∞'],a:1,
+ hints:['ดีกรีเท่ากัน (3)','สัมประสิทธิ์นำ 5 กับ 2'],
+ steps:['ดีกรีบน = ดีกรีล่าง (3 เท่ากัน) → ลิมิต = อัตราส่วนสัมประสิทธิ์นำ','<span class=\"fx\">= 5/2</span> — เทอมยักษ์ x³ กลบเทอมเล็กหมดเมื่อ x โตมหาศาล (หารบนล่างด้วย x³ แล้วเศษที่เหลือ → 0)']},
+{id:'L32',sub:'cont',diff:3,q:'f(x) = (x² − 1)/[(x − 1)(x − 2)] มีจุดไม่ต่อเนื่องกี่จุด แบบใดบ้าง?',ch:['1 จุด: กระโดด','2 จุด: รูที่ x=1 + เส้นกำกับที่ x=2','2 จุด: เส้นกำกับทั้งคู่','3 จุด'],a:1,
+ hints:['แยกตัวประกอบบนก่อน: (x−1)(x+1)','(x−1) ตัดกันได้ = รู · (x−2) ตัดไม่ได้ = พุ่ง'],
+ steps:['f = (x−1)(x+1)/[(x−1)(x−2)]','x=1: ตัวประกอบตัดกัน → รู (removable)','x=2: ตัวส่วนยังเป็น 0 → เส้นกำกับตั้ง (infinite)']},
+/* ---------- โหด ---------- */
+{id:'L33',sub:'lhop',diff:4,q:'lim (x→0) ของ (eˣ − 1 − x)/x² เท่ากับข้อใด?',ch:['0','1/2','1','∞'],a:1,
+ hints:['0/0 → โลปิตาล','ยังไม่หลุด ทำซ้ำอีกรอบ'],
+ steps:['โลปิตาลรอบ 1: (eˣ−1)/2x ยังเป็น 0/0','โลปิตาลรอบ 2: eˣ/2','แทน 0: 1/2']},
+{id:'L34',sub:'lhop',diff:4,q:'lim (x→∞) ของ ln x / x เท่ากับข้อใด?',ch:['0','1','e','∞'],a:0,
+ hints:['∞/∞ → โลปิตาล','ln โตช้ากว่าทุกกำลังของ x'],
+ steps:['โลปิตาล: (1/x)/1 = 1/x','→ 0 (ln แพ้ x เสมอในการแข่งโต)']},
+{id:'L35',sub:'lhop',diff:4,q:'lim (x→0⁺) ของ x·ln x เท่ากับข้อใด?',ch:['0','−∞','−1','ไม่มีลิมิต'],a:0,
+ hints:['รูป 0·(−∞) → จัดเป็น ln x/(1/x) ก่อน','แล้วโลปิตาล'],
+ steps:['เขียนเป็น lnx/(1/x) = −∞/∞','โลปิตาล: (1/x)/(−1/x²) = −x','→ 0 (x ชนะ ln)']},
+{id:'L36',sub:'zero',diff:4,q:'lim (x→0) ของ (√(1+x) − 1)/x เท่ากับข้อใด?',ch:['0','1/2','1','2'],a:1,
+ hints:['คูณคอนจูเกต √(1+x)+1','หรือโลปิตาล'],
+ steps:['คูณคอนจูเกต: บนกลายเป็น (1+x)−1 = x','เหลือ 1/(√(1+x)+1)','แทน 0: 1/2']},
+{id:'L37',sub:'lhop',diff:4,q:'lim (x→∞) ของ (1 + 1/x)ˣ เท่ากับข้อใด?',ch:['1','2','e','∞'],a:2,
+ hints:['รูป 1^∞ อันโด่งดัง','นี่คือนิยามของ e'],
+ steps:['นี่คือนิยามของค่า e','(1+1/x)ˣ → e ≈ 2.718','(ฐานเข้า 1 แต่ยกกำลังไม่หยุด → สู้กันได้ e)']},
+{id:'L38',sub:'cont',diff:4,q:'f(x) = sin(kx)/x เมื่อ x ≠ 0 และ f(0) = 3 หา k ที่ทำให้ f ต่อเนื่องที่ 0',ch:['k = 1','k = 3','k = 1/3','k = 9'],a:1,
+ hints:['ลิมิตของ sin(kx)/x = k','ต่อเนื่อง: ลิมิต = f(0) = 3'],
+ steps:['lim sin(kx)/x = k','ต่อเนื่อง: k = f(0) = 3']},
+{id:'L39',sub:'zero',diff:4,q:'lim (x→1) ของ (x³ − 1)/(x − 1) เท่ากับข้อใด?',ch:['1','2','3','ไม่มีลิมิต'],a:2,
+ hints:['x³−1 = (x−1)(x²+x+1)','หรือมองเป็นนิยามอนุพันธ์ของ x³ ที่ x=1'],
+ steps:['(x−1)(x²+x+1)/(x−1) = x²+x+1','แทน 1: 1+1+1 = 3','(= f′(1) ของ x³ = 3x² ที่ 1 พอดี)']},
+{id:'L40',sub:'lhop',diff:4,q:'lim (x→0) ของ (x − sin x)/x³ เท่ากับข้อใด?',ch:['0','1/6','1/3','1/2'],a:1,
+ hints:['โลปิตาล 2-3 รอบ','รอบแรก: (1−cosx)/3x²'],
+ steps:['โลปิตาล 1: (1−cosx)/3x²','โลปิตาล 2: sinx/6x','= (1/6)·(sinx/x) → 1/6']},
+];
+
+/* แก่นแท้ต่อข้อ */
+const WHY={
+L01:'พหุนามเป็นเส้นเรียบไม่มีสะดุด → "เข้าใกล้" กับ "เป็น" คือค่าเดียวกัน แทนค่าได้เลย',
+L02:'0/0 ไม่ใช่คำตอบ แต่เป็นสัญญาณว่า "มีตัวประกอบร่วมซ่อนอยู่" — ตัดทิ้งแล้วรูจะเผยตัว (ดูแท็บ 🎯)',
+L03:'แบ่งเค้ก 1 ก้อนให้คนทั้งโลก แต่ละคนได้ ≈ 0 — ยิ่งส่วนโต ค่ายิ่งจิ๋ว (ดูแท็บ ♾️)',
+L04:'ซูมใกล้ 0 มากๆ เส้น sin x กับ y=x ทับกันสนิท → อัตราส่วน = 1 (ดูแท็บ 🏁)',
+L05:'ต่อเนื่อง = "ลากปากกาผ่านจุดนั้นโดยไม่ยก" — ต้องมีจุด (①) เส้นสองฝั่งต้องมาบรรจบ (②) และบรรจบที่จุดนั้นพอดี (③)',
+L06:'เส้นแนวนอนไม่เคลื่อนไหว เข้าใกล้จากไหนก็เจอค่าเดิม',
+L07:'ลิมิตคือ "จุดหมายที่กำลังมุ่งไป" ไม่ใช่ "จุดที่ยืนอยู่" — รูที่ปลายทางไม่เปลี่ยนทิศทางการเดิน (ดูแท็บ 🎯)',
+L08:'ที่ระยะไกลมาก พจน์เล็ก (+1, +3) กลายเป็นฝุ่น เหลือแค่ 2x/x = 2 (ดูแท็บ ♾️)',
+L09:'หารด้วยบวกจิ๋ว = ระเบิดขึ้นฟ้า นี่คือที่มาของเส้นกำกับตั้ง',
+L10:'|x|/x คือ "เครื่องตรวจเครื่องหมาย": ขวาให้ +1 ซ้ายให้ −1 → สองฝั่งไม่เท่ากัน (ดูแท็บ ⚡)',
+L11:'ตัด (x−2) ทิ้ง = ดึงรูออก เหลือเส้นตรง x+2 ที่เดินผ่าน 4',
+L12:'แข่งโตระดับ x²: สัมประสิทธิ์นำเท่านั้นที่ตัดสิน 3 ต่อ 1',
+L13:'ล่างวิ่งเร็วกว่าหนึ่งดีกรี → เศษส่วนโดนบดจนแบน = 0',
+L14:'บนวิ่งเร็วกว่า → หนีขึ้นไม่หยุด ไม่มีเพดาน',
+L15:'คอนจูเกตคือ "ตัวปลดรูท": (√x−2)(√x+2) = x−4 เป๊ะ ตัดกับล่างได้',
+L16:'สองท่อนของกราฟต้อง "จับมือกันพอดี" ที่ x=2 — จุดปลายซ้ายต้องเท่าจุดเริ่มขวา (ดูแท็บ 🧱)',
+L17:'sin(3x) แกว่งเร็ว 3 เท่า → ใกล้ 0 มัน ≈ 3x → หารด้วย x เหลือ 3',
+L18:'ใกล้ 0 cos→1 ดังนั้น tan ≈ sin ≈ x → เหมือน sinx/x',
+L19:'ตัวส่วนเป็น 0 (แต่บนไม่เป็น) = จุดระเบิด — กราฟพุ่งชิดเส้นตั้งนั้นไม่มีวันแตะ',
+L20:'เส้นกำกับนอนคือ "ระดับน้ำนิ่ง" ปลายทางที่ไกลสุดขอบโลก = ลิมิตที่อนันต์ (ดูแท็บ ♾️)',
+L21:'รูเข็มเดียวซ่อมได้ (เติมจุด) แต่หน้าผากระโดดต้องสร้างสะพาน — ซ่อมไม่ได้ด้วยจุดเดียว (ดูแท็บ 🧱)',
+L22:'โครงเดียวกับ (x²−4)/(x−2): ตัดตัวประกอบร่วม เหลือ x+5',
+L23:'ใกล้ 0: 1−cos x ≈ x²/2 (จากอนุกรม) → หาร x² เหลือ 1/2',
+L24:'ใกล้ 0 sin(ax) ≈ ax → อัตราส่วน = 5x/2x = 5/2 (ตัวจิ๋วเทียบตัวจิ๋ว)',
+L25:'ไกลมากๆ +1 ใต้รูทไร้ความหมาย: √(x²+1) ≈ |x| → อัตราส่วน 1',
+L26:'กับดัก: √(x²) = |x| เสมอ! ที่ −∞ ค่า |x| = −x → เครื่องหมายพลิกเป็น −1',
+L27:'"อุดรู" ให้ต่อเนื่อง: ค่าที่อุดต้องเท่ากับค่าที่สองฝั่งกำลังวิ่งเข้า (ดูแท็บ 🧱)',
+L28:'|x−2|/(x−2) ตรวจเครื่องหมายรอบ x=2: ขวา +1 ซ้าย −1 → หน้าผากระโดด ลิมิตไม่มี (ดูแท็บ ⚡)',
+L29:'แซนด์วิช: sin แกว่งแค่ไหนก็โดนขนมปัง ±x² บีบแบนเข้า 0 — ตัวคูณจิ๋วชนะการแกว่ง',
+L30:'หารยาวเผยโครงจริง: f = x + 1/x — ไกลออกไปเศษ 1/x หาย เหลือเส้น y=x ที่กราฟแนบ',
+L31:'ดีกรีเท่า → มองแค่หัว: 5x³ ต่อ 2x³',
+L32:'แยกตัวประกอบก่อนเสมอ! (x−1) ตัดได้ = รูซ่อมได้ ส่วน (x−2) ตัดไม่ได้ = จุดระเบิดจริง',
+L33:'โลปิตาลคือ "ปอกหัวหอม" — ปอกทีละชั้นจนเจอชั้นที่แทนค่าได้ (ที่นี่ 2 ชั้น)',
+L34:'การแข่งโต: ln คือเต่า, x คือกระต่าย — ไกลแค่ไหนเต่าก็โดนทิ้งจนอัตราส่วน = 0',
+L35:'0·(−∞) คือการชักเย่อ: x ดึงเข้า 0 แรงกว่า ln x ดึงลง −∞ → x ชนะ ได้ 0',
+L36:'คอนจูเกตปลดรูท หรือมองเป็นความชันของ √(1+x) ที่จุด 0 = 1/2',
+L37:'ดอกเบี้ยทบต้นถี่ไม่จำกัด: ฐานเข้า 1 แต่คูณถี่ขึ้นพอดีกัน → ค่าสมดุลคือ e',
+L38:'sin(kx)/x → k คือ "ความชันของ sin(kx) ที่ 0" — จะต่อเนื่องต้องอุดรูด้วยค่านั้นพอดี',
+L39:'นี่คือนิยามอนุพันธ์ปลอมตัว: lim (x³−1³)/(x−1) = f′(1) ของ x³ = 3',
+L40:'อนุกรม sin x = x − x³/6 + … → x−sinx ≈ x³/6 → หาร x³ ได้ 1/6 (โลปิตาลก็ถึงเหมือนกัน)',
+};
+
+/* กระจายตำแหน่งคำตอบ ก-ง (หมุนตัวเลือกตามลำดับข้อ) */
+PROBLEMS.forEach((p,i)=>{const r=i%4;if(r){const c=p.ch;p.ch=c.map((_,k)=>c[(k+r)%4]);p.a=(p.a-r+4)%4;}});
+
+const KEY='tsam_math01_lim_v2';
+let state={done:{},correct:{}};
+try{const s=JSON.parse(localStorage.getItem(KEY));if(s){state=s;}}catch(e){}
+let fDiff='all', fSub='all', order=[], pos=0;
+
+function saveState(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+function buildOrder(){
+  order=PROBLEMS.filter(p=>(fDiff==='all'||p.diff==+fDiff)&&(fSub==='all'||p.sub===fSub)).map(p=>p.id);
+  pos=0;
+}
+function shuffle(){for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];}pos=0;render();}
+
+const $=id=>document.getElementById(id);
+function updateStats(){
+  const ids=PROBLEMS.map(p=>p.id);
+  const seen=ids.filter(i=>state.done[i]).length;
+  const corr=ids.filter(i=>state.correct[i]).length;
+  $('st-seen').textContent=seen;
+  $('st-total').textContent=PROBLEMS.length;
+  $('st-correct').textContent=corr;
+  $('st-pct').textContent=seen?Math.round(corr/seen*100)+'%':'0%';
+  $('progbar').style.width=(seen/PROBLEMS.length*100)+'%';
+}
+function render(){
+  updateStats();
+  document.querySelectorAll('.chip[data-d]').forEach(c=>c.classList.toggle('on',c.dataset.d===fDiff));
+  document.querySelectorAll('.chip[data-s]').forEach(c=>c.classList.toggle('on',c.dataset.s===fSub));
+  if(!order.length){$('qbody').style.display='none';$('qempty').style.display='';$('st-pos').textContent='–';return;}
+  $('qbody').style.display='';$('qempty').style.display='none';
+  if(pos<0)pos=0; if(pos>=order.length)pos=order.length-1;
+  const p=PROBLEMS.find(x=>x.id===order[pos]);
+  $('st-pos').textContent=(pos+1)+'/'+order.length;
+  $('badges').innerHTML=`<span class="badge d${p.diff}">${['','🟢','🟡','🟠','🔴'][p.diff]} ${DNAME[p.diff]}</span><span class="badge sb">${SUB[p.sub]}</span>`;
+  $('qnum').textContent='ข้อ '+(pos+1)+' / '+order.length;
+  $('qtext').textContent=p.q;
+  const answered=state.done[p.id];
+  const picked=answered?answered.pick:null;
+  const ch=$('choices');ch.innerHTML='';
+  p.ch.forEach((c,i)=>{
+    const b=document.createElement('button');
+    b.className='choice';b.innerHTML=`<span class="k">${'กขคง'[i]}</span><span>${c}</span>`;
+    if(answered){b.disabled=true;
+      if(i===p.a)b.classList.add('correct');
+      if(i===picked&&picked!==p.a)b.classList.add('wrong');
+    }else{b.onclick=()=>pick(p,i);}
+    ch.appendChild(b);
+  });
+  const fb=$('fb');
+  if(answered){
+    const ok=picked===p.a;
+    fb.className='fb show '+(ok?'ok':'no');
+    fb.innerHTML=ok?'✅ ถูกต้อง! ตอบข้อ '+'กขคง'[p.a]:'❌ ยังไม่ใช่ — คำตอบที่ถูกคือข้อ '+'กขคง'[p.a]+' ('+p.ch[p.a]+')';
+    $('btn-steps').style.display='';
+  }else{fb.className='fb';fb.innerHTML='';$('btn-steps').style.display='none';}
+  $('hintbox').innerHTML='';$('hintbox').dataset.n='0';
+  $('steps').className='steps';$('steps').innerHTML='';
+}
+function pick(p,i){
+  state.done[p.id]={pick:i};
+  if(i===p.a)state.correct[p.id]=1; else delete state.correct[p.id];
+  saveState();render();
+}
+function showSteps(){
+  const p=PROBLEMS.find(x=>x.id===order[pos]);
+  const box=$('steps');box.className='steps show';box.innerHTML='';
+  if(WHY[p.id]){const w=document.createElement('div');w.className='whybox';w.innerHTML='🔑 <b>แก่นแท้:</b> '+WHY[p.id];box.appendChild(w);}
+  const h=document.createElement('h3');h.style.margin='4px 0 0';h.textContent='วิธีทำ';box.appendChild(h);
+  p.steps.forEach((s,i)=>{const d=document.createElement('div');d.className='step';d.style.animationDelay=(i*.08)+'s';d.innerHTML=s;box.appendChild(d);});
+}
+function showHint(){
+  const p=PROBLEMS.find(x=>x.id===order[pos]);
+  const box=$('hintbox');let n=+(box.dataset.n||0);
+  if(n>=p.hints.length){const d=document.createElement('div');d.className='hint';d.innerHTML='ℹ️ นัยหมดแล้ว — ลองกด "ดูขั้นตอน" ถ้ายังติด';box.appendChild(d);box.dataset.n=n+1;return;}
+  const d=document.createElement('div');d.className='hint';d.innerHTML='💡 นัยที่ '+(n+1)+': '+p.hints[n];box.appendChild(d);box.dataset.n=n+1;
+}
+
+document.querySelectorAll('.chip[data-d]').forEach(c=>c.onclick=()=>{fDiff=c.dataset.d;buildOrder();render();});
+document.querySelectorAll('.chip[data-s]').forEach(c=>c.onclick=()=>{fSub=c.dataset.s;buildOrder();render();});
+$('shuffle').onclick=shuffle;
+$('reset').onclick=()=>{if(confirm('ล้างคะแนนและประวัติการทำข้อทั้งหมด?')){state={done:{},correct:{}};saveState();render();}};
+$('next').onclick=()=>{if(pos<order.length-1){pos++;render();}};
+$('prev').onclick=()=>{if(pos>0){pos--;render();}};
+$('btn-steps').onclick=showSteps;
+$('btn-hint').onclick=showHint;
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')$('next').click();if(e.key==='ArrowLeft')$('prev').click();});
+
+/* ========== การ์ดแก่นแท้เชิงเรขาคณิต ========== */
+(function(){
+const cv=$('geocanvas'),cap=$('geocap'),rng=$('georange'),slab=$('geoslabel'),sval=$('geoval');
+if(!cv)return;
+let panel='approach';
+const CFG={
+ approach:{min:.05,max:1.8,step:.01,def:1.2,label:'ระยะห่าง δ ='},
+ jump:{min:-1.5,max:1.5,step:.02,def:-.8,label:'x ='},
+ asym:{min:2,max:30,step:.5,def:5,label:'x ='},
+ cont:{min:0,max:4,step:.05,def:1,label:'ค่าที่อุด c ='},
+ lhop:{min:.05,max:1.5,step:.01,def:1,label:'ซูมที่ x ='},
+};
+function fit(){const w=cv.parentElement.clientWidth||600,h=300,dpr=Math.min(2,window.devicePixelRatio||1);
+ cv.width=w*dpr;cv.height=h*dpr;cv.style.height=h+'px';const ctx=cv.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);return{ctx,w,h};}
+function mk(w,h,x0,x1,y0,y1,pad,ox){pad=pad==null?36:pad;ox=ox||0;
+ return{X:x=>ox+pad+(x-x0)/(x1-x0)*(w-2*pad),Y:y=>h-pad-(y-y0)/(y1-y0)*(h-2*pad)};}
+function axes(ctx,M,x0,x1,y0,y1){ctx.strokeStyle='rgba(255,255,255,.16)';ctx.lineWidth=1;
+ const yz=(y0<=0&&y1>=0)?M.Y(0):M.Y(y0),xz=(x0<=0&&x1>=0)?M.X(0):M.X(x0);
+ ctx.beginPath();ctx.moveTo(M.X(x0),yz);ctx.lineTo(M.X(x1),yz);ctx.stroke();
+ ctx.beginPath();ctx.moveTo(xz,M.Y(y1));ctx.lineTo(xz,M.Y(y0));ctx.stroke();}
+function curve(ctx,M,f,a,b,col,wd){ctx.strokeStyle=col;ctx.lineWidth=wd||2.4;ctx.beginPath();let fst=true;
+ for(let i=0;i<=240;i++){const x=a+(b-a)*i/240,y=f(x);if(!isFinite(y)||Math.abs(y)>1e4){fst=true;continue;}
+  const px=M.X(x),py=M.Y(y);if(fst){ctx.moveTo(px,py);fst=false;}else ctx.lineTo(px,py);}ctx.stroke();}
+function dash(ctx,x1,y1,x2,y2,col){ctx.save();ctx.setLineDash([5,4]);ctx.strokeStyle=col;ctx.lineWidth=1.4;
+ ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.restore();}
+function dot(ctx,x,y,col,r){ctx.fillStyle=col;ctx.beginPath();ctx.arc(x,y,r||5,0,7);ctx.fill();
+ ctx.strokeStyle='rgba(0,0,0,.4)';ctx.lineWidth=1.2;ctx.stroke();}
+function hole(ctx,x,y,col){ctx.fillStyle='#0a0d18';ctx.beginPath();ctx.arc(x,y,5,0,7);ctx.fill();
+ ctx.strokeStyle=col;ctx.lineWidth=2;ctx.stroke();}
+function label(ctx,x,y,t,col){ctx.fillStyle=col||'#dfe6ff';ctx.font='600 12px sans-serif';ctx.fillText(t,x,y);}
+const C_M='#5cc8ff',C_P='#a371f7',C_G='#ffd166',C_R='#ff7a59',C_GD='#5ee6a8';
+
+function drawApproach(ctx,w,h,d){
+ // f(x)=(x^2-4)/(x-2) = x+2 with hole at 2
+ const x0=-.5,x1=4.5,y0=0,y1=6.5,M=mk(w,h,x0,x1,y0,y1);
+ axes(ctx,M,x0,x1,y0,y1);
+ curve(ctx,M,x=>x+2,-.5,4.5,C_M);
+ hole(ctx,M.X(2),M.Y(4),C_M);label(ctx,M.X(2)+8,M.Y(4)-10,'รูที่ (2,4)',C_M);
+ const xl=2-d,xr=2+d;
+ dot(ctx,M.X(xl),M.Y(xl+2),C_G);dot(ctx,M.X(xr),M.Y(xr+2),C_R);
+ dash(ctx,M.X(xl),M.Y(xl+2),M.X(xl),M.Y(0),C_G);dash(ctx,M.X(xr),M.Y(xr+2),M.X(xr),M.Y(0),C_R);
+ label(ctx,M.X(xl)-14,M.Y(0)-6,'ซ้าย',C_G);label(ctx,M.X(xr)+2,M.Y(0)-6,'ขวา',C_R);
+ cap.innerHTML='f(x) = (x²−4)/(x−2) มี "รู" ที่ x=2 · จุดซ้ายให้ค่า <b>'+(xl+2).toFixed(2)+'</b> จุดขวาให้ <b>'+(xr+2).toFixed(2)+'</b> — ลากเข้าใกล้ 2 สองฝั่งบีบเข้าค่าเดียวกัน = <b>4</b> → lim = 4 แม้ f(2) ไม่นิยาม';
+}
+function drawJump(ctx,w,h,x){
+ // sign function |x|/x
+ const x0=-1.8,x1=1.8,y0=-1.8,y1=1.8,M=mk(w,h,x0,x1,y0,y1);
+ axes(ctx,M,x0,x1,y0,y1);
+ curve(ctx,M,t=>-1,-1.8,-.02,C_M);curve(ctx,M,t=>1,.02,1.8,C_M);
+ hole(ctx,M.X(0),M.Y(1),C_M);hole(ctx,M.X(0),M.Y(-1),C_M);
+ label(ctx,M.X(.7),M.Y(1)-10,'ฝั่งขวา = +1',C_R);label(ctx,M.X(-1.6),M.Y(-1)+18,'ฝั่งซ้าย = −1',C_G);
+ const y=x===0?0:(x>0?1:-1);
+ if(x!==0){dot(ctx,M.X(x),M.Y(y),x>0?C_R:C_G);dash(ctx,M.X(x),M.Y(y),M.X(x),M.Y(0),x>0?C_R:C_G);}
+ cap.innerHTML='f(x) = |x|/x · ตอนนี้ x = '+x.toFixed(2)+' ได้ f = <b>'+(x===0?'ไม่นิยาม':y)+'</b> — ฝั่งซ้ายวิ่งเข้า <b>−1</b> ฝั่งขวาวิ่งเข้า <b>+1</b> ไม่มีวันเจอกัน → <b>ลิมิตที่ 0 ไม่มี</b> (jump)';
+}
+function drawAsym(ctx,w,h,x){
+ // (2x+1)/(x-1): VA x=1, HA y=2
+ const x0=-4,x1=31,y0=-1,y1=6,M=mk(w,h,x0,x1,y0,y1);
+ axes(ctx,M,x0,x1,y0,y1);
+ dash(ctx,M.X(x0),M.Y(2),M.X(x1),M.Y(2),C_G);label(ctx,M.X(24),M.Y(2)-8,'เส้นกำกับนอน y=2',C_G);
+ dash(ctx,M.X(1),M.Y(y0),M.X(1),M.Y(y1),C_R);label(ctx,M.X(1)+5,M.Y(5.6),'เส้นกำกับตั้ง x=1',C_R);
+ const f=t=>(2*t+1)/(t-1);
+ curve(ctx,M,f,1.15,31,C_M);curve(ctx,M,f,-4,.85,C_M);
+ const y=f(x);dot(ctx,M.X(x),M.Y(y),C_G);
+ cap.innerHTML='f(x) = (2x+1)/(x−1) · ที่ x = '+x.toFixed(1)+' ค่า f = <b>'+y.toFixed(3)+'</b> — ลากไปทางขวาไกลๆ ค่าจะแนบ <b>y = 2</b> (= lim ที่ ∞ = ดีกรีเท่า → 2/1) ส่วนใกล้ x=1 ระเบิดขึ้น ∞ เพราะหารด้วยเกือบศูนย์';
+}
+function drawCont(ctx,w,h,c){
+ // (x^2-1)/(x-1) hole at (1,2), patch value c
+ const x0=-1.5,x1=3.5,y0=-.5,y1=4.5,M=mk(w,h,x0,x1,y0,y1);
+ axes(ctx,M,x0,x1,y0,y1);
+ curve(ctx,M,x=>x+1,-1.5,3.5,C_M);
+ hole(ctx,M.X(1),M.Y(2),C_M);
+ dot(ctx,M.X(1),M.Y(c),Math.abs(c-2)<.05?C_GD:C_R,6);
+ dash(ctx,M.X(1),M.Y(0),M.X(1),M.Y(Math.max(c,2)),'rgba(255,255,255,.2)');
+ label(ctx,M.X(1)+8,M.Y(c)+4,'f(1) = c = '+c.toFixed(2),Math.abs(c-2)<.05?C_GD:C_R);
+ const ok=Math.abs(c-2)<.05;
+ cap.innerHTML='f(x) = (x²−1)/(x−1) เมื่อ x≠1 มีรูที่ (1,2) · เลื่อน c เพื่ออุดรู: ตอนนี้ '+(ok?'<b style="color:#5ee6a8">✓ c = 2 อุดพอดี → ต่อเนื่อง!</b> (ลิมิต = f(1) ครบ 3 เงื่อนไข)':'<b style="color:#ff7a59">✗ ยังไม่ต่อเนื่อง</b> — จุดลอยไม่ตรงรู (ลิมิต = 2 แต่ f(1) = '+c.toFixed(2)+')');
+}
+function drawLhop(ctx,w,h,z){
+ // sin x vs x near 0, zoom window ±z
+ const x0=-z,x1=z,y0=-z,y1=z,M=mk(w,h,x0,x1,y0,y1);
+ axes(ctx,M,x0,x1,y0,y1);
+ curve(ctx,M,x=>x,-z,z,C_G);label(ctx,M.X(z*.6),M.Y(z*.6)-10,'y = x',C_G);
+ curve(ctx,M,x=>Math.sin(x),-z,z,C_M);label(ctx,M.X(z*.55),M.Y(Math.sin(z*.55))+16,'y = sin x',C_M);
+ const r=Math.sin(z*.8)/(z*.8);
+ dot(ctx,M.X(z*.8),M.Y(Math.sin(z*.8)),C_M,4);dot(ctx,M.X(z*.8),M.Y(z*.8),C_G,4);
+ cap.innerHTML='ซูมเข้าใกล้ 0 (ตอนนี้มอง ±'+z.toFixed(2)+'): สองเส้นทับกันขึ้นเรื่อยๆ ที่ x='+(z*.8).toFixed(2)+' อัตราส่วน sinx/x = <b>'+r.toFixed(4)+'</b> → เข้าใกล้ <b>1</b> · โลปิตาลคือแนวคิดนี้เอง: ใกล้จุด 0/0 ฟังก์ชัน ≈ เส้นสัมผัส → เทียบกันเหลือแค่ "ความชันต่อความชัน"';
+}
+const DRAW={approach:drawApproach,jump:drawJump,asym:drawAsym,cont:drawCont,lhop:drawLhop};
+function draw(){const {ctx,w,h}=fit();ctx.clearRect(0,0,w,h);DRAW[panel](ctx,w,h,parseFloat(rng.value));sval.textContent=parseFloat(rng.value).toFixed(2);}
+function setPanel(p){panel=p;const c=CFG[p];rng.min=c.min;rng.max=c.max;rng.step=c.step;rng.value=c.def;slab.textContent=c.label;
+ document.querySelectorAll('.geotab').forEach(b=>b.classList.toggle('on',b.dataset.g===p));draw();}
+document.querySelectorAll('.geotab').forEach(b=>b.onclick=()=>setPanel(b.dataset.g));
+rng.oninput=draw;
+window.addEventListener('resize',()=>{clearTimeout(window._grz);window._grz=setTimeout(draw,150);});
+setPanel('approach');
+})();
+
+buildOrder();render();
+</script>
+</body>
+</html>

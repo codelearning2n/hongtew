@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>แคลคูลัสติว TSAM — ลองเล่นให้เห็นภาพ</title>
+<style>
+/* ====== โทนจาก study-kit (premium dark) — inline ทั้งหมด ====== */
+:root{
+  --bg-0:#0a0d18; --bg-1:#11152a; --ink:#f2f4ff; --muted:#9aa2cf;
+  --line:rgba(255,255,255,.09);
+  --accent:#5cc8ff; --accent-2:#a371f7; --gold:#ffd166;
+  --good:#5ee6a8; --bad:#f85149;
+  --glass:linear-gradient(180deg,rgba(40,46,90,.50),rgba(16,20,46,.55));
+  --glass-2:linear-gradient(180deg,rgba(52,58,108,.55),rgba(24,28,62,.62));
+  --shadow:0 22px 55px -24px rgba(0,0,0,.78);
+  --ring:0 0 0 1px rgba(255,255,255,.06);
+  --grad-text:linear-gradient(120deg,#ffffff,#bcd4ff 45%,#b6a4ff);
+  --grad-fill:linear-gradient(90deg,var(--accent),var(--accent-2));
+  --r-sm:10px; --r-md:14px; --r-lg:18px; --r-xl:24px; --r-pill:999px;
+  --ease:cubic-bezier(.2,.7,.3,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  color:var(--ink); line-height:1.6; padding:16px 12px 40px;
+  font-family:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
+  background:
+    radial-gradient(820px 520px at 8% -12%,rgba(92,120,255,.20),transparent 55%),
+    radial-gradient(720px 520px at 98% -6%,rgba(124,92,255,.22),transparent 52%),
+    radial-gradient(760px 680px at 55% 122%,rgba(40,110,210,.16),transparent 55%),
+    var(--bg-0);
+  background-attachment:fixed; min-height:100vh;
+}
+::selection{background:rgba(92,200,255,.35)}
+.wrap{max-width:860px;margin:0 auto}
+
+/* hero */
+.hero{position:relative;overflow:hidden;background:var(--glass-2);border:1px solid var(--line);
+  border-radius:var(--r-xl);padding:22px 20px 18px;margin-bottom:14px;
+  box-shadow:var(--shadow),var(--ring),inset 0 1px 0 rgba(255,255,255,.08)}
+.hero::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(640px 240px at 102% -10%,rgba(124,92,255,.28),transparent 60%)}
+.hero h1{margin:.1rem 0;font-size:clamp(1.35rem,4.5vw,2rem);line-height:1.2}
+.grad-text{background:var(--grad-text);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:var(--muted);margin:.35rem 0 0;font-size:.92rem}
+
+/* tabs */
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 8px;margin-bottom:12px;
+  -webkit-overflow-scrolling:touch;scrollbar-width:thin}
+.tabs::-webkit-scrollbar{height:6px}
+.tabs::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:9px}
+.tab{flex:0 0 auto;white-space:nowrap;cursor:pointer;border:1px solid var(--line);
+  background:rgba(255,255,255,.04);color:var(--muted);font-family:inherit;font-weight:700;
+  font-size:.9rem;padding:10px 15px;border-radius:var(--r-pill);transition:all .15s var(--ease)}
+.tab:hover{color:var(--ink);border-color:rgba(92,200,255,.4)}
+.tab.active{color:#06210d;background:var(--grad-fill);color:#0a1020;border-color:transparent;
+  box-shadow:0 10px 22px -10px rgba(92,140,255,.7)}
+.tab .n{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;
+  background:rgba(0,0,0,.18);font-size:.78rem;margin-right:6px}
+.tab.active .n{background:rgba(255,255,255,.35)}
+
+/* card */
+.card{position:relative;background:var(--glass);border:1px solid var(--line);
+  border-radius:var(--r-lg);padding:16px;margin-bottom:14px;
+  box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.05)}
+.card h2{margin:0 0 4px;font-size:1.1rem}
+.card h2 .ic{margin-right:6px}
+.sub{color:var(--muted);font-size:.86rem;margin:0 0 12px}
+
+.panel{display:none}
+.panel.active{display:block;animation:rise .35s var(--ease) both}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* canvas */
+.cv-wrap{position:relative;width:100%;background:rgba(8,10,22,.55);border:1px solid var(--line);
+  border-radius:var(--r-md);overflow:hidden;touch-action:none}
+canvas{display:block;width:100%;height:auto}
+
+/* controls */
+.ctrl{margin:12px 0}
+.ctrl .lab{display:flex;justify-content:space-between;align-items:baseline;font-size:.88rem;margin-bottom:5px}
+.ctrl .lab b{color:var(--accent);font-weight:800;font-size:1rem;font-variant-numeric:tabular-nums}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:7px;border-radius:9px;
+  background:rgba(255,255,255,.12);outline:none;margin:0}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;
+  background:var(--accent);cursor:pointer;border:3px solid #0a0d18;box-shadow:0 4px 12px rgba(92,200,255,.5)}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--accent);
+  cursor:pointer;border:3px solid #0a0d18}
+
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.seg{display:inline-flex;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:var(--r-pill);padding:3px;gap:2px;flex-wrap:wrap}
+.seg button{border:none;background:transparent;color:var(--muted);font-family:inherit;font-weight:700;
+  font-size:.85rem;padding:7px 13px;border-radius:var(--r-pill);cursor:pointer;transition:.12s}
+.seg button.on{background:var(--grad-fill);color:#0a1020}
+.seg.gold button.on{background:linear-gradient(135deg,#ffd166,#ff9f6b);color:#1a1205}
+
+/* buttons */
+.btn{border:none;cursor:pointer;font-family:inherit;font-weight:700;font-size:.95rem;color:#fff;
+  padding:11px 18px;border-radius:var(--r-md);background:var(--grad-fill);
+  box-shadow:0 12px 26px -12px rgba(92,140,255,.7);transition:transform .15s var(--ease)}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+.btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--line);box-shadow:none}
+.btn.gold{background:linear-gradient(135deg,#ffd166,#ff9f6b);color:#1a1205;box-shadow:0 12px 26px -12px rgba(255,180,80,.6)}
+.btn.sm{padding:8px 14px;font-size:.85rem}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+
+/* readout */
+.read{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.stat{flex:1 1 130px;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:var(--r-md);padding:10px 12px}
+.stat .t{font-size:.74rem;color:var(--muted)}
+.stat .v{font-size:1.25rem;font-weight:800;font-variant-numeric:tabular-nums;margin-top:2px}
+.stat.a .v{color:var(--accent)} .stat.g .v{color:var(--gold)} .stat.ok .v{color:var(--good)} .stat.p .v{color:var(--accent-2)}
+
+/* approach table */
+.aptab{width:100%;border-collapse:collapse;margin-top:10px;font-size:.85rem;font-variant-numeric:tabular-nums}
+.aptab th,.aptab td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:right}
+.aptab th:first-child,.aptab td:first-child{text-align:left;color:var(--muted)}
+.aptab tr:last-child td{font-weight:800;color:var(--good)}
+
+/* note / callout */
+.note{background:rgba(92,200,255,.08);border:1px solid rgba(92,200,255,.22);border-radius:var(--r-md);
+  padding:11px 13px;font-size:.88rem;margin-top:12px}
+.note.gold{background:rgba(255,209,102,.08);border-color:rgba(255,209,102,.25)}
+.note b{color:var(--accent)} .note.gold b{color:var(--gold)}
+.k{font-family:'Cambria Math','Sarabun',serif;font-style:italic}
+
+/* drill */
+.q{font-size:1.15rem;font-weight:700;margin:6px 0 14px;line-height:1.5}
+.steps{list-style:none;padding:0;margin:0}
+.steps li{background:rgba(255,255,255,.04);border:1px solid var(--line);border-left:3px solid var(--accent);
+  border-radius:8px;padding:10px 12px;margin-bottom:8px;font-size:.96rem;animation:rise .3s var(--ease) both}
+.steps li .why{display:block;color:var(--muted);font-size:.8rem;margin-top:3px}
+.hintbox{margin-top:10px}
+.hint{background:rgba(255,209,102,.08);border:1px solid rgba(255,209,102,.25);border-radius:8px;
+  padding:10px 12px;margin-top:8px;font-size:.9rem;animation:rise .3s var(--ease) both}
+.hint b{color:var(--gold)}
+.ans{background:rgba(94,230,168,.1);border:1px solid rgba(94,230,168,.4);border-radius:8px;
+  padding:12px;margin-top:10px;font-size:1rem;animation:rise .3s var(--ease) both}
+.ans b{color:var(--good)}
+
+.foot{color:var(--muted);text-align:center;font-size:.82rem;margin-top:18px}
+.pill{display:inline-block;font-size:.72rem;font-weight:700;color:var(--accent);
+  background:rgba(92,200,255,.1);border:1px solid rgba(92,200,255,.25);padding:2px 9px;border-radius:7px}
+sup{font-size:.7em}
+.theory{margin-top:12px;border:1px solid var(--line);border-radius:var(--r-md);background:rgba(255,255,255,.03);overflow:hidden}
+.theory summary{cursor:pointer;padding:11px 14px;font-weight:700;color:var(--accent-2);font-size:.92rem;list-style:none;user-select:none}
+.theory summary::-webkit-details-marker{display:none}
+.theory summary::before{content:"▸ ";color:var(--muted)}
+.theory[open] summary::before{content:"▾ "}
+.theory ol{margin:0;padding:4px 18px 14px 32px;font-size:.9rem;color:var(--ink)}
+.theory li{margin:6px 0}
+.theory b{color:var(--accent)}
+
+/* แก้ contrast 2026-08-08: ปุ่มเดิมเป็นตัวอักษรขาวบนไล่เฉด #5cc8ff->#a371f7 ได้ 2.60
+   สลับเป็นตัวอักษรสีเข้มบนปุ่มสว่าง ได้ 8.0 โดยไม่ต้องเปลี่ยนสีแบรนด์
+   .lbl เดิมใช้ --accent-2 (#a371f7) บนพื้นการ์ด ได้ 4.15 -> ใช้ม่วงสว่างขึ้น */
+.btn{color:#080b14}
+/* ต้องเจาะจงเท่ากฎเดิม .ex .exq .lbl ไม่งั้นโดนทับ */
+.lbl,.ex .exq .lbl{color:#c9adff}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <span class="pill">ติว TSAM AP-Test '70 · คณิต ~45/56 ข้อเป็นแคลคูลัส</span>
+    <h1><span class="grad-text">แคลคูลัส — ลองเล่นให้เห็นภาพ</span></h1>
+    <p class="lead">ยังไม่เคยเรียนแคลมหาลัย? ไม่เป็นไร เริ่มจาก "เห็นภาพ" ก่อนท่องสูตร —
+      ลากสไลเดอร์ กดปุ่ม สังเกตว่าเกิดอะไรขึ้น แล้วสูตรจะตามมาเอง 👇</p>
+  </div>
+
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-p="0"><span class="n">1</span>ลิมิต</button>
+    <button class="tab" data-p="1"><span class="n">2</span>อนุพันธ์ = ความชัน</button>
+    <button class="tab" data-p="2"><span class="n">3</span>กฎอนุพันธ์ (ฝึก)</button>
+    <button class="tab" data-p="3"><span class="n">4</span>อินทิเกรต = พื้นที่</button>
+    <button class="tab" data-p="4"><span class="n">5</span>เทคนิคอินทิเกรต</button>
+    <button class="tab" data-p="5"><span class="n">6</span>ประยุกต์อนุพันธ์</button>
+    <button class="tab" data-p="6"><span class="n">7</span>ประยุกต์อินทิเกรต</button>
+  </div>
+
+  <!-- ============ TAB 1: LIMIT ============ -->
+  <section class="panel active" id="p0">
+    <div class="card">
+      <h2><span class="ic">🎯</span>ลิมิตคืออะไร? "ค่าที่ f(x) วิ่งเข้าหา"</h2>
+      <p class="sub">ลิมิตไม่สนว่า x = a มีค่าจริงไหม — มันสนแค่ว่า "พอ x เฉียดเข้าใกล้ a แล้ว f(x) เฉียดเข้าใกล้เลขอะไร"
+        ลองกดปุ่มให้ x ค่อยๆ เดินเข้าหา a ทั้งสองข้างดู</p>
+
+      <div class="seg" id="lim-fn" style="margin-bottom:10px">
+        <button class="on" data-f="0">(x²−1)/(x−1)</button>
+        <button data-f="1">sin x / x</button>
+        <button data-f="2">|x| / x</button>
+        <button data-f="3">1 / x</button>
+      </div>
+
+      <div class="cv-wrap"><canvas id="cv-lim"></canvas></div>
+
+      <div class="ctrl">
+        <div class="lab"><span>ตำแหน่ง x</span><b id="lim-xval">2.000</b></div>
+        <input type="range" id="lim-x" min="-30" max="30" value="20" step="1">
+      </div>
+
+      <div class="row" style="margin:10px 0">
+        <button class="btn sm" id="lim-left">◀ เดินเข้าจากซ้าย</button>
+        <button class="btn sm" id="lim-right">เดินเข้าจากขวา ▶</button>
+        <button class="btn ghost sm" id="lim-reset">รีเซ็ต</button>
+      </div>
+
+      <div class="read">
+        <div class="stat a"><div class="t">x ปัจจุบัน</div><div class="v" id="lim-x2">2.000</div></div>
+        <div class="stat g"><div class="t">f(x) =</div><div class="v" id="lim-fx">3.000</div></div>
+        <div class="stat ok"><div class="t">ลิมิตที่ x→a</div><div class="v" id="lim-L">2</div></div>
+      </div>
+
+      <table class="aptab" id="lim-tab"><thead><tr><th>x</th><th>f(x)</th></tr></thead><tbody></tbody></table>
+
+      <div class="note" id="lim-note"><b>สังเกต:</b> ที่ x=1 ฟังก์ชันนี้ "หาค่าไม่ได้" (0/0) — มีรู (hole) ตรงนั้น
+        แต่พอ x เฉียดเข้า 1 ทั้งสองข้าง f(x) กลับวิ่งเข้าหา <b>2</b> เป๊ะ นั่นแหละคือลิมิต = 2
+        แม้จุดนั้นจะไม่มีค่าก็ตาม</div>
+    </div>
+  </section>
+
+  <!-- ============ TAB 2: DERIVATIVE ============ -->
+  <section class="panel" id="p1">
+    <div class="card">
+      <h2><span class="ic">📐</span>อนุพันธ์ = ความชันของเส้นสัมผัส</h2>
+      <p class="sub">เส้นที่ลากผ่าน 2 จุด เรียก <i>secant</i> — ความชัน = (Δy/Δx) = (f(x+h)−f(x))/h
+        ลอง <b>ลาก h ให้เล็กลงเรื่อยๆ</b> สิ จุดที่สองจะคืบเข้าหาจุดแรก จนเส้นเกือบแตะกราฟแค่จุดเดียว →
+        นั่นคือ <i>tangent</i> และความชันของมันคือ f′(x)</p>
+
+      <div class="seg" id="der-fn" style="margin-bottom:10px">
+        <button class="on" data-f="0">x²</button>
+        <button data-f="1">x³</button>
+        <button data-f="2">sin x</button>
+        <button data-f="3">eˣ</button>
+      </div>
+
+      <div class="cv-wrap"><canvas id="cv-der"></canvas></div>
+
+      <div class="ctrl">
+        <div class="lab"><span>จุด x₀ (จุดที่อยากหาความชัน)</span><b id="der-x0v">1.0</b></div>
+        <input type="range" id="der-x0" min="-25" max="25" value="10" step="1">
+      </div>
+      <div class="ctrl">
+        <div class="lab"><span>ระยะ h (ลากให้เล็กลง!)</span><b id="der-hv">1.50</b></div>
+        <input type="range" id="der-h" min="1" max="200" value="150" step="1">
+      </div>
+
+      <div class="read">
+        <div class="stat a"><div class="t">ความชัน secant = Δy/Δx</div><div class="v" id="der-sec">—</div></div>
+        <div class="stat ok"><div class="t">f′(x₀) ค่าจริง</div><div class="v" id="der-true">—</div></div>
+        <div class="stat g"><div class="t">ต่างกัน</div><div class="v" id="der-err">—</div></div>
+      </div>
+
+      <div class="note"><b>เป้าหมาย:</b> ลาก h เข้าใกล้ 0 แล้วดูช่อง "ต่างกัน" — มันจะเล็กลงจนเกือบ 0
+        แปลว่า secant กลายเป็น tangent นี่คือนิยามจริงของอนุพันธ์:
+        <span class="k">f′(x) = lim<sub>h→0</sub> [f(x+h)−f(x)] / h</span></div>
+    </div>
+  </section>
+
+  <!-- ============ TAB 3: RULES DRILL ============ -->
+  <section class="panel" id="p2">
+    <div class="card">
+      <h2><span class="ic">✏️</span>ฝึกกฎอนุพันธ์ — ทำเองทีละขั้น</h2>
+      <p class="sub">ลองหาคำตอบในใจก่อน แล้วค่อยกด "ขั้นต่อไป" เช็คทีละบรรทัด ติดตรงไหนกดดูนัยได้ — ไม่ต้องรีบดูเฉลย</p>
+
+      <div class="seg gold" id="dr-cat" style="margin-bottom:12px">
+        <button class="on" data-c="all">รวมทุกกฎ</button>
+        <button data-c="power">power</button>
+        <button data-c="product">product</button>
+        <button data-c="quotient">quotient</button>
+        <button data-c="chain">chain</button>
+        <button data-c="log">ln/log/aˣ</button>
+        <button data-c="implicit">implicit</button>
+        <button data-c="inverse">ตรีโกณผกผัน</button>
+        <button data-c="higher">อันดับสูง</button>
+      </div>
+
+      <div class="q" id="dr-q">—</div>
+      <ol class="steps" id="dr-steps"></ol>
+      <div class="hintbox" id="dr-hints"></div>
+
+      <div class="row" style="margin-top:14px">
+        <button class="btn sm" id="dr-step">ขั้นต่อไป ▸</button>
+        <button class="btn gold sm" id="dr-hint">💡 ขอนัย</button>
+        <button class="btn ghost sm" id="dr-new">🎲 ข้อใหม่</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TAB 4: INTEGRAL ============ -->
+  <section class="panel" id="p3">
+    <div class="card">
+      <h2><span class="ic">📊</span>อินทิเกรต = พื้นที่ใต้กราฟ (Riemann sum)</h2>
+      <p class="sub">วิธีหาพื้นที่ใต้เส้นโค้ง: ซอยช่วง [a,b] เป็นแท่งสี่เหลี่ยมแคบๆ n แท่ง แล้วบวกพื้นที่มันรวมกัน
+        ลอง <b>เพิ่ม n</b> สิ — แท่งยิ่งเยอะยิ่งบาง พื้นที่ประมาณยิ่งลู่เข้าหา "ค่าอินทิกรัลจริง"</p>
+
+      <div class="seg" id="int-fn" style="margin-bottom:10px">
+        <button class="on" data-f="0">x²</button>
+        <button data-f="1">x³</button>
+        <button data-f="2">sin x</button>
+        <button data-f="3">√x</button>
+      </div>
+
+      <div class="cv-wrap"><canvas id="cv-int"></canvas></div>
+
+      <div class="ctrl">
+        <div class="lab"><span>จำนวนแท่ง n</span><b id="int-nv">8</b></div>
+        <input type="range" id="int-n" min="1" max="120" value="8" step="1">
+      </div>
+      <div class="row" style="gap:14px">
+        <div class="ctrl" style="flex:1 1 130px">
+          <div class="lab"><span>ขอบล่าง a</span><b id="int-av">0.0</b></div>
+          <input type="range" id="int-a" min="-20" max="20" value="0" step="1">
+        </div>
+        <div class="ctrl" style="flex:1 1 130px">
+          <div class="lab"><span>ขอบบน b</span><b id="int-bv">3.0</b></div>
+          <input type="range" id="int-b" min="-20" max="40" value="30" step="1">
+        </div>
+      </div>
+      <div class="seg" id="int-mode" style="margin-bottom:4px">
+        <button class="on" data-m="left">ซ้าย</button>
+        <button data-m="mid">กลาง</button>
+        <button data-m="right">ขวา</button>
+      </div>
+
+      <div class="read">
+        <div class="stat a"><div class="t">ผลรวมแท่ง (ประมาณ)</div><div class="v" id="int-approx">—</div></div>
+        <div class="stat ok"><div class="t">∫ ค่าจริง</div><div class="v" id="int-true">—</div></div>
+        <div class="stat g"><div class="t">คลาดเคลื่อน</div><div class="v" id="int-err">—</div></div>
+      </div>
+
+      <div class="note"><b>ลองเลื่อน n จาก 1 → 120:</b> ดูช่อง "คลาดเคลื่อน" หดเข้าหา 0
+        นี่คือเหตุผลที่ <span class="k">∫<sub>a</sub><sup>b</sup> f(x) dx</span> = พื้นที่จริงใต้กราฟ
+        (limit ของ Riemann sum เมื่อ n→∞)</div>
+    </div>
+  </section>
+
+  <!-- ============ TAB 5: INTEGRATION TECHNIQUES ============ -->
+  <section class="panel" id="p4">
+    <div class="card">
+      <h2><span class="ic">🧩</span>เทคนิคอินทิเกรต (โซน ส.7)</h2>
+      <p class="sub">ข้อยากของ TSAM อยู่ตรงนี้ — by parts / เศษส่วนย่อย / แทนค่าตรีโกณ
+        ดูทีละขั้นว่าเลือกเทคนิคไหนเพราะอะไร ติดตรงไหนกดขอนัย</p>
+
+      <div class="seg gold" id="tc-cat" style="margin-bottom:12px">
+        <button class="on" data-c="all">รวม</button>
+        <button data-c="usub">u-sub</button>
+        <button data-c="parts">by parts</button>
+        <button data-c="partial">เศษส่วนย่อย</button>
+        <button data-c="trig">แทนตรีโกณ</button>
+      </div>
+
+      <div class="q" id="tc-q">—</div>
+      <ol class="steps" id="tc-steps"></ol>
+      <div class="hintbox" id="tc-hints"></div>
+
+      <div class="row" style="margin-top:14px">
+        <button class="btn sm" id="tc-step">ขั้นต่อไป ▸</button>
+        <button class="btn gold sm" id="tc-hint">💡 ขอนัย</button>
+        <button class="btn ghost sm" id="tc-new">🎲 ข้อใหม่</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TAB 6: APPLICATIONS OF DERIVATIVE ============ -->
+  <section class="panel" id="p5">
+    <div class="card">
+      <h2><span class="ic">📈</span>ประยุกต์อนุพันธ์ — จุดสูงสุด/ต่ำสุด & กราฟ</h2>
+      <p class="sub">f′(x) บอก "ความชัน" → f′>0 กราฟ<b>กำลังขึ้น</b>, f′&lt;0 <b>กำลังลง</b>, f′=0 คือ <b>จุดวิกฤต</b> (ยอด/ก้น/จุดเปลี่ยน)
+        ลากเคอร์เซอร์ x ดูสิว่าเครื่องหมาย f′ เปลี่ยนตรงไหน — ตรงนั้นแหละ max/min</p>
+      <div class="seg" id="ap-fn" style="margin-bottom:10px">
+        <button class="on" data-f="0">x³−3x</button>
+        <button data-f="1">x³−6x²+9x</button>
+        <button data-f="2">−x²+4x</button>
+        <button data-f="3">x⁴−2x²</button>
+      </div>
+      <div class="cv-wrap"><canvas id="cv-ap"></canvas></div>
+      <div class="ctrl">
+        <div class="lab"><span>เคอร์เซอร์ x</span><b id="ap-xv">0.0</b></div>
+        <input type="range" id="ap-x" min="-30" max="30" value="0" step="1">
+      </div>
+      <div class="read">
+        <div class="stat a"><div class="t">f(x)</div><div class="v" id="ap-fx">—</div></div>
+        <div class="stat g"><div class="t">f′(x) = ความชัน</div><div class="v" id="ap-dfx">—</div></div>
+        <div class="stat ok"><div class="t">สถานะ</div><div class="v" id="ap-state" style="font-size:.95rem">—</div></div>
+      </div>
+      <div class="note" id="ap-note"></div>
+      <details class="theory"><summary>📖 ทฤษฎี: วิธีหา max-min (first derivative test)</summary>
+        <ol>
+          <li>หา f′(x) แล้วแก้ <span class="k">f′(x)=0</span> → ได้ "จุดวิกฤต"</li>
+          <li>เช็คเครื่องหมาย f′ ซ้าย-ขวาจุดนั้น: <b>+→−</b> = จุดสูงสุด (max), <b>−→+</b> = จุดต่ำสุด (min)</li>
+          <li>หรือใช้ <span class="k">f″</span>: f″&lt;0 → max (กราฟคว่ำ), f″&gt;0 → min (กราฟหงาย)</li>
+          <li>โจทย์ TSAM ชอบถาม: กล่อง/ถังที่ใช้วัสดุน้อยสุด, ระยะที่เร็วสุด — ตั้งฟังก์ชันแล้วหา f′=0</li>
+        </ol>
+      </details>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">✏️ ฝึกโจทย์ประยุกต์ (max-min · related rates · เส้นสัมผัส)</h3>
+      <div class="seg gold" id="d5-cat" style="margin-bottom:10px">
+        <button class="on" data-c="all">รวม</button>
+        <button data-c="maxmin">max-min</button>
+        <button data-c="related">related rates</button>
+        <button data-c="tangent">เส้นสัมผัส</button>
+      </div>
+      <div class="q" id="d5-q">—</div><ol class="steps" id="d5-steps"></ol><div id="d5-hints"></div>
+      <div class="row" style="margin-top:12px">
+        <button class="btn sm" id="d5-step">ขั้นต่อไป ▸</button>
+        <button class="btn gold sm" id="d5-hint">💡 ขอนัย</button>
+        <button class="btn ghost sm" id="d5-new">🎲 ข้อใหม่</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TAB 7: APPLICATIONS OF INTEGRAL ============ -->
+  <section class="panel" id="p6">
+    <div class="card">
+      <h2><span class="ic">🔵</span>ประยุกต์อินทิเกรต — พื้นที่ระหว่างเส้นโค้ง & ปริมาตรหมุน</h2>
+      <p class="sub">พื้นที่ระหว่าง 2 เส้น = <span class="k">∫(เส้นบน − เส้นล่าง) dx</span> ลองเลือกคู่ฟังก์ชันแล้วลากขอบเขตดูพื้นที่ที่ระบาย</p>
+      <div class="seg" id="ar-pair" style="margin-bottom:10px">
+        <button class="on" data-p="0">x² กับ x</button>
+        <button data-p="1">x² กับ 2x</button>
+        <button data-p="2">x³ กับ x</button>
+        <button data-p="3">sin x กับ 0</button>
+      </div>
+      <div class="cv-wrap"><canvas id="cv-ar"></canvas></div>
+      <div class="row" style="gap:14px">
+        <div class="ctrl" style="flex:1 1 130px"><div class="lab"><span>ขอบล่าง a</span><b id="ar-av">0.0</b></div>
+          <input type="range" id="ar-a" min="-25" max="25" value="0" step="1"></div>
+        <div class="ctrl" style="flex:1 1 130px"><div class="lab"><span>ขอบบน b</span><b id="ar-bv">1.0</b></div>
+          <input type="range" id="ar-b" min="-25" max="30" value="10" step="1"></div>
+      </div>
+      <div class="seg gold" id="ar-mode" style="margin-bottom:6px">
+        <button class="on" data-m="area">พื้นที่</button>
+        <button data-m="vol">ปริมาตรหมุนรอบแกน x (disk)</button>
+      </div>
+      <div class="read">
+        <div class="stat a"><div class="t" id="ar-t1">พื้นที่ระบาย</div><div class="v" id="ar-val">—</div></div>
+        <div class="stat ok"><div class="t">จุดตัด (a,b แนะนำ)</div><div class="v" id="ar-cross" style="font-size:.95rem">—</div></div>
+      </div>
+      <div class="note" id="ar-note"></div>
+      <details class="theory"><summary>📖 ทฤษฎี: พื้นที่ & ปริมาตรหมุน</summary>
+        <ol>
+          <li><b>พื้นที่ระหว่างเส้นโค้ง:</b> <span class="k">A = ∫<sub>a</sub><sup>b</sup> |f(x)−g(x)| dx</span> — หาจุดตัดก่อน (f=g) เพื่อได้ขอบเขต a,b</li>
+          <li><b>ปริมาตรหมุนรอบแกน x (disk):</b> <span class="k">V = π∫<sub>a</sub><sup>b</sup> [f(x)]² dx</span> — แต่ละแผ่นบางคือวงกลมรัศมี f(x)</li>
+          <li><b>วิธี shell (รอบแกน y):</b> <span class="k">V = 2π∫ x·f(x) dx</span></li>
+          <li>เคล็ด TSAM: ดูว่าเส้นไหนอยู่บนในช่วงนั้น (แทนค่าทดสอบ 1 จุด) เส้นบนลบเส้นล่างเสมอ</li>
+        </ol>
+      </details>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">✏️ ฝึกโจทย์ประยุกต์อินทิเกรต</h3>
+      <div class="seg gold" id="d6-cat" style="margin-bottom:10px">
+        <button class="on" data-c="all">รวม</button>
+        <button data-c="area">พื้นที่</button>
+        <button data-c="vol">ปริมาตร</button>
+        <button data-c="avg">ค่าเฉลี่ย/อื่นๆ</button>
+      </div>
+      <div class="q" id="d6-q">—</div><ol class="steps" id="d6-steps"></ol><div id="d6-hints"></div>
+      <div class="row" style="margin-top:12px">
+        <button class="btn sm" id="d6-step">ขั้นต่อไป ▸</button>
+        <button class="btn gold sm" id="d6-hint">💡 ขอนัย</button>
+        <button class="btn ghost sm" id="d6-new">🎲 ข้อใหม่</button>
+      </div>
+    </div>
+  </section>
+
+  <p class="foot">ทำเพื่อติว TSAM '70 · เน้นเข้าใจก่อนท่อง · เปิดไฟล์เดียวจบ ไม่ต้องต่อเน็ต</p>
+</div>
+
+<script>
+"use strict";
+/* ===================== ตัวช่วยวาดกราฟบน canvas ===================== */
+function setupCanvas(cv){
+  const dpr = Math.max(1, window.devicePixelRatio||1);
+  const w = cv.clientWidth;
+  const h = Math.round(w * 0.62);
+  cv.width = w*dpr; cv.height = h*dpr;
+  cv.style.height = h+'px';
+  const ctx = cv.getContext('2d');
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  return {ctx, w, h};
+}
+function makePlot(ctx,w,h,xmin,xmax,ymin,ymax){
+  const padL=8,padR=8,padT=8,padB=8;
+  const X = x => padL + (x-xmin)/(xmax-xmin)*(w-padL-padR);
+  const Y = y => h-padB - (y-ymin)/(ymax-ymin)*(h-padT-padB);
+  return {X,Y,xmin,xmax,ymin,ymax,w,h};
+}
+function drawAxes(ctx,P){
+  ctx.lineWidth=1;
+  // grid
+  ctx.strokeStyle='rgba(255,255,255,.06)';
+  ctx.beginPath();
+  const stepX = niceStep(P.xmax-P.xmin), stepY = niceStep(P.ymax-P.ymin);
+  for(let x=Math.ceil(P.xmin/stepX)*stepX; x<=P.xmax; x+=stepX){ctx.moveTo(P.X(x),P.Y(P.ymin));ctx.lineTo(P.X(x),P.Y(P.ymax));}
+  for(let y=Math.ceil(P.ymin/stepY)*stepY; y<=P.ymax; y+=stepY){ctx.moveTo(P.X(P.xmin),P.Y(y));ctx.lineTo(P.X(P.xmax),P.Y(y));}
+  ctx.stroke();
+  // axes
+  ctx.strokeStyle='rgba(255,255,255,.28)';ctx.lineWidth=1.4;
+  ctx.beginPath();
+  if(P.ymin<0&&P.ymax>0){ctx.moveTo(P.X(P.xmin),P.Y(0));ctx.lineTo(P.X(P.xmax),P.Y(0));}
+  if(P.xmin<0&&P.xmax>0){ctx.moveTo(P.X(0),P.Y(P.ymin));ctx.lineTo(P.X(0),P.Y(P.ymax));}
+  ctx.stroke();
+}
+function niceStep(range){
+  const raw = range/8, p=Math.pow(10,Math.floor(Math.log10(raw))), n=raw/p;
+  return (n<1.5?1:n<3?2:n<7?5:10)*p;
+}
+function plotFn(ctx,P,f,color,width){
+  ctx.strokeStyle=color;ctx.lineWidth=width||2.4;ctx.beginPath();
+  let started=false;
+  const N=400;
+  for(let i=0;i<=N;i++){
+    const x=P.xmin+(P.xmax-P.xmin)*i/N, y=f(x);
+    if(!isFinite(y)||y>P.ymax*3||y<P.ymin*3){started=false;continue;}
+    const px=P.X(x),py=P.Y(y);
+    if(!started){ctx.moveTo(px,py);started=true;}else ctx.lineTo(px,py);
+  }
+  ctx.stroke();
+}
+function dot(ctx,px,py,color,r){ctx.fillStyle=color;ctx.beginPath();ctx.arc(px,py,r||5,0,7);ctx.fill();}
+function ring(ctx,px,py,color){ctx.strokeStyle=color;ctx.fillStyle='#0a0d18';ctx.lineWidth=2;
+  ctx.beginPath();ctx.arc(px,py,5,0,7);ctx.fill();ctx.stroke();}
+function fmt(v,d){if(!isFinite(v))return '—';return v.toFixed(d==null?3:d);}
+
+/* ===================== TAB 1: LIMIT ===================== */
+const limFns=[
+  {f:x=>Math.abs(x-1)<1e-9?NaN:(x*x-1)/(x-1), a:1, L:2, view:[-2,4,-2,6],
+   note:'ที่ x=1 ฟังก์ชันนี้ "หาค่าไม่ได้" (0/0) — มีรู (hole) ตรงนั้น แต่พอ x เฉียดเข้า 1 ทั้งสองข้าง f(x) วิ่งเข้าหา <b>2</b> เป๊ะ นั่นคือลิมิต = 2 แม้จุดนั้นไม่มีค่า',
+   hole:true},
+  {f:x=>Math.abs(x)<1e-9?NaN:Math.sin(x)/x, a:0, L:1, view:[-8,8,-0.5,1.5],
+   note:'sin x / x ที่ x=0 ก็เป็น 0/0 หาค่าตรงๆ ไม่ได้ — แต่ลิมิตเมื่อ x→0 = <b>1</b> (ลิมิตสุดคลาสสิกที่ต้องจำ!)',
+   hole:true},
+  {f:x=>Math.abs(x)<1e-9?NaN:Math.abs(x)/x, a:0, L:null, view:[-4,4,-2,2],
+   note:'ฝั่งซ้าย (x<0) f(x)=−1 แต่ฝั่งขวา (x>0) f(x)=+1 — สองข้าง<b>ไม่เท่ากัน</b> ลิมิตที่ x→0 จึง <b>หาไม่ได้ (DNE)</b>',
+   hole:false},
+  {f:x=>Math.abs(x)<1e-9?NaN:1/x, a:0, L:null, view:[-4,4,-8,8],
+   note:'1/x พอ x→0 ฝั่งขวาพุ่งขึ้น +∞ ฝั่งซ้ายดิ่ง −∞ — ไม่ลู่เข้าเลขใดเลข ลิมิต <b>หาไม่ได้</b>',
+   hole:false},
+];
+let limI=0;
+const limCv=document.getElementById('cv-lim');
+function limX(){return +document.getElementById('lim-x').value/10;}
+function drawLim(){
+  const F=limFns[limI];
+  const {ctx,w,h}=setupCanvas(limCv);
+  const v=F.view, P=makePlot(ctx,w,h,v[0],v[1],v[2],v[3]);
+  drawAxes(ctx,P);
+  plotFn(ctx,P,F.f,'#5cc8ff',2.6);
+  // hole at a
+  const fa = F.hole ? F.L : null;
+  if(F.hole){ ring(ctx,P.X(F.a),P.Y(fa),'#5cc8ff'); }
+  // vertical line at a
+  ctx.strokeStyle='rgba(255,209,102,.5)';ctx.setLineDash([5,5]);ctx.lineWidth=1.4;
+  ctx.beginPath();ctx.moveTo(P.X(F.a),P.Y(P.ymin));ctx.lineTo(P.X(F.a),P.Y(P.ymax));ctx.stroke();
+  ctx.setLineDash([]);
+  // current x marker
+  const x=limX(), y=F.f(x);
+  if(isFinite(y)){
+    ctx.strokeStyle='rgba(94,230,168,.6)';ctx.setLineDash([3,3]);
+    ctx.beginPath();ctx.moveTo(P.X(x),P.Y(P.ymin));ctx.lineTo(P.X(x),P.Y(y));
+    ctx.lineTo(P.X(P.xmin),P.Y(y));ctx.stroke();ctx.setLineDash([]);
+    dot(ctx,P.X(x),P.Y(y),'#5ee6a8',6);
+  }
+  // labels
+  document.getElementById('lim-xval').textContent=fmt(x,3);
+  document.getElementById('lim-x2').textContent=fmt(x,3);
+  document.getElementById('lim-fx').textContent=fmt(y,4);
+  document.getElementById('lim-L').textContent=F.L==null?'หาไม่ได้':F.L;
+  document.getElementById('lim-L').style.color=F.L==null?'#f85149':'';
+  document.getElementById('lim-note').innerHTML='<b>สังเกต:</b> '+F.note;
+}
+// approach animation
+let limTimer=null;
+function approach(side){
+  if(limTimer){clearInterval(limTimer);limTimer=null;}
+  const F=limFns[limI];
+  const tb=document.querySelector('#lim-tab tbody');tb.innerHTML='';
+  const offs=[0.5,0.2,0.1,0.05,0.02,0.01,0.005,0.001];
+  let i=0;
+  limTimer=setInterval(()=>{
+    if(i>=offs.length){clearInterval(limTimer);limTimer=null;return;}
+    const x=F.a + (side<0?-1:1)*offs[i];
+    document.getElementById('lim-x').value=Math.round(x*10);
+    drawLim();
+    const y=F.f(x);
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${x.toFixed(3)}</td><td>${isFinite(y)?y.toFixed(5):'—'}</td>`;
+    tb.appendChild(tr);
+    i++;
+  },420);
+}
+document.getElementById('lim-x').addEventListener('input',()=>{if(limTimer){clearInterval(limTimer);limTimer=null;}drawLim();});
+document.getElementById('lim-left').onclick=()=>approach(-1);
+document.getElementById('lim-right').onclick=()=>approach(1);
+document.getElementById('lim-reset').onclick=()=>{
+  if(limTimer){clearInterval(limTimer);limTimer=null;}
+  document.querySelector('#lim-tab tbody').innerHTML='';
+  const F=limFns[limI];
+  document.getElementById('lim-x').value=Math.round((F.a+2)*10);drawLim();
+};
+document.querySelectorAll('#lim-fn button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('#lim-fn button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');limI=+b.dataset.f;
+  const F=limFns[limI];
+  const sl=document.getElementById('lim-x');
+  sl.min=Math.round(F.view[0]*10);sl.max=Math.round(F.view[1]*10);
+  sl.value=Math.round((F.a + (F.view[1]-F.a)*0.5)*10);
+  document.querySelector('#lim-tab tbody').innerHTML='';
+  drawLim();
+});
+
+/* ===================== TAB 2: DERIVATIVE ===================== */
+const derFns=[
+  {f:x=>x*x, fp:x=>2*x, view:[-3,3,-1,8], name:'x²'},
+  {f:x=>x*x*x, fp:x=>3*x*x, view:[-2.5,2.5,-8,8], name:'x³'},
+  {f:x=>Math.sin(x), fp:x=>Math.cos(x), view:[-Math.PI*1.5,Math.PI*1.5,-1.6,1.6], name:'sin x'},
+  {f:x=>Math.exp(x), fp:x=>Math.exp(x), view:[-2.5,2,-1,8], name:'eˣ'},
+];
+let derI=0;
+const derCv=document.getElementById('cv-der');
+function drawDer(){
+  const F=derFns[derI];
+  const {ctx,w,h}=setupCanvas(derCv);
+  const v=F.view,P=makePlot(ctx,w,h,v[0],v[1],v[2],v[3]);
+  drawAxes(ctx,P);
+  plotFn(ctx,P,F.f,'#5cc8ff',2.6);
+  const x0=+document.getElementById('der-x0').value/10;
+  const h_ = +document.getElementById('der-h').value/100; // 0.01..2.0
+  const y0=F.f(x0), x1=x0+h_, y1=F.f(x1);
+  const secSlope=(y1-y0)/h_;
+  const trueSlope=F.fp(x0);
+  // tangent (faint)
+  const tx0=P.xmin, tx1=P.xmax;
+  ctx.strokeStyle='rgba(163,113,247,.45)';ctx.lineWidth=1.6;ctx.setLineDash([6,5]);
+  ctx.beginPath();ctx.moveTo(P.X(tx0),P.Y(y0+trueSlope*(tx0-x0)));ctx.lineTo(P.X(tx1),P.Y(y0+trueSlope*(tx1-x0)));ctx.stroke();
+  ctx.setLineDash([]);
+  // secant (extended a bit)
+  const ex0=x0-(x1-x0)*1.2, ex1=x1+(x1-x0)*1.2;
+  ctx.strokeStyle='#ffd166';ctx.lineWidth=2.2;
+  ctx.beginPath();ctx.moveTo(P.X(ex0),P.Y(y0+secSlope*(ex0-x0)));ctx.lineTo(P.X(ex1),P.Y(y0+secSlope*(ex1-x0)));ctx.stroke();
+  // points
+  dot(ctx,P.X(x0),P.Y(y0),'#5ee6a8',6);
+  dot(ctx,P.X(x1),P.Y(y1),'#ffd166',6);
+  // labels
+  document.getElementById('der-x0v').textContent=fmt(x0,1);
+  document.getElementById('der-hv').textContent=fmt(h_,2);
+  document.getElementById('der-sec').textContent=fmt(secSlope,3);
+  document.getElementById('der-true').textContent=fmt(trueSlope,3);
+  const e=Math.abs(secSlope-trueSlope);
+  const es=document.getElementById('der-err');
+  es.textContent=fmt(e,3);
+  es.parentElement.querySelector('.v').style.color = e<0.05?'#5ee6a8':e<0.3?'#ffd166':'#f85149';
+}
+['der-x0','der-h'].forEach(id=>document.getElementById(id).addEventListener('input',drawDer));
+document.querySelectorAll('#der-fn button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('#der-fn button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');derI=+b.dataset.f;
+  const F=derFns[derI];const sl=document.getElementById('der-x0');
+  sl.min=Math.round(F.view[0]*10);sl.max=Math.round(F.view[1]*10);
+  if(+sl.value<+sl.min||+sl.value>+sl.max)sl.value=Math.round((F.view[0]+F.view[1])/2*10*0.6);
+  drawDer();
+});
+
+/* ===================== TAB 4: INTEGRAL ===================== */
+const intFns=[
+  {f:x=>x*x, Fi:x=>x*x*x/3, view:[-1,5,-1,16], name:'x²', dom:[-20,40]},
+  {f:x=>x*x*x, Fi:x=>x*x*x*x/4, view:[-1,4,-2,30], name:'x³', dom:[-20,40]},
+  {f:x=>Math.sin(x), Fi:x=>-Math.cos(x), view:[-1,7,-1.4,1.4], name:'sin x', dom:[-20,40]},
+  {f:x=>x<0?NaN:Math.sqrt(x), Fi:x=>2/3*Math.pow(Math.max(x,0),1.5), view:[-0.5,6,-0.5,3], name:'√x', dom:[0,40]},
+];
+let intI=0, intMode='left';
+const intCv=document.getElementById('cv-int');
+function drawInt(){
+  const F=intFns[intI];
+  const {ctx,w,h}=setupCanvas(intCv);
+  const v=F.view,P=makePlot(ctx,w,h,v[0],v[1],v[2],v[3]);
+  drawAxes(ctx,P);
+  let a=+document.getElementById('int-a').value/10;
+  let b=+document.getElementById('int-b').value/10;
+  if(a>b){const t=a;a=b;b=t;}
+  const n=+document.getElementById('int-n').value;
+  const dx=(b-a)/n;
+  // bars
+  let sum=0;
+  for(let i=0;i<n;i++){
+    const xl=a+i*dx;
+    let xs = intMode==='left'?xl : intMode==='right'?xl+dx : xl+dx/2;
+    let fy=F.f(xs); if(!isFinite(fy))fy=0;
+    sum+=fy*dx;
+    const top=P.Y(fy), base=P.Y(0);
+    ctx.fillStyle= fy>=0?'rgba(92,200,255,.28)':'rgba(248,81,73,.28)';
+    ctx.strokeStyle='rgba(92,200,255,.7)';ctx.lineWidth=0.8;
+    const px=P.X(xl), pw=P.X(xl+dx)-P.X(xl);
+    ctx.fillRect(px,Math.min(top,base),pw,Math.abs(base-top));
+    ctx.strokeRect(px,Math.min(top,base),pw,Math.abs(base-top));
+  }
+  plotFn(ctx,P,F.f,'#ffd166',2.6);
+  // a,b markers
+  ctx.fillStyle='#5ee6a8';
+  [a,b].forEach(xx=>{ctx.fillRect(P.X(xx)-1,P.Y(0)-6,2,12);});
+  const trueV=F.Fi(b)-F.Fi(a);
+  document.getElementById('int-nv').textContent=n;
+  document.getElementById('int-av').textContent=fmt(a,1);
+  document.getElementById('int-bv').textContent=fmt(b,1);
+  document.getElementById('int-approx').textContent=fmt(sum,4);
+  document.getElementById('int-true').textContent=fmt(trueV,4);
+  const e=Math.abs(sum-trueV);
+  const es=document.getElementById('int-err').parentElement.querySelector('.v');
+  document.getElementById('int-err').textContent=fmt(e,4);
+  es.style.color=e<0.05?'#5ee6a8':e<0.5?'#ffd166':'#f85149';
+}
+['int-n','int-a','int-b'].forEach(id=>document.getElementById(id).addEventListener('input',drawInt));
+document.querySelectorAll('#int-fn button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('#int-fn button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');intI=+b.dataset.f;
+  const F=intFns[intI];
+  const sa=document.getElementById('int-a'), sb=document.getElementById('int-b');
+  sa.min=Math.round(F.dom[0]*10);sb.max=Math.round(F.dom[1]*10);
+  if(+sa.value<+sa.min)sa.value=sa.min;
+  drawInt();
+});
+document.querySelectorAll('#int-mode button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('#int-mode button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');intMode=b.dataset.m;drawInt();
+});
+
+/* ===================== STEP/HINT ENGINE (TAB 3 & 5) ===================== */
+function makeDrill(cfg){
+  // cfg: {bank, catSel, qEl, stepsEl, hintsEl, btnStep, btnHint, btnNew}
+  let pool=cfg.bank, cur=null, shown=0, hintShown=0, cat='all';
+  function filter(){pool = cat==='all'?cfg.bank:cfg.bank.filter(p=>p.cat===cat);}
+  function pick(){
+    filter();
+    cur = pool[Math.floor(Math.random()*pool.length)];
+    shown=0;hintShown=0;
+    cfg.qEl.innerHTML = cur.q;
+    cfg.stepsEl.innerHTML='';
+    cfg.hintsEl.innerHTML='';
+    cfg.btnStep.disabled=false;
+    cfg.btnStep.textContent='ขั้นต่อไป ▸';
+  }
+  cfg.btnStep.onclick=()=>{
+    if(!cur)return;
+    if(shown<cur.steps.length){
+      const li=document.createElement('li');
+      const s=cur.steps[shown];
+      li.innerHTML = s.t + (s.why?`<span class="why">${s.why}</span>`:'');
+      cfg.stepsEl.appendChild(li);
+      shown++;
+      if(shown>=cur.steps.length){cfg.btnStep.textContent='✓ ครบแล้ว';cfg.btnStep.disabled=true;}
+    }
+  };
+  cfg.btnHint.onclick=()=>{
+    if(!cur)return;
+    const hs=cur.hints;
+    if(hintShown<hs.length){
+      const d=document.createElement('div');
+      const isAns = hintShown===hs.length-1;
+      d.className = isAns?'ans':'hint';
+      d.innerHTML = isAns ? ('<b>เฉลย:</b> '+hs[hintShown]) : (`<b>นัยที่ ${hintShown+1}:</b> `+hs[hintShown]);
+      cfg.hintsEl.appendChild(d);
+      hintShown++;
+      if(hintShown>=hs.length)cfg.btnHint.disabled=true;
+    }
+  };
+  cfg.btnNew.onclick=()=>{cfg.btnHint.disabled=false;pick();};
+  cfg.catBtns.forEach(b=>b.onclick=()=>{
+    cfg.catBtns.forEach(x=>x.classList.remove('on'));b.classList.add('on');
+    cat=b.dataset.c;cfg.btnHint.disabled=false;pick();
+  });
+  pick();
+  return {pick};
+}
+
+/* ---- bank: กฎอนุพันธ์ ---- */
+const drillBank=[
+  {cat:'power', q:'หา f′(x) เมื่อ <span class="k">f(x) = 3x⁵ − 2x³ + 7x − 4</span>',
+   steps:[
+     {t:'กฎกำลัง: <span class="k">d/dx[xⁿ] = n·xⁿ⁻¹</span> ทำทีละพจน์',why:'ดึงเลขชี้กำลังลงมาคูณ แล้วลดกำลังลง 1'},
+     {t:'3x⁵ → 15x⁴ , −2x³ → −6x² , 7x → 7 , −4 → 0',why:'ค่าคงที่ (−4) อนุพันธ์เป็น 0 เสมอ'},
+     {t:'<b>f′(x) = 15x⁴ − 6x² + 7</b>'},
+   ],
+   hints:['พจน์ค่าคงที่หายไป ส่วนพจน์อื่นใช้ n·xⁿ⁻¹','7x มาจาก 7x¹ → 7x⁰ = 7','15x⁴ − 6x² + 7']},
+
+  {cat:'power', q:'หา f′(x) เมื่อ <span class="k">f(x) = 4√x + 6/x²</span>',
+   steps:[
+     {t:'เขียนใหม่เป็นเลขชี้กำลัง: <span class="k">4x^(1/2) + 6x^(−2)</span>',why:'√x = x^(1/2), 1/x² = x^(−2)'},
+     {t:'4·(1/2)x^(−1/2) + 6·(−2)x^(−3)',why:'ใช้กฎกำลังกับเลขชี้กำลังเศษส่วน/ลบได้ตามปกติ'},
+     {t:'<b>f′(x) = 2x^(−1/2) − 12x^(−3) = 2/√x − 12/x³</b>'},
+   ],
+   hints:['แปลงรากและเศษส่วนเป็นเลขชี้กำลังก่อน','x^(1/2) อนุพันธ์ = (1/2)x^(−1/2)','2/√x − 12/x³']},
+
+  {cat:'product', q:'หา f′(x) เมื่อ <span class="k">f(x) = x²·sin x</span>',
+   steps:[
+     {t:'กฎผลคูณ: <span class="k">(uv)′ = u′v + uv′</span>',why:'ให้ u = x², v = sin x'},
+     {t:'u′ = 2x , v′ = cos x',why:''},
+     {t:'f′ = (2x)(sin x) + (x²)(cos x)',why:'แทนลงสูตร u′v + uv′'},
+     {t:'<b>f′(x) = 2x·sin x + x²·cos x</b>'},
+   ],
+   hints:['มีสองก้อนคูณกัน → กฎผลคูณ (uv)′ = u′v + uv′','u=x² (u′=2x), v=sin x (v′=cos x)','2x sin x + x² cos x']},
+
+  {cat:'product', q:'หา f′(x) เมื่อ <span class="k">f(x) = (x² + 1)(x³ − 2x)</span>',
+   steps:[
+     {t:'กฎผลคูณ u = x²+1, v = x³−2x',why:'จะกระจายก่อนก็ได้ แต่ฝึกกฎผลคูณ'},
+     {t:'u′ = 2x , v′ = 3x² − 2',why:''},
+     {t:'f′ = 2x(x³−2x) + (x²+1)(3x²−2)',why:'u′v + uv′'},
+     {t:'<b>f′(x) = 5x⁴ − 3x² − 2</b>',why:'กระจายแล้วรวมพจน์: 2x⁴−4x² + 3x⁴+3x²−2x²−2'},
+   ],
+   hints:['กฎผลคูณ หรือกระจายให้เป็นพหุนามก่อนก็ได้','u′v+uv′ = 2x(x³−2x)+(x²+1)(3x²−2)','5x⁴ − 3x² − 2']},
+
+  {cat:'quotient', q:'หา f′(x) เมื่อ <span class="k">f(x) = (x² + 1)/(x − 1)</span>',
+   steps:[
+     {t:'กฎผลหาร: <span class="k">(u/v)′ = (u′v − uv′)/v²</span>',why:'u = x²+1, v = x−1'},
+     {t:'u′ = 2x , v′ = 1',why:''},
+     {t:'f′ = [2x(x−1) − (x²+1)(1)] / (x−1)²',why:'แทนลงสูตร ระวังเครื่องหมายลบตัวที่สอง'},
+     {t:'<b>f′(x) = (x² − 2x − 1)/(x − 1)²</b>',why:'ตัวเศษ: 2x²−2x − x²−1 = x²−2x−1'},
+   ],
+   hints:['ก้อนหารกัน → กฎผลหาร (u′v−uv′)/v² อย่าสลับ u กับ v','u=x²+1 (u′=2x), v=x−1 (v′=1)','(x²−2x−1)/(x−1)²']},
+
+  {cat:'quotient', q:'หา f′(x) เมื่อ <span class="k">f(x) = sin x / x</span>',
+   steps:[
+     {t:'กฎผลหาร u = sin x, v = x',why:''},
+     {t:'u′ = cos x , v′ = 1',why:''},
+     {t:'f′ = (x·cos x − sin x)/x²',why:'(u′v − uv′)/v²'},
+     {t:'<b>f′(x) = (x cos x − sin x)/x²</b>'},
+   ],
+   hints:['(u/v)′ = (u′v − uv′)/v²','u=sin x (u′=cos x), v=x (v′=1)','(x cos x − sin x)/x²']},
+
+  {cat:'chain', q:'หา f′(x) เมื่อ <span class="k">f(x) = (3x² + 1)⁵</span>',
+   steps:[
+     {t:'กฎลูกโซ่: อนุพันธ์ "เปลือกนอก" × อนุพันธ์ "ไส้ใน"',why:'นอก = (·)⁵, ใน = 3x²+1'},
+     {t:'นอก: 5(3x²+1)⁴ , ใน: d/dx(3x²+1) = 6x',why:''},
+     {t:'f′ = 5(3x²+1)⁴ · 6x',why:'คูณกัน'},
+     {t:'<b>f′(x) = 30x(3x² + 1)⁴</b>'},
+   ],
+   hints:['มีของอยู่ใน () ยกกำลัง → กฎลูกโซ่: นอก×ใน','5(3x²+1)⁴ แล้วคูณอนุพันธ์ไส้ใน 6x','30x(3x²+1)⁴']},
+
+  {cat:'chain', q:'หา f′(x) เมื่อ <span class="k">f(x) = sin(x²)</span>',
+   steps:[
+     {t:'กฎลูกโซ่ นอก = sin(·), ใน = x²',why:''},
+     {t:'นอก: cos(x²) , ใน: 2x',why:'d/dx sin u = cos u · u′'},
+     {t:'<b>f′(x) = 2x·cos(x²)</b>'},
+   ],
+   hints:['sin ของอะไรที่ไม่ใช่แค่ x → กฎลูกโซ่','cos(x²) คูณอนุพันธ์ข้างใน (2x)','2x cos(x²)']},
+
+  {cat:'chain', q:'หา f′(x) เมื่อ <span class="k">f(x) = e^(2x² − x)</span>',
+   steps:[
+     {t:'กฎลูกโซ่ นอก = e^(·), ใน = 2x²−x',why:'d/dx e^u = e^u · u′'},
+     {t:'ใน: d/dx(2x²−x) = 4x − 1',why:''},
+     {t:'<b>f′(x) = (4x − 1)·e^(2x² − x)</b>'},
+   ],
+   hints:['e ยกกำลังก้อน → e^(ก้อน) คูณอนุพันธ์ของก้อน','อนุพันธ์ของ 2x²−x คือ 4x−1','(4x−1)e^(2x²−x)']},
+
+  {cat:'chain', q:'หา f′(x) เมื่อ <span class="k">f(x) = √(x³ + 1)</span>',
+   steps:[
+     {t:'เขียนเป็น (x³+1)^(1/2) แล้วใช้กฎลูกโซ่',why:''},
+     {t:'นอก: (1/2)(x³+1)^(−1/2) , ใน: 3x²',why:''},
+     {t:'<b>f′(x) = 3x² / [2√(x³ + 1)]</b>'},
+   ],
+   hints:['ราก = ยกกำลัง 1/2 แล้วลูกโซ่','(1/2)(x³+1)^(−1/2)·3x²','3x²/(2√(x³+1))']},
+
+  {cat:'chain', q:'หา f′(x) เมื่อ <span class="k">f(x) = cos³(2x)</span> (เลขชี้ซ้อนลูกโซ่ 2 ชั้น)',
+   steps:[
+     {t:'มองเป็น [cos(2x)]³ → ลูกโซ่ 2 ชั้น: ชั้นนอกยกกำลัง 3, ชั้นกลาง cos, ชั้นใน 2x',why:'ลอกทีละชั้นจากนอกเข้าใน'},
+     {t:'ชั้นนอก: 3[cos(2x)]² × ชั้นกลาง: −sin(2x) × ชั้นใน: 2',why:'คูณอนุพันธ์ทุกชั้นต่อกัน'},
+     {t:'<b>f′(x) = −6 cos²(2x)·sin(2x)</b>'},
+   ],
+   hints:['ลูกโซ่ซ้อน — ลอกจากนอกสุดเข้าใน ทีละชั้น','3cos²(2x) · (−sin2x) · 2','−6 cos²(2x) sin(2x)']},
+
+  {cat:'log', q:'หา f′(x) เมื่อ <span class="k">f(x) = ln(x² + 1)</span>',
+   steps:[
+     {t:'สูตร: <span class="k">d/dx ln(u) = u′/u</span> (ลูกโซ่กับ ln)',why:'u = x²+1'},
+     {t:'u′ = 2x → f′ = 2x/(x²+1)',why:'เอาอนุพันธ์ข้างในหารด้วยตัวข้างใน'},
+     {t:'<b>f′(x) = 2x/(x² + 1)</b>'},
+   ],
+   hints:['d/dx ln(u) = u′/u','u=x²+1, u′=2x','2x/(x²+1)']},
+
+  {cat:'log', q:'หา f′(x) เมื่อ <span class="k">f(x) = x²·ln x</span> (ผลคูณ + log)',
+   steps:[
+     {t:'กฎผลคูณ u=x², v=ln x',why:'d/dx ln x = 1/x'},
+     {t:'u′=2x, v′=1/x → f′ = 2x·ln x + x²·(1/x)',why:'u′v + uv′'},
+     {t:'<b>f′(x) = 2x·ln x + x</b>',why:'x²·(1/x) = x'},
+   ],
+   hints:['ผลคูณ กับ v=ln x (v′=1/x)','2x ln x + x²/x','2x ln x + x']},
+
+  {cat:'log', q:'หา f′(x) เมื่อ <span class="k">f(x) = a^x</span> (ฐาน a ใดๆ เช่น 2ˣ)',
+   steps:[
+     {t:'สูตร: <span class="k">d/dx a^x = a^x · ln a</span>',why:'ต่างจาก eˣ ตรงมี ln a คูณเพิ่ม'},
+     {t:'เช่น f(x)=2ˣ → f′ = 2ˣ·ln 2',why:''},
+     {t:'<b>f′(x) = a^x · ln a</b>'},
+   ],
+   hints:['ฐานไม่ใช่ e ต้องมี ln(ฐาน) คูณ','aˣ ln a','a^x · ln a']},
+
+  {cat:'implicit', q:'หา dy/dx จาก <span class="k">x² + y² = 25</span> (อนุพันธ์โดยปริยาย)',
+   steps:[
+     {t:'อนุพันธ์ทั้งสองข้างเทียบ x โดยถือ y เป็นฟังก์ชันของ x',why:'พจน์ที่มี y ต้องคูณ dy/dx (ลูกโซ่)'},
+     {t:'2x + 2y·(dy/dx) = 0',why:'d/dx(y²) = 2y·dy/dx'},
+     {t:'แก้หา dy/dx: 2y·(dy/dx) = −2x',why:''},
+     {t:'<b>dy/dx = −x/y</b>'},
+   ],
+   hints:['ดิฟทั้งสองข้าง พจน์ y ต้องติด dy/dx','2x + 2y y′ = 0','dy/dx = −x/y']},
+
+  {cat:'implicit', q:'หา dy/dx จาก <span class="k">x³ + y³ = 6xy</span> (โฟเลียมของเดการ์ต)',
+   steps:[
+     {t:'ดิฟทั้งสองข้าง: 3x² + 3y²·y′ = 6(y + x·y′)',why:'ขวามือใช้กฎผลคูณกับ 6xy'},
+     {t:'3x² + 3y²y′ = 6y + 6x y′',why:'กระจาย'},
+     {t:'รวมพจน์ y′ ไว้ข้างเดียว: 3y²y′ − 6x y′ = 6y − 3x²',why:''},
+     {t:'<b>dy/dx = (6y − 3x²)/(3y² − 6x) = (2y − x²)/(y² − 2x)</b>'},
+   ],
+   hints:['ดิฟปริยาย ขวามือ 6xy ใช้ผลคูณ','ดึง y′ ออกมาเป็นตัวประกอบร่วม','(2y−x²)/(y²−2x)']},
+
+  {cat:'inverse', q:'หา f′(x) เมื่อ <span class="k">f(x) = arctan(x)</span> และ arcsin(x)',
+   steps:[
+     {t:'สูตรอนุพันธ์ตรีโกณผกผัน (ควรจำ):',why:''},
+     {t:'d/dx arctan x = <b>1/(1+x²)</b>',why:''},
+     {t:'d/dx arcsin x = <b>1/√(1−x²)</b> , d/dx arccos x = −1/√(1−x²)',why:'arccos ต่างกันแค่เครื่องหมายลบ'},
+   ],
+   hints:['กลุ่มสูตรผกผันที่ต้องจำ','arctan → 1/(1+x²)','arcsin → 1/√(1−x²)']},
+
+  {cat:'higher', q:'หา f″(x) (อนุพันธ์อันดับ 2) เมื่อ <span class="k">f(x) = x⁴ − 3x²</span>',
+   steps:[
+     {t:'ดิฟครั้งที่ 1: f′(x) = 4x³ − 6x',why:'กฎกำลังปกติ'},
+     {t:'ดิฟ f′ อีกครั้ง: f″(x) = 12x² − 6',why:'อนุพันธ์ของอนุพันธ์'},
+     {t:'<b>f″(x) = 12x² − 6</b>',why:'f″ ใช้บอกความเว้า: f″>0 หงาย, f″<0 คว่ำ'},
+   ],
+   hints:['อนุพันธ์อันดับ 2 = ดิฟสองครั้ง','f′=4x³−6x แล้วดิฟอีกที','12x² − 6']},
+];
+
+makeDrill({
+  bank:drillBank,
+  qEl:document.getElementById('dr-q'),
+  stepsEl:document.getElementById('dr-steps'),
+  hintsEl:document.getElementById('dr-hints'),
+  btnStep:document.getElementById('dr-step'),
+  btnHint:document.getElementById('dr-hint'),
+  btnNew:document.getElementById('dr-new'),
+  catBtns:[...document.querySelectorAll('#dr-cat button')],
+});
+
+/* ---- bank: เทคนิคอินทิเกรต ---- */
+const tcBank=[
+  {cat:'parts', q:'หา <span class="k">∫ x·eˣ dx</span>',
+   steps:[
+     {t:'รูปแบบ "พหุนาม × eˣ" → ใช้ by parts: <span class="k">∫u dv = uv − ∫v du</span>',why:'เลือก u ตาม LIATE: พหุนาม x มาก่อน e'},
+     {t:'ให้ u = x → du = dx ; dv = eˣ dx → v = eˣ',why:'อยากให้ ∫v du ง่ายลง'},
+     {t:'= x·eˣ − ∫eˣ dx',why:'uv − ∫v du'},
+     {t:'<b>= x·eˣ − eˣ + C = eˣ(x − 1) + C</b>'},
+   ],
+   hints:['สองอย่างคูณกันที่อินทิเกรตตรงๆ ไม่ได้ → by parts','LIATE: ให้ u = x (พหุนาม), dv = eˣ dx','x eˣ − eˣ + C']},
+
+  {cat:'parts', q:'หา <span class="k">∫ x·sin x dx</span>',
+   steps:[
+     {t:'by parts, LIATE → u = x (พหุนามมาก่อนตรีโกณ)',why:''},
+     {t:'u = x → du = dx ; dv = sin x dx → v = −cos x',why:''},
+     {t:'= −x·cos x − ∫(−cos x)dx = −x cos x + ∫cos x dx',why:'uv − ∫v du'},
+     {t:'<b>= −x·cos x + sin x + C</b>'},
+   ],
+   hints:['by parts: u = x, dv = sin x dx','v = −cos x (ระวังเครื่องหมาย)','−x cos x + sin x + C']},
+
+  {cat:'parts', q:'หา <span class="k">∫ ln x dx</span>',
+   steps:[
+     {t:'เห็น ln เดี่ยวๆ → by parts โดยมองว่ามี ·1 อยู่: u = ln x, dv = dx',why:'ทริคคลาสสิก'},
+     {t:'u = ln x → du = (1/x)dx ; dv = dx → v = x',why:''},
+     {t:'= x·ln x − ∫x·(1/x)dx = x ln x − ∫1 dx',why:''},
+     {t:'<b>= x·ln x − x + C</b>'},
+   ],
+   hints:['ln x อินทิเกรตตรงๆ ไม่ออก → by parts กับ dv = dx','u = ln x, v = x → x ln x − ∫1 dx','x ln x − x + C']},
+
+  {cat:'partial', q:'หา <span class="k">∫ 1/(x² − 1) dx</span>',
+   steps:[
+     {t:'ตัวส่วนแยกได้: x²−1 = (x−1)(x+1) → แตกเศษส่วนย่อย',why:'1/((x−1)(x+1)) = A/(x−1) + B/(x+1)'},
+     {t:'แก้ได้ A = 1/2, B = −1/2',why:'1 = A(x+1)+B(x−1); แทน x=1 → A=1/2, x=−1 → B=−1/2'},
+     {t:'= ∫[ (1/2)/(x−1) − (1/2)/(x+1) ] dx',why:''},
+     {t:'<b>= ½ ln|x−1| − ½ ln|x+1| + C = ½ ln|(x−1)/(x+1)| + C</b>'},
+   ],
+   hints:['ตัวส่วนแยกตัวประกอบได้ → เศษส่วนย่อย','1/((x−1)(x+1)) = (1/2)/(x−1) − (1/2)/(x+1)','½ ln|(x−1)/(x+1)| + C']},
+
+  {cat:'partial', q:'หา <span class="k">∫ (x + 3)/[(x − 1)(x + 2)] dx</span>',
+   steps:[
+     {t:'แตกเศษส่วนย่อย: (x+3)/((x−1)(x+2)) = A/(x−1) + B/(x+2)',why:''},
+     {t:'x+3 = A(x+2) + B(x−1). แทน x=1 → 4 = 3A → A = 4/3 ; x=−2 → 1 = −3B → B = −1/3',why:'แทนรากตัวส่วน'},
+     {t:'= ∫[ (4/3)/(x−1) − (1/3)/(x+2) ] dx',why:''},
+     {t:'<b>= (4/3)ln|x−1| − (1/3)ln|x+2| + C</b>'},
+   ],
+   hints:['ตัวส่วนเป็นผลคูณเชิงเส้นสองอัน → เศษส่วนย่อย','หา A,B โดยแทน x=1 และ x=−2','(4/3)ln|x−1| − (1/3)ln|x+2| + C']},
+
+  {cat:'trig', q:'หา <span class="k">∫ 1/√(1 − x²) dx</span>',
+   steps:[
+     {t:'รูป √(1−x²) → แทน x = sin θ, dx = cos θ dθ',why:'ทำให้ 1−x² = cos²θ'},
+     {t:'√(1−sin²θ) = cos θ → อินทิกรัล = ∫ cos θ/cos θ dθ = ∫1 dθ',why:''},
+     {t:'= θ + C, และ θ = arcsin x',why:'ย้อนกลับตัวแปร'},
+     {t:'<b>= arcsin x + C</b>',why:'อันนี้คุ้มจำเป็นสูตรสำเร็จไปเลย'},
+   ],
+   hints:['เห็น √(1−x²) → แทนตรีโกณ x = sin θ','ทุกอย่างตัดกันเหลือ ∫dθ = θ','arcsin x + C']},
+
+  {cat:'trig', q:'หา <span class="k">∫ 1/(1 + x²) dx</span>',
+   steps:[
+     {t:'รูป 1+x² → แทน x = tan θ, dx = sec²θ dθ',why:'1+tan²θ = sec²θ'},
+     {t:'= ∫ sec²θ/sec²θ dθ = ∫1 dθ = θ + C',why:''},
+     {t:'<b>= arctan x + C</b>',why:'สูตรสำเร็จที่ควรจำ'},
+   ],
+   hints:['เห็น 1+x² → แทน x = tan θ','sec²θ ตัดกันเหลือ ∫dθ','arctan x + C']},
+
+  {cat:'trig', q:'หา <span class="k">∫ √(1 − x²) dx</span>',
+   steps:[
+     {t:'แทน x = sin θ, dx = cos θ dθ → √(1−x²) = cos θ',why:''},
+     {t:'= ∫ cos θ·cos θ dθ = ∫ cos²θ dθ',why:'ได้กำลังสอง → ใช้สูตรลดกำลัง'},
+     {t:'cos²θ = (1 + cos 2θ)/2 → ∫ = θ/2 + (sin 2θ)/4 + C',why:''},
+     {t:'<b>= ½ arcsin x + ½ x√(1 − x²) + C</b>',why:'ย้อน θ: sin2θ = 2 sinθ cosθ = 2x√(1−x²)'},
+   ],
+   hints:['√(1−x²) → x = sin θ','เจอ ∫cos²θ dθ ใช้สูตรลดกำลัง (1+cos2θ)/2','½ arcsin x + ½ x√(1−x²) + C']},
+
+  {cat:'usub', q:'หา <span class="k">∫ 2x·(x² + 1)⁵ dx</span> (การแทนค่า u-substitution)',
+   steps:[
+     {t:'เห็น "ก้อน" (x²+1) ยกกำลัง และมี 2x = อนุพันธ์ของก้อนพอดี → ตั้ง u = x²+1',why:'มองหา u ที่ du โผล่อยู่ในโจทย์'},
+     {t:'du = 2x dx → โจทย์กลายเป็น ∫ u⁵ du',why:'2x dx แทนด้วย du ได้ทั้งก้อน'},
+     {t:'∫ u⁵ du = u⁶/6 + C',why:''},
+     {t:'<b>= (x² + 1)⁶/6 + C</b>',why:'แทน u กลับ'},
+   ],
+   hints:['มีก้อนยกกำลัง + อนุพันธ์ของก้อนอยู่ด้วย → u-sub','u=x²+1, du=2x dx → ∫u⁵du','(x²+1)⁶/6 + C']},
+
+  {cat:'usub', q:'หา <span class="k">∫ x·e^(x²) dx</span>',
+   steps:[
+     {t:'ตั้ง u = x² → du = 2x dx → x dx = ½ du',why:'x โผล่เป็นอนุพันธ์ของ x²'},
+     {t:'= ∫ e^u · ½ du = ½ ∫ e^u du',why:''},
+     {t:'<b>= ½ e^(x²) + C</b>'},
+   ],
+   hints:['u=x² เพราะ x dx ≈ du','½∫eᵘ du','½ e^(x²) + C']},
+
+  {cat:'usub', q:'หา <span class="k">∫ tan x dx</span> (ทริกคลาสสิก)',
+   steps:[
+     {t:'เขียน tan x = sin x / cos x แล้วตั้ง u = cos x',why:'du = −sin x dx → sin x dx = −du'},
+     {t:'= ∫ (−du)/u = −∫ du/u = −ln|u|',why:''},
+     {t:'<b>= −ln|cos x| + C = ln|sec x| + C</b>'},
+   ],
+   hints:['แยก tan = sin/cos แล้ว u=cos x','∫du/u = ln|u|, อย่าลืมเครื่องหมายลบ','−ln|cos x| + C']},
+
+  {cat:'parts', q:'หา <span class="k">∫ x²·eˣ dx</span> (by parts สองรอบ)',
+   steps:[
+     {t:'รอบแรก: u=x², dv=eˣdx → du=2x dx, v=eˣ',why:'พหุนามดีกรี 2 ต้องทำซ้ำจนหมด x'},
+     {t:'= x²eˣ − ∫2x·eˣ dx = x²eˣ − 2∫x eˣ dx',why:''},
+     {t:'รอบสอง: ∫x eˣ dx = x eˣ − eˣ (จากข้อก่อน)',why:'by parts อีกครั้ง'},
+     {t:'<b>= x²eˣ − 2(x eˣ − eˣ) + C = eˣ(x² − 2x + 2) + C</b>'},
+   ],
+   hints:['พหุนาม×eˣ → by parts ดีกรีลดทีละ 1','ทำซ้ำกับ ∫x eˣ dx','eˣ(x²−2x+2) + C']},
+
+  {cat:'parts', q:'หา <span class="k">∫ eˣ·sin x dx</span> (by parts วน → ย้ายข้าง)',
+   steps:[
+     {t:'ให้ I = ∫eˣ sin x dx. by parts: u=eˣ, dv=sin x dx → = −eˣcos x + ∫eˣ cos x dx',why:'ยังเหลืออินทิกรัล'},
+     {t:'∫eˣ cos x dx อีกครั้ง: = eˣ sin x − ∫eˣ sin x dx = eˣ sin x − I',why:'วนกลับมาเป็น I!'},
+     {t:'รวม: I = −eˣcos x + eˣ sin x − I → 2I = eˣ(sin x − cos x)',why:'ย้าย I มาบวกกัน'},
+     {t:'<b>I = ½ eˣ(sin x − cos x) + C</b>'},
+   ],
+   hints:['by parts แล้ววนกลับมาเป็นอินทิกรัลเดิม','ตั้ง I แล้วย้ายข้าง 2I = ...','½eˣ(sin x − cos x) + C']},
+
+  {cat:'partial', q:'หา <span class="k">∫ (3x + 5)/[(x + 1)(x + 3)] dx</span>',
+   steps:[
+     {t:'แตกเศษส่วนย่อย: (3x+5)/((x+1)(x+3)) = A/(x+1) + B/(x+3)',why:''},
+     {t:'3x+5 = A(x+3)+B(x+1). x=−1 → 2=2A → A=1 ; x=−3 → −4=−2B → B=2',why:'แทนรากตัวส่วน'},
+     {t:'= ∫[ 1/(x+1) + 2/(x+3) ] dx',why:''},
+     {t:'<b>= ln|x+1| + 2 ln|x+3| + C</b>'},
+   ],
+   hints:['ตัวส่วน 2 วงเล็บ → เศษส่วนย่อย A,B','แทน x=−1, x=−3 หา A=1,B=2','ln|x+1| + 2ln|x+3| + C']},
+
+  {cat:'trig', q:'หา <span class="k">∫ sin²x dx</span> (สูตรลดกำลัง — เจอบ่อย)',
+   steps:[
+     {t:'ใช้เอกลักษณ์ครึ่งมุม: sin²x = (1 − cos 2x)/2',why:'กำลังคู่ของ sin/cos ใช้สูตรนี้เสมอ'},
+     {t:'= ∫ (1 − cos 2x)/2 dx = ½∫1 dx − ½∫cos 2x dx',why:''},
+     {t:'= ½x − ½·(½ sin 2x)',why:'∫cos 2x dx = ½ sin 2x'},
+     {t:'<b>= x/2 − (sin 2x)/4 + C</b>'},
+   ],
+   hints:['sin²x = (1−cos2x)/2 ก่อน','∫cos2x = ½sin2x','x/2 − sin2x/4 + C']},
+];
+
+makeDrill({
+  bank:tcBank,
+  qEl:document.getElementById('tc-q'),
+  stepsEl:document.getElementById('tc-steps'),
+  hintsEl:document.getElementById('tc-hints'),
+  btnStep:document.getElementById('tc-step'),
+  btnHint:document.getElementById('tc-hint'),
+  btnNew:document.getElementById('tc-new'),
+  catBtns:[...document.querySelectorAll('#tc-cat button')],
+});
+
+/* ===================== TAB 6: APPLICATION OF DERIVATIVE ===================== */
+const apFns=[
+  {f:x=>x**3-3*x, fp:x=>3*x*x-3, view:[-2.6,2.6,-4,4], crit:[-1,1], name:'x³−3x'},
+  {f:x=>x**3-6*x*x+9*x, fp:x=>3*x*x-12*x+9, view:[-0.5,4.5,-2,6], crit:[1,3], name:'x³−6x²+9x'},
+  {f:x=>-x*x+4*x, fp:x=>-2*x+4, view:[-1,5,-2,5], crit:[2], name:'−x²+4x'},
+  {f:x=>x**4-2*x*x, fp:x=>4*x**3-4*x, view:[-1.8,1.8,-1.6,2.4], crit:[-1,0,1], name:'x⁴−2x²'},
+];
+let apI=0;
+const apCv=document.getElementById('cv-ap');
+function drawAp(){
+  const F=apFns[apI];
+  const {ctx,w,h}=setupCanvas(apCv);
+  const v=F.view,P=makePlot(ctx,w,h,v[0],v[1],v[2],v[3]);
+  drawAxes(ctx,P);
+  // shade increasing(green)/decreasing(red) by f' sign — light tint along curve
+  const N=240;
+  for(let i=0;i<N;i++){
+    const x=v[0]+(v[1]-v[0])*i/N, x2=v[0]+(v[1]-v[0])*(i+1)/N;
+    ctx.strokeStyle=F.fp(x)>=0?'rgba(94,230,168,.85)':'rgba(248,81,73,.85)';
+    ctx.lineWidth=2.8;ctx.beginPath();
+    const y=F.f(x),y2=F.f(x2);
+    if(isFinite(y)&&isFinite(y2)){ctx.moveTo(P.X(x),P.Y(y));ctx.lineTo(P.X(x2),P.Y(y2));ctx.stroke();}
+  }
+  // critical points
+  F.crit.forEach(c=>{const y=F.f(c);
+    ctx.strokeStyle='#ffd166';ctx.setLineDash([3,3]);ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(P.X(c),P.Y(P.ymin));ctx.lineTo(P.X(c),P.Y(y));ctx.stroke();ctx.setLineDash([]);
+    ring(ctx,P.X(c),P.Y(y),'#ffd166');
+  });
+  // cursor + tangent
+  const x0=+document.getElementById('ap-x').value/10;
+  const y0=F.f(x0), m=F.fp(x0);
+  ctx.strokeStyle='rgba(163,113,247,.6)';ctx.lineWidth=1.8;ctx.setLineDash([6,4]);
+  ctx.beginPath();ctx.moveTo(P.X(v[0]),P.Y(y0+m*(v[0]-x0)));ctx.lineTo(P.X(v[1]),P.Y(y0+m*(v[1]-x0)));ctx.stroke();ctx.setLineDash([]);
+  dot(ctx,P.X(x0),P.Y(y0),'#a371f7',6);
+  // readouts
+  document.getElementById('ap-xv').textContent=fmt(x0,1);
+  document.getElementById('ap-fx').textContent=fmt(y0,2);
+  document.getElementById('ap-dfx').textContent=fmt(m,2);
+  let state, col;
+  if(Math.abs(m)<0.15){state='≈ จุดวิกฤต (f′≈0)';col='#ffd166';}
+  else if(m>0){state='กำลังเพิ่ม ↗ (f′>0)';col='#5ee6a8';}
+  else{state='กำลังลด ↘ (f′<0)';col='#f85149';}
+  const se=document.getElementById('ap-state');se.textContent=state;se.style.color=col;
+  // note: nearest critical classification
+  let txt='เส้นโค้งช่วง<span style="color:#5ee6a8">เขียว</span>=กำลังเพิ่ม, <span style="color:#f85149">แดง</span>=กำลังลด, วงเหลือง=จุดวิกฤต (f′=0). ';
+  const cls=F.crit.map(c=>{
+    const left=F.fp(c-0.1), right=F.fp(c+0.1);
+    if(left>0&&right<0)return 'x='+c+' เป็น<b>จุดสูงสุด</b>(max)';
+    if(left<0&&right>0)return 'x='+c+' เป็น<b>จุดต่ำสุด</b>(min)';
+    return 'x='+c+' เป็นจุดเปลี่ยนเว้า/อาน';
+  }).join(', ');
+  document.getElementById('ap-note').className='note gold';
+  document.getElementById('ap-note').innerHTML=txt+cls;
+}
+document.getElementById('ap-x').addEventListener('input',drawAp);
+document.querySelectorAll('#ap-fn button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('#ap-fn button').forEach(x=>x.classList.remove('on'));b.classList.add('on');apI=+b.dataset.f;
+  const F=apFns[apI];const sl=document.getElementById('ap-x');
+  sl.min=Math.round(F.view[0]*10);sl.max=Math.round(F.view[1]*10);
+  if(+sl.value<+sl.min||+sl.value>+sl.max)sl.value=0;
+  drawAp();
+});
+
+/* ---- bank: applications of derivative ---- */
+makeDrill({bank:[
+  {cat:'maxmin', q:'ต้องการทำกล่องเปิดฝาปริมาตรมากสุด จากกระดาษโดยตัดมุมสี่เหลี่ยมจัตุรัสด้าน x จากแผ่น 12×12 cm แล้วพับขึ้น หา x',
+   steps:[
+     {t:'ปริมาตร V = x(12−2x)² (ฐาน (12−2x)² สูง x)',why:'ตัดมุม x ทั้งสองด้าน → ฐานลด 2x'},
+     {t:'กระจาย: V = x(144 − 48x + 4x²) = 4x³ − 48x² + 144x',why:''},
+     {t:'หา V′ = 12x² − 96x + 144 = 0 → x² − 8x + 12 = 0',why:'แก้ V′=0 หาจุดวิกฤต'},
+     {t:'(x−2)(x−6)=0 → x=2 หรือ 6 แต่ x=6 ทำให้ฐาน=0 → ใช้ <b>x = 2 cm</b>',why:'x ต้อง < 6'},
+   ],
+   hints:['ตั้งฟังก์ชันปริมาตรก่อน V=x(12−2x)²','หา V′=0 ได้ x²−8x+12=0','x = 2 cm (V=128 cm³)']},
+  {cat:'maxmin', q:'หาจุดต่ำสุดของ <span class="k">f(x) = x² − 6x + 5</span>',
+   steps:[
+     {t:'f′(x) = 2x − 6',why:'พาราโบลาหงาย → มีจุดต่ำสุด'},
+     {t:'2x − 6 = 0 → x = 3',why:'จุดวิกฤต'},
+     {t:'f(3) = 9 − 18 + 5 = −4 → <b>จุดต่ำสุดที่ (3, −4)</b>',why:'f″=2>0 ยืนยัน min'},
+   ],
+   hints:['หา f′=0','x=3','(3, −4)']},
+  {cat:'related', q:'ลูกโป่งทรงกลมถูกสูบลม dV/dt = 100 cm³/s ขณะ r = 5 cm รัศมีเพิ่มเร็วแค่ไหน (dr/dt)?',
+   steps:[
+     {t:'V = (4/3)πr³ → dV/dt = 4πr²·(dr/dt)',why:'ดิฟเทียบเวลา (related rates) ลูกโซ่'},
+     {t:'แทน: 100 = 4π(5)²·(dr/dt) = 100π·(dr/dt)',why:''},
+     {t:'<b>dr/dt = 1/π ≈ 0.318 cm/s</b>'},
+   ],
+   hints:['ดิฟ V=(4/3)πr³ เทียบ t ได้ dV/dt=4πr² dr/dt','แทน dV/dt=100, r=5','dr/dt = 1/π ≈ 0.32 cm/s']},
+  {cat:'related', q:'บันไดยาว 5 m พิงกำแพง ปลายล่างถูกดึงออกด้วย 2 m/s ขณะปลายล่างห่างกำแพง 3 m ปลายบนเลื่อนลงเร็วแค่ไหน?',
+   steps:[
+     {t:'ให้ x=ระยะปลายล่าง, y=ความสูงปลายบน: x² + y² = 25',why:'พีทาโกรัส บันไดยาวคงที่'},
+     {t:'ดิฟเทียบ t: 2x(dx/dt) + 2y(dy/dt) = 0',why:'related rates'},
+     {t:'ที่ x=3 → y=4. แทน: 2(3)(2) + 2(4)(dy/dt)=0 → 12 + 8(dy/dt)=0',why:''},
+     {t:'<b>dy/dt = −1.5 m/s</b> (ลบ = เลื่อนลง)'},
+   ],
+   hints:['x²+y²=25 แล้วดิฟเทียบเวลา','หา y จากพีทาโกรัสก่อน (y=4)','dy/dt = −1.5 m/s']},
+  {cat:'tangent', q:'หาสมการเส้นสัมผัสกราฟ <span class="k">y = x²</span> ที่จุด x = 3',
+   steps:[
+     {t:'จุดสัมผัส: y(3) = 9 → จุด (3, 9)',why:''},
+     {t:'ความชัน m = y′(3) = 2(3) = 6',why:'y′=2x'},
+     {t:'เส้นสัมผัส: y − 9 = 6(x − 3)',why:'point-slope'},
+     {t:'<b>y = 6x − 9</b>'},
+   ],
+   hints:['ความชันเส้นสัมผัส = f′ ที่จุดนั้น','m=6, ผ่าน (3,9)','y = 6x − 9']},
+], qEl:gid('d5-q'),stepsEl:gid('d5-steps'),hintsEl:gid('d5-hints'),btnStep:gid('d5-step'),btnHint:gid('d5-hint'),btnNew:gid('d5-new'),catBtns:[...document.querySelectorAll('#d5-cat button')]});
+
+/* ===================== TAB 7: APPLICATION OF INTEGRAL ===================== */
+const arPairs=[
+  {f:x=>x*x, g:x=>x, view:[-0.5,1.6,-0.3,1.6], cross:[0,1], name:'x² กับ x'},
+  {f:x=>x*x, g:x=>2*x, view:[-0.5,2.6,-0.5,4.5], cross:[0,2], name:'x² กับ 2x'},
+  {f:x=>x**3, g:x=>x, view:[-1.6,1.6,-1.6,1.6], cross:[-1,0,1], name:'x³ กับ x'},
+  {f:x=>Math.sin(x), g:x=>0, view:[-0.5,Math.PI+0.5,-0.3,1.3], cross:[0,Math.PI], name:'sin x กับ 0'},
+];
+let arI=0, arMode='area';
+const arCv=document.getElementById('cv-ar');
+function arUpper(P){ // returns {hi,lo} as functions where hi>=lo on (a,b)
+  const mid=( +gid('ar-a').value/10 + +gid('ar-b').value/10 )/2;
+  const F=arPairs[arI];
+  return F.f(mid)>=F.g(mid)?{hi:F.f,lo:F.g}:{hi:F.g,lo:F.f};
+}
+function drawAr(){
+  const F=arPairs[arI];
+  const {ctx,w,h}=setupCanvas(arCv);
+  const v=F.view,P=makePlot(ctx,w,h,v[0],v[1],v[2],v[3]);
+  drawAxes(ctx,P);
+  let a=+gid('ar-a').value/10, b=+gid('ar-b').value/10;
+  if(a>b){const t=a;a=b;b=t;}
+  const {hi,lo}=arUpper(P);
+  // shade region between hi & lo on [a,b]
+  if(arMode==='area'){
+    ctx.beginPath();const N=80;
+    for(let i=0;i<=N;i++){const x=a+(b-a)*i/N;const y=hi(x);i?ctx.lineTo(P.X(x),P.Y(y)):ctx.moveTo(P.X(x),P.Y(y));}
+    for(let i=N;i>=0;i--){const x=a+(b-a)*i/N;ctx.lineTo(P.X(x),P.Y(lo(x)));}
+    ctx.closePath();ctx.fillStyle='rgba(92,200,255,.22)';ctx.fill();
+  } else {
+    // volume: shade f(x)² disks region (just under f down to axis) using upper curve
+    ctx.beginPath();const N=80;
+    for(let i=0;i<=N;i++){const x=a+(b-a)*i/N;const y=hi(x);i?ctx.lineTo(P.X(x),P.Y(y)):ctx.moveTo(P.X(x),P.Y(y));}
+    ctx.lineTo(P.X(b),P.Y(0));ctx.lineTo(P.X(a),P.Y(0));ctx.closePath();
+    ctx.fillStyle='rgba(163,113,247,.20)';ctx.fill();
+    // a few disk ellipses
+    for(let k=1;k<=5;k++){const x=a+(b-a)*k/6;const r=Math.abs(hi(x));
+      ctx.strokeStyle='rgba(163,113,247,.55)';ctx.lineWidth=1;ctx.beginPath();
+      ctx.ellipse(P.X(x),P.Y(0),3,Math.abs(P.Y(r)-P.Y(0)),0,0,7);ctx.stroke();}
+  }
+  // curves
+  plotFn(ctx,P,F.f,'#5cc8ff',2.4);
+  plotFn(ctx,P,F.g,'#ffd166',2.4);
+  // bounds
+  ctx.fillStyle='#5ee6a8';[a,b].forEach(xx=>ctx.fillRect(P.X(xx)-1,P.Y(P.ymin),2,h));
+  // compute value numerically
+  let val=0;const M=600;
+  for(let i=0;i<M;i++){const x=a+(b-a)*(i+0.5)/M;
+    if(arMode==='area')val+=Math.abs(hi(x)-lo(x))*(b-a)/M;
+    else val+=Math.PI*hi(x)*hi(x)*(b-a)/M;
+  }
+  gid('ar-t1').textContent=arMode==='area'?'พื้นที่ระบาย':'ปริมาตร V = π∫f² dx';
+  gid('ar-val').textContent=fmt(val,3);
+  gid('ar-av').textContent=fmt(a,1);gid('ar-bv').textContent=fmt(b,1);
+  gid('ar-cross').textContent=F.cross.map(c=>fmt(c,2)).join(' , ');
+  const note=gid('ar-note');note.className='note';
+  if(arMode==='area')note.innerHTML='<b>พื้นที่ = ∫(เส้นบน − เส้นล่าง) dx</b> ลองตั้ง a,b ให้ตรงจุดตัด ('+F.cross.map(c=>fmt(c,2)).join(', ')+') จะได้พื้นที่ปิดล้อมพอดี — เส้นบนตอนนี้คือเส้นที่อยู่สูงกว่าในช่วงนั้น';
+  else note.innerHTML='<b>ปริมาตรหมุนรอบแกน x = π∫[f(x)]² dx</b> แต่ละแผ่นบาง (disk) เป็นวงกลมรัศมี f(x) พื้นที่ πr² คูณความหนา dx แล้วบวกรวม';
+}
+['ar-a','ar-b'].forEach(id=>gid(id).addEventListener('input',drawAr));
+document.querySelectorAll('#ar-pair button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('#ar-pair button').forEach(x=>x.classList.remove('on'));b.classList.add('on');arI=+b.dataset.p;
+  const F=arPairs[arI];const sa=gid('ar-a'),sb=gid('ar-b');
+  sa.min=Math.round(F.view[0]*10);sa.max=Math.round(F.view[1]*10);
+  sb.min=Math.round(F.view[0]*10);sb.max=Math.round(F.view[1]*10);
+  sa.value=Math.round(F.cross[0]*10);sb.value=Math.round(F.cross[F.cross.length-1]*10);
+  drawAr();
+});
+document.querySelectorAll('#ar-mode button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('#ar-mode button').forEach(x=>x.classList.remove('on'));b.classList.add('on');arMode=b.dataset.m;drawAr();
+});
+
+/* ---- bank: applications of integral ---- */
+makeDrill({bank:[
+  {cat:'area', q:'หาพื้นที่ปิดล้อมระหว่าง <span class="k">y = x²</span> กับ <span class="k">y = x</span>',
+   steps:[
+     {t:'หาจุดตัด: x² = x → x²−x=0 → x(x−1)=0 → x=0, 1',why:'ขอบเขต a=0, b=1'},
+     {t:'ในช่วง (0,1) เส้นไหนบน? ลองที่ x=0.5: x=0.5 > x²=0.25 → <b>y=x อยู่บน</b>',why:'เส้นบนลบเส้นล่าง'},
+     {t:'A = ∫₀¹ (x − x²) dx = [x²/2 − x³/3]₀¹',why:''},
+     {t:'= (1/2 − 1/3) = <b>1/6 ตารางหน่วย</b>'},
+   ],
+   hints:['หาจุดตัดก่อน x=0,1','เส้นบน=x, เส้นล่าง=x² → ∫(x−x²)','1/6']},
+  {cat:'area', q:'หาพื้นที่ใต้ <span class="k">y = sin x</span> จาก 0 ถึง π',
+   steps:[
+     {t:'A = ∫₀^π sin x dx',why:'sin x ≥ 0 ตลอดช่วงนี้'},
+     {t:'= [−cos x]₀^π = −cos π − (−cos 0)',why:''},
+     {t:'= −(−1) − (−1) = 1 + 1 = <b>2 ตารางหน่วย</b>'},
+   ],
+   hints:['∫sin x = −cos x','−cosπ + cos0 = 1+1','2']},
+  {cat:'vol', q:'หาปริมาตรรูปทรงที่เกิดจากหมุน <span class="k">y = √x</span> รอบแกน x จาก 0 ถึง 4',
+   steps:[
+     {t:'วิธี disk: V = π∫₀⁴ [f(x)]² dx = π∫₀⁴ (√x)² dx',why:'รัศมีแต่ละแผ่น = √x'},
+     {t:'= π∫₀⁴ x dx = π[x²/2]₀⁴',why:'(√x)² = x'},
+     {t:'= π(16/2) = <b>8π ลูกบาศก์หน่วย</b>'},
+   ],
+   hints:['V=π∫f² dx, f²=x','π[x²/2] จาก 0 ถึง 4','8π']},
+  {cat:'vol', q:'หมุน <span class="k">y = x²</span> รอบแกน x จาก 0 ถึง 1 หาปริมาตร',
+   steps:[
+     {t:'V = π∫₀¹ (x²)² dx = π∫₀¹ x⁴ dx',why:'f²=(x²)²=x⁴'},
+     {t:'= π[x⁵/5]₀¹',why:''},
+     {t:'= <b>π/5 ลูกบาศก์หน่วย</b>'},
+   ],
+   hints:['V=π∫(x²)² dx = π∫x⁴','π[x⁵/5]','π/5']},
+  {cat:'avg', q:'หาค่าเฉลี่ยของ <span class="k">f(x) = x²</span> บนช่วง [0, 3]',
+   steps:[
+     {t:'ค่าเฉลี่ย = (1/(b−a)) ∫ₐᵇ f(x) dx',why:'นิยามค่าเฉลี่ยของฟังก์ชัน'},
+     {t:'= (1/3) ∫₀³ x² dx = (1/3)[x³/3]₀³',why:''},
+     {t:'= (1/3)(27/3) = (1/3)(9) = <b>3</b>'},
+   ],
+   hints:['ค่าเฉลี่ย = (1/(b−a))∫f dx','(1/3)·∫₀³x² = (1/3)(9)','3']},
+], qEl:gid('d6-q'),stepsEl:gid('d6-steps'),hintsEl:gid('d6-hints'),btnStep:gid('d6-step'),btnHint:gid('d6-hint'),btnNew:gid('d6-new'),catBtns:[...document.querySelectorAll('#d6-cat button')]});
+
+function gid(id){return document.getElementById(id);}
+
+/* ===================== TAB SWITCHING ===================== */
+const drawers=[drawLim,drawDer,null,drawInt,null,drawAp,drawAr];
+document.querySelectorAll('#tabs .tab').forEach(t=>t.onclick=()=>{
+  document.querySelectorAll('#tabs .tab').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');
+  const i=+t.dataset.p;
+  document.getElementById('p'+i).classList.add('active');
+  if(drawers[i])drawers[i]();
+});
+
+/* initial draw + resize */
+function redrawActive(){
+  const active=document.querySelector('.panel.active').id;
+  if(active==='p0')drawLim(); else if(active==='p1')drawDer(); else if(active==='p3')drawInt();
+  else if(active==='p5')drawAp(); else if(active==='p6')drawAr();
+}
+window.addEventListener('resize',()=>requestAnimationFrame(redrawActive));
+drawLim();
+</script>
+</body>
+</html>

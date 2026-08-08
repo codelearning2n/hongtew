@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>คณิต TSAM จากศูนย์ — ไม่มีพื้นฐานก็เริ่มได้ | TSAM</title>
+<style>
+:root{
+  --bg-0:#0a0d18; --ink:#f2f4ff; --muted:#9aa2cf; --line:rgba(255,255,255,.09);
+  --accent:#5cc8ff; --accent-2:#a371f7; --gold:#ffd166; --good:#5ee6a8; --bad:#f85149; --hot:#ff7a59;
+  --glass:linear-gradient(180deg,rgba(40,46,90,.50),rgba(16,20,46,.55));
+  --glass-2:linear-gradient(180deg,rgba(52,58,108,.55),rgba(24,28,62,.62));
+  --shadow:0 22px 55px -24px rgba(0,0,0,.78); --ring:0 0 0 1px rgba(255,255,255,.06);
+  --grad-text:linear-gradient(120deg,#ffffff,#bcd4ff 45%,#b6a4ff);
+  --grad-fill:linear-gradient(90deg,var(--accent),var(--accent-2));
+  --r-md:14px; --r-lg:18px; --r-xl:24px; --r-pill:999px; --ease:cubic-bezier(.2,.7,.3,1);
+}
+*{box-sizing:border-box} html,body{margin:0}
+body{color:var(--ink);line-height:1.7;padding:16px 12px 48px;
+  font-family:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
+  background:
+    radial-gradient(820px 520px at 8% -12%,rgba(92,120,255,.20),transparent 55%),
+    radial-gradient(720px 520px at 98% -6%,rgba(124,92,255,.22),transparent 52%),
+    radial-gradient(760px 680px at 55% 122%,rgba(40,110,210,.16),transparent 55%),
+    var(--bg-0);
+  background-attachment:fixed;min-height:100vh}
+::selection{background:rgba(92,200,255,.35)}
+.wrap{max-width:880px;margin:0 auto}
+.hero{position:relative;overflow:hidden;background:var(--glass-2);border:1px solid var(--line);
+  border-radius:var(--r-xl);padding:22px 20px 18px;margin-bottom:14px;
+  box-shadow:var(--shadow),var(--ring),inset 0 1px 0 rgba(255,255,255,.08)}
+.hero::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(640px 240px at 102% -10%,rgba(94,230,168,.18),transparent 60%)}
+.hero h1{margin:.1rem 0;font-size:clamp(1.3rem,4.5vw,1.9rem);line-height:1.25}
+.grad-text{background:var(--grad-text);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:var(--muted);margin:.4rem 0 0;font-size:.92rem}
+.pill{display:inline-block;font-size:.7rem;font-weight:700;color:var(--good);
+  background:rgba(94,230,168,.1);border:1px solid rgba(94,230,168,.3);padding:2px 9px;border-radius:7px}
+.card{position:relative;background:var(--glass);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:16px;margin-bottom:14px;box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.05)}
+h2{margin:0 0 6px;font-size:1.08rem}
+h3{margin:14px 0 6px;font-size:.98rem;color:var(--accent)}
+.sub{color:var(--muted);font-size:.87rem}
+.fx{font-family:'Cascadia Code',ui-monospace,monospace;background:rgba(0,0,0,.28);
+  padding:1px 6px;border-radius:6px;color:#cfe3ff;font-size:.92em}
+.pathrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:8px}
+.pathbox{background:rgba(8,10,22,.5);border:1px solid var(--line);border-radius:var(--r-md);padding:12px 14px}
+.pathbox b{color:var(--gold)}
+.pathbox small{color:var(--muted);display:block;font-size:.82rem;margin-top:2px}
+.pathbox .num{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:8px;
+  background:var(--grad-fill);color:#0a1020;font-weight:800;margin-bottom:6px}
+.geotabs{display:flex;gap:7px;overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+.geotabs::-webkit-scrollbar{height:5px}.geotabs::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:9px}
+.geotab{flex:0 0 auto;white-space:nowrap;cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.04);
+  color:var(--muted);font-family:inherit;font-weight:700;font-size:.84rem;padding:8px 13px;border-radius:var(--r-pill);transition:all .15s var(--ease)}
+.geotab:hover{color:var(--ink);border-color:rgba(92,200,255,.4)}
+.geotab.on{background:var(--grad-fill);color:#0a1020;border-color:transparent}
+.cvwrap{position:relative;width:100%;background:rgba(8,10,22,.55);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;margin-top:10px}
+#geocanvas{display:block;width:100%;height:auto}
+.georow{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:.85rem;color:var(--muted)}
+.georow input[type=range]{flex:1;accent-color:var(--accent)}
+.georow .val{font-family:ui-monospace,monospace;color:var(--gold);min-width:64px;text-align:right}
+.story{margin-top:12px;background:rgba(8,10,22,.4);border:1px solid var(--line);border-radius:var(--r-md);padding:14px 16px;font-size:.95rem}
+.story b{color:var(--gold)}
+.story .bigidea{background:linear-gradient(180deg,rgba(94,230,168,.12),rgba(94,230,168,.03));border:1px solid rgba(94,230,168,.35);
+  border-radius:10px;padding:10px 13px;margin:10px 0;color:#d9ffe9;font-size:.95rem}
+.story .bigidea b{color:var(--good)}
+.story .mathbox{background:rgba(92,200,255,.07);border:1px solid rgba(92,200,255,.3);border-radius:10px;padding:10px 13px;margin:10px 0;font-size:.93rem}
+.story .mathbox b{color:var(--accent)}
+.glos{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px}
+.glos span{background:rgba(255,209,102,.08);border:1px solid rgba(255,209,102,.28);border-radius:10px;
+  padding:6px 11px;font-size:.84rem;color:#ffe9b0}
+.glos b{color:var(--gold)}
+.golink{display:inline-block;margin-top:10px;background:var(--grad-fill);color:#0a1020;font-weight:800;
+  padding:8px 16px;border-radius:var(--r-pill);text-decoration:none;font-size:.88rem}
+.golink.alt{background:rgba(255,255,255,.08);color:var(--ink);border:1px solid var(--line)}
+.homelink{text-align:center;font-size:.82rem}
+.homelink a{color:var(--accent);text-decoration:none;font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero">
+  <span class="pill">TSAM · คณิต ด่าน 0 — จุดเริ่มต้น</span>
+  <h1><span class="grad-text">คณิต TSAM จากศูนย์ 🌱</span></h1>
+  <p class="lead">ทั้งข้อสอบคณิต 56 ข้อ สร้างจากไอเดียแค่ <b>6 เรื่อง</b> — หน้านี้เล่าทั้ง 6 ด้วยภาษาบ้านๆ ไม่ต้องมีพื้นฐานอะไรเลย แค่ลากสไลเดอร์แล้วอ่านนิทานประกอบ · เข้าใจ 6 เรื่องนี้เมื่อไร ทุกบทที่เหลือคือ "เรื่องเดิมแต่งตัวใหม่"</p>
+</div>
+
+<div class="card">
+  <h2>🗺️ เส้นทางเรียน 3 ขั้น (สำหรับคนเริ่มจากศูนย์)</h2>
+  <div class="pathrow">
+    <div class="pathbox"><span class="num">1</span><br><b>เข้าใจไอเดีย (หน้านี้)</b>
+      <small>อ่าน 6 แท็บข้างล่างตามลำดับ ลากสไลเดอร์เล่นจนรู้สึกว่า "อ๋อ มันแค่นี้เอง" — ไม่ต้องจำสูตรอะไรทั้งนั้น</small></div>
+    <div class="pathbox"><span class="num">2</span><br><b>ดูทฤษฎีแบบละเอียด</b>
+      <small>เปิด <a href="calculus-tsam.html" style="color:var(--accent)">calculus-tsam</a> (7 แท็บ) กับ <a href="seq-series-tsam.html" style="color:var(--accent)">seq-series</a> — สูตรเต็มพร้อมภาพเคลื่อนไหว</small></div>
+    <div class="pathbox"><span class="num">3</span><br><b>ตะลุยโจทย์ ง่าย→โหด</b>
+      <small>เข้าไฟล์คลังโจทย์ math-01 → 04 → 05-08 → 10-11 เริ่มจากฟิลเตอร์ 🟢 ง่าย ให้ถูก 80% ก่อนแล้วค่อยขยับ</small></div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>🎡 6 ไอเดียใหญ่ — เลือกแท็บ แล้วลากสไลเดอร์</h2>
+  <div class="geotabs" id="geotabs">
+    <button class="geotab on" data-g="func">1️⃣ ฟังก์ชัน = ตู้กดน้ำ</button>
+    <button class="geotab" data-g="limit">2️⃣ ลิมิต = แอบมองหลังประตู</button>
+    <button class="geotab" data-g="deriv">3️⃣ อนุพันธ์ = เข็มไมล์</button>
+    <button class="geotab" data-g="integ">4️⃣ อินทิเกรต = มิเตอร์สะสม</button>
+    <button class="geotab" data-g="series">5️⃣ อนุกรม = กินเค้กทีละครึ่ง</button>
+    <button class="geotab" data-g="multi">6️⃣ หลายตัวแปร = เดินบนภูเขา</button>
+  </div>
+  <div class="cvwrap"><canvas id="geocanvas"></canvas></div>
+  <div class="georow">
+    <span id="geoslabel"></span>
+    <input type="range" id="georange">
+    <span class="val" id="geoval"></span>
+  </div>
+  <div class="story" id="storybox"></div>
+</div>
+
+<div class="card homelink">
+  🌱 ด่าน 0 จบแล้ว? ไปต่อ: <a href="math-01-limits-continuity-tsam.html">คลังโจทย์ส่วน 1 ลิมิต</a> · <a href="index.html">‹ กลับหน้ารวม</a>
+</div>
+
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const cv=$('geocanvas'),rng=$('georange'),slab=$('geoslabel'),sval=$('geoval'),story=$('storybox');
+let panel='func';
+const CFG={
+ func:{min:-5,max:5,step:.1,def:2,label:'เลขที่หยอด x ='},
+ limit:{min:.02,max:1.5,step:.02,def:1,label:'ระยะห่างจากประตู h ='},
+ deriv:{min:-4,max:4,step:.1,def:2,label:'ยืนอยู่ตรง x ='},
+ integ:{min:0,max:10,step:.1,def:4,label:'เปิดน้ำมาแล้ว t (วินาที) ='},
+ series:{min:1,max:14,step:1,def:3,label:'กินไปแล้ว n คำ ='},
+ multi:{min:0,max:90,step:1,def:0,label:'ทิศที่หันหน้า θ (°) ='},
+};
+const STORY={
+func:`<b>นิทาน:</b> ฟังก์ชันคือ <b>ตู้กดน้ำอัตโนมัติ</b> — หยอดเลขเข้าไปหนึ่งตัว ตู้จะคายเลขออกมาหนึ่งตัว <b>ตามกติกาตายตัว</b> ตู้ในภาพนี้กติกาคือ "ยกกำลังสอง" (หยอด 3 ได้ 9, หยอด −3 ก็ได้ 9)
+<div class="bigidea">💡 <b>ไอเดียใหญ่:</b> กราฟไม่ใช่อะไรลึกลับ — มันคือ <b>สมุดบันทึกของตู้</b>: ทุกครั้งที่หยอด x แล้วได้ y เราจุดหมึกไว้ที่ (x, y) หยอดครบทุกเลข จุดต่อกันเป็นเส้นโค้ง เท่านั้นเอง</div>
+<div class="mathbox">✍️ <b>แปลเป็นภาษาคณิต:</b> เขียนกติกาของตู้ว่า <span class="fx">f(x) = x²</span> อ่านว่า "เอฟของเอ็กซ์" = "หยอด x เข้าตู้ f แล้วได้อะไร" · เลขที่หยอดได้ทั้งหมดเรียก <b>โดเมน</b> เลขที่เป็นไปได้ที่ตู้จะคายเรียก <b>เรนจ์</b></div>
+<div class="glos"><span><b>f(x)</b> = ผลลัพธ์จากตู้เมื่อหยอด x</span><span><b>กราฟ</b> = สมุดบันทึกทุกการหยอด</span><span><b>โดเมน</b> = เลขที่หยอดได้</span><span><b>เรนจ์</b> = เลขที่ออกมาได้</span></div>
+ทำไมต้องรู้: ทุกข้อสอบทั้ง 56 ข้อ เริ่มจาก "มีตู้อยู่ตู้หนึ่ง..." ทั้งนั้น
+<br><a class="golink alt" href="math-04-inverse-transcendental-tsam.html">ฝึกเรื่องตู้พิเศษ (ผกผัน/e^x/ln) — math-04 ›</a>`,
+limit:`<b>นิทาน:</b> ตู้ f(x) = (x²−4)/(x−2) มีปัญหา: พอหยอดเลข 2 เป๊ะๆ ตู้ค้าง! (ได้ 0/0 — เครื่องตีความไม่ออก) เหมือน<b>ประตูห้องที่ล็อกตาย</b> เราเข้าไม่ได้... แต่เราแอบมองได้!
+<div class="bigidea">💡 <b>ไอเดียใหญ่:</b> ลิมิตคือการ<b>เดินเข้าไปใกล้ๆ แล้วดูแนวโน้ม</b> — ยืนที่ 1.9 ตู้บอก 3.9, ยืนที่ 1.99 ตู้บอก 3.99, มาจากฝั่งขวา 2.01 ก็ได้ 4.01 → ทั้งสองฝั่งชี้นิ้วไปที่ <b>4</b> ตรงกัน เราจึงประกาศว่า "ลิมิตที่ 2 คือ 4" <b>ทั้งที่ไม่เคยเปิดประตูได้เลย</b></div>
+<div class="mathbox">✍️ <b>แปลเป็นภาษาคณิต:</b> <span class="fx">lim(x→2) f(x) = 4</span> อ่านว่า "เมื่อ x เดินเข้าใกล้ 2 ค่า f กำลังจะเป็น 4" · สังเกต: ลิมิตถามว่า "กำลังจะเป็นอะไร" <b>ไม่ใช่</b> "ตอนนี้เป็นอะไร" — ค่าจริงตรงนั้นจะมี ไม่มี หรือเป็นรู ไม่เกี่ยว!</div>
+<div class="glos"><span><b>lim</b> = ค่าที่กำลังจะเป็น</span><span><b>x→2</b> = x เดินเข้าใกล้ 2 (ไม่แตะ)</span><span><b>0/0</b> = ตู้ค้าง ต้องหาทางอ้อม</span><span><b>ต่อเนื่อง</b> = วาดกราฟได้โดยไม่ยกปากกา</span></div>
+ทำไมต้องรู้: บทที่เหลือ<b>ทุกบท</b>สร้างบนลิมิต — อนุพันธ์กับอินทิเกรตคือลิมิตแต่งตัว
+<br><a class="golink" href="math-01-limits-continuity-tsam.html">ตะลุยโจทย์ลิมิต 40 ข้อ — math-01 ›</a>`,
+deriv:`<b>นิทาน:</b> ขี่จักรยานบนถนนเนิน (กราฟโค้ง) — คำถามคือ <b>"ตรงที่ยืนอยู่ตอนนี้ ชันแค่ไหน?"</b> ไม่ใช่ชันเฉลี่ยทั้งเส้นทาง แต่ชัน "ณ จุดนี้เป๊ะๆ" เหมือน<b>เข็มไมล์รถ</b>ที่บอกความเร็ววินาทีนี้ ไม่ใช่ความเร็วเฉลี่ยทั้งทริป
+<div class="bigidea">💡 <b>ไอเดียใหญ่:</b> วิธีวัด: เอาไม้บรรทัดไป<b>แตะ</b>โค้งตรงจุดนั้นพอดี (เส้นสัมผัส) — ความเอียงของไม้บรรทัดคือ <b>อนุพันธ์</b> · ลากสไลเดอร์ดู: ยิ่งไปไกล เนิน x² ยิ่งชัน และตัวเลขความชันจะเป็น <b>2 เท่าของตำแหน่ง</b> เสมอ (ยืนที่ 3 ชัน 6) — นี่แหละที่มาของสูตรท่องจำ "x² ดิฟได้ 2x"</div>
+<div class="mathbox">✍️ <b>แปลเป็นภาษาคณิต:</b> <span class="fx">f′(x)</span> หรือ <span class="fx">dy/dx</span> = "ถ้าขยับขวาไปนิดจิ๋วๆ (dx) ค่า y ขยับขึ้นเท่าไร (dy)" — มันคือลิมิตของ "ความชันระหว่างสองจุดที่บีบเข้าหากันจนติดกัน" · ใช้ทำอะไร: หาจุดสูงสุด-ต่ำสุด (ยอดเขา = จุดที่ความชันเป็น 0!), หาความเร็วจากระยะทาง, ประมาณค่า</div>
+<div class="glos"><span><b>f′(x)</b> = ความชัน ณ จุด x</span><span><b>dx</b> = ก้าวจิ๋วๆ ทางขวา</span><span><b>เส้นสัมผัส</b> = ไม้บรรทัดแตะโค้ง</span><span><b>f′=0</b> = พื้นราบ = ยอดเขา/ก้นเหว</span></div>
+ทำไมต้องรู้: ครอบข้อสอบส่วน 2+3 (12 ข้อ) และฟิสิกส์ทั้งเล่ม (v = dx/dt)
+<br><a class="golink alt" href="calculus-tsam.html">ทฤษฎี+กฎดิฟทั้งหมด — calculus ›</a>`,
+integ:`<b>นิทาน:</b> เปิดก๊อกเติมน้ำใส่ถัง แต่ก๊อกนี้<b>ไหลแรงขึ้นเรื่อยๆ</b> (วินาทีที่ t ไหล t ลิตร/วินาที) — ถามว่าผ่านไป t วินาที <b>ในถังมีน้ำเท่าไร?</b> จะบวกยังไงในเมื่ออัตราเปลี่ยนตลอดเวลา?
+<div class="bigidea">💡 <b>ไอเดียใหญ่:</b> หั่นเวลาเป็นชิ้นจิ๋วๆ — ในเสี้ยววินาทีเดียว อัตราแทบไม่เปลี่ยน ก็คูณตรงๆ ได้ (อัตรา × เวลาจิ๋ว = น้ำชิ้นจิ๋ว) แล้ว<b>บวกทุกชิ้นรวมกัน</b> = พื้นที่ใต้กราฟพอดีเป๊ะ! อินทิเกรตคือ "การทบยอดของจิ๋วล้านชิ้น" — ดูแถบในภาพ: น้ำในถัง = พื้นที่สามเหลี่ยมใต้เส้น = t²/2</div>
+<div class="mathbox">✍️ <b>แปลเป็นภาษาคณิต:</b> <span class="fx">∫₀ᵗ v dt</span> — เครื่องหมาย ∫ คือตัว <b>S ยืดๆ มาจากคำว่า Sum (บวกรวม)</b> ไม่มีอะไรน่ากลัว · และนี่คือทวิสต์ใหญ่สุดของแคลคูลัส: <b>อินทิเกรตคือปุ่มย้อนของอนุพันธ์</b> — มิเตอร์สะสม (ถัง) กับเข็มไมล์ (ก๊อก) คือข้อมูลเดียวกันมองคนละมุม: t²/2 ดิฟกลับได้ t พอดี (ทฤษฎีบทหลักแคลคูลัส FTC)</div>
+<div class="glos"><span><b>∫</b> = ตัว S ยืด = บวกรวมชิ้นจิ๋ว</span><span><b>พื้นที่ใต้กราฟ</b> = ยอดสะสม</span><span><b>FTC</b> = ดิฟกับอินทิเกรตย้อนกันได้</span><span><b>+C</b> = ไม่รู้น้ำตั้งต้นในถัง</span></div>
+ทำไมต้องรู้: ครอบข้อสอบส่วน 5, 7, 8, 9 รวม 17 ข้อ — โซนใหญ่สุดของคณิต
+<br><a class="golink" href="math-05-08-integrals-core-tsam.html">ตะลุยโจทย์ปริพันธ์ 40 ข้อ — math-05-08 ›</a>`,
+series:`<b>นิทาน:</b> มีเค้ก 1 ก้อน กติกาคือ<b>กัดครั้งละครึ่งของที่เหลือ</b> — คำแรกกิน 1/2 คำสอง 1/4 คำสาม 1/8... กินแบบนี้<b>ไปเรื่อยๆ ไม่มีวันหยุด</b> จะได้เค้กทั้งหมดเท่าไร?
+<div class="bigidea">💡 <b>ไอเดียใหญ่:</b> บวกไม่รู้จบ ไม่ได้แปลว่าได้อนันต์! ลากสไลเดอร์ดู: ยอดรวมวิ่งเข้าหา <b>1 ก้อนพอดี</b> ไม่มีวันเกิน — แบบนี้เรียก <b>"ลู่เข้า"</b> · แต่ถ้าคำที่กินไม่ยอมเล็กลง (กิน 1+1+1+...) ยอดพุ่งไม่หยุด = <b>"ลู่ออก"</b> · เกณฑ์ทดสอบทั้งบทอนุกรม แท้จริงคือเครื่องตรวจคำถามเดียว: <b>"คำถัดไปเล็กลงเร็วพอไหม?"</b></div>
+<div class="mathbox">✍️ <b>แปลเป็นภาษาคณิต:</b> <span class="fx">Σ (1/2)ⁿ = 1</span> — Σ (ซิกมา) คือ "บวกทุกคำ" · โบนัสเรื่องใหญ่: <b>อนุกรมกำลัง</b> คือการเขียนฟังก์ชันยากๆ (sin, eˣ) เป็น "บวกพจน์ x ยกกำลังเรียงกัน" — เหมือนแปลงเพลงเป็นตัวโน้ต ทำให้เครื่องคิดเลขคำนวณ sin ได้ทั้งที่มันบวกเลขเป็นอย่างเดียว</div>
+<div class="glos"><span><b>Σ</b> = บวกทุกคำ</span><span><b>ลู่เข้า</b> = ยอดรวมนิ่งที่ค่าหนึ่ง</span><span><b>ลู่ออก</b> = ยอดพุ่งไม่หยุด</span><span><b>อนุกรมกำลัง</b> = ฟังก์ชันเขียนเป็นโน้ตเพลง</span></div>
+ทำไมต้องรู้: ครอบข้อสอบส่วน 6+10 (8 ข้อ) — และเทคนิค "ส่วนชนะ/เศษชนะ" ที่เราเคยทำไว้ใน seq-series
+<br><a class="golink" href="math-10-11-series-multivar-tsam.html">ตะลุยโจทย์อนุกรม 40 ข้อ — math-10-11 ›</a>`,
+multi:`<b>นิทาน:</b> ก่อนหน้านี้ตู้กดน้ำรับเลขตัวเดียว — คราวนี้เจอ<b>ภูเขาจริงๆ</b>: ความสูงขึ้นกับ<b>สองอย่าง</b> คือเดินไปตะวันออกเท่าไร (x) กับไปเหนือเท่าไร (y) · ปัญหาคือ: ยืนบนไหล่เขา ถาม "ชันเท่าไร?" — <b>ตอบไม่ได้ถ้าไม่บอกทิศ!</b> หันตะวันออกอาจชันมาก หันเหนืออาจแทบราบ
+<div class="bigidea">💡 <b>ไอเดียใหญ่:</b> ทางแก้ของนักคณิต: <b>วัดทีละทิศ</b> — "อนุพันธ์ย่อยตาม x" (∂f/∂x) คือความชันถ้าเดินไปตะวันออก<b>เป๊ะๆ โดยไม่ขยับเหนือ-ใต้เลย</b> (แช่ y ไว้เป็นค่าคงที่) และกลับกันสำหรับ ∂f/∂y · ลากสไลเดอร์หมุนทิศดู: ความชันทิศเฉียงคือ "ส่วนผสม" ของสองทิศหลัก</div>
+<div class="mathbox">✍️ <b>แปลเป็นภาษาคณิต:</b> ∂ (อ่าน "เดล") ก็คือ d เดิมนั่นแหละ แค่เตือนว่า "มีตัวแปรอื่นถูกแช่ไว้อยู่นะ" · วิธีทำจริงง่ายกว่าที่คิด: <b>ดิฟตามปกติ โดยมองตัวแปรอื่นเป็นเลขธรรมดา</b> เช่น f = x²y → ∂f/∂x = 2xy (มอง y เป็นเลขเฉยๆ) · ผลต่างรวม df = ยอดขยับเมื่อขยับทั้งคู่พร้อมกันนิดๆ</div>
+<div class="glos"><span><b>∂</b> = d ที่มีเพื่อนถูกแช่แข็ง</span><span><b>∂f/∂x</b> = ชันทิศตะวันออก</span><span><b>เส้นชั้นความสูง</b> = แผนที่ภูเขาแบบมองบน</span><span><b>df</b> = ยอดขยับรวมทุกทิศ</span></div>
+ทำไมต้องรู้: ครอบข้อสอบส่วน 11+12 (7 ข้อ) — และเป็นบทที่ "ดูโหดแต่จริงๆ ง่าย" เพราะแค่ดิฟเดิมบวกกติกาแช่แข็ง
+<br><a class="golink" href="math-10-11-series-multivar-tsam.html">ตะลุยโจทย์หลายตัวแปร — math-10-11 ›</a>`,
+};
+function fit(){const w=cv.parentElement.clientWidth||600,h=310,dpr=Math.min(2,window.devicePixelRatio||1);
+ cv.width=w*dpr;cv.height=h*dpr;cv.style.height=h+'px';const ctx=cv.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);return{ctx,w,h};}
+function arrow(ctx,x1,y1,x2,y2,col,wd){ctx.strokeStyle=col;ctx.fillStyle=col;ctx.lineWidth=wd||2.6;
+ ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();const a=Math.atan2(y2-y1,x2-x1),s=10;
+ ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-s*Math.cos(a-.4),y2-s*Math.sin(a-.4));ctx.lineTo(x2-s*Math.cos(a+.4),y2-s*Math.sin(a+.4));ctx.closePath();ctx.fill();}
+function dash(ctx,x1,y1,x2,y2,col){ctx.save();ctx.setLineDash([5,4]);ctx.strokeStyle=col;ctx.lineWidth=1.4;
+ ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.restore();}
+function label(ctx,x,y,t,col,sz){ctx.fillStyle=col||'#dfe6ff';ctx.font='600 '+(sz||12)+'px sans-serif';ctx.fillText(t,x,y);}
+function ball(ctx,x,y,r,col){ctx.fillStyle=col;ctx.strokeStyle='rgba(255,255,255,.4)';ctx.lineWidth=1.2;
+ ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fill();ctx.stroke();}
+function box(ctx,x,y,w2,h2,col){ctx.fillStyle=col;ctx.strokeStyle='rgba(255,255,255,.35)';ctx.lineWidth=1.2;
+ ctx.fillRect(x,y,w2,h2);ctx.strokeRect(x,y,w2,h2);}
+const C_M='#5cc8ff',C_P='#a371f7',C_G='#ffd166',C_R='#ff7a59',C_GD='#5ee6a8';
+
+function drawFunc(ctx,w,h,x){
+ const y=x*x;
+ // machine
+ const mx=w*.16,my=h*.34;
+ ball(ctx,mx-56,my,15,'rgba(92,200,255,.55)');label(ctx,mx-64,my+4,x.toFixed(1),'#0a1020',11);
+ arrow(ctx,mx-38,my,mx-8,my,C_M);
+ box(ctx,mx,my-34,96,68,'rgba(163,113,247,.3)');
+ label(ctx,mx+14,my-6,'ตู้ f',C_P,15);label(ctx,mx+10,my+16,'กติกา: x²','#dfe6ff');
+ arrow(ctx,mx+100,my,mx+130,my,C_P);
+ ball(ctx,mx+152,my,17,'rgba(255,209,102,.6)');label(ctx,mx+140,my+4,y.toFixed(1),'#0a1020',11);
+ label(ctx,mx-70,my-32,'หยอด',C_M);label(ctx,mx+134,my-32,'ได้ออกมา',C_G);
+ // graph (notebook)
+ const gx=w*.6,gy=h*.56,gw=w*.34,sc=gw/12;
+ ctx.strokeStyle='rgba(255,255,255,.16)';ctx.lineWidth=1;
+ ctx.beginPath();ctx.moveTo(gx-gw/2,gy);ctx.lineTo(gx+gw/2,gy);ctx.stroke();
+ ctx.beginPath();ctx.moveTo(gx,gy+20);ctx.lineTo(gx,gy-25*5.4);ctx.stroke();
+ ctx.strokeStyle='rgba(92,200,255,.6)';ctx.lineWidth=2;ctx.beginPath();
+ for(let i=0;i<=100;i++){const xx=-5+i/10;const px=gx+xx*sc,py=gy-xx*xx*5;
+  i?ctx.lineTo(px,py):ctx.moveTo(px,py);}
+ ctx.stroke();
+ ball(ctx,gx+x*sc,gy-y*5,7,C_G);
+ dash(ctx,gx+x*sc,gy,gx+x*sc,gy-y*5,'rgba(255,209,102,.35)');
+ dash(ctx,gx,gy-y*5,gx+x*sc,gy-y*5,'rgba(255,209,102,.35)');
+ label(ctx,gx-gw/2,gy-140,'สมุดบันทึกของตู้ (= กราฟ)','#9aa2cf');
+ label(ctx,gx+x*sc+8,gy-y*5-8,'('+x.toFixed(1)+', '+y.toFixed(1)+')',C_G);
+ label(ctx,20,h-16,'หยอด '+x.toFixed(1)+' → ตู้คาย '+y.toFixed(1)+' → จดจุดลงสมุด',C_GD);
+}
+function drawLimit(ctx,w,h,hh){
+ const pad=50,gw=w-2*pad;
+ const X=x=>pad+(x+1)/5*gw, Y=y=>h-56-(y/7)*(h-110);
+ ctx.strokeStyle='rgba(255,255,255,.16)';ctx.lineWidth=1;
+ ctx.beginPath();ctx.moveTo(pad,h-56);ctx.lineTo(w-pad,h-56);ctx.stroke();
+ // line y=x+2 with hole at 2
+ ctx.strokeStyle=C_M;ctx.lineWidth=2.2;ctx.beginPath();
+ ctx.moveTo(X(-1),Y(1));ctx.lineTo(X(4),Y(6));ctx.stroke();
+ // hole
+ ctx.fillStyle='#0a0d18';ctx.strokeStyle=C_M;ctx.lineWidth=2;
+ ctx.beginPath();ctx.arc(X(2),Y(4),6,0,7);ctx.fill();ctx.stroke();
+ label(ctx,X(2)-14,Y(4)-14,'ประตูล็อก! (0/0)',C_R);
+ dash(ctx,X(2),h-56,X(2),Y(4),'rgba(255,122,89,.35)');
+ label(ctx,X(2)-6,h-38,'x=2',C_R);
+ // two walkers
+ const xl=2-hh, xr=2+hh, yl=xl+2, yr=xr+2;
+ ball(ctx,X(xl),Y(yl),8,'rgba(94,230,168,.7)');
+ ball(ctx,X(xr),Y(yr),8,'rgba(255,209,102,.7)');
+ arrow(ctx,X(xl)-26,Y(yl)-16,X(xl)-6,Y(yl)-4,C_GD);
+ arrow(ctx,X(xr)+26,Y(yr)+16,X(xr)+6,Y(yr)+4,C_G);
+ label(ctx,X(xl)-46,Y(yl)-24,'ฝั่งซ้ายเห็น '+yl.toFixed(2),C_GD);
+ label(ctx,Math.min(X(xr)+10,w-130),Y(yr)+30,'ฝั่งขวาเห็น '+yr.toFixed(2),C_G);
+ label(ctx,20,32,'สองฝั่งชี้ตรงกัน → lim = 4 (ทั้งที่ตรงประตูเป็นรู!)','#dfe6ff',13);
+}
+function drawDeriv(ctx,w,h,x0){
+ const pad=50,gw=w-2*pad;
+ const f=x=>x*x/4;
+ const X=x=>pad+(x+5)/10*gw, Y=y=>h-52-(y/7)*(h-108);
+ ctx.strokeStyle='rgba(255,255,255,.16)';ctx.lineWidth=1;
+ ctx.beginPath();ctx.moveTo(pad,h-52);ctx.lineTo(w-pad,h-52);ctx.stroke();
+ // curve
+ ctx.strokeStyle=C_M;ctx.lineWidth=2.2;ctx.beginPath();
+ for(let i=0;i<=120;i++){const xx=-5+i/12;i?ctx.lineTo(X(xx),Y(f(xx))):ctx.moveTo(X(xx),Y(f(xx)));}
+ ctx.stroke();
+ label(ctx,pad+6,40,'ถนนเนิน y = x²/4','#9aa2cf');
+ // tangent
+ const m=x0/2, y0=f(x0);
+ ctx.strokeStyle=C_G;ctx.lineWidth=2.4;ctx.beginPath();
+ const t1=x0-2.4,t2=x0+2.4;
+ ctx.moveTo(X(t1),Y(y0+m*(t1-x0)));ctx.lineTo(X(t2),Y(y0+m*(t2-x0)));ctx.stroke();
+ ball(ctx,X(x0),Y(y0),8,'rgba(255,122,89,.8)');
+ label(ctx,X(x0)-20,Y(y0)-16,'🚲 ยืนตรงนี้',C_R);
+ // slope readout
+ label(ctx,w*.6,44,'ความชันตอนนี้ = '+m.toFixed(2),C_G,14);
+ label(ctx,w*.6,66,'(= 2 เท่าของ x/4... คือ x/2 พอดี)','#9aa2cf');
+ if(Math.abs(x0)<.15)label(ctx,w*.6,90,'⛰️ พื้นราบ! ความชัน 0 = ก้นเหว',C_GD,13);
+ label(ctx,20,h-16,'ไม้บรรทัดสีทอง "แตะ" โค้งพอดี — ความเอียงของมันคืออนุพันธ์',C_G);
+}
+function drawInteg(ctx,w,h,T){
+ const pad=50,gw=w*.52;
+ const X=t=>pad+t/10*gw, Y=v=>h-52-(v/11)*(h-108);
+ ctx.strokeStyle='rgba(255,255,255,.16)';ctx.lineWidth=1;
+ ctx.beginPath();ctx.moveTo(pad,h-52);ctx.lineTo(pad+gw,h-52);ctx.stroke();
+ // v(t)=t line
+ ctx.strokeStyle=C_M;ctx.lineWidth=2.2;ctx.beginPath();ctx.moveTo(X(0),Y(0));ctx.lineTo(X(10),Y(10));ctx.stroke();
+ label(ctx,pad+4,40,'อัตราไหลก๊อก v = t (ลิตร/วิ)','#9aa2cf');
+ // shaded strips up to T
+ const n=Math.max(1,Math.round(T*3));
+ for(let i=0;i<n;i++){const t=i*T/n;
+  ctx.fillStyle='rgba(92,200,255,.25)';
+  ctx.fillRect(X(t),Y(t),(X(T/n)-X(0)),h-52-Y(t));}
+ label(ctx,X(T/2)-30,h-30,'พื้นที่ = น้ำสะสม',C_M);
+ // tank
+ const vol=T*T/2, tank=w*.78, tw=70, th2=h-130, tb=h-48;
+ ctx.strokeStyle='rgba(255,255,255,.4)';ctx.lineWidth=2;
+ ctx.strokeRect(tank,tb-th2,tw,th2);
+ const fillh=Math.min(1,vol/50)*th2;
+ ctx.fillStyle='rgba(92,200,255,.4)';ctx.fillRect(tank+2,tb-fillh,tw-4,fillh);
+ label(ctx,tank-8,tb-th2-12,'ถังน้ำ','#9aa2cf');
+ label(ctx,tank,tb+18,vol.toFixed(1)+' ลิตร (= T²/2)',C_G);
+ label(ctx,20,h-16,'หั่นจิ๋ว × บวกรวม = พื้นที่ใต้กราฟ = ยอดในถัง — นี่คือ ∫ ทั้งตัว',C_GD);
+}
+function drawSeries(ctx,w,h,n){
+ // cake bar filling: pieces 1/2,1/4,...
+ const bx=w*.1, bw2=w*.8, by=h*.36, bh=52;
+ ctx.strokeStyle='rgba(255,255,255,.4)';ctx.lineWidth=2;
+ ctx.strokeRect(bx,by,bw2,bh);
+ label(ctx,bx,by-12,'เค้ก 1 ก้อนเต็ม','#9aa2cf');
+ let acc=0;
+ const cols=['rgba(92,200,255,.55)','rgba(163,113,247,.5)','rgba(255,209,102,.5)','rgba(94,230,168,.5)','rgba(255,122,89,.5)'];
+ for(let i=1;i<=n;i++){
+  const piece=Math.pow(.5,i);
+  ctx.fillStyle=cols[(i-1)%5];
+  ctx.fillRect(bx+acc*bw2,by+2,piece*bw2,bh-4);
+  if(i<=5)label(ctx,bx+(acc+piece/2)*bw2-12,by+bh/2+4,'1/'+Math.pow(2,i),'#0a1020',11);
+  acc+=piece;
+ }
+ label(ctx,Math.min(bx+acc*bw2+6,w-90),by+bh/2+4,'เหลือ '+(Math.pow(.5,n)).toPrecision(2),'#9aa2cf',11);
+ // running total curve
+ const gy=h-46, gh=h*.3, gx0=bx;
+ ctx.strokeStyle='rgba(255,255,255,.16)';ctx.beginPath();ctx.moveTo(gx0,gy);ctx.lineTo(gx0+bw2,gy);ctx.stroke();
+ dash(ctx,gx0,gy-gh,gx0+bw2,gy-gh,'rgba(255,122,89,.5)');
+ label(ctx,gx0+bw2-90,gy-gh-8,'เพดาน = 1 ก้อน',C_R);
+ ctx.strokeStyle=C_GD;ctx.lineWidth=2;ctx.beginPath();
+ let s=0;
+ for(let i=1;i<=14;i++){s+=Math.pow(.5,i);
+  const px=gx0+i/14*bw2, py=gy-s*gh;
+  i===1?ctx.moveTo(px,py):ctx.lineTo(px,py);
+  if(i<=n)ball(ctx,px,py,4,C_GD);}
+ ctx.stroke();
+ const sn=1-Math.pow(.5,n);
+ label(ctx,gx0,gy-gh-30,'กิน '+n+' คำ ได้แล้ว '+sn.toFixed(4)+' ก้อน — เข้าใกล้ 1 แต่ไม่มีวันเกิน = "ลู่เข้า"',C_GD,13);
+}
+function drawMulti(ctx,w,h,deg){
+ const th=deg*Math.PI/180;
+ const fx=1.5, fy=.5;
+ const slope=fx*Math.cos(th)+fy*Math.sin(th);
+ // compass
+ const cx=w*.17, cy=h*.5, R=54;
+ ctx.strokeStyle='rgba(255,255,255,.25)';ctx.lineWidth=1.4;
+ ctx.beginPath();ctx.arc(cx,cy,R,0,7);ctx.stroke();
+ label(ctx,cx+R+6,cy+4,'ตะวันออก (x)','#9aa2cf',11);
+ label(ctx,cx-14,cy-R-8,'เหนือ (y)','#9aa2cf',11);
+ arrow(ctx,cx,cy,cx+R*Math.cos(th),cy-R*Math.sin(th),C_G,3);
+ label(ctx,cx-24,cy+R+18,'หันหน้า θ = '+deg+'°',C_G);
+ // hill profile along direction
+ const pad=w*.42, gw=w*.5;
+ const X=t=>pad+t/5*gw, Y=z=>h-58-(z/9)*(h-120);
+ ctx.strokeStyle='rgba(255,255,255,.16)';ctx.lineWidth=1;
+ ctx.beginPath();ctx.moveTo(pad,h-58);ctx.lineTo(pad+gw,h-58);ctx.stroke();
+ ctx.strokeStyle=C_M;ctx.lineWidth=2.2;ctx.beginPath();
+ for(let i=0;i<=80;i++){const t=i/16;const z=slope*t;
+  i?ctx.lineTo(X(t),Y(Math.max(0,z))):ctx.moveTo(X(t),Y(Math.max(0,z)));}
+ ctx.stroke();
+ label(ctx,pad,40,'หน้าตัดภูเขาตามทิศที่หัน','#9aa2cf');
+ label(ctx,pad,64,'ความชันทิศนี้ = '+slope.toFixed(2),C_M,14);
+ label(ctx,pad,88,'(ตะวันออกล้วน = 1.5 · เหนือล้วน = 0.5)','#9aa2cf',11);
+ label(ctx,20,h-16,'ภูเขาลูกเดียว ชันไม่เท่ากันแล้วแต่ทิศ — ∂/∂x กับ ∂/∂y คือชันของสองทิศหลัก',C_GD);
+}
+const DRAW={func:drawFunc,limit:drawLimit,deriv:drawDeriv,integ:drawInteg,series:drawSeries,multi:drawMulti};
+function draw(){const {ctx,w,h}=fit();ctx.clearRect(0,0,w,h);DRAW[panel](ctx,w,h,parseFloat(rng.value));sval.textContent=parseFloat(rng.value).toFixed(1);}
+function setPanel(p){panel=p;const c=CFG[p];rng.min=c.min;rng.max=c.max;rng.step=c.step;rng.value=c.def;slab.textContent=c.label;
+ story.innerHTML=STORY[p];
+ document.querySelectorAll('.geotab').forEach(b=>b.classList.toggle('on',b.dataset.g===p));draw();}
+document.querySelectorAll('.geotab').forEach(b=>b.onclick=()=>setPanel(b.dataset.g));
+rng.oninput=draw;
+window.addEventListener('resize',()=>{clearTimeout(window._grz);window._grz=setTimeout(draw,150);});
+setPanel('func');
+</script>
+</body>
+</html>

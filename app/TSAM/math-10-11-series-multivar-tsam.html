@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>คณิต ส่วน 10+11 — อนุกรมกำลัง · หลายตัวแปร (+พาราเมตริก/ค่าเชิงอนุพันธ์) | TSAM</title>
+<style>
+:root{
+  --bg-0:#0a0d18; --ink:#f2f4ff; --muted:#9aa2cf; --line:rgba(255,255,255,.09);
+  --accent:#5cc8ff; --accent-2:#a371f7; --gold:#ffd166; --good:#5ee6a8; --bad:#f85149; --hot:#ff7a59;
+  --d1:#5ee6a8; --d2:#ffd166; --d3:#ff9f43; --d4:#f85149;
+  --glass:linear-gradient(180deg,rgba(40,46,90,.50),rgba(16,20,46,.55));
+  --glass-2:linear-gradient(180deg,rgba(52,58,108,.55),rgba(24,28,62,.62));
+  --shadow:0 22px 55px -24px rgba(0,0,0,.78); --ring:0 0 0 1px rgba(255,255,255,.06);
+  --grad-text:linear-gradient(120deg,#ffffff,#bcd4ff 45%,#b6a4ff);
+  --grad-fill:linear-gradient(90deg,var(--accent),var(--accent-2));
+  --r-md:14px; --r-lg:18px; --r-xl:24px; --r-pill:999px; --ease:cubic-bezier(.2,.7,.3,1);
+}
+*{box-sizing:border-box} html,body{margin:0}
+body{color:var(--ink);line-height:1.6;padding:16px 12px 48px;
+  font-family:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
+  background:
+    radial-gradient(820px 520px at 8% -12%,rgba(92,120,255,.20),transparent 55%),
+    radial-gradient(720px 520px at 98% -6%,rgba(124,92,255,.22),transparent 52%),
+    radial-gradient(760px 680px at 55% 122%,rgba(40,110,210,.16),transparent 55%),
+    var(--bg-0);
+  background-attachment:fixed;min-height:100vh}
+::selection{background:rgba(92,200,255,.35)}
+.wrap{max-width:880px;margin:0 auto}
+.hero{position:relative;overflow:hidden;background:var(--glass-2);border:1px solid var(--line);
+  border-radius:var(--r-xl);padding:22px 20px 18px;margin-bottom:14px;
+  box-shadow:var(--shadow),var(--ring),inset 0 1px 0 rgba(255,255,255,.08)}
+.hero::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(640px 240px at 102% -10%,rgba(92,200,255,.22),transparent 60%)}
+.hero h1{margin:.1rem 0;font-size:clamp(1.3rem,4.5vw,1.9rem);line-height:1.2}
+.grad-text{background:var(--grad-text);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:var(--muted);margin:.35rem 0 0;font-size:.9rem}
+.pill{display:inline-block;font-size:.7rem;font-weight:700;color:var(--gold);
+  background:rgba(255,209,102,.1);border:1px solid rgba(255,209,102,.25);padding:2px 9px;border-radius:7px}
+.card{position:relative;background:var(--glass);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:16px;margin-bottom:14px;box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.05)}
+h2{margin:0 0 6px;font-size:1.08rem}
+h3{margin:12px 0 4px;font-size:.95rem;color:var(--accent)}
+.sub{color:var(--muted);font-size:.85rem}
+code,.fx{font-family:'Cascadia Code',ui-monospace,monospace;background:rgba(0,0,0,.28);
+  padding:1px 6px;border-radius:6px;color:#cfe3ff;font-size:.9em}
+.acc-head{display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
+.acc-head .chev{transition:transform .25s var(--ease)}
+.acc.open .chev{transform:rotate(90deg)}
+.acc-body{display:none;margin-top:10px}
+.acc.open .acc-body{display:block;animation:rise .3s var(--ease) both}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin-top:6px}
+.fbox{background:rgba(8,10,22,.5);border:1px solid var(--line);border-radius:var(--r-md);padding:10px 12px}
+.fbox b{color:var(--gold);font-size:.9rem}
+.fbox .fx{display:inline-block;margin:3px 0;font-size:.9rem}
+.fbox small{color:var(--muted);display:block;font-size:.8rem}
+.filters{display:flex;flex-wrap:wrap;gap:7px;margin:2px 0 8px}
+.flabel{width:100%;font-size:.76rem;color:var(--muted);font-weight:700;margin-top:6px}
+.chip{cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--muted);
+  font-family:inherit;font-weight:700;font-size:.82rem;padding:7px 13px;border-radius:var(--r-pill);
+  transition:all .15s var(--ease)}
+.chip:hover{color:var(--ink);border-color:rgba(92,200,255,.4)}
+.chip.on{color:#0a1020;border-color:transparent}
+.chip.on.all{background:var(--grad-fill)}
+.chip.on.d1{background:var(--d1)} .chip.on.d2{background:var(--d2)}
+.chip.on.d3{background:var(--d3)} .chip.on.d4{background:var(--d4);color:#fff}
+.chip.on.sub{background:linear-gradient(90deg,#7aa2ff,#a371f7)}
+.tool{cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--ink);
+  font-family:inherit;font-weight:700;font-size:.82rem;padding:7px 13px;border-radius:var(--r-pill)}
+.tool:hover{border-color:var(--accent)}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+.stat{flex:1;min-width:90px;background:rgba(8,10,22,.5);border:1px solid var(--line);border-radius:var(--r-md);
+  padding:8px 10px;text-align:center}
+.stat b{display:block;font-size:1.25rem;line-height:1.1}
+.stat small{color:var(--muted);font-size:.72rem}
+.bar{height:8px;border-radius:9px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:8px}
+.bar>i{display:block;height:100%;width:0;background:var(--grad-fill);transition:width .4s var(--ease)}
+.qtop{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.badges{display:flex;gap:6px;flex-wrap:wrap}
+.badge{font-size:.72rem;font-weight:800;padding:2px 9px;border-radius:var(--r-pill);border:1px solid transparent}
+.badge.d1{color:var(--d1);border-color:var(--d1);background:rgba(94,230,168,.1)}
+.badge.d2{color:var(--d2);border-color:var(--d2);background:rgba(255,209,102,.1)}
+.badge.d3{color:var(--d3);border-color:var(--d3);background:rgba(255,159,67,.12)}
+.badge.d4{color:var(--d4);border-color:var(--d4);background:rgba(248,81,73,.12)}
+.badge.sb{color:#bcd4ff;border-color:rgba(188,212,255,.35);background:rgba(122,162,255,.1)}
+.qnum{color:var(--muted);font-size:.8rem;font-weight:700}
+.qtext{font-size:1.05rem;margin:12px 0 12px;line-height:1.55}
+.choices{display:grid;gap:8px}
+.choice{display:flex;gap:10px;align-items:flex-start;cursor:pointer;border:1px solid var(--line);
+  background:rgba(255,255,255,.035);border-radius:var(--r-md);padding:11px 13px;font-size:.98rem;
+  transition:all .12s var(--ease);text-align:left;color:var(--ink);font-family:inherit;width:100%}
+.choice:hover:not(:disabled){border-color:var(--accent);background:rgba(92,200,255,.06)}
+.choice .k{flex:0 0 auto;width:22px;height:22px;border-radius:6px;display:grid;place-items:center;
+  background:rgba(255,255,255,.08);font-size:.8rem;font-weight:800}
+.choice.correct{border-color:var(--good);background:rgba(94,230,168,.13)}
+.choice.correct .k{background:var(--good);color:#062}
+.choice.wrong{border-color:var(--bad);background:rgba(248,81,73,.13)}
+.choice.wrong .k{background:var(--bad);color:#fff}
+.choice:disabled{cursor:default;opacity:.95}
+.fb{margin-top:12px;padding:11px 13px;border-radius:var(--r-md);font-size:.92rem;display:none}
+.fb.show{display:block;animation:rise .25s var(--ease) both}
+.fb.ok{background:rgba(94,230,168,.1);border:1px solid rgba(94,230,168,.3)}
+.fb.no{background:rgba(248,81,73,.1);border:1px solid rgba(248,81,73,.3)}
+.act{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.steps{margin-top:10px;display:none}
+.steps.show{display:block}
+.step{background:rgba(8,10,22,.5);border-left:3px solid var(--accent);border-radius:0 10px 10px 0;
+  padding:8px 12px;margin:7px 0;font-size:.92rem;animation:rise .25s var(--ease) both}
+.step .fx{background:rgba(0,0,0,.35)}
+.hintbox{margin-top:8px}
+.hint{background:rgba(255,209,102,.08);border:1px solid rgba(255,209,102,.25);border-radius:10px;
+  padding:8px 12px;margin:6px 0;font-size:.9rem;color:#ffe9b0;animation:rise .25s var(--ease) both}
+.nav{display:flex;gap:8px;justify-content:space-between;margin-top:14px}
+.empty{text-align:center;color:var(--muted);padding:30px 10px}
+.homelink{text-align:center;font-size:.82rem}
+.homelink a{color:var(--accent);text-decoration:none;font-weight:700}
+.geotabs{display:flex;gap:7px;overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+.geotabs::-webkit-scrollbar{height:5px}.geotabs::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:9px}
+.geotab{flex:0 0 auto;white-space:nowrap;cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.04);
+  color:var(--muted);font-family:inherit;font-weight:700;font-size:.82rem;padding:7px 12px;border-radius:var(--r-pill);transition:all .15s var(--ease)}
+.geotab:hover{color:var(--ink);border-color:rgba(92,200,255,.4)}
+.geotab.on{background:var(--grad-fill);color:#0a1020;border-color:transparent}
+.cvwrap{position:relative;width:100%;background:rgba(8,10,22,.55);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;margin-top:8px}
+#geocanvas{display:block;width:100%;height:auto}
+.georow{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:.85rem;color:var(--muted)}
+.georow input[type=range]{flex:1;accent-color:var(--accent)}
+.georow .val{font-family:ui-monospace,monospace;color:var(--gold);min-width:70px;text-align:right}
+.geocap{margin-top:10px;background:rgba(8,10,22,.4);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:.9rem;color:#dfe6ff;line-height:1.55}
+.geocap b{color:var(--gold)}
+.whybox{background:linear-gradient(180deg,rgba(255,209,102,.12),rgba(255,209,102,.04));border:1px solid rgba(255,209,102,.35);
+  border-radius:var(--r-md);padding:9px 12px;margin:0 0 8px;font-size:.93rem;color:#ffe9b0}
+.whybox b{color:var(--gold)}
+@media(max-width:520px){.stat b{font-size:1.1rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero">
+  <span class="pill">TSAM · คณิต ส่วนที่ 10 + 11 /12 (+เก็บตก 2-3)</span>
+  <h1><span class="grad-text">อนุกรมกำลัง &amp; ฟังก์ชันหลายตัวแปร</span></h1>
+  <p class="lead">อนุกรมกำลัง · ช่วงการลู่เข้า · อนุพันธ์ย่อย(อันดับสอง) · ผลต่างเชิงอนุพันธ์รวม + พาราเมตริก &amp; ค่าเชิงอนุพันธ์ — คลังโจทย์ <b style="color:var(--d1)">ง่าย</b> → <b style="color:var(--d2)">กลาง</b> → <b style="color:var(--d3)">ยาก</b> → <b style="color:var(--d4)">โหด</b></p>
+</div>
+
+<div class="card acc" id="essence">
+  <div class="acc-head" onclick="document.getElementById('essence').classList.toggle('open')">
+    <h2 style="margin:0">🎯 แก่นแท้ 30 วินาที — สูตรที่ต้องมีในหัว</h2>
+    <span class="chev">▶</span>
+  </div>
+  <div class="acc-body">
+    <div class="fgrid">
+      <div class="fbox"><b>อนุกรมเรขาคณิต (รากของทุกอย่าง)</b>
+        <span class="fx">Σ rⁿ (n≥0) = 1/(1−r)</span>
+        <small>ลู่เข้าเมื่อ |r| &lt; 1 เท่านั้น · เริ่ม n=1 → r/(1−r)</small></div>
+      <div class="fbox"><b>อนุกรมกำลัง = พหุนามไม่รู้จบ</b>
+        <span class="fx">Σ cₙ(x−a)ⁿ</span>
+        <small>ลู่เข้าใน "รัศมี R รอบจุดศูนย์กลาง a"</small>
+        <small>หา R: ratio test → lim |aₙ₊₁/aₙ| &lt; 1 แล้วแก้หา x</small></div>
+      <div class="fbox"><b>ช่วงการลู่เข้า</b>
+        <small>① ratio test ได้ช่วงเปิด (a−R, a+R)</small>
+        <small>② <b>เช็คปลายสองข้างแยกเสมอ!</b> (แทน x จริงแล้วดูอนุกรมตัวเลข)</small></div>
+      <div class="fbox"><b>อนุกรมแม่บทที่ควรจำ</b>
+        <span class="fx">eˣ = Σ xⁿ/n! (ทุก x)</span><br>
+        <span class="fx">sin x = x − x³/3! + x⁵/5! …</span><br>
+        <span class="fx">1/(1−x) = Σ xⁿ (|x|&lt;1)</span></div>
+      <div class="fbox"><b>อนุพันธ์ย่อย</b>
+        <small>∂f/∂x = ดิฟตาม x โดย "แช่แข็ง y ไว้เป็นค่าคงที่"</small>
+        <small>อันดับสอง: fxx, fyy, fxy · Clairaut: fxy = fyx</small></div>
+      <div class="fbox"><b>ผลต่างเชิงอนุพันธ์รวม</b>
+        <span class="fx">dz = fₓ dx + f_y dy</span>
+        <small>= ประมาณการเปลี่ยนของ z เมื่อ x,y ขยับนิดๆ</small>
+        <small>อนุพันธ์รวม: dz/dt = fₓ(dx/dt) + f_y(dy/dt)</small></div>
+      <div class="fbox"><b>พาราเมตริก (เก็บตกส่วน 2)</b>
+        <span class="fx">dy/dx = (dy/dt)/(dx/dt)</span>
+        <small>ดิฟแยกตาม t แล้วหารกัน</small></div>
+      <div class="fbox"><b>ค่าเชิงอนุพันธ์ (เก็บตกส่วน 3)</b>
+        <span class="fx">Δy ≈ dy = f′(x)·dx</span>
+        <small>ประมาณค่า: f(x+dx) ≈ f(x) + f′(x)dx (เดินตามเส้นสัมผัส)</small></div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>🎨 แก่นแท้เชิงเรขาคณิต — เห็นภาพว่า "ทำไม"</h2>
+  <p class="sub">เลือกหัวข้อ แล้ว<b>ลากสไลเดอร์</b>ดูว่าเกิดอะไรขึ้น — เข้าใจที่มา ไม่ใช่ท่องสูตร</p>
+  <div class="geotabs" id="geotabs">
+    <button class="geotab on" data-g="power">📚 อนุกรมกำลังไต่เข้าหา 1/(1−x)</button>
+    <button class="geotab" data-g="taylor">🌊 พหุนามแปลงร่างเป็น sin</button>
+    <button class="geotab" data-g="partial">✂️ อนุพันธ์ย่อย = หั่นภูเขา</button>
+    <button class="geotab" data-g="diff">📐 ค่าเชิงอนุพันธ์ = เดินตามเส้นสัมผัส</button>
+    <button class="geotab" data-g="param">🛤️ พาราเมตริก: ทางโค้งจากเวลา t</button>
+  </div>
+  <div class="cvwrap"><canvas id="geocanvas"></canvas></div>
+  <div class="georow" id="georow">
+    <span id="geoslabel"></span>
+    <input type="range" id="georange">
+    <span class="val" id="geoval"></span>
+  </div>
+  <div class="geocap" id="geocap"></div>
+</div>
+
+<div class="card">
+  <div class="filters">
+    <div class="flabel">ระดับความยาก (on demand)</div>
+    <button class="chip on all" data-d="all">ทั้งหมด</button>
+    <button class="chip d1" data-d="1">🟢 ง่าย</button>
+    <button class="chip d2" data-d="2">🟡 กลาง</button>
+    <button class="chip d3" data-d="3">🟠 ยาก</button>
+    <button class="chip d4" data-d="4">🔴 โหด</button>
+    <div class="flabel">หัวข้อย่อย</div>
+    <button class="chip sub on" data-s="all">ทุกหัวข้อ</button>
+    <button class="chip sub" data-s="ser">อนุกรม/อนุกรมกำลัง</button>
+    <button class="chip sub" data-s="conv">ช่วงการลู่เข้า</button>
+    <button class="chip sub" data-s="par">อนุพันธ์ย่อย</button>
+    <button class="chip sub" data-s="tot">ผลต่างรวม/อนุพันธ์รวม</button>
+    <button class="chip sub" data-s="misc">พาราเมตริก/ค่าเชิงอนุพันธ์</button>
+    <div class="flabel" style="display:flex;gap:7px;align-items:center;width:100%;justify-content:space-between">
+      <span>เครื่องมือ</span>
+      <span style="display:flex;gap:7px">
+        <button class="tool" id="shuffle">🔀 สลับข้อ</button>
+        <button class="tool" id="reset">↺ ล้างคะแนน</button>
+      </span>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stat"><b id="st-seen">0</b><small>ทำแล้ว / <span id="st-total">0</span></small></div>
+    <div class="stat"><b id="st-correct" style="color:var(--good)">0</b><small>ตอบถูก</small></div>
+    <div class="stat"><b id="st-pct">0%</b><small>ความแม่น</small></div>
+    <div class="stat"><b id="st-pos">–</b><small>ข้อที่</small></div>
+  </div>
+  <div class="bar"><i id="progbar"></i></div>
+</div>
+
+<div class="card" id="quizcard">
+  <div class="empty" id="qempty" style="display:none">ไม่มีข้อในตัวกรองนี้ 🤔<br>ลองเลือกความยาก/หัวข้ออื่น</div>
+  <div id="qbody">
+  <div class="qtop">
+    <div class="badges" id="badges"></div>
+    <div class="qnum" id="qnum"></div>
+  </div>
+  <div class="qtext" id="qtext"></div>
+  <div class="choices" id="choices"></div>
+  <div class="fb" id="fb"></div>
+  <div class="act">
+    <button class="tool" id="btn-steps" style="display:none">🪜 ดูขั้นตอน</button>
+    <button class="tool" id="btn-hint">💡 ขอนัยใบ้</button>
+  </div>
+  <div class="hintbox" id="hintbox"></div>
+  <div class="steps" id="steps"></div>
+  <div class="nav">
+    <button class="tool" id="prev">‹ ก่อนหน้า</button>
+    <button class="tool" id="next">ถัดไป ›</button>
+  </div>
+  </div><!-- /qbody -->
+</div>
+
+<div class="card homelink">
+  🔢 อุดหลุมส่วน 10+11 (+เก็บตก 2-3) · ทฤษฎีลำดับ-อนุกรม: <a href="seq-series-tsam.html">seq-series-tsam</a> · อนุพันธ์ย่อยเบื้องต้น: <a href="math-extra-tsam.html">math-extra-tsam</a> · <a href="index.html">‹ กลับหน้ารวม</a>
+</div>
+
+</div>
+
+<script>
+const SUB={ser:'อนุกรมกำลัง',conv:'ช่วงลู่เข้า',par:'อนุพันธ์ย่อย',tot:'ผลต่างรวม',misc:'พาราเมตริก/dy'};
+const DNAME={1:'ง่าย',2:'กลาง',3:'ยาก',4:'โหด'};
+const PROBLEMS=[
+/* ---------- ง่าย ---------- */
+{id:'S01',sub:'ser',diff:1,q:'อนุกรมเรขาคณิต 1 + 1/2 + 1/4 + 1/8 + … มีผลบวกเท่าใด?',ch:['1','2','3','ลู่ออก'],a:1,
+ hints:['r = 1/2, |r| < 1 → ลู่เข้า','สูตร a/(1−r)'],
+ steps:['a = 1, r = 1/2','S = 1/(1−1/2)','= 2']},
+{id:'S02',sub:'ser',diff:1,q:'อนุกรมเรขาคณิต Σ rⁿ ลู่เข้าเมื่อใด?',ch:['ทุกค่า r','|r| < 1','r > 0','r < 1'],a:1,
+ hints:['ต้องหดลงเรื่อยๆ','ขนาดของ r ต้องเล็กกว่า 1 (ลบก็ได้)'],
+ steps:['พจน์ต้องหดเข้า 0 เร็วพอ','|r| < 1 (เช่น r = −1/2 ก็ลู่เข้า)','r = 1 หรือ −1 ไม่รอด']},
+{id:'S03',sub:'ser',diff:1,q:'Σ (1/3)ⁿ ตั้งแต่ n = 1 ถึง ∞ เท่ากับข้อใด?',ch:['3/2','1/2','1/3','2/3'],a:1,
+ hints:['เริ่มที่ n=1 → พจน์แรก = 1/3','สูตร a/(1−r) โดย a = พจน์แรก'],
+ steps:['a = 1/3, r = 1/3','S = (1/3)/(1−1/3) = (1/3)/(2/3)','= 1/2']},
+{id:'S04',sub:'ser',diff:1,q:'"อนุกรมกำลัง" คือข้อใด?',ch:['อนุกรมของจำนวนยกกำลัง','Σ cₙ(x−a)ⁿ — พหุนามที่มีพจน์ไม่รู้จบ','อนุกรมที่ลู่เข้าเสมอ','ผลบวกของ n²'],a:1,
+ hints:['มีตัวแปร x อยู่ในอนุกรม','เหมือนพหุนามที่ไม่มีวันจบ'],
+ steps:['อนุกรมกำลัง = Σ cₙ(x−a)ⁿ','คือ "พหุนามอนันต์พจน์" รอบจุดศูนย์กลาง a','ค่า x บางช่วงเท่านั้นที่ลู่เข้า']},
+{id:'S05',sub:'par',diff:1,q:'f(x,y) = x² + y² ค่า f(1,2) เท่ากับข้อใด?',ch:['3','5','9','1'],a:1,
+ hints:['แค่แทนค่า','1² + 2²'],
+ steps:['แทนค่าตรงๆ: <span class=\"fx\">f(1,2) = 1² + 2² = 1 + 4</span>','<span class=\"fx\">= 5</span> — ฟังก์ชันสองตัวแปรคือ \"เครื่องรับเลขสองตัว คืนหนึ่งตัว\" (ความสูงของผิวโดมที่จุดนั้น)']},
+{id:'S06',sub:'par',diff:1,q:'∂/∂x ของ f(x,y) = x²y เท่ากับข้อใด?',ch:['2xy','x²','2x','x²+y'],a:0,
+ hints:['มอง y เป็นค่าคงที่','ดิฟ x² ได้ 2x แล้วคูณ y ที่แช่ไว้'],
+ steps:['y = ค่าคงที่ (แช่แข็ง)','∂f/∂x = 2x·y = 2xy']},
+{id:'S07',sub:'par',diff:1,q:'∂/∂y ของ f(x,y) = x²y เท่ากับข้อใด?',ch:['2xy','x²','2y','0'],a:1,
+ hints:['คราวนี้แช่ x','x² เป็นแค่สัมประสิทธิ์ของ y'],
+ steps:['x = ค่าคงที่','f = (x²)·y → ∂f/∂y = x²']},
+{id:'S08',sub:'par',diff:1,q:'∂/∂x ของ f(x,y) = sin y เท่ากับข้อใด?',ch:['cos y','−cos y','0','sin y'],a:2,
+ hints:['ไม่มี x ในนิพจน์เลย','ค่าคงที่ดิฟได้ 0'],
+ steps:['sin y ไม่ขึ้นกับ x','∂/∂x (ค่าคงที่เทียบ x) = 0']},
+{id:'S09',sub:'ser',diff:1,q:'อนุกรมฮาร์มอนิก 1 + 1/2 + 1/3 + 1/4 + … เป็นอย่างไร?',ch:['ลู่เข้า = 2','ลู่เข้า = e','ลู่ออก (โตไม่หยุด)','ลู่เข้า = π'],a:2,
+ hints:['พจน์เข้า 0 แต่ช้าไป','จับกลุ่มแล้วแต่ละกลุ่มเกิน 1/2'],
+ steps:['1/3+1/4 > 1/2, 1/5+…+1/8 > 1/2, …','บวก 1/2 ได้ไม่รู้จบ','ลู่ออก (แม้พจน์จะเข้า 0!)']},
+{id:'S10',sub:'misc',diff:1,q:'เส้นโค้งพาราเมตริก x = t², y = t³ สูตร dy/dx คือข้อใด?',ch:['(dy/dt)·(dx/dt)','(dy/dt)/(dx/dt)','dy/dt − dx/dt','3t²·2t'],a:1,
+ hints:['ความชัน = อัตรา y ต่ออัตรา x','หารกัน'],
+ steps:['dy/dx = (dy/dt)/(dx/dt)','ดิฟแยกตาม t แล้วหาร']},
+/* ---------- กลาง ---------- */
+{id:'S11',sub:'conv',diff:2,q:'รัศมีการลู่เข้าของ Σ xⁿ เท่ากับข้อใด?',ch:['R = 0','R = 1','R = 2','R = ∞'],a:1,
+ hints:['นี่คืออนุกรมเรขาคณิต r = x','ลู่เข้าเมื่อ |x| < 1'],
+ steps:['Σxⁿ ลู่เข้าเมื่อ |x| < 1','รัศมี R = 1 รอบศูนย์กลาง 0']},
+{id:'S12',sub:'conv',diff:2,q:'ช่วงการลู่เข้าของ Σ xⁿ (ตรวจปลายแล้ว) คือข้อใด?',ch:['[−1, 1]','(−1, 1)','[−1, 1)','(−1, 1]'],a:1,
+ hints:['เช็ค x = 1: Σ1 = ?  x = −1: Σ(−1)ⁿ = ?','ทั้งคู่ไม่ลู่เข้า'],
+ steps:['x=1: 1+1+1+… ลู่ออก','x=−1: 1−1+1−… แกว่ง ลู่ออก','ช่วง = (−1, 1) เปิดสองข้าง']},
+{id:'S13',sub:'ser',diff:2,q:'Σ xⁿ/n! คืออนุกรมของฟังก์ชันใด?',ch:['sin x','cos x','eˣ','ln(1+x)'],a:2,
+ hints:['ดิฟอนุกรมนี้แล้วได้ตัวเดิม','ฟังก์ชันที่ดิฟได้ตัวเอง'],
+ steps:['ดิฟทีละพจน์: xⁿ/n! → xⁿ⁻¹/(n−1)! เลื่อนกลับที่เดิม','ดิฟแล้วได้ตัวเดิม = eˣ','(ลู่เข้าทุก x, R = ∞)']},
+{id:'S14',sub:'par',diff:2,q:'f(x,y) = x²y³ ค่า fₓ ที่จุด (1,1) เท่ากับข้อใด?',ch:['2','3','6','1'],a:0,
+ hints:['fₓ = 2xy³','แทน (1,1)'],
+ steps:['fₓ = 2xy³','fₓ(1,1) = 2(1)(1) = 2']},
+{id:'S15',sub:'par',diff:2,q:'f(x,y) = x²y³ อนุพันธ์ย่อยผสม f_xy ที่ (1,1) เท่ากับข้อใด?',ch:['2','6','12','3'],a:1,
+ hints:['ดิฟ x ก่อน: 2xy³ แล้วดิฟ y ต่อ','2x·3y²'],
+ steps:['fₓ = 2xy³','f_xy = ∂/∂y (2xy³) = 6xy²','ที่ (1,1): 6']},
+{id:'S16',sub:'tot',diff:2,q:'z = xy ผลต่างเชิงอนุพันธ์รวม dz คือข้อใด?',ch:['dx·dy','y dx + x dy','x dx + y dy','dx + dy'],a:1,
+ hints:['dz = fₓdx + f_y dy','fₓ = y, f_y = x'],
+ steps:['fₓ = y, f_y = x','dz = y dx + x dy']},
+{id:'S17',sub:'tot',diff:2,q:'z = x²y ที่ x=2, y=3 ถ้า dx = 0.1, dy = 0.2 แล้ว dz ≈ เท่าใด?',ch:['1.2','2.0','0.8','3.2'],a:1,
+ hints:['dz = 2xy·dx + x²·dy','แทนตัวเลข'],
+ steps:['dz = 2(2)(3)(0.1) + (4)(0.2)','= 1.2 + 0.8','= 2.0']},
+{id:'S18',sub:'par',diff:2,q:'f(x,y) = x³y แล้ว f_xx เท่ากับข้อใด?',ch:['3x²y','6xy','6x','x³'],a:1,
+ hints:['ดิฟ x สองรอบ','3x²y → 6xy'],
+ steps:['fₓ = 3x²y','f_xx = 6xy']},
+{id:'S19',sub:'misc',diff:2,q:'x = t², y = t³ ค่า dy/dx ที่ t = 2 เท่ากับข้อใด?',ch:['3','6','12','3/2'],a:0,
+ hints:['dy/dt = 3t², dx/dt = 2t','หารกันแล้วแทน t=2'],
+ steps:['dy/dx = 3t²/2t = 3t/2','ที่ t=2: 3(2)/2 = 3']},
+{id:'S20',sub:'misc',diff:2,q:'ใช้ค่าเชิงอนุพันธ์ประมาณ √25.1 ได้เท่าใด? (f=√x ที่ 25, dx=0.1)',ch:['5.01','5.05','5.1','5.001'],a:0,
+ hints:['dy = dx/(2√x)','= 0.1/10'],
+ steps:['f′(25) = 1/(2·5) = 0.1','dy = 0.1 × 0.1 = 0.01','√25.1 ≈ 5 + 0.01 = 5.01']},
+{id:'S21',sub:'conv',diff:2,q:'รัศมีการลู่เข้าของ Σ xⁿ/2ⁿ เท่ากับข้อใด?',ch:['1/2','1','2','∞'],a:2,
+ hints:['เขียนเป็น Σ(x/2)ⁿ','เรขาคณิต r = x/2'],
+ steps:['ลู่เข้าเมื่อ |x/2| < 1','|x| < 2 → R = 2']},
+{id:'S22',sub:'ser',diff:2,q:'Σ xⁿ (n≥0) เมื่อ |x|<1 มีผลบวกเป็นฟังก์ชันใด และค่าที่ x = 1/3 คือ?',ch:['1/(1−x) → 3/2','1/(1+x) → 3/4','eˣ → e^{1/3}','ln(1−x)'],a:0,
+ hints:['อนุกรมเรขาคณิตแท้ๆ','แทน x = 1/3'],
+ steps:['Σxⁿ = 1/(1−x)','ที่ 1/3: 1/(2/3) = 3/2']},
+/* ---------- ยาก ---------- */
+{id:'S23',sub:'conv',diff:3,q:'ช่วงการลู่เข้าของ Σ xⁿ/n (n≥1) คือข้อใด?',ch:['(−1,1)','[−1,1]','[−1,1)','(−1,1]'],a:2,
+ hints:['R = 1 · เช็คปลาย: x=1 ฮาร์มอนิก, x=−1 สลับเครื่องหมาย','ฮาร์มอนิกตาย สลับรอด'],
+ steps:['ratio → R = 1','x=1: Σ1/n ลู่ออก (ฮาร์มอนิก)','x=−1: Σ(−1)ⁿ/n ลู่เข้า (สลับ) → [−1,1)']},
+{id:'S24',sub:'par',diff:3,q:'f(x,y) = e^(xy) แล้ว fₓ เท่ากับข้อใด?',ch:['e^(xy)','y·e^(xy)','x·e^(xy)','xy·e^(xy)'],a:1,
+ hints:['ลูกโซ่: e^(ไส้)·ดิฟไส้ตาม x','ไส้ = xy, ดิฟตาม x ได้ y'],
+ steps:['∂/∂x e^(xy) = e^(xy)·∂(xy)/∂x','= y·e^(xy)']},
+{id:'S25',sub:'par',diff:3,q:'ทฤษฎีบทของแคลโรต์ (Clairaut) กล่าวว่าอย่างไร?',ch:['fxx = fyy เสมอ','f_xy = f_yx (เมื่อต่อเนื่อง)','fx = fy','อนุพันธ์ย่อยมีจริงเสมอ'],a:1,
+ hints:['เรื่องลำดับการดิฟผสม','สลับลำดับได้'],
+ steps:['ถ้าอนุพันธ์ย่อยอันดับสองต่อเนื่อง','ลำดับการดิฟไม่สำคัญ: f_xy = f_yx','(ดิฟ x ก่อนหรือ y ก่อน ได้เท่ากัน)']},
+{id:'S26',sub:'par',diff:3,q:'z = ln(x² + y²) แล้ว zₓ เท่ากับข้อใด?',ch:['1/(x²+y²)','2x/(x²+y²)','2x','x/(x²+y²)'],a:1,
+ hints:['ลูกโซ่ของ ln: ดิฟไส้/ไส้','ไส้ดิฟตาม x = 2x'],
+ steps:['zₓ = (∂ไส้/∂x)/ไส้','= 2x/(x²+y²)']},
+{id:'S27',sub:'tot',diff:3,q:'z = x² + y², x = cos t, y = sin t แล้ว dz/dt เท่ากับข้อใด?',ch:['2cos t + 2sin t','0','−2 sin t cos t','1'],a:1,
+ hints:['อนุพันธ์รวม: zₓ(dx/dt)+z_y(dy/dt)','หรือสังเกต cos²+sin² = 1'],
+ steps:['dz/dt = 2x(−sint) + 2y(cost)','= −2cost·sint + 2sint·cost = 0','(สมเหตุผล: z = cos²+sin² = 1 คงที่ตลอด!)']},
+{id:'S28',sub:'misc',diff:3,q:'ประมาณ (2.01)³ ด้วยค่าเชิงอนุพันธ์ได้เท่าใด?',ch:['8.06','8.12','8.24','8.01'],a:1,
+ hints:['f = x³ ที่ 2, dx = 0.01','dy = 3x²dx = 12(0.01)'],
+ steps:['f(2) = 8, f′(2) = 12','dy = 12 × 0.01 = 0.12','(2.01)³ ≈ 8.12']},
+{id:'S29',sub:'conv',diff:3,q:'อนุกรมกำลังลู่เข้า "เร็วสุด/ชัวร์สุด" ที่จุดใด?',ch:['ปลายช่วง','จุดศูนย์กลาง a','ทุกจุดเท่ากัน','นอกช่วง'],a:1,
+ hints:['(x−a)ⁿ เล็กสุดเมื่อไร','ยิ่งใกล้ a พจน์ยิ่งจิ๋ว'],
+ steps:['ที่ x = a ทุกพจน์ (ยกเว้นแรก) เป็น 0','ยิ่งไกล a พจน์ (x−a)ⁿ ยิ่งโต ลู่ช้าลง','จนเกิน R ก็ลู่ออก — ศูนย์กลางชัวร์สุด']},
+{id:'S30',sub:'tot',diff:3,q:'ระนาบสัมผัสของ z = x² + y² ที่จุด (1,1,2) คือข้อใด?',ch:['z = 2x + 2y − 2','z = x + y','z = 2x + 2y + 2','z = 4x + 4y − 6'],a:0,
+ hints:['z = z₀ + fₓ(x−1) + f_y(y−1)','fₓ = f_y = 2 ที่จุดนี้'],
+ steps:['fₓ(1,1) = 2, f_y(1,1) = 2','z = 2 + 2(x−1) + 2(y−1)','= 2x + 2y − 2']},
+{id:'S31',sub:'ser',diff:3,q:'อนุกรมแมคลอรินของ sin x คือข้อใด?',ch:['1 − x²/2! + x⁴/4! − …','x − x³/3! + x⁵/5! − …','x + x³/3! + x⁵/5! + …','Σ xⁿ/n!'],a:1,
+ hints:['sin เป็นฟังก์ชันคี่ → มีแต่กำลังคี่','เครื่องหมายสลับ'],
+ steps:['sin คี่ → พจน์กำลังคี่เท่านั้น','สลับบวกลบ: x − x³/6 + x⁵/120 − …']},
+{id:'S32',sub:'par',diff:3,q:'lim ของ (x² − y²)/(x − y) เมื่อ (x,y) → (1,1) เท่ากับข้อใด?',ch:['0','1','2','ไม่มีลิมิต'],a:2,
+ hints:['0/0 → แยกตัวประกอบเหมือนตัวแปรเดียว','(x−y)(x+y)'],
+ steps:['= (x−y)(x+y)/(x−y) = x+y','→ 1+1 = 2']},
+/* ---------- โหด ---------- */
+{id:'S33',sub:'conv',diff:4,q:'ช่วงการลู่เข้าของ Σ (x−2)ⁿ/(n·3ⁿ) คือข้อใด?',ch:['(−1, 5)','[−1, 5)','(−1, 5]','[−1, 5]'],a:1,
+ hints:['ratio: |x−2|/3 < 1 → ศูนย์กลาง 2 รัศมี 3','ปลาย: x=5 ฮาร์มอนิก / x=−1 สลับ'],
+ steps:['|x−2| < 3 → −1 < x < 5','x=5: Σ1/n ลู่ออก · x=−1: Σ(−1)ⁿ/n ลู่เข้า','= [−1, 5)']},
+{id:'S34',sub:'ser',diff:4,q:'ประมาณ sin(0.5) ด้วยอนุกรม 2 พจน์แรก ได้เท่าใด?',ch:['0.500','0.479','0.521','0.458'],a:1,
+ hints:['sin x ≈ x − x³/6','0.5 − 0.125/6'],
+ steps:['x = 0.5: x³/6 = 0.125/6 ≈ 0.0208','0.5 − 0.0208 = 0.4792','≈ 0.479 (ค่าจริง 0.4794 — ใกล้มาก!)']},
+{id:'S35',sub:'par',diff:4,q:'f(x,y) = x² − y² ค่า f_xx + f_yy เท่ากับข้อใด?',ch:['0','4','2x − 2y','−4'],a:0,
+ hints:['f_xx = 2, f_yy = −2','บวกกัน'],
+ steps:['f_xx = 2, f_yy = −2','ผลรวม = 0','(เรียกว่าฟังก์ชันฮาร์มอนิก — สมการลาปลาซ)']},
+{id:'S36',sub:'par',diff:4,q:'lim ของ xy/(x² + y²) เมื่อ (x,y) → (0,0) เป็นอย่างไร?',ch:['= 0','= 1/2','= 1','ไม่มีลิมิต (ขึ้นกับเส้นทาง)'],a:3,
+ hints:['ลองเข้าตามแกน x (y=0) กับตามเส้น y=x','ได้ค่าต่างกัน = จบ'],
+ steps:['ตามแกน x (y=0): 0/x² = 0','ตามเส้น y=x: x²/2x² = 1/2','คนละค่า → ลิมิตไม่มี (หลายตัวแปรต้องเหมือนกัน "ทุกเส้นทาง")']},
+{id:'S37',sub:'tot',diff:4,q:'กระป๋องทรงกระบอก V = πr²h ที่ r=2, h=5 ถ้า dr = 0.1, dh = −0.2 แล้ว dV ≈ เท่าใด?',ch:['1.2π','2π','−0.8π','0.4π'],a:0,
+ hints:['dV = V_r dr + V_h dh','V_r = 2πrh, V_h = πr²'],
+ steps:['V_r = 2π(2)(5) = 20π · V_h = π(4) = 4π','dV = 20π(0.1) + 4π(−0.2)','= 2π − 0.8π = 1.2π']},
+{id:'S38',sub:'misc',diff:4,q:'เส้นโค้ง x = t², y = t³ ที่ t = 1 เส้นสัมผัสมีสมการใด?',ch:['y = x','y = (3/2)x − 1/2','y = 3x − 2','y = (2/3)x + 1/3'],a:1,
+ hints:['จุดสัมผัส (1,1), ความชัน = 3t/2 ที่ t=1','y − 1 = m(x − 1)'],
+ steps:['จุด (1,1), dy/dx = 3t/2 = 3/2','y − 1 = (3/2)(x − 1)','y = (3/2)x − 1/2']},
+{id:'S39',sub:'conv',diff:4,q:'Σ n!·xⁿ มีรัศมีการลู่เข้าเท่าใด?',ch:['R = 1','R = e','R = ∞','R = 0 (ลู่เฉพาะ x = 0)'],a:3,
+ hints:['ratio: (n+1)!/n! = n+1 → โตไม่หยุด','ไม่มี x ไหนเอาชนะ n! ได้'],
+ steps:['ratio = (n+1)|x| → ∞ ทุก x ≠ 0','ลู่เข้าเฉพาะจุดเดียว x = 0','R = 0 (ขั้วตรงข้ามของ eˣ ที่ R = ∞)']},
+{id:'S40',sub:'tot',diff:4,q:'z = f(x,y), x = g(t), y = h(t) สูตรอนุพันธ์รวม dz/dt คือข้อใด?',ch:['fₓ + f_y','fₓ·g′ + f_y·h′','fₓ·f_y·g′h′','g′ + h′'],a:1,
+ hints:['กฎลูกโซ่หลายตัวแปร','ผลจากทุกเส้นทางบวกกัน'],
+ steps:['z เปลี่ยนผ่าน 2 ทาง: ผ่าน x และผ่าน y','dz/dt = fₓ(dx/dt) + f_y(dy/dt)','= "บวกทุกช่องทางที่ t ส่งผลถึง z"']},
+];
+
+const WHY={
+S01:'ก้าวครึ่งหนึ่งของที่เหลือเรื่อยๆ: 1 → 1.5 → 1.75 → … ไม่มีวันเกิน 2 แต่แนบ 2 สนิท',
+S02:'แต่ละพจน์ต้อง "หด" — ถ้า |r|≥1 ก้าวไม่เล็กลง เดินไกลอนันต์',
+S03:'สูตรเดียวกัน แค่พจน์แรกเปลี่ยน: S = พจน์แรก/(1−r)',
+S04:'อนุกรมกำลัง = เลโก้พหุนามต่อไม่จบ ใช้สร้างฟังก์ชันโหดๆ (sin, eˣ) จากบวก-คูณธรรมดา (ดูแท็บ 📚)',
+S05:'f(x,y) คือ "ภูมิประเทศ": ป้อนพิกัด ได้ความสูง',
+S06:'∂/∂x = เดินตามทิศ x อย่างเดียว โดยตรึง y ไว้ — y เป็นแค่ผู้ชม (ดูแท็บ ✂️)',
+S07:'สลับบทบาท: คราวนี้ x นั่งดู y เดิน',
+S08:'ภูมิประเทศไม่เปลี่ยนตามทิศ x เลย → เดินทิศ x พื้นเรียบ ชัน 0',
+S09:'กับดักดัง: พจน์เข้า 0 "ไม่พอ" ต้องเข้าเร็วพอด้วย — ฮาร์มอนิกหดช้าเกิน สะสมทะลุทุกเพดาน',
+S10:'ความชัน = ความเร็วแนว y หารความเร็วแนว x — เหมือนอ่าน speedometer สองตัวแล้วหารกัน (ดูแท็บ 🛤️)',
+S11:'Σxⁿ คือเรขาคณิตที่ r = x ตรงๆ → เขต |x|<1 คือเขตปลอดภัยของมัน',
+S12:'ขอบเขตต้องสอบแยกเสมอ: ที่ปลาย ratio test "เสมอ" ตัดสินไม่ได้ ต้องแทนค่าจริงดู',
+S13:'n! โตเร็วกว่า xⁿ ทุกตัว → หางอนุกรมโดนบดจนแหลก ลู่เข้าทุกที่ = ทำไม eˣ นิยามได้ทั้งเส้น',
+S14:'แช่ y=1 เหลือ f = x² → ชัน 2x = 2 ที่ x=1 — อนุพันธ์ย่อยคือแคลตัวเดียวในคราบหลายตัว',
+S15:'ดิฟสองทิศต่อกัน: ทิศ x ก่อนแล้วทิศ y — วัดว่า "ความชันทิศ x เปลี่ยนไหมเมื่อขยับ y"',
+S16:'พื้นที่สี่เหลี่ยม xy: ขยับกว้าง dx เพิ่ม y·dx, ขยับสูง dy เพิ่ม x·dy — สองแถบบวกกัน',
+S17:'ผลต่างรวม = ประเมินผลกระทบทีละช่อง (x ส่ง 1.2, y ส่ง 0.8) แล้วรวม',
+S18:'ดิฟซ้ำทิศเดิม = ความเว้าตามทิศ x ของภูเขา',
+S19:'ที่ t=2 รถวิ่งแนว y เร็ว 12 แนว x เร็ว 4 → เส้นทางชัน 3',
+S20:'ยืนที่จุดที่รู้ (√25=5) แล้วเดินตามเส้นสัมผัสนิดเดียว — โค้งกับเส้นตรงยังแยกไม่ออก (ดูแท็บ 📐)',
+S21:'ยืด r เป็น x/2 → เขตปลอดภัยกว้างขึ้นเป็น |x|<2 — สัมประสิทธิ์หด = รัศมีขยาย',
+S22:'สูตรปิด 1/(1−x) กับอนุกรม Σxⁿ คือร่างเดียวกันในเขต |x|<1 (ดูแท็บ 📚)',
+S23:'หาร n ทำให้ปลายซ้ายรอด (สลับเครื่องหมายช่วยหักล้าง) แต่ปลายขวายังเป็นฮาร์มอนิกแท้ → ครึ่งเปิดครึ่งปิด',
+S24:'ลูกโซ่ย่อย: ดิฟไส้ xy ตาม x ได้ y (y โดนแช่) — e ไม่เปลี่ยนรูป',
+S25:'เดินอ้อมภูเขา: ไปตะวันออกก่อนแล้วเหนือ vs เหนือก่อนแล้วตะวันออก — ถึงยอดเดียวกัน (ผิวเรียบพอ)',
+S26:'ลูกโซ่ ln: ดิฟไส้ตามทิศนั้น / ไส้เดิม',
+S27:'จุด (cost, sint) วิ่งบนวงกลมรัศมี 1 — ความสูง z = ระยะ² = 1 ตลอด → ไม่เปลี่ยน = 0 (เรขาคณิตตอบก่อนพีชคณิต!)',
+S28:'เดินตามเส้นสัมผัสของ x³ จากฐาน 8: ชัน 12 เดิน 0.01 → เพิ่ม 0.12',
+S29:'(x−a)ⁿ คือเชื้อเพลิงของแต่ละพจน์ — ที่ศูนย์กลางเชื้อเพลิงเป็นศูนย์ อนุกรมสงบสุด ยิ่งไกลยิ่งเดือด',
+S30:'ระนาบสัมผัส = เส้นสัมผัสเวอร์ชัน 2 มิติ: ชัน 2 ทั้งสองทิศจากจุด (1,1,2)',
+S31:'sin สมมาตรคี่ (หมุน 180° รอบจุดกำเนิดแล้วเหมือนเดิม) → มีแต่พจน์กำลังคี่ (ดูแท็บ 🌊)',
+S32:'0/0 หลายตัวแปรบางทีก็แค่พีชคณิตพื้นๆ: ตัด (x−y) เหลือ x+y เดินเข้า 2 สบายๆ',
+S33:'ท่าสอบครบสูตร: ratio หา R=3 รอบศูนย์ 2 แล้ว "สอบปลายแยก" — ฮาร์มอนิกตาย/สลับรอด ให้คำตอบครึ่งเปิด',
+S34:'อนุกรมตัดสั้น = เครื่องคิดเลขในหัว: สองพจน์ก็แม่นถึงทศนิยมที่ 3 (ดูแท็บ 🌊)',
+S35:'ภูเขา x²−y² คืออานม้า: เว้าขึ้นทิศ x (+2) เว้าลงทิศ y (−2) หักกันพอดี — สมดุลลาปลาซ',
+S36:'หลายตัวแปรลิมิตต้องรอด "ทุกเส้นทาง": ถนนสองสายให้ค่าต่างกัน = ไม่มีลิมิต (ต่างจากตัวเดียวที่มีแค่ซ้าย-ขวา)',
+S37:'ถังเบียร์: ขยายรัศมีนิด (ผิวข้างใหญ่ +2π) แต่เตี้ยลงนิด (−0.8π) — ผลรวมสุทธิคือ dV',
+S38:'พาราเมตริกซ่อนโค้ง y² = x³ ไว้ — แต่หา "จุด+ความชัน" จาก t ได้โดยไม่ต้องแกะรูปแฝง',
+S39:'n! คือสัตว์ประหลาดที่กินทุก xⁿ — เว้นแต่ x=0 ที่ทุกพจน์ตายตั้งแต่เกิด: อนุกรมสวยได้แต่ไร้เขตใช้งาน',
+S40:'แม่น้ำสองสาย: t ไหลผ่าน x และผ่าน y ไปรวมที่ z — ปริมาณน้ำรวม = บวกจากทุกสาย',
+};
+
+/* กระจายตำแหน่งคำตอบ ก-ง (หมุนตัวเลือกตามลำดับข้อ) */
+PROBLEMS.forEach((p,i)=>{const r=i%4;if(r){const c=p.ch;p.ch=c.map((_,k)=>c[(k+r)%4]);p.a=(p.a-r+4)%4;}});
+
+const KEY='tsam_math1011_ser_v2';
+let state={done:{},correct:{}};
+try{const s=JSON.parse(localStorage.getItem(KEY));if(s){state=s;}}catch(e){}
+let fDiff='all', fSub='all', order=[], pos=0;
+
+function saveState(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+function buildOrder(){
+  order=PROBLEMS.filter(p=>(fDiff==='all'||p.diff==+fDiff)&&(fSub==='all'||p.sub===fSub)).map(p=>p.id);
+  pos=0;
+}
+function shuffle(){for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];}pos=0;render();}
+
+const $=id=>document.getElementById(id);
+function updateStats(){
+  const ids=PROBLEMS.map(p=>p.id);
+  const seen=ids.filter(i=>state.done[i]).length;
+  const corr=ids.filter(i=>state.correct[i]).length;
+  $('st-seen').textContent=seen;
+  $('st-total').textContent=PROBLEMS.length;
+  $('st-correct').textContent=corr;
+  $('st-pct').textContent=seen?Math.round(corr/seen*100)+'%':'0%';
+  $('progbar').style.width=(seen/PROBLEMS.length*100)+'%';
+}
+function render(){
+  updateStats();
+  document.querySelectorAll('.chip[data-d]').forEach(c=>c.classList.toggle('on',c.dataset.d===fDiff));
+  document.querySelectorAll('.chip[data-s]').forEach(c=>c.classList.toggle('on',c.dataset.s===fSub));
+  if(!order.length){$('qbody').style.display='none';$('qempty').style.display='';$('st-pos').textContent='–';return;}
+  $('qbody').style.display='';$('qempty').style.display='none';
+  if(pos<0)pos=0; if(pos>=order.length)pos=order.length-1;
+  const p=PROBLEMS.find(x=>x.id===order[pos]);
+  $('st-pos').textContent=(pos+1)+'/'+order.length;
+  $('badges').innerHTML=`<span class="badge d${p.diff}">${['','🟢','🟡','🟠','🔴'][p.diff]} ${DNAME[p.diff]}</span><span class="badge sb">${SUB[p.sub]}</span>`;
+  $('qnum').textContent='ข้อ '+(pos+1)+' / '+order.length;
+  $('qtext').textContent=p.q;
+  const answered=state.done[p.id];
+  const picked=answered?answered.pick:null;
+  const ch=$('choices');ch.innerHTML='';
+  p.ch.forEach((c,i)=>{
+    const b=document.createElement('button');
+    b.className='choice';b.innerHTML=`<span class="k">${'กขคง'[i]}</span><span>${c}</span>`;
+    if(answered){b.disabled=true;
+      if(i===p.a)b.classList.add('correct');
+      if(i===picked&&picked!==p.a)b.classList.add('wrong');
+    }else{b.onclick=()=>pick(p,i);}
+    ch.appendChild(b);
+  });
+  const fb=$('fb');
+  if(answered){
+    const ok=picked===p.a;
+    fb.className='fb show '+(ok?'ok':'no');
+    fb.innerHTML=ok?'✅ ถูกต้อง! ตอบข้อ '+'กขคง'[p.a]:'❌ ยังไม่ใช่ — คำตอบที่ถูกคือข้อ '+'กขคง'[p.a]+' ('+p.ch[p.a]+')';
+    $('btn-steps').style.display='';
+  }else{fb.className='fb';fb.innerHTML='';$('btn-steps').style.display='none';}
+  $('hintbox').innerHTML='';$('hintbox').dataset.n='0';
+  $('steps').className='steps';$('steps').innerHTML='';
+}
+function pick(p,i){
+  state.done[p.id]={pick:i};
+  if(i===p.a)state.correct[p.id]=1; else delete state.correct[p.id];
+  saveState();render();
+}
+function showSteps(){
+  const p=PROBLEMS.find(x=>x.id===order[pos]);
+  const box=$('steps');box.className='steps show';box.innerHTML='';
+  if(WHY[p.id]){const w=document.createElement('div');w.className='whybox';w.innerHTML='🔑 <b>แก่นแท้:</b> '+WHY[p.id];box.appendChild(w);}
+  const h=document.createElement('h3');h.style.margin='4px 0 0';h.textContent='วิธีทำ';box.appendChild(h);
+  p.steps.forEach((s,i)=>{const d=document.createElement('div');d.className='step';d.style.animationDelay=(i*.08)+'s';d.innerHTML=s;box.appendChild(d);});
+}
+function showHint(){
+  const p=PROBLEMS.find(x=>x.id===order[pos]);
+  const box=$('hintbox');let n=+(box.dataset.n||0);
+  if(n>=p.hints.length){const d=document.createElement('div');d.className='hint';d.innerHTML='ℹ️ นัยหมดแล้ว — ลองกด "ดูขั้นตอน" ถ้ายังติด';box.appendChild(d);box.dataset.n=n+1;return;}
+  const d=document.createElement('div');d.className='hint';d.innerHTML='💡 นัยที่ '+(n+1)+': '+p.hints[n];box.appendChild(d);box.dataset.n=n+1;
+}
+
+document.querySelectorAll('.chip[data-d]').forEach(c=>c.onclick=()=>{fDiff=c.dataset.d;buildOrder();render();});
+document.querySelectorAll('.chip[data-s]').forEach(c=>c.onclick=()=>{fSub=c.dataset.s;buildOrder();render();});
+$('shuffle').onclick=shuffle;
+$('reset').onclick=()=>{if(confirm('ล้างคะแนนและประวัติการทำข้อทั้งหมด?')){state={done:{},correct:{}};saveState();render();}};
+$('next').onclick=()=>{if(pos<order.length-1){pos++;render();}};
+$('prev').onclick=()=>{if(pos>0){pos--;render();}};
+$('btn-steps').onclick=showSteps;
+$('btn-hint').onclick=showHint;
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')$('next').click();if(e.key==='ArrowLeft')$('prev').click();});
+
+/* ========== การ์ดแก่นแท้เชิงเรขาคณิต ========== */
+(function(){
+const cv=$('geocanvas'),cap=$('geocap'),rng=$('georange'),slab=$('geoslabel'),sval=$('geoval');
+if(!cv)return;
+let panel='power';
+const CFG={
+ power:{min:1,max:12,step:1,def:2,label:'จำนวนพจน์ n ='},
+ taylor:{min:1,max:6,step:1,def:1,label:'จำนวนพจน์ ='},
+ partial:{min:-1.4,max:1.4,step:.05,def:.5,label:'หั่นที่ y₀ ='},
+ diff:{min:0,max:1.6,step:.02,def:.8,label:'ก้าว dx ='},
+ param:{min:-1.6,max:1.6,step:.02,def:.8,label:'เวลา t ='},
+};
+function fit(){const w=cv.parentElement.clientWidth||600,h=300,dpr=Math.min(2,window.devicePixelRatio||1);
+ cv.width=w*dpr;cv.height=h*dpr;cv.style.height=h+'px';const ctx=cv.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);return{ctx,w,h};}
+function mk(w,h,x0,x1,y0,y1,pad,ox){pad=pad==null?36:pad;ox=ox||0;
+ return{X:x=>ox+pad+(x-x0)/(x1-x0)*(w-2*pad),Y:y=>h-pad-(y-y0)/(y1-y0)*(h-2*pad)};}
+function axes(ctx,M,x0,x1,y0,y1){ctx.strokeStyle='rgba(255,255,255,.16)';ctx.lineWidth=1;
+ const yz=(y0<=0&&y1>=0)?M.Y(0):M.Y(y0),xz=(x0<=0&&x1>=0)?M.X(0):M.X(x0);
+ ctx.beginPath();ctx.moveTo(M.X(x0),yz);ctx.lineTo(M.X(x1),yz);ctx.stroke();
+ ctx.beginPath();ctx.moveTo(xz,M.Y(y1));ctx.lineTo(xz,M.Y(y0));ctx.stroke();}
+function curve(ctx,M,f,a,b,col,wd){ctx.strokeStyle=col;ctx.lineWidth=wd||2.4;ctx.beginPath();let fst=true;
+ for(let i=0;i<=240;i++){const x=a+(b-a)*i/240,y=f(x);if(!isFinite(y)||Math.abs(y)>1e4){fst=true;continue;}
+  const px=M.X(x),py=M.Y(y);if(px<-50||px>2000){fst=true;continue;}if(fst){ctx.moveTo(px,py);fst=false;}else ctx.lineTo(px,py);}ctx.stroke();}
+function dash(ctx,x1,y1,x2,y2,col){ctx.save();ctx.setLineDash([5,4]);ctx.strokeStyle=col;ctx.lineWidth=1.4;
+ ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.restore();}
+function dot(ctx,x,y,col,r){ctx.fillStyle=col;ctx.beginPath();ctx.arc(x,y,r||5,0,7);ctx.fill();
+ ctx.strokeStyle='rgba(0,0,0,.4)';ctx.lineWidth=1.2;ctx.stroke();}
+function label(ctx,x,y,t,col){ctx.fillStyle=col||'#dfe6ff';ctx.font='600 12px sans-serif';ctx.fillText(t,x,y);}
+const C_M='#5cc8ff',C_P='#a371f7',C_G='#ffd166',C_R='#ff7a59',C_GD='#5ee6a8';
+
+function drawPower(ctx,w,h,n){
+ const x0=-1.6,x1=1.6,y0=-1,y1=5,M=mk(w,h,x0,x1,y0,y1);
+ axes(ctx,M,x0,x1,y0,y1);
+ dash(ctx,M.X(1),M.Y(y0),M.X(1),M.Y(y1),C_R);dash(ctx,M.X(-1),M.Y(y0),M.X(-1),M.Y(y1),C_R);
+ label(ctx,M.X(1)+4,M.Y(4.5),'x=1',C_R);label(ctx,M.X(-1)+4,M.Y(4.5),'x=−1',C_R);
+ curve(ctx,M,x=>1/(1-x),-1.6,.83,'rgba(255,209,102,.8)',2);label(ctx,M.X(.45),M.Y(1/(1-.45))-10,'เป้า: 1/(1−x)',C_G);
+ const S=x=>{let s=0;for(let k=0;k<n;k++)s+=Math.pow(x,k);return s;};
+ curve(ctx,M,S,-1.55,1.55,C_M,2.6);
+ label(ctx,M.X(-1.5),M.Y(S(-1.35))-10,'Sₙ(x), n='+n,C_M);
+ cap.innerHTML='พหุนาม n = '+n+' พจน์ (ฟ้า) ไต่เข้าหา 1/(1−x) (ทอง) — <b>ในเขต |x|&lt;1 เท่านั้น</b> · สังเกตนอกเส้นแดง (|x|&gt;1): เพิ่มพจน์เท่าไรก็ยิ่งเหวี่ยงหนี → นี่คือความหมายของ "รัศมีการลู่เข้า R=1"';
+}
+function drawTaylor(ctx,w,h,n){
+ const x0=-6.5,x1=6.5,y0=-2.6,y1=2.6,M=mk(w,h,x0,x1,y0,y1);
+ axes(ctx,M,x0,x1,y0,y1);
+ curve(ctx,M,Math.sin,-6.5,6.5,'rgba(255,209,102,.8)',2);label(ctx,M.X(4.4),M.Y(Math.sin(4.4))-10,'sin x',C_G);
+ const T=x=>{let s=0;for(let k=0;k<n;k++){const p=2*k+1;let f=1;for(let j=2;j<=p;j++)f*=j;s+=((k%2?-1:1)*Math.pow(x,p))/f;}return s;};
+ curve(ctx,M,T,-6.5,6.5,C_M,2.6);
+ const terms=['x','x−x³/3!','…+x⁵/5!','…−x⁷/7!','…+x⁹/9!','…−x¹¹/11!'];
+ cap.innerHTML='พหุนาม <b>'+terms[n-1]+'</b> (ฟ้า) เทียบ sin x (ทอง) — พจน์เดียวคือเส้นตรง, เพิ่มทีละพจน์ พหุนาม "งอตัว" กอดคลื่นได้ไกลขึ้นเรื่อยๆ · นี่คือแก่นของอนุกรม: <b>สร้างฟังก์ชันโหดจากบวก-คูณล้วนๆ</b>';
+}
+function drawPartial(ctx,w,h,y0v){
+ // contour of z=x^2+y^2 (left) + slice curve (right)
+ const LM=mk(w/2,h,-1.6,1.6,-1.6,1.6,28,0);
+ axes(ctx,LM,-1.6,1.6,-1.6,1.6);
+ for(let r=.4;r<=1.6;r+=.4){ctx.strokeStyle='rgba(92,200,255,'+(0.5-r*0.18)+')';ctx.lineWidth=1.6;ctx.beginPath();
+  for(let i=0;i<=100;i++){const a=2*Math.PI*i/100;const px=LM.X(r*Math.cos(a)),py=LM.Y(r*Math.sin(a));i?ctx.lineTo(px,py):ctx.moveTo(px,py);}ctx.closePath();ctx.stroke();}
+ dash(ctx,LM.X(-1.6),LM.Y(y0v),LM.X(1.6),LM.Y(y0v),C_G);
+ label(ctx,LM.X(-1.5),LM.Y(y0v)-6,'หั่นที่ y='+y0v.toFixed(2),C_G);
+ label(ctx,10,h-10,'คอนทัวร์ z=x²+y² (มองบน)','#9aa2cf');
+ const RM=mk(w/2,h,-1.6,1.6,0,4.2,28,w/2);
+ axes(ctx,RM,-1.6,1.6,0,4.2);
+ curve(ctx,RM,x=>x*x+y0v*y0v,-1.6,1.6,C_G,2.6);
+ const xs=.8, sl=2*xs;
+ dot(ctx,RM.X(xs),RM.Y(xs*xs+y0v*y0v),C_R,4);
+ ctx.strokeStyle=C_R;ctx.lineWidth=1.8;ctx.beginPath();
+ ctx.moveTo(RM.X(xs-.5),RM.Y(xs*xs+y0v*y0v-sl*.5));ctx.lineTo(RM.X(xs+.5),RM.Y(xs*xs+y0v*y0v+sl*.5));ctx.stroke();
+ label(ctx,w/2+10,h-10,'หน้าตัด z = x² + '+(y0v*y0v).toFixed(2),'#9aa2cf');
+ cap.innerHTML='ซ้าย: ภูเขา z=x²+y² มองจากบน (วงคือระดับความสูง) — เส้นทอง = มีดหั่นที่ y = '+y0v.toFixed(2)+' · ขวา: หน้าตัดที่ได้ = พาราโบลา z = x²+'+(y0v*y0v).toFixed(2)+' · <b>∂z/∂x คือความชันของหน้าตัดนี้</b> (= 2x ไม่ขึ้นกับ y ที่เลือก) — อนุพันธ์ย่อย = แคลตัวเดียวบนแผ่นหั่น';
+}
+function drawDiff(ctx,w,h,dx){
+ // f = sqrt(x) at x=1, tangent approx
+ const x0=0,x1=3.2,y0=0,y1=2.1,M=mk(w,h,x0,x1,y0,y1);
+ axes(ctx,M,x0,x1,y0,y1);
+ curve(ctx,M,Math.sqrt,0,3.2,C_M);label(ctx,M.X(2.6),M.Y(Math.sqrt(2.6))-10,'y=√x',C_M);
+ const a=1,fa=1,m=.5;
+ ctx.strokeStyle=C_G;ctx.lineWidth=2;ctx.beginPath();
+ ctx.moveTo(M.X(0),M.Y(fa-m*a));ctx.lineTo(M.X(3.2),M.Y(fa+m*(3.2-a)));ctx.stroke();
+ label(ctx,M.X(2.3),M.Y(fa+m*1.3)-10,'เส้นสัมผัส',C_G);
+ dot(ctx,M.X(a),M.Y(fa),C_M);
+ const xx=a+dx, approx=fa+m*dx, tru=Math.sqrt(xx);
+ dot(ctx,M.X(xx),M.Y(approx),C_G,5);dot(ctx,M.X(xx),M.Y(tru),C_R,5);
+ dash(ctx,M.X(xx),M.Y(0),M.X(xx),M.Y(Math.max(approx,tru)),'rgba(255,255,255,.2)');
+ dash(ctx,M.X(xx),M.Y(tru),M.X(xx),M.Y(approx),C_R);
+ cap.innerHTML='จาก x=1 ก้าวไป dx = '+dx.toFixed(2)+': เส้นสัมผัสทาย <b style="color:#ffd166">'+approx.toFixed(4)+'</b> ค่าจริง <b style="color:#ff7a59">'+tru.toFixed(4)+'</b> คลาด '+Math.abs(approx-tru).toFixed(4)+' — <b>ก้าวสั้น เส้นตรงกับโค้งแยกไม่ออก</b> = หัวใจของ Δy ≈ f′dx · ก้าวยาวแล้วโกหกมากขึ้น ลองลากดู!',
+ label(ctx,M.X(xx)+8,M.Y(approx),'ทาย',C_G),label(ctx,M.X(xx)+8,M.Y(tru)+12,'จริง',C_R);
+}
+function drawParam(ctx,w,h,t){
+ // x=t^2, y=t^3 curve with moving point + velocity
+ const x0=-.4,x1=3,y0=-4.5,y1=4.5,M=mk(w,h,x0,x1,y0,y1);
+ axes(ctx,M,x0,x1,y0,y1);
+ ctx.strokeStyle=C_M;ctx.lineWidth=2.4;ctx.beginPath();
+ for(let i=0;i<=200;i++){const s=-1.65+3.3*i/200;const px=M.X(s*s),py=M.Y(s*s*s);i?ctx.lineTo(px,py):ctx.moveTo(px,py);}ctx.stroke();
+ label(ctx,M.X(2.2),M.Y(2.2*Math.sqrt(2.2))+20,'x=t², y=t³',C_M);
+ const X=t*t,Y=t*t*t,vx=2*t,vy=3*t*t;
+ const sc=.25;
+ ctx.strokeStyle=C_G;ctx.fillStyle=C_G;ctx.lineWidth=2.4;
+ ctx.beginPath();ctx.moveTo(M.X(X),M.Y(Y));ctx.lineTo(M.X(X+vx*sc),M.Y(Y+vy*sc));ctx.stroke();
+ const ang=Math.atan2(M.Y(Y+vy*sc)-M.Y(Y),M.X(X+vx*sc)-M.X(X)),s2=9;
+ ctx.beginPath();ctx.moveTo(M.X(X+vx*sc),M.Y(Y+vy*sc));
+ ctx.lineTo(M.X(X+vx*sc)-s2*Math.cos(ang-.4),M.Y(Y+vy*sc)-s2*Math.sin(ang-.4));
+ ctx.lineTo(M.X(X+vx*sc)-s2*Math.cos(ang+.4),M.Y(Y+vy*sc)-s2*Math.sin(ang+.4));ctx.closePath();ctx.fill();
+ dot(ctx,M.X(X),M.Y(Y),C_R);
+ const m=(Math.abs(t)<.01)?'∞':(3*t/2).toFixed(2);
+ cap.innerHTML='รถวิ่งตามเวลา t = '+t.toFixed(2)+' อยู่ที่ ('+X.toFixed(2)+', '+Y.toFixed(2)+') · ลูกศรทอง = ความเร็ว (dx/dt, dy/dt) = ('+vx.toFixed(2)+', '+vy.toFixed(2)+') · <b>ความชันเส้นทาง dy/dx = '+(3*t*t).toFixed(2)+'/'+(2*t).toFixed(2)+' = '+m+'</b> — แค่หารความเร็วสองแกน ไม่ต้องรู้สมการโค้ง';
+}
+const DRAW={power:drawPower,taylor:drawTaylor,partial:drawPartial,diff:drawDiff,param:drawParam};
+function draw(){const {ctx,w,h}=fit();ctx.clearRect(0,0,w,h);DRAW[panel](ctx,w,h,parseFloat(rng.value));sval.textContent=parseFloat(rng.value).toFixed(2);}
+function setPanel(p){panel=p;const c=CFG[p];rng.min=c.min;rng.max=c.max;rng.step=c.step;rng.value=c.def;slab.textContent=c.label;
+ document.querySelectorAll('.geotab').forEach(b=>b.classList.toggle('on',b.dataset.g===p));draw();}
+document.querySelectorAll('.geotab').forEach(b=>b.onclick=()=>setPanel(b.dataset.g));
+rng.oninput=draw;
+window.addEventListener('resize',()=>{clearTimeout(window._grz);window._grz=setTimeout(draw,150);});
+setPanel('power');
+})();
+
+buildOrder();render();
+</script>
+</body>
+</html>

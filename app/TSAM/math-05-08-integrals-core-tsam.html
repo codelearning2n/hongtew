@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>คณิต ส่วน 5+8 — FTC · ปริพันธ์ไม่ตรงแบบ · ความยาวโค้ง · ปริมาตร | TSAM</title>
+<style>
+:root{
+  --bg-0:#0a0d18; --ink:#f2f4ff; --muted:#9aa2cf; --line:rgba(255,255,255,.09);
+  --accent:#5cc8ff; --accent-2:#a371f7; --gold:#ffd166; --good:#5ee6a8; --bad:#f85149; --hot:#ff7a59;
+  --d1:#5ee6a8; --d2:#ffd166; --d3:#ff9f43; --d4:#f85149;
+  --glass:linear-gradient(180deg,rgba(40,46,90,.50),rgba(16,20,46,.55));
+  --glass-2:linear-gradient(180deg,rgba(52,58,108,.55),rgba(24,28,62,.62));
+  --shadow:0 22px 55px -24px rgba(0,0,0,.78); --ring:0 0 0 1px rgba(255,255,255,.06);
+  --grad-text:linear-gradient(120deg,#ffffff,#bcd4ff 45%,#b6a4ff);
+  --grad-fill:linear-gradient(90deg,var(--accent),var(--accent-2));
+  --r-md:14px; --r-lg:18px; --r-xl:24px; --r-pill:999px; --ease:cubic-bezier(.2,.7,.3,1);
+}
+*{box-sizing:border-box} html,body{margin:0}
+body{color:var(--ink);line-height:1.6;padding:16px 12px 48px;
+  font-family:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
+  background:
+    radial-gradient(820px 520px at 8% -12%,rgba(92,120,255,.20),transparent 55%),
+    radial-gradient(720px 520px at 98% -6%,rgba(124,92,255,.22),transparent 52%),
+    radial-gradient(760px 680px at 55% 122%,rgba(40,110,210,.16),transparent 55%),
+    var(--bg-0);
+  background-attachment:fixed;min-height:100vh}
+::selection{background:rgba(92,200,255,.35)}
+.wrap{max-width:880px;margin:0 auto}
+.hero{position:relative;overflow:hidden;background:var(--glass-2);border:1px solid var(--line);
+  border-radius:var(--r-xl);padding:22px 20px 18px;margin-bottom:14px;
+  box-shadow:var(--shadow),var(--ring),inset 0 1px 0 rgba(255,255,255,.08)}
+.hero::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(640px 240px at 102% -10%,rgba(92,200,255,.22),transparent 60%)}
+.hero h1{margin:.1rem 0;font-size:clamp(1.3rem,4.5vw,1.9rem);line-height:1.2}
+.grad-text{background:var(--grad-text);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:var(--muted);margin:.35rem 0 0;font-size:.9rem}
+.pill{display:inline-block;font-size:.7rem;font-weight:700;color:var(--gold);
+  background:rgba(255,209,102,.1);border:1px solid rgba(255,209,102,.25);padding:2px 9px;border-radius:7px}
+.card{position:relative;background:var(--glass);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:16px;margin-bottom:14px;box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.05)}
+h2{margin:0 0 6px;font-size:1.08rem}
+h3{margin:12px 0 4px;font-size:.95rem;color:var(--accent)}
+.sub{color:var(--muted);font-size:.85rem}
+code,.fx{font-family:'Cascadia Code',ui-monospace,monospace;background:rgba(0,0,0,.28);
+  padding:1px 6px;border-radius:6px;color:#cfe3ff;font-size:.9em}
+.acc-head{display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
+.acc-head .chev{transition:transform .25s var(--ease)}
+.acc.open .chev{transform:rotate(90deg)}
+.acc-body{display:none;margin-top:10px}
+.acc.open .acc-body{display:block;animation:rise .3s var(--ease) both}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin-top:6px}
+.fbox{background:rgba(8,10,22,.5);border:1px solid var(--line);border-radius:var(--r-md);padding:10px 12px}
+.fbox b{color:var(--gold);font-size:.9rem}
+.fbox .fx{display:inline-block;margin:3px 0;font-size:.9rem}
+.fbox small{color:var(--muted);display:block;font-size:.8rem}
+.filters{display:flex;flex-wrap:wrap;gap:7px;margin:2px 0 8px}
+.flabel{width:100%;font-size:.76rem;color:var(--muted);font-weight:700;margin-top:6px}
+.chip{cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--muted);
+  font-family:inherit;font-weight:700;font-size:.82rem;padding:7px 13px;border-radius:var(--r-pill);
+  transition:all .15s var(--ease)}
+.chip:hover{color:var(--ink);border-color:rgba(92,200,255,.4)}
+.chip.on{color:#0a1020;border-color:transparent}
+.chip.on.all{background:var(--grad-fill)}
+.chip.on.d1{background:var(--d1)} .chip.on.d2{background:var(--d2)}
+.chip.on.d3{background:var(--d3)} .chip.on.d4{background:var(--d4);color:#fff}
+.chip.on.sub{background:linear-gradient(90deg,#7aa2ff,#a371f7)}
+.tool{cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--ink);
+  font-family:inherit;font-weight:700;font-size:.82rem;padding:7px 13px;border-radius:var(--r-pill)}
+.tool:hover{border-color:var(--accent)}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+.stat{flex:1;min-width:90px;background:rgba(8,10,22,.5);border:1px solid var(--line);border-radius:var(--r-md);
+  padding:8px 10px;text-align:center}
+.stat b{display:block;font-size:1.25rem;line-height:1.1}
+.stat small{color:var(--muted);font-size:.72rem}
+.bar{height:8px;border-radius:9px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:8px}
+.bar>i{display:block;height:100%;width:0;background:var(--grad-fill);transition:width .4s var(--ease)}
+.qtop{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.badges{display:flex;gap:6px;flex-wrap:wrap}
+.badge{font-size:.72rem;font-weight:800;padding:2px 9px;border-radius:var(--r-pill);border:1px solid transparent}
+.badge.d1{color:var(--d1);border-color:var(--d1);background:rgba(94,230,168,.1)}
+.badge.d2{color:var(--d2);border-color:var(--d2);background:rgba(255,209,102,.1)}
+.badge.d3{color:var(--d3);border-color:var(--d3);background:rgba(255,159,67,.12)}
+.badge.d4{color:var(--d4);border-color:var(--d4);background:rgba(248,81,73,.12)}
+.badge.sb{color:#bcd4ff;border-color:rgba(188,212,255,.35);background:rgba(122,162,255,.1)}
+.qnum{color:var(--muted);font-size:.8rem;font-weight:700}
+.qtext{font-size:1.05rem;margin:12px 0 12px;line-height:1.55}
+.choices{display:grid;gap:8px}
+.choice{display:flex;gap:10px;align-items:flex-start;cursor:pointer;border:1px solid var(--line);
+  background:rgba(255,255,255,.035);border-radius:var(--r-md);padding:11px 13px;font-size:.98rem;
+  transition:all .12s var(--ease);text-align:left;color:var(--ink);font-family:inherit;width:100%}
+.choice:hover:not(:disabled){border-color:var(--accent);background:rgba(92,200,255,.06)}
+.choice .k{flex:0 0 auto;width:22px;height:22px;border-radius:6px;display:grid;place-items:center;
+  background:rgba(255,255,255,.08);font-size:.8rem;font-weight:800}
+.choice.correct{border-color:var(--good);background:rgba(94,230,168,.13)}
+.choice.correct .k{background:var(--good);color:#062}
+.choice.wrong{border-color:var(--bad);background:rgba(248,81,73,.13)}
+.choice.wrong .k{background:var(--bad);color:#fff}
+.choice:disabled{cursor:default;opacity:.95}
+.fb{margin-top:12px;padding:11px 13px;border-radius:var(--r-md);font-size:.92rem;display:none}
+.fb.show{display:block;animation:rise .25s var(--ease) both}
+.fb.ok{background:rgba(94,230,168,.1);border:1px solid rgba(94,230,168,.3)}
+.fb.no{background:rgba(248,81,73,.1);border:1px solid rgba(248,81,73,.3)}
+.act{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.steps{margin-top:10px;display:none}
+.steps.show{display:block}
+.step{background:rgba(8,10,22,.5);border-left:3px solid var(--accent);border-radius:0 10px 10px 0;
+  padding:8px 12px;margin:7px 0;font-size:.92rem;animation:rise .25s var(--ease) both}
+.step .fx{background:rgba(0,0,0,.35)}
+.hintbox{margin-top:8px}
+.hint{background:rgba(255,209,102,.08);border:1px solid rgba(255,209,102,.25);border-radius:10px;
+  padding:8px 12px;margin:6px 0;font-size:.9rem;color:#ffe9b0;animation:rise .25s var(--ease) both}
+.nav{display:flex;gap:8px;justify-content:space-between;margin-top:14px}
+.empty{text-align:center;color:var(--muted);padding:30px 10px}
+.homelink{text-align:center;font-size:.82rem}
+.homelink a{color:var(--accent);text-decoration:none;font-weight:700}
+.geotabs{display:flex;gap:7px;overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+.geotabs::-webkit-scrollbar{height:5px}.geotabs::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:9px}
+.geotab{flex:0 0 auto;white-space:nowrap;cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.04);
+  color:var(--muted);font-family:inherit;font-weight:700;font-size:.82rem;padding:7px 12px;border-radius:var(--r-pill);transition:all .15s var(--ease)}
+.geotab:hover{color:var(--ink);border-color:rgba(92,200,255,.4)}
+.geotab.on{background:var(--grad-fill);color:#0a1020;border-color:transparent}
+.cvwrap{position:relative;width:100%;background:rgba(8,10,22,.55);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;margin-top:8px}
+#geocanvas{display:block;width:100%;height:auto}
+.georow{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:.85rem;color:var(--muted)}
+.georow input[type=range]{flex:1;accent-color:var(--accent)}
+.georow .val{font-family:ui-monospace,monospace;color:var(--gold);min-width:70px;text-align:right}
+.geocap{margin-top:10px;background:rgba(8,10,22,.4);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:.9rem;color:#dfe6ff;line-height:1.55}
+.geocap b{color:var(--gold)}
+.whybox{background:linear-gradient(180deg,rgba(255,209,102,.12),rgba(255,209,102,.04));border:1px solid rgba(255,209,102,.35);
+  border-radius:var(--r-md);padding:9px 12px;margin:0 0 8px;font-size:.93rem;color:#ffe9b0}
+.whybox b{color:var(--gold)}
+@media(max-width:520px){.stat b{font-size:1.1rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero">
+  <span class="pill">TSAM · คณิต ส่วนที่ 5 + 8 /12</span>
+  <h1><span class="grad-text">ปริพันธ์แกนหลัก — FTC · ไม่ตรงแบบ · ความยาวโค้ง · ปริมาตร</span></h1>
+  <p class="lead">ทฤษฎีบทมูลฐาน · สมบัติปริพันธ์จำกัดเขต · ปริพันธ์ไม่ตรงแบบ · พื้นที่/ปริมาตร/ส่วนโค้ง — คลังโจทย์ <b style="color:var(--d1)">ง่าย</b> → <b style="color:var(--d2)">กลาง</b> → <b style="color:var(--d3)">ยาก</b> → <b style="color:var(--d4)">โหด</b> · แก่นแท้ทุกข้อ</p>
+</div>
+
+<div class="card acc" id="essence">
+  <div class="acc-head" onclick="document.getElementById('essence').classList.toggle('open')">
+    <h2 style="margin:0">🎯 แก่นแท้ 30 วินาที — สูตรที่ต้องมีในหัว</h2>
+    <span class="chev">▶</span>
+  </div>
+  <div class="acc-body">
+    <div class="fgrid">
+      <div class="fbox"><b>FTC (หัวใจของแคลคูลัส)</b>
+        <span class="fx">∫ₐᵇ f = F(b) − F(a)</span>
+        <span class="fx">d/dx ∫ₐˣ f(t)dt = f(x)</span>
+        <small>ขอบบนเป็น g(x) → ได้ f(g(x))·g′(x) (ลูกโซ่)</small></div>
+      <div class="fbox"><b>สมบัติจำกัดเขต</b>
+        <small>∫ₐᵃ = 0 · สลับขอบ = ติดลบ</small>
+        <small>∫ₐᵇ = ∫ₐᶜ + ∫ᶜᵇ (ต่อช่วงได้)</small>
+        <small>คี่บนช่วงสมมาตร = 0 · คู่ = 2 เท่าครึ่งช่วง</small></div>
+      <div class="fbox"><b>ปริพันธ์ไม่ตรงแบบ</b>
+        <small>ขอบเป็น ∞ หรือฟังก์ชันระเบิดในช่วง → เขียนเป็น lim</small>
+        <span class="fx">∫₁^∞ 1/xᵖ: p&gt;1 ลู่เข้า, p≤1 ลู่ออก</span>
+        <small>เทียบ: 1/x² รอด (=1), 1/x ตาย (ln→∞)</small></div>
+      <div class="fbox"><b>ความยาวส่วนโค้ง</b>
+        <span class="fx">L = ∫ₐᵇ √(1+(y′)²) dx</span>
+        <small>มาจากพีทาโกรัสจิ๋ว: ds² = dx² + dy²</small></div>
+      <div class="fbox"><b>ปริมาตรหมุน: จาน (disk)</b>
+        <span class="fx">V = π∫ [R(x)]² dx</span>
+        <small>หมุนรอบแกน x, R = ระยะจากแกนถึงขอบ</small>
+        <small>มีรูตรงกลาง (washer): π∫(R²−r²)</small></div>
+      <div class="fbox"><b>ปริมาตรหมุน: เปลือก (shell)</b>
+        <span class="fx">V = 2π∫ x·f(x) dx</span>
+        <small>หมุนรอบแกน y · เปลือก = กระบอกบางๆ รัศมี x สูง f(x)</small></div>
+      <div class="fbox"><b>พื้นที่ระหว่างเส้นโค้ง</b>
+        <span class="fx">A = ∫ (บน − ล่าง) dx</span>
+        <small>หาจุดตัดก่อนเสมอ · ติดลบแปลว่าสลับบน-ล่าง</small></div>
+      <div class="fbox"><b>กับดักที่ออกบ่อย</b>
+        <small>• ∫ค่า "ติดลบได้" แต่พื้นที่จริงต้องใส่ ||</small>
+        <small>• d/dx ∫ₓᵇ = −f(x) (ขอบล่างติดลบ)</small>
+        <small>• อย่าลืม π ใน disk และ 2π ใน shell</small></div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>🎨 แก่นแท้เชิงเรขาคณิต — เห็นภาพว่า "ทำไม"</h2>
+  <p class="sub">เลือกหัวข้อ แล้ว<b>ลากสไลเดอร์</b>ดูว่าเกิดอะไรขึ้น — เข้าใจที่มา ไม่ใช่ท่องสูตร</p>
+  <div class="geotabs" id="geotabs">
+    <button class="geotab on" data-g="ftc">🏗️ FTC: พื้นที่สะสมโตด้วยอัตรา f</button>
+    <button class="geotab" data-g="split">➕ ต่อช่วง: ∫=∫+∫</button>
+    <button class="geotab" data-g="improper">♾️ ไม่ตรงแบบ: 1/x² รอด 1/x ตาย</button>
+    <button class="geotab" data-g="arc">📏 ความยาวโค้ง = ต่อท่อนจิ๋ว</button>
+    <button class="geotab" data-g="disk">🍩 ปริมาตร = ซ้อนแผ่นจาน</button>
+  </div>
+  <div class="cvwrap"><canvas id="geocanvas"></canvas></div>
+  <div class="georow" id="georow">
+    <span id="geoslabel"></span>
+    <input type="range" id="georange">
+    <span class="val" id="geoval"></span>
+  </div>
+  <div class="geocap" id="geocap"></div>
+</div>
+
+<div class="card">
+  <div class="filters">
+    <div class="flabel">ระดับความยาก (on demand)</div>
+    <button class="chip on all" data-d="all">ทั้งหมด</button>
+    <button class="chip d1" data-d="1">🟢 ง่าย</button>
+    <button class="chip d2" data-d="2">🟡 กลาง</button>
+    <button class="chip d3" data-d="3">🟠 ยาก</button>
+    <button class="chip d4" data-d="4">🔴 โหด</button>
+    <div class="flabel">หัวข้อย่อย</div>
+    <button class="chip sub on" data-s="all">ทุกหัวข้อ</button>
+    <button class="chip sub" data-s="ftc">FTC/คำนวณ</button>
+    <button class="chip sub" data-s="prop">สมบัติจำกัดเขต</button>
+    <button class="chip sub" data-s="imp">ไม่ตรงแบบ</button>
+    <button class="chip sub" data-s="arc">ความยาวโค้ง</button>
+    <button class="chip sub" data-s="vol">พื้นที่/ปริมาตร</button>
+    <div class="flabel" style="display:flex;gap:7px;align-items:center;width:100%;justify-content:space-between">
+      <span>เครื่องมือ</span>
+      <span style="display:flex;gap:7px">
+        <button class="tool" id="shuffle">🔀 สลับข้อ</button>
+        <button class="tool" id="reset">↺ ล้างคะแนน</button>
+      </span>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stat"><b id="st-seen">0</b><small>ทำแล้ว / <span id="st-total">0</span></small></div>
+    <div class="stat"><b id="st-correct" style="color:var(--good)">0</b><small>ตอบถูก</small></div>
+    <div class="stat"><b id="st-pct">0%</b><small>ความแม่น</small></div>
+    <div class="stat"><b id="st-pos">–</b><small>ข้อที่</small></div>
+  </div>
+  <div class="bar"><i id="progbar"></i></div>
+</div>
+
+<div class="card" id="quizcard">
+  <div class="empty" id="qempty" style="display:none">ไม่มีข้อในตัวกรองนี้ 🤔<br>ลองเลือกความยาก/หัวข้ออื่น</div>
+  <div id="qbody">
+  <div class="qtop">
+    <div class="badges" id="badges"></div>
+    <div class="qnum" id="qnum"></div>
+  </div>
+  <div class="qtext" id="qtext"></div>
+  <div class="choices" id="choices"></div>
+  <div class="fb" id="fb"></div>
+  <div class="act">
+    <button class="tool" id="btn-steps" style="display:none">🪜 ดูขั้นตอน</button>
+    <button class="tool" id="btn-hint">💡 ขอนัยใบ้</button>
+  </div>
+  <div class="hintbox" id="hintbox"></div>
+  <div class="steps" id="steps"></div>
+  <div class="nav">
+    <button class="tool" id="prev">‹ ก่อนหน้า</button>
+    <button class="tool" id="next">ถัดไป ›</button>
+  </div>
+  </div><!-- /qbody -->
+</div>
+
+<div class="card homelink">
+  🔢 อุดหลุมส่วน 5+8 · เทคนิคปริพันธ์ (ส่วน 7): <a href="calculus-tsam.html">calculus-tsam</a> · <a href="index.html">‹ กลับหน้ารวม</a>
+</div>
+
+</div>
+
+<script>
+const SUB={ftc:'FTC/คำนวณ',prop:'สมบัติ',imp:'ไม่ตรงแบบ',arc:'ความยาวโค้ง',vol:'พื้นที่/ปริมาตร'};
+const DNAME={1:'ง่าย',2:'กลาง',3:'ยาก',4:'โหด'};
+const PROBLEMS=[
+/* ---------- ง่าย ---------- */
+{id:'I01',sub:'ftc',diff:1,q:'∫₀² 2x dx เท่ากับข้อใด?',ch:['2','4','8','1'],a:1,
+ hints:['ปฏิยานุพันธ์ของ 2x คือ x²','แทนขอบ F(2)−F(0)'],
+ steps:['F(x) = x²','F(2) − F(0) = 4 − 0','= 4']},
+{id:'I02',sub:'ftc',diff:1,q:'∫₁³ 3 dx เท่ากับข้อใด?',ch:['3','6','9','2'],a:1,
+ hints:['ค่าคงที่ = สี่เหลี่ยมผืนผ้า','กว้าง 2 สูง 3'],
+ steps:['∫ค่าคงที่ = สูง × กว้างช่วง','= 3 × (3−1) = 6']},
+{id:'I03',sub:'prop',diff:1,q:'∫₅⁵ f(x) dx เท่ากับข้อใด (f ใดๆ)?',ch:['f(5)','0','1','หาไม่ได้'],a:1,
+ hints:['ช่วงกว้างศูนย์','พื้นที่บนเส้นเดียว'],
+ steps:['ขอบบน = ขอบล่าง → ช่วงกว้าง 0','พื้นที่ = 0 เสมอ']},
+{id:'I04',sub:'prop',diff:1,q:'ถ้า ∫ₐᵇ f = 7 แล้ว ∫ᵦₐ f เท่ากับข้อใด?',ch:['7','−7','0','1/7'],a:1,
+ hints:['สลับขอบบน-ล่าง','เดินย้อนทาง'],
+ steps:['สลับขอบ = เปลี่ยนเครื่องหมาย','= −7']},
+{id:'I05',sub:'ftc',diff:1,q:'∫₀¹ x² dx เท่ากับข้อใด?',ch:['1','1/2','1/3','1/4'],a:2,
+ hints:['ปฏิยานุพันธ์ x³/3','แทนขอบ'],
+ steps:['F = x³/3','F(1)−F(0) = 1/3']},
+{id:'I06',sub:'ftc',diff:1,q:'d/dx ∫₀ˣ t² dt เท่ากับข้อใด?',ch:['x²','x³/3','2x','t²'],a:0,
+ hints:['FTC ข้อ 1: ดิฟล้างอินทิเกรต','ได้ตัวในแทนที่ t ด้วย x'],
+ steps:['FTC1: d/dx ∫₀ˣ f(t)dt = f(x)','= x² (ไม่ต้องอินทิเกรตจริง!)']},
+{id:'I07',sub:'prop',diff:1,q:'∫₀³ f + ∫₃⁵ f เท่ากับข้อใด?',ch:['∫₀⁵ f','∫₃³ f','∫₀¹⁵ f','บวกกันไม่ได้'],a:0,
+ hints:['ช่วงต่อกันพอดี 0→3→5','พื้นที่สองท่อนต่อกัน'],
+ steps:['ช่วง [0,3] ต่อกับ [3,5] = [0,5]','= ∫₀⁵ f (พื้นที่ต่อกัน)']},
+{id:'I08',sub:'ftc',diff:1,q:'∫₀^π sin x dx เท่ากับข้อใด?',ch:['0','1','2','π'],a:2,
+ hints:['ปฏิยานุพันธ์ = −cos x','cos π = −1, cos 0 = 1'],
+ steps:['F = −cos x','F(π)−F(0) = −(−1) − (−1)','= 1+1 = 2']},
+{id:'I09',sub:'ftc',diff:1,q:'∫₀¹ eˣ dx เท่ากับข้อใด?',ch:['e','e − 1','1','1/e'],a:1,
+ hints:['(eˣ)′ = eˣ','แทนขอบ'],
+ steps:['F = eˣ','F(1)−F(0) = e − 1']},
+{id:'I10',sub:'vol',diff:1,q:'พื้นที่ใต้ y = x เหนือแกน x จาก 0 ถึง 2 เท่ากับข้อใด?',ch:['1','2','4','1/2'],a:1,
+ hints:['สามเหลี่ยม','½ × 2 × 2'],
+ steps:['สามเหลี่ยมฐาน 2 สูง 2','= ½·2·2 = 2 (= ∫₀² x dx)']},
+/* ---------- กลาง ---------- */
+{id:'I11',sub:'ftc',diff:2,q:'d/dx ∫₀^(x²) sin t dt เท่ากับข้อใด?',ch:['sin(x²)','2x·sin(x²)','cos(x²)','sin(2x)'],a:1,
+ hints:['ขอบบนเป็น x² → ต้องคูณดิฟขอบ (ลูกโซ่)','sin(ขอบ)·(ขอบ)′'],
+ steps:['FTC + ลูกโซ่: f(g(x))·g′(x)','= sin(x²)·(2x)','= 2x sin(x²)']},
+{id:'I12',sub:'imp',diff:2,q:'∫₁^∞ 1/x² dx เท่ากับข้อใด?',ch:['ลู่ออก (∞)','0','1','2'],a:2,
+ hints:['เขียนเป็น lim b→∞ ของ ∫₁ᵇ','ปฏิยานุพันธ์ = −1/x'],
+ steps:['∫₁ᵇ = [−1/x]₁ᵇ = 1 − 1/b','b→∞: 1/b → 0','= 1 (พื้นที่ยาวอนันต์แต่จำกัด!)']},
+{id:'I13',sub:'imp',diff:2,q:'∫₁^∞ 1/x dx เท่ากับข้อใด?',ch:['1','ln 2','e','ลู่ออก (∞)'],a:3,
+ hints:['ปฏิยานุพันธ์ = ln x','ln b เมื่อ b→∞'],
+ steps:['∫₁ᵇ = ln b − 0','b→∞: ln b → ∞','ลู่ออก — 1/x บางไม่พอ (เทียบ 1/x² ที่รอด)']},
+{id:'I14',sub:'imp',diff:2,q:'∫₀¹ 1/√x dx เท่ากับข้อใด? (ฟังก์ชันระเบิดที่ 0)',ch:['ลู่ออก','1','2','1/2'],a:2,
+ hints:['ไม่ตรงแบบที่ขอบล่าง → lim a→0⁺','ปฏิยานุพันธ์ = 2√x'],
+ steps:['∫ₐ¹ = [2√x]ₐ¹ = 2 − 2√a','a→0⁺: 2√a → 0','= 2 (ระเบิดแต่รอด)']},
+{id:'I15',sub:'prop',diff:2,q:'∫₋₂² x³ dx เท่ากับข้อใด?',ch:['0','8','16','4'],a:0,
+ hints:['x³ เป็นฟังก์ชันคี่','ช่วงสมมาตรรอบ 0'],
+ steps:['ฟังก์ชันคี่บนช่วงสมมาตร','พื้นที่บวก-ลบหักกันพอดี','= 0 (ไม่ต้องคำนวณ)']},
+{id:'I16',sub:'prop',diff:2,q:'∫₋₁¹ x² dx เท่ากับข้อใด?',ch:['0','1/3','2/3','1'],a:2,
+ hints:['x² เป็นฟังก์ชันคู่','= 2∫₀¹'],
+ steps:['คู่: สองฝั่งเหมือนกัน = 2∫₀¹ x² dx','= 2(1/3) = 2/3']},
+{id:'I17',sub:'arc',diff:2,q:'สูตรความยาวส่วนโค้งของ y = f(x) จาก a ถึง b คือข้อใด?',ch:['∫√(1+f²) dx','∫√(1+(f′)²) dx','∫(1+f′) dx','π∫f² dx'],a:1,
+ hints:['มาจาก ds² = dx²+dy²','ดึง dx ออก: √(1+(dy/dx)²)'],
+ steps:['ท่อนจิ๋ว: ds = √(dx²+dy²)','= √(1+(y′)²) dx','L = ∫ₐᵇ √(1+(f′)²) dx']},
+{id:'I18',sub:'arc',diff:2,q:'ความยาวส่วนโค้งของ y = (3/4)x จาก x=0 ถึง 4 เท่ากับข้อใด?',ch:['4','5','3','6'],a:1,
+ hints:['เส้นตรง! y′ = 3/4','√(1+9/16) = 5/4'],
+ steps:['y′ = 3/4 → √(1+9/16) = √(25/16) = 5/4','L = ∫₀⁴ 5/4 dx = 5','(เช็คด้วยพีทาโกรัส: ฐาน4 สูง3 → 5 ✓)']},
+{id:'I19',sub:'vol',diff:2,q:'พื้นที่ระหว่าง y = x กับ y = x² (จาก 0 ถึง 1) เท่ากับข้อใด?',ch:['1/2','1/3','1/6','1/12'],a:2,
+ hints:['บน = x, ล่าง = x² ในช่วงนี้','∫(x − x²)'],
+ steps:['∫₀¹ (x − x²) dx','= [x²/2 − x³/3]₀¹ = 1/2 − 1/3','= 1/6']},
+{id:'I20',sub:'vol',diff:2,q:'หมุน y = √x รอบแกน x จาก 0 ถึง 4 ได้ปริมาตรเท่าใด (วิธีจาน)?',ch:['4π','8π','16π','2π'],a:1,
+ hints:['V = π∫R² dx, R = √x','R² = x'],
+ steps:['V = π∫₀⁴ (√x)² dx = π∫₀⁴ x dx','= π·[x²/2]₀⁴ = π·8','= 8π']},
+{id:'I21',sub:'prop',diff:2,q:'∫₀² |x − 1| dx เท่ากับข้อใด?',ch:['0','1','2','1/2'],a:1,
+ hints:['ค่าสัมบูรณ์ → แยกช่วงที่ x=1','สองสามเหลี่ยมเล็ก'],
+ steps:['แยก: ∫₀¹(1−x) + ∫₁²(x−1)','= 1/2 + 1/2','= 1 (สามเหลี่ยมสองอันขนาด ½)']},
+{id:'I22',sub:'ftc',diff:2,q:'ค่าเฉลี่ยของ f(x) = x² บนช่วง [0, 3] เท่ากับข้อใด?',ch:['9','3','4.5','27'],a:1,
+ hints:['ค่าเฉลี่ย = (1/(b−a))∫ₐᵇ f','∫₀³ x² = 9'],
+ steps:['∫₀³ x² dx = 27/3 = 9','ค่าเฉลี่ย = 9/(3−0)','= 3']},
+/* ---------- ยาก ---------- */
+{id:'I23',sub:'imp',diff:3,q:'∫₁^∞ 1/xᵖ dx ลู่เข้าเมื่อใด?',ch:['p > 0','p ≥ 1','p > 1','ทุกค่า p'],a:2,
+ hints:['ลอง p=1 (ln → ตาย) กับ p=2 (รอด)','เส้นแบ่งคือ p=1 แต่ตัว p=1 เองตาย'],
+ steps:['p≠1: ∫ = [x^(1−p)/(1−p)] → จำกัดเมื่อ 1−p<0','คือ p > 1','p=1 ได้ ln → ลู่ออก ∴ ต้อง p > 1 เท่านั้น']},
+{id:'I24',sub:'imp',diff:3,q:'∫₀^∞ e⁻ˣ dx เท่ากับข้อใด?',ch:['ลู่ออก','1','e','1/e'],a:1,
+ hints:['ปฏิยานุพันธ์ = −e⁻ˣ','e⁻ᵇ → 0'],
+ steps:['∫₀ᵇ = [−e⁻ˣ]₀ᵇ = 1 − e⁻ᵇ','b→∞: e⁻ᵇ → 0','= 1']},
+{id:'I25',sub:'ftc',diff:3,q:'d/dx ∫ₓ⁵ f(t) dt เท่ากับข้อใด?',ch:['f(x)','−f(x)','f(5) − f(x)','0'],a:1,
+ hints:['x อยู่ขอบล่าง!','สลับขอบก่อน แล้วใช้ FTC'],
+ steps:['∫ₓ⁵ = −∫₅ˣ','d/dx (−∫₅ˣ f) = −f(x)']},
+{id:'I26',sub:'arc',diff:3,q:'ความยาวส่วนโค้งของ y = (2/3)x^(3/2) จาก x=0 ถึง 3 เท่ากับข้อใด?',ch:['14/3','8/3','5','7/2'],a:0,
+ hints:['y′ = √x → 1+(y′)² = 1+x','∫√(1+x) อินทิเกรตง่าย'],
+ steps:['y′ = x^(1/2) → √(1+x)','L = ∫₀³ √(1+x) dx = [⅔(1+x)^(3/2)]₀³','= ⅔(8 − 1) = 14/3']},
+{id:'I27',sub:'vol',diff:3,q:'หมุนพื้นที่ใต้ y = x (0 ถึง 1) รอบแกน y ด้วยวิธีเปลือก ได้ V เท่าใด?',ch:['π/3','2π/3','π','π/2'],a:1,
+ hints:['เปลือก: V = 2π∫ x·f(x) dx','f(x) = x'],
+ steps:['V = 2π∫₀¹ x·x dx = 2π∫₀¹ x²','= 2π/3']},
+{id:'I28',sub:'prop',diff:3,q:'ถ้า ∫₀⁴ f = 10 และ ∫₀⁴ g = 4 แล้ว ∫₀⁴ (3f − g) dx เท่ากับข้อใด?',ch:['26','34','14','6'],a:0,
+ hints:['ปริพันธ์เชิงเส้น: ดึงค่าคงที่ แยกบวกลบ','3(10) − 4'],
+ steps:['∫(3f−g) = 3∫f − ∫g','= 3(10) − 4 = 26']},
+{id:'I29',sub:'imp',diff:3,q:'∫₀¹ 1/x dx เท่ากับข้อใด?',ch:['0','1','ln 1','ลู่ออก'],a:3,
+ hints:['ระเบิดที่ขอบล่าง 0','ln a → −∞ เมื่อ a→0⁺'],
+ steps:['∫ₐ¹ = −ln a','a→0⁺: −ln a → +∞','ลู่ออก (1/x แพ้ทั้งสองสนาม: ที่ 0 และที่ ∞)']},
+{id:'I30',sub:'vol',diff:3,q:'∫₀^{2π} sin x dx = 0 แต่ "พื้นที่จริง" ระหว่างกราฟกับแกน x เท่ากับข้อใด?',ch:['0','2','4','π'],a:2,
+ hints:['ครึ่งบนบวก ครึ่งล่างลบ หักกัน','พื้นที่จริงต้องใส่ค่าสัมบูรณ์'],
+ steps:['∫₀^π sinx = 2 (บวก), ∫_π^{2π} = −2 (ลบ)','ปริพันธ์รวม = 0 แต่พื้นที่ = |2|+|−2|','= 4']},
+{id:'I31',sub:'vol',diff:3,q:'ฐานเป็นบริเวณใต้ y = √x (0 ถึง 4) ภาคตัดตั้งฉากแกน x เป็นสี่เหลี่ยมจัตุรัส ปริมาตรเท่าใด?',ch:['4','8','16','8π'],a:1,
+ hints:['ด้านของจัตุรัส = √x → พื้นที่หน้าตัด = x','V = ∫A(x)dx ไม่มี π'],
+ steps:['A(x) = (√x)² = x','V = ∫₀⁴ x dx = 8','(ภาคตัดไม่ใช่วงกลม → ไม่มี π)']},
+{id:'I32',sub:'ftc',diff:3,q:'F′(x) = 3x² และ F(1) = 2 แล้ว F(2) เท่ากับข้อใด?',ch:['7','8','9','10'],a:2,
+ hints:['F(2) = F(1) + ∫₁² F′','∫₁² 3x² = 7'],
+ steps:['F(2) − F(1) = ∫₁² 3x² dx = [x³]₁² = 7','F(2) = 2 + 7 = 9']},
+/* ---------- โหด ---------- */
+{id:'I33',sub:'ftc',diff:4,q:'d/dx ∫ₓ^(x²) cos t dt เท่ากับข้อใด?',ch:['cos(x²) − cos x','2x·cos(x²) − cos x','2x·cos(x²) + cos x','cos(x²)·cos x'],a:1,
+ hints:['สองขอบขยับทั้งคู่: (ขอบบน)′·f(บน) − (ขอบล่าง)′·f(ล่าง)','ขอบบน x² ดิฟได้ 2x, ขอบล่าง x ดิฟได้ 1'],
+ steps:['สูตร: f(บน)·(บน)′ − f(ล่าง)·(ล่าง)′','= cos(x²)·2x − cos(x)·1','= 2x cos(x²) − cos x']},
+{id:'I34',sub:'imp',diff:4,q:'∫₋∞^∞ 1/(1+x²) dx เท่ากับข้อใด?',ch:['ลู่ออก','π/2','π','2π'],a:2,
+ hints:['ปฏิยานุพันธ์ = arctan x','arctan(±∞) = ±π/2'],
+ steps:['= [arctan x] จาก −∞ ถึง ∞','= π/2 − (−π/2)','= π (พื้นที่ใต้เส้นโค้งระฆังแบนๆ นี้ = π พอดี)']},
+{id:'I35',sub:'arc',diff:4,q:'ท่อนจิ๋ว ds ของส่วนโค้งมาจากข้อใด (แก่นของสูตร)?',ch:['ds = dx + dy','ds² = dx² + dy² (พีทาโกรัส)','ds = dy/dx','ds = √(dx·dy)'],a:1,
+ hints:['ซูมจนโค้งกลายเป็นเส้นตรงจิ๋ว','สามเหลี่ยมมุมฉากจิ๋ว'],
+ steps:['ซูมมากๆ ส่วนโค้ง ≈ เส้นตรง','เป็นด้านตรงข้ามมุมฉากของ dx, dy','ds = √(dx²+dy²) = √(1+(y′)²)dx']},
+{id:'I36',sub:'imp',diff:4,q:'"แตร Gabriel": หมุน y = 1/x (x ≥ 1) รอบแกน x ปริมาตรเท่ากับข้อใด?',ch:['∞ (ลู่ออก)','π','2π','π²'],a:1,
+ hints:['V = π∫₁^∞ (1/x)² dx','∫1/x² ลู่เข้า = 1'],
+ steps:['V = π∫₁^∞ 1/x² dx = π(1)','= π','(พาราด็อกซ์ดัง: ปริมาตรจำกัด แต่ผิวข้างอนันต์!)']},
+{id:'I37',sub:'imp',diff:4,q:'∫₀^∞ x·e^(−x²) dx เท่ากับข้อใด?',ch:['1','1/2','ลู่ออก','√π'],a:1,
+ hints:['u = x² → du = 2x dx','กลายเป็น ½∫e^(−u)'],
+ steps:['u = x²: ½∫₀^∞ e⁻ᵘ du','= ½ · 1','= 1/2']},
+{id:'I38',sub:'prop',diff:4,q:'f ต่อเนื่องบน [1,4] และ ∫₁⁴ f = 9 ข้อใดถูกตามทฤษฎีบทค่าเฉลี่ย (MVT for integrals)?',ch:['f(x) = 3 ทุกจุด','มีอย่างน้อยหนึ่งจุด c ที่ f(c) = 3','f สูงสุด = 3','f(1) = f(4)'],a:1,
+ hints:['ค่าเฉลี่ย = 9/(4−1) = 3','ฟังก์ชันต่อเนื่องต้องผ่านค่าเฉลี่ยของตัวเอง'],
+ steps:['ค่าเฉลี่ย = 9/3 = 3','MVT: f ต่อเนื่องต้องแตะค่าเฉลี่ยสักจุด','∃c: f(c) = 3 (ไม่ใช่ทุกจุด — สักจุด)']},
+{id:'I39',sub:'ftc',diff:4,q:'∫₀^(π/2) sin²x dx เท่ากับข้อใด?',ch:['1/2','π/4','π/2','1'],a:1,
+ hints:['sin² = (1−cos2x)/2','หรือมอง: sin²+cos² แบ่งช่วงเท่ากัน'],
+ steps:['sin²x = (1−cos 2x)/2','∫ = [x/2 − sin2x/4]₀^{π/2} = π/4','(สมมาตร: sin² กับ cos² แบ่งพื้นที่ π/2 คนละครึ่ง)']},
+{id:'I40',sub:'vol',diff:4,q:'หมุนบริเวณระหว่าง y = x กับ y = x² รอบแกน x ได้ปริมาตรเท่าใด (washer)?',ch:['π/6','2π/15','π/3','π/15'],a:1,
+ hints:['V = π∫(R² − r²), R = x (นอก), r = x² (ใน)','∫(x² − x⁴) จาก 0 ถึง 1'],
+ steps:['V = π∫₀¹ (x² − x⁴) dx','= π(1/3 − 1/5)','= 2π/15']},
+];
+
+const WHY={
+I01:'ปริพันธ์จำกัดเขต = พื้นที่ใต้กราฟ; FTC บอกว่าแค่หา "ฟังก์ชันแม่" แล้วลบค่าหัว-ท้าย ไม่ต้องนับพื้นที่จริง',
+I02:'ค่าคงที่ = แถบสี่เหลี่ยมผืนผ้า สูง 3 กว้าง 2 — ปริพันธ์คือพื้นที่ล้วนๆ',
+I03:'ยังไม่ทันเดิน พื้นที่ก็ยังไม่เกิด — ช่วงกว้างศูนย์ = ศูนย์เสมอ',
+I04:'เดินย้อนทาง dx พลิกเครื่องหมาย → พื้นที่เดิมแต่ติดลบ',
+I05:'กฎกำลังย้อนกลับ: เพิ่มดีกรี 1 แล้วหารด้วยดีกรีใหม่',
+I06:'FTC1 = "ดิฟล้างอินทิเกรต": อัตราที่พื้นที่สะสมโต ณ ขอบ = ความสูงของกราฟตรงนั้น (ดูแท็บ 🏗️)',
+I07:'พื้นที่สองท่อนที่ต่อชายกันพอดี รวมเป็นท่อนเดียว (ดูแท็บ ➕)',
+I08:'ครึ่งคลื่นบวกของ sin ให้พื้นที่ 2 พอดี — ตัวเลขคลาสสิกที่ควรจำ',
+I09:'eˣ เป็นแม่ของตัวเอง → แค่แทนขอบ',
+I10:'ปริพันธ์กับเรขาคณิตพื้นฐานต้องให้คำตอบเดียวกัน — เช็คคำตอบด้วยรูปได้เสมอ',
+I11:'ขอบบนวิ่งเร็วกว่า x (มันคือ x²) → พื้นที่โตเร็วขึ้นตามอัตราขอบ = คูณ g′ (ลูกโซ่บนขอบ)',
+I12:'1/x² บางลงเร็วพอ หางแคบจนพื้นที่รวมจำกัด = 1 (ดูแท็บ ♾️)',
+I13:'1/x บางลงช้าไป — ln โตไม่หยุด พื้นที่สะสมไม่มีเพดาน (เส้นแบ่งชีวิตคือ p=1)',
+I14:'ระเบิดที่ 0 แต่ระเบิด "ช้าพอ" (กำลังแค่ ½ < 1) → พื้นที่ยังจำกัด',
+I15:'ฟังก์ชันคี่: ฝั่งขวาบวก ฝั่งซ้ายลบ สมมาตรเป๊ะ หักกันเป็นศูนย์โดยไม่ต้องคิดเลข',
+I16:'ฟังก์ชันคู่: สองฝั่งเหมือนกันเป๊ะ → คิดฝั่งเดียวแล้วคูณสอง',
+I17:'สูตรโค้งทั้งเส้นมาจากพีทาโกรัสของท่อนจิ๋วท่อนเดียว แล้วบวกด้วยปริพันธ์ (ดูแท็บ 📏)',
+I18:'เส้นตรงความชัน 3/4 คือสามเหลี่ยม 3-4-5 ในตำนาน — สูตรโค้งต้องตอบตรงกับพีทาโกรัส',
+I19:'พื้นที่ระหว่างโค้ง = "บนลบล่าง" เสมอ; x อยู่เหนือ x² ในช่วง (0,1)',
+I20:'จานแต่ละแผ่นคือวงกลมรัศมี √x → พื้นที่ πx ซ้อนกันไปตามแกน (ดูแท็บ 🍩)',
+I21:'|x−1| คือตัว V — แยกที่ก้น V แล้วคิดสองสามเหลี่ยม',
+I22:'ค่าเฉลี่ย = เกลี่ยพื้นที่ให้แบนเป็นสี่เหลี่ยม: สูงเท่าไรถึงได้พื้นที่เท่าเดิม',
+I23:'สงคราม p: ต้องบางเร็วกว่า 1/x ถึงรอด — p=1 คือเส้นตายพอดี (ตายทั้งคู่ที่ ∞)',
+I24:'e⁻ˣ ตายเร็วแบบเลขชี้กำลัง — หางแทบไม่มีน้ำหนัก พื้นที่ = 1 พอดี',
+I25:'x อยู่ขอบ "ล่าง" = พื้นที่หดเมื่อ x โต → เครื่องหมายลบ',
+I26:'เลือกโค้งที่ (y′)² บวก 1 แล้วสวย — ข้อสอบชอบ y = ⅔x^{3/2} เพราะ √(1+x) อินทิเกรตได้จริง',
+I27:'ม้วนกระดาษ: แผ่นบางที่รัศมี x ยาวรอบวง 2πx สูง f(x) — คลี่ออกเป็นแผ่นสี่เหลี่ยม',
+I28:'ปริพันธ์เป็น "เครื่องบวกเชิงเส้น": ค่าคงที่ดึงออก บวกลบแยกได้',
+I29:'1/x แพ้ทั้งสองสนาม: ใกล้ 0 ก็ระเบิดแรงไป (p=1) ที่ ∞ ก็บางช้าไป — ตัวเดียวที่ตายสองด้าน',
+I30:'ปริพันธ์คือ "พื้นที่มีเครื่องหมาย" ใต้แกนติดลบ; พื้นที่จริงต้องพับส่วนลบขึ้นมาบวก',
+I31:'ปริมาตร = ซ้อนแผ่นหน้าตัด A(x); จัตุรัสไม่ใช่วงกลม → ไม่มี π (π มากับวงกลมเท่านั้น!)',
+I32:'FTC กลับด้าน: รู้อัตรา (F′) + จุดตั้งต้น → เดินสะสมด้วยปริพันธ์ถึงปลายทาง',
+I33:'ขอบขยับสองข้าง = ประตูสองบาน: บานบนเปิดรับพื้นที่ (บวก) บานล่างไล่พื้นที่ (ลบ) แต่ละบานคูณความเร็วของตัวเอง',
+I34:'arctan เก็บพื้นที่โค้งระฆังทั้งเส้นจริง: จาก −π/2 ถึง π/2 รวมได้ π เป๊ะ',
+I35:'ซูมจนโค้งตรง → พีทาโกรัสจิ๋ว ds²=dx²+dy² คือเมล็ดพันธุ์ของสูตรทั้งสูตร (ดูแท็บ 📏)',
+I36:'ความจุจำกัด (เทียบ 1/x² ลู่เข้า) แต่ผิวลู่ออก (เทียบ 1/x) — เติมสีเต็มแตรได้ แต่ทาสีผิวไม่มีวันพอ',
+I37:'u-sub เปลี่ยนหน้าตาโหดให้เป็น e⁻ᵘ ธรรมดา — เห็น x คู่กับ x² ให้คิดถึง u=x² ทันที',
+I38:'เกลี่ยพื้นที่ 9 บนความกว้าง 3 = ระดับน้ำ 3; ฟังก์ชันต่อเนื่องต้องโผล่แตะระดับน้ำของตัวเองสักจุด',
+I39:'sin² กับ cos² ผลัดกันครอบครองช่วง [0,π/2] อย่างสมมาตร — แต่ละตัวได้ครึ่งของ π/2 = π/4',
+I40:'วงแหวน: วงนอก (y=x) ลบวงใน (y=x²) แผ่นต่อแผ่น — จำ R นอกก่อน r ใน อย่าสลับ',
+};
+
+/* กระจายตำแหน่งคำตอบ ก-ง (หมุนตัวเลือกตามลำดับข้อ) */
+PROBLEMS.forEach((p,i)=>{const r=i%4;if(r){const c=p.ch;p.ch=c.map((_,k)=>c[(k+r)%4]);p.a=(p.a-r+4)%4;}});
+
+const KEY='tsam_math0508_int_v2';
+let state={done:{},correct:{}};
+try{const s=JSON.parse(localStorage.getItem(KEY));if(s){state=s;}}catch(e){}
+let fDiff='all', fSub='all', order=[], pos=0;
+
+function saveState(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+function buildOrder(){
+  order=PROBLEMS.filter(p=>(fDiff==='all'||p.diff==+fDiff)&&(fSub==='all'||p.sub===fSub)).map(p=>p.id);
+  pos=0;
+}
+function shuffle(){for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];}pos=0;render();}
+
+const $=id=>document.getElementById(id);
+function updateStats(){
+  const ids=PROBLEMS.map(p=>p.id);
+  const seen=ids.filter(i=>state.done[i]).length;
+  const corr=ids.filter(i=>state.correct[i]).length;
+  $('st-seen').textContent=seen;
+  $('st-total').textContent=PROBLEMS.length;
+  $('st-correct').textContent=corr;
+  $('st-pct').textContent=seen?Math.round(corr/seen*100)+'%':'0%';
+  $('progbar').style.width=(seen/PROBLEMS.length*100)+'%';
+}
+function render(){
+  updateStats();
+  document.querySelectorAll('.chip[data-d]').forEach(c=>c.classList.toggle('on',c.dataset.d===fDiff));
+  document.querySelectorAll('.chip[data-s]').forEach(c=>c.classList.toggle('on',c.dataset.s===fSub));
+  if(!order.length){$('qbody').style.display='none';$('qempty').style.display='';$('st-pos').textContent='–';return;}
+  $('qbody').style.display='';$('qempty').style.display='none';
+  if(pos<0)pos=0; if(pos>=order.length)pos=order.length-1;
+  const p=PROBLEMS.find(x=>x.id===order[pos]);
+  $('st-pos').textContent=(pos+1)+'/'+order.length;
+  $('badges').innerHTML=`<span class="badge d${p.diff}">${['','🟢','🟡','🟠','🔴'][p.diff]} ${DNAME[p.diff]}</span><span class="badge sb">${SUB[p.sub]}</span>`;
+  $('qnum').textContent='ข้อ '+(pos+1)+' / '+order.length;
+  $('qtext').textContent=p.q;
+  const answered=state.done[p.id];
+  const picked=answered?answered.pick:null;
+  const ch=$('choices');ch.innerHTML='';
+  p.ch.forEach((c,i)=>{
+    const b=document.createElement('button');
+    b.className='choice';b.innerHTML=`<span class="k">${'กขคง'[i]}</span><span>${c}</span>`;
+    if(answered){b.disabled=true;
+      if(i===p.a)b.classList.add('correct');
+      if(i===picked&&picked!==p.a)b.classList.add('wrong');
+    }else{b.onclick=()=>pick(p,i);}
+    ch.appendChild(b);
+  });
+  const fb=$('fb');
+  if(answered){
+    const ok=picked===p.a;
+    fb.className='fb show '+(ok?'ok':'no');
+    fb.innerHTML=ok?'✅ ถูกต้อง! ตอบข้อ '+'กขคง'[p.a]:'❌ ยังไม่ใช่ — คำตอบที่ถูกคือข้อ '+'กขคง'[p.a]+' ('+p.ch[p.a]+')';
+    $('btn-steps').style.display='';
+  }else{fb.className='fb';fb.innerHTML='';$('btn-steps').style.display='none';}
+  $('hintbox').innerHTML='';$('hintbox').dataset.n='0';
+  $('steps').className='steps';$('steps').innerHTML='';
+}
+function pick(p,i){
+  state.done[p.id]={pick:i};
+  if(i===p.a)state.correct[p.id]=1; else delete state.correct[p.id];
+  saveState();render();
+}
+function showSteps(){
+  const p=PROBLEMS.find(x=>x.id===order[pos]);
+  const box=$('steps');box.className='steps show';box.innerHTML='';
+  if(WHY[p.id]){const w=document.createElement('div');w.className='whybox';w.innerHTML='🔑 <b>แก่นแท้:</b> '+WHY[p.id];box.appendChild(w);}
+  const h=document.createElement('h3');h.style.margin='4px 0 0';h.textContent='วิธีทำ';box.appendChild(h);
+  p.steps.forEach((s,i)=>{const d=document.createElement('div');d.className='step';d.style.animationDelay=(i*.08)+'s';d.innerHTML=s;box.appendChild(d);});
+}
+function showHint(){
+  const p=PROBLEMS.find(x=>x.id===order[pos]);
+  const box=$('hintbox');let n=+(box.dataset.n||0);
+  if(n>=p.hints.length){const d=document.createElement('div');d.className='hint';d.innerHTML='ℹ️ นัยหมดแล้ว — ลองกด "ดูขั้นตอน" ถ้ายังติด';box.appendChild(d);box.dataset.n=n+1;return;}
+  const d=document.createElement('div');d.className='hint';d.innerHTML='💡 นัยที่ '+(n+1)+': '+p.hints[n];box.appendChild(d);box.dataset.n=n+1;
+}
+
+document.querySelectorAll('.chip[data-d]').forEach(c=>c.onclick=()=>{fDiff=c.dataset.d;buildOrder();render();});
+document.querySelectorAll('.chip[data-s]').forEach(c=>c.onclick=()=>{fSub=c.dataset.s;buildOrder();render();});
+$('shuffle').onclick=shuffle;
+$('reset').onclick=()=>{if(confirm('ล้างคะแนนและประวัติการทำข้อทั้งหมด?')){state={done:{},correct:{}};saveState();render();}};
+$('next').onclick=()=>{if(pos<order.length-1){pos++;render();}};
+$('prev').onclick=()=>{if(pos>0){pos--;render();}};
+$('btn-steps').onclick=showSteps;
+$('btn-hint').onclick=showHint;
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')$('next').click();if(e.key==='ArrowLeft')$('prev').click();});
+
+/* ========== การ์ดแก่นแท้เชิงเรขาคณิต ========== */
+(function(){
+const cv=$('geocanvas'),cap=$('geocap'),rng=$('georange'),slab=$('geoslabel'),sval=$('geoval');
+if(!cv)return;
+let panel='ftc';
+const CFG={
+ ftc:{min:.3,max:4,step:.02,def:2,label:'X ='},
+ split:{min:.5,max:3.5,step:.05,def:2,label:'จุดแบ่ง c ='},
+ improper:{min:2,max:40,step:.5,def:8,label:'ขอบบน B ='},
+ arc:{min:2,max:24,step:1,def:4,label:'จำนวนท่อน n ='},
+ disk:{min:.2,max:3.9,step:.05,def:2,label:'ตำแหน่ง x ='},
+};
+function fit(){const w=cv.parentElement.clientWidth||600,h=300,dpr=Math.min(2,window.devicePixelRatio||1);
+ cv.width=w*dpr;cv.height=h*dpr;cv.style.height=h+'px';const ctx=cv.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);return{ctx,w,h};}
+function mk(w,h,x0,x1,y0,y1,pad,ox){pad=pad==null?36:pad;ox=ox||0;
+ return{X:x=>ox+pad+(x-x0)/(x1-x0)*(w-2*pad),Y:y=>h-pad-(y-y0)/(y1-y0)*(h-2*pad)};}
+function axes(ctx,M,x0,x1,y0,y1){ctx.strokeStyle='rgba(255,255,255,.16)';ctx.lineWidth=1;
+ const yz=(y0<=0&&y1>=0)?M.Y(0):M.Y(y0),xz=(x0<=0&&x1>=0)?M.X(0):M.X(x0);
+ ctx.beginPath();ctx.moveTo(M.X(x0),yz);ctx.lineTo(M.X(x1),yz);ctx.stroke();
+ ctx.beginPath();ctx.moveTo(xz,M.Y(y1));ctx.lineTo(xz,M.Y(y0));ctx.stroke();}
+function curve(ctx,M,f,a,b,col,wd){ctx.strokeStyle=col;ctx.lineWidth=wd||2.4;ctx.beginPath();let fst=true;
+ for(let i=0;i<=240;i++){const x=a+(b-a)*i/240,y=f(x);if(!isFinite(y)||Math.abs(y)>1e4){fst=true;continue;}
+  const px=M.X(x),py=M.Y(y);if(fst){ctx.moveTo(px,py);fst=false;}else ctx.lineTo(px,py);}ctx.stroke();}
+function shade(ctx,M,f,a,b,col){ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(M.X(a),M.Y(0));
+ for(let i=0;i<=140;i++){const x=a+(b-a)*i/140;ctx.lineTo(M.X(x),M.Y(f(x)));}
+ ctx.lineTo(M.X(b),M.Y(0));ctx.closePath();ctx.fill();}
+function dash(ctx,x1,y1,x2,y2,col){ctx.save();ctx.setLineDash([5,4]);ctx.strokeStyle=col;ctx.lineWidth=1.4;
+ ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.restore();}
+function dot(ctx,x,y,col,r){ctx.fillStyle=col;ctx.beginPath();ctx.arc(x,y,r||5,0,7);ctx.fill();
+ ctx.strokeStyle='rgba(0,0,0,.4)';ctx.lineWidth=1.2;ctx.stroke();}
+function label(ctx,x,y,t,col){ctx.fillStyle=col||'#dfe6ff';ctx.font='600 12px sans-serif';ctx.fillText(t,x,y);}
+const C_M='#5cc8ff',C_P='#a371f7',C_G='#ffd166',C_R='#ff7a59',C_GD='#5ee6a8';
+
+function drawFTC(ctx,w,h,X){
+ const f=x=>1+x/2, x0=0,x1=4.3,y0=0,y1=3.6,M=mk(w,h,x0,x1,y0,y1);
+ axes(ctx,M,x0,x1,y0,y1);
+ shade(ctx,M,f,0,X,'rgba(92,200,255,.22)');
+ curve(ctx,M,f,0,4.3,C_M);label(ctx,M.X(3.3),M.Y(f(3.3))-8,'f(x)=1+x/2',C_M);
+ dash(ctx,M.X(X),M.Y(0),M.X(X),M.Y(f(X)),C_G);dot(ctx,M.X(X),M.Y(f(X)),C_G);
+ const A=X+X*X/4;
+ label(ctx,M.X(X/2)-20,M.Y(f(X/2)/2),'A(X)='+A.toFixed(2),'#dfe6ff');
+ cap.innerHTML='พื้นที่สะสม A(X) = '+A.toFixed(2)+' · ขยับขอบขวาไปนิด พื้นที่เพิ่ม = แถบสูง <b>f(X) = '+f(X).toFixed(2)+'</b> พอดี → <b>A′(X) = f(X)</b> นี่คือ FTC ทั้งใจความ: อัตราโตของพื้นที่ = ความสูงตรงขอบ';
+}
+function drawSplit(ctx,w,h,c){
+ const f=x=>2.6-Math.pow(x-2,2)*.45, x0=0,x1=4,y0=0,y1=3.2,M=mk(w,h,x0,x1,y0,y1);
+ axes(ctx,M,x0,x1,y0,y1);
+ shade(ctx,M,f,.3,c,'rgba(94,230,168,.25)');shade(ctx,M,f,c,3.7,'rgba(163,113,247,.25)');
+ curve(ctx,M,f,0,4,C_M);
+ dash(ctx,M.X(c),M.Y(0),M.X(c),M.Y(f(c)),C_G);
+ label(ctx,M.X(c)-4,M.Y(f(c))-8,'c',C_G);
+ label(ctx,M.X(.9),M.Y(.4),'∫ₐᶜ',C_GD);label(ctx,M.X(3),M.Y(.4),'∫ᶜᵇ',C_P);
+ cap.innerHTML='เลื่อนจุดแบ่ง c ไปที่ไหนก็ได้ — เขียว + ม่วง = พื้นที่ทั้งก้อน <b>เท่าเดิมเสมอ</b> → ∫ₐᵇ = ∫ₐᶜ + ∫ᶜᵇ · นี่คือเหตุผลที่โจทย์ |x−1| ต้อง "หั่นที่หักมุม" ได้อย่างถูกกติกา';
+}
+function drawImproper(ctx,w,h,B){
+ const x0=1,x1=42,y0=0,y1=1.15,M=mk(w,h,x0,x1,y0,y1);
+ axes(ctx,M,x0,x1,y0,y1);
+ shade(ctx,M,x=>1/(x*x),1,B,'rgba(94,230,168,.3)');
+ shade(ctx,M,x=>1/x,1,B,'rgba(255,122,89,.18)');
+ curve(ctx,M,x=>1/x,1,42,C_R);label(ctx,M.X(20),M.Y(1/20)-8,'1/x (ตาย)',C_R);
+ curve(ctx,M,x=>1/(x*x),1,42,C_GD);label(ctx,M.X(6),M.Y(1/36)+16,'1/x² (รอด)',C_GD);
+ const a1=1-1/B, a2=Math.log(B);
+ cap.innerHTML='ถึงขอบ B = '+B.toFixed(0)+': พื้นที่ใต้ <b style="color:#5ee6a8">1/x² = '+a1.toFixed(3)+'</b> (ไม่มีวันเกิน 1) แต่ <b style="color:#ff7a59">1/x = ln B = '+a2.toFixed(2)+'</b> โตไม่หยุด — เส้นแบ่งชีวิตคือ p = 1: บางเร็วกว่านี้รอด ช้ากว่านี้ตาย';
+}
+function drawArc(ctx,w,h,n){
+ const f=x=>1.2+Math.sin(x)*.9, x0=0,x1=6.4,y0=0,y1=2.6,M=mk(w,h,x0,x1,y0,y1);
+ axes(ctx,M,x0,x1,y0,y1);
+ curve(ctx,M,f,0,6.28,'rgba(92,200,255,.35)',5);
+ let L=0;ctx.strokeStyle=C_G;ctx.lineWidth=2;ctx.beginPath();
+ for(let i=0;i<=n;i++){const x=6.28*i/n,y=f(x);const px=M.X(x),py=M.Y(y);
+  if(i===0)ctx.moveTo(px,py);else ctx.lineTo(px,py);
+  if(i>0){const xp=6.28*(i-1)/n;L+=Math.hypot(x-xp,f(x)-f(xp));}}
+ ctx.stroke();
+ for(let i=0;i<=n;i++){const x=6.28*i/n;dot(ctx,M.X(x),M.Y(f(x)),C_G,3);}
+ // true length numeric
+ let T=0;for(let i=1;i<=800;i++){const a=6.28*(i-1)/800,b=6.28*i/800;T+=Math.hypot(b-a,f(b)-f(a));}
+ cap.innerHTML='แบ่งโค้งเป็น <b>'+n+' ท่อนตรง</b> (พีทาโกรัสจิ๋วท่อนละครั้ง) ผลรวม = <b>'+L.toFixed(4)+'</b> · ความยาวจริง ≈ '+T.toFixed(4)+' — เพิ่ม n แล้วดูมันไต่เข้าหาค่าจริง: ∫√(1+(y′)²)dx คือการทำแบบนี้ด้วยท่อน "เล็กอนันต์"';
+}
+function drawDisk(ctx,w,h,x){
+ // y=sqrt(x) rotate about x-axis, side view with ellipse disks
+ const x0=0,x1=4.4,y0=-2.4,y1=2.4,M=mk(w,h,x0,x1,y0,y1);
+ axes(ctx,M,x0,x1,y0,y1);
+ curve(ctx,M,t=>Math.sqrt(t),0,4.3,C_M);curve(ctx,M,t=>-Math.sqrt(t),0,4.3,C_M);
+ label(ctx,M.X(3.4),M.Y(Math.sqrt(3.4))-8,'y=√x',C_M);
+ // ghost disks
+ for(let k=1;k<5;k++){const xx=4*k/5;ctx.strokeStyle='rgba(163,113,247,.35)';ctx.lineWidth=1.2;
+  ctx.beginPath();ctx.ellipse(M.X(xx),M.Y(0),7,(M.Y(0)-M.Y(Math.sqrt(xx))),0,0,7);ctx.stroke();}
+ const R=Math.sqrt(x);
+ ctx.strokeStyle=C_G;ctx.fillStyle='rgba(255,209,102,.25)';ctx.lineWidth=2;
+ ctx.beginPath();ctx.ellipse(M.X(x),M.Y(0),8,(M.Y(0)-M.Y(R)),0,0,7);ctx.fill();ctx.stroke();
+ dash(ctx,M.X(x),M.Y(0),M.X(x),M.Y(R),C_G);
+ label(ctx,M.X(x)+10,M.Y(R/2),'R=√x='+R.toFixed(2),C_G);
+ cap.innerHTML='หมุน y=√x รอบแกน x: ที่ตำแหน่ง x = '+x.toFixed(2)+' ได้ "จาน" รัศมี R = '+R.toFixed(2)+' พื้นที่หน้า = πR² = <b>'+(Math.PI*x).toFixed(2)+'</b> · ปริมาตรทั้งก้อน = ซ้อนจานบางๆ ทุกแผ่น = π∫R²dx = π∫x dx — π มากับ "หน้าตัดวงกลม" เท่านั้น';
+}
+const DRAW={ftc:drawFTC,split:drawSplit,improper:drawImproper,arc:drawArc,disk:drawDisk};
+function draw(){const {ctx,w,h}=fit();ctx.clearRect(0,0,w,h);DRAW[panel](ctx,w,h,parseFloat(rng.value));sval.textContent=parseFloat(rng.value).toFixed(2);}
+function setPanel(p){panel=p;const c=CFG[p];rng.min=c.min;rng.max=c.max;rng.step=c.step;rng.value=c.def;slab.textContent=c.label;
+ document.querySelectorAll('.geotab').forEach(b=>b.classList.toggle('on',b.dataset.g===p));draw();}
+document.querySelectorAll('.geotab').forEach(b=>b.onclick=()=>setPanel(b.dataset.g));
+rng.oninput=draw;
+window.addEventListener('resize',()=>{clearTimeout(window._grz);window._grz=setTimeout(draw,150);});
+setPanel('ftc');
+})();
+
+buildOrder();render();
+</script>
+</body>
+</html>
