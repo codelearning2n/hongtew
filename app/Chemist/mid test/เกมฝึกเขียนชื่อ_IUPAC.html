@@ -5,131 +5,131 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>เกมฝึกเขียนชื่อ IUPAC — เคมีอินทรีย์ กลางภาค</title>
 <style>
-  :root{
-    --bg:#0d0f12; --panel:#161a20; --panel2:#1e242c; --line:#2c333d;
-    --ink:#e9edf2; --dim:#9aa5b1; --acc:#ff8a1e; --acc2:#ffb45f;
-    --ok:#37d67a; --bad:#ff5a6a; --blue:#5aa9ff;
-  }
-  *{box-sizing:border-box}
-  body{
-    margin:0; background:radial-gradient(1200px 600px at 50% -10%,#1a1410,#0d0f12 60%);
-    color:var(--ink);
-    font-family:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
-    line-height:1.5; padding:14px; -webkit-text-size-adjust:100%;
-  }
-  .wrap{max-width:760px;margin:0 auto}
-  header{text-align:center;margin-bottom:10px}
-  h1{font-size:clamp(19px,5vw,26px);margin:.2em 0;color:var(--acc2);letter-spacing:.3px}
-  .sub{color:var(--dim);font-size:13px}
-  .stats{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:12px 0}
-  .stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:7px 12px;min-width:78px;text-align:center}
-  .stat b{display:block;font-size:20px;color:var(--acc2);line-height:1.1}
-  .stat span{font-size:11px;color:var(--dim)}
-  .filters{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}
-  .chip{background:var(--panel);border:1px solid var(--line);color:var(--dim);
-    border-radius:999px;padding:6px 13px;font-size:13px;cursor:pointer;user-select:none;transition:.15s}
-  .chip:hover{border-color:var(--acc)}
-  .chip.on{background:var(--acc);color:#1a1205;border-color:var(--acc);font-weight:700}
-  .card{background:linear-gradient(180deg,var(--panel),var(--panel2));
-    border:1px solid var(--line);border-radius:18px;padding:18px 16px 16px;box-shadow:0 10px 40px rgba(0,0,0,.4)}
-  .qtag{display:inline-block;font-size:11.5px;color:var(--acc2);background:#2a1c0c;
-    border:1px solid #4a3413;border-radius:8px;padding:2px 9px;margin-bottom:10px}
-  .ask{color:var(--dim);font-size:13.5px;margin-bottom:6px}
-  .struct{font-family:'Cascadia Code','Consolas','SFMono-Regular',ui-monospace,monospace;
-    background:#0b0d10;border:1px solid var(--line);border-radius:12px;
-    padding:16px 12px;text-align:center;font-size:clamp(18px,5.4vw,26px);
-    letter-spacing:.5px;word-break:break-word;color:#fff}
-  .prompt-name{font-size:clamp(20px,6vw,30px);text-align:center;color:#fff;font-weight:700;padding:14px 8px}
-  .skel{background:#0b0d10;border:1px solid var(--line);border-radius:12px;padding:14px 10px;display:flex;justify-content:center;align-items:center;min-height:120px}
-  .skel svg{display:block}
-  .inputrow{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
-  input[type=text]{flex:1;min-width:180px;background:#0b0d10;border:1.5px solid var(--line);
-    color:#fff;border-radius:12px;padding:12px 14px;font-size:16px;outline:none}
-  input[type=text]:focus{border-color:var(--acc)}
-  .opts{display:grid;grid-template-columns:1fr;gap:9px;margin-top:14px}
-  @media(min-width:560px){.opts{grid-template-columns:1fr 1fr}}
-  .opt{background:#0b0d10;border:1.5px solid var(--line);border-radius:12px;padding:13px;
-    cursor:pointer;font-family:ui-monospace,'Consolas',monospace;font-size:16px;text-align:center;
-    color:#fff;transition:.12s;word-break:break-word}
-  .opt:hover{border-color:var(--acc)}
-  .opt.ok{border-color:var(--ok);background:#0f2418}
-  .opt.bad{border-color:var(--bad);background:#2a1214}
-  .opt.dim{opacity:.5}
-  button{font-family:inherit}
-  .btn{background:var(--acc);color:#1a1205;border:none;border-radius:12px;padding:12px 18px;
-    font-size:15px;font-weight:700;cursor:pointer;transition:.12s}
-  .btn:hover{background:var(--acc2)}
-  .btn.ghost{background:transparent;border:1.5px solid var(--line);color:var(--dim);font-weight:600}
-  .btn.ghost:hover{border-color:var(--acc);color:var(--ink)}
-  .fb{margin-top:14px;border-radius:12px;padding:13px 14px;font-size:14.5px;display:none}
-  .fb.show{display:block}
-  .fb.good{background:#0f2418;border:1px solid #245c3b}
-  .fb.wrong{background:#2a1214;border:1px solid #5c2530}
-  .fb .verdict{font-weight:700;font-size:15.5px;margin-bottom:4px}
-  .fb .ans{color:var(--acc2);font-family:ui-monospace,monospace}
-  .fb .exp{color:var(--dim);margin-top:6px;font-size:13.5px}
-  .actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
-  .foot{text-align:center;color:var(--dim);font-size:12px;margin-top:16px}
-  .foot a{color:var(--blue);cursor:pointer}
-  .hintbox{margin-top:10px;font-size:13px;color:var(--dim)}
-  kbd{background:#0b0d10;border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:12px}
-  .bar{height:6px;background:#0b0d10;border-radius:6px;overflow:hidden;margin:10px 0 2px}
-  .bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));width:0;transition:.3s}
+ :root{
+ --bg:#0d0f12; --panel:#161a20; --panel2:#1e242c; --line:#2c333d;
+ --ink:#e9edf2; --dim:#9aa5b1; --acc:#ff8a1e; --acc2:#ffb45f;
+ --ok:#37d67a; --bad:#ff5a6a; --blue:#5aa9ff;
+ }
+ *{box-sizing:border-box}
+ body{
+ margin:0; background:radial-gradient(1200px 600px at 50% -10%,#1a1410,#0d0f12 60%);
+ color:var(--ink);
+ font-family:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
+ line-height:1.5; padding:14px; -webkit-text-size-adjust:100%;
+ }
+ .wrap{max-width:760px;margin:0 auto}
+ header{text-align:center;margin-bottom:10px}
+ h1{font-size:clamp(19px,5vw,26px);margin:.2em 0;color:var(--acc2);letter-spacing:.3px}
+ .sub{color:var(--dim);font-size:13px}
+ .stats{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:12px 0}
+ .stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:7px 12px;min-width:78px;text-align:center}
+ .stat b{display:block;font-size:20px;color:var(--acc2);line-height:1.1}
+ .stat span{font-size:11px;color:var(--dim)}
+ .filters{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}
+ .chip{background:var(--panel);border:1px solid var(--line);color:var(--dim);
+ border-radius:999px;padding:6px 13px;font-size:13px;cursor:pointer;user-select:none;transition:.15s}
+ .chip:hover{border-color:var(--acc)}
+ .chip.on{background:var(--acc);color:#1a1205;border-color:var(--acc);font-weight:700}
+ .card{background:linear-gradient(180deg,var(--panel),var(--panel2));
+ border:1px solid var(--line);border-radius:18px;padding:18px 16px 16px;box-shadow:0 10px 40px rgba(0,0,0,.4)}
+ .qtag{display:inline-block;font-size:11.5px;color:var(--acc2);background:#2a1c0c;
+ border:1px solid #4a3413;border-radius:8px;padding:2px 9px;margin-bottom:10px}
+ .ask{color:var(--dim);font-size:13.5px;margin-bottom:6px}
+ .struct{font-family:'Cascadia Code','Consolas','SFMono-Regular',ui-monospace,monospace;
+ background:#0b0d10;border:1px solid var(--line);border-radius:12px;
+ padding:16px 12px;text-align:center;font-size:clamp(18px,5.4vw,26px);
+ letter-spacing:.5px;word-break:break-word;color:#fff}
+ .prompt-name{font-size:clamp(20px,6vw,30px);text-align:center;color:#fff;font-weight:700;padding:14px 8px}
+ .skel{background:#0b0d10;border:1px solid var(--line);border-radius:12px;padding:14px 10px;display:flex;justify-content:center;align-items:center;min-height:120px}
+ .skel svg{display:block}
+ .inputrow{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+ input[type=text]{flex:1;min-width:180px;background:#0b0d10;border:1.5px solid var(--line);
+ color:#fff;border-radius:12px;padding:12px 14px;font-size:16px;outline:none}
+ input[type=text]:focus{border-color:var(--acc)}
+ .opts{display:grid;grid-template-columns:1fr;gap:9px;margin-top:14px}
+ @media(min-width:560px){.opts{grid-template-columns:1fr 1fr}}
+ .opt{background:#0b0d10;border:1.5px solid var(--line);border-radius:12px;padding:13px;
+ cursor:pointer;font-family:ui-monospace,'Consolas',monospace;font-size:16px;text-align:center;
+ color:#fff;transition:.12s;word-break:break-word}
+ .opt:hover{border-color:var(--acc)}
+ .opt.ok{border-color:var(--ok);background:#0f2418}
+ .opt.bad{border-color:var(--bad);background:#2a1214}
+ .opt.dim{opacity:.5}
+ button{font-family:inherit}
+ .btn{background:var(--acc);color:#1a1205;border:none;border-radius:12px;padding:12px 18px;
+ font-size:15px;font-weight:700;cursor:pointer;transition:.12s}
+ .btn:hover{background:var(--acc2)}
+ .btn.ghost{background:transparent;border:1.5px solid var(--line);color:var(--dim);font-weight:600}
+ .btn.ghost:hover{border-color:var(--acc);color:var(--ink)}
+ .fb{margin-top:14px;border-radius:12px;padding:13px 14px;font-size:14.5px;display:none}
+ .fb.show{display:block}
+ .fb.good{background:#0f2418;border:1px solid #245c3b}
+ .fb.wrong{background:#2a1214;border:1px solid #5c2530}
+ .fb .verdict{font-weight:700;font-size:15.5px;margin-bottom:4px}
+ .fb .ans{color:var(--acc2);font-family:ui-monospace,monospace}
+ .fb .exp{color:var(--dim);margin-top:6px;font-size:13.5px}
+ .actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+ .foot{text-align:center;color:var(--dim);font-size:12px;margin-top:16px}
+ .foot a{color:var(--blue);cursor:pointer}
+ .hintbox{margin-top:10px;font-size:13px;color:var(--dim)}
+ kbd{background:#0b0d10;border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:12px}
+ .bar{height:6px;background:#0b0d10;border-radius:6px;overflow:hidden;margin:10px 0 2px}
+ .bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));width:0;transition:.3s}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <header>
-    <h1>⚗️ เกมฝึกเขียนชื่อ IUPAC</h1>
-    <div class="sub">เคมีอินทรีย์ กลางภาค — แอลเคน · แอลคีน · แอลไคน์ · หมู่ฟังก์ชัน · ชื่อ→โครงสร้าง</div>
-  </header>
+ <header>
+ <h1>⚗️ เกมฝึกเขียนชื่อ IUPAC</h1>
+ <div class="sub">เคมีอินทรีย์ กลางภาค — แอลเคน · แอลคีน · แอลไคน์ · หมู่ฟังก์ชัน · ชื่อ→โครงสร้าง</div>
+ </header>
 
-  <div class="stats">
-    <div class="stat"><b id="sScore">0</b><span>ถูก</span></div>
-    <div class="stat"><b id="sTotal">0</b><span>ทำไปแล้ว</span></div>
-    <div class="stat"><b id="sStreak">0</b><span>ต่อเนื่อง 🔥</span></div>
-    <div class="stat"><b id="sBest">0</b><span>สถิติสูงสุด</span></div>
-  </div>
+ <div class="stats">
+ <div class="stat"><b id="sScore">0</b><span>ถูก</span></div>
+ <div class="stat"><b id="sTotal">0</b><span>ทำไปแล้ว</span></div>
+ <div class="stat"><b id="sStreak">0</b><span>ต่อเนื่อง 🔥</span></div>
+ <div class="stat"><b id="sBest">0</b><span>สถิติสูงสุด</span></div>
+ </div>
 
-  <div class="filters" id="filters"></div>
+ <div class="filters" id="filters"></div>
 
-  <div id="examBar" style="text-align:center;margin-bottom:12px">
-    <button class="btn" id="examBtn">📝 โหมดข้อสอบจริง — 15 อ่านชื่อ · 10 เขียนโครงสร้าง · 2 หมู่ฟังก์ชัน</button>
-  </div>
+ <div id="examBar" style="text-align:center;margin-bottom:12px">
+ <button class="btn" id="examBtn">📝 โหมดข้อสอบจริง — 15 อ่านชื่อ · 10 เขียนโครงสร้าง · 2 หมู่ฟังก์ชัน</button>
+ </div>
 
-  <div class="card" id="practiceCard">
-    <div id="qtag" class="qtag"></div>
-    <div class="ask" id="ask"></div>
-    <div id="promptArea"></div>
+ <div class="card" id="practiceCard">
+ <div id="qtag" class="qtag"></div>
+ <div class="ask" id="ask"></div>
+ <div id="promptArea"></div>
 
-    <div id="typeZone" style="display:none">
-      <div class="inputrow">
-        <input type="text" id="answer" placeholder="พิมพ์ชื่อ IUPAC เช่น 2-methylbutane, but-2-ene…" autocomplete="off" autocapitalize="off" spellcheck="false">
-        <button class="btn" id="checkBtn">ตรวจ</button>
-      </div>
-      <div class="hintbox">💡 พิมพ์เว้นวรรค/ขีด/จุลภาค ยังไงก็ได้ ระบบตัดให้ — กด <kbd>Enter</kbd> เพื่อตรวจ</div>
-    </div>
+ <div id="typeZone" style="display:none">
+ <div class="inputrow">
+ <input type="text" id="answer" placeholder="พิมพ์ชื่อ IUPAC เช่น 2-methylbutane, but-2-ene…" autocomplete="off" autocapitalize="off" spellcheck="false">
+ <button class="btn" id="checkBtn">ตรวจ</button>
+ </div>
+ <div class="hintbox">💡 พิมพ์เว้นวรรค/ขีด/จุลภาค ยังไงก็ได้ ระบบตัดให้ — กด <kbd>Enter</kbd> เพื่อตรวจ</div>
+ </div>
 
-    <div id="mcZone" class="opts" style="display:none"></div>
+ <div id="mcZone" class="opts" style="display:none"></div>
 
-    <div class="fb" id="fb"></div>
+ <div class="fb" id="fb"></div>
 
-    <div class="actions">
-      <button class="btn ghost" id="revealBtn">เฉลย 👀</button>
-      <button class="btn" id="nextBtn" style="display:none">ข้อถัดไป →</button>
-      <button class="btn ghost" id="skipBtn">ข้าม</button>
-    </div>
-    <div class="bar"><i id="bar"></i></div>
-    <div class="hintbox" id="bagInfo" style="margin-top:6px"></div>
-  </div>
+ <div class="actions">
+ <button class="btn ghost" id="revealBtn">เฉลย 👀</button>
+ <button class="btn" id="nextBtn" style="display:none">ข้อถัดไป →</button>
+ <button class="btn ghost" id="skipBtn">ข้าม</button>
+ </div>
+ <div class="bar"><i id="bar"></i></div>
+ <div class="hintbox" id="bagInfo" style="margin-top:6px"></div>
+ </div>
 
-  <div id="examWrap" style="display:none"></div>
+ <div id="examWrap" style="display:none"></div>
 
-  <div class="foot">
-    คลังข้อสอบ <b id="poolCount">0</b> ข้อ · หมุนเวียนไม่ซ้ำจนครบชุด ·
-    <a id="resetAll">ล้างสถิติ</a><br>
-    ⚠️ เฉลยยึด IUPAC มาตรฐาน — ถ้าอาจารย์ยึดตามสไลด์ต่างออกไป ตรวจกับอาจารย์อีกที
-  </div>
+ <div class="foot">
+ คลังข้อสอบ <b id="poolCount">0</b> ข้อ · หมุนเวียนไม่ซ้ำจนครบชุด ·
+ <a id="resetAll">ล้างสถิติ</a><br>
+ ⚠️ เฉลยยึด IUPAC มาตรฐาน — ถ้าสไลด์ยึดแบบต่างออกไป ตรวจกับสไลด์อีกที
+ </div>
 </div>
 
 <script>
@@ -148,7 +148,7 @@ const BANK = [
 {cat:'alkane',type:'name',q:'CH₃–CH(CH₃)–CH₂–CH₂–CH₂–CH₃',a:['2-methylhexane'],exp:'hexane + methyl ที่ C2'},
 {cat:'alkane',type:'name',q:'CH₃–CH₂–CH₂–CH(CH₃)–CH₂–CH₂–CH₃',a:['4-methylheptane'],exp:'heptane + methyl กลางโซ่ที่ C4'},
 {cat:'alkane',type:'name',q:'CH₃–C(CH₃)₂–CH₃',a:['2,2-dimethylpropane','neopentane'],exp:'propane + methyl 2 หมู่ที่ C2'},
-{cat:'alkane',type:'name',q:'CH₃–C(CH₃)₂–CH₂–CH₃',a:['2,2-dimethylbutane'],exp:'butane + methyl 2 หมู่ที่ C2  [= (CH₃)₃CCH₂CH₃]'},
+{cat:'alkane',type:'name',q:'CH₃–C(CH₃)₂–CH₂–CH₃',a:['2,2-dimethylbutane'],exp:'butane + methyl 2 หมู่ที่ C2 [= (CH₃)₃CCH₂CH₃]'},
 {cat:'alkane',type:'name',q:'CH₃–CH(CH₃)–CH(CH₃)–CH₃',a:['2,3-dimethylbutane'],exp:'butane + methyl ที่ C2,C3 → ใช้ di'},
 {cat:'alkane',type:'name',q:'CH₃–CH₂–C(CH₃)₂–CH₂–CH₃',a:['3,3-dimethylpentane'],exp:'pentane + methyl 2 หมู่ที่ C3'},
 {cat:'alkane',type:'name',q:'CH₃–CH₂–C(CH₃)₂–CH₂–CH₂–CH₃',a:['3,3-dimethylhexane'],exp:'hexane, นับจากซ้าย C3 < ขวา C4'},
@@ -259,17 +259,17 @@ const BANK = [
 ];
 
 /* ---------- normalize สำหรับตรวจชื่อ ---------- */
-function norm(s){return (s||'').toString().toLowerCase().replace(/[\s\-–—,.​]/g,'').trim();}
+function norm(s){return (s||'').toString.toLowerCase.replace(/[\s\-–—,.​]/g,'').trim;}
 
 /* ---------- state ---------- */
 const CATS=[
-  {id:'all',label:'ทั้งหมด'},
-  {id:'alkane',label:'แอลเคน'},
-  {id:'alkene',label:'แอลคีน'},
-  {id:'alkyne',label:'แอลไคน์'},
-  {id:'hard',label:'ยาก 🔥'},
-  {id:'draw',label:'ชื่อ→โครงสร้าง'},
-  {id:'func',label:'หมู่ฟังก์ชัน'},
+ {id:'all',label:'ทั้งหมด'},
+ {id:'alkane',label:'แอลเคน'},
+ {id:'alkene',label:'แอลคีน'},
+ {id:'alkyne',label:'แอลไคน์'},
+ {id:'hard',label:'ยาก 🔥'},
+ {id:'draw',label:'ชื่อ→โครงสร้าง'},
+ {id:'func',label:'หมู่ฟังก์ชัน'},
 ];
 let filter='all', bag=[], cur=null, answered=false;
 let score=0,total=0,streak=0,best=+(localStorage.getItem('iupac_best')||0);
@@ -281,166 +281,166 @@ $('poolCount').textContent=BANK.length;
 /* filters */
 const fWrap=$('filters');
 CATS.forEach(c=>{
-  const b=document.createElement('div');
-  b.className='chip'+(c.id==='all'?' on':'');b.textContent=c.label;b.dataset.id=c.id;
-  b.onclick=()=>{filter=c.id;[...fWrap.children].forEach(x=>x.classList.toggle('on',x.dataset.id===c.id));newBag();next();};
-  fWrap.appendChild(b);
+ const b=document.createElement('div');
+ b.className='chip'+(c.id==='all'?' on':'');b.textContent=c.label;b.dataset.id=c.id;
+ b.onclick==>{filter=c.id;[...fWrap.children].forEach(x=>x.classList.toggle('on',x.dataset.id===c.id));newBag;next;};
+ fWrap.appendChild(b);
 });
 
-function pool(){return filter==='all'?BANK.slice():BANK.filter(q=>q.cat===filter);}
-function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;}
-function newBag(){bag=shuffle(pool().map((_,i)=>i));}
+function pool{return filter==='all'?BANK.slice:BANK.filter(q=>q.cat===filter);}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.random*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;}
+function newBag{bag=shuffle(pool.map((_,i)=>i));}
 
-function updStats(){
-  $('sScore').textContent=score;$('sTotal').textContent=total;
-  $('sStreak').textContent=streak;$('sBest').textContent=best;
+function updStats{
+ $('sScore').textContent=score;$('sTotal').textContent=total;
+ $('sStreak').textContent=streak;$('sBest').textContent=best;
 }
-function setBar(){const P=pool().length;const done=P-bag.length;$('bar').style.width=(P?done/P*100:0)+'%';
-  $('bagInfo').textContent=`ชุดนี้ ${pool().length} ข้อ · เหลือ ${bag.length} ข้อในรอบนี้`;}
+function setBar{const P=pool.length;const done=P-bag.length;$('bar').style.width=(P?done/P*100:0)+'%';
+ $('bagInfo').textContent=`ชุดนี้ ${pool.length} ข้อ · เหลือ ${bag.length} ข้อในรอบนี้`;}
 
-function next(){
-  answered=false;
-  if(bag.length===0)newBag();
-  cur=bag.pop();
-  const q=pool()[cur];
-  render(q);setBar();
+function next{
+ answered=false;
+ if(bag.length===0)newBag;
+ cur=bag.pop;
+ const q=pool[cur];
+ render(q);setBar;
 }
 
 /* ---------- ตัววาดโครงสร้างแบบเส้น-มุม (skeletal SVG) ---------- */
 function bondLines(a,b,order){
-  const out=[];
-  if(order===1){out.push([a.x,a.y,b.x,b.y]);return out;}
-  const ux=b.x-a.x,uy=b.y-a.y,len=Math.hypot(ux,uy)||1,px=-uy/len,py=ux/len,off=3.7;
-  if(order===2){out.push([a.x,a.y,b.x,b.y]);out.push([a.x+px*off,a.y+py*off,b.x+px*off,b.y+py*off]);}
-  else{out.push([a.x,a.y,b.x,b.y]);out.push([a.x+px*off,a.y+py*off,b.x+px*off,b.y+py*off]);out.push([a.x-px*off,a.y-py*off,b.x-px*off,b.y-py*off]);}
-  return out;
+ const out=[];
+ if(order===1){out.push([a.x,a.y,b.x,b.y]);return out;}
+ const ux=b.x-a.x,uy=b.y-a.y,len=Math.hypot(ux,uy)||1,px=-uy/len,py=ux/len,off=3.7;
+ if(order===2){out.push([a.x,a.y,b.x,b.y]);out.push([a.x+px*off,a.y+py*off,b.x+px*off,b.y+py*off]);}
+ else{out.push([a.x,a.y,b.x,b.y]);out.push([a.x+px*off,a.y+py*off,b.x+px*off,b.y+py*off]);out.push([a.x-px*off,a.y-py*off,b.x-px*off,b.y-py*off]);}
+ return out;
 }
 function svgWrap(segs,txt,pts){
-  let minX=1e9,minY=1e9,maxX=-1e9,maxY=-1e9;
-  pts.forEach(p=>{minX=Math.min(minX,p.x);minY=Math.min(minY,p.y);maxX=Math.max(maxX,p.x);maxY=Math.max(maxY,p.y);});
-  const pad=16;minX-=pad;minY-=pad;maxX+=pad;maxY+=pad;
-  const w=maxX-minX,h=maxY-minY;
-  let s='<svg viewBox="'+minX.toFixed(1)+' '+minY.toFixed(1)+' '+w.toFixed(1)+' '+h.toFixed(1)+'" style="width:100%;max-width:'+Math.min(430,Math.max(150,w*1.15)).toFixed(0)+'px;height:auto" xmlns="http://www.w3.org/2000/svg">';
-  segs.forEach(g=>{s+='<line x1="'+g[0].toFixed(1)+'" y1="'+g[1].toFixed(1)+'" x2="'+g[2].toFixed(1)+'" y2="'+g[3].toFixed(1)+'" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>';});
-  txt.forEach(t=>{s+='<text x="'+t.x.toFixed(1)+'" y="'+t.y.toFixed(1)+'" fill="#ffd9a8" font-size="15" font-family="ui-monospace,monospace" font-weight="700" text-anchor="middle">'+t.t+'</text>';});
-  return s+'</svg>';
+ let minX=1e9,minY=1e9,maxX=-1e9,maxY=-1e9;
+ pts.forEach(p=>{minX=Math.min(minX,p.x);minY=Math.min(minY,p.y);maxX=Math.max(maxX,p.x);maxY=Math.max(maxY,p.y);});
+ const pad=16;minX-=pad;minY-=pad;maxX+=pad;maxY+=pad;
+ const w=maxX-minX,h=maxY-minY;
+ let s='<svg viewBox="'+minX.toFixed(1)+' '+minY.toFixed(1)+' '+w.toFixed(1)+' '+h.toFixed(1)+'" style="width:100%;max-width:'+Math.min(430,Math.max(150,w*1.15)).toFixed(0)+'px;height:auto" xmlns="http://www.w3.org/2000/svg">';
+ segs.forEach(g=>{s+='<line x1="'+g[0].toFixed(1)+'" y1="'+g[1].toFixed(1)+'" x2="'+g[2].toFixed(1)+'" y2="'+g[3].toFixed(1)+'" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>';});
+ txt.forEach(t=>{s+='<text x="'+t.x.toFixed(1)+'" y="'+t.y.toFixed(1)+'" fill="#ffd9a8" font-size="15" font-family="ui-monospace,monospace" font-weight="700" text-anchor="middle">'+t.t+'</text>';});
+ return s+'</svg>';
 }
 function renderSK(sp){
-  const L=32,cos=0.866,sin=0.5,dx=L*cos,dy=L*sin,dxb=L*sin,dyb=L*cos;
-  const V=[];for(let k=0;k<sp.main;k++)V.push({x:k*dx,y:(k%2?-dy:0)});
-  const segs=[],txt=[],pts=[];
-  const bond=(a,b,o)=>{bondLines(a,b,o||1).forEach(g=>{segs.push(g);pts.push({x:g[0],y:g[1]},{x:g[2],y:g[3]});});};
-  for(let k=0;k<sp.main-1;k++){
-    const o=(sp.db&&sp.db.includes(k))?2:(sp.tb&&sp.tb.includes(k))?3:1;
-    bond(V[k],V[k+1],o);
-  }
-  (sp.subs||[]).forEach(s=>{
-    const vx=V[s.at].x,vy=V[s.at].y,sg=s.up?-1:1;
-    if(s.type==='label'){const P={x:vx,y:vy+sg*dyb};bond({x:vx,y:vy},P,1);txt.push({x:P.x,y:P.y+(sg<0?-3:13),t:s.text});pts.push({x:P.x-10,y:P.y+sg*15},{x:P.x+10,y:P.y+sg*15});}
-    else if(s.type==='isopropyl'){const A={x:vx,y:vy+sg*dyb};bond({x:vx,y:vy},A,1);bond(A,{x:A.x-dxb,y:A.y+sg*dy},1);bond(A,{x:A.x+dxb,y:A.y+sg*dy},1);}
-    else{const m={methyl:1,ethyl:2,propyl:3}[s.type]||1;let pr={x:vx,y:vy};for(let j=1;j<=m;j++){const nx=vx+((j%2)?dxb:0),ny=vy+sg*dyb*j;bond(pr,{x:nx,y:ny},1);pr={x:nx,y:ny};}}
-  });
-  return svgWrap(segs,txt,pts);
+ const L=32,cos=0.866,sin=0.5,dx=L*cos,dy=L*sin,dxb=L*sin,dyb=L*cos;
+ const V=[];for(let k=0;k<sp.main;k++)V.push({x:k*dx,y:(k%2?-dy:0)});
+ const segs=[],txt=[],pts=[];
+ const bond=(a,b,o)=>{bondLines(a,b,o||1).forEach(g=>{segs.push(g);pts.push({x:g[0],y:g[1]},{x:g[2],y:g[3]});});};
+ for(let k=0;k<sp.main-1;k++){
+ const o=(sp.db&&sp.db.includes(k))?2:(sp.tb&&sp.tb.includes(k))?3:1;
+ bond(V[k],V[k+1],o);
+ }
+ (sp.subs||[]).forEach(s=>{
+ const vx=V[s.at].x,vy=V[s.at].y,sg=s.up?-1:1;
+ if(s.type==='label'){const P={x:vx,y:vy+sg*dyb};bond({x:vx,y:vy},P,1);txt.push({x:P.x,y:P.y+(sg<0?-3:13),t:s.text});pts.push({x:P.x-10,y:P.y+sg*15},{x:P.x+10,y:P.y+sg*15});}
+ else if(s.type==='isopropyl'){const A={x:vx,y:vy+sg*dyb};bond({x:vx,y:vy},A,1);bond(A,{x:A.x-dxb,y:A.y+sg*dy},1);bond(A,{x:A.x+dxb,y:A.y+sg*dy},1);}
+ else{const m={methyl:1,ethyl:2,propyl:3}[s.type]||1;let pr={x:vx,y:vy};for(let j=1;j<=m;j++){const nx=vx+((j%2)?dxb:0),ny=vy+sg*dyb*j;bond(pr,{x:nx,y:ny},1);pr={x:nx,y:ny};}}
+ });
+ return svgWrap(segs,txt,pts);
 }
 function renderRing(sp){
-  const n=sp.n,R=32,segs=[],txt=[],pts=[];
-  const ang=k=>-Math.PI/2+k*2*Math.PI/n;
-  const P=[];for(let k=0;k<n;k++)P.push({x:R*Math.cos(ang(k)),y:R*Math.sin(ang(k))});
-  const bond=(a,b,o)=>{bondLines(a,b,o||1).forEach(g=>{segs.push(g);pts.push({x:g[0],y:g[1]},{x:g[2],y:g[3]});});};
-  for(let k=0;k<n;k++)bond(P[k],P[(k+1)%n],(sp.db&&sp.db.includes(k))?2:1);
-  (sp.subs||[]).forEach(s=>{const a=P[s.at],ux=a.x,uy=a.y,len=Math.hypot(ux,uy)||1,B={x:a.x+ux/len*24,y:a.y+uy/len*24};bond(a,B,1);if(s.type==='label'){txt.push({x:B.x,y:B.y+(uy<0?-3:13),t:s.text});pts.push({x:B.x,y:B.y+(uy<0?-13:13)});}});
-  let base=svgWrap(segs,txt,pts);
-  if(sp.aromatic)base=base.replace('</svg>','<circle cx="0" cy="0" r="18" fill="none" stroke="#fff" stroke-width="2"/></svg>');
-  return base;
+ const n=sp.n,R=32,segs=[],txt=[],pts=[];
+ const ang=k=>-Math.PI/2+k*2*Math.PI/n;
+ const P=[];for(let k=0;k<n;k++)P.push({x:R*Math.cos(ang(k)),y:R*Math.sin(ang(k))});
+ const bond=(a,b,o)=>{bondLines(a,b,o||1).forEach(g=>{segs.push(g);pts.push({x:g[0],y:g[1]},{x:g[2],y:g[3]});});};
+ for(let k=0;k<n;k++)bond(P[k],P[(k+1)%n],(sp.db&&sp.db.includes(k))?2:1);
+ (sp.subs||[]).forEach(s=>{const a=P[s.at],ux=a.x,uy=a.y,len=Math.hypot(ux,uy)||1,B={x:a.x+ux/len*24,y:a.y+uy/len*24};bond(a,B,1);if(s.type==='label'){txt.push({x:B.x,y:B.y+(uy<0?-3:13),t:s.text});pts.push({x:B.x,y:B.y+(uy<0?-13:13)});}});
+ let base=svgWrap(segs,txt,pts);
+ if(sp.aromatic)base=base.replace('</svg>','<circle cx="0" cy="0" r="18" fill="none" stroke="#fff" stroke-width="2"/></svg>');
+ return base;
 }
 function promptHTML(q){
-  if(q.sk)   return '<div class="skel">'+renderSK(q.sk)+'</div>';
-  if(q.ring) return '<div class="skel">'+renderRing(q.ring)+'</div>';
-  if(q.cat==='draw') return '<div class="prompt-name">'+q.q+'</div>';
-  return '<div class="struct">'+q.q+'</div>';
+ if(q.sk) return '<div class="skel">'+renderSK(q.sk)+'</div>';
+ if(q.ring) return '<div class="skel">'+renderRing(q.ring)+'</div>';
+ if(q.cat==='draw') return '<div class="prompt-name">'+q.q+'</div>';
+ return '<div class="struct">'+q.q+'</div>';
 }
 function render(q){
-  $('fb').className='fb';$('fb').innerHTML='';
-  $('nextBtn').style.display='none';
-  $('revealBtn').style.display='';
-  const tags={alkane:'แอลเคน · เขียนชื่อ',alkene:'แอลคีน · เขียนชื่อ',alkyne:'แอลไคน์ · เขียนชื่อ',draw:'ชื่อ → เลือกโครงสร้าง',func:'ระบุหมู่ฟังก์ชัน/ครอบครัว',hard:'ยาก 🔥 · โครงสร้างเส้น-มุม'};
-  $('qtag').textContent=tags[q.cat]||q.cat;
-  $('ask').textContent = q.ask || (q.type==='name'?'โครงสร้างนี้มีชื่อ IUPAC ว่าอะไร? (พิมพ์เป็นภาษาอังกฤษ)':(q.cat==='draw'?'เลือกโครงสร้างที่ตรงกับชื่อนี้':'สารนี้จัดเป็นอะไร?'));
-  $('promptArea').innerHTML=promptHTML(q);
+ $('fb').className='fb';$('fb').innerHTML='';
+ $('nextBtn').style.display='none';
+ $('revealBtn').style.display='';
+ const tags={alkane:'แอลเคน · เขียนชื่อ',alkene:'แอลคีน · เขียนชื่อ',alkyne:'แอลไคน์ · เขียนชื่อ',draw:'ชื่อ → เลือกโครงสร้าง',func:'ระบุหมู่ฟังก์ชัน/ครอบครัว',hard:'ยาก 🔥 · โครงสร้างเส้น-มุม'};
+ $('qtag').textContent=tags[q.cat]||q.cat;
+ $('ask').textContent = q.ask || (q.type==='name'?'โครงสร้างนี้มีชื่อ IUPAC ว่าอะไร? (พิมพ์เป็นภาษาอังกฤษ)':(q.cat==='draw'?'เลือกโครงสร้างที่ตรงกับชื่อนี้':'สารนี้จัดเป็นอะไร?'));
+ $('promptArea').innerHTML=promptHTML(q);
 
-  if(q.type==='name'){
-    $('typeZone').style.display='';$('mcZone').style.display='none';
-    const inp=$('answer');inp.value='';inp.disabled=false;setTimeout(()=>inp.focus(),40);
-  }else{
-    $('typeZone').style.display='none';$('mcZone').style.display='grid';
-    const z=$('mcZone');z.innerHTML='';
-    q._order=shuffle(q.opts.map((_,i)=>i));
-    q._order.forEach(oi=>{
-      const d=document.createElement('div');d.className='opt';d.innerHTML=q.opts[oi];
-      d.onclick=()=>pickMC(oi,d);z.appendChild(d);
-    });
-  }
+ if(q.type==='name'){
+ $('typeZone').style.display='';$('mcZone').style.display='none';
+ const inp=$('answer');inp.value='';inp.disabled=false;setTimeout(=>inp.focus,40);
+ }else{
+ $('typeZone').style.display='none';$('mcZone').style.display='grid';
+ const z=$('mcZone');z.innerHTML='';
+ q._order=shuffle(q.opts.map((_,i)=>i));
+ q._order.forEach(oi=>{
+ const d=document.createElement('div');d.className='opt';d.innerHTML=q.opts[oi];
+ d.onclick==>pickMC(oi,d);z.appendChild(d);
+ });
+ }
 }
 
 function pickMC(oi,el){
-  if(answered)return;answered=true;const q=pool()[cur];
-  const right=oi===q.correct;
-  [...$('mcZone').children].forEach(c=>c.style.pointerEvents='none');
-  if(right){el.classList.add('ok');good(q);}
-  else{el.classList.add('bad');
-    // highlight correct
-    [...$('mcZone').children].forEach((c,idx)=>{if(q._order[idx]===q.correct)c.classList.add('ok');});
-    bad(q,q.opts[q.correct]);}
+ if(answered)return;answered=true;const q=pool[cur];
+ const right=oi===q.correct;
+ [...$('mcZone').children].forEach(c=>c.style.pointerEvents='none');
+ if(right){el.classList.add('ok');good(q);}
+ else{el.classList.add('bad');
+ // highlight correct
+ [...$('mcZone').children].forEach((c,idx)=>{if(q._order[idx]===q.correct)c.classList.add('ok');});
+ bad(q,q.opts[q.correct]);}
 }
 
-function checkName(){
-  if(answered)return;const q=pool()[cur];const u=$('answer').value.trim();
-  if(!u){$('answer').focus();return;}
-  answered=true;$('answer').disabled=true;
-  const hit=q.a.some(a=>norm(a)===norm(u));
-  if(hit)good(q);else bad(q,q.a[0]);
+function checkName{
+ if(answered)return;const q=pool[cur];const u=$('answer').value.trim;
+ if(!u){$('answer').focus;return;}
+ answered=true;$('answer').disabled=true;
+ const hit=q.a.some(a=>norm(a)===norm(u));
+ if(hit)good(q);else bad(q,q.a[0]);
 }
 
 function good(q){
-  score++;total++;streak++;if(score>best){best=score;localStorage.setItem('iupac_best',best);}
-  updStats();
-  const f=$('fb');f.className='fb show good';
-  f.innerHTML='<div class="verdict">✅ ถูกต้อง! เยี่ยมมาก</div>'+
-    (q.type==='name'?'<div>เฉลย: <span class="ans">'+q.a[0]+'</span></div>':'')+
-    '<div class="exp">'+q.exp+'</div>';
-  finishRow();
+ score++;total++;streak++;if(score>best){best=score;localStorage.setItem('iupac_best',best);}
+ updStats;
+ const f=$('fb');f.className='fb show good';
+ f.innerHTML='<div class="verdict">✅ ถูกต้อง! เยี่ยมมาก</div>'+
+ (q.type==='name'?'<div>เฉลย: <span class="ans">'+q.a[0]+'</span></div>':'')+
+ '<div class="exp">'+q.exp+'</div>';
+ finishRow;
 }
 function bad(q,ans){
-  total++;streak=0;updStats();
-  const f=$('fb');f.className='fb show wrong';
-  f.innerHTML='<div class="verdict">💡 ยังไม่ใช่ — ลองจำแนวคิดนี้ไว้</div>'+
-    '<div>คำตอบที่ถูก: <span class="ans">'+ans+'</span></div>'+
-    '<div class="exp">'+q.exp+'</div>';
-  finishRow();
+ total++;streak=0;updStats;
+ const f=$('fb');f.className='fb show wrong';
+ f.innerHTML='<div class="verdict">💡 ยังไม่ใช่ — ลองจำแนวคิดนี้ไว้</div>'+
+ '<div>คำตอบที่ถูก: <span class="ans">'+ans+'</span></div>'+
+ '<div class="exp">'+q.exp+'</div>';
+ finishRow;
 }
-function finishRow(){$('nextBtn').style.display='';$('revealBtn').style.display='none';}
+function finishRow{$('nextBtn').style.display='';$('revealBtn').style.display='none';}
 
-function reveal(){
-  if(answered)return;const q=pool()[cur];answered=true;
-  if(q.type==='name'){$('answer').disabled=true;
-    const f=$('fb');f.className='fb show good';
-    f.innerHTML='<div class="verdict">👀 เฉลย</div><div>คำตอบ: <span class="ans">'+q.a[0]+'</span>'+
-      (q.a.length>1?' <span class="exp">(ยอมรับ: '+q.a.join(', ')+')</span>':'')+'</div><div class="exp">'+q.exp+'</div>';
-  }else{
-    [...$('mcZone').children].forEach((c,idx)=>{c.style.pointerEvents='none';if(q._order[idx]===q.correct)c.classList.add('ok');else c.classList.add('dim');});
-    const f=$('fb');f.className='fb show good';
-    f.innerHTML='<div class="verdict">👀 เฉลย</div><div>คำตอบ: <span class="ans">'+q.opts[q.correct]+'</span></div><div class="exp">'+q.exp+'</div>';
-  }
-  total++;streak=0;updStats();finishRow();
+function reveal{
+ if(answered)return;const q=pool[cur];answered=true;
+ if(q.type==='name'){$('answer').disabled=true;
+ const f=$('fb');f.className='fb show good';
+ f.innerHTML='<div class="verdict">👀 เฉลย</div><div>คำตอบ: <span class="ans">'+q.a[0]+'</span>'+
+ (q.a.length>1?' <span class="exp">(ยอมรับ: '+q.a.join(', ')+')</span>':'')+'</div><div class="exp">'+q.exp+'</div>';
+ }else{
+ [...$('mcZone').children].forEach((c,idx)=>{c.style.pointerEvents='none';if(q._order[idx]===q.correct)c.classList.add('ok');else c.classList.add('dim');});
+ const f=$('fb');f.className='fb show good';
+ f.innerHTML='<div class="verdict">👀 เฉลย</div><div>คำตอบ: <span class="ans">'+q.opts[q.correct]+'</span></div><div class="exp">'+q.exp+'</div>';
+ }
+ total++;streak=0;updStats;finishRow;
 }
 
 /* events */
 $('checkBtn').onclick=checkName;
-$('answer').addEventListener('keydown',e=>{if(e.key==='Enter')checkName();});
+$('answer').addEventListener('keydown',e=>{if(e.key==='Enter')checkName;});
 $('nextBtn').onclick=next;
-$('skipBtn').onclick=()=>{if(!answered){streak=0;updStats();}next();};
+$('skipBtn').onclick==>{if(!answered){streak=0;updStats;}next;};
 $('revealBtn').onclick=reveal;
-$('resetAll').onclick=()=>{score=0;total=0;streak=0;best=0;localStorage.removeItem('iupac_best');updStats();newBag();next();};
+$('resetAll').onclick==>{score=0;total=0;streak=0;best=0;localStorage.removeItem('iupac_best');updStats;newBag;next;};
 
 /* ---------- โหมดข้อสอบจริง (15 อ่านชื่อ + 10 เขียนโครงสร้าง + 2 หมู่ฟังก์ชัน) ---------- */
 /* ตอนที่ 2 เขียนโครงสร้างจากชื่อ — โชว์ชื่อ → นักเรียนวาดเอง → กดดูเฉลย (skeletal) แล้วตรวจตัวเอง */
@@ -462,138 +462,138 @@ const EXAM_DRAW=[
  {name:'3-ethylhexane',sk:{main:6,subs:[{at:2,up:true,type:'ethyl'}]},exp:'hexane + ethyl ที่ C3'},
 ];
 let EX=null;
-function buildExam(){
-  const names=shuffle(BANK.filter(q=>q.type==='name'&&['alkane','alkene','alkyne','hard'].includes(q.cat))).slice(0,15);
-  const draws=shuffle(EXAM_DRAW.slice()).slice(0,10);
-  const funcs=shuffle(BANK.filter(q=>q.cat==='func')).slice(0,2);
-  const list=[];
-  names.forEach(q=>list.push({sec:'name',q}));
-  draws.forEach(q=>list.push({sec:'draw',q}));
-  funcs.forEach(q=>list.push({sec:'func',q}));
-  return {list,idx:0,ans:new Array(list.length).fill(null),score:{name:0,draw:0,func:0}};
+function buildExam{
+ const names=shuffle(BANK.filter(q=>q.type==='name'&&['alkane','alkene','alkyne','hard'].includes(q.cat))).slice(0,15);
+ const draws=shuffle(EXAM_DRAW.slice).slice(0,10);
+ const funcs=shuffle(BANK.filter(q=>q.cat==='func')).slice(0,2);
+ const list=[];
+ names.forEach(q=>list.push({sec:'name',q}));
+ draws.forEach(q=>list.push({sec:'draw',q}));
+ funcs.forEach(q=>list.push({sec:'func',q}));
+ return {list,idx:0,ans:new Array(list.length).fill(null),score:{name:0,draw:0,func:0}};
 }
 function secInfo(i){
-  if(i<15)return{no:1,name:'อ่านชื่อ — เขียนชื่อ IUPAC',total:15,inNo:i+1};
-  if(i<25)return{no:2,name:'เขียนโครงสร้างจากชื่อ',total:10,inNo:i-14};
-  return{no:3,name:'ระบุหมู่ฟังก์ชัน',total:2,inNo:i-24};
+ if(i<15)return{no:1,name:'อ่านชื่อ — เขียนชื่อ IUPAC',total:15,inNo:i+1};
+ if(i<25)return{no:2,name:'เขียนโครงสร้างจากชื่อ',total:10,inNo:i-14};
+ return{no:3,name:'ระบุหมู่ฟังก์ชัน',total:2,inNo:i-24};
 }
-function examStart(){
-  EX=buildExam();
-  $('filters').style.display='none';$('examBar').style.display='none';$('practiceCard').style.display='none';
-  $('examWrap').style.display='';examRender();window.scrollTo(0,0);
+function examStart{
+ EX=buildExam;
+ $('filters').style.display='none';$('examBar').style.display='none';$('practiceCard').style.display='none';
+ $('examWrap').style.display='';examRender;window.scrollTo(0,0);
 }
-function examQuit(){
-  EX=null;
-  $('filters').style.display='';$('examBar').style.display='';$('practiceCard').style.display='';
-  $('examWrap').style.display='none';$('examWrap').innerHTML='';
+function examQuit{
+ EX=null;
+ $('filters').style.display='';$('examBar').style.display='';$('practiceCard').style.display='';
+ $('examWrap').style.display='none';$('examWrap').innerHTML='';
 }
-function examRender(){
-  if(EX.idx>=EX.list.length){examSummary();return;}
-  const it=EX.list[EX.idx],si=secInfo(EX.idx),pct=(EX.idx/EX.list.length*100).toFixed(0);
-  let prompt='',interact='';
-  if(it.sec==='name'){
-    prompt=promptHTML(it.q);
-    interact='<div class="inputrow"><input type="text" id="exInput" placeholder="พิมพ์ชื่อ IUPAC…" autocomplete="off" autocapitalize="off" spellcheck="false"><button class="btn" id="exCheck">ตรวจ</button></div>';
-  }else if(it.sec==='func'){
-    prompt=promptHTML(it.q);it.q._order=shuffle(it.q.opts.map((_,i)=>i));
-    interact='<div class="opts" id="exOpts">'+it.q._order.map(oi=>'<div class="opt" data-i="'+oi+'">'+it.q.opts[oi]+'</div>').join('')+'</div>';
-  }else{
-    prompt='<div class="prompt-name">'+it.q.name+'</div>';
-    interact='<div class="hintbox">✏️ วาดโครงสร้าง (แบบเส้น-มุม หรือ condensed) ลงกระดาษ แล้วกด "ดูเฉลย" เพื่อเทียบ</div><button class="btn ghost" id="exShow" style="margin-top:10px">ดูเฉลย 👀</button><div id="exReveal" style="margin-top:12px"></div>';
-  }
-  $('examWrap').innerHTML=
-    '<div class="card">'+
-      '<div class="qtag">📝 ข้อสอบ · ตอนที่ '+si.no+' — '+si.name+'</div>'+
-      '<div class="ask">ข้อ '+(EX.idx+1)+' / '+EX.list.length+' &nbsp;·&nbsp; (ข้อ '+si.inNo+'/'+si.total+' ของตอนนี้)</div>'+
-      '<div id="exPrompt">'+prompt+'</div>'+
-      '<div id="exInteract">'+interact+'</div>'+
-      '<div class="fb" id="exFb"></div>'+
-      '<div class="actions"><button class="btn" id="exNext" style="display:none">ข้อถัดไป →</button><button class="btn ghost" id="exQuit">ออกจากข้อสอบ</button></div>'+
-      '<div class="bar"><i style="width:'+pct+'%"></i></div>'+
-    '</div>';
-  $('exQuit').onclick=()=>{if(confirm('ออกจากข้อสอบ? คะแนนรอบนี้จะหาย'))examQuit();};
-  $('exNext').onclick=examNext;
-  if(it.sec==='name'){const inp=$('exInput');$('exCheck').onclick=examNameCheck;inp.addEventListener('keydown',e=>{if(e.key==='Enter')examNameCheck();});setTimeout(()=>inp.focus(),40);}
-  else if(it.sec==='func'){[...document.querySelectorAll('#exOpts .opt')].forEach(o=>o.onclick=()=>examPick(+o.dataset.i,o));}
-  else{$('exShow').onclick=examShow;}
+function examRender{
+ if(EX.idx>=EX.list.length){examSummary;return;}
+ const it=EX.list[EX.idx],si=secInfo(EX.idx),pct=(EX.idx/EX.list.length*100).toFixed(0);
+ let prompt='',interact='';
+ if(it.sec==='name'){
+ prompt=promptHTML(it.q);
+ interact='<div class="inputrow"><input type="text" id="exInput" placeholder="พิมพ์ชื่อ IUPAC…" autocomplete="off" autocapitalize="off" spellcheck="false"><button class="btn" id="exCheck">ตรวจ</button></div>';
+ }else if(it.sec==='func'){
+ prompt=promptHTML(it.q);it.q._order=shuffle(it.q.opts.map((_,i)=>i));
+ interact='<div class="opts" id="exOpts">'+it.q._order.map(oi=>'<div class="opt" data-i="'+oi+'">'+it.q.opts[oi]+'</div>').join('')+'</div>';
+ }else{
+ prompt='<div class="prompt-name">'+it.q.name+'</div>';
+ interact='<div class="hintbox">✏️ วาดโครงสร้าง (แบบเส้น-มุม หรือ condensed) ลงกระดาษ แล้วกด "ดูเฉลย" เพื่อเทียบ</div><button class="btn ghost" id="exShow" style="margin-top:10px">ดูเฉลย 👀</button><div id="exReveal" style="margin-top:12px"></div>';
+ }
+ $('examWrap').innerHTML=
+ '<div class="card">'+
+ '<div class="qtag">📝 ข้อสอบ · ตอนที่ '+si.no+' — '+si.name+'</div>'+
+ '<div class="ask">ข้อ '+(EX.idx+1)+' / '+EX.list.length+' &nbsp;·&nbsp; (ข้อ '+si.inNo+'/'+si.total+' ของตอนนี้)</div>'+
+ '<div id="exPrompt">'+prompt+'</div>'+
+ '<div id="exInteract">'+interact+'</div>'+
+ '<div class="fb" id="exFb"></div>'+
+ '<div class="actions"><button class="btn" id="exNext" style="display:none">ข้อถัดไป →</button><button class="btn ghost" id="exQuit">ออกจากข้อสอบ</button></div>'+
+ '<div class="bar"><i style="width:'+pct+'%"></i></div>'+
+ '</div>';
+ $('exQuit').onclick==>{if(confirm('ออกจากข้อสอบ? คะแนนรอบนี้จะหาย'))examQuit;};
+ $('exNext').onclick=examNext;
+ if(it.sec==='name'){const inp=$('exInput');$('exCheck').onclick=examNameCheck;inp.addEventListener('keydown',e=>{if(e.key==='Enter')examNameCheck;});setTimeout(=>inp.focus,40);}
+ else if(it.sec==='func'){[...document.querySelectorAll('#exOpts .opt')].forEach(o=>o.onclick==>examPick(+o.dataset.i,o));}
+ else{$('exShow').onclick=examShow;}
 }
 function examFb(ok,ans,exp){
-  const f=$('exFb');f.className='fb show '+(ok?'good':'wrong');
-  f.innerHTML=(ok?'<div class="verdict">✅ ถูกต้อง</div>':'<div class="verdict">❌ ยังไม่ใช่</div><div>คำตอบ: <span class="ans">'+ans+'</span></div>')+'<div class="exp">'+exp+'</div>';
-  $('exNext').style.display='';
+ const f=$('exFb');f.className='fb show '+(ok?'good':'wrong');
+ f.innerHTML=(ok?'<div class="verdict">✅ ถูกต้อง</div>':'<div class="verdict">❌ ยังไม่ใช่</div><div>คำตอบ: <span class="ans">'+ans+'</span></div>')+'<div class="exp">'+exp+'</div>';
+ $('exNext').style.display='';
 }
-function examNameCheck(){
-  const it=EX.list[EX.idx];if(EX.ans[EX.idx]!==null)return;
-  const u=$('exInput').value.trim();if(!u){$('exInput').focus();return;}
-  const ok=it.q.a.some(a=>norm(a)===norm(u));EX.ans[EX.idx]=ok;if(ok)EX.score.name++;
-  $('exInput').disabled=true;examFb(ok,it.q.a[0],it.q.exp);
+function examNameCheck{
+ const it=EX.list[EX.idx];if(EX.ans[EX.idx]!==null)return;
+ const u=$('exInput').value.trim;if(!u){$('exInput').focus;return;}
+ const ok=it.q.a.some(a=>norm(a)===norm(u));EX.ans[EX.idx]=ok;if(ok)EX.score.name++;
+ $('exInput').disabled=true;examFb(ok,it.q.a[0],it.q.exp);
 }
 function examPick(oi,el){
-  const it=EX.list[EX.idx];if(EX.ans[EX.idx]!==null)return;
-  const ok=oi===it.q.correct;EX.ans[EX.idx]=ok;if(ok)EX.score.func++;
-  [...document.querySelectorAll('#exOpts .opt')].forEach(c=>{c.style.pointerEvents='none';if(+c.dataset.i===it.q.correct)c.classList.add('ok');else if(c===el)c.classList.add('bad');});
-  examFb(ok,it.q.opts[it.q.correct],it.q.exp);
+ const it=EX.list[EX.idx];if(EX.ans[EX.idx]!==null)return;
+ const ok=oi===it.q.correct;EX.ans[EX.idx]=ok;if(ok)EX.score.func++;
+ [...document.querySelectorAll('#exOpts .opt')].forEach(c=>{c.style.pointerEvents='none';if(+c.dataset.i===it.q.correct)c.classList.add('ok');else if(c===el)c.classList.add('bad');});
+ examFb(ok,it.q.opts[it.q.correct],it.q.exp);
 }
-function examShow(){
-  const it=EX.list[EX.idx];
-  $('exReveal').innerHTML='<div class="skel">'+renderSK(it.q.sk)+'</div><div class="exp" style="margin-top:8px;color:var(--dim)">'+(it.q.exp||'')+'</div><div style="margin-top:12px;font-weight:600">คุณวาดตรงกับเฉลยไหม?</div><div class="actions"><button class="btn" id="exYes">✅ วาดถูก</button><button class="btn ghost" id="exNo">❌ ยังไม่ถูก</button></div>';
-  $('exShow').style.display='none';
-  $('exYes').onclick=()=>examSelf(true);$('exNo').onclick=()=>examSelf(false);
+function examShow{
+ const it=EX.list[EX.idx];
+ $('exReveal').innerHTML='<div class="skel">'+renderSK(it.q.sk)+'</div><div class="exp" style="margin-top:8px;color:var(--dim)">'+(it.q.exp||'')+'</div><div style="margin-top:12px;font-weight:600">คุณวาดตรงกับเฉลยไหม?</div><div class="actions"><button class="btn" id="exYes">✅ วาดถูก</button><button class="btn ghost" id="exNo">❌ ยังไม่ถูก</button></div>';
+ $('exShow').style.display='none';
+ $('exYes').onclick==>examSelf(true);$('exNo').onclick==>examSelf(false);
 }
 function examSelf(ok){
-  if(EX.ans[EX.idx]!==null)return;EX.ans[EX.idx]=ok;if(ok)EX.score.draw++;
-  $('exYes').disabled=true;$('exNo').disabled=true;$('exNext').style.display='';
+ if(EX.ans[EX.idx]!==null)return;EX.ans[EX.idx]=ok;if(ok)EX.score.draw++;
+ $('exYes').disabled=true;$('exNo').disabled=true;$('exNext').style.display='';
 }
-function examNext(){EX.idx++;examRender();window.scrollTo(0,0);}
-function examSummary(){
-  const s=EX.score,tot=s.name+s.draw+s.func,pct=Math.round(tot/EX.list.length*100);
-  const grade=pct>=80?'🏆 ยอดเยี่ยม!':pct>=60?'👍 ผ่านสบาย':pct>=50?'🙂 พอไหว ทบทวนอีกนิด':'📚 ลุยทบทวนต่อ!';
-  $('examWrap').innerHTML=
-   '<div class="card" style="text-align:center">'+
-     '<div class="qtag">📝 สรุปผลข้อสอบ</div>'+
-     '<div style="font-size:46px;font-weight:800;color:var(--acc2);margin:6px 0">'+tot+'/'+EX.list.length+'</div>'+
-     '<div style="font-size:20px;margin-bottom:4px">'+pct+'% · '+grade+'</div>'+
-     '<div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:14px 0">'+
-       '<div class="stat"><b>'+s.name+'/15</b><span>อ่านชื่อ</span></div>'+
-       '<div class="stat"><b>'+s.draw+'/10</b><span>เขียนโครงสร้าง</span></div>'+
-       '<div class="stat"><b>'+s.func+'/2</b><span>หมู่ฟังก์ชัน</span></div>'+
-     '</div>'+
-     '<div class="hintbox">ตอนที่ 2 (เขียนโครงสร้าง) ให้คะแนนตามที่ตรวจตัวเอง — ซื่อสัตย์กับตัวเองจะแม่นสุด 💪</div>'+
-     '<div class="actions" style="justify-content:center;margin-top:12px"><button class="btn" id="exAgain">ทำชุดใหม่ 🔁</button><button class="btn ghost" id="exBack">กลับโหมดฝึก</button></div>'+
-   '</div>';
-  $('exAgain').onclick=examStart;$('exBack').onclick=examQuit;window.scrollTo(0,0);
+function examNext{EX.idx++;examRender;window.scrollTo(0,0);}
+function examSummary{
+ const s=EX.score,tot=s.name+s.draw+s.func,pct=Math.round(tot/EX.list.length*100);
+ const grade=pct>=80?'🏆 ยอดเยี่ยม!':pct>=60?'👍 ผ่านสบาย':pct>=50?'🙂 พอไหว ทบทวนอีกนิด':'📚 ลุยทบทวนต่อ!';
+ $('examWrap').innerHTML=
+ '<div class="card" style="text-align:center">'+
+ '<div class="qtag">📝 สรุปผลข้อสอบ</div>'+
+ '<div style="font-size:46px;font-weight:800;color:var(--acc2);margin:6px 0">'+tot+'/'+EX.list.length+'</div>'+
+ '<div style="font-size:20px;margin-bottom:4px">'+pct+'% · '+grade+'</div>'+
+ '<div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:14px 0">'+
+ '<div class="stat"><b>'+s.name+'/15</b><span>อ่านชื่อ</span></div>'+
+ '<div class="stat"><b>'+s.draw+'/10</b><span>เขียนโครงสร้าง</span></div>'+
+ '<div class="stat"><b>'+s.func+'/2</b><span>หมู่ฟังก์ชัน</span></div>'+
+ '</div>'+
+ '<div class="hintbox">ตอนที่ 2 (เขียนโครงสร้าง) ให้คะแนนตามที่ตรวจตัวเอง — ซื่อสัตย์กับตัวเองจะแม่นสุด 💪</div>'+
+ '<div class="actions" style="justify-content:center;margin-top:12px"><button class="btn" id="exAgain">ทำชุดใหม่ 🔁</button><button class="btn ghost" id="exBack">กลับโหมดฝึก</button></div>'+
+ '</div>';
+ $('exAgain').onclick=examStart;$('exBack').onclick=examQuit;window.scrollTo(0,0);
 }
 $('examBtn').onclick=examStart;
 
 /* go */
-newBag();next();updStats();
+newBag;next;updStats;
 </script>
 <!--KIT-UI v2.7 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>
 /* =============================================================================
-   _kit/ui-controls.js  —  KIT UI  v1.0
-   แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
-     🌙/☀️  โหมดมืด / สว่าง   (จำค่าไว้ใน localStorage)
-     A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
-     ✏️  ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
-     🧮  เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
+ _kit/ui-controls.js — KIT UI v1.0
+ แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
+ 🌙/☀️ โหมดมืด / สว่าง (จำค่าไว้ใน localStorage)
+ A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
+ ✏️ ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
+ 🧮 เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
 
-   ── วิธีใช้ ────────────────────────────────────────────────────────────────
-   ห้ามแก้โค้ดนี้ในไฟล์ widget!  แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
-       pwsh -File _kit/apply-ui.ps1
-   สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
-   (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
+ ── วิธีใช้ ────────────────────────────────────────────────────────────────
+ ห้ามแก้โค้ดนี้ในไฟล์ widget! แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
+ pwsh -File _kit/apply-ui.ps1
+ สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
+ (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
 
-   !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
-      เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
+ !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
+ เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
 
-   ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
-   ใส่แอตทริบิวต์ที่ tag body:  data-tools="pen,calc"  = บังคับเปิด
-                              data-tools="none"      = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
-   ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
-              หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
-   ============================================================================= */
-(function(){
+ ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
+ ใส่แอตทริบิวต์ที่ tag body: data-tools="pen,calc" = บังคับเปิด
+ data-tools="none" = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
+ ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
+ หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
+ ============================================================================= */
+(function{
 if(window.__KITUI__) return; window.__KITUI__='2.7';
 
 /* ---------- helper ---------- */
@@ -603,16 +603,16 @@ const set=(k,v)=>{try{localStorage.setItem('kitui-'+k,v)}catch(e){}};
 const el=(t,c,h)=>{const e=D.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
 
 /* =============================================================================
-   1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
-   ============================================================================= */
+ 1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
+ ============================================================================= */
 const CSS=`
 /* ===== DARK TOKENS (คู่กับ _kit/design-tokens.css) ===== */
 :root[data-theme="dark"]{
-  --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
-  --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
-  --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
-  --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
-  --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
+ --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
+ --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
+ --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
+ --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
+ --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
 }
 :root[data-theme="dark"] body{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f172a}
 :root[data-theme="dark"] body[data-subject="physics"]{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f1220}
@@ -632,11 +632,11 @@ const CSS=`
 
 /* ===== แถบเครื่องมือลอย ===== */
 #kitui-bar{position:fixed;right:10px;bottom:10px;z-index:99990;display:flex;gap:6px;align-items:center;
-  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
-  box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
+ background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
+ box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
 #kitui-bar button{border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;
-  font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
-  align-items:center;justify-content:center;font-weight:700}
+ font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
+ align-items:center;justify-content:center;font-weight:700}
 #kitui-bar button:hover{background:var(--soft)}
 #kitui-bar button:active{transform:scale(.93)}
 #kitui-bar button.on{background:var(--accent);color:#fff}
@@ -647,16 +647,16 @@ const CSS=`
 
 /* ===== แผงลอย (ที่ทด / เครื่องคิดเลข) ===== */
 .kitui-sheet{position:fixed;left:0;right:0;bottom:0;z-index:99991;background:var(--card);
-  border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
-  display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
-  height:52vh;max-height:92vh;min-height:180px}
+ border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
+ display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
+ height:52vh;max-height:92vh;min-height:180px}
 .kitui-sheet.open{display:flex}
 .kitui-sheet.full{height:100vh;border-radius:0}
 .kitui-head{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--line);
-  flex-wrap:wrap;touch-action:none;cursor:ns-resize}
+ flex-wrap:wrap;touch-action:none;cursor:ns-resize}
 .kitui-head b{font-size:.9rem;color:var(--accent-ink);margin-right:2px;white-space:nowrap}
 .kitui-head button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;
-  padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
+ padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
 .kitui-head button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
 .kitui-head .kitui-spacer{flex:1}
 .kitui-sw{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;min-height:0}
@@ -668,12 +668,12 @@ const CSS=`
 /* ===== เครื่องคิดเลข ===== */
 #kitui-calc{height:auto;max-height:90vh}
 .kitui-disp{padding:8px 12px;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);
-  border-bottom:1px solid var(--line)}
+ border-bottom:1px solid var(--line)}
 .kitui-disp .ex{font-size:.95rem;color:var(--muted);min-height:1.3em;word-break:break-all}
 .kitui-disp .rs{font-size:1.6rem;font-weight:700;color:var(--accent-ink);word-break:break-all}
 .kitui-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:7px}
 .kitui-keys button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:9px;
-  font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
+ font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
 .kitui-keys button:active{transform:scale(.95)}
 .kitui-keys button.fn{font-size:.8rem;color:var(--accent-ink)}
 .kitui-keys button.op{background:var(--accent-soft);color:var(--accent-ink)}
@@ -682,446 +682,446 @@ const CSS=`
 .kitui-keys button.w3{grid-column:span 3}
 @media(max-width:420px){.kitui-keys button{font-size:.88rem;min-height:40px}.kitui-keys button.fn{font-size:.72rem}}
 @media(min-width:760px){
-  .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
-  .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
-  #kitui-pad{width:560px}
+ .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
+ .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
+ #kitui-pad{width:560px}
 }
 @media print{#kitui-bar,.kitui-sheet{display:none!important}}
 `;
 const st=el('style'); st.id='kitui-style'; st.textContent=CSS; D.head.appendChild(st);
 
 /* -----------------------------------------------------------------------------
-   1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
-   widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
-   พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
-   แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
-   เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
+ 1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
+ widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
+ พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
+ แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
+ เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
 ----------------------------------------------------------------------------- */
 /* สีพาสเทลสว่าง -> สีเข้มที่ยังคง "เฉดเดิม" ไว้ (เขียว=ถูก / แดง=ผิด ต้องยังแยกออก)
-   ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
+ ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
 function darken(cr,cg,cb){
-  const r=cr/255,g=cg/255,b=cb/255;
-  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
-  let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
-  /* ⚠️ ห้ามใช้ saturation ของ HSL ตรง ๆ ตัดสิน: ที่ความสว่างเกือบ 1 ตัวหารจะเล็กมาก
-     ทำให้สีที่แทบเป็นสีขาว (เช่น #fdf8f4) ได้ค่าอิ่มสีสูงลิ่ว แล้วกลายเป็นสีน้ำตาลจัดตอนกดให้เข้ม
-     ให้ดูจาก "ช่วงห่างของแม่สี" (chroma) แทน แล้วแปลงเป็นความอิ่มสีแบบไล่ระดับ */
-  const s = Math.min(.45, Math.max(.08, d*4));
-  const l = d<.02 ? .13 : .17;                       /* เทา/ขาวล้วนให้เข้มกว่าสีนิดหน่อย */
-  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
-  let rr,gg,bb;
-  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
-  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
-  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+ const r=cr/255,g=cg/255,b=cb/255;
+ const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+ let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
+ /* ⚠️ ห้ามใช้ saturation ของ HSL ตรง ๆ ตัดสิน: ที่ความสว่างเกือบ 1 ตัวหารจะเล็กมาก
+ ทำให้สีที่แทบเป็นสีขาว (เช่น #fdf8f4) ได้ค่าอิ่มสีสูงลิ่ว แล้วกลายเป็นสีน้ำตาลจัดตอนกดให้เข้ม
+ ให้ดูจาก "ช่วงห่างของแม่สี" (chroma) แทน แล้วแปลงเป็นความอิ่มสีแบบไล่ระดับ */
+ const s = Math.min(.45, Math.max(.08, d*4));
+ const l = d<.02 ? .13 : .17; /* เทา/ขาวล้วนให้เข้มกว่าสีนิดหน่อย */
+ const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+ let rr,gg,bb;
+ if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+ else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+ return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
 }
-function darkFix(){
-  const out=[], seen=new Set();
-  const take=r=>{
-    if(!r.style || !r.selectorText) return;
-    if(r.selectorText.indexOf('kitui')>-1) return;               /* ของเราเองใช้ token อยู่แล้ว */
-    const bg=r.style.backgroundColor;
-    if(!bg || bg.indexOf('var(')>-1) return;
-    const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
-    if(!m) return;
-    if(m[4]!==undefined && +m[4]<0.6) return;                    /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
-    const cr=+m[1], cg=+m[2], cb=+m[3];
-    if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return;       /* ไม่สว่างพอ ไม่ต้องยุ่ง */
-    const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
-    const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
-    let css='background-color:'+repl;
-    /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
-    const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
-    if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
-    out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
-  };
-  /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
-        ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
-  const visit=rules=>{
-    for(let i=0;i<rules.length;i++){
-      const r=rules[i];
-      if(r.selectorText) take(r);
-      if(r.cssRules && r.cssRules.length) visit(r.cssRules);     /* @media / @supports / nesting */
-    }
-  };
-  for(let i=0;i<D.styleSheets.length;i++){
-    let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; }   /* ข้ามชีตข้ามโดเมน */
-    if(rr) visit(rr);
-  }
-  if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
-  return out.length;
+function darkFix{
+ const out=[], seen=new Set;
+ const take=r=>{
+ if(!r.style || !r.selectorText) return;
+ if(r.selectorText.indexOf('kitui')>-1) return; /* ของเราเองใช้ token อยู่แล้ว */
+ const bg=r.style.backgroundColor;
+ if(!bg || bg.indexOf('var(')>-1) return;
+ const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
+ if(!m) return;
+ if(m[4]!==undefined && +m[4]<0.6) return; /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
+ const cr=+m[1], cg=+m[2], cb=+m[3];
+ if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return; /* ไม่สว่างพอ ไม่ต้องยุ่ง */
+ const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
+ const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
+ let css='background-color:'+repl;
+ /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
+ const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+ if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
+ out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
+ };
+ /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
+ ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
+ const visit=rules=>{
+ for(let i=0;i<rules.length;i++){
+ const r=rules[i];
+ if(r.selectorText) take(r);
+ if(r.cssRules && r.cssRules.length) visit(r.cssRules); /* @media / @supports / nesting */
+ }
+ };
+ for(let i=0;i<D.styleSheets.length;i++){
+ let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; } /* ข้ามชีตข้ามโดเมน */
+ if(rr) visit(rr);
+ }
+ if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
+ return out.length;
 }
-try{ window.__KITUI_DARKFIX__ = (D.body.getAttribute('data-kit-theme')==='off') ? 'locked' : darkFix(); }
+try{ window.__KITUI_DARKFIX__ = (D.body.getAttribute('data-kit-theme')==='off') ? 'locked' : darkFix; }
 catch(e){ window.__KITUI_DARKFIX__='err:'+e.message; }
 
 /* darkFix ข้างบนซ่อมได้เฉพาะสีที่เขียนตายตัวในไฟล์ CSS
-   แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
-   ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
-   จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
+ แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
+ ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
+ จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
 const rgbOf=c=>{const m=c&&c.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null;};
 const lumOf=v=>v?(0.2126*v[0]+0.7152*v[1]+0.0722*v[2])/255:null;
-/* ตรงข้ามกับ darken(): ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
-   (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
+/* ตรงข้ามกับ darken: ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
+ (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
 function lighten(cr,cg,cb){
-  const r=cr/255,g=cg/255,b=cb/255;
-  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
-  if(d<0.04) return 'var(--ink)';                    /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
-  let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
-  const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
-  const s=Math.min(.92,Math.max(.55,s0)), l=.72;
-  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
-  let rr,gg,bb;
-  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
-  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
-  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+ const r=cr/255,g=cg/255,b=cb/255;
+ const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+ if(d<0.04) return 'var(--ink)'; /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
+ let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
+ const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
+ const s=Math.min(.92,Math.max(.55,s0)), l=.72;
+ const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+ let rr,gg,bb;
+ if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+ else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+ return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
 }
 const SKIP={CANVAS:1,IMG:1,VIDEO:1,SVG:1,IFRAME:1,PICTURE:1,OBJECT:1};
 const OBS_OPT={childList:true,subtree:true,attributes:true,attributeFilter:['class','style']};
 let patched=[], obs=null;
-function elementFix(){
-  /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
-        ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
-  if(obs) obs.disconnect();
-  try{ elementFixCore(); } finally { if(obs) obs.observe(D.body,OBS_OPT); }
+function elementFix{
+ /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
+ ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
+ if(obs) obs.disconnect;
+ try{ elementFixCore; } finally { if(obs) obs.observe(D.body,OBS_OPT); }
 }
-function elementFixCore(){
-  if(D.body.getAttribute('data-kit-theme')==='off') return;   /* หน้าที่ล็อกธีมไว้ ห้ามไปยุ่งสี */
-  /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
-     ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
-     จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
-  if(R.getAttribute('data-theme')!=='dark'){
-    patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
-    patched=[];
-    return;
-  }
-  /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
-     ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
-  /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
-  const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
-  for(let i=0;i<all.length;i++){
-    const e=all[i];
-    if(e.id&&e.id.indexOf('kitui')===0) continue;
-    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
-    if(SKIP[e.tagName]) continue;                      /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
-    const s=getComputedStyle(e);
-    const bg=rgbOf(s.backgroundColor);
-    if(!bg || bg[3]<0.6) continue;                     /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
-    if(lumOf(bg)<0.72) continue;                       /* เข้มพออยู่แล้ว */
-    /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
-    e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
-    const fg=rgbOf(s.color);
-    if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important');  /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
-    patched.push(e);
-  }
-  /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
-     ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
-  const bgCache=new Map();
-  const effBg=n=>{
-    for(let p=n;p;p=p.parentElement){
-      if(bgCache.has(p)) return bgCache.get(p);
-      const b=rgbOf(getComputedStyle(p).backgroundColor);
-      if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
-    }
-    return null;
-  };
-  for(let i=2;i<all.length;i++){
-    const e=all[i];
-    if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
-    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
-    if(e.style.color) continue;                         /* จัดการไปแล้วในรอบแรก */
-    if(!e.textContent || !e.textContent.trim()) continue;
-    const fg=rgbOf(getComputedStyle(e).color);
-    if(!fg || lumOf(fg)>=0.45) continue;                 /* ตัวอักษรสว่างอยู่แล้ว */
-    const bg=effBg(e);
-    if(!bg || lumOf(bg)>=0.5) continue;                  /* พื้นยังสว่าง อ่านออกอยู่ */
-    e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
-    patched.push(e);
-  }
+function elementFixCore{
+ if(D.body.getAttribute('data-kit-theme')==='off') return; /* หน้าที่ล็อกธีมไว้ ห้ามไปยุ่งสี */
+ /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
+ ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
+ จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
+ if(R.getAttribute('data-theme')!=='dark'){
+ patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
+ patched=[];
+ return;
+ }
+ /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
+ ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
+ /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
+ const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
+ for(let i=0;i<all.length;i++){
+ const e=all[i];
+ if(e.id&&e.id.indexOf('kitui')===0) continue;
+ if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+ if(SKIP[e.tagName]) continue; /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
+ const s=getComputedStyle(e);
+ const bg=rgbOf(s.backgroundColor);
+ if(!bg || bg[3]<0.6) continue; /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
+ if(lumOf(bg)<0.72) continue; /* เข้มพออยู่แล้ว */
+ /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
+ e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
+ const fg=rgbOf(s.color);
+ if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important'); /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
+ patched.push(e);
+ }
+ /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
+ ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
+ const bgCache=new Map;
+ const effBg=n=>{
+ for(let p=n;p;p=p.parentElement){
+ if(bgCache.has(p)) return bgCache.get(p);
+ const b=rgbOf(getComputedStyle(p).backgroundColor);
+ if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
+ }
+ return null;
+ };
+ for(let i=2;i<all.length;i++){
+ const e=all[i];
+ if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
+ if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+ if(e.style.color) continue; /* จัดการไปแล้วในรอบแรก */
+ if(!e.textContent || !e.textContent.trim) continue;
+ const fg=rgbOf(getComputedStyle(e).color);
+ if(!fg || lumOf(fg)>=0.45) continue; /* ตัวอักษรสว่างอยู่แล้ว */
+ const bg=effBg(e);
+ if(!bg || lumOf(bg)>=0.5) continue; /* พื้นยังสว่าง อ่านออกอยู่ */
+ e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
+ patched.push(e);
+ }
 }
 let efT=0;
-const scheduleFix=()=>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
+const scheduleFix==>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
 try{
-  obs=new MutationObserver(scheduleFix);
-  obs.observe(D.body,OBS_OPT);
+ obs=new MutationObserver(scheduleFix);
+ obs.observe(D.body,OBS_OPT);
 }catch(e){}
 
 /* =============================================================================
-   2) ธีม + ขนาดตัวอักษร
-   ============================================================================= */
+ 2) ธีม + ขนาดตัวอักษร
+ ============================================================================= */
 const FS=[.85,1,1.15,1.3,1.5], FSNAME=['เล็กสุด','เล็ก','ปกติ','ใหญ่','ใหญ่สุด'];
 let fsIdx=parseInt(get('fs')); if(isNaN(fsIdx)||fsIdx<0||fsIdx>4) fsIdx=1;
 let theme=get('theme') || (matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
 
 /* หน้าที่ออกแบบธีมมาเองครบแล้ว (เช่น "หนังสือทบทวน" พื้นเข้มทั้งเล่ม) ให้ปิดระบบธีมของ KIT UI
-   ไม่งั้นโทเคน --bg/--ink ของเราจะไปทับสีที่หน้านั้นตั้งไว้ แล้วหน้าเพี้ยน
-   ใส่ที่ tag body:  data-kit-theme="off"   (ปุ่มปรับขนาดตัวอักษรยังใช้ได้ตามปกติ) */
+ ไม่งั้นโทเคน --bg/--ink ของเราจะไปทับสีที่หน้านั้นตั้งไว้ แล้วหน้าเพี้ยน
+ ใส่ที่ tag body: data-kit-theme="off" (ปุ่มปรับขนาดตัวอักษรยังใช้ได้ตามปกติ) */
 const themeLock = D.body.getAttribute('data-kit-theme')==='off';
 
-function applyTheme(){
-  if(themeLock) return;
-  R.setAttribute('data-theme',theme);
-  R.style.colorScheme = theme==='dark'?'dark':'light';   /* ให้ select/input เป็นสีเข้มด้วย */
-  const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
-  set('theme',theme);
-  clearTimeout(efT);                                   /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
-  if(typeof elementFix==='function') elementFix();
-  /* ⚠️ ห้ามอ้างถึงตัวแปรของส่วน "ที่ทด" ตรงนี้!
-     applyTheme() ถูกเรียกก่อนที่ `let pad` ในส่วนที่ 4 จะทำงาน → ชน temporal dead zone
-     แล้ว ReferenceError จะทำให้สคริปต์ตายทั้งก้อน (ปุ่มขนาดอักษร/ที่ทด/เครื่องคิดเลขหายหมด)
-     ใช้วิธียิง event แทน ใครสนใจค่อยไปดักฟังเอง */
-  try{ D.dispatchEvent(new CustomEvent('kitui-theme')); }catch(e){}
+function applyTheme{
+ if(themeLock) return;
+ R.setAttribute('data-theme',theme);
+ R.style.colorScheme = theme==='dark'?'dark':'light'; /* ให้ select/input เป็นสีเข้มด้วย */
+ const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
+ set('theme',theme);
+ clearTimeout(efT); /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
+ if(typeof elementFix==='function') elementFix;
+ /* ⚠️ ห้ามอ้างถึงตัวแปรของส่วน "ที่ทด" ตรงนี้!
+ applyTheme ถูกเรียกก่อนที่ `let pad` ในส่วนที่ 4 จะทำงาน → ชน temporal dead zone
+ แล้ว ReferenceError จะทำให้สคริปต์ตายทั้งก้อน (ปุ่มขนาดอักษร/ที่ทด/เครื่องคิดเลขหายหมด)
+ ใช้วิธียิง event แทน ใครสนใจค่อยไปดักฟังเอง */
+ try{ D.dispatchEvent(new CustomEvent('kitui-theme')); }catch(e){}
 }
-function applyFS(){
-  R.style.fontSize=(16*FS[fsIdx])+'px';
-  const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
-  set('fs',fsIdx);
+function applyFS{
+ R.style.fontSize=(16*FS[fsIdx])+'px';
+ const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
+ set('fs',fsIdx);
 }
 
 /* =============================================================================
-   3) แถบเครื่องมือ
-   ============================================================================= */
-const subj=(D.body.getAttribute('data-subject')||'').toLowerCase();
+ 3) แถบเครื่องมือ
+ ============================================================================= */
+const subj=(D.body.getAttribute('data-subject')||'').toLowerCase;
 /* หลาย widget ไม่ได้ใส่ data-subject ที่ <body> → เดาจากโฟลเดอร์ที่ไฟล์อยู่ด้วย */
 const inPath=/\/(physics|math|chemist)\//i.test(decodeURIComponent(location.pathname));
 const tAttr=D.body.getAttribute('data-tools');
-const wantTools = tAttr!=null ? tAttr.toLowerCase()
-                : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
-const hasPen  = wantTools.includes('pen');
+const wantTools = tAttr!=null ? tAttr.toLowerCase
+ : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
+const hasPen = wantTools.includes('pen');
 const hasCalc = wantTools.includes('calc');
 
 const bar=el('div'); bar.id='kitui-bar';
 bar.innerHTML =
-  `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
-  (themeLock ? '' : `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button><span class="kitui-sep"></span>`)+
-  `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
-  `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
-  `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
-  (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
-  (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
+ `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
+ (themeLock ? '' : `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button><span class="kitui-sep"></span>`)+
+ `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
+ `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
+ `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
+ (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
+ (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
 D.body.appendChild(bar);
 
-if(!themeLock) D.getElementById('kitui-theme').onclick=()=>{theme=theme==='dark'?'light':'dark';applyTheme();};
-D.getElementById('kitui-fsup').onclick=()=>{if(fsIdx<4){fsIdx++;applyFS();}};
-D.getElementById('kitui-fsdown').onclick=()=>{if(fsIdx>0){fsIdx--;applyFS();}};
-D.getElementById('kitui-grip').onclick=()=>bar.classList.toggle('hidden');
-applyTheme(); applyFS();
+if(!themeLock) D.getElementById('kitui-theme').onclick==>{theme=theme==='dark'?'light':'dark';applyTheme;};
+D.getElementById('kitui-fsup').onclick==>{if(fsIdx<4){fsIdx++;applyFS;}};
+D.getElementById('kitui-fsdown').onclick==>{if(fsIdx>0){fsIdx--;applyFS;}};
+D.getElementById('kitui-grip').onclick==>bar.classList.toggle('hidden');
+applyTheme; applyFS;
 
 /* ปิดแผงด้วยปุ่ม Esc */
 D.addEventListener('keydown',e=>{ if(e.key==='Escape') D.querySelectorAll('.kitui-sheet.open').forEach(s=>s.classList.remove('open')); });
 
 /* ลากหัวแผงเพื่อปรับความสูง */
 function makeResizable(sheet){
-  const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
-  head.addEventListener('pointerdown',e=>{
-    if(e.target.closest('button'))return;
-    drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect().height;head.setPointerCapture(e.pointerId);
-  });
-  head.addEventListener('pointermove',e=>{
-    if(!drag)return;
-    const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
-    sheet.classList.remove('full'); sheet.style.height=h+'px';
-    if(sheet.id==='kitui-pad') fitPad();
-  });
-  head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
+ const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
+ head.addEventListener('pointerdown',e=>{
+ if(e.target.closest('button'))return;
+ drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect.height;head.setPointerCapture(e.pointerId);
+ });
+ head.addEventListener('pointermove',e=>{
+ if(!drag)return;
+ const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
+ sheet.classList.remove('full'); sheet.style.height=h+'px';
+ if(sheet.id==='kitui-pad') fitPad;
+ });
+ head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
 }
 
 /* =============================================================================
-   4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ  หลายหน้า  เซฟอัตโนมัติ
-   ============================================================================= */
+ 4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ หลายหน้า เซฟอัตโนมัติ
+ ============================================================================= */
 let pad,padCv,padCx,pages=[[]],pg=0,undone=[],histo=[];
 let tool='pen',color='#111827',width=2.4,penSeen=0;
 const COLORS=['#111827','#2563eb','#dc2626','#16a34a','#f59e0b'];
-const PADKEY='pad-'+location.pathname.split('/').pop();
+const PADKEY='pad-'+location.pathname.split('/').pop;
 
-function buildPad(){
-  pad=el('div','kitui-sheet'); pad.id='kitui-pad';
-  pad.innerHTML=
-   `<div class="kitui-head">
-      <b>✏️ ที่ทด</b>
-      <button data-t="pen" class="on">🖊️</button>
-      <button data-t="hl">🖍️</button>
-      <button data-t="er">🧽</button>
-      ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
-      <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
-      <span class="kitui-spacer"></span>
-      <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
-      <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
-      <button id="kitui-pgadd">+ หน้า</button>
-      <button id="kitui-clear">ล้างหน้านี้</button>
-      <button id="kitui-full">⛶</button>
-      <button id="kitui-padclose">✕</button>
-    </div>
-    <div class="kitui-padwrap"><canvas></canvas></div>`;
-  D.body.appendChild(pad);
-  padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
-  makeResizable(pad);
+function buildPad{
+ pad=el('div','kitui-sheet'); pad.id='kitui-pad';
+ pad.innerHTML=
+ `<div class="kitui-head">
+ <b>✏️ ที่ทด</b>
+ <button data-t="pen" class="on">🖊️</button>
+ <button data-t="hl">🖍️</button>
+ <button data-t="er">🧽</button>
+ ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
+ <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
+ <span class="kitui-spacer"></span>
+ <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
+ <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
+ <button id="kitui-pgadd">+ หน้า</button>
+ <button id="kitui-clear">ล้างหน้านี้</button>
+ <button id="kitui-full">⛶</button>
+ <button id="kitui-padclose">✕</button>
+ </div>
+ <div class="kitui-padwrap"><canvas></canvas></div>`;
+ D.body.appendChild(pad);
+ padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
+ makeResizable(pad);
 
-  pad.querySelector('.kitui-head').addEventListener('click',e=>{
-    const b=e.target.closest('button'); if(!b)return;
-    if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
-    if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
-    if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
-  });
-  D.getElementById('kitui-undo').onclick=()=>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop(); draw(); save(); } };
-  D.getElementById('kitui-redo').onclick=()=>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop(); draw(); save(); } };
-  D.getElementById('kitui-clear').onclick=()=>{ snap(); pages[pg]=[]; draw(); save(); };
-  D.getElementById('kitui-pgadd').onclick=()=>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw(); save(); };
-  D.getElementById('kitui-pgprev').onclick=()=>{ if(pg>0){pg--;histo=[];undone=[];draw();} };
-  D.getElementById('kitui-pgnext').onclick=()=>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw();} };
-  D.getElementById('kitui-full').onclick=()=>{ pad.classList.toggle('full'); pad.style.height=''; fitPad(); };
-  D.getElementById('kitui-padclose').onclick=()=>pad.classList.remove('open');
+ pad.querySelector('.kitui-head').addEventListener('click',e=>{
+ const b=e.target.closest('button'); if(!b)return;
+ if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
+ if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
+ if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
+ });
+ D.getElementById('kitui-undo').onclick==>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop; draw; save; } };
+ D.getElementById('kitui-redo').onclick==>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop; draw; save; } };
+ D.getElementById('kitui-clear').onclick==>{ snap; pages[pg]=[]; draw; save; };
+ D.getElementById('kitui-pgadd').onclick==>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw; save; };
+ D.getElementById('kitui-pgprev').onclick==>{ if(pg>0){pg--;histo=[];undone=[];draw;} };
+ D.getElementById('kitui-pgnext').onclick==>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw;} };
+ D.getElementById('kitui-full').onclick==>{ pad.classList.toggle('full'); pad.style.height=''; fitPad; };
+ D.getElementById('kitui-padclose').onclick==>pad.classList.remove('open');
 
-  /* ---- วาด ---- */
-  let cur=null;
-  padCv.addEventListener('pointerdown',e=>{
-    if(e.pointerType==='pen') penSeen=Date.now();
-    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;   /* กันฝ่ามือแตะตอนใช้สไตลัส */
-    const p=pt(e);
-    if(tool==='er'){ snap(); erase(p); return; }
-    snap();
-    cur={c:color,w:width,hl:tool==='hl',pts:[p]};
-    pages[pg].push(cur); draw();
-    try{ padCv.setPointerCapture(e.pointerId); }catch(x){}  /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
-  });
-  padCv.addEventListener('pointermove',e=>{
-    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;
-    if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
-    if(!cur||!e.buttons)return;
-    /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
-    let evs=[e];
-    if(e.getCoalescedEvents){ const c=e.getCoalescedEvents(); if(c&&c.length) evs=c; }
-    evs.forEach(ev=>cur.pts.push(pt(ev)));
-    draw();
-  });
-  const end=()=>{ if(cur){cur=null;save();} };
-  padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
-  padCv.addEventListener('pointerleave',end);
+ /* ---- วาด ---- */
+ let cur=null;
+ padCv.addEventListener('pointerdown',e=>{
+ if(e.pointerType==='pen') penSeen=Date.now;
+ if(e.pointerType==='touch' && Date.now-penSeen<1500) return; /* กันฝ่ามือแตะตอนใช้สไตลัส */
+ const p=pt(e);
+ if(tool==='er'){ snap; erase(p); return; }
+ snap;
+ cur={c:color,w:width,hl:tool==='hl',pts:[p]};
+ pages[pg].push(cur); draw;
+ try{ padCv.setPointerCapture(e.pointerId); }catch(x){} /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
+ });
+ padCv.addEventListener('pointermove',e=>{
+ if(e.pointerType==='touch' && Date.now-penSeen<1500) return;
+ if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
+ if(!cur||!e.buttons)return;
+ /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
+ let evs=[e];
+ if(e.getCoalescedEvents){ const c=e.getCoalescedEvents; if(c&&c.length) evs=c; }
+ evs.forEach(ev=>cur.pts.push(pt(ev)));
+ draw;
+ });
+ const end==>{ if(cur){cur=null;save;} };
+ padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
+ padCv.addEventListener('pointerleave',end);
 
-  addEventListener('resize',()=>{ if(pad.classList.contains('open')) fitPad(); });
-  D.addEventListener('kitui-theme',()=>draw());   /* สลับธีมแล้ววาดลายใหม่ เส้นดำ<->ขาวตามพื้น */
-  load(); fitPad();
+ addEventListener('resize',=>{ if(pad.classList.contains('open')) fitPad; });
+ D.addEventListener('kitui-theme',=>draw); /* สลับธีมแล้ววาดลายใหม่ เส้นดำ<->ขาวตามพื้น */
+ load; fitPad;
 }
 function pt(e){
-  const r=padCv.getBoundingClientRect();
-  return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
-          p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5};   /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
+ const r=padCv.getBoundingClientRect;
+ return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
+ p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5}; /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
 }
-function snap(){ histo.push(pages[pg].slice()); if(histo.length>60)histo.shift(); undone=[]; }
+function snap{ histo.push(pages[pg].slice); if(histo.length>60)histo.shift; undone=[]; }
 function erase(p){
-  const r=padCv.getBoundingClientRect(), rad=18/r.width;
-  const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
-  if(keep.length!==pages[pg].length){ pages[pg]=keep; draw(); save(); }
+ const r=padCv.getBoundingClientRect, rad=18/r.width;
+ const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
+ if(keep.length!==pages[pg].length){ pages[pg]=keep; draw; save; }
 }
-function fitPad(){
-  const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
-  const dpr=Math.min(devicePixelRatio||1,2.5);
-  padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
-  draw();
+function fitPad{
+ const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
+ const dpr=Math.min(devicePixelRatio||1,2.5);
+ padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
+ draw;
 }
-function draw(){
-  const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
-  padCx.clearRect(0,0,W,H);
-  /* เส้นตารางจาง ๆ ให้เขียนตรง */
-  const dark=R.getAttribute('data-theme')==='dark';
-  padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
-  for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath();padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke();}
-  padCx.lineCap='round'; padCx.lineJoin='round';
-  pages[pg].forEach(s=>{
-    padCx.globalAlpha=s.hl?0.32:1;
-    padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
-    for(let i=1;i<s.pts.length;i++){
-      const a=s.pts[i-1],b=s.pts[i];
-      padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
-      padCx.beginPath(); padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke();
-    }
-    if(s.pts.length===1){ /* จุดเดียว */
-      padCx.fillStyle=padCx.strokeStyle; padCx.beginPath();
-      padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill();
-    }
-  });
-  padCx.globalAlpha=1;
-  const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
+function draw{
+ const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
+ padCx.clearRect(0,0,W,H);
+ /* เส้นตารางจาง ๆ ให้เขียนตรง */
+ const dark=R.getAttribute('data-theme')==='dark';
+ padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
+ for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath;padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke;}
+ padCx.lineCap='round'; padCx.lineJoin='round';
+ pages[pg].forEach(s=>{
+ padCx.globalAlpha=s.hl?0.32:1;
+ padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
+ for(let i=1;i<s.pts.length;i++){
+ const a=s.pts[i-1],b=s.pts[i];
+ padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
+ padCx.beginPath; padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke;
+ }
+ if(s.pts.length===1){ /* จุดเดียว */
+ padCx.fillStyle=padCx.strokeStyle; padCx.beginPath;
+ padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill;
+ }
+ });
+ padCx.globalAlpha=1;
+ const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
 }
-function save(){ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
-function load(){
-  try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
+function save{ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
+function load{
+ try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
 }
 
 if(hasPen){
-  buildPad();
-  D.getElementById('kitui-penbtn').onclick=()=>{
-    const o=pad.classList.toggle('open');
-    D.getElementById('kitui-penbtn').classList.toggle('on',o);
-    if(o) fitPad();
-  };
+ buildPad;
+ D.getElementById('kitui-penbtn').onclick==>{
+ const o=pad.classList.toggle('open');
+ D.getElementById('kitui-penbtn').classList.toggle('on',o);
+ if(o) fitPad;
+ };
 }
 
 /* =============================================================================
-   5) เครื่องคิดเลขวิทยาศาสตร์  (tokenizer → shunting-yard → RPN  ไม่ใช้ eval)
-   ============================================================================= */
+ 5) เครื่องคิดเลขวิทยาศาสตร์ (tokenizer → shunting-yard → RPN ไม่ใช้ eval)
+ ============================================================================= */
 const FN={sin:1,cos:1,tan:1,asin:1,acos:1,atan:1,ln:1,log:1,sqrt:1,abs:1,exp:1};
 const PREC={'+':1,'-':1,'*':2,'/':2,'^':4,'u-':3};
 function tokenize(s){
-  s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
-  const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!()])/g; let m;
-  while((m=re.exec(s))) out.push(m[1]);
-  return out;
+ s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
+ const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!])/g; let m;
+ while((m=re.exec(s))) out.push(m[1]);
+ return out;
 }
 function toRPN(tk){
-  const out=[],op=[]; let prev=null;
-  for(let t of tk){
-    if(t==='**')t='^';
-    if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
-    else if(t==='PI'){ out.push(Math.PI); }
-    else if(t==='e'||t==='E'){ out.push(Math.E); }
-    else if(t==='ANS'){ out.push(ANS); }
-    else if(FN[t]){ op.push(t); }
-    else if(t==='('){ op.push(t); }
-    else if(t===')'){
-      while(op.length&&op[op.length-1]!=='(') out.push(op.pop());
-      if(!op.length) throw 0; op.pop();
-      if(op.length&&FN[op[op.length-1]]) out.push(op.pop());
-    }
-    else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
-    else if('+-*/^'.includes(t)){
-      let o=t;
-      const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
-      if(t==='-'&&unary) o='u-';
-      else if(t==='+'&&unary){ prev=t; continue; }
-      while(op.length){
-        const top=op[op.length-1];
-        if(top==='('||FN[top])break;
-        const rightAssoc=(o==='^'||o==='u-');
-        if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop()); else break;
-      }
-      op.push(o);
-    }
-    else throw 0;
-    prev=t;
-  }
-  while(op.length){ const o=op.pop(); if(o==='(')throw 0; out.push(o); }
-  return out;
+ const out=[],op=[]; let prev=null;
+ for(let t of tk){
+ if(t==='**')t='^';
+ if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
+ else if(t==='PI'){ out.push(Math.PI); }
+ else if(t==='e'||t==='E'){ out.push(Math.E); }
+ else if(t==='ANS'){ out.push(ANS); }
+ else if(FN[t]){ op.push(t); }
+ else if(t==='('){ op.push(t); }
+ else if(t===')'){
+ while(op.length&&op[op.length-1]!=='(') out.push(op.pop);
+ if(!op.length) throw 0; op.pop;
+ if(op.length&&FN[op[op.length-1]]) out.push(op.pop);
+ }
+ else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
+ else if('+-*/^'.includes(t)){
+ let o=t;
+ const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
+ if(t==='-'&&unary) o='u-';
+ else if(t==='+'&&unary){ prev=t; continue; }
+ while(op.length){
+ const top=op[op.length-1];
+ if(top==='('||FN[top])break;
+ const rightAssoc=(o==='^'||o==='u-');
+ if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop); else break;
+ }
+ op.push(o);
+ }
+ else throw 0;
+ prev=t;
+ }
+ while(op.length){ const o=op.pop; if(o==='(')throw 0; out.push(o); }
+ return out;
 }
 function evalRPN(rpn,deg){
-  const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
-  const pop=()=>{ if(!st.length)throw 0; return st.pop(); };
-  for(const t of rpn){
-    if(typeof t==='number'){ st.push(t); continue; }
-    if(t==='fact'){ const n=pop(); if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
-    if(t==='pct'){ st.push(pop()/100); continue; }
-    if(t==='u-'){ st.push(-pop()); continue; }
-    if(FN[t]){
-      const a=pop();
-      st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
-             : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
-             : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
-             : t==='abs'?Math.abs(a) : Math.exp(a) );
-      continue;
-    }
-    const b=pop(),a=pop();
-    st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
-  }
-  if(st.length!==1) throw 0;
-  return st[0];
+ const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
+ const pop==>{ if(!st.length)throw 0; return st.pop; };
+ for(const t of rpn){
+ if(typeof t==='number'){ st.push(t); continue; }
+ if(t==='fact'){ const n=pop; if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
+ if(t==='pct'){ st.push(pop/100); continue; }
+ if(t==='u-'){ st.push(-pop); continue; }
+ if(FN[t]){
+ const a=pop;
+ st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
+ : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
+ : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
+ : t==='abs'?Math.abs(a) : Math.exp(a) );
+ continue;
+ }
+ const b=pop,a=pop;
+ st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
+ }
+ if(st.length!==1) throw 0;
+ return st[0];
 }
 function calc(src,deg){ return evalRPN(toRPN(tokenize(src)),deg); }
 
@@ -1136,53 +1136,53 @@ const KEYS=[
  ['1','1',''],['2','2',''],['3','3',''],['.','.',''],['=','eq','eq'],
  ['0','0','w3'],['x²','^2','fn']
 ];
-function buildCalc(){
-  calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
-  calcSheet.innerHTML=
-   `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
-      <button id="kitui-calcclose">✕</button></div>
-    <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
-    <div class="kitui-keys" id="kitui-keys">
-      ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
-    </div>`;
-  D.body.appendChild(calcSheet);
-  D.getElementById('kitui-calcclose').onclick=()=>calcSheet.classList.remove('open');
-  const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
-  const show=()=>{ ex.textContent=expr||' ';
-    try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
-    catch(e){ rs.style.opacity=.35; }
-  };
-  D.getElementById('kitui-keys').addEventListener('click',e=>{
-    const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
-    if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
-    if(k==='del'){ expr=expr.slice(0,-1); show(); return; }
-    if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show(); return; }
-    if(k==='eq'){
-      rs.style.opacity=1;
-      try{
-        const v=calc(expr,isDeg);
-        if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
-        if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
-        ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
-      }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
-      return;
-    }
-    expr+=k; show();
-  });
+function buildCalc{
+ calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
+ calcSheet.innerHTML=
+ `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
+ <button id="kitui-calcclose">✕</button></div>
+ <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
+ <div class="kitui-keys" id="kitui-keys">
+ ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
+ </div>`;
+ D.body.appendChild(calcSheet);
+ D.getElementById('kitui-calcclose').onclick==>calcSheet.classList.remove('open');
+ const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
+ const show==>{ ex.textContent=expr||' ';
+ try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
+ catch(e){ rs.style.opacity=.35; }
+ };
+ D.getElementById('kitui-keys').addEventListener('click',e=>{
+ const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
+ if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
+ if(k==='del'){ expr=expr.slice(0,-1); show; return; }
+ if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show; return; }
+ if(k==='eq'){
+ rs.style.opacity=1;
+ try{
+ const v=calc(expr,isDeg);
+ if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
+ if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
+ ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
+ }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
+ return;
+ }
+ expr+=k; show;
+ });
 }
 function fmt(v){
-  if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
-  if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
-  return String(Math.round(v*1e10)/1e10);
+ if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
+ if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
+ return String(Math.round(v*1e10)/1e10);
 }
 if(hasCalc){
-  buildCalc();
-  D.getElementById('kitui-calcbtn').onclick=()=>{
-    const o=calcSheet.classList.toggle('open');
-    D.getElementById('kitui-calcbtn').classList.toggle('on',o);
-  };
+ buildCalc;
+ D.getElementById('kitui-calcbtn').onclick==>{
+ const o=calcSheet.classList.toggle('open');
+ D.getElementById('kitui-calcbtn').classList.toggle('on',o);
+ };
 }
-})();
+});
 
 </script>
 <!--/KIT-UI-->

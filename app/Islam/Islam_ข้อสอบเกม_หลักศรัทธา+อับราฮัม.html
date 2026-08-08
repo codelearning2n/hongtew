@@ -48,7 +48,7 @@ font-size:13.5px;margin-top:8px;color:#fde68a;display:none;}
 <body>
 <div class="wrap">
  <h1>☪️ ข้อสอบเกม — อิสลาม</h1>
- <div class="sub">หลักศรัทธา 6 ประการ (อีมาน) + 3 ศาสนาอับราฮัม (ยูดาย·คริสต์·อิสลาม)<br>ตอบเองก่อน ติดค่อยกด 💡 คำใบ้ · อาจารย์ออกอังกฤษ ท่องชื่อให้แม่น</div>
+ <div class="sub">หลักศรัทธา 6 ประการ (อีมาน) + 3 ศาสนาอับราฮัม (ยูดาย·คริสต์·อิสลาม)<br>ตอบเองก่อน ติดค่อยกด 💡 คำใบ้ · ข้อสอบเป็นภาษาอังกฤษ ท่องชื่อให้แม่น</div>
 
  <div id="menu">
  <div class="card" id="resumeCard" style="display:none; border:2px solid var(--grn);">
@@ -64,7 +64,7 @@ font-size:13.5px;margin-top:8px;color:#fde68a;display:none;}
  <button class="btn" onclick="startQuiz">▶ เริ่มทำข้อสอบ (ตามหมวดที่เลือก)</button>
  </div>
  <div class="card" style="border:2px solid var(--gold);">
- <div style="font-weight:700; margin-bottom:4px;">🎯 โหมดจำลองข้อสอบจริง (แนว อาจารย์)</div>
+ <div style="font-weight:700; margin-bottom:4px;">🎯 โหมดจำลองข้อสอบจริง (แนวข้อสอบ)</div>
  <div class="note" style="margin-top:0;">สุ่ม <b>30 ข้อ</b> ตามสัดส่วนที่ออกสอบจริง: 🌙 <b>วันสำคัญ 50%</b> · 👳 <b>คนสำคัญ 30%</b> · 🕋 <b>ทั่วไป 20%</b> (ไม่สนหมวดที่เลือกด้านบน)</div>
  <button class="btn" style="background:linear-gradient(90deg,#f59e0b,#fbbf24);color:#3a2a05;" onclick="examSim">🎯 เริ่มโหมดจำลองข้อสอบ</button>
  </div>
@@ -268,7 +268,7 @@ function refreshChips{
 }
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 
-// ===== โหมดจำลองข้อสอบ (แนว อาจารย์): วันสำคัญ 50% · คนสำคัญ 30% · ทั่วไป 20% =====
+// ===== โหมดจำลองข้อสอบ (แนวข้อสอบ): วันสำคัญ 50% · คนสำคัญ 30% · ทั่วไป 20% =====
 function pickN(cats,n){ return shuffle(BANK.filter(q=>cats.includes(q.c)).slice).slice(0,Math.max(0,n)); }
 function examSim{
  const nDays=Math.round(EXAM_TOTAL*0.5), nPpl=Math.round(EXAM_TOTAL*0.3), nGen=EXAM_TOTAL-nDays-nPpl;

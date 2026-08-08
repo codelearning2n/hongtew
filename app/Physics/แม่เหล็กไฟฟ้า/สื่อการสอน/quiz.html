@@ -8,19 +8,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0b1120; --surface:#131c2e; --card:#1c2740; --card2:#243352;
-  --text:#e6edf7; --muted:#9fb0c9; --border:#2b3a57;
-  --field:#38bdf8; --force:#fbbf24; --current:#f472b6;
-  --ok:#34d399; --bad:#f87171;
-  --radius:16px; --shadow:0 8px 24px rgba(0,0,0,.35);
-  --font:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
+ --bg:#0b1120; --surface:#131c2e; --card:#1c2740; --card2:#243352;
+ --text:#e6edf7; --muted:#9fb0c9; --border:#2b3a57;
+ --field:#38bdf8; --force:#fbbf24; --current:#f472b6;
+ --ok:#34d399; --bad:#f87171;
+ --radius:16px; --shadow:0 8px 24px rgba(0,0,0,.35);
+ --font:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
 }
 *{box-sizing:border-box}
 body{margin:0;background:radial-gradient(1200px 600px at 50% -10%,#152238,var(--bg));
-  color:var(--text);font-family:var(--font);line-height:1.6;min-height:100vh}
+ color:var(--text);font-family:var(--font);line-height:1.6;min-height:100vh}
 .top{display:flex;align-items:center;justify-content:space-between;gap:12px;
-  padding:14px 18px;background:rgba(19,28,46,.8);border-bottom:1px solid var(--border);
-  position:sticky;top:0;backdrop-filter:blur(8px);z-index:5}
+ padding:14px 18px;background:rgba(19,28,46,.8);border-bottom:1px solid var(--border);
+ position:sticky;top:0;backdrop-filter:blur(8px);z-index:5}
 .top h1{font-size:1.1rem;margin:0;font-weight:700}
 .top a{color:var(--field);text-decoration:none;font-size:.9rem;white-space:nowrap}
 .wrap{max-width:720px;margin:0 auto;padding:20px 16px 60px}
@@ -30,14 +30,14 @@ body{margin:0;background:radial-gradient(1200px 600px at 50% -10%,#152238,var(--
 .meta{font-size:.9rem;color:var(--muted);white-space:nowrap}
 .score{font-weight:700;color:var(--ok)}
 .tag{display:inline-block;font-size:.75rem;color:var(--field);border:1px solid var(--border);
-  border-radius:99px;padding:2px 10px;margin-bottom:10px;background:rgba(56,189,248,.08)}
+ border-radius:99px;padding:2px 10px;margin-bottom:10px;background:rgba(56,189,248,.08)}
 .q{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--border);
-  border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+ border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
 .q .text{font-size:1.12rem;font-weight:600;margin-bottom:16px;white-space:pre-wrap}
 .choices{display:grid;gap:10px}
 .choice{display:block;width:100%;text-align:left;padding:13px 16px;border-radius:12px;
-  background:var(--surface);border:1px solid var(--border);color:var(--text);
-  font-family:var(--font);font-size:1rem;cursor:pointer;transition:.12s}
+ background:var(--surface);border:1px solid var(--border);color:var(--text);
+ font-family:var(--font);font-size:1rem;cursor:pointer;transition:.12s}
 .choice:hover:not(:disabled){border-color:var(--field);transform:translateY(-1px)}
 .choice:disabled{cursor:default;opacity:.95}
 .choice.correct{border-color:var(--ok);background:rgba(52,211,153,.15);color:#c9f7e5}
@@ -45,13 +45,13 @@ body{margin:0;background:radial-gradient(1200px 600px at 50% -10%,#152238,var(--
 .choice .mk{float:right;font-weight:700}
 .hintrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
 .btn{padding:9px 14px;border-radius:10px;border:1px solid var(--border);background:var(--card);
-  color:var(--text);font-family:var(--font);font-size:.92rem;cursor:pointer;transition:.12s}
+ color:var(--text);font-family:var(--font);font-size:.92rem;cursor:pointer;transition:.12s}
 .btn:hover{border-color:var(--field)}
 .btn.primary{background:var(--field);color:#04121f;border-color:var(--field);font-weight:700}
 .btn.ghost{background:transparent}
 .btn:disabled{opacity:.4;cursor:default}
 .reveal{margin-top:14px;padding:13px 15px;border-radius:12px;border:1px dashed var(--border);
-  background:rgba(56,189,248,.06);font-size:.96rem;display:none}
+ background:rgba(56,189,248,.06);font-size:.96rem;display:none}
 .reveal.show{display:block}
 .reveal.sol{border-style:solid;background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.35)}
 .reveal b{color:var(--force)}
@@ -68,362 +68,362 @@ label.chk{font-size:.9rem;color:var(--muted);display:inline-flex;align-items:cen
 </head>
 <body>
 <div class="top">
-  <h1>📝 ควิซข้อสอบ แม่เหล็กไฟฟ้า</h1>
-  <a href="index.html">← กลับหน้ารวม</a>
+ <h1>📝 ควิซข้อสอบ แม่เหล็กไฟฟ้า</h1>
+ <a href="index.html">← กลับหน้ารวม</a>
 </div>
 <div class="wrap">
-  <div id="start" class="q center">
-    <p class="tag">22 ข้อ · จากสไลด์จริง Ex1–Ex35</p>
-    <p class="text" style="text-align:center">ลองทำโจทย์ดู ถ้าติดตรงไหน กดดู <b>นัยที่ 1 → 2 → เฉลยละเอียด</b> ได้เลย<br>ตอบผิดไม่เป็นไร มีคำใบ้ช่วยเสมอ 💪</p>
-    <div class="controls">
-      <label class="chk"><input type="checkbox" id="shuffle" checked> สลับลำดับข้อ</label>
-    </div>
-    <button class="btn primary" onclick="startQuiz()">เริ่มทำควิซ</button>
-  </div>
+ <div id="start" class="q center">
+ <p class="tag">22 ข้อ · จากสไลด์จริง Ex1–Ex35</p>
+ <p class="text" style="text-align:center">ลองทำโจทย์ดู ถ้าติดตรงไหน กดดู <b>นัยที่ 1 → 2 → เฉลยละเอียด</b> ได้เลย<br>ตอบผิดไม่เป็นไร มีคำใบ้ช่วยเสมอ 💪</p>
+ <div class="controls">
+ <label class="chk"><input type="checkbox" id="shuffle" checked> สลับลำดับข้อ</label>
+ </div>
+ <button class="btn primary" onclick="startQuiz">เริ่มทำควิซ</button>
+ </div>
 
-  <div id="quiz" style="display:none">
-    <div class="bar">
-      <div class="progress"><i id="pfill"></i></div>
-      <span class="meta">ข้อ <span id="qnum">1</span>/<span id="qtot">22</span></span>
-      <span class="meta">คะแนน <span class="score" id="score">0</span></span>
-    </div>
-    <div class="q">
-      <span class="tag" id="qtag">—</span>
-      <div class="text" id="qtext"></div>
-      <div class="choices" id="choices"></div>
-      <div class="feedback" id="feedback"></div>
-      <div class="hintrow">
-        <button class="btn ghost" id="h1btn" onclick="showHint(1)">💡 นัยที่ 1</button>
-        <button class="btn ghost" id="h2btn" onclick="showHint(2)">💡 นัยที่ 2</button>
-        <button class="btn ghost" id="solbtn" onclick="showHint(3)">✅ เฉลยละเอียด</button>
-      </div>
-      <div class="reveal" id="h1"></div>
-      <div class="reveal" id="h2"></div>
-      <div class="reveal sol" id="sol"></div>
-      <div class="nav">
-        <span></span>
-        <button class="btn primary" id="nextbtn" onclick="next()" disabled>ข้อถัดไป →</button>
-      </div>
-    </div>
-  </div>
+ <div id="quiz" style="display:none">
+ <div class="bar">
+ <div class="progress"><i id="pfill"></i></div>
+ <span class="meta">ข้อ <span id="qnum">1</span>/<span id="qtot">22</span></span>
+ <span class="meta">คะแนน <span class="score" id="score">0</span></span>
+ </div>
+ <div class="q">
+ <span class="tag" id="qtag">—</span>
+ <div class="text" id="qtext"></div>
+ <div class="choices" id="choices"></div>
+ <div class="feedback" id="feedback"></div>
+ <div class="hintrow">
+ <button class="btn ghost" id="h1btn" onclick="showHint(1)">💡 นัยที่ 1</button>
+ <button class="btn ghost" id="h2btn" onclick="showHint(2)">💡 นัยที่ 2</button>
+ <button class="btn ghost" id="solbtn" onclick="showHint(3)">✅ เฉลยละเอียด</button>
+ </div>
+ <div class="reveal" id="h1"></div>
+ <div class="reveal" id="h2"></div>
+ <div class="reveal sol" id="sol"></div>
+ <div class="nav">
+ <span></span>
+ <button class="btn primary" id="nextbtn" onclick="next" disabled>ข้อถัดไป →</button>
+ </div>
+ </div>
+ </div>
 
-  <div id="done" class="q summary" style="display:none">
-    <p class="tag">จบแล้ว!</p>
-    <div class="big"><span id="finalscore">0</span>/<span id="finaltot">–</span></div>
-    <p class="msg" id="finalmsg"></p>
-    <div class="center"><button class="btn primary" onclick="location.reload()">ทำใหม่อีกครั้ง</button></div>
-  </div>
+ <div id="done" class="q summary" style="display:none">
+ <p class="tag">จบแล้ว!</p>
+ <div class="big"><span id="finalscore">0</span>/<span id="finaltot">–</span></div>
+ <p class="msg" id="finalmsg"></p>
+ <div class="center"><button class="btn primary" onclick="location.reload">ทำใหม่อีกครั้ง</button></div>
+ </div>
 </div>
 
 <script>
 const BANK = [
  {tag:"ฟลักซ์ · Ex2", text:"ขดลวดพื้นที่ 0.4 m² อยู่ในสนาม 2 T โดยระนาบของขดลวดทำมุม 30° กับสนามแม่เหล็ก จงหาฟลักซ์แม่เหล็กที่ผ่านขดลวด",
-  choices:["1.0 Wb","0.8 Wb","0.6 Wb","0.4 Wb"], a:3,
-  h1:"ใช้ Φ = B·A·sinθ โดย θ วัดจาก <b>ระนาบพื้นที่</b> (จึงใช้ sin)",
-  h2:"แทนค่า Φ = 2 × 0.4 × sin30°",
-  sol:"Φ = B·A·sinθ = 2 × 0.4 × sin30° = 2 × 0.4 × 0.5 = <b>0.4 Wb</b>"},
+ choices:["1.0 Wb","0.8 Wb","0.6 Wb","0.4 Wb"], a:3,
+ h1:"ใช้ Φ = B·A·sinθ โดย θ วัดจาก <b>ระนาบพื้นที่</b> (จึงใช้ sin)",
+ h2:"แทนค่า Φ = 2 × 0.4 × sin30°",
+ sol:"Φ = B·A·sinθ = 2 × 0.4 × sin30° = 2 × 0.4 × 0.5 = <b>0.4 Wb</b>"},
 
  {tag:"แรงบนประจุ · Ex5", text:"โปรตอนวิ่งดิ่งลงสู่ผิวโลกที่บริเวณเส้นศูนย์สูตร ซึ่งสนามแม่เหล็กโลกขนานผิวโลกชี้ไปทางทิศเหนือ โปรตอนจะเบนไปทางทิศใด",
-  choices:["ทิศเหนือ","ทิศตะวันตก","ทิศใต้","ทิศตะวันออก"], a:3,
-  h1:"ใช้กฎมือขวา F = qv×B (โปรตอนเป็นประจุบวก)",
-  h2:"v ชี้ลง, B ชี้ไปทางเหนือ — กางมือขวาตามกฎแล้วดูหัวแม่มือ",
-  sol:"v(ลง) × B(เหนือ) ให้แรงพุ่งไป <b>ทิศตะวันออก</b> (ประจุบวกจึงไปตามทิศ v×B)"},
+ choices:["ทิศเหนือ","ทิศตะวันตก","ทิศใต้","ทิศตะวันออก"], a:3,
+ h1:"ใช้กฎมือขวา F = qv×B (โปรตอนเป็นประจุบวก)",
+ h2:"v ชี้ลง, B ชี้ไปทางเหนือ — กางมือขวาตามกฎแล้วดูหัวแม่มือ",
+ sol:"v(ลง) × B(เหนือ) ให้แรงพุ่งไป <b>ทิศตะวันออก</b> (ประจุบวกจึงไปตามทิศ v×B)"},
 
  {tag:"แรงบนประจุ · Ex7", text:"อิเล็กตรอนความเร็ว 1×10⁷ m/s เคลื่อนที่ตั้งฉากกับสนามแม่เหล็ก 10⁻⁴ T จะมีแรงกระทำเท่าใด",
-  choices:["1.6×10⁻¹² N","1.6×10⁻¹⁶ N","3.2×10⁻¹² N","3.2×10⁻¹⁶ N"], a:1,
-  h1:"F = qvB·sinθ ; ตั้งฉาก sin90° = 1",
-  h2:"ประจุอิเล็กตรอน q = 1.6×10⁻¹⁹ C",
-  sol:"F = (1.6×10⁻¹⁹)(1×10⁷)(1×10⁻⁴) = <b>1.6×10⁻¹⁶ N</b>"},
+ choices:["1.6×10⁻¹² N","1.6×10⁻¹⁶ N","3.2×10⁻¹² N","3.2×10⁻¹⁶ N"], a:1,
+ h1:"F = qvB·sinθ ; ตั้งฉาก sin90° = 1",
+ h2:"ประจุอิเล็กตรอน q = 1.6×10⁻¹⁹ C",
+ sol:"F = (1.6×10⁻¹⁹)(1×10⁷)(1×10⁻⁴) = <b>1.6×10⁻¹⁶ N</b>"},
 
  {tag:"แรงบนประจุ · Ex8", text:"โปรตอนกับอนุภาคแอลฟาเคลื่อนที่ตั้งฉากกับสนามแม่เหล็กเดียวกัน และมีแรงแม่เหล็กเท่ากัน อัตราเร็วของโปรตอนเป็นกี่เท่าของอัตราเร็วแอลฟา",
-  choices:["0.5 เท่า","1 เท่า","2 เท่า","4 เท่า"], a:2,
-  h1:"F = qvB เท่ากันทั้งคู่ (B เท่ากัน)",
-  h2:"ประจุแอลฟา q(α) = 2·q(โปรตอน)",
-  sol:"q_p·v_p = q_α·v_α → v_p = (q_α/q_p)·v_α = <b>2 เท่า</b>"},
+ choices:["0.5 เท่า","1 เท่า","2 เท่า","4 เท่า"], a:2,
+ h1:"F = qvB เท่ากันทั้งคู่ (B เท่ากัน)",
+ h2:"ประจุแอลฟา q(α) = 2·q(โปรตอน)",
+ sol:"q_p·v_p = q_α·v_α → v_p = (q_α/q_p)·v_α = <b>2 เท่า</b>"},
 
  {tag:"แรงบนลวด · Ex12", text:"ลวดยาว 5 m มีกระแส 4 A วางในสนามแม่เหล็ก 10⁻³ T โดยลวดตั้งฉากกับสนาม จงหาแรงที่กระทำต่อลวด",
-  choices:["0.02 N","0.2 N","0.04 N","0.1 N"], a:0,
-  h1:"F = B·I·L·sinθ ; ตั้งฉาก sin90° = 1",
-  h2:"F = 10⁻³ × 4 × 5",
-  sol:"F = B·I·L = 10⁻³ × 4 × 5 = <b>0.02 N</b>"},
+ choices:["0.02 N","0.2 N","0.04 N","0.1 N"], a:0,
+ h1:"F = B·I·L·sinθ ; ตั้งฉาก sin90° = 1",
+ h2:"F = 10⁻³ × 4 × 5",
+ sol:"F = B·I·L = 10⁻³ × 4 × 5 = <b>0.02 N</b>"},
 
  {tag:"แรงบนลวด · Ex13", text:"ลวด AB มวล 50 g วางบนรางห่างกัน 0.1 m มีกระแส 0.2 A ต้องการให้ลวดเคลื่อนที่ด้วยความเร่ง 0.04 m/s² ต้องใช้สนาม B ตั้งฉากขนาดกี่เทสลา",
-  choices:["0.1 T","0.2 T","0.05 T","0.4 T"], a:0,
-  h1:"แรงจากสนาม F = BIL ทำให้เกิดความเร่ง F = ma",
-  h2:"F = ma = 0.05 × 0.04 = 0.002 N แล้ว B = F/(IL)",
-  sol:"B = F/(IL) = 0.002/(0.2×0.1) = 0.002/0.02 = <b>0.1 T</b>"},
+ choices:["0.1 T","0.2 T","0.05 T","0.4 T"], a:0,
+ h1:"แรงจากสนาม F = BIL ทำให้เกิดความเร่ง F = ma",
+ h2:"F = ma = 0.05 × 0.04 = 0.002 N แล้ว B = F/(IL)",
+ sol:"B = F/(IL) = 0.002/(0.2×0.1) = 0.002/0.02 = <b>0.1 T</b>"},
 
  {tag:"ลวดขนาน · Ex15", text:"สายไฟในบ้านมีลวด 2 เส้น (กระแสไหลสวนทางกัน และเป็นไฟฟ้ากระแสสลับ) เมื่อใช้เครื่องไฟฟ้า ลวดทั้งสองมีแรงต่อกันอย่างไร",
-  choices:["ไม่มีแรง เพราะมีฉนวนหุ้ม","ผลักและดูดสลับกัน","ดูดเข้าหากัน","ผลักซึ่งกันและกัน"], a:3,
-  h1:"กระแสตามกัน → ดูด ; สวนกัน → ผลัก",
-  h2:"ไฟกระแสสลับกลับทิศพร้อมกันทั้งสองเส้น จึงยังคง 'สวนกัน' เสมอ",
-  sol:"กระแสสวนทางกันตลอด → เกิด <b>แรงผลักซึ่งกันและกัน</b>"},
+ choices:["ไม่มีแรง เพราะมีฉนวนหุ้ม","ผลักและดูดสลับกัน","ดูดเข้าหากัน","ผลักซึ่งกันและกัน"], a:3,
+ h1:"กระแสตามกัน → ดูด ; สวนกัน → ผลัก",
+ h2:"ไฟกระแสสลับกลับทิศพร้อมกันทั้งสองเส้น จึงยังคง 'สวนกัน' เสมอ",
+ sol:"กระแสสวนทางกันตลอด → เกิด <b>แรงผลักซึ่งกันและกัน</b>"},
 
  {tag:"โมเมนต์ · Ex16", text:"ขดลวดวงกลมพื้นที่ 60 cm² พันอยู่ 600 รอบ มีกระแส 1 A วางในสนาม 1 T โมเมนต์สูงสุดของขดลวดมีค่ากี่ N·m",
-  choices:["3.6","6.0","0.6","36"], a:0,
-  h1:"M_max = N·I·A·B (สูงสุดเมื่อระนาบขนานสนาม θ=0)",
-  h2:"เปลี่ยนหน่วยพื้นที่ A = 60 cm² = 6×10⁻³ m²",
-  sol:"M = N·I·A·B = 600 × 1 × 6×10⁻³ × 1 = <b>3.6 N·m</b>"},
+ choices:["3.6","6.0","0.6","36"], a:0,
+ h1:"M_max = N·I·A·B (สูงสุดเมื่อระนาบขนานสนาม θ=0)",
+ h2:"เปลี่ยนหน่วยพื้นที่ A = 60 cm² = 6×10⁻³ m²",
+ sol:"M = N·I·A·B = 600 × 1 × 6×10⁻³ × 1 = <b>3.6 N·m</b>"},
 
  {tag:"การเหนี่ยวนำ · Ex19", text:"ขดลวดวางบนโต๊ะ มีสนามแม่เหล็กพุ่งขึ้นตั้งฉากโต๊ะ กรณีใดผสมกันแล้วเกิด emf ตามเข็มนาฬิกา (มองจากด้านบน) มากที่สุด — ก.วงเล็กลง ข.วงใหญ่ขึ้น ค.สนามลดลง ง.สนามเพิ่มขึ้น",
-  choices:["ก และ ค","ก และ ง","ข และ ค","ข และ ง"], a:3,
-  h1:"กระแสตามเข็ม(มองบน) สร้างสนามเหนี่ยวนำพุ่งลง → ต้านการ 'เพิ่มขึ้น' ของฟลักซ์ขึ้น",
-  h2:"จึงต้องทำให้ฟลักซ์ขึ้น 'เพิ่มขึ้น' คือ พื้นที่เพิ่ม (ข) หรือ สนามเพิ่ม (ง)",
-  sol:"ฟลักซ์ขึ้นต้องเพิ่มขึ้น → <b>ข (วงใหญ่ขึ้น) และ ง (สนามเพิ่มขึ้น)</b>"},
+ choices:["ก และ ค","ก และ ง","ข และ ค","ข และ ง"], a:3,
+ h1:"กระแสตามเข็ม(มองบน) สร้างสนามเหนี่ยวนำพุ่งลง → ต้านการ 'เพิ่มขึ้น' ของฟลักซ์ขึ้น",
+ h2:"จึงต้องทำให้ฟลักซ์ขึ้น 'เพิ่มขึ้น' คือ พื้นที่เพิ่ม (ข) หรือ สนามเพิ่ม (ง)",
+ sol:"ฟลักซ์ขึ้นต้องเพิ่มขึ้น → <b>ข (วงใหญ่ขึ้น) และ ง (สนามเพิ่มขึ้น)</b>"},
 
  {tag:"มอเตอร์ · Ex21", text:"ในขณะที่มอเตอร์หมุนด้วยอัตราเร็วคงที่ ขดลวดที่อยู่ภายในมอเตอร์จะมีลักษณะใด",
-  choices:["โมเมนต์คู่ควบเป็นศูนย์คงที่","ฟลักซ์แม่เหล็กเป็นศูนย์คงที่","กระแสมากกว่าตอนเริ่มหมุน","เกิด emf เหนี่ยวนำทิศตรงข้ามกับ emf เดิม"], a:3,
-  h1:"การหมุนของขดลวดทำให้เกิดแรงเคลื่อนไฟฟ้าเหนี่ยวนำ (back-emf)",
-  h2:"back-emf มีทิศต้าน emf ที่ใส่เข้าไป",
-  sol:"เกิด <b>แรงเคลื่อนไฟฟ้าเหนี่ยวนำทิศตรงข้ามกับ emf เดิม</b> (แรงดันดันกลับ)"},
+ choices:["โมเมนต์คู่ควบเป็นศูนย์คงที่","ฟลักซ์แม่เหล็กเป็นศูนย์คงที่","กระแสมากกว่าตอนเริ่มหมุน","เกิด emf เหนี่ยวนำทิศตรงข้ามกับ emf เดิม"], a:3,
+ h1:"การหมุนของขดลวดทำให้เกิดแรงเคลื่อนไฟฟ้าเหนี่ยวนำ (back-emf)",
+ h2:"back-emf มีทิศต้าน emf ที่ใส่เข้าไป",
+ sol:"เกิด <b>แรงเคลื่อนไฟฟ้าเหนี่ยวนำทิศตรงข้ามกับ emf เดิม</b> (แรงดันดันกลับ)"},
 
  {tag:"มอเตอร์ · Ex22", text:"แบตเตอรี่ 6 V ความต้านทานภายใน 1 Ω ต่อกับมอเตอร์ที่ขดลวดมีความต้านทาน 1 Ω ขณะหมุนวัดกระแสได้ 0.5 A แรงเคลื่อนไฟฟ้าดันกลับของมอเตอร์มีค่าเท่าใด",
-  choices:["5 V","1 V","4 V","6 V"], a:0,
-  h1:"I = (E − e)/(R + r)",
-  h2:"0.5 = (6 − e)/(1+1) → 6 − e = 1",
-  sol:"6 − e = 0.5 × 2 = 1 → back-emf e = <b>5 V</b>"},
+ choices:["5 V","1 V","4 V","6 V"], a:0,
+ h1:"I = (E − e)/(R + r)",
+ h2:"0.5 = (6 − e)/(1+1) → 6 − e = 1",
+ sol:"6 − e = 0.5 × 2 = 1 → back-emf e = <b>5 V</b>"},
 
  {tag:"เครื่องกำเนิด · Ex23", text:"เครื่องกำเนิดไฟฟ้าทำงาน 88 kW ส่งกำลังผ่านสายที่มีความต้านทาน 0.5 Ω ที่ความต่างศักย์ 22,000 V เป็นเวลา 5 s พลังงานที่สูญเสียในสายเป็นความร้อนเท่าใด",
-  choices:["8 J","20 J","40 J","80 J"], a:2,
-  h1:"หากระแสในสายก่อน I = P/V แล้วกำลังสูญเสีย P_loss = I²R",
-  h2:"I = 88000/22000 = 4 A → P_loss = 4²×0.5 = 8 W",
-  sol:"พลังงาน = P_loss × t = 8 × 5 = <b>40 J</b>"},
+ choices:["8 J","20 J","40 J","80 J"], a:2,
+ h1:"หากระแสในสายก่อน I = P/V แล้วกำลังสูญเสีย P_loss = I²R",
+ h2:"I = 88000/22000 = 4 A → P_loss = 4²×0.5 = 8 W",
+ sol:"พลังงาน = P_loss × t = 8 × 5 = <b>40 J</b>"},
 
  {tag:"หม้อแปลง · Ex24", text:"เกี่ยวกับแกนเหล็กของหม้อแปลง ข้อใดถูก — ก.แกนเป็นเหล็กอ่อน ข.แกนเป็นสารแม่เหล็กถาวร ค.ประสิทธิภาพดีต้องมีกระแสวนในแกนมาก ง.ประสิทธิภาพดีต้องมีกระแสวนในแกนน้อย",
-  choices:["ก และ ค","ก และ ง","ข และ ค","ข และ ง"], a:1,
-  h1:"แกนหม้อแปลงใช้เหล็กอ่อนแผ่นบางซ้อนกัน",
-  h2:"กระแสวน (eddy current) ในแกน = การสูญเสียพลังงาน ยิ่งน้อยยิ่งดี",
-  sol:"<b>ก (เหล็กอ่อน) และ ง (กระแสวนน้อย)</b>"},
+ choices:["ก และ ค","ก และ ง","ข และ ค","ข และ ง"], a:1,
+ h1:"แกนหม้อแปลงใช้เหล็กอ่อนแผ่นบางซ้อนกัน",
+ h2:"กระแสวน (eddy current) ในแกน = การสูญเสียพลังงาน ยิ่งน้อยยิ่งดี",
+ sol:"<b>ก (เหล็กอ่อน) และ ง (กระแสวนน้อย)</b>"},
 
  {tag:"หม้อแปลง · Ex25", text:"หม้อแปลง N₁=200 รอบ N₂=20 รอบ ใช้กับไฟบ้าน 220 V ขดทุติยภูมิต่อความต้านทาน 10 Ω กำลังความร้อนที่ความต้านทานนี้เป็นเท่าใด (ไม่มีการสูญเสีย)",
-  choices:["4840 W","220 W","48.4 W","22.0 W"], a:2,
-  h1:"หา V₂ ก่อน: V₂ = V₁·(N₂/N₁) แล้ว P = V₂²/R",
-  h2:"V₂ = 220 × 20/200 = 22 V",
-  sol:"P = V₂²/R = 22²/10 = 484/10 = <b>48.4 W</b>"},
+ choices:["4840 W","220 W","48.4 W","22.0 W"], a:2,
+ h1:"หา V₂ ก่อน: V₂ = V₁·(N₂/N₁) แล้ว P = V₂²/R",
+ h2:"V₂ = 220 × 20/200 = 22 V",
+ sol:"P = V₂²/R = 22²/10 = 484/10 = <b>48.4 W</b>"},
 
  {tag:"หม้อแปลง · Ex26", text:"หม้อแปลงลงจาก 20,000 V เป็น 220 V เกิดกำลังในขดทุติยภูมิ 5.4 kW หม้อแปลงมีประสิทธิภาพ 90% กระแสไฟฟ้าที่ผ่านขดปฐมภูมิมีค่าเท่าใด",
-  choices:["0.24 A","0.27 A","0.30 A","0.54 A"], a:2,
-  h1:"หากำลังด้านปฐมภูมิก่อน: P₁ = P₂ / ประสิทธิภาพ",
-  h2:"P₁ = 5400/0.9 = 6000 W → I₁ = P₁/V₁",
-  sol:"I₁ = 6000/20000 = <b>0.30 A</b>"},
+ choices:["0.24 A","0.27 A","0.30 A","0.54 A"], a:2,
+ h1:"หากำลังด้านปฐมภูมิก่อน: P₁ = P₂ / ประสิทธิภาพ",
+ h2:"P₁ = 5400/0.9 = 6000 W → I₁ = P₁/V₁",
+ sol:"I₁ = 6000/20000 = <b>0.30 A</b>"},
 
  {tag:"AC · Ex27", text:"เครื่องกำเนิดไฟฟ้ากระแสสลับผลิตกระแสสูงสุด 20 A ความต่างศักย์สูงสุด 300 V ความถี่ 50 Hz จงหากระแสและความต่างศักย์ที่เวลา 1/600 วินาที",
-  choices:["10 A, 150 V","20 A, 150 V","10 A, 300 V","20 A, 300 V"], a:0,
-  h1:"i = Iₘ·sin(ωt), ω = 2πf",
-  h2:"ωt = 2π(50)(1/600) = 100π/600 = π/6 = 30°",
-  sol:"i = 20·sin30° = 10 A ; v = 300·sin30° = 150 V → <b>10 A, 150 V</b>"},
+ choices:["10 A, 150 V","20 A, 150 V","10 A, 300 V","20 A, 300 V"], a:0,
+ h1:"i = Iₘ·sin(ωt), ω = 2πf",
+ h2:"ωt = 2π(50)(1/600) = 100π/600 = π/6 = 30°",
+ sol:"i = 20·sin30° = 10 A ; v = 300·sin30° = 150 V → <b>10 A, 150 V</b>"},
 
  {tag:"AC · rms · Ex28", text:"ไฟฟ้าในบ้านมีความต่างศักย์ 220 V (ค่า rms) หมายความว่าความต่างศักย์สูงสุดมีค่ากี่โวลต์",
-  choices:["110 V","220 V","0.707 × 220 V","220√2 V (≈311 V)"], a:3,
-  h1:"V_rms = Vₘ/√2",
-  h2:"ดังนั้น Vₘ = V_rms × √2",
-  sol:"Vₘ = 220 × √2 = <b>220√2 ≈ 311 V</b>"},
+ choices:["110 V","220 V","0.707 × 220 V","220√2 V (≈311 V)"], a:3,
+ h1:"V_rms = Vₘ/√2",
+ h2:"ดังนั้น Vₘ = V_rms × √2",
+ sol:"Vₘ = 220 × √2 = <b>220√2 ≈ 311 V</b>"},
 
  {tag:"ตัวเก็บประจุ · Ex30", text:"ตัวเก็บประจุ 0.5 μF ที่ความถี่ 1 kHz ต้องมีความต่างศักย์คร่อมกี่โวลต์ จึงจะเกิดกระแส 6.28 mA",
-  choices:["1 V","2 V","3 V","4 V"], a:1,
-  h1:"หาความต้านทานเชิงความจุ X_C = 1/(2πfC) แล้ว V = I·X_C",
-  h2:"X_C = 1/(2π×1000×0.5×10⁻⁶) ≈ 318 Ω",
-  sol:"V = I·X_C = 6.28×10⁻³ × 318 ≈ <b>2 V</b>"},
+ choices:["1 V","2 V","3 V","4 V"], a:1,
+ h1:"หาความต้านทานเชิงความจุ X_C = 1/(2πfC) แล้ว V = I·X_C",
+ h2:"X_C = 1/(2π×1000×0.5×10⁻⁶) ≈ 318 Ω",
+ sol:"V = I·X_C = 6.28×10⁻³ × 318 ≈ <b>2 V</b>"},
 
  {tag:"ตัวเหนี่ยวนำ · Ex31", text:"วงจร AC ความถี่ 50 Hz มีตัวต้านทาน 20 Ω และตัวเหนี่ยวนำ (20/π) mH มีกระแสผ่าน 0.2 A ความต่างศักย์คร่อมตัวเหนี่ยวนำมีค่ากี่โวลต์",
-  choices:["0.2 V","0.4 V","2 V","4 V"], a:1,
-  h1:"V_L = I·X_L โดย X_L = 2πfL",
-  h2:"X_L = 2π×50×(20/π)×10⁻³ = 2×50×20×10⁻³ = 2 Ω",
-  sol:"V_L = I·X_L = 0.2 × 2 = <b>0.4 V</b>"},
+ choices:["0.2 V","0.4 V","2 V","4 V"], a:1,
+ h1:"V_L = I·X_L โดย X_L = 2πfL",
+ h2:"X_L = 2π×50×(20/π)×10⁻³ = 2×50×20×10⁻³ = 2 Ω",
+ sol:"V_L = I·X_L = 0.2 × 2 = <b>0.4 V</b>"},
 
  {tag:"ตัวเหนี่ยวนำ · Ex33", text:"ตัวเหนี่ยวนำ L = 50 mH มีกระแสสลับ i = 3sin(60t) A จงหาความต่างศักย์คร่อมตัวเหนี่ยวนำ ณ เวลา t ใด ๆ",
-  choices:["V_L = sin60t","V_L = 150sin60t","V_L = 150cos(60t+π/2)","V_L = 9sin(60t+π/2)"], a:3,
-  h1:"v_L = L·(di/dt)",
-  h2:"di/dt = 3×60×cos60t = 180cos60t → v = 0.05×180cos60t = 9cos60t",
-  sol:"v_L = 9cos60t = <b>9sin(60t + π/2)</b> (แรงดันนำกระแส 90°)"},
+ choices:["V_L = sin60t","V_L = 150sin60t","V_L = 150cos(60t+π/2)","V_L = 9sin(60t+π/2)"], a:3,
+ h1:"v_L = L·(di/dt)",
+ h2:"di/dt = 3×60×cos60t = 180cos60t → v = 0.05×180cos60t = 9cos60t",
+ sol:"v_L = 9cos60t = <b>9sin(60t + π/2)</b> (แรงดันนำกระแส 90°)"},
 
  {tag:"กำลัง AC · Ex34", text:"วงจรไฟฟ้ากระแสสลับมีความต่างศักย์ยังผล 200 V กระแสยังผล 20 A และมุมต่างเฟส 30° กำลังไฟฟ้าเฉลี่ยที่สูญเสียในวงจรมีค่ากี่กิโลวัตต์",
-  choices:["1.8 kW","2.4 kW","3.0 kW","3.5 kW"], a:3,
-  h1:"P = V·I·cosφ",
-  h2:"P = 200 × 20 × cos30° = 4000 × 0.866",
-  sol:"P = 4000 × 0.866 ≈ 3464 W ≈ <b>3.5 kW</b>"},
+ choices:["1.8 kW","2.4 kW","3.0 kW","3.5 kW"], a:3,
+ h1:"P = V·I·cosφ",
+ h2:"P = 200 × 20 × cos30° = 4000 × 0.866",
+ sol:"P = 4000 × 0.866 ≈ 3464 W ≈ <b>3.5 kW</b>"},
 
  {tag:"กำลัง AC · Ex35", text:"ตัวเหนี่ยวนำ 0.03 H ต่ออนุกรมกับตัวต้านทาน 40 Ω กับแหล่ง AC กระแส i = 5sin(1000t) A จงหากำลังเฉลี่ยของวงจร",
-  choices:["500 W","875 W","1000 W","1250 W"], a:0,
-  h1:"กำลังจริงเกิดที่ R เท่านั้น: P = I²_rms·R",
-  h2:"I_rms = Iₘ/√2 = 5/√2 (ไม่ต้องใช้ X_L ในการคิดกำลังจริง)",
-  sol:"P = (5/√2)² × 40 = (25/2) × 40 = <b>500 W</b>"},
+ choices:["500 W","875 W","1000 W","1250 W"], a:0,
+ h1:"กำลังจริงเกิดที่ R เท่านั้น: P = I²_rms·R",
+ h2:"I_rms = Iₘ/√2 = 5/√2 (ไม่ต้องใช้ X_L ในการคิดกำลังจริง)",
+ sol:"P = (5/√2)² × 40 = (25/2) × 40 = <b>500 W</b>"},
 
- /* ===== เพิ่ม 2026-07-31 — ถอดจากคลิปสอนชดเชยของอาจารย์ "หม้อแปลงไฟฟ้า" (53 นาที)
-    เน้นจุดที่อาจารย์ย้ำเองในคลิป ซึ่งยังไม่มีในโจทย์ Ex24–26 เดิม
-    ที่มา: https://youtu.be/1KUy09xOaPU · สรุปเต็มอยู่ที่ ../หม้อแปลงไฟฟ้า_สรุปจากคลิปอาจารย์.md ===== */
+ /* ===== เพิ่ม 2026-07-31 — ถอดจากคลิปสอนชดเชย "หม้อแปลงไฟฟ้า" (53 นาที)
+ เน้นจุดที่ย้ำเองในคลิป ซึ่งยังไม่มีในโจทย์ Ex24–26 เดิม
+ ที่มา: https://youtu.be/1KUy09xOaPU · สรุปเต็มอยู่ที่ ../หม้อแปลงไฟฟ้า_สรุปจากคลิปสอนชดเชย.md ===== */
 
- {tag:"หม้อแปลง · อจ.เน้น", text:"ถ้านำหม้อแปลงไปต่อกับ<b>ไฟฟ้ากระแสตรง (DC)</b> แทนไฟฟ้ากระแสสลับ จะเกิดอะไรขึ้นที่ขดลวดทุติยภูมิ",
-  choices:["ได้แรงดันออกมาเท่าเดิม","ได้แรงดันออกมาแต่ค่าน้อยลง","ไม่มีแรงดันออกมาเลย","ได้แรงดันออกมาเป็นสองเท่า"], a:2,
-  h1:"เงื่อนไขของการเหนี่ยวนำคือสนามแม่เหล็กต้อง <b>เปลี่ยนแปลง</b>",
-  h2:"DC ให้กระแสคงที่ → สนามแม่เหล็กคงที่ นิ่ง ไม่เปลี่ยนแปลง",
-  sol:"DC → B คงที่ → ไม่มีการเปลี่ยนแปลงฟลักซ์ → <b>ไม่เกิดแรงเคลื่อนเหนี่ยวนำเลย</b><br>นี่คือเหตุผลที่หม้อแปลง <b>ใช้ได้กับ AC เท่านั้น</b> — อาจารย์ย้ำจุดนี้หลายรอบในคลิป"},
+ {tag:"หม้อแปลง · จุดเน้น", text:"ถ้านำหม้อแปลงไปต่อกับ<b>ไฟฟ้ากระแสตรง (DC)</b> แทนไฟฟ้ากระแสสลับ จะเกิดอะไรขึ้นที่ขดลวดทุติยภูมิ",
+ choices:["ได้แรงดันออกมาเท่าเดิม","ได้แรงดันออกมาแต่ค่าน้อยลง","ไม่มีแรงดันออกมาเลย","ได้แรงดันออกมาเป็นสองเท่า"], a:2,
+ h1:"เงื่อนไขของการเหนี่ยวนำคือสนามแม่เหล็กต้อง <b>เปลี่ยนแปลง</b>",
+ h2:"DC ให้กระแสคงที่ → สนามแม่เหล็กคงที่ นิ่ง ไม่เปลี่ยนแปลง",
+ sol:"DC → B คงที่ → ไม่มีการเปลี่ยนแปลงฟลักซ์ → <b>ไม่เกิดแรงเคลื่อนเหนี่ยวนำเลย</b><br>นี่คือเหตุผลที่หม้อแปลง <b>ใช้ได้กับ AC เท่านั้น</b> — ย้ำจุดนี้หลายรอบในคลิป"},
 
- {tag:"หม้อแปลง · อจ.เน้น", text:"แกนเหล็กอ่อนตรงกลางหม้อแปลงมีหน้าที่หลักคืออะไร",
-  choices:["นำกระแสไฟฟ้าจากขดปฐมภูมิไปขดทุติยภูมิ","รวมเส้นแรงแม่เหล็กจากขดลวดให้ผ่านไปยังอีกขด","เก็บประจุไฟฟ้าไว้ชั่วคราว","ทำหน้าที่เป็นแม่เหล็กถาวรให้ระบบ"], a:1,
-  h1:"ขดลวดสองขด<b>ไม่ได้ต่อถึงกันทางไฟฟ้า</b>เลย",
-  h2:"สิ่งที่ส่งผ่านระหว่างสองขดคือ 'สนามแม่เหล็ก' ไม่ใช่ 'กระแส'",
-  sol:"แกนเหล็กทำหน้าที่ <b>รวมเส้นแรงแม่เหล็ก</b> เท่านั้น<br>🎯 อาจารย์เน้นว่า \"จริง ๆ เขา<b>ไม่ต้องการให้กระแสไหล</b>ในแกน\" เพราะกระแสวนจะกลายเป็นความร้อน = สูญเสียพลังงาน"},
+ {tag:"หม้อแปลง · จุดเน้น", text:"แกนเหล็กอ่อนตรงกลางหม้อแปลงมีหน้าที่หลักคืออะไร",
+ choices:["นำกระแสไฟฟ้าจากขดปฐมภูมิไปขดทุติยภูมิ","รวมเส้นแรงแม่เหล็กจากขดลวดให้ผ่านไปยังอีกขด","เก็บประจุไฟฟ้าไว้ชั่วคราว","ทำหน้าที่เป็นแม่เหล็กถาวรให้ระบบ"], a:1,
+ h1:"ขดลวดสองขด<b>ไม่ได้ต่อถึงกันทางไฟฟ้า</b>เลย",
+ h2:"สิ่งที่ส่งผ่านระหว่างสองขดคือ 'สนามแม่เหล็ก' ไม่ใช่ 'กระแส'",
+ sol:"แกนเหล็กทำหน้าที่ <b>รวมเส้นแรงแม่เหล็ก</b> เท่านั้น<br>🎯 เน้นว่า \"จริง ๆ เขา<b>ไม่ต้องการให้กระแสไหล</b>ในแกน\" เพราะกระแสวนจะกลายเป็นความร้อน = สูญเสียพลังงาน"},
 
- {tag:"หม้อแปลง · อจ.เน้น", text:"เพราะเหตุใดแกนเหล็กของหม้อแปลงจึงทำจาก<b>แผ่นเหล็กบาง ๆ หลายแผ่นวางซ้อนกัน</b> แทนที่จะเป็นเหล็กตันก้อนเดียว",
-  choices:["เพื่อให้แกนเบาลง ประหยัดต้นทุน","เพื่อลดกระแสวนในแกน ทำให้สูญเสียเป็นความร้อนน้อยลง","เพื่อเพิ่มจำนวนรอบของขดลวดได้มากขึ้น","เพื่อให้สนามแม่เหล็กเปลี่ยนทิศได้เร็วขึ้น"], a:1,
-  h1:"ปัญหาของแกนตันคือมีกระแสไหลวนอยู่ข้างในได้ง่าย",
-  h2:"I มาก → Q (ความร้อน) มาก → ประสิทธิภาพลด",
-  sol:"แผ่นบางซ้อนกัน (ตัดเป็นสี่เหลี่ยมหรือรูปตัว E) ทำให้ <b>กระแสวนไหลได้น้อยลง</b> → ความร้อนน้อยลง → <b>ประสิทธิภาพสูงขึ้น</b><br>สอดคล้องกับ Ex24 ข้อ ง."},
+ {tag:"หม้อแปลง · จุดเน้น", text:"เพราะเหตุใดแกนเหล็กของหม้อแปลงจึงทำจาก<b>แผ่นเหล็กบาง ๆ หลายแผ่นวางซ้อนกัน</b> แทนที่จะเป็นเหล็กตันก้อนเดียว",
+ choices:["เพื่อให้แกนเบาลง ประหยัดต้นทุน","เพื่อลดกระแสวนในแกน ทำให้สูญเสียเป็นความร้อนน้อยลง","เพื่อเพิ่มจำนวนรอบของขดลวดได้มากขึ้น","เพื่อให้สนามแม่เหล็กเปลี่ยนทิศได้เร็วขึ้น"], a:1,
+ h1:"ปัญหาของแกนตันคือมีกระแสไหลวนอยู่ข้างในได้ง่าย",
+ h2:"I มาก → Q (ความร้อน) มาก → ประสิทธิภาพลด",
+ sol:"แผ่นบางซ้อนกัน (ตัดเป็นสี่เหลี่ยมหรือรูปตัว E) ทำให้ <b>กระแสวนไหลได้น้อยลง</b> → ความร้อนน้อยลง → <b>ประสิทธิภาพสูงขึ้น</b><br>สอดคล้องกับ Ex24 ข้อ ง."},
 
- {tag:"หม้อแปลง · อจ.เน้น", text:"นักเรียนคนหนึ่งบอกว่า \"หม้อแปลงเพิ่มแรงดันได้ ถ้าอย่างนั้นเราก็พันขดทุติยภูมิเยอะ ๆ ก็จะได้<b>พลังงานไฟฟ้าเพิ่มขึ้น</b>\" ข้อความนี้ถูกหรือผิด เพราะอะไร",
-  choices:["ถูก เพราะแรงดันที่เพิ่มขึ้นทำให้กำลังไฟฟ้าเพิ่มตาม","ผิด เพราะแรงดันเพิ่มแต่กระแสจะลดลงตามส่วน กำลังไฟฟ้าเท่าเดิม","ถูก ถ้าหม้อแปลงมีประสิทธิภาพ 100%","ผิด เพราะการพันขดเพิ่มทำให้แรงดันลดลง"], a:1,
-  h1:"P = IV และหม้อแปลงต้องเป็นไปตามกฎอนุรักษ์พลังงาน",
-  h2:"N₁/N₂ = V₁/V₂ แต่ N₁/N₂ = I₂/I₁ (กระแสแปรผกผัน)",
-  sol:"<b>ผิด</b> — V เพิ่มก็จริง แต่ I ลดลงตามส่วน คูณกันแล้วได้ P เท่าเดิม (P₁ = P₂)<br>🎯 อาจารย์ติดตลกว่า \"ถ้าใครทำให้ P₂ มากกว่า P₁ ได้ ก็เตรียมไปรับโนเบลเลย\""},
+ {tag:"หม้อแปลง · จุดเน้น", text:"นักเรียนคนหนึ่งบอกว่า \"หม้อแปลงเพิ่มแรงดันได้ ถ้าอย่างนั้นเราก็พันขดทุติยภูมิเยอะ ๆ ก็จะได้<b>พลังงานไฟฟ้าเพิ่มขึ้น</b>\" ข้อความนี้ถูกหรือผิด เพราะอะไร",
+ choices:["ถูก เพราะแรงดันที่เพิ่มขึ้นทำให้กำลังไฟฟ้าเพิ่มตาม","ผิด เพราะแรงดันเพิ่มแต่กระแสจะลดลงตามส่วน กำลังไฟฟ้าเท่าเดิม","ถูก ถ้าหม้อแปลงมีประสิทธิภาพ 100%","ผิด เพราะการพันขดเพิ่มทำให้แรงดันลดลง"], a:1,
+ h1:"P = IV และหม้อแปลงต้องเป็นไปตามกฎอนุรักษ์พลังงาน",
+ h2:"N₁/N₂ = V₁/V₂ แต่ N₁/N₂ = I₂/I₁ (กระแสแปรผกผัน)",
+ sol:"<b>ผิด</b> — V เพิ่มก็จริง แต่ I ลดลงตามส่วน คูณกันแล้วได้ P เท่าเดิม (P₁ = P₂)<br>🎯 ในคลิปบอกติดตลกว่า \"ถ้าใครทำให้ P₂ มากกว่า P₁ ได้ ก็เตรียมไปรับโนเบลเลย\""},
 
- {tag:"หม้อแปลง · อจ.เน้น", text:"หม้อแปลงหนึ่งมี N₁ = 3 รอบ, N₂ = 6 รอบ จ่ายไฟเข้า V₁ = 12 V, I₁ = 0.48 A ถ้าไม่มีการสูญเสียพลังงาน กระแสด้านทุติยภูมิ (I₂) มีค่าเท่าใด",
-  choices:["0.12 A","0.24 A","0.48 A","0.96 A"], a:1,
-  h1:"กระแส <b>แปรผกผัน</b> กับจำนวนรอบ: N₁/N₂ = I₂/I₁",
-  h2:"3/6 = I₂/0.48",
-  sol:"I₂ = 0.48 × (3/6) = <b>0.24 A</b><br>ตรวจกำลัง: V₂ = 12×(6/3) = 24 V → P₂ = 24 × 0.24 = 5.76 W = P₁ = 12 × 0.48 = 5.76 W ✓"},
+ {tag:"หม้อแปลง · จุดเน้น", text:"หม้อแปลงหนึ่งมี N₁ = 3 รอบ, N₂ = 6 รอบ จ่ายไฟเข้า V₁ = 12 V, I₁ = 0.48 A ถ้าไม่มีการสูญเสียพลังงาน กระแสด้านทุติยภูมิ (I₂) มีค่าเท่าใด",
+ choices:["0.12 A","0.24 A","0.48 A","0.96 A"], a:1,
+ h1:"กระแส <b>แปรผกผัน</b> กับจำนวนรอบ: N₁/N₂ = I₂/I₁",
+ h2:"3/6 = I₂/0.48",
+ sol:"I₂ = 0.48 × (3/6) = <b>0.24 A</b><br>ตรวจกำลัง: V₂ = 12×(6/3) = 24 V → P₂ = 24 × 0.24 = 5.76 W = P₁ = 12 × 0.48 = 5.76 W ✓"},
 
- {tag:"หม้อแปลง · อจ.เน้น", text:"หม้อแปลงตัวหนึ่งรับกำลังไฟฟ้าเข้า 500 W และจ่ายกำลังออกได้ 450 W ประสิทธิภาพของหม้อแปลงเป็นเท่าใด",
-  choices:["50%","90%","95%","111%"], a:1,
-  h1:"Eff = (กำลังขาออก / กำลังขาเข้า) × 100%",
-  h2:"450/500 = 0.9 แล้ว<b>อย่าลืมคูณ 100%</b>",
-  sol:"Eff = (450/500) × 100% = <b>90%</b><br>🎯 อาจารย์ย้ำว่าอย่าลืมคูณ 100% และสูตรนี้ใช้เหมือนกันหมดทุกเรื่อง (รอก คาน เพลา ล้อ สกรู)"},
+ {tag:"หม้อแปลง · จุดเน้น", text:"หม้อแปลงตัวหนึ่งรับกำลังไฟฟ้าเข้า 500 W และจ่ายกำลังออกได้ 450 W ประสิทธิภาพของหม้อแปลงเป็นเท่าใด",
+ choices:["50%","90%","95%","111%"], a:1,
+ h1:"Eff = (กำลังขาออก / กำลังขาเข้า) × 100%",
+ h2:"450/500 = 0.9 แล้ว<b>อย่าลืมคูณ 100%</b>",
+ sol:"Eff = (450/500) × 100% = <b>90%</b><br>🎯 ย้ำว่าอย่าลืมคูณ 100% และสูตรนี้ใช้เหมือนกันหมดทุกเรื่อง (รอก คาน เพลา ล้อ สกรู)"},
 
- {tag:"หม้อแปลง · อจ.เน้น", text:"ในหม้อแปลงที่มีการสูญเสียพลังงาน ข้อใดถูกต้องเสมอ",
-  choices:["P₁ = P₂","P₁ < P₂","P₁ > P₂","P₁ อาจมากหรือน้อยกว่า P₂ ก็ได้"], a:2,
-  h1:"พลังงานที่หายไปกลายเป็นอะไร แล้วมันหายจากฝั่งไหน",
-  h2:"ถ้าขาออกมากกว่าขาเข้า = ได้พลังงานฟรี ซึ่งเป็นไปไม่ได้",
-  sol:"<b>P₁ > P₂ เสมอ</b> — ส่วนที่หายไปกลายเป็นความร้อนที่ขดลวดและแกนเหล็ก<br>ในทางปฏิบัติเข้า 100 มักออกราว 80–90"},
+ {tag:"หม้อแปลง · จุดเน้น", text:"ในหม้อแปลงที่มีการสูญเสียพลังงาน ข้อใดถูกต้องเสมอ",
+ choices:["P₁ = P₂","P₁ < P₂","P₁ > P₂","P₁ อาจมากหรือน้อยกว่า P₂ ก็ได้"], a:2,
+ h1:"พลังงานที่หายไปกลายเป็นอะไร แล้วมันหายจากฝั่งไหน",
+ h2:"ถ้าขาออกมากกว่าขาเข้า = ได้พลังงานฟรี ซึ่งเป็นไปไม่ได้",
+ sol:"<b>P₁ > P₂ เสมอ</b> — ส่วนที่หายไปกลายเป็นความร้อนที่ขดลวดและแกนเหล็ก<br>ในทางปฏิบัติเข้า 100 มักออกราว 80–90"},
 
- {tag:"หม้อแปลง · อจ.เน้น", text:"ไฟฟ้าที่ใช้ตามบ้านในประเทศไทยมีความถี่และแรงดันเท่าใด (และหมายความว่าอย่างไร)",
-  choices:["50 Hz 220 V — สนามแม่เหล็กกลับทิศ 50 ครั้งต่อวินาที","60 Hz 220 V — สนามแม่เหล็กกลับทิศ 60 ครั้งต่อวินาที","50 Hz 110 V — สนามแม่เหล็กกลับทิศ 50 ครั้งต่อวินาที","60 Hz 110 V — สนามแม่เหล็กกลับทิศ 60 ครั้งต่อวินาที"], a:0,
-  h1:"ประเทศญี่ปุ่นใช้ 60 Hz แต่ไทยไม่เท่ากัน",
-  h2:"แรงดันไฟบ้านไทยที่ใช้ในโจทย์ตลอดคือ 220 V (ค่าเฉลี่ย rms)",
-  sol:"ไทยใช้ <b>50 Hz, 220 V</b> → ไฟกลับทิศไป-กลับ <b>50 ครั้งต่อวินาที</b> ทำให้สนามแม่เหล็กเปลี่ยนแปลงตลอดเวลา<br>(ญี่ปุ่น = 60 Hz) · สัญญาณไซน์นี้มาจากเครื่องกำเนิดไฟฟ้า"},
+ {tag:"หม้อแปลง · จุดเน้น", text:"ไฟฟ้าที่ใช้ตามบ้านในประเทศไทยมีความถี่และแรงดันเท่าใด (และหมายความว่าอย่างไร)",
+ choices:["50 Hz 220 V — สนามแม่เหล็กกลับทิศ 50 ครั้งต่อวินาที","60 Hz 220 V — สนามแม่เหล็กกลับทิศ 60 ครั้งต่อวินาที","50 Hz 110 V — สนามแม่เหล็กกลับทิศ 50 ครั้งต่อวินาที","60 Hz 110 V — สนามแม่เหล็กกลับทิศ 60 ครั้งต่อวินาที"], a:0,
+ h1:"ประเทศญี่ปุ่นใช้ 60 Hz แต่ไทยไม่เท่ากัน",
+ h2:"แรงดันไฟบ้านไทยที่ใช้ในโจทย์ตลอดคือ 220 V (ค่าเฉลี่ย rms)",
+ sol:"ไทยใช้ <b>50 Hz, 220 V</b> → ไฟกลับทิศไป-กลับ <b>50 ครั้งต่อวินาที</b> ทำให้สนามแม่เหล็กเปลี่ยนแปลงตลอดเวลา<br>(ญี่ปุ่น = 60 Hz) · สัญญาณไซน์นี้มาจากเครื่องกำเนิดไฟฟ้า"},
 
- {tag:"หม้อแปลง · อจ.เน้น", text:"หม้อแปลงลูกหนึ่งมี V₂ = 40 V ต่อกับความต้านทาน 20 Ω ถ้าต้องการหา<b>กำลังความร้อนที่ความต้านทาน</b> วิธีใดสั้นที่สุด",
-  choices:["หา I ก่อนจาก I = V/R แล้วค่อยใช้ P = IV","ใช้ P = V²/R ได้เลย","ต้องรู้ N₁ กับ N₂ ก่อนจึงจะหาได้","ใช้ P = I²R โดยเดาค่า I"], a:1,
-  h1:"สูตรกำลังมีหลายแบบ: P = IV, P = I²R, P = V²/R, P = W/t",
-  h2:"โจทย์ให้ V กับ R มาแล้วทั้งคู่ — เลือกสูตรที่ใช้เฉพาะสองตัวนี้",
-  sol:"ใช้ <b>P = V²/R = 40²/20 = 80 W</b> ได้เลยใน 1 บรรทัด<br>🎯 อาจารย์สอนว่าไม่ต้องเสียเวลาไปหา I ก่อน — <b>เลือกสูตร P ให้ตรงกับสิ่งที่โจทย์ให้มา</b>"},
+ {tag:"หม้อแปลง · จุดเน้น", text:"หม้อแปลงลูกหนึ่งมี V₂ = 40 V ต่อกับความต้านทาน 20 Ω ถ้าต้องการหา<b>กำลังความร้อนที่ความต้านทาน</b> วิธีใดสั้นที่สุด",
+ choices:["หา I ก่อนจาก I = V/R แล้วค่อยใช้ P = IV","ใช้ P = V²/R ได้เลย","ต้องรู้ N₁ กับ N₂ ก่อนจึงจะหาได้","ใช้ P = I²R โดยเดาค่า I"], a:1,
+ h1:"สูตรกำลังมีหลายแบบ: P = IV, P = I²R, P = V²/R, P = W/t",
+ h2:"โจทย์ให้ V กับ R มาแล้วทั้งคู่ — เลือกสูตรที่ใช้เฉพาะสองตัวนี้",
+ sol:"ใช้ <b>P = V²/R = 40²/20 = 80 W</b> ได้เลยใน 1 บรรทัด<br>🎯 ในคลิปสอนว่าไม่ต้องเสียเวลาไปหา I ก่อน — <b>เลือกสูตร P ให้ตรงกับสิ่งที่โจทย์ให้มา</b>"},
 
- {tag:"หม้อแปลง · อจ.เน้น", text:"หลักการของหม้อแปลงเกิดจากการนำหลักการเดิม 2 เรื่องมาต่อกัน คือข้อใด",
-  choices:["กฎของโอห์ม + กฎอนุรักษ์ประจุ","กระแสในขดลวดสร้างสนามแม่เหล็ก + สนามแม่เหล็กที่เปลี่ยนแปลงเหนี่ยวนำให้เกิดกระแส","แรงบนลวดตัวนำ F = BIL + โมเมนต์ของขดลวด","การเหนี่ยวนำร่วม + กฎมือขวาสำหรับประจุเคลื่อนที่"], a:1,
-  h1:"นึกถึงขดที่ 1 ทำอะไร แล้วขดที่ 2 ได้อะไร",
-  h2:"ขดที่ 1 = โซลินอยด์สร้างสนาม · ขดที่ 2 = การเหนี่ยวนำแบบฟาราเดย์",
-  sol:"① <b>จ่ายไฟเข้าขดลวด → เกิดสนามแม่เหล็ก</b> (แบบโซลินอยด์)<br>② <b>สนามแม่เหล็กที่เปลี่ยนแปลงตัดขดลวด → เกิดกระแสเหนี่ยวนำ</b> (ฟาราเดย์)<br>ขดที่ 1 ทำตัวเป็นแม่เหล็กไฟฟ้าแทนแท่งแม่เหล็กที่ต้องเลื่อนเข้า-ออก"},
+ {tag:"หม้อแปลง · จุดเน้น", text:"หลักการของหม้อแปลงเกิดจากการนำหลักการเดิม 2 เรื่องมาต่อกัน คือข้อใด",
+ choices:["กฎของโอห์ม + กฎอนุรักษ์ประจุ","กระแสในขดลวดสร้างสนามแม่เหล็ก + สนามแม่เหล็กที่เปลี่ยนแปลงเหนี่ยวนำให้เกิดกระแส","แรงบนลวดตัวนำ F = BIL + โมเมนต์ของขดลวด","การเหนี่ยวนำร่วม + กฎมือขวาสำหรับประจุเคลื่อนที่"], a:1,
+ h1:"นึกถึงขดที่ 1 ทำอะไร แล้วขดที่ 2 ได้อะไร",
+ h2:"ขดที่ 1 = โซลินอยด์สร้างสนาม · ขดที่ 2 = การเหนี่ยวนำแบบฟาราเดย์",
+ sol:"① <b>จ่ายไฟเข้าขดลวด → เกิดสนามแม่เหล็ก</b> (แบบโซลินอยด์)<br>② <b>สนามแม่เหล็กที่เปลี่ยนแปลงตัดขดลวด → เกิดกระแสเหนี่ยวนำ</b> (ฟาราเดย์)<br>ขดที่ 1 ทำตัวเป็นแม่เหล็กไฟฟ้าแทนแท่งแม่เหล็กที่ต้องเลื่อนเข้า-ออก"},
 ];
 
 let order=[], idx=0, score=0, answered=false;
 
-function startQuiz(){
-  order = BANK.map((_,i)=>i);
-  if(document.getElementById('shuffle').checked){
-    for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];}
-  }
-  idx=0; score=0;
-  document.getElementById('start').style.display='none';
-  document.getElementById('quiz').style.display='block';
-  document.getElementById('qtot').textContent=BANK.length;
-  render();
+function startQuiz{
+ order = BANK.map((_,i)=>i);
+ if(document.getElementById('shuffle').checked){
+ for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random*(i+1));[order[i],order[j]]=[order[j],order[i]];}
+ }
+ idx=0; score=0;
+ document.getElementById('start').style.display='none';
+ document.getElementById('quiz').style.display='block';
+ document.getElementById('qtot').textContent=BANK.length;
+ render;
 }
 
-function render(){
-  answered=false;
-  const q=BANK[order[idx]];
-  document.getElementById('qnum').textContent=idx+1;
-  document.getElementById('score').textContent=score;
-  document.getElementById('pfill').style.width=((idx)/BANK.length*100)+'%';
-  document.getElementById('qtag').textContent=q.tag;
-  document.getElementById('qtext').textContent=q.text;
-  const cc=document.getElementById('choices'); cc.innerHTML='';
-  q.choices.forEach((c,i)=>{
-    const b=document.createElement('button');
-    b.className='choice'; b.innerHTML=c;
-    b.onclick=()=>pick(i,b);
-    cc.appendChild(b);
-  });
-  document.getElementById('feedback').textContent=''; document.getElementById('feedback').className='feedback';
-  ['h1','h2','sol'].forEach(id=>{document.getElementById(id).className='reveal'+(id==='sol'?' sol':'');});
-  document.getElementById('h1').innerHTML='💡 <b>นัยที่ 1:</b> '+q.h1;
-  document.getElementById('h2').innerHTML='💡 <b>นัยที่ 2:</b> '+q.h2;
-  document.getElementById('sol').innerHTML='✅ <b>เฉลย:</b> '+q.sol;
-  document.getElementById('nextbtn').disabled=true;
-  document.getElementById('nextbtn').textContent = (idx===BANK.length-1)?'ดูสรุปคะแนน →':'ข้อถัดไป →';
+function render{
+ answered=false;
+ const q=BANK[order[idx]];
+ document.getElementById('qnum').textContent=idx+1;
+ document.getElementById('score').textContent=score;
+ document.getElementById('pfill').style.width=((idx)/BANK.length*100)+'%';
+ document.getElementById('qtag').textContent=q.tag;
+ document.getElementById('qtext').textContent=q.text;
+ const cc=document.getElementById('choices'); cc.innerHTML='';
+ q.choices.forEach((c,i)=>{
+ const b=document.createElement('button');
+ b.className='choice'; b.innerHTML=c;
+ b.onclick==>pick(i,b);
+ cc.appendChild(b);
+ });
+ document.getElementById('feedback').textContent=''; document.getElementById('feedback').className='feedback';
+ ['h1','h2','sol'].forEach(id=>{document.getElementById(id).className='reveal'+(id==='sol'?' sol':'');});
+ document.getElementById('h1').innerHTML='💡 <b>นัยที่ 1:</b> '+q.h1;
+ document.getElementById('h2').innerHTML='💡 <b>นัยที่ 2:</b> '+q.h2;
+ document.getElementById('sol').innerHTML='✅ <b>เฉลย:</b> '+q.sol;
+ document.getElementById('nextbtn').disabled=true;
+ document.getElementById('nextbtn').textContent = (idx===BANK.length-1)?'ดูสรุปคะแนน →':'ข้อถัดไป →';
 }
 
 function pick(i,btn){
-  if(answered) return;
-  answered=true;
-  const q=BANK[order[idx]];
-  const btns=document.querySelectorAll('.choice');
-  btns.forEach(b=>b.disabled=true);
-  const fb=document.getElementById('feedback');
-  if(i===q.a){
-    btn.classList.add('correct'); btn.querySelector('.mk')||btn.insertAdjacentHTML('beforeend','<span class="mk">✓</span>');
-    score++; document.getElementById('score').textContent=score;
-    fb.textContent='เยี่ยม! ถูกต้อง 🎉'; fb.className='feedback ok';
-  }else{
-    btn.classList.add('wrong'); btn.insertAdjacentHTML('beforeend','<span class="mk">✗</span>');
-    btns[q.a].classList.add('correct'); btns[q.a].insertAdjacentHTML('beforeend','<span class="mk">✓</span>');
-    fb.innerHTML='ยังไม่ใช่ — ลองดู <b>เฉลยละเอียด</b> ด้านล่างว่าพลาดตรงไหน 💡'; fb.className='feedback bad';
-    document.getElementById('sol').classList.add('show');
-  }
-  document.getElementById('nextbtn').disabled=false;
+ if(answered) return;
+ answered=true;
+ const q=BANK[order[idx]];
+ const btns=document.querySelectorAll('.choice');
+ btns.forEach(b=>b.disabled=true);
+ const fb=document.getElementById('feedback');
+ if(i===q.a){
+ btn.classList.add('correct'); btn.querySelector('.mk')||btn.insertAdjacentHTML('beforeend','<span class="mk">✓</span>');
+ score++; document.getElementById('score').textContent=score;
+ fb.textContent='เยี่ยม! ถูกต้อง 🎉'; fb.className='feedback ok';
+ }else{
+ btn.classList.add('wrong'); btn.insertAdjacentHTML('beforeend','<span class="mk">✗</span>');
+ btns[q.a].classList.add('correct'); btns[q.a].insertAdjacentHTML('beforeend','<span class="mk">✓</span>');
+ fb.innerHTML='ยังไม่ใช่ — ลองดู <b>เฉลยละเอียด</b> ด้านล่างว่าพลาดตรงไหน 💡'; fb.className='feedback bad';
+ document.getElementById('sol').classList.add('show');
+ }
+ document.getElementById('nextbtn').disabled=false;
 }
 
 function showHint(n){
-  const id = n===1?'h1':n===2?'h2':'sol';
-  document.getElementById(id).classList.add('show');
+ const id = n===1?'h1':n===2?'h2':'sol';
+ document.getElementById(id).classList.add('show');
 }
 
-function next(){
-  if(idx===BANK.length-1){ finish(); return; }
-  idx++; render();
-  window.scrollTo({top:0,behavior:'smooth'});
+function next{
+ if(idx===BANK.length-1){ finish; return; }
+ idx++; render;
+ window.scrollTo({top:0,behavior:'smooth'});
 }
 
-function finish(){
-  document.getElementById('quiz').style.display='none';
-  const d=document.getElementById('done'); d.style.display='block';
-  document.getElementById('finalscore').textContent=score;
-  document.getElementById('finaltot').textContent=BANK.length;   /* เดิม hardcode 22 ไว้ พอเพิ่มข้อแล้วตัวหารผิด */
-  const pct=score/BANK.length;
-  let msg;
-  if(pct===1) msg='เพอร์เฟกต์! แม่นทุกข้อ พร้อมสอบสุด ๆ 🏆';
-  else if(pct>=0.8) msg='เก่งมาก! เหลืออีกนิดเดียวก็เต็ม ทบทวนข้อที่พลาดอีกรอบนะ 💪';
-  else if(pct>=0.5) msg='มาถูกทางแล้ว ลองกลับไปดูเฉลยข้อที่ผิดแล้วทำใหม่อีกรอบ 📘';
-  else msg='ไม่เป็นไร ทุกคนเริ่มจากตรงนี้ เปิดสรุปเต็มทบทวนสูตรก่อนแล้วลองอีกครั้ง 🌱';
-  document.getElementById('finalmsg').textContent=msg;
-  window.scrollTo({top:0,behavior:'smooth'});
+function finish{
+ document.getElementById('quiz').style.display='none';
+ const d=document.getElementById('done'); d.style.display='block';
+ document.getElementById('finalscore').textContent=score;
+ document.getElementById('finaltot').textContent=BANK.length; /* เดิม hardcode 22 ไว้ พอเพิ่มข้อแล้วตัวหารผิด */
+ const pct=score/BANK.length;
+ let msg;
+ if(pct===1) msg='เพอร์เฟกต์! แม่นทุกข้อ พร้อมสอบสุด ๆ 🏆';
+ else if(pct>=0.8) msg='เก่งมาก! เหลืออีกนิดเดียวก็เต็ม ทบทวนข้อที่พลาดอีกรอบนะ 💪';
+ else if(pct>=0.5) msg='มาถูกทางแล้ว ลองกลับไปดูเฉลยข้อที่ผิดแล้วทำใหม่อีกรอบ 📘';
+ else msg='ไม่เป็นไร ทุกคนเริ่มจากตรงนี้ เปิดสรุปเต็มทบทวนสูตรก่อนแล้วลองอีกครั้ง 🌱';
+ document.getElementById('finalmsg').textContent=msg;
+ window.scrollTo({top:0,behavior:'smooth'});
 }
 </script>
 <!--KIT-UI v2.7 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>
 /* =============================================================================
-   _kit/ui-controls.js  —  KIT UI  v1.0
-   แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
-     🌙/☀️  โหมดมืด / สว่าง   (จำค่าไว้ใน localStorage)
-     A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
-     ✏️  ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
-     🧮  เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
+ _kit/ui-controls.js — KIT UI v1.0
+ แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
+ 🌙/☀️ โหมดมืด / สว่าง (จำค่าไว้ใน localStorage)
+ A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
+ ✏️ ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
+ 🧮 เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
 
-   ── วิธีใช้ ────────────────────────────────────────────────────────────────
-   ห้ามแก้โค้ดนี้ในไฟล์ widget!  แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
-       pwsh -File _kit/apply-ui.ps1
-   สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
-   (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
+ ── วิธีใช้ ────────────────────────────────────────────────────────────────
+ ห้ามแก้โค้ดนี้ในไฟล์ widget! แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
+ pwsh -File _kit/apply-ui.ps1
+ สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
+ (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
 
-   !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
-      เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
+ !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
+ เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
 
-   ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
-   ใส่แอตทริบิวต์ที่ tag body:  data-tools="pen,calc"  = บังคับเปิด
-                              data-tools="none"      = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
-   ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
-              หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
-   ============================================================================= */
-(function(){
+ ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
+ ใส่แอตทริบิวต์ที่ tag body: data-tools="pen,calc" = บังคับเปิด
+ data-tools="none" = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
+ ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
+ หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
+ ============================================================================= */
+(function{
 if(window.__KITUI__) return; window.__KITUI__='2.7';
 
 /* ---------- helper ---------- */
@@ -433,16 +433,16 @@ const set=(k,v)=>{try{localStorage.setItem('kitui-'+k,v)}catch(e){}};
 const el=(t,c,h)=>{const e=D.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
 
 /* =============================================================================
-   1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
-   ============================================================================= */
+ 1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
+ ============================================================================= */
 const CSS=`
 /* ===== DARK TOKENS (คู่กับ _kit/design-tokens.css) ===== */
 :root[data-theme="dark"]{
-  --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
-  --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
-  --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
-  --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
-  --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
+ --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
+ --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
+ --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
+ --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
+ --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
 }
 :root[data-theme="dark"] body{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f172a}
 :root[data-theme="dark"] body[data-subject="physics"]{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f1220}
@@ -462,11 +462,11 @@ const CSS=`
 
 /* ===== แถบเครื่องมือลอย ===== */
 #kitui-bar{position:fixed;right:10px;bottom:10px;z-index:99990;display:flex;gap:6px;align-items:center;
-  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
-  box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
+ background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
+ box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
 #kitui-bar button{border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;
-  font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
-  align-items:center;justify-content:center;font-weight:700}
+ font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
+ align-items:center;justify-content:center;font-weight:700}
 #kitui-bar button:hover{background:var(--soft)}
 #kitui-bar button:active{transform:scale(.93)}
 #kitui-bar button.on{background:var(--accent);color:#fff}
@@ -477,16 +477,16 @@ const CSS=`
 
 /* ===== แผงลอย (ที่ทด / เครื่องคิดเลข) ===== */
 .kitui-sheet{position:fixed;left:0;right:0;bottom:0;z-index:99991;background:var(--card);
-  border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
-  display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
-  height:52vh;max-height:92vh;min-height:180px}
+ border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
+ display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
+ height:52vh;max-height:92vh;min-height:180px}
 .kitui-sheet.open{display:flex}
 .kitui-sheet.full{height:100vh;border-radius:0}
 .kitui-head{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--line);
-  flex-wrap:wrap;touch-action:none;cursor:ns-resize}
+ flex-wrap:wrap;touch-action:none;cursor:ns-resize}
 .kitui-head b{font-size:.9rem;color:var(--accent-ink);margin-right:2px;white-space:nowrap}
 .kitui-head button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;
-  padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
+ padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
 .kitui-head button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
 .kitui-head .kitui-spacer{flex:1}
 .kitui-sw{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;min-height:0}
@@ -498,12 +498,12 @@ const CSS=`
 /* ===== เครื่องคิดเลข ===== */
 #kitui-calc{height:auto;max-height:90vh}
 .kitui-disp{padding:8px 12px;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);
-  border-bottom:1px solid var(--line)}
+ border-bottom:1px solid var(--line)}
 .kitui-disp .ex{font-size:.95rem;color:var(--muted);min-height:1.3em;word-break:break-all}
 .kitui-disp .rs{font-size:1.6rem;font-weight:700;color:var(--accent-ink);word-break:break-all}
 .kitui-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:7px}
 .kitui-keys button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:9px;
-  font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
+ font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
 .kitui-keys button:active{transform:scale(.95)}
 .kitui-keys button.fn{font-size:.8rem;color:var(--accent-ink)}
 .kitui-keys button.op{background:var(--accent-soft);color:var(--accent-ink)}
@@ -512,446 +512,446 @@ const CSS=`
 .kitui-keys button.w3{grid-column:span 3}
 @media(max-width:420px){.kitui-keys button{font-size:.88rem;min-height:40px}.kitui-keys button.fn{font-size:.72rem}}
 @media(min-width:760px){
-  .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
-  .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
-  #kitui-pad{width:560px}
+ .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
+ .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
+ #kitui-pad{width:560px}
 }
 @media print{#kitui-bar,.kitui-sheet{display:none!important}}
 `;
 const st=el('style'); st.id='kitui-style'; st.textContent=CSS; D.head.appendChild(st);
 
 /* -----------------------------------------------------------------------------
-   1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
-   widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
-   พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
-   แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
-   เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
+ 1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
+ widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
+ พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
+ แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
+ เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
 ----------------------------------------------------------------------------- */
 /* สีพาสเทลสว่าง -> สีเข้มที่ยังคง "เฉดเดิม" ไว้ (เขียว=ถูก / แดง=ผิด ต้องยังแยกออก)
-   ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
+ ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
 function darken(cr,cg,cb){
-  const r=cr/255,g=cg/255,b=cb/255;
-  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
-  let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
-  /* ⚠️ ห้ามใช้ saturation ของ HSL ตรง ๆ ตัดสิน: ที่ความสว่างเกือบ 1 ตัวหารจะเล็กมาก
-     ทำให้สีที่แทบเป็นสีขาว (เช่น #fdf8f4) ได้ค่าอิ่มสีสูงลิ่ว แล้วกลายเป็นสีน้ำตาลจัดตอนกดให้เข้ม
-     ให้ดูจาก "ช่วงห่างของแม่สี" (chroma) แทน แล้วแปลงเป็นความอิ่มสีแบบไล่ระดับ */
-  const s = Math.min(.45, Math.max(.08, d*4));
-  const l = d<.02 ? .13 : .17;                       /* เทา/ขาวล้วนให้เข้มกว่าสีนิดหน่อย */
-  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
-  let rr,gg,bb;
-  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
-  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
-  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+ const r=cr/255,g=cg/255,b=cb/255;
+ const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+ let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
+ /* ⚠️ ห้ามใช้ saturation ของ HSL ตรง ๆ ตัดสิน: ที่ความสว่างเกือบ 1 ตัวหารจะเล็กมาก
+ ทำให้สีที่แทบเป็นสีขาว (เช่น #fdf8f4) ได้ค่าอิ่มสีสูงลิ่ว แล้วกลายเป็นสีน้ำตาลจัดตอนกดให้เข้ม
+ ให้ดูจาก "ช่วงห่างของแม่สี" (chroma) แทน แล้วแปลงเป็นความอิ่มสีแบบไล่ระดับ */
+ const s = Math.min(.45, Math.max(.08, d*4));
+ const l = d<.02 ? .13 : .17; /* เทา/ขาวล้วนให้เข้มกว่าสีนิดหน่อย */
+ const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+ let rr,gg,bb;
+ if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+ else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+ return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
 }
-function darkFix(){
-  const out=[], seen=new Set();
-  const take=r=>{
-    if(!r.style || !r.selectorText) return;
-    if(r.selectorText.indexOf('kitui')>-1) return;               /* ของเราเองใช้ token อยู่แล้ว */
-    const bg=r.style.backgroundColor;
-    if(!bg || bg.indexOf('var(')>-1) return;
-    const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
-    if(!m) return;
-    if(m[4]!==undefined && +m[4]<0.6) return;                    /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
-    const cr=+m[1], cg=+m[2], cb=+m[3];
-    if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return;       /* ไม่สว่างพอ ไม่ต้องยุ่ง */
-    const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
-    const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
-    let css='background-color:'+repl;
-    /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
-    const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
-    if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
-    out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
-  };
-  /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
-        ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
-  const visit=rules=>{
-    for(let i=0;i<rules.length;i++){
-      const r=rules[i];
-      if(r.selectorText) take(r);
-      if(r.cssRules && r.cssRules.length) visit(r.cssRules);     /* @media / @supports / nesting */
-    }
-  };
-  for(let i=0;i<D.styleSheets.length;i++){
-    let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; }   /* ข้ามชีตข้ามโดเมน */
-    if(rr) visit(rr);
-  }
-  if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
-  return out.length;
+function darkFix{
+ const out=[], seen=new Set;
+ const take=r=>{
+ if(!r.style || !r.selectorText) return;
+ if(r.selectorText.indexOf('kitui')>-1) return; /* ของเราเองใช้ token อยู่แล้ว */
+ const bg=r.style.backgroundColor;
+ if(!bg || bg.indexOf('var(')>-1) return;
+ const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
+ if(!m) return;
+ if(m[4]!==undefined && +m[4]<0.6) return; /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
+ const cr=+m[1], cg=+m[2], cb=+m[3];
+ if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return; /* ไม่สว่างพอ ไม่ต้องยุ่ง */
+ const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
+ const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
+ let css='background-color:'+repl;
+ /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
+ const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+ if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
+ out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
+ };
+ /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
+ ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
+ const visit=rules=>{
+ for(let i=0;i<rules.length;i++){
+ const r=rules[i];
+ if(r.selectorText) take(r);
+ if(r.cssRules && r.cssRules.length) visit(r.cssRules); /* @media / @supports / nesting */
+ }
+ };
+ for(let i=0;i<D.styleSheets.length;i++){
+ let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; } /* ข้ามชีตข้ามโดเมน */
+ if(rr) visit(rr);
+ }
+ if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
+ return out.length;
 }
-try{ window.__KITUI_DARKFIX__ = (D.body.getAttribute('data-kit-theme')==='off') ? 'locked' : darkFix(); }
+try{ window.__KITUI_DARKFIX__ = (D.body.getAttribute('data-kit-theme')==='off') ? 'locked' : darkFix; }
 catch(e){ window.__KITUI_DARKFIX__='err:'+e.message; }
 
 /* darkFix ข้างบนซ่อมได้เฉพาะสีที่เขียนตายตัวในไฟล์ CSS
-   แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
-   ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
-   จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
+ แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
+ ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
+ จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
 const rgbOf=c=>{const m=c&&c.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null;};
 const lumOf=v=>v?(0.2126*v[0]+0.7152*v[1]+0.0722*v[2])/255:null;
-/* ตรงข้ามกับ darken(): ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
-   (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
+/* ตรงข้ามกับ darken: ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
+ (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
 function lighten(cr,cg,cb){
-  const r=cr/255,g=cg/255,b=cb/255;
-  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
-  if(d<0.04) return 'var(--ink)';                    /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
-  let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
-  const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
-  const s=Math.min(.92,Math.max(.55,s0)), l=.72;
-  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
-  let rr,gg,bb;
-  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
-  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
-  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+ const r=cr/255,g=cg/255,b=cb/255;
+ const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+ if(d<0.04) return 'var(--ink)'; /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
+ let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
+ const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
+ const s=Math.min(.92,Math.max(.55,s0)), l=.72;
+ const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+ let rr,gg,bb;
+ if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+ else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+ return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
 }
 const SKIP={CANVAS:1,IMG:1,VIDEO:1,SVG:1,IFRAME:1,PICTURE:1,OBJECT:1};
 const OBS_OPT={childList:true,subtree:true,attributes:true,attributeFilter:['class','style']};
 let patched=[], obs=null;
-function elementFix(){
-  /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
-        ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
-  if(obs) obs.disconnect();
-  try{ elementFixCore(); } finally { if(obs) obs.observe(D.body,OBS_OPT); }
+function elementFix{
+ /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
+ ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
+ if(obs) obs.disconnect;
+ try{ elementFixCore; } finally { if(obs) obs.observe(D.body,OBS_OPT); }
 }
-function elementFixCore(){
-  if(D.body.getAttribute('data-kit-theme')==='off') return;   /* หน้าที่ล็อกธีมไว้ ห้ามไปยุ่งสี */
-  /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
-     ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
-     จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
-  if(R.getAttribute('data-theme')!=='dark'){
-    patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
-    patched=[];
-    return;
-  }
-  /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
-     ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
-  /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
-  const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
-  for(let i=0;i<all.length;i++){
-    const e=all[i];
-    if(e.id&&e.id.indexOf('kitui')===0) continue;
-    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
-    if(SKIP[e.tagName]) continue;                      /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
-    const s=getComputedStyle(e);
-    const bg=rgbOf(s.backgroundColor);
-    if(!bg || bg[3]<0.6) continue;                     /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
-    if(lumOf(bg)<0.72) continue;                       /* เข้มพออยู่แล้ว */
-    /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
-    e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
-    const fg=rgbOf(s.color);
-    if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important');  /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
-    patched.push(e);
-  }
-  /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
-     ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
-  const bgCache=new Map();
-  const effBg=n=>{
-    for(let p=n;p;p=p.parentElement){
-      if(bgCache.has(p)) return bgCache.get(p);
-      const b=rgbOf(getComputedStyle(p).backgroundColor);
-      if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
-    }
-    return null;
-  };
-  for(let i=2;i<all.length;i++){
-    const e=all[i];
-    if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
-    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
-    if(e.style.color) continue;                         /* จัดการไปแล้วในรอบแรก */
-    if(!e.textContent || !e.textContent.trim()) continue;
-    const fg=rgbOf(getComputedStyle(e).color);
-    if(!fg || lumOf(fg)>=0.45) continue;                 /* ตัวอักษรสว่างอยู่แล้ว */
-    const bg=effBg(e);
-    if(!bg || lumOf(bg)>=0.5) continue;                  /* พื้นยังสว่าง อ่านออกอยู่ */
-    e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
-    patched.push(e);
-  }
+function elementFixCore{
+ if(D.body.getAttribute('data-kit-theme')==='off') return; /* หน้าที่ล็อกธีมไว้ ห้ามไปยุ่งสี */
+ /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
+ ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
+ จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
+ if(R.getAttribute('data-theme')!=='dark'){
+ patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
+ patched=[];
+ return;
+ }
+ /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
+ ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
+ /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
+ const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
+ for(let i=0;i<all.length;i++){
+ const e=all[i];
+ if(e.id&&e.id.indexOf('kitui')===0) continue;
+ if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+ if(SKIP[e.tagName]) continue; /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
+ const s=getComputedStyle(e);
+ const bg=rgbOf(s.backgroundColor);
+ if(!bg || bg[3]<0.6) continue; /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
+ if(lumOf(bg)<0.72) continue; /* เข้มพออยู่แล้ว */
+ /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
+ e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
+ const fg=rgbOf(s.color);
+ if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important'); /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
+ patched.push(e);
+ }
+ /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
+ ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
+ const bgCache=new Map;
+ const effBg=n=>{
+ for(let p=n;p;p=p.parentElement){
+ if(bgCache.has(p)) return bgCache.get(p);
+ const b=rgbOf(getComputedStyle(p).backgroundColor);
+ if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
+ }
+ return null;
+ };
+ for(let i=2;i<all.length;i++){
+ const e=all[i];
+ if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
+ if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+ if(e.style.color) continue; /* จัดการไปแล้วในรอบแรก */
+ if(!e.textContent || !e.textContent.trim) continue;
+ const fg=rgbOf(getComputedStyle(e).color);
+ if(!fg || lumOf(fg)>=0.45) continue; /* ตัวอักษรสว่างอยู่แล้ว */
+ const bg=effBg(e);
+ if(!bg || lumOf(bg)>=0.5) continue; /* พื้นยังสว่าง อ่านออกอยู่ */
+ e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
+ patched.push(e);
+ }
 }
 let efT=0;
-const scheduleFix=()=>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
+const scheduleFix==>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
 try{
-  obs=new MutationObserver(scheduleFix);
-  obs.observe(D.body,OBS_OPT);
+ obs=new MutationObserver(scheduleFix);
+ obs.observe(D.body,OBS_OPT);
 }catch(e){}
 
 /* =============================================================================
-   2) ธีม + ขนาดตัวอักษร
-   ============================================================================= */
+ 2) ธีม + ขนาดตัวอักษร
+ ============================================================================= */
 const FS=[.85,1,1.15,1.3,1.5], FSNAME=['เล็กสุด','เล็ก','ปกติ','ใหญ่','ใหญ่สุด'];
 let fsIdx=parseInt(get('fs')); if(isNaN(fsIdx)||fsIdx<0||fsIdx>4) fsIdx=1;
 let theme=get('theme') || (matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
 
 /* หน้าที่ออกแบบธีมมาเองครบแล้ว (เช่น "หนังสือทบทวน" พื้นเข้มทั้งเล่ม) ให้ปิดระบบธีมของ KIT UI
-   ไม่งั้นโทเคน --bg/--ink ของเราจะไปทับสีที่หน้านั้นตั้งไว้ แล้วหน้าเพี้ยน
-   ใส่ที่ tag body:  data-kit-theme="off"   (ปุ่มปรับขนาดตัวอักษรยังใช้ได้ตามปกติ) */
+ ไม่งั้นโทเคน --bg/--ink ของเราจะไปทับสีที่หน้านั้นตั้งไว้ แล้วหน้าเพี้ยน
+ ใส่ที่ tag body: data-kit-theme="off" (ปุ่มปรับขนาดตัวอักษรยังใช้ได้ตามปกติ) */
 const themeLock = D.body.getAttribute('data-kit-theme')==='off';
 
-function applyTheme(){
-  if(themeLock) return;
-  R.setAttribute('data-theme',theme);
-  R.style.colorScheme = theme==='dark'?'dark':'light';   /* ให้ select/input เป็นสีเข้มด้วย */
-  const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
-  set('theme',theme);
-  clearTimeout(efT);                                   /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
-  if(typeof elementFix==='function') elementFix();
-  /* ⚠️ ห้ามอ้างถึงตัวแปรของส่วน "ที่ทด" ตรงนี้!
-     applyTheme() ถูกเรียกก่อนที่ `let pad` ในส่วนที่ 4 จะทำงาน → ชน temporal dead zone
-     แล้ว ReferenceError จะทำให้สคริปต์ตายทั้งก้อน (ปุ่มขนาดอักษร/ที่ทด/เครื่องคิดเลขหายหมด)
-     ใช้วิธียิง event แทน ใครสนใจค่อยไปดักฟังเอง */
-  try{ D.dispatchEvent(new CustomEvent('kitui-theme')); }catch(e){}
+function applyTheme{
+ if(themeLock) return;
+ R.setAttribute('data-theme',theme);
+ R.style.colorScheme = theme==='dark'?'dark':'light'; /* ให้ select/input เป็นสีเข้มด้วย */
+ const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
+ set('theme',theme);
+ clearTimeout(efT); /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
+ if(typeof elementFix==='function') elementFix;
+ /* ⚠️ ห้ามอ้างถึงตัวแปรของส่วน "ที่ทด" ตรงนี้!
+ applyTheme ถูกเรียกก่อนที่ `let pad` ในส่วนที่ 4 จะทำงาน → ชน temporal dead zone
+ แล้ว ReferenceError จะทำให้สคริปต์ตายทั้งก้อน (ปุ่มขนาดอักษร/ที่ทด/เครื่องคิดเลขหายหมด)
+ ใช้วิธียิง event แทน ใครสนใจค่อยไปดักฟังเอง */
+ try{ D.dispatchEvent(new CustomEvent('kitui-theme')); }catch(e){}
 }
-function applyFS(){
-  R.style.fontSize=(16*FS[fsIdx])+'px';
-  const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
-  set('fs',fsIdx);
+function applyFS{
+ R.style.fontSize=(16*FS[fsIdx])+'px';
+ const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
+ set('fs',fsIdx);
 }
 
 /* =============================================================================
-   3) แถบเครื่องมือ
-   ============================================================================= */
-const subj=(D.body.getAttribute('data-subject')||'').toLowerCase();
+ 3) แถบเครื่องมือ
+ ============================================================================= */
+const subj=(D.body.getAttribute('data-subject')||'').toLowerCase;
 /* หลาย widget ไม่ได้ใส่ data-subject ที่ <body> → เดาจากโฟลเดอร์ที่ไฟล์อยู่ด้วย */
 const inPath=/\/(physics|math|chemist)\//i.test(decodeURIComponent(location.pathname));
 const tAttr=D.body.getAttribute('data-tools');
-const wantTools = tAttr!=null ? tAttr.toLowerCase()
-                : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
-const hasPen  = wantTools.includes('pen');
+const wantTools = tAttr!=null ? tAttr.toLowerCase
+ : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
+const hasPen = wantTools.includes('pen');
 const hasCalc = wantTools.includes('calc');
 
 const bar=el('div'); bar.id='kitui-bar';
 bar.innerHTML =
-  `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
-  (themeLock ? '' : `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button><span class="kitui-sep"></span>`)+
-  `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
-  `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
-  `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
-  (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
-  (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
+ `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
+ (themeLock ? '' : `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button><span class="kitui-sep"></span>`)+
+ `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
+ `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
+ `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
+ (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
+ (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
 D.body.appendChild(bar);
 
-if(!themeLock) D.getElementById('kitui-theme').onclick=()=>{theme=theme==='dark'?'light':'dark';applyTheme();};
-D.getElementById('kitui-fsup').onclick=()=>{if(fsIdx<4){fsIdx++;applyFS();}};
-D.getElementById('kitui-fsdown').onclick=()=>{if(fsIdx>0){fsIdx--;applyFS();}};
-D.getElementById('kitui-grip').onclick=()=>bar.classList.toggle('hidden');
-applyTheme(); applyFS();
+if(!themeLock) D.getElementById('kitui-theme').onclick==>{theme=theme==='dark'?'light':'dark';applyTheme;};
+D.getElementById('kitui-fsup').onclick==>{if(fsIdx<4){fsIdx++;applyFS;}};
+D.getElementById('kitui-fsdown').onclick==>{if(fsIdx>0){fsIdx--;applyFS;}};
+D.getElementById('kitui-grip').onclick==>bar.classList.toggle('hidden');
+applyTheme; applyFS;
 
 /* ปิดแผงด้วยปุ่ม Esc */
 D.addEventListener('keydown',e=>{ if(e.key==='Escape') D.querySelectorAll('.kitui-sheet.open').forEach(s=>s.classList.remove('open')); });
 
 /* ลากหัวแผงเพื่อปรับความสูง */
 function makeResizable(sheet){
-  const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
-  head.addEventListener('pointerdown',e=>{
-    if(e.target.closest('button'))return;
-    drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect().height;head.setPointerCapture(e.pointerId);
-  });
-  head.addEventListener('pointermove',e=>{
-    if(!drag)return;
-    const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
-    sheet.classList.remove('full'); sheet.style.height=h+'px';
-    if(sheet.id==='kitui-pad') fitPad();
-  });
-  head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
+ const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
+ head.addEventListener('pointerdown',e=>{
+ if(e.target.closest('button'))return;
+ drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect.height;head.setPointerCapture(e.pointerId);
+ });
+ head.addEventListener('pointermove',e=>{
+ if(!drag)return;
+ const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
+ sheet.classList.remove('full'); sheet.style.height=h+'px';
+ if(sheet.id==='kitui-pad') fitPad;
+ });
+ head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
 }
 
 /* =============================================================================
-   4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ  หลายหน้า  เซฟอัตโนมัติ
-   ============================================================================= */
+ 4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ หลายหน้า เซฟอัตโนมัติ
+ ============================================================================= */
 let pad,padCv,padCx,pages=[[]],pg=0,undone=[],histo=[];
 let tool='pen',color='#111827',width=2.4,penSeen=0;
 const COLORS=['#111827','#2563eb','#dc2626','#16a34a','#f59e0b'];
-const PADKEY='pad-'+location.pathname.split('/').pop();
+const PADKEY='pad-'+location.pathname.split('/').pop;
 
-function buildPad(){
-  pad=el('div','kitui-sheet'); pad.id='kitui-pad';
-  pad.innerHTML=
-   `<div class="kitui-head">
-      <b>✏️ ที่ทด</b>
-      <button data-t="pen" class="on">🖊️</button>
-      <button data-t="hl">🖍️</button>
-      <button data-t="er">🧽</button>
-      ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
-      <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
-      <span class="kitui-spacer"></span>
-      <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
-      <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
-      <button id="kitui-pgadd">+ หน้า</button>
-      <button id="kitui-clear">ล้างหน้านี้</button>
-      <button id="kitui-full">⛶</button>
-      <button id="kitui-padclose">✕</button>
-    </div>
-    <div class="kitui-padwrap"><canvas></canvas></div>`;
-  D.body.appendChild(pad);
-  padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
-  makeResizable(pad);
+function buildPad{
+ pad=el('div','kitui-sheet'); pad.id='kitui-pad';
+ pad.innerHTML=
+ `<div class="kitui-head">
+ <b>✏️ ที่ทด</b>
+ <button data-t="pen" class="on">🖊️</button>
+ <button data-t="hl">🖍️</button>
+ <button data-t="er">🧽</button>
+ ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
+ <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
+ <span class="kitui-spacer"></span>
+ <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
+ <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
+ <button id="kitui-pgadd">+ หน้า</button>
+ <button id="kitui-clear">ล้างหน้านี้</button>
+ <button id="kitui-full">⛶</button>
+ <button id="kitui-padclose">✕</button>
+ </div>
+ <div class="kitui-padwrap"><canvas></canvas></div>`;
+ D.body.appendChild(pad);
+ padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
+ makeResizable(pad);
 
-  pad.querySelector('.kitui-head').addEventListener('click',e=>{
-    const b=e.target.closest('button'); if(!b)return;
-    if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
-    if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
-    if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
-  });
-  D.getElementById('kitui-undo').onclick=()=>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop(); draw(); save(); } };
-  D.getElementById('kitui-redo').onclick=()=>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop(); draw(); save(); } };
-  D.getElementById('kitui-clear').onclick=()=>{ snap(); pages[pg]=[]; draw(); save(); };
-  D.getElementById('kitui-pgadd').onclick=()=>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw(); save(); };
-  D.getElementById('kitui-pgprev').onclick=()=>{ if(pg>0){pg--;histo=[];undone=[];draw();} };
-  D.getElementById('kitui-pgnext').onclick=()=>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw();} };
-  D.getElementById('kitui-full').onclick=()=>{ pad.classList.toggle('full'); pad.style.height=''; fitPad(); };
-  D.getElementById('kitui-padclose').onclick=()=>pad.classList.remove('open');
+ pad.querySelector('.kitui-head').addEventListener('click',e=>{
+ const b=e.target.closest('button'); if(!b)return;
+ if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
+ if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
+ if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
+ });
+ D.getElementById('kitui-undo').onclick==>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop; draw; save; } };
+ D.getElementById('kitui-redo').onclick==>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop; draw; save; } };
+ D.getElementById('kitui-clear').onclick==>{ snap; pages[pg]=[]; draw; save; };
+ D.getElementById('kitui-pgadd').onclick==>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw; save; };
+ D.getElementById('kitui-pgprev').onclick==>{ if(pg>0){pg--;histo=[];undone=[];draw;} };
+ D.getElementById('kitui-pgnext').onclick==>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw;} };
+ D.getElementById('kitui-full').onclick==>{ pad.classList.toggle('full'); pad.style.height=''; fitPad; };
+ D.getElementById('kitui-padclose').onclick==>pad.classList.remove('open');
 
-  /* ---- วาด ---- */
-  let cur=null;
-  padCv.addEventListener('pointerdown',e=>{
-    if(e.pointerType==='pen') penSeen=Date.now();
-    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;   /* กันฝ่ามือแตะตอนใช้สไตลัส */
-    const p=pt(e);
-    if(tool==='er'){ snap(); erase(p); return; }
-    snap();
-    cur={c:color,w:width,hl:tool==='hl',pts:[p]};
-    pages[pg].push(cur); draw();
-    try{ padCv.setPointerCapture(e.pointerId); }catch(x){}  /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
-  });
-  padCv.addEventListener('pointermove',e=>{
-    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;
-    if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
-    if(!cur||!e.buttons)return;
-    /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
-    let evs=[e];
-    if(e.getCoalescedEvents){ const c=e.getCoalescedEvents(); if(c&&c.length) evs=c; }
-    evs.forEach(ev=>cur.pts.push(pt(ev)));
-    draw();
-  });
-  const end=()=>{ if(cur){cur=null;save();} };
-  padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
-  padCv.addEventListener('pointerleave',end);
+ /* ---- วาด ---- */
+ let cur=null;
+ padCv.addEventListener('pointerdown',e=>{
+ if(e.pointerType==='pen') penSeen=Date.now;
+ if(e.pointerType==='touch' && Date.now-penSeen<1500) return; /* กันฝ่ามือแตะตอนใช้สไตลัส */
+ const p=pt(e);
+ if(tool==='er'){ snap; erase(p); return; }
+ snap;
+ cur={c:color,w:width,hl:tool==='hl',pts:[p]};
+ pages[pg].push(cur); draw;
+ try{ padCv.setPointerCapture(e.pointerId); }catch(x){} /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
+ });
+ padCv.addEventListener('pointermove',e=>{
+ if(e.pointerType==='touch' && Date.now-penSeen<1500) return;
+ if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
+ if(!cur||!e.buttons)return;
+ /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
+ let evs=[e];
+ if(e.getCoalescedEvents){ const c=e.getCoalescedEvents; if(c&&c.length) evs=c; }
+ evs.forEach(ev=>cur.pts.push(pt(ev)));
+ draw;
+ });
+ const end==>{ if(cur){cur=null;save;} };
+ padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
+ padCv.addEventListener('pointerleave',end);
 
-  addEventListener('resize',()=>{ if(pad.classList.contains('open')) fitPad(); });
-  D.addEventListener('kitui-theme',()=>draw());   /* สลับธีมแล้ววาดลายใหม่ เส้นดำ<->ขาวตามพื้น */
-  load(); fitPad();
+ addEventListener('resize',=>{ if(pad.classList.contains('open')) fitPad; });
+ D.addEventListener('kitui-theme',=>draw); /* สลับธีมแล้ววาดลายใหม่ เส้นดำ<->ขาวตามพื้น */
+ load; fitPad;
 }
 function pt(e){
-  const r=padCv.getBoundingClientRect();
-  return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
-          p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5};   /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
+ const r=padCv.getBoundingClientRect;
+ return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
+ p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5}; /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
 }
-function snap(){ histo.push(pages[pg].slice()); if(histo.length>60)histo.shift(); undone=[]; }
+function snap{ histo.push(pages[pg].slice); if(histo.length>60)histo.shift; undone=[]; }
 function erase(p){
-  const r=padCv.getBoundingClientRect(), rad=18/r.width;
-  const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
-  if(keep.length!==pages[pg].length){ pages[pg]=keep; draw(); save(); }
+ const r=padCv.getBoundingClientRect, rad=18/r.width;
+ const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
+ if(keep.length!==pages[pg].length){ pages[pg]=keep; draw; save; }
 }
-function fitPad(){
-  const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
-  const dpr=Math.min(devicePixelRatio||1,2.5);
-  padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
-  draw();
+function fitPad{
+ const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
+ const dpr=Math.min(devicePixelRatio||1,2.5);
+ padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
+ draw;
 }
-function draw(){
-  const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
-  padCx.clearRect(0,0,W,H);
-  /* เส้นตารางจาง ๆ ให้เขียนตรง */
-  const dark=R.getAttribute('data-theme')==='dark';
-  padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
-  for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath();padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke();}
-  padCx.lineCap='round'; padCx.lineJoin='round';
-  pages[pg].forEach(s=>{
-    padCx.globalAlpha=s.hl?0.32:1;
-    padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
-    for(let i=1;i<s.pts.length;i++){
-      const a=s.pts[i-1],b=s.pts[i];
-      padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
-      padCx.beginPath(); padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke();
-    }
-    if(s.pts.length===1){ /* จุดเดียว */
-      padCx.fillStyle=padCx.strokeStyle; padCx.beginPath();
-      padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill();
-    }
-  });
-  padCx.globalAlpha=1;
-  const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
+function draw{
+ const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
+ padCx.clearRect(0,0,W,H);
+ /* เส้นตารางจาง ๆ ให้เขียนตรง */
+ const dark=R.getAttribute('data-theme')==='dark';
+ padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
+ for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath;padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke;}
+ padCx.lineCap='round'; padCx.lineJoin='round';
+ pages[pg].forEach(s=>{
+ padCx.globalAlpha=s.hl?0.32:1;
+ padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
+ for(let i=1;i<s.pts.length;i++){
+ const a=s.pts[i-1],b=s.pts[i];
+ padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
+ padCx.beginPath; padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke;
+ }
+ if(s.pts.length===1){ /* จุดเดียว */
+ padCx.fillStyle=padCx.strokeStyle; padCx.beginPath;
+ padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill;
+ }
+ });
+ padCx.globalAlpha=1;
+ const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
 }
-function save(){ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
-function load(){
-  try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
+function save{ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
+function load{
+ try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
 }
 
 if(hasPen){
-  buildPad();
-  D.getElementById('kitui-penbtn').onclick=()=>{
-    const o=pad.classList.toggle('open');
-    D.getElementById('kitui-penbtn').classList.toggle('on',o);
-    if(o) fitPad();
-  };
+ buildPad;
+ D.getElementById('kitui-penbtn').onclick==>{
+ const o=pad.classList.toggle('open');
+ D.getElementById('kitui-penbtn').classList.toggle('on',o);
+ if(o) fitPad;
+ };
 }
 
 /* =============================================================================
-   5) เครื่องคิดเลขวิทยาศาสตร์  (tokenizer → shunting-yard → RPN  ไม่ใช้ eval)
-   ============================================================================= */
+ 5) เครื่องคิดเลขวิทยาศาสตร์ (tokenizer → shunting-yard → RPN ไม่ใช้ eval)
+ ============================================================================= */
 const FN={sin:1,cos:1,tan:1,asin:1,acos:1,atan:1,ln:1,log:1,sqrt:1,abs:1,exp:1};
 const PREC={'+':1,'-':1,'*':2,'/':2,'^':4,'u-':3};
 function tokenize(s){
-  s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
-  const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!()])/g; let m;
-  while((m=re.exec(s))) out.push(m[1]);
-  return out;
+ s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
+ const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!])/g; let m;
+ while((m=re.exec(s))) out.push(m[1]);
+ return out;
 }
 function toRPN(tk){
-  const out=[],op=[]; let prev=null;
-  for(let t of tk){
-    if(t==='**')t='^';
-    if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
-    else if(t==='PI'){ out.push(Math.PI); }
-    else if(t==='e'||t==='E'){ out.push(Math.E); }
-    else if(t==='ANS'){ out.push(ANS); }
-    else if(FN[t]){ op.push(t); }
-    else if(t==='('){ op.push(t); }
-    else if(t===')'){
-      while(op.length&&op[op.length-1]!=='(') out.push(op.pop());
-      if(!op.length) throw 0; op.pop();
-      if(op.length&&FN[op[op.length-1]]) out.push(op.pop());
-    }
-    else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
-    else if('+-*/^'.includes(t)){
-      let o=t;
-      const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
-      if(t==='-'&&unary) o='u-';
-      else if(t==='+'&&unary){ prev=t; continue; }
-      while(op.length){
-        const top=op[op.length-1];
-        if(top==='('||FN[top])break;
-        const rightAssoc=(o==='^'||o==='u-');
-        if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop()); else break;
-      }
-      op.push(o);
-    }
-    else throw 0;
-    prev=t;
-  }
-  while(op.length){ const o=op.pop(); if(o==='(')throw 0; out.push(o); }
-  return out;
+ const out=[],op=[]; let prev=null;
+ for(let t of tk){
+ if(t==='**')t='^';
+ if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
+ else if(t==='PI'){ out.push(Math.PI); }
+ else if(t==='e'||t==='E'){ out.push(Math.E); }
+ else if(t==='ANS'){ out.push(ANS); }
+ else if(FN[t]){ op.push(t); }
+ else if(t==='('){ op.push(t); }
+ else if(t===')'){
+ while(op.length&&op[op.length-1]!=='(') out.push(op.pop);
+ if(!op.length) throw 0; op.pop;
+ if(op.length&&FN[op[op.length-1]]) out.push(op.pop);
+ }
+ else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
+ else if('+-*/^'.includes(t)){
+ let o=t;
+ const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
+ if(t==='-'&&unary) o='u-';
+ else if(t==='+'&&unary){ prev=t; continue; }
+ while(op.length){
+ const top=op[op.length-1];
+ if(top==='('||FN[top])break;
+ const rightAssoc=(o==='^'||o==='u-');
+ if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop); else break;
+ }
+ op.push(o);
+ }
+ else throw 0;
+ prev=t;
+ }
+ while(op.length){ const o=op.pop; if(o==='(')throw 0; out.push(o); }
+ return out;
 }
 function evalRPN(rpn,deg){
-  const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
-  const pop=()=>{ if(!st.length)throw 0; return st.pop(); };
-  for(const t of rpn){
-    if(typeof t==='number'){ st.push(t); continue; }
-    if(t==='fact'){ const n=pop(); if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
-    if(t==='pct'){ st.push(pop()/100); continue; }
-    if(t==='u-'){ st.push(-pop()); continue; }
-    if(FN[t]){
-      const a=pop();
-      st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
-             : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
-             : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
-             : t==='abs'?Math.abs(a) : Math.exp(a) );
-      continue;
-    }
-    const b=pop(),a=pop();
-    st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
-  }
-  if(st.length!==1) throw 0;
-  return st[0];
+ const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
+ const pop==>{ if(!st.length)throw 0; return st.pop; };
+ for(const t of rpn){
+ if(typeof t==='number'){ st.push(t); continue; }
+ if(t==='fact'){ const n=pop; if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
+ if(t==='pct'){ st.push(pop/100); continue; }
+ if(t==='u-'){ st.push(-pop); continue; }
+ if(FN[t]){
+ const a=pop;
+ st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
+ : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
+ : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
+ : t==='abs'?Math.abs(a) : Math.exp(a) );
+ continue;
+ }
+ const b=pop,a=pop;
+ st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
+ }
+ if(st.length!==1) throw 0;
+ return st[0];
 }
 function calc(src,deg){ return evalRPN(toRPN(tokenize(src)),deg); }
 
@@ -966,53 +966,53 @@ const KEYS=[
  ['1','1',''],['2','2',''],['3','3',''],['.','.',''],['=','eq','eq'],
  ['0','0','w3'],['x²','^2','fn']
 ];
-function buildCalc(){
-  calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
-  calcSheet.innerHTML=
-   `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
-      <button id="kitui-calcclose">✕</button></div>
-    <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
-    <div class="kitui-keys" id="kitui-keys">
-      ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
-    </div>`;
-  D.body.appendChild(calcSheet);
-  D.getElementById('kitui-calcclose').onclick=()=>calcSheet.classList.remove('open');
-  const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
-  const show=()=>{ ex.textContent=expr||' ';
-    try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
-    catch(e){ rs.style.opacity=.35; }
-  };
-  D.getElementById('kitui-keys').addEventListener('click',e=>{
-    const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
-    if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
-    if(k==='del'){ expr=expr.slice(0,-1); show(); return; }
-    if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show(); return; }
-    if(k==='eq'){
-      rs.style.opacity=1;
-      try{
-        const v=calc(expr,isDeg);
-        if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
-        if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
-        ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
-      }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
-      return;
-    }
-    expr+=k; show();
-  });
+function buildCalc{
+ calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
+ calcSheet.innerHTML=
+ `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
+ <button id="kitui-calcclose">✕</button></div>
+ <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
+ <div class="kitui-keys" id="kitui-keys">
+ ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
+ </div>`;
+ D.body.appendChild(calcSheet);
+ D.getElementById('kitui-calcclose').onclick==>calcSheet.classList.remove('open');
+ const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
+ const show==>{ ex.textContent=expr||' ';
+ try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
+ catch(e){ rs.style.opacity=.35; }
+ };
+ D.getElementById('kitui-keys').addEventListener('click',e=>{
+ const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
+ if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
+ if(k==='del'){ expr=expr.slice(0,-1); show; return; }
+ if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show; return; }
+ if(k==='eq'){
+ rs.style.opacity=1;
+ try{
+ const v=calc(expr,isDeg);
+ if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
+ if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
+ ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
+ }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
+ return;
+ }
+ expr+=k; show;
+ });
 }
 function fmt(v){
-  if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
-  if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
-  return String(Math.round(v*1e10)/1e10);
+ if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
+ if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
+ return String(Math.round(v*1e10)/1e10);
 }
 if(hasCalc){
-  buildCalc();
-  D.getElementById('kitui-calcbtn').onclick=()=>{
-    const o=calcSheet.classList.toggle('open');
-    D.getElementById('kitui-calcbtn').classList.toggle('on',o);
-  };
+ buildCalc;
+ D.getElementById('kitui-calcbtn').onclick==>{
+ const o=calcSheet.classList.toggle('open');
+ D.getElementById('kitui-calcbtn').classList.toggle('on',o);
+ };
 }
-})();
+});
 
 </script>
 <!--/KIT-UI-->
