@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Unit 21 ระบบสืบพันธุ์ — ข้อสอบฝึก 113 ข้อ</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-text-size-adjust:100%}
+:root{
+  --pg:#f4f6f5;--cd:#fff;--cd2:#f6faf8;--tx:#232a27;--strong:#0f1613;--mut:#5f6d68;--bd:#dfe6e2;
+  --ac:#0e7c66;--acbg:#e6f5f1;--acbd:#b5ded4;--achd:#0a5b4a;
+  --good:#0d7a4f;--goodbg:#e7f6ee;--goodbd:#b3e0c9;
+  --bad2:#b3261e;--badbg:#fdeceb;--badbd:#f3c2be;
+  --warn:#a8420d;--warnbg:#fdf1e9;--warnbd:#f2cdb2;
+  --sh:0 1px 3px rgba(15,35,30,.08);
+}
+:root[data-theme="dark"]{
+  --pg:#070b0a;--cd:#111917;--cd2:#18211f;--tx:#e4ece9;--strong:#f6fbfa;--mut:#93a39f;--bd:#25322f;
+  --ac:#4fd1b5;--acbg:#062723;--acbd:#12574c;--achd:#8ce6d5;
+  --good:#4bd6a0;--goodbg:#07271b;--goodbd:#155941;
+  --bad2:#f2918c;--badbg:#2d1110;--badbd:#5e2b28;
+  --warn:#f9a97e;--warnbg:#2e1509;--warnbd:#5f2f14;
+  --sh:0 1px 3px rgba(0,0,0,.55);
+}
+html{background:var(--pg)}
+body{font-family:'Leelawadee UI','Sarabun','Noto Sans Thai',Tahoma,sans-serif;
+  background:var(--pg);color:var(--tx);line-height:1.6;font-size:1rem;padding-bottom:3rem}
+.wrap{max-width:48rem;margin:0 auto;padding:0 .7rem}
+.cover{text-align:center;padding:1rem 0 .6rem;border-bottom:3px solid var(--ac);margin-bottom:.7rem}
+.cover h1{font-size:1.25rem;color:var(--strong)}
+.cover .sub{color:var(--mut);font-size:.82rem;margin-top:.25rem}
+.modes{display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:.7rem}
+.mode{font-family:inherit;font-size:.84rem;cursor:pointer;border:1px solid var(--bd);
+  background:var(--cd);color:var(--tx);padding:.35rem .75rem;border-radius:1.2rem}
+.mode.on{background:var(--ac);color:#fff;border-color:var(--ac);font-weight:700}
+:root[data-theme="dark"] .mode.on{background:var(--acbg);color:var(--achd);border-color:var(--acbd)}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:.5rem;flex-wrap:wrap;
+  font-size:.82rem;color:var(--mut);margin-bottom:.5rem}
+.bar b{color:var(--strong)}
+.card{background:var(--cd);border:1px solid var(--bd);border-radius:.6rem;padding:.85rem;
+  box-shadow:var(--sh)}
+.qhead{display:flex;gap:.5rem;align-items:baseline;flex-wrap:wrap;margin-bottom:.5rem}
+.pill{font-size:.7rem;background:var(--acbg);color:var(--achd);border:1px solid var(--acbd);
+  border-radius:1rem;padding:.05rem .5rem;white-space:nowrap}
+.pill.calc{background:var(--warnbg);color:var(--warn);border-color:var(--warnbd)}
+.q{font-size:1.02rem;color:var(--strong);font-weight:700;margin-bottom:.55rem}
+.qimg{border:1px solid var(--bd);border-radius:.45rem;overflow:hidden;margin:.5rem 0;background:#fff}
+.qimg img{display:block;width:100%;height:auto}
+.qimg figcaption{font-size:.7rem;color:var(--mut);background:var(--cd2);padding:.2rem .45rem;
+  border-top:1px solid var(--bd)}
+.opts{display:grid;gap:.4rem}
+.opt{font-family:inherit;text-align:left;font-size:.95rem;cursor:pointer;border:1px solid var(--bd);
+  background:var(--cd2);color:var(--tx);padding:.5rem .7rem;border-radius:.45rem;line-height:1.45}
+.opt:hover:not(:disabled){border-color:var(--ac)}
+.opt:disabled{cursor:default}
+.opt .k{display:inline-block;min-width:1.4rem;font-weight:700;color:var(--mut)}
+.opt.right{background:var(--goodbg);border-color:var(--goodbd);color:var(--strong)}
+.opt.right .k{color:var(--good)}
+.opt.wrong{background:var(--badbg);border-color:var(--badbd);color:var(--strong)}
+.opt.wrong .k{color:var(--bad2)}
+.fb{margin-top:.6rem;border-radius:.45rem;padding:.55rem .7rem;font-size:.92rem;display:none}
+.fb.show{display:block}
+.fb.ok{background:var(--goodbg);border:1px solid var(--goodbd)}
+.fb.no{background:var(--badbg);border:1px solid var(--badbd)}
+.fb b{color:var(--strong)}
+.nav{display:flex;gap:.5rem;margin-top:.7rem;flex-wrap:wrap}
+.btn{font-family:inherit;font-size:.92rem;font-weight:700;cursor:pointer;border:1px solid var(--ac);
+  background:var(--ac);color:#fff;padding:.45rem 1.1rem;border-radius:.45rem}
+:root[data-theme="dark"] .btn{background:var(--acbg);color:var(--achd)}
+.btn.ghost{background:var(--cd);color:var(--tx);border-color:var(--bd)}
+.btn:disabled{opacity:.45;cursor:default}
+.done{text-align:center;padding:1.2rem .8rem}
+.done .big{font-size:2rem;font-weight:700;color:var(--achd)}
+@media print{ #kitui-bar{display:none!important} }
+</style>
+</head>
+<body data-subject="bio">
+<div class="wrap">
+  <div class="cover">
+    <h1>📝 Unit 21 ข้อสอบฝึก</h1>
+    <div class="sub">113 ข้อ · ตัวเลือกภาษาอังกฤษ · มีข้อคำนวณ 20 ข้อ · ข้อดูรูป 0 ข้อ · สลับตัวเลือกทุกครั้ง</div>
+  </div>
+  <div class="modes"><button class="mode on" data-m="0">สุ่มทั้งหมด</button><button class="mode" data-m="1">เซลล์เดียว + ไม่อาศัยเพศ</button><button class="mode" data-m="2">อาศัยเพศ + เพศชาย</button><button class="mode" data-m="3">เพศหญิง + ปฏิสนธิ</button><button class="mode" data-m="4">การเจริญของสัตว์</button><button class="mode" data-m="5">⭐ เฉพาะข้อคำนวณ</button><button class="mode" data-m="6">🖼️ เฉพาะข้อดูรูป</button></div>
+  <div class="bar"><span id="prog"></span><span>ตอบผิดไม่เป็นไร ดูเฉลยแล้วไปต่อ</span></div>
+  <div class="card" id="quiz"></div>
+</div>
+<script>
+var QS=[{"q":"การสืบพันธุ์ (reproduction) ของสิ่งมีชีวิตมีจุดประสงค์หลักเพื่อสิ่งใด","ch":["Increase population of species","Increase cell size only","Repair damaged tissue only","Produce energy for the cell"],"ans":0,"why":"การสืบพันธุ์ทำให้สิ่งมีชีวิตเพิ่มจำนวนประชากรของสปีชีส์และถ่ายทอดพันธุกรรมสู่รุ่นต่อไป","topic":"บทนำการสืบพันธุ์","g":1},{"q":"หลังจากไซโกตเกิดขึ้นจากการสืบพันธุ์ กระบวนการใดเกิดขึ้นตามมาเพื่อให้สิ่งมีชีวิตเจริญสู่วัยเจริญพันธุ์","ch":["Sporulation only","Development and growth","Conjugation only","Fragmentation only"],"ans":1,"why":"หลังการสืบพันธุ์เกิดไซโกต จะมีการเจริญ (development) และเติบโต (growth) จนถึงวัยที่สืบพันธุ์ได้อีกครั้ง","topic":"บทนำการสืบพันธุ์","g":1},{"q":"สิ่งมีชีวิตเซลล์เดียวมักสืบพันธุ์แบบไม่อาศัยเพศเมื่อสภาวะแวดล้อมเป็นอย่างไร","ch":["Unfavorable condition","Extremely cold condition only","Favorable condition","No oxygen condition only"],"ans":2,"why":"ในสภาวะแวดล้อมที่เหมาะสม สิ่งมีชีวิตเซลล์เดียวจะสืบพันธุ์แบบไม่อาศัยเพศ ส่วนสภาวะไม่เหมาะสมจะสืบพันธุ์แบบอาศัยเพศ","topic":"การสืบพันธุ์สิ่งมีชีวิตเซลล์เดียว","g":1},{"q":"สิ่งมีชีวิตชนิดใดสืบพันธุ์แบบไม่อาศัยเพศด้วยวิธี budding (การแตกหน่อ)","ch":["Amoeba","Paramecium","Bacteria","Yeast"],"ans":3,"why":"จากเนื้อหา ยีสต์สืบพันธุ์แบบไม่อาศัยเพศด้วยวิธี budding หรือการแตกหน่อ","topic":"ยีสต์","g":1},{"q":"การสืบพันธุ์แบบ fission (การแบ่งแยกตัว) พบในสิ่งมีชีวิตกลุ่มใด","ch":["Paramecium and amoeba","Yeast and sponge","Hydra and coral","Bacteria only"],"ans":0,"why":"fission พบในพารามีเซียมและอะมีบา ตามที่ระบุในสไลด์ภาพรวมวิธีสืบพันธุ์","topic":"การสืบพันธุ์สิ่งมีชีวิตเซลล์เดียว","g":1},{"q":"เมื่อเปรียบเทียบ binary fission กับ conjugation ข้อใดถูกต้องที่สุด","ch":["Both processes exchange genetic material between two cells","Conjugation exchanges genetic material between paired cells while binary fission simply splits one cell into two","Both processes produce genetically identical offspring","Binary fission requires two individuals to pair while conjugation does not"],"ans":1,"why":"Conjugation คือกลไกถ่ายทอดสารพันธุกรรมโดยการจับคู่และแลกเปลี่ยนสารพันธุกรรมคล้ายการสืบพันธุ์แบบอาศัยเพศ ต่างจาก binary fission ที่เป็นเพียงการแบ่งเซลล์ออกเป็น 2 ส่วนโดยไม่มีการแลกเปลี่ยนสารพันธุกรรม","topic":"Conjugation","g":1},{"q":"ยีสต์สามารถดำรงชีวิตอยู่ได้ในรูปแบบใด","ch":["Diploid (2n) only","Haploid (n) only","Both diploid (2n) and haploid (n)","Triploid (3n) only"],"ans":2,"why":"ยีสต์สามารถดำรงชีวิตได้ทั้งแบบ diploid (2n) และ haploid (n) และทั้งสองรูปแบบแบ่งเซลล์แบบไมโทซิสได้","topic":"ยีสต์","g":1},{"q":"การแบ่งตัวแบบไม่สมมาตร (asymmetric division) ของยีสต์ ตรงกับกระบวนการใด","ch":["Binary fission","Conjugation","Fragmentation","Budding"],"ans":3,"why":"ยีสต์แบ่งตัวแบบไม่สมมาตร เกิดเป็นหน่อเล็กบนเซลล์แม่ เรียกว่า budding","topic":"ยีสต์","g":1},{"q":"ภายใต้สภาวะแวดล้อมที่ไม่เหมาะสม ยีสต์ชนิด diploid (2n) จะเกิดกระบวนการใด","ch":["Meiosis and sporulation","Mitosis and budding only","Binary fission only","Conjugation with bacteria"],"ans":0,"why":"ภายใต้สภาวะไม่เหมาะสม ยีสต์ (2n) สามารถเกิดการแบ่งเซลล์แบบไมโอซิสและสร้างสปอร์ (sporulation) ต่างจากสภาวะปกติที่แบ่งแบบไมโทซิส","topic":"ยีสต์","g":1},{"q":"พารามีเซียมสืบพันธุ์แบบไม่อาศัยเพศด้วยวิธีใด","ch":["Conjugation","Budding","Sporulation","Binary fission"],"ans":3,"why":"การสืบพันธุ์แบบไม่อาศัยเพศของพารามีเซียมคือ binary fission ส่วนแบบอาศัยเพศคือ conjugation","topic":"พารามีเซียม","g":1},{"q":"โดยทั่วไปแบคทีเรียสืบพันธุ์แบบไม่อาศัยเพศด้วยวิธีใด","ch":["Conjugation","Binary fission","Budding","Regeneration"],"ans":1,"why":"โดยทั่วไปแบคทีเรียมีการสืบพันธุ์แบบไม่อาศัยเพศโดยการแบ่งแยกตัว (binary fission)","topic":"แบคทีเรีย","g":1},{"q":"การสืบพันธุ์แบบไม่อาศัยเพศของสัตว์ (asexual reproduction) เกิดจากการแบ่งเซลล์แบบใด","ch":["Meiotic cell division","Binary fission only","Conjugation only","Mitotic cell division"],"ans":3,"why":"21.1.1 การสืบพันธุ์แบบไม่อาศัยเพศของสัตว์เกิดจาก mitotic cell division ส่วนแบบอาศัยเพศเกิดจาก meiotic cell division","topic":"การสืบพันธุ์แบบไม่อาศัยเพศของสัตว์","g":1},{"q":"ในการสืบพันธุ์แบบอาศัยเพศของสัตว์ เมื่อสเปิร์ม (n) ผสมกับไข่ (n) จะได้ผลลัพธ์เป็นอะไร","ch":["Zygote (2n)","Zygote (n)","Gamete (2n)","Spore (n)"],"ans":0,"why":"Sperm (n) + Egg (n) = zygote ที่มีโครโมโซมเป็น 2n","topic":"การสืบพันธุ์แบบไม่อาศัยเพศของสัตว์","g":1},{"q":"สัตว์ในข้อใดสืบพันธุ์แบบไม่อาศัยเพศด้วยวิธี budding","ch":["Sea anemone","Hydra","Planaria","Sea star"],"ans":1,"why":"ตามเนื้อหา budding พบใน hydra, fission พบใน sea anemone, regeneration พบใน planaria","topic":"ไฮดรา","g":1},{"q":"สัตว์ในข้อใดสืบพันธุ์แบบไม่อาศัยเพศด้วยวิธี fission","ch":["Hydra","Sponge","Sea anemone","Planaria"],"ans":2,"why":"จากเนื้อหา fission (การแบ่งแยกตัว) พบใน sea anemone","topic":"ดอกไม้ทะเล","g":1},{"q":"สัตว์ในข้อใดสืบพันธุ์แบบไม่อาศัยเพศด้วยวิธี regeneration เป็นหลัก","ch":["Hydra","Sea anemone","Bee","Planaria"],"ans":3,"why":"Regeneration (การงอกใหม่) เป็นวิธีสืบพันธุ์แบบไม่อาศัยเพศของ planaria","topic":"พลานาเรีย","g":1},{"q":"ข้อใดคือคำจำกัดความของการสืบพันธุ์แบบไม่อาศัยเพศ (asexual reproduction)","ch":["Reproduction without fusion of sex cells","Reproduction that always requires two individuals","Reproduction using sperm and egg only","Reproduction that only occurs in plants"],"ans":0,"why":"การสืบพันธุ์แบบไม่อาศัยเพศ คือ การสืบพันธุ์ที่ไม่มีการรวมกันของเซลล์สืบพันธุ์","topic":"การสืบพันธุ์แบบไม่อาศัยเพศ","g":1},{"q":"สัตว์ไม่มีกระดูกสันหลังกลุ่มใดต่อไปนี้ ที่มีการสืบพันธุ์แบบไม่อาศัยเพศ","ch":["Mammals and birds","Sponges, cnidarians, flatworms","Reptiles only","Insects with backbone"],"ans":1,"why":"สัตว์ไม่มีกระดูกสันหลังที่มีการสืบพันธุ์แบบไม่อาศัยเพศ ได้แก่ sponges, cnidarians, flatworms, annelids และ echinoderms","topic":"การสืบพันธุ์แบบไม่อาศัยเพศ","g":1},{"q":"กระบวนการที่รุ่นพ่อแม่แตกหักออกเป็นชิ้น ๆ แล้วแต่ละชิ้นพัฒนาเป็นตัวใหม่ที่สมบูรณ์ เรียกว่าอะไร","ch":["Budding","Fission","Fragmentation and regeneration","Parthenogenesis"],"ans":2,"why":"Fragmentation (การหักหรือการขาดออก) และ regeneration (การงอกใหม่) คือกระบวนการที่ชิ้นส่วนที่แยกออกไปพัฒนาเป็นตัวใหม่ที่สมบูรณ์","topic":"Fragmentation และ Regeneration","g":1},{"q":"ข้อใดคือข้อได้เปรียบของการสืบพันธุ์แบบไม่อาศัยเพศ","ch":["Increase genetic diversity","Better survival when environment changes","Always produce fewer offspring","Reproduce without searching for a mate"],"ans":3,"why":"ข้อได้เปรียบของการสืบพันธุ์แบบไม่อาศัยเพศ คือสิ่งมีชีวิตที่เคลื่อนที่ไม่ได้สามารถสืบพันธุ์ได้โดยไม่ต้องหาคู่","topic":"ข้อดีข้อเสียของการสืบพันธุ์แบบไม่อาศัยเพศ","g":1},{"q":"ข้อใด ไม่ใช่ ข้อได้เปรียบของการสืบพันธุ์แบบไม่อาศัยเพศ","ch":["High genetic diversity for changing environment","Produce many offspring in a short time","No need to find a mate","Success in stable environment"],"ans":0,"why":"การสืบพันธุ์แบบไม่อาศัยเพศให้ลูกที่มีพันธุกรรมเหมือนเดิม จึงมีความหลากหลายทางพันธุกรรมต่ำ ไม่ใช่ข้อได้เปรียบ","topic":"ข้อดีข้อเสียของการสืบพันธุ์แบบไม่อาศัยเพศ","g":1},{"q":"ฟองน้ำสืบพันธุ์แบบไม่อาศัยเพศด้วยวิธีใด","ch":["Binary fission and conjugation","Parthenogenesis only","Regeneration only","Budding and fragmentation"],"ans":3,"why":"ฟองน้ำสืบพันธุ์แบบไม่อาศัยเพศด้วยวิธี budding และ fragmentation","topic":"ฟองน้ำ","g":1},{"q":"ในไฮดรา เซลล์ชนิดใดที่ epidermis สามารถพัฒนาไปเป็น testis หรือ ovary ได้","ch":["Nerve cells","Interstitial cells","Nematocyst cells","Digestive cells"],"ans":1,"why":"interstitial cells ของ epidermis ในไฮดราสามารถพัฒนาไปเป็น testis หรือ ovary","topic":"ไฮดรา","g":1},{"q":"สัตว์ที่มีระบบสืบพันธุ์ 2 ระบบอยู่ภายในตัวเดียวกัน เรียกว่าสัตว์ประเภทใด","ch":["Parthenogenetic animals","Sessile animals","Filter-feeding animals","Hermaphroditic animals"],"ans":3,"why":"สัตว์ที่มี 2 ระบบสืบพันธุ์ภายในตัวเดียว เรียกว่า hermaphroditic animals เช่น ดอกไม้ทะเลและพลานาเรีย","topic":"Hermaphroditic animals","g":1},{"q":"พลานาเรีย (planaria) จัดอยู่ใน phylum ใด","ch":["Platyhelminthes","Porifera","Cnidaria","Echinodermata"],"ans":0,"why":"พลานาเรียเป็น flatworm ซึ่งอยู่ใน phylum Platyhelminthes","topic":"พลานาเรีย","g":1},{"q":"สิ่งมีชีวิตกลุ่มใดต่อไปนี้ ไม่ ได้ถูกระบุว่าสามารถสืบพันธุ์แบบ fragmentation และ regeneration ได้","ch":["Coral","Mammals","Sponge","Tunicates"],"ans":1,"why":"เนื้อหาระบุว่าปะการัง ฟองน้ำ ไนดาเรียน และ tunicates สามารถสืบพันธุ์แบบ fragmentation และ regeneration ได้ แต่ไม่ได้กล่าวถึงสัตว์เลี้ยงลูกด้วยนม (mammals)","topic":"Fragmentation และ Regeneration","g":1},{"q":"ข้อใดกล่าวถูกต้องเกี่ยวกับการสืบพันธุ์แบบไม่อาศัยเพศของดาวทะเล เมื่อเทียบกับพลานาเรีย","ch":["Only planaria can regenerate","Only sea star can regenerate","Neither can regenerate","Both can regenerate a complete organism from a broken body part"],"ans":3,"why":"ทั้งดาวทะเลและพลานาเรียสามารถสืบพันธุ์แบบไม่อาศัยเพศโดยกระบวนการงอกใหม่ (regeneration) จากส่วนที่แตกหักให้เป็นสิ่งมีชีวิตที่สมบูรณ์ได้","topic":"ดาวทะเล","g":1},{"q":"พาร์ทีโนเจเนซิส (parthenogenesis) คือการสืบพันธุ์ที่เกิดจากสิ่งใด","ch":["Unfertilized egg cell developing into a new organism","Fertilized egg cell developing into a new organism","Two sperm cells fusing together","Spore germination"],"ans":0,"why":"พาร์ทีโนเจเนซิสเป็นการสืบพันธุ์ที่เกิดขึ้นจากเซลล์ไข่ (haploid) ที่ไม่ได้รับการปฏิสนธิ แล้วเจริญเป็นสิ่งมีชีวิตใหม่","topic":"Parthenogenesis","g":1},{"q":"การสืบพันธุ์แบบอาศัยเพศ (sexual reproduction) เกิดจากกระบวนการใด","ch":["Fusion of male and female gamete nuclei","Mitotic division of a single parent cell","Fragmentation of the parent's body","Budding from the parent organism"],"ans":0,"why":"การสืบพันธุ์แบบอาศัยเพศเกิดจากการรวมนิวเคลียสของเซลล์สืบพันธุ์เพศผู้ (sperm) กับเซลล์สืบพันธุ์เพศเมีย (egg)","topic":"การสืบพันธุ์แบบอาศัยเพศ","g":2},{"q":"เซลล์สืบพันธุ์ (gametes) ของสัตว์เกิดจากการแบ่งเซลล์แบบใด และมีชุดโครโมโซมแบบใด","ch":["Meiosis, haploid (n)","Mitosis, diploid (2n)","Meiosis, diploid (2n)","Mitosis, haploid (n)"],"ans":0,"why":"gametes เกิดจากการแบ่งเซลล์แบบไมโอซิส (meiotic cell division) ทำให้ได้เซลล์สืบพันธุ์ที่เป็น haploid (n)","topic":"เซลล์สืบพันธุ์","g":2},{"q":"เมื่อ sperm และ egg รวมนิวเคลียสกัน (fertilization) จะได้โครงสร้างใด และมีชุดโครโมโซมแบบใด","ch":["Zygote, diploid (2n)","Zygote, haploid (n)","Blastula, diploid (2n)","Gamete, haploid (n)"],"ans":0,"why":"การปฏิสนธิ (fertilization) คือการรวมนิวเคลียสของ sperm และ egg ทำให้เกิดไซโกต (zygote) ที่มีโครโมโซมเป็น 2n","topic":"การปฏิสนธิ","g":2},{"q":"จากตัวอย่างในเนื้อหา สัตว์กลุ่มใดที่มีการแลกเปลี่ยนสเปิร์มระหว่างกันในการผสมพันธุ์แบบ hermaphrodite","ch":["Earthworm and sea slug","Shark and ray","Frog and lizard","Bird and reptile"],"ans":0,"why":"เนื้อหายกตัวอย่างการผสมพันธุ์ของไส้เดือนดินและทากทะเลซึ่งเป็นสัตว์ hermaphrodite ที่แลกเปลี่ยนสเปิร์มกัน","topic":"Hermaphrodite","g":2},{"q":"External fertilization (การปฏิสนธิภายนอก) หมายถึงข้อใด","ch":["Egg and sperm unite outside the body of the parents","Egg and sperm unite inside the female's reproductive tract","Fertilization occurs inside a placenta","Fertilization does not involve gametes"],"ans":0,"why":"การปฏิสนธิภายนอก (external fertilization) คือการที่ไข่และสเปิร์มมารวมกันภายนอกร่างกายของพ่อแม่","topic":"กลไกการสืบพันธุ์","g":2},{"q":"การเจริญของไซโกตแบบ Oviparity มีลักษณะอย่างไร","ch":["Zygote develops outside the mother's body and the embryo gets nutrients from egg yolk","Zygote develops inside the mother and gets nutrients from her blood via placenta","Zygote develops inside the mother and gets nutrients from its own yolk sac","Zygote develops outside the mother and gets nutrients directly from the mother's blood"],"ans":0,"why":"Oviparity คือไซโกตพัฒนาภายนอกตัวแม่ ตัวอ่อนได้รับสารอาหารจากไข่แดง","topic":"Oviparity","g":2},{"q":"การเจริญของไซโกตแบบ Ovoviviparity แตกต่างจาก Oviparity อย่างไร","ch":["Zygote develops inside the mother's body but nutrients still come from the embryo's own yolk sac","Zygote develops outside the mother's body","Embryo gets nutrients from the mother's blood via placenta","There is no fertilization process"],"ans":0,"why":"Ovoviviparity ไซโกตพัฒนาภายในตัวแม่ แต่ตัวอ่อนยังได้รับสารอาหารจากถุงไข่แดงของตัวเอง ไม่ใช่จากแม่โดยตรง","topic":"Ovoviviparity","g":2},{"q":"สัตว์ที่มีการสืบพันธุ์แบบ Viviparity ตัวอ่อนได้รับสารอาหารจากแหล่งใด","ch":["Mother's blood through the placenta","Egg yolk within the egg","Its own yolk sac","Surrounding water in the environment"],"ans":0,"why":"Viviparity ตัวอ่อนพัฒนาภายในตัวแม่และได้รับสารอาหารจากเลือดของแม่ผ่านทางรก (placenta)","topic":"Viviparity","g":2},{"q":"ข้อใดเป็นลักษณะเด่นของการสืบพันธุ์แบบอาศัยเพศ เมื่อเทียบกับแบบไม่อาศัยเพศ","ch":["Offspring have genetic variation different from the parents","Offspring are genetically identical to the mother","Population increases faster","Only one parent is required"],"ans":0,"why":"การสืบพันธุ์แบบอาศัยเพศมีการรวมพันธุกรรมจากพ่อและแม่ ทำให้ลูกมีพันธุกรรมแตกต่างจากรุ่นพ่อแม่ ต่างจากแบบไม่อาศัยเพศที่ลูกเหมือนแม่ทุกประการ","topic":"เปรียบเทียบการสืบพันธุ์","g":2},{"q":"ข้อใดเป็นลักษณะของการสืบพันธุ์แบบไม่อาศัยเพศ","ch":["New individual arises from mitotic division and only one parent is involved","New individual arises from meiotic division involving two parents","Offspring have genetic variation from the parents","Gametes are produced and fertilization occurs"],"ans":0,"why":"การสืบพันธุ์แบบไม่อาศัยเพศไม่มีการสร้างเซลล์สืบพันธุ์และไม่มีการปฏิสนธิ ตัวใหม่เกิดจากการแบ่งเซลล์แบบไมโทซิสของแม่เพียงตัวเดียว","topic":"เปรียบเทียบการสืบพันธุ์","g":2},{"q":"เซลล์สืบพันธุ์เพศผู้และเพศเมียของสัตว์เรียกว่าอะไรตามลำดับ","ch":["Sperm and egg","Egg and sperm","Zygote and gamete","Spermatid and oocyte"],"ans":0,"why":"เซลล์สืบพันธุ์เพศผู้ คือ sperm และเซลล์สืบพันธุ์เพศเมีย คือ egg","topic":"เซลล์สืบพันธุ์","g":2},{"q":"ถุงอัณฑะ (scrotum) มีความสำคัญต่อการสร้างสเปิร์มอย่างไร","ch":["Keeps testis temperature about 2°C lower than body temperature (~35°C) for optimal sperm production","Increases testis temperature to match body temperature","Produces testosterone directly","Stores mature sperm before ejaculation"],"ans":0,"why":"ถุงอัณฑะช่วยรักษาอุณหภูมิของอัณฑะให้ต่ำกว่าอุณหภูมิร่างกายประมาณ 2 องศาเซลเซียส (~35°C) ซึ่งเหมาะสมต่อการสร้างสเปิร์ม","topic":"ถุงอัณฑะ","g":2},{"q":"สเปิร์มที่สร้างจากหลอดสร้างอสุจิ จะเคลื่อนไปเก็บและพัฒนาจนเจริญเต็มที่ที่ใด","ch":["Epididymis","Vas deferens","Seminal vesicle","Prostate gland"],"ans":0,"why":"สเปิร์มที่สร้างจาก seminiferous tubule จะเคลื่อนมาเก็บที่หลอดเก็บอสุจิ (epididymis) และพัฒนาจนเจริญเต็มที่","topic":"หลอดเก็บอสุจิ","g":2},{"q":"ในกระบวนการหลั่งน้ำอสุจิ (ejaculation) กล้ามเนื้อบริเวณใดหดตัวเพื่อผลักดันอสุจิเข้าสู่ vas deferens","ch":["Epididymis","Seminal vesicle","Prostate gland","Urethra"],"ans":0,"why":"การหลั่งน้ำอสุจิเกิดจากการหดตัวของกล้ามเนื้อบริเวณหลอดเก็บอสุจิ (epididymis) ผลักดันอสุจิเข้าสู่ vas deferens","topic":"การหลั่งน้ำอสุจิ","g":2},{"q":"ระบบสืบพันธุ์เพศชายมีความสัมพันธ์กับระบบใดที่แตกต่างจากเพศหญิง","ch":["Urinary system (shares the same urethra)","Digestive system","Circulatory system","Nervous system"],"ans":0,"why":"ระบบสืบพันธุ์เพศชายเชื่อมกับระบบปัสสาวะผ่านท่อปัสสาวะ (urethra) ร่วมกัน ซึ่งต่างจากเพศหญิงที่ระบบทั้งสองแยกจากกัน","topic":"ระบบสืบพันธุ์เพศชาย","g":2},{"q":"ต่อมใดบ้างที่สร้างสารมารวมกับสเปิร์มเป็นน้ำอสุจิ (semen)","ch":["Seminal vesicle, prostate gland, and Cowper's gland","Epididymis, vas deferens, and urethra","Testis, epididymis, and scrotum","Pituitary gland, hypothalamus, and testis"],"ans":0,"why":"ต่อม 3 ต่อมที่สร้างสารมารวมกับสเปิร์มเป็นน้ำอสุจิ ได้แก่ seminal vesicle, prostate gland และ Cowper's gland","topic":"ต่อมสร้างน้ำอสุจิ","g":2},{"q":"ของเหลวจาก seminal vesicle มีสารใดเป็นแหล่งพลังงานให้สเปิร์ม","ch":["Fructose","Glucose","Testosterone","Mucus only"],"ans":0,"why":"Seminal vesicle หลั่งของเหลวที่มีน้ำตาลฟรักโตส (fructose) ซึ่งเป็นแหล่งพลังงานของสเปิร์ม","topic":"Seminal vesicle","g":2},{"q":"ของเหลวจากต่อมลูกหมาก (prostate gland) มีคุณสมบัติและประโยชน์อย่างไรต่อสเปิร์ม","ch":["Alkaline (basic), helps sperm move and survive in the acidic vagina","Acidic, kills harmful bacteria in the vagina","Neutral, provides no benefit to sperm","Alkaline, provides energy to sperm"],"ans":0,"why":"Prostate gland หลั่งของเหลวที่มีฤทธิ์เป็นเบส (alkaline) เพื่อช่วยให้สเปิร์มเคลื่อนที่และอยู่รอดได้ในช่องคลอดที่มีสภาพเป็นกรด","topic":"Prostate gland","g":2},{"q":"ต่อมคาวเปอร์ (Cowper's gland) ทำหน้าที่ใด","ch":["Lubricates the urethra and reduces acidity within it","Produces testosterone","Stores mature sperm","Provides fructose as an energy source"],"ans":0,"why":"ต่อมคาวเปอร์ทำหน้าที่หลั่งของเหลวเพื่อหล่อลื่นท่อปัสสาวะและลดความเป็นกรดภายในท่อปัสสาวะ","topic":"Cowper's gland","g":2},{"q":"เหตุใดเพศชายจึงสามารถสร้างสเปิร์มได้ตั้งแต่วัยรุ่นจนตลอดชีวิต (หากร่างกายแข็งแรง)","ch":["Because spermatogonium can continue dividing throughout the reproductive period","Because sperm cells never die","Because testosterone is produced only once in life","Because meiosis occurs only during childhood"],"ans":0,"why":"Spermatogonium สามารถแบ่งเซลล์ได้ตลอดช่วงวัยเจริญพันธุ์ จึงทำให้เพศชายสร้างสเปิร์มได้ต่อเนื่องตลอดชีวิต","topic":"Spermatogenesis","g":2},{"q":"หลังสิ้นสุด meiosis I สเปอร์มาโทไซต์ระยะที่สอง (secondary spermatocyte) มีชุดโครโมโซมแบบใด","ch":["Haploid (n)","Diploid (2n)","Triploid (3n)","Tetraploid (4n)"],"ans":0,"why":"เมื่อสิ้นสุด meiosis I primary spermatocyte (2n) จะแบ่งเป็น secondary spermatocyte ที่มีชุดโครโมโซมเป็น haploid (n)","topic":"Spermatogenesis","g":2},{"q":"FSH มีบทบาทเกี่ยวข้องกับกระบวนการใดในระบบสืบพันธุ์เพศชาย","ch":["Stimulates sperm production in the seminiferous tubules","Stimulates testosterone production directly in Leydig cells","Controls GnRH release from the hypothalamus","Regulates blood sugar level"],"ans":0,"why":"FSH ช่วยเกี่ยวกับการสร้างสเปิร์มในหลอดสร้างอสุจิ (seminiferous tubules)","topic":"การควบคุมฮอร์โมนเพศชาย","g":2},{"q":"LH ควบคุมการผลิตฮอร์โมนใด และโดยเซลล์ชนิดใด","ch":["Testosterone (androgen), by the interstitial cells (Leydig cells)","FSH, by Sertoli cells","GnRH, by hypothalamus cells","Estrogen, by follicle cells"],"ans":0,"why":"LH ควบคุมการผลิตฮอร์โมน androgen (testosterone) โดยเซลล์ interstitial cells หรือ Leydig cells","topic":"การควบคุมฮอร์โมนเพศชาย","g":2},{"q":"ถ้าเพศชายมี spermatogonium จำนวน 20 เซลล์ เข้าสู่กระบวนการ spermatogenesis จนสมบูรณ์ จะได้สเปิร์มทั้งหมดกี่เซลล์","ch":["160 cells","80 cells","40 cells","20 cells"],"ans":0,"why":"spermatogonium แต่ละเซลล์ให้อสุจิ 2³ = 8 เซลล์ (เพราะแบ่งไมโทซิสก่อน 1 ครั้งได้ primary spermatocyte 2 เซลล์ แล้วแต่ละเซลล์ให้อสุจิ 4 เซลล์) ดังนั้น 8×20 = 160 เซลล์","topic":"คำนวณ Spermatogenesis","calc":true,"g":2},{"q":"ถ้าเพศชายมี primary spermatocyte จำนวน 20 เซลล์ จะได้สเปิร์มทั้งหมดกี่เซลล์","ch":["80 cells","160 cells","40 cells","20 cells"],"ans":0,"why":"primary spermatocyte ผ่าน meiosis I และ II ได้อสุจิ 2² = 4 เซลล์ต่อเซลล์ ดังนั้น 4×20 = 80 เซลล์","topic":"คำนวณ Spermatogenesis","calc":true,"g":2},{"q":"ถ้าเพศชายมี secondary spermatocyte จำนวน 50 เซลล์ จะได้สเปิร์มทั้งหมดกี่เซลล์","ch":["100 cells","200 cells","50 cells","400 cells"],"ans":0,"why":"secondary spermatocyte ผ่าน meiosis II เพียงขั้นตอนเดียว ได้อสุจิ 2¹ = 2 เซลล์ต่อเซลล์ ดังนั้น 2×50 = 100 เซลล์","topic":"คำนวณ Spermatogenesis","calc":true,"g":2},{"q":"ถ้ามี spermatid จำนวน 100 เซลล์ จะเปลี่ยนสภาพเป็นสเปิร์มได้กี่เซลล์","ch":["100 cells","200 cells","50 cells","400 cells"],"ans":0,"why":"spermatid ไม่มีการแบ่งเซลล์อีก เพียงเปลี่ยนรูปร่างเป็นสเปิร์มโดยตรง จึงได้จำนวนเท่าเดิมคือ 100 เซลล์","topic":"คำนวณ Spermatogenesis","calc":true,"g":2},{"q":"ถ้าต้องการอสุจิ 240 เซลล์ ต้องมี primary spermatocyte เริ่มต้นกี่เซลล์","ch":["60 cells","30 cells","120 cells","240 cells"],"ans":0,"why":"primary spermatocyte 1 เซลล์ ให้อสุจิ 2² = 4 เซลล์ ดังนั้น 240 ÷ 4 = 60 เซลล์","topic":"คำนวณ Spermatogenesis","calc":true,"g":2},{"q":"ถ้าต้องการอสุจิ 96 เซลล์ ต้องมี spermatogonium เริ่มต้นกี่เซลล์","ch":["12 cells","24 cells","48 cells","96 cells"],"ans":0,"why":"spermatogonium 1 เซลล์ ให้อสุจิ 2³ = 8 เซลล์ ดังนั้น 96 ÷ 8 = 12 เซลล์","topic":"คำนวณ Spermatogenesis","calc":true,"g":2},{"q":"ถ้าเพศชายมี spermatogonium จำนวน 5 เซลล์ จะได้สเปิร์มทั้งหมดกี่เซลล์","ch":["40 cells","20 cells","10 cells","5 cells"],"ans":0,"why":"2³ × 5 = 40 เซลล์ เพราะ spermatogonium แบ่งไมโทซิสก่อน 1 ครั้งแล้วเข้าสู่ meiosis ให้อสุจิ 8 เซลล์ต่อเซลล์ตั้งต้น","topic":"คำนวณ Spermatogenesis","calc":true,"g":2},{"q":"ถ้าเพศชายมี primary spermatocyte จำนวน 25 เซลล์ จะได้สเปิร์มทั้งหมดกี่เซลล์","ch":["100 cells","200 cells","50 cells","25 cells"],"ans":0,"why":"2² × 25 = 100 เซลล์ เพราะ primary spermatocyte ผ่าน meiosis I และ II ได้อสุจิ 4 เซลล์ต่อเซลล์ตั้งต้น","topic":"คำนวณ Spermatogenesis","calc":true,"g":2},{"q":"รังไข่ (ovary) ทำหน้าที่หลักอะไรในระบบสืบพันธุ์เพศหญิง","ch":["Produce egg cells and female sex hormones","Produce sperm cells and testosterone","Store the fertilized embryo only","Produce only progesterone but not eggs"],"ans":0,"why":"รังไข่ทำหน้าที่สร้างเซลล์ไข่ (egg cell) และฮอร์โมนเพศหญิง เช่น เอสโตรเจนและโปรเจสเตอโรน","topic":"กายวิภาครังไข่","g":3},{"q":"เซลล์ไข่เคลื่อนที่ผ่านท่อนำไข่ไปยังมดลูกได้ด้วยกลไกใด","ch":["Beating of cilia lining the oviduct","Active swimming movement of the egg itself","Muscular contraction of the vagina","Peristalsis of the cervix"],"ans":0,"why":"เซลล์เยื่อบุผิวของท่อนำไข่มีซีเรีย (cilia) ที่พัดโบกช่วยพาเซลล์ไข่เคลื่อนที่เข้าสู่มดลูก","topic":"ท่อนำไข่","g":3},{"q":"มดลูก (uterus) วางตัวอยู่ในตำแหน่งใดของอุ้งเชิงกราน","ch":["Behind the urinary bladder","In front of the urinary bladder","Above the ovary","Inside the vagina"],"ans":0,"why":"มดลูกอยู่ด้านหลังของกระเพาะปัสสาวะ","topic":"กายวิภาคมดลูก","g":3},{"q":"ผนังมดลูกชั้นในซึ่งเป็นบริเวณที่เอ็มบริโอฝังตัวและมีหลอดเลือดมาเลี้ยงจำนวนมากเรียกว่าอะไร","ch":["Endometrium","Myometrium","Perimetrium","Zona pellucida"],"ans":0,"why":"เยื่อบุมดลูก (endometrium) เป็นชั้นในสุดที่มีหลอดเลือดฝอยมากและเป็นบริเวณฝังตัวของเอ็มบริโอ","topic":"ผนังมดลูก","g":3},{"q":"ผนังมดลูกชั้นกล้ามเนื้อที่ทำหน้าที่บีบตัวในระหว่างการคลอดบุตรเรียกว่าอะไร","ch":["Myometrium","Endometrium","Cervix","Oviduct"],"ans":0,"why":"ชั้นกล้ามเนื้อของมดลูกทำหน้าที่บีบตัว (ดีดตัว) ในระหว่างการคลอด","topic":"ผนังมดลูก","g":3},{"q":"ส่วนล่างของมดลูกที่แคบลงและเปิดออกสู่ช่องคลอดเรียกว่าอะไร","ch":["Cervix","Fundus","Follicle","Oviduct"],"ans":0,"why":"ปากมดลูก (cervix) คือส่วนล่างที่แคบของมดลูกซึ่งเปิดออกสู่ช่องคลอด","topic":"กายวิภาคมดลูก","g":3},{"q":"โอโอโกเนียม (oogonium) มีลักษณะและการแบ่งเซลล์อย่างไรในระยะเอ็มบริโอ","ch":["A diploid stem cell that undergoes mitotic division to increase its number","A haploid cell that has completed meiosis II","A cell formed only after birth during puberty","A cell that never divides throughout life"],"ans":0,"why":"oogonium เป็นเซลล์ต้นกำเนิดไข่ (2n) ที่แบ่งเซลล์แบบ mitosis เพื่อเพิ่มจำนวนตั้งแต่ในระยะเอ็มบริโอ","topic":"Oogenesis","g":3},{"q":"ถ้ามี oogonium 4 เซลล์ พัฒนาผ่านกระบวนการสร้างไข่จนสมบูรณ์ทั้งหมด จะได้เซลล์ไข่ (ovum) ทั้งหมดกี่เซลล์","ch":["8 eggs","4 eggs","16 eggs","24 eggs"],"ans":0,"why":"1 oogonium แบ่งแบบไมโทซิสได้ 2 primary oocyte ซึ่งแต่ละเซลล์ให้ไข่ 1 เซลล์ ดังนั้น 1 oogonium ให้ไข่ 2 เซลล์ เมื่อมี 4 เซลล์ จะได้ไข่ 4×2 = 8 เซลล์","topic":"การคำนวณ Oogenesis","calc":true,"g":3},{"q":"primary spermatocyte 10 เซลล์ เทียบกับ primary oocyte 10 เซลล์ จะได้เซลล์สืบพันธุ์ (gamete) ต่างกันกี่เซลล์","ch":["30 cells","10 cells","40 cells","50 cells"],"ans":0,"why":"primary spermatocyte 10 เซลล์ ให้สเปิร์ม 10×4 = 40 เซลล์ ส่วน primary oocyte 10 เซลล์ ให้ไข่ 10×1 = 10 เซลล์ ผลต่าง = 40−10 = 30 เซลล์","topic":"เปรียบเทียบ Spermatogenesis-Oogenesis","calc":true,"g":3},{"q":"หากไม่มีการปฏิสนธิเกิดขึ้น secondary oocyte จะสลายไปภายในเวลาประมาณเท่าใดหลังการตกไข่","ch":["24 hours","7 days","48 hours","14 days"],"ans":0,"why":"ถ้าไม่เกิดการปฏิสนธิภายใน 24 ชั่วโมงหลังตกไข่ secondary oocyte จะสลายไป","topic":"Oogenesis","g":3},{"q":"corpus luteum หลั่งฮอร์โมนใดเป็นหลักเพื่อช่วยให้ผนังมดลูกหนาขึ้นพร้อมรับการฝังตัวของเอ็มบริโอ","ch":["Progesterone","FSH","LH","Testosterone"],"ans":0,"why":"corpus luteum หลั่งฮอร์โมน progesterone ซึ่งช่วยให้ผนังมดลูกหนาขึ้นเพื่อพร้อมรับการฝังตัวของเอ็มบริโอ","topic":"ฮอร์โมนกับรอบประจำเดือน","g":3},{"q":"หลังการตกไข่ ฮอร์โมน progesterone มีผลต่อการหลั่ง FSH และ LH อย่างไร","ch":["Suppresses FSH and LH secretion to prevent new follicle development","Stimulates more FSH and LH to develop a new follicle","Has no effect on FSH or LH","Converts FSH into LH"],"ans":0,"why":"progesterone ที่หลั่งหลังตกไข่จะไปลดการหลั่ง FSH และ LH เพื่อไม่ให้มีการเจริญของ follicle รอบใหม่","topic":"ฮอร์โมนกับรอบประจำเดือน","g":3},{"q":"ถ้าเกิดการตั้งครรภ์ รกจะสร้างฮอร์โมนใดไปกระตุ้นให้ corpus luteum เจริญต่อและสร้างฮอร์โมนต่อไป","ch":["hCG (human chorionic gonadotrophin)","FSH","LH","Oxytocin"],"ans":0,"why":"เมื่อมีการตั้งครรภ์ รกจะสร้างฮอร์โมน hCG ไปกระตุ้นให้ corpus luteum เจริญและสร้าง progesterone และ estrogen ต่อไป","topic":"ฮอร์โมนกับการตั้งครรภ์","g":3},{"q":"การเกิดประจำเดือน (menstruation) มีสาเหตุมาจากอะไร","ch":["Corpus luteum degenerates, causing progesterone and estrogen to drop and the endometrium to shed","Corpus luteum grows larger and produces more hormones","FSH and LH levels rise sharply","The oocyte completes fertilization"],"ans":0,"why":"ถ้าไม่มีการตั้งครรภ์ corpus luteum จะสลายไป ทำให้ระดับ progesterone และ estrogen ลดลง เยื่อบุมดลูกที่หนาขึ้นจะหลุดลอกออกมาเป็นประจำเดือน","topic":"รอบประจำเดือน","g":3},{"q":"ถ้ามี primary oocyte 20 เซลล์ เข้าสู่กระบวนการสร้างไข่จนสมบูรณ์ทุกเซลล์ จะได้เซลล์ไข่ (egg) ทั้งหมดกี่เซลล์","ch":["20 eggs","80 eggs","60 eggs","40 eggs"],"ans":0,"why":"1 primary oocyte ให้ไข่เพียง 1 เซลล์เท่านั้น (ต่างจากฝ่ายชายที่ได้ 4 เซลล์) ดังนั้น 20 เซลล์ จะได้ไข่ 20 เซลล์","topic":"การคำนวณ Oogenesis","calc":true,"g":3},{"q":"จากข้อข้างต้น ถ้ามี primary oocyte 15 เซลล์ พัฒนาจนสมบูรณ์ จะได้ polar body ทั้งหมดกี่เซลล์","ch":["45 polar bodies","15 polar bodies","60 polar bodies","30 polar bodies"],"ans":0,"why":"1 primary oocyte ให้ polar body รวม 3 เซลล์ (1 จาก meiosis I ที่แบ่งต่อ + 2 จาก meiosis II) ดังนั้น 15 เซลล์ จะได้ polar body 15×3 = 45 เซลล์","topic":"การคำนวณ Oogenesis","calc":true,"g":3},{"q":"ถ้ามี oogonium 6 เซลล์ พัฒนาผ่านกระบวนการสร้างไข่จนสมบูรณ์ทั้งหมด จะได้เซลล์ไข่รวมกับ polar body ทั้งหมดกี่เซลล์","ch":["48 cells","24 cells","36 cells","12 cells"],"ans":0,"why":"1 oogonium ให้ไข่ 2 เซลล์และ polar body 6 เซลล์ รวม 8 เซลล์ต่อ 1 oogonium เมื่อมี 6 เซลล์ จะได้ 6×8 = 48 เซลล์","topic":"การคำนวณ Oogenesis","calc":true,"g":3},{"q":"เพศชายหลั่งน้ำอสุจิ (semen) ต่อครั้งมีปริมาตรประมาณเท่าใด","ch":["2-5 mL","10-15 mL","0.5-1 mL","20-30 mL"],"ans":0,"why":"เพศชายหลั่งน้ำอสุจิประมาณครั้งละ 2-5 mL โดยมีสเปิร์มประมาณ 15 ล้านเซลล์ต่อ mL","topic":"การหลั่งอสุจิ","g":3},{"q":"ถ้าเพศชายหลั่งน้ำอสุจิปริมาณ 3 mL โดยมีความเข้มข้นของสเปิร์ม 15 ล้านเซลล์ต่อ mL จะมีสเปิร์มทั้งหมดกี่เซลล์","ch":["45 million cells","15 million cells","5 million cells","60 million cells"],"ans":0,"why":"จำนวนสเปิร์มทั้งหมด = ความเข้มข้น × ปริมาตร = 15 ล้านเซลล์/mL × 3 mL = 45 ล้านเซลล์","topic":"การคำนวณจำนวนสเปิร์ม","calc":true,"g":3},{"q":"จากสเปิร์มทั้งหมดที่หลั่งออกมา มีสเปิร์มประมาณกี่เซลล์ที่สามารถเคลื่อนที่ไปถึงท่อนำไข่ (oviduct) ได้","ch":["About 200 cells","About 2,000 cells","About 2 million cells","About 20 cells"],"ans":0,"why":"แม้จะหลั่งสเปิร์มออกมาหลายร้อยล้านเซลล์ แต่มีเพียงประมาณ 200 เซลล์เท่านั้นที่สามารถเข้าไปถึง oviduct ได้","topic":"การเดินทางของสเปิร์ม","g":3},{"q":"การปฏิสนธิ (fertilization) ระหว่างสเปิร์มและไข่เกิดขึ้นที่ตำแหน่งใด","ch":["Oviduct","Uterus","Vagina","Cervix"],"ans":0,"why":"การปฏิสนธิเกิดขึ้นเมื่อสเปิร์มรวมกับไข่ที่บริเวณท่อนำไข่ (oviduct)","topic":"การปฏิสนธิ","g":3},{"q":"เอนไซม์ที่หลั่งจาก acrosome ของสเปิร์มมีหน้าที่อะไร","ch":["Digest the zona pellucida so the sperm nucleus can enter the egg","Harden the zona pellucida to block other sperm","Provide energy for sperm movement","Stimulate the egg to complete mitosis"],"ans":0,"why":"สเปิร์มหลั่งเอนไซม์จาก acrosome เพื่อย่อยสารในชั้น zona pellucida ที่หุ้มเซลล์ไข่ ทำให้นิวเคลียสของสเปิร์มเข้าไปในไข่ได้","topic":"กลไกการปฏิสนธิ","g":3},{"q":"การที่สเปิร์มจับกับตัวรับ (sperm receptor) บนผิวไข่ กระตุ้นให้เกิดปฏิกิริยาใด","ch":["Acrosomal reaction","Cortical reaction only","Meiotic division of the egg","Implantation"],"ans":0,"why":"การจับกันของสเปิร์มกับ sperm receptor กระตุ้นให้เกิด acrosomal reaction ซึ่งช่วยให้สเปิร์มเจาะผ่านเข้าไปได้","topic":"กลไกการปฏิสนธิ","g":3},{"q":"ในกระบวนการ IVF เหตุใดจึงอาจมีการให้ฮอร์โมนแก่ผู้หญิงก่อนเก็บไข่","ch":["To stimulate multiple ovulation and increase the chance of pregnancy","To stop ovulation completely","To prevent embryo implantation","To destroy excess oogonia"],"ans":0,"why":"อาจมีการให้ฮอร์โมนกระตุ้นให้มีการตกไข่ครั้งละหลายเซลล์ เพื่อเพิ่มโอกาสในการมีบุตร","topic":"เทคโนโลยีช่วยการเจริญพันธุ์","g":3},{"q":"เทคนิค ICSI (intracytoplasmic sperm injection) ต่างจาก SUZI (subzonal sperm injection) อย่างไร","ch":["ICSI injects the sperm directly into the egg cytoplasm, while SUZI only places the sperm beneath the zona pellucida","ICSI is performed in the oviduct while SUZI is performed in the uterus","ICSI uses a zygote while SUZI uses a mature embryo","ICSI and SUZI are exactly the same procedure"],"ans":0,"why":"ICSI คือการฉีดอสุจิเข้าไปในไข่โดยตรงเพื่อให้แน่ใจว่าผสมกัน ส่วน SUZI เป็นการฉีดอสุจิให้หัวมันแตะเยื่อหุ้มเซลล์ไข่เท่านั้น","topic":"เทคโนโลยีช่วยการเจริญพันธุ์","g":3},{"q":"เทคนิค GIFT (gamete intra fallopian transfer) ทำอย่างไร","ch":["Placing sperm and egg together into the fallopian tube to fertilize naturally","Injecting a zygote into the fallopian tube","Mixing sperm and egg in a test tube before implantation","Removing the fallopian tube for fertilization"],"ans":0,"why":"GIFT คือการนำอสุจิและไข่เข้าไปผสมกันภายในท่อนำไข่โดยตรง","topic":"เทคโนโลยีช่วยการเจริญพันธุ์","g":3},{"q":"เทคนิค ZIFT (zygote intra fallopian transfer) แตกต่างจาก GIFT อย่างไร","ch":["ZIFT transfers an already-fertilized zygote into the fallopian tube, while GIFT transfers unfertilized gametes","ZIFT transfers gametes while GIFT transfers a zygote","ZIFT and GIFT are performed only in the uterus","ZIFT uses sperm alone without an egg"],"ans":0,"why":"ZIFT คือการนำไซโกต (zygote) ที่ผสมแล้วเข้าไปในท่อนำไข่ ในขณะที่ GIFT คือการนำอสุจิและไข่ (ที่ยังไม่ผสม) เข้าไปผสมกันในท่อนำไข่","topic":"เทคโนโลยีช่วยการเจริญพันธุ์","g":3},{"q":"หญิงตั้งครรภ์ที่มีอายุมากกว่ากี่ปี มีความเสี่ยงสูงขึ้นที่ลูกจะมีความผิดปกติของโครโมโซม เช่น กลุ่มอาการดาวน์","ch":["35 years","20 years","25 years","45 years"],"ans":0,"why":"ผู้หญิงที่ตั้งครรภ์เมื่ออายุมากกว่า 35 ปี มีความเสี่ยงสูงขึ้นที่ลูกจะมี chromosomal mutation เช่น Down syndrome","topic":"การตรวจความผิดปกติของทารกในครรภ์","g":3},{"q":"เทคโนโลยี Non-invasive prenatal testing (NIPT) ตรวจหา DNA ของทารกจากแหล่งใด","ch":["DNA circulating in the pregnant mother's blood","Amniotic fluid obtained by needle aspiration","Tissue from the chorionic villus","Cells scraped from the cervix"],"ans":0,"why":"NIPT อาศัยการตรวจเลือดของมารดาที่มี DNA ของทารกในครรภ์หมุนเวียนอยู่ ทำให้มีความเสี่ยงต่ำกว่าการเจาะน้ำคร่ำ","topic":"NIPT","g":3},{"q":"จากข้อมูลที่ว่า DNA ของทารกในกระแสเลือดมารดาคิดเป็นประมาณ 10-15% ของ DNA ที่หมุนเวียนทั้งหมด ถ้าตรวจพบ DNA หมุนเวียนทั้งหมด 1,000 หน่วย และเป็นสัดส่วนของทารก 12% จะมี DNA ของทารกประมาณกี่หน่วย","ch":["120 units","100 units","150 units","12 units"],"ans":0,"why":"DNA ของทารก = 12% × 1,000 หน่วย = 120 หน่วย","topic":"การคำนวณ NIPT","calc":true,"g":3},{"q":"การเปลี่ยนแปลงสภาพของเซลล์เพื่อไปทำหน้าที่เฉพาะ เช่น เซลล์กล้ามเนื้อ เซลล์เม็ดเลือดขาว เซลล์ประสาท เรียกว่าอะไร","ch":["Development","Differentiation","Growth","Gastrulation"],"ans":1,"why":"Differentiation คือการเปลี่ยนสภาพของเซลล์เพื่อไปทำหน้าที่เฉพาะ","topic":"นิยามการเจริญ","g":4},{"q":"กระบวนการพัฒนาของอวัยวะต่าง ๆ จนเกิดเป็นรูปร่างและโครงสร้างที่แน่นอน เรียกว่าอะไร","ch":["Growth","Cleavage","Morphogenesis","Fertilization"],"ans":2,"why":"Morphogenesis คือกระบวนการพัฒนาของอวัยวะจนเกิดรูปร่างและโครงสร้างที่แน่นอน","topic":"นิยามการเจริญ","g":4},{"q":"ไข่ของนกและสัตว์เลื้อยคลาน ซึ่งมีไข่แดงสะสมอยู่มาก จัดเป็นไข่ชนิดใด","ch":["Microlecithal egg","Mesolecithal egg","Macrolecithal egg","Isolecithal egg"],"ans":2,"why":"นกและสัตว์เลื้อยคลานมีไข่แดงมาก จัดเป็น macrolecithal egg","topic":"ชนิดไข่ตามปริมาณไข่แดง","g":4},{"q":"ถ้าไซโกต 1 เซลล์ แบ่งคลีเวจไปแล้ว 3 ครั้ง จะได้เซลล์ทั้งหมดกี่เซลล์","ch":["6","8","9","3"],"ans":1,"why":"จำนวนเซลล์จากคลีเวจคำนวณจาก 2 ยกกำลังจำนวนครั้งที่แบ่ง คือ 2^3 = 8 เซลล์","topic":"คำนวณจำนวนเซลล์คลีเวจ","calc":true,"g":4},{"q":"ในระยะคลีเวจ วัฏจักรเซลล์ (cell cycle) จะข้ามระยะใดไป มีเพียง S และ M phase","ch":["S and M phases","G1 and G2 phases","only M phase","only S phase"],"ans":1,"why":"ระยะคลีเวจแบ่งเซลล์แบบ mitotic โดยมีเฉพาะ S (DNA synthesis) และ M (mitosis) phase ข้าม G1 และ G2","topic":"ลักษณะคลีเวจ","g":4},{"q":"ช่องว่างที่มีของเหลวบรรจุอยู่บริเวณกึ่งกลางเอ็มบริโอระยะบลาสทูลา เรียกว่าอะไร","ch":["Blastomere","Blastocoel","Blastopore","Archenteron"],"ans":1,"why":"Blastocoel คือช่องว่างที่มีของเหลวบรรจุอยู่กลางบลาสทูลา เกิดขึ้นช่วงการแบ่งตัวครั้งที่ 5-7","topic":"โครงสร้างระยะคลีเวจ","g":4},{"q":"ไซโกต 1 เซลล์ แบ่งคลีเวจไปแล้ว 5 ครั้ง จะได้บลาสโตเมียร์กี่เซลล์","ch":["16","32","10","64"],"ans":1,"why":"จำนวนเซลล์ = 2 ยกกำลังจำนวนครั้งที่แบ่ง = 2^5 = 32 เซลล์","topic":"คำนวณจำนวนเซลล์คลีเวจ","calc":true,"g":4},{"q":"ถ้านับจำนวนบลาสโตเมียร์ได้ 64 เซลล์ แสดงว่าผ่านการแบ่งคลีเวจมาแล้วกี่ครั้ง","ch":["8","6","32","64"],"ans":1,"why":"จาก 2^n = 64 จะได้ n = 6 ครั้ง (2^6 = 64)","topic":"คำนวณจำนวนครั้งคลีเวจ","calc":true,"g":4},{"q":"การจัดเรียงตัวของเนื้อเยื่อในระยะแกสทรูเลชัน ทำให้เกิดเนื้อเยื่อ (germ layer) ทั้งหมดกี่ชั้น","ch":["2","3","4","1"],"ans":1,"why":"เกิดเนื้อเยื่อ 3 ชั้น คือ ectoderm, mesoderm และ endoderm","topic":"นับจำนวนชั้นเนื้อเยื่อ","calc":true,"g":4},{"q":"กบมีการปฏิสนธิแบบใด และวางไข่ที่ใด","ch":["Internal fertilization on land","External fertilization in water","External fertilization on land","Internal fertilization in water"],"ans":1,"why":"กบเป็นสัตว์สะเทินน้ำสะเทินบก ปฏิสนธิภายนอก ผสมพันธุ์และวางไข่ในน้ำ","topic":"การเจริญของกบ","g":4},{"q":"ตัวอ่อนกบที่ฟักออกจากไข่ ก่อนเข้าสู่กระบวนการ metamorphosis เรียกว่าอะไร","ch":["Blastodisc","Tadpole","Blastocyst","Gastrula"],"ans":1,"why":"ตัวอ่อนกบที่ฟักออกจากไข่เรียกว่าลูกอ๊อด (tadpole) แล้วจึงเกิด metamorphosis กลายเป็นลูกกบ","topic":"การเจริญของกบ","g":4},{"q":"กระบวนการที่ลูกอ๊อดเปลี่ยนแปลงรูปร่างจนได้ลูกกบที่คล้ายตัวเต็มวัย เรียกว่าอะไร","ch":["Gastrulation","Metamorphosis","Organogenesis","Cleavage"],"ans":1,"why":"Metamorphosis คือกระบวนการเปลี่ยนแปลงรูปร่างของลูกอ๊อดจนได้ลูกกบที่คล้ายตัวเต็มวัย","topic":"การเจริญของกบ","g":4},{"q":"บริเวณเล็ก ๆ ในไข่ไก่ที่มีนิวเคลียสและไซโทพลาซึม ซึ่งเป็นจุดเกิดการปฏิสนธิและเจริญเป็นเอ็มบริโอ เรียกว่าอะไร","ch":["Blastocoel","Blastodisc","Blastomere","Blastocyst"],"ans":1,"why":"Blastodisc คือบริเวณเล็ก ๆ ที่มีนิวเคลียสและไซโทพลาซึมในไข่ไก่ เป็นจุดปฏิสนธิและเจริญเป็นเอ็มบริโอ","topic":"การเจริญของไก่","g":4},{"q":"ถุงหุ้มตัวอ่อนชั้นในสุดที่มีของเหลวบรรจุอยู่ ทำหน้าที่ป้องกันการกระทบกระเทือนและป้องกันไม่ให้เอ็มบริโอแห้ง คือโครงสร้างใด","ch":["Chorion","Amnion","Yolk sac","Allantois"],"ans":1,"why":"Amnion เป็นถุงชั้นในที่ห่อหุ้มเอ็มบริโอ มีของเหลวบรรจุอยู่ ป้องกันการกระทบกระเทือนและป้องกันเอ็มบริโอแห้ง","topic":"ถุงหุ้มตัวอ่อน","g":4},{"q":"ถุงหุ้มตัวอ่อนชั้นนอกสุดที่อยู่ใกล้เปลือกไข่ ทำหน้าที่แลกเปลี่ยนแก๊ส คือโครงสร้างใด","ch":["Amnion","Chorion","Yolk sac","Allantois"],"ans":1,"why":"Chorion เป็นถุงชั้นนอกที่ห่อหุ้มเอ็มบริโอ อยู่ใกล้เปลือกไข่ ทำหน้าที่แลกเปลี่ยนแก๊ส","topic":"ถุงหุ้มตัวอ่อน","g":4},{"q":"ถุงหุ้มตัวอ่อนที่เป็นแหล่งสะสมอาหารสำหรับเอ็มบริโอไก่ คือโครงสร้างใด","ch":["Amnion","Yolk sac","Chorion","Allantois"],"ans":1,"why":"Yolk sac คือถุงไข่แดง ทำหน้าที่เป็นแหล่งอาหารสำหรับเอ็มบริโอ","topic":"ถุงหุ้มตัวอ่อน","g":4},{"q":"ถุงหุ้มตัวอ่อน (extraembryonic membrane) ของไก่ที่กล่าวถึงในบทเรียนมีทั้งหมดกี่ชนิด","ch":["3","4","5","2"],"ans":1,"why":"มีทั้งหมด 4 ชนิด ได้แก่ amnion, chorion, yolk sac และ allantois","topic":"นับจำนวนถุงหุ้มตัวอ่อน","calc":true,"g":4},{"q":"กระบวนการใดที่พบในการเจริญของกบ แต่ไม่พบในการเจริญของไก่","ch":["Cleavage","Metamorphosis","Gastrulation","Organogenesis"],"ans":1,"why":"ไก่ไม่มีกระบวนการ metamorphosis ต่างจากกบซึ่งมีการเปลี่ยนแปลงจากลูกอ๊อดเป็นลูกกบ","topic":"เปรียบเทียบไก่กับกบ","g":4},{"q":"ไก่มีการปฏิสนธิแบบใด","ch":["External fertilization","Internal fertilization","Self-fertilization","No fertilization"],"ans":1,"why":"ไก่มีการปฏิสนธิภายในและวางไข่บนบก","topic":"การเจริญของไก่","g":4},{"q":"การปฏิสนธิของมนุษย์เกิดขึ้นที่บริเวณใด","ch":["Uterus","Oviduct","Ovary","Endometrium"],"ans":1,"why":"การปฏิสนธิของมนุษย์เกิดที่ท่อนำไข่ (oviduct) แล้วจึงเจริญเป็นไซโกตและเอ็มบริโอ","topic":"การเจริญของมนุษย์","g":4},{"q":"เอ็มบริโอมนุษย์สิ้นสุดระยะเอ็มบริโอและเข้าสู่ระยะฟีตัส (fetus) เมื่อสัปดาห์ที่เท่าใด","ch":["Week 4","Week 8","Week 2","Week 16"],"ans":1,"why":"สัปดาห์ที่ 8 เจริญเติบโตและมีอวัยวะครบ สิ้นสุดระยะเอ็มบริโอ เข้าสู่ระยะฟีตัส","topic":"ลำดับเวลาการเจริญของมนุษย์","g":4},{"q":"โครงสร้างที่พัฒนามาจากคอเรียนที่ล้อมรอบเอ็มบริโอมนุษย์ ทำหน้าที่แลกเปลี่ยนสารระหว่างแม่กับลูก คือโครงสร้างใด","ch":["Amnion","Placenta","Yolk sac","Allantois"],"ans":1,"why":"ขณะเอ็มบริโอฝังตัว จะสร้างคอเรียนล้อมรอบ ซึ่งต่อมาพัฒนาไปเป็นรก (placenta) ทำหน้าที่แลกเปลี่ยนสารระหว่างแม่กับลูก","topic":"รกและสายสะดือ","g":4},{"q":"เนื้อเยื่อชั้น mesoderm เจริญไปเป็นอวัยวะใดต่อไปนี้","ch":["Brain and spinal cord","Muscle and notochord","Lining of respiratory tract","Epidermis and sweat glands"],"ans":1,"why":"Mesoderm เจริญไปเป็นกล้ามเนื้อและโนโททคอร์ด รวมถึงระบบกระดูกและกล้ามเนื้อ ระบบหมุนเวียนเลือด","topic":"อวัยวะจากชั้นเนื้อเยื่อ","g":4},{"q":"เนื้อเยื่อชั้น endoderm เจริญไปเป็นอวัยวะใดต่อไปนี้","ch":["Brain and spinal cord","Liver and pancreas","Muscle and notochord","Epidermis"],"ans":1,"why":"Endoderm เจริญไปเป็นเยื่อบุอวัยวะในทางเดินอาหาร ตับและตับอ่อน ต่อมไทรอยด์และพาราไทรอยด์","topic":"อวัยวะจากชั้นเนื้อเยื่อ","g":4}], GROUP={"1": "เซลล์เดียว + ไม่อาศัยเพศ", "2": "อาศัยเพศ + เพศชาย", "3": "เพศหญิง + ปฏิสนธิ", "4": "การเจริญของสัตว์"};
+var mode=0, pool=[], idx=0, score=0, answered=false, wrongIds=[];
+
+function $(s){ return document.getElementById(s); }
+function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i];a[i]=a[j];a[j]=t; } return a; }
+
+function buildPool(){
+  var all=QS.map(function(q,i){ return i; });
+  if(mode===0){ pool=shuffle(all.slice()); }                       // ทั้งหมด สุ่ม
+  else if(mode===5){ pool=shuffle(all.filter(function(i){return QS[i].calc;})); }
+  else if(mode===6){ pool=shuffle(all.filter(function(i){return QS[i].img;})); }
+  else { pool=shuffle(all.filter(function(i){return QS[i].g===mode;})); }
+  idx=0; score=0; wrongIds=[];
+}
+
+function render(){
+  var box=$('quiz');
+  if(idx>=pool.length){
+    var pct=pool.length?Math.round(score/pool.length*100):0;
+    box.innerHTML='<div class="done"><div class="big">'+score+' / '+pool.length+'</div>'+
+      '<p>ตอบถูก '+pct+'%</p>'+
+      (wrongIds.length?'<p style="color:var(--mut);font-size:.88rem">ข้อที่ตอบผิด '+wrongIds.length+' ข้อ กดปุ่มด้านล่างเพื่อฝึกเฉพาะข้อที่ผิด</p>':'')+
+      '<div class="nav" style="justify-content:center">'+
+      (wrongIds.length?'<button class="btn" id="b-again">ฝึกเฉพาะข้อที่ผิด</button>':'')+
+      '<button class="btn ghost" id="b-restart">เริ่มใหม่ทั้งหมด</button></div></div>';
+    if($('b-again')) $('b-again').onclick=function(){ pool=shuffle(wrongIds.slice()); idx=0; score=0; wrongIds=[]; render(); };
+    $('b-restart').onclick=function(){ buildPool(); render(); };
+    $('prog').textContent='จบชุดแล้ว';
+    return;
+  }
+  var q=QS[pool[idx]];
+  answered=false;
+  var order=shuffle(q.ch.map(function(c,i){ return i; }));          // สลับตัวเลือกทุกครั้ง
+  var K='ABCDE';
+  var h='<div class="qhead"><span class="pill">'+esc(GROUP[q.g]||'')+'</span>';
+  if(q.topic) h+='<span class="pill">'+esc(q.topic)+'</span>';
+  if(q.calc) h+='<span class="pill calc">คำนวณ</span>';
+  h+='</div><div class="q">'+esc(q.q)+'</div>';
+  if(q.img) h+='<figure class="qimg"><img loading="lazy" alt="ภาพประกอบคำถาม" src="'+
+    encodeURIComponent('รูปสไลด์')+'/_p'+String(q.img).padStart(3,'0')+'.jpg">'+
+    '<figcaption>ดูภาพประกอบก่อนตอบ</figcaption></figure>';
+  h+='<div class="opts" id="opts">';
+  order.forEach(function(oi,n){
+    h+='<button class="opt" data-i="'+oi+'"><span class="k">'+K[n]+'.</span> '+esc(q.ch[oi])+'</button>';
+  });
+  h+='</div><div class="fb" id="fb"></div>'+
+     '<div class="nav"><button class="btn" id="b-next" disabled>ข้อต่อไป</button>'+
+     '<button class="btn ghost" id="b-skip">ข้าม</button></div>';
+  box.innerHTML=h;
+  // ⚠️ ผูก event ในกล่องคำถามเท่านั้น ห้าม querySelector ลอย ๆ ทั้งหน้า
+  [].forEach.call(box.querySelectorAll('#opts .opt'), function(b){
+    b.onclick=function(){ grade(+b.dataset.i); };
+  });
+  $('b-next').onclick=function(){ idx++; render(); };
+  $('b-skip').onclick=function(){ idx++; render(); };
+  $('prog').innerHTML='ข้อ <b>'+(idx+1)+'</b> / '+pool.length+' · ถูก <b>'+score+'</b>';
+}
+
+function grade(pick){
+  if(answered) return;
+  answered=true;
+  var box=$('quiz'), q=QS[pool[idx]];
+  try{
+    var ok = (pick===q.ans);
+    if(ok) score++; else wrongIds.push(pool[idx]);
+    [].forEach.call(box.querySelectorAll('#opts .opt'), function(b){
+      b.disabled=true;
+      var i=+b.dataset.i;
+      // ⚠️ classList.add('') โยน SyntaxError -> ต้องเช็คก่อน
+      var cls = (i===q.ans) ? 'right' : (i===pick ? 'wrong' : '');
+      if(cls) b.classList.add(cls);
+    });
+    var fb=$('fb');
+    fb.className='fb show '+(ok?'ok':'no');
+    fb.innerHTML='<b>'+(ok?'ถูกต้อง':'ยังไม่ถูก — คำตอบคือ '+esc(q.ch[q.ans]))+'</b><br>'+esc(q.why);
+  } finally {
+    // ⚠️ ต้องอยู่ใน finally ไม่งั้นถ้าพังกลางคัน ปุ่มไปต่อจะค้างกดไม่ได้
+    if($('b-next')) $('b-next').disabled=false;
+    $('prog').innerHTML='ข้อ <b>'+(idx+1)+'</b> / '+pool.length+' · ถูก <b>'+score+'</b>';
+  }
+}
+
+function esc(s){ return String(s).replace(/[&<>"]/g,function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+[].forEach.call(document.querySelectorAll('.mode'), function(b){
+  b.onclick=function(){
+    [].forEach.call(document.querySelectorAll('.mode'),function(x){x.classList.remove('on')});
+    b.classList.add('on');
+    mode=+b.dataset.m; buildPool(); render(); window.scrollTo(0,0);
+  };
+});
+buildPool(); render();
+</script>
+<!--KIT-UI v2.7 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<script>
+/* =============================================================================
+   _kit/ui-controls.js  —  KIT UI  v1.0
+   แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
+     🌙/☀️  โหมดมืด / สว่าง   (จำค่าไว้ใน localStorage)
+     A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
+     ✏️  ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
+     🧮  เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
+
+   ── วิธีใช้ ────────────────────────────────────────────────────────────────
+   ห้ามแก้โค้ดนี้ในไฟล์ widget!  แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
+       pwsh -File _kit/apply-ui.ps1
+   สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
+   (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
+
+   !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
+      เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
+
+   ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
+   ใส่แอตทริบิวต์ที่ tag body:  data-tools="pen,calc"  = บังคับเปิด
+                              data-tools="none"      = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
+   ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
+              หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
+   ============================================================================= */
+(function(){
+if(window.__KITUI__) return; window.__KITUI__='2.7';
+
+/* ---------- helper ---------- */
+const D=document, R=D.documentElement;
+const get=k=>{try{return localStorage.getItem('kitui-'+k)}catch(e){return null}};
+const set=(k,v)=>{try{localStorage.setItem('kitui-'+k,v)}catch(e){}};
+const el=(t,c,h)=>{const e=D.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
+
+/* =============================================================================
+   1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
+   ============================================================================= */
+const CSS=`
+/* ===== DARK TOKENS (คู่กับ _kit/design-tokens.css) ===== */
+:root[data-theme="dark"]{
+  --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
+  --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
+  --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
+  --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
+  --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
+}
+:root[data-theme="dark"] body{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f172a}
+:root[data-theme="dark"] body[data-subject="physics"]{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f1220}
+:root[data-theme="dark"] body[data-subject="bio"]{--accent:#4ade80;--accent-head:#bbf7d0;--accent-ink:#86efac;--accent-soft:#0f2a1a;--accent-bd:#256b41;--accent-chip:#14532d;--accent-ghost:#15803d;--bg:#0d1912}
+:root[data-theme="dark"] body[data-subject="chem"]{--accent:#fb923c;--accent-head:#fed7aa;--accent-ink:#fdba74;--accent-soft:#2b1a0c;--accent-bd:#8a3d12;--accent-chip:#6d2c10;--accent-ghost:#c2410c;--bg:#1a130c}
+:root[data-theme="dark"] body[data-subject="christ"]{--accent:#a78bfa;--accent-head:#ddd6fe;--accent-ink:#c4b5fd;--accent-soft:#241a3d;--accent-bd:#5b21b6;--accent-chip:#4c1d95;--accent-ghost:#6d28d9;--bg:#16121f}
+:root[data-theme="dark"] body[data-subject="islam"]{--accent:#2dd4bf;--accent-head:#99f6e4;--accent-ink:#5eead4;--accent-soft:#0d2b28;--accent-bd:#12615a;--accent-chip:#134e4a;--accent-ghost:#0f766e;--bg:#0c1917}
+:root[data-theme="dark"] body[data-subject="history"]{--accent:#fbbf24;--accent-head:#fde68a;--accent-ink:#fcd34d;--accent-soft:#2a1f0a;--accent-bd:#8a4b0c;--accent-chip:#6d3a0a;--accent-ghost:#b45309;--bg:#191509}
+:root[data-theme="dark"] body[data-subject="math"]{--accent:#38bdf8;--accent-head:#bae6fd;--accent-ink:#7dd3fc;--accent-soft:#0c2434;--accent-bd:#0b5a80;--accent-chip:#0c4a6e;--accent-ghost:#0369a1;--bg:#0b1620}
+:root[data-theme="dark"] body[data-subject="eng"]{--accent:#f472b6;--accent-head:#fbcfe8;--accent-ink:#f9a8d4;--accent-soft:#2e1122;--accent-bd:#8d1748;--accent-chip:#731839;--accent-ghost:#be185d;--bg:#1c0f16}
+:root[data-theme="dark"] body[data-subject="thai"]{--accent:#f87171;--accent-head:#fecaca;--accent-ink:#fca5a5;--accent-soft:#2d1414;--accent-bd:#8d2020;--accent-chip:#7f1d1d;--accent-ghost:#b91c1c;--bg:#1a0f0f}
+:root[data-theme="dark"] img,:root[data-theme="dark"] .svg-box{filter:brightness(.92)}
+/* ช่องกรอก/ดรอปดาวน์ที่ widget เก่ากำหนดพื้นขาวตายตัวไว้ */
+:root[data-theme="dark"] select,:root[data-theme="dark"] textarea,
+:root[data-theme="dark"] input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=color])
+{background-color:var(--soft);color:var(--ink);border-color:var(--line)}
+
+/* ===== แถบเครื่องมือลอย ===== */
+#kitui-bar{position:fixed;right:10px;bottom:10px;z-index:99990;display:flex;gap:6px;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
+#kitui-bar button{border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;
+  font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
+  align-items:center;justify-content:center;font-weight:700}
+#kitui-bar button:hover{background:var(--soft)}
+#kitui-bar button:active{transform:scale(.93)}
+#kitui-bar button.on{background:var(--accent);color:#fff}
+#kitui-bar .kitui-sep{width:1px;height:22px;background:var(--line);flex:0 0 1px}
+#kitui-bar .kitui-fs{font-size:11px;color:var(--muted);min-width:34px;text-align:center;font-weight:700}
+#kitui-bar.hidden > *:not(#kitui-grip){display:none}
+#kitui-grip{font-size:17px}
+
+/* ===== แผงลอย (ที่ทด / เครื่องคิดเลข) ===== */
+.kitui-sheet{position:fixed;left:0;right:0;bottom:0;z-index:99991;background:var(--card);
+  border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
+  display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
+  height:52vh;max-height:92vh;min-height:180px}
+.kitui-sheet.open{display:flex}
+.kitui-sheet.full{height:100vh;border-radius:0}
+.kitui-head{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--line);
+  flex-wrap:wrap;touch-action:none;cursor:ns-resize}
+.kitui-head b{font-size:.9rem;color:var(--accent-ink);margin-right:2px;white-space:nowrap}
+.kitui-head button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;
+  padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
+.kitui-head button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.kitui-head .kitui-spacer{flex:1}
+.kitui-sw{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;min-height:0}
+.kitui-sw.on{border-color:var(--ink);transform:scale(1.12)}
+.kitui-padwrap{flex:1;position:relative;overflow:hidden;background:var(--soft)}
+.kitui-padwrap canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+:root[data-theme="dark"] .kitui-padwrap{background:#0c1220}
+
+/* ===== เครื่องคิดเลข ===== */
+#kitui-calc{height:auto;max-height:90vh}
+.kitui-disp{padding:8px 12px;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);
+  border-bottom:1px solid var(--line)}
+.kitui-disp .ex{font-size:.95rem;color:var(--muted);min-height:1.3em;word-break:break-all}
+.kitui-disp .rs{font-size:1.6rem;font-weight:700;color:var(--accent-ink);word-break:break-all}
+.kitui-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:7px}
+.kitui-keys button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:9px;
+  font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
+.kitui-keys button:active{transform:scale(.95)}
+.kitui-keys button.fn{font-size:.8rem;color:var(--accent-ink)}
+.kitui-keys button.op{background:var(--accent-soft);color:var(--accent-ink)}
+.kitui-keys button.eq{background:var(--accent);color:#fff;grid-row:span 2}
+.kitui-keys button.del{background:var(--hot-bg);color:var(--hot-ink)}
+.kitui-keys button.w3{grid-column:span 3}
+@media(max-width:420px){.kitui-keys button{font-size:.88rem;min-height:40px}.kitui-keys button.fn{font-size:.72rem}}
+@media(min-width:760px){
+  .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
+  .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
+  #kitui-pad{width:560px}
+}
+@media print{#kitui-bar,.kitui-sheet{display:none!important}}
+`;
+const st=el('style'); st.id='kitui-style'; st.textContent=CSS; D.head.appendChild(st);
+
+/* -----------------------------------------------------------------------------
+   1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
+   widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
+   พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
+   แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
+   เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
+----------------------------------------------------------------------------- */
+/* สีพาสเทลสว่าง -> สีเข้มที่ยังคง "เฉดเดิม" ไว้ (เขียว=ถูก / แดง=ผิด ต้องยังแยกออก)
+   ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
+function darken(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
+  /* ⚠️ ห้ามใช้ saturation ของ HSL ตรง ๆ ตัดสิน: ที่ความสว่างเกือบ 1 ตัวหารจะเล็กมาก
+     ทำให้สีที่แทบเป็นสีขาว (เช่น #fdf8f4) ได้ค่าอิ่มสีสูงลิ่ว แล้วกลายเป็นสีน้ำตาลจัดตอนกดให้เข้ม
+     ให้ดูจาก "ช่วงห่างของแม่สี" (chroma) แทน แล้วแปลงเป็นความอิ่มสีแบบไล่ระดับ */
+  const s = Math.min(.45, Math.max(.08, d*4));
+  const l = d<.02 ? .13 : .17;                       /* เทา/ขาวล้วนให้เข้มกว่าสีนิดหน่อย */
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+function darkFix(){
+  const out=[], seen=new Set();
+  const take=r=>{
+    if(!r.style || !r.selectorText) return;
+    if(r.selectorText.indexOf('kitui')>-1) return;               /* ของเราเองใช้ token อยู่แล้ว */
+    const bg=r.style.backgroundColor;
+    if(!bg || bg.indexOf('var(')>-1) return;
+    const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
+    if(!m) return;
+    if(m[4]!==undefined && +m[4]<0.6) return;                    /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
+    const cr=+m[1], cg=+m[2], cb=+m[3];
+    if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return;       /* ไม่สว่างพอ ไม่ต้องยุ่ง */
+    const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
+    const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
+    let css='background-color:'+repl;
+    /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
+    const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
+    out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
+  };
+  /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
+        ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
+  const visit=rules=>{
+    for(let i=0;i<rules.length;i++){
+      const r=rules[i];
+      if(r.selectorText) take(r);
+      if(r.cssRules && r.cssRules.length) visit(r.cssRules);     /* @media / @supports / nesting */
+    }
+  };
+  for(let i=0;i<D.styleSheets.length;i++){
+    let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; }   /* ข้ามชีตข้ามโดเมน */
+    if(rr) visit(rr);
+  }
+  if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
+  return out.length;
+}
+try{ window.__KITUI_DARKFIX__ = (D.body.getAttribute('data-kit-theme')==='off') ? 'locked' : darkFix(); }
+catch(e){ window.__KITUI_DARKFIX__='err:'+e.message; }
+
+/* darkFix ข้างบนซ่อมได้เฉพาะสีที่เขียนตายตัวในไฟล์ CSS
+   แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
+   ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
+   จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
+const rgbOf=c=>{const m=c&&c.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null;};
+const lumOf=v=>v?(0.2126*v[0]+0.7152*v[1]+0.0722*v[2])/255:null;
+/* ตรงข้ามกับ darken(): ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
+   (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
+function lighten(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  if(d<0.04) return 'var(--ink)';                    /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
+  let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
+  const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
+  const s=Math.min(.92,Math.max(.55,s0)), l=.72;
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+const SKIP={CANVAS:1,IMG:1,VIDEO:1,SVG:1,IFRAME:1,PICTURE:1,OBJECT:1};
+const OBS_OPT={childList:true,subtree:true,attributes:true,attributeFilter:['class','style']};
+let patched=[], obs=null;
+function elementFix(){
+  /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
+        ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
+  if(obs) obs.disconnect();
+  try{ elementFixCore(); } finally { if(obs) obs.observe(D.body,OBS_OPT); }
+}
+function elementFixCore(){
+  if(D.body.getAttribute('data-kit-theme')==='off') return;   /* หน้าที่ล็อกธีมไว้ ห้ามไปยุ่งสี */
+  /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
+     ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
+     จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
+  if(R.getAttribute('data-theme')!=='dark'){
+    patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
+    patched=[];
+    return;
+  }
+  /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
+     ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
+  /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
+  const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
+  for(let i=0;i<all.length;i++){
+    const e=all[i];
+    if(e.id&&e.id.indexOf('kitui')===0) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(SKIP[e.tagName]) continue;                      /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
+    const s=getComputedStyle(e);
+    const bg=rgbOf(s.backgroundColor);
+    if(!bg || bg[3]<0.6) continue;                     /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
+    if(lumOf(bg)<0.72) continue;                       /* เข้มพออยู่แล้ว */
+    /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
+    e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
+    const fg=rgbOf(s.color);
+    if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important');  /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
+    patched.push(e);
+  }
+  /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
+     ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
+  const bgCache=new Map();
+  const effBg=n=>{
+    for(let p=n;p;p=p.parentElement){
+      if(bgCache.has(p)) return bgCache.get(p);
+      const b=rgbOf(getComputedStyle(p).backgroundColor);
+      if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
+    }
+    return null;
+  };
+  for(let i=2;i<all.length;i++){
+    const e=all[i];
+    if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(e.style.color) continue;                         /* จัดการไปแล้วในรอบแรก */
+    if(!e.textContent || !e.textContent.trim()) continue;
+    const fg=rgbOf(getComputedStyle(e).color);
+    if(!fg || lumOf(fg)>=0.45) continue;                 /* ตัวอักษรสว่างอยู่แล้ว */
+    const bg=effBg(e);
+    if(!bg || lumOf(bg)>=0.5) continue;                  /* พื้นยังสว่าง อ่านออกอยู่ */
+    e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
+    patched.push(e);
+  }
+}
+let efT=0;
+const scheduleFix=()=>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
+try{
+  obs=new MutationObserver(scheduleFix);
+  obs.observe(D.body,OBS_OPT);
+}catch(e){}
+
+/* =============================================================================
+   2) ธีม + ขนาดตัวอักษร
+   ============================================================================= */
+const FS=[.85,1,1.15,1.3,1.5], FSNAME=['เล็กสุด','เล็ก','ปกติ','ใหญ่','ใหญ่สุด'];
+let fsIdx=parseInt(get('fs')); if(isNaN(fsIdx)||fsIdx<0||fsIdx>4) fsIdx=1;
+let theme=get('theme') || (matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+
+/* หน้าที่ออกแบบธีมมาเองครบแล้ว (เช่น "หนังสือทบทวน" พื้นเข้มทั้งเล่ม) ให้ปิดระบบธีมของ KIT UI
+   ไม่งั้นโทเคน --bg/--ink ของเราจะไปทับสีที่หน้านั้นตั้งไว้ แล้วหน้าเพี้ยน
+   ใส่ที่ tag body:  data-kit-theme="off"   (ปุ่มปรับขนาดตัวอักษรยังใช้ได้ตามปกติ) */
+const themeLock = D.body.getAttribute('data-kit-theme')==='off';
+
+function applyTheme(){
+  if(themeLock) return;
+  R.setAttribute('data-theme',theme);
+  R.style.colorScheme = theme==='dark'?'dark':'light';   /* ให้ select/input เป็นสีเข้มด้วย */
+  const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
+  set('theme',theme);
+  clearTimeout(efT);                                   /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
+  if(typeof elementFix==='function') elementFix();
+  /* ⚠️ ห้ามอ้างถึงตัวแปรของส่วน "ที่ทด" ตรงนี้!
+     applyTheme() ถูกเรียกก่อนที่ `let pad` ในส่วนที่ 4 จะทำงาน → ชน temporal dead zone
+     แล้ว ReferenceError จะทำให้สคริปต์ตายทั้งก้อน (ปุ่มขนาดอักษร/ที่ทด/เครื่องคิดเลขหายหมด)
+     ใช้วิธียิง event แทน ใครสนใจค่อยไปดักฟังเอง */
+  try{ D.dispatchEvent(new CustomEvent('kitui-theme')); }catch(e){}
+}
+function applyFS(){
+  R.style.fontSize=(16*FS[fsIdx])+'px';
+  const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
+  set('fs',fsIdx);
+}
+
+/* =============================================================================
+   3) แถบเครื่องมือ
+   ============================================================================= */
+const subj=(D.body.getAttribute('data-subject')||'').toLowerCase();
+/* หลาย widget ไม่ได้ใส่ data-subject ที่ <body> → เดาจากโฟลเดอร์ที่ไฟล์อยู่ด้วย */
+const inPath=/\/(physics|math|chemist)\//i.test(decodeURIComponent(location.pathname));
+const tAttr=D.body.getAttribute('data-tools');
+const wantTools = tAttr!=null ? tAttr.toLowerCase()
+                : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
+const hasPen  = wantTools.includes('pen');
+const hasCalc = wantTools.includes('calc');
+
+const bar=el('div'); bar.id='kitui-bar';
+bar.innerHTML =
+  `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
+  (themeLock ? '' : `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button><span class="kitui-sep"></span>`)+
+  `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
+  `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
+  `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
+  (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
+  (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
+D.body.appendChild(bar);
+
+if(!themeLock) D.getElementById('kitui-theme').onclick=()=>{theme=theme==='dark'?'light':'dark';applyTheme();};
+D.getElementById('kitui-fsup').onclick=()=>{if(fsIdx<4){fsIdx++;applyFS();}};
+D.getElementById('kitui-fsdown').onclick=()=>{if(fsIdx>0){fsIdx--;applyFS();}};
+D.getElementById('kitui-grip').onclick=()=>bar.classList.toggle('hidden');
+applyTheme(); applyFS();
+
+/* ปิดแผงด้วยปุ่ม Esc */
+D.addEventListener('keydown',e=>{ if(e.key==='Escape') D.querySelectorAll('.kitui-sheet.open').forEach(s=>s.classList.remove('open')); });
+
+/* ลากหัวแผงเพื่อปรับความสูง */
+function makeResizable(sheet){
+  const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
+  head.addEventListener('pointerdown',e=>{
+    if(e.target.closest('button'))return;
+    drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect().height;head.setPointerCapture(e.pointerId);
+  });
+  head.addEventListener('pointermove',e=>{
+    if(!drag)return;
+    const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
+    sheet.classList.remove('full'); sheet.style.height=h+'px';
+    if(sheet.id==='kitui-pad') fitPad();
+  });
+  head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
+}
+
+/* =============================================================================
+   4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ  หลายหน้า  เซฟอัตโนมัติ
+   ============================================================================= */
+let pad,padCv,padCx,pages=[[]],pg=0,undone=[],histo=[];
+let tool='pen',color='#111827',width=2.4,penSeen=0;
+const COLORS=['#111827','#2563eb','#dc2626','#16a34a','#f59e0b'];
+const PADKEY='pad-'+location.pathname.split('/').pop();
+
+function buildPad(){
+  pad=el('div','kitui-sheet'); pad.id='kitui-pad';
+  pad.innerHTML=
+   `<div class="kitui-head">
+      <b>✏️ ที่ทด</b>
+      <button data-t="pen" class="on">🖊️</button>
+      <button data-t="hl">🖍️</button>
+      <button data-t="er">🧽</button>
+      ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
+      <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
+      <span class="kitui-spacer"></span>
+      <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
+      <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
+      <button id="kitui-pgadd">+ หน้า</button>
+      <button id="kitui-clear">ล้างหน้านี้</button>
+      <button id="kitui-full">⛶</button>
+      <button id="kitui-padclose">✕</button>
+    </div>
+    <div class="kitui-padwrap"><canvas></canvas></div>`;
+  D.body.appendChild(pad);
+  padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
+  makeResizable(pad);
+
+  pad.querySelector('.kitui-head').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
+  });
+  D.getElementById('kitui-undo').onclick=()=>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop(); draw(); save(); } };
+  D.getElementById('kitui-redo').onclick=()=>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop(); draw(); save(); } };
+  D.getElementById('kitui-clear').onclick=()=>{ snap(); pages[pg]=[]; draw(); save(); };
+  D.getElementById('kitui-pgadd').onclick=()=>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw(); save(); };
+  D.getElementById('kitui-pgprev').onclick=()=>{ if(pg>0){pg--;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-pgnext').onclick=()=>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-full').onclick=()=>{ pad.classList.toggle('full'); pad.style.height=''; fitPad(); };
+  D.getElementById('kitui-padclose').onclick=()=>pad.classList.remove('open');
+
+  /* ---- วาด ---- */
+  let cur=null;
+  padCv.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='pen') penSeen=Date.now();
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;   /* กันฝ่ามือแตะตอนใช้สไตลัส */
+    const p=pt(e);
+    if(tool==='er'){ snap(); erase(p); return; }
+    snap();
+    cur={c:color,w:width,hl:tool==='hl',pts:[p]};
+    pages[pg].push(cur); draw();
+    try{ padCv.setPointerCapture(e.pointerId); }catch(x){}  /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
+  });
+  padCv.addEventListener('pointermove',e=>{
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;
+    if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
+    if(!cur||!e.buttons)return;
+    /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
+    let evs=[e];
+    if(e.getCoalescedEvents){ const c=e.getCoalescedEvents(); if(c&&c.length) evs=c; }
+    evs.forEach(ev=>cur.pts.push(pt(ev)));
+    draw();
+  });
+  const end=()=>{ if(cur){cur=null;save();} };
+  padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
+  padCv.addEventListener('pointerleave',end);
+
+  addEventListener('resize',()=>{ if(pad.classList.contains('open')) fitPad(); });
+  D.addEventListener('kitui-theme',()=>draw());   /* สลับธีมแล้ววาดลายใหม่ เส้นดำ<->ขาวตามพื้น */
+  load(); fitPad();
+}
+function pt(e){
+  const r=padCv.getBoundingClientRect();
+  return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
+          p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5};   /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
+}
+function snap(){ histo.push(pages[pg].slice()); if(histo.length>60)histo.shift(); undone=[]; }
+function erase(p){
+  const r=padCv.getBoundingClientRect(), rad=18/r.width;
+  const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
+  if(keep.length!==pages[pg].length){ pages[pg]=keep; draw(); save(); }
+}
+function fitPad(){
+  const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
+  const dpr=Math.min(devicePixelRatio||1,2.5);
+  padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
+  draw();
+}
+function draw(){
+  const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
+  padCx.clearRect(0,0,W,H);
+  /* เส้นตารางจาง ๆ ให้เขียนตรง */
+  const dark=R.getAttribute('data-theme')==='dark';
+  padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
+  for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath();padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke();}
+  padCx.lineCap='round'; padCx.lineJoin='round';
+  pages[pg].forEach(s=>{
+    padCx.globalAlpha=s.hl?0.32:1;
+    padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
+    for(let i=1;i<s.pts.length;i++){
+      const a=s.pts[i-1],b=s.pts[i];
+      padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
+      padCx.beginPath(); padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke();
+    }
+    if(s.pts.length===1){ /* จุดเดียว */
+      padCx.fillStyle=padCx.strokeStyle; padCx.beginPath();
+      padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill();
+    }
+  });
+  padCx.globalAlpha=1;
+  const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
+}
+function save(){ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
+function load(){
+  try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
+}
+
+if(hasPen){
+  buildPad();
+  D.getElementById('kitui-penbtn').onclick=()=>{
+    const o=pad.classList.toggle('open');
+    D.getElementById('kitui-penbtn').classList.toggle('on',o);
+    if(o) fitPad();
+  };
+}
+
+/* =============================================================================
+   5) เครื่องคิดเลขวิทยาศาสตร์  (tokenizer → shunting-yard → RPN  ไม่ใช้ eval)
+   ============================================================================= */
+const FN={sin:1,cos:1,tan:1,asin:1,acos:1,atan:1,ln:1,log:1,sqrt:1,abs:1,exp:1};
+const PREC={'+':1,'-':1,'*':2,'/':2,'^':4,'u-':3};
+function tokenize(s){
+  s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
+  const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!()])/g; let m;
+  while((m=re.exec(s))) out.push(m[1]);
+  return out;
+}
+function toRPN(tk){
+  const out=[],op=[]; let prev=null;
+  for(let t of tk){
+    if(t==='**')t='^';
+    if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
+    else if(t==='PI'){ out.push(Math.PI); }
+    else if(t==='e'||t==='E'){ out.push(Math.E); }
+    else if(t==='ANS'){ out.push(ANS); }
+    else if(FN[t]){ op.push(t); }
+    else if(t==='('){ op.push(t); }
+    else if(t===')'){
+      while(op.length&&op[op.length-1]!=='(') out.push(op.pop());
+      if(!op.length) throw 0; op.pop();
+      if(op.length&&FN[op[op.length-1]]) out.push(op.pop());
+    }
+    else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
+    else if('+-*/^'.includes(t)){
+      let o=t;
+      const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
+      if(t==='-'&&unary) o='u-';
+      else if(t==='+'&&unary){ prev=t; continue; }
+      while(op.length){
+        const top=op[op.length-1];
+        if(top==='('||FN[top])break;
+        const rightAssoc=(o==='^'||o==='u-');
+        if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop()); else break;
+      }
+      op.push(o);
+    }
+    else throw 0;
+    prev=t;
+  }
+  while(op.length){ const o=op.pop(); if(o==='(')throw 0; out.push(o); }
+  return out;
+}
+function evalRPN(rpn,deg){
+  const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
+  const pop=()=>{ if(!st.length)throw 0; return st.pop(); };
+  for(const t of rpn){
+    if(typeof t==='number'){ st.push(t); continue; }
+    if(t==='fact'){ const n=pop(); if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
+    if(t==='pct'){ st.push(pop()/100); continue; }
+    if(t==='u-'){ st.push(-pop()); continue; }
+    if(FN[t]){
+      const a=pop();
+      st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
+             : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
+             : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
+             : t==='abs'?Math.abs(a) : Math.exp(a) );
+      continue;
+    }
+    const b=pop(),a=pop();
+    st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
+  }
+  if(st.length!==1) throw 0;
+  return st[0];
+}
+function calc(src,deg){ return evalRPN(toRPN(tokenize(src)),deg); }
+
+let ANS=0, expr='', calcSheet, isDeg=true;
+const KEYS=[
+ ['DEG','deg','fn'],['(','(',''],[')',')',''],['⌫','del','del'],['AC','ac','del'],
+ ['sin','sin(','fn'],['cos','cos(','fn'],['tan','tan(','fn'],['π','π','fn'],['÷','÷','op'],
+ ['sin⁻¹','asin(','fn'],['cos⁻¹','acos(','fn'],['tan⁻¹','atan(','fn'],['e','e','fn'],['×','×','op'],
+ ['ln','ln(','fn'],['log','log(','fn'],['√','√(','fn'],['xʸ','^','fn'],['−','−','op'],
+ ['7','7',''],['8','8',''],['9','9',''],['x!','!','fn'],['+','+','op'],
+ ['4','4',''],['5','5',''],['6','6',''],['%','%','fn'],['ANS','ANS','fn'],
+ ['1','1',''],['2','2',''],['3','3',''],['.','.',''],['=','eq','eq'],
+ ['0','0','w3'],['x²','^2','fn']
+];
+function buildCalc(){
+  calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
+  calcSheet.innerHTML=
+   `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
+      <button id="kitui-calcclose">✕</button></div>
+    <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
+    <div class="kitui-keys" id="kitui-keys">
+      ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
+    </div>`;
+  D.body.appendChild(calcSheet);
+  D.getElementById('kitui-calcclose').onclick=()=>calcSheet.classList.remove('open');
+  const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
+  const show=()=>{ ex.textContent=expr||' ';
+    try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
+    catch(e){ rs.style.opacity=.35; }
+  };
+  D.getElementById('kitui-keys').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
+    if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
+    if(k==='del'){ expr=expr.slice(0,-1); show(); return; }
+    if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show(); return; }
+    if(k==='eq'){
+      rs.style.opacity=1;
+      try{
+        const v=calc(expr,isDeg);
+        if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
+        if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
+        ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
+      }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
+      return;
+    }
+    expr+=k; show();
+  });
+}
+function fmt(v){
+  if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
+  if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
+  return String(Math.round(v*1e10)/1e10);
+}
+if(hasCalc){
+  buildCalc();
+  D.getElementById('kitui-calcbtn').onclick=()=>{
+    const o=calcSheet.classList.toggle('open');
+    D.getElementById('kitui-calcbtn').classList.toggle('on',o);
+  };
+}
+})();
+
+</script>
+<!--/KIT-UI-->
+</body>
+</html>
