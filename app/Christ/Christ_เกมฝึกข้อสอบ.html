@@ -5,1089 +5,1089 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>เกมฝึกข้อสอบ — ศาสนาคริสต์</title>
 <style>
- :root{
- --bg:#0d1117; --bg2:#161b22; --card:#1c2230;
- --line:#2a3242; --text:#e6edf3; --dim:#9aa6b2;
- --gold:#e3b341; --green:#3fb950; --red:#f85149; --blue:#58a6ff;
- --accent:#a371f7;
- }
- *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
- body{
- font-family:"Segoe UI","Sarabun",system-ui,sans-serif;
- background:radial-gradient(1200px 600px at 50% -10%,#1b2233,#0d1117 60%);
- color:var(--text);min-height:100vh;padding:16px;line-height:1.6;
- }
- .wrap{max-width:680px;margin:0 auto}
- header{text-align:center;padding:14px 0 8px}
- h1{font-size:1.45rem;font-weight:700;letter-spacing:.3px}
- h1 .cross{color:var(--gold)}
- .sub{color:var(--dim);font-size:.85rem;margin-top:4px}
- .filterbar{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin:14px 0 6px}
- .fchip{background:var(--bg2);border:1px solid var(--line);color:var(--dim);
- border-radius:999px;padding:5px 12px;font-size:.8rem;cursor:pointer;
- font-family:inherit;transition:.15s}
- .fchip:hover{border-color:var(--accent);color:var(--text)}
- .fchip.on{background:var(--accent);color:#1a1030;border-color:var(--accent);font-weight:700}
- .fchip.focus5{border-color:var(--gold);color:var(--gold)}
- .fchip.focus5.on{background:var(--gold);color:#2a1f06}
- .bar{
- display:flex;gap:10px;justify-content:center;flex-wrap:wrap;
- margin:14px 0;font-size:.85rem
- }
- .chip{background:var(--bg2);border:1px solid var(--line);border-radius:999px;
- padding:6px 14px;display:flex;align-items:center;gap:6px}
- .chip b{font-size:1rem}
- .chip.score b{color:var(--gold)} .chip.streak b{color:var(--accent)}
- .chip.prog b{color:var(--blue)}
- .progress{height:6px;background:var(--bg2);border-radius:999px;overflow:hidden;margin:6px 0 16px}
- .progress>div{height:100%;background:linear-gradient(90deg,var(--blue),var(--accent));width:0;transition:width .4s}
- .card{
- background:linear-gradient(180deg,var(--card),#171d28);
- border:1px solid var(--line);border-radius:18px;padding:20px 18px;
- box-shadow:0 10px 30px rgba(0,0,0,.35)
- }
- .tag{display:inline-block;font-size:.72rem;color:var(--dim);
- background:var(--bg);border:1px solid var(--line);border-radius:6px;
- padding:2px 8px;margin-bottom:12px}
- .q{font-size:1.12rem;font-weight:600;margin-bottom:16px}
- .opts{display:flex;flex-direction:column;gap:10px}
- .opt{
- text-align:left;background:var(--bg2);border:1.5px solid var(--line);
- color:var(--text);border-radius:12px;padding:13px 15px;font-size:1rem;
- cursor:pointer;transition:.15s;display:flex;gap:10px;align-items:flex-start
- }
- .opt:hover:not(:disabled){border-color:var(--blue);transform:translateY(-1px)}
- .opt:disabled{cursor:default}
- .opt .k{font-weight:700;color:var(--dim);min-width:18px}
- .opt.correct{border-color:var(--green);background:rgba(63,185,80,.13)}
- .opt.wrong{border-color:var(--red);background:rgba(248,81,73,.13)}
- .opt.correct .k{color:var(--green)} .opt.wrong .k{color:var(--red)}
- .fb{margin-top:16px;border-radius:12px;padding:14px;font-size:.95rem;display:none}
- .fb.show{display:block;animation:pop .25s}
- .fb.ok{background:rgba(63,185,80,.1);border:1px solid rgba(63,185,80,.4)}
- .fb.no{background:rgba(248,81,73,.1);border:1px solid rgba(248,81,73,.4)}
- .fb .head{font-weight:700;margin-bottom:6px}
- .fb.ok .head{color:var(--green)} .fb.no .head{color:var(--red)}
- .fb .ref{color:var(--dim);font-size:.8rem;margin-top:8px;font-style:italic}
- @keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
- .hintbtn{margin-top:14px;background:transparent;border:1px dashed var(--line);
- color:var(--gold);border-radius:10px;padding:8px 14px;cursor:pointer;font-size:.85rem}
- .hint{margin-top:10px;color:var(--gold);font-size:.88rem;display:none}
- .hint.show{display:block}
- .next{
- margin-top:18px;width:100%;background:linear-gradient(90deg,var(--blue),var(--accent));
- border:none;color:#fff;font-weight:700;font-size:1rem;border-radius:12px;
- padding:14px;cursor:pointer;display:none
- }
- .next.show{display:block}
- .end{text-align:center}
- .end .big{font-size:2.6rem;font-weight:800;color:var(--gold);margin:8px 0}
- .end .msg{color:var(--dim);margin:10px 0 20px}
- .restart{background:var(--green);border:none;color:#06210d;font-weight:700;
- border-radius:12px;padding:13px 26px;cursor:pointer;font-size:1rem}
- footer{text-align:center;color:var(--dim);font-size:.72rem;margin-top:18px;line-height:1.5}
+  :root{
+    --bg:#0d1117; --bg2:#161b22; --card:#1c2230;
+    --line:#2a3242; --text:#e6edf3; --dim:#9aa6b2;
+    --gold:#e3b341; --green:#3fb950; --red:#f85149; --blue:#58a6ff;
+    --accent:#a371f7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  body{
+    font-family:"Segoe UI","Sarabun",system-ui,sans-serif;
+    background:radial-gradient(1200px 600px at 50% -10%,#1b2233,#0d1117 60%);
+    color:var(--text);min-height:100vh;padding:16px;line-height:1.6;
+  }
+  .wrap{max-width:680px;margin:0 auto}
+  header{text-align:center;padding:14px 0 8px}
+  h1{font-size:1.45rem;font-weight:700;letter-spacing:.3px}
+  h1 .cross{color:var(--gold)}
+  .sub{color:var(--dim);font-size:.85rem;margin-top:4px}
+  .filterbar{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin:14px 0 6px}
+  .fchip{background:var(--bg2);border:1px solid var(--line);color:var(--dim);
+    border-radius:999px;padding:5px 12px;font-size:.8rem;cursor:pointer;
+    font-family:inherit;transition:.15s}
+  .fchip:hover{border-color:var(--accent);color:var(--text)}
+  .fchip.on{background:var(--accent);color:#1a1030;border-color:var(--accent);font-weight:700}
+  .fchip.focus5{border-color:var(--gold);color:var(--gold)}
+  .fchip.focus5.on{background:var(--gold);color:#2a1f06}
+  .bar{
+    display:flex;gap:10px;justify-content:center;flex-wrap:wrap;
+    margin:14px 0;font-size:.85rem
+  }
+  .chip{background:var(--bg2);border:1px solid var(--line);border-radius:999px;
+    padding:6px 14px;display:flex;align-items:center;gap:6px}
+  .chip b{font-size:1rem}
+  .chip.score b{color:var(--gold)} .chip.streak b{color:var(--accent)}
+  .chip.prog b{color:var(--blue)}
+  .progress{height:6px;background:var(--bg2);border-radius:999px;overflow:hidden;margin:6px 0 16px}
+  .progress>div{height:100%;background:linear-gradient(90deg,var(--blue),var(--accent));width:0;transition:width .4s}
+  .card{
+    background:linear-gradient(180deg,var(--card),#171d28);
+    border:1px solid var(--line);border-radius:18px;padding:20px 18px;
+    box-shadow:0 10px 30px rgba(0,0,0,.35)
+  }
+  .tag{display:inline-block;font-size:.72rem;color:var(--dim);
+    background:var(--bg);border:1px solid var(--line);border-radius:6px;
+    padding:2px 8px;margin-bottom:12px}
+  .q{font-size:1.12rem;font-weight:600;margin-bottom:16px}
+  .opts{display:flex;flex-direction:column;gap:10px}
+  .opt{
+    text-align:left;background:var(--bg2);border:1.5px solid var(--line);
+    color:var(--text);border-radius:12px;padding:13px 15px;font-size:1rem;
+    cursor:pointer;transition:.15s;display:flex;gap:10px;align-items:flex-start
+  }
+  .opt:hover:not(:disabled){border-color:var(--blue);transform:translateY(-1px)}
+  .opt:disabled{cursor:default}
+  .opt .k{font-weight:700;color:var(--dim);min-width:18px}
+  .opt.correct{border-color:var(--green);background:rgba(63,185,80,.13)}
+  .opt.wrong{border-color:var(--red);background:rgba(248,81,73,.13)}
+  .opt.correct .k{color:var(--green)} .opt.wrong .k{color:var(--red)}
+  .fb{margin-top:16px;border-radius:12px;padding:14px;font-size:.95rem;display:none}
+  .fb.show{display:block;animation:pop .25s}
+  .fb.ok{background:rgba(63,185,80,.1);border:1px solid rgba(63,185,80,.4)}
+  .fb.no{background:rgba(248,81,73,.1);border:1px solid rgba(248,81,73,.4)}
+  .fb .head{font-weight:700;margin-bottom:6px}
+  .fb.ok .head{color:var(--green)} .fb.no .head{color:var(--red)}
+  .fb .ref{color:var(--dim);font-size:.8rem;margin-top:8px;font-style:italic}
+  @keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .hintbtn{margin-top:14px;background:transparent;border:1px dashed var(--line);
+    color:var(--gold);border-radius:10px;padding:8px 14px;cursor:pointer;font-size:.85rem}
+  .hint{margin-top:10px;color:var(--gold);font-size:.88rem;display:none}
+  .hint.show{display:block}
+  .next{
+    margin-top:18px;width:100%;background:linear-gradient(90deg,var(--blue),var(--accent));
+    border:none;color:#fff;font-weight:700;font-size:1rem;border-radius:12px;
+    padding:14px;cursor:pointer;display:none
+  }
+  .next.show{display:block}
+  .end{text-align:center}
+  .end .big{font-size:2.6rem;font-weight:800;color:var(--gold);margin:8px 0}
+  .end .msg{color:var(--dim);margin:10px 0 20px}
+  .restart{background:var(--green);border:none;color:#06210d;font-weight:700;
+    border-radius:12px;padding:13px 26px;cursor:pointer;font-size:1rem}
+  footer{text-align:center;color:var(--dim);font-size:.72rem;margin-top:18px;line-height:1.5}
 </style>
 </head>
 <body>
 <div class="wrap">
- <header>
- <h1><span class="cross">✝</span> เกมฝึกข้อสอบ — ศาสนาคริสต์</h1>
+  <header>
+    <h1><span class="cross">✝</span> เกมฝึกข้อสอบ — ศาสนาคริสต์</h1>
  <div class="sub">อ้างอิงจากชีท 11 ไฟล์</div>
- </header>
+  </header>
 
- <div class="filterbar" id="filterbar"></div>
+  <div class="filterbar" id="filterbar"></div>
 
- <div class="bar">
- <div class="chip score">คะแนน <b id="score">0</b></div>
- <div class="chip streak">สตรีค <b id="streak">0</b>🔥</div>
- <div class="chip prog">ข้อ <b id="qnum">1</b>/<span id="qtot">0</span></div>
- </div>
- <div class="progress"><div id="pbar"></div></div>
+  <div class="bar">
+    <div class="chip score">คะแนน <b id="score">0</b></div>
+    <div class="chip streak">สตรีค <b id="streak">0</b>🔥</div>
+    <div class="chip prog">ข้อ <b id="qnum">1</b>/<span id="qtot">0</span></div>
+  </div>
+  <div class="progress"><div id="pbar"></div></div>
 
- <div id="stage"></div>
+  <div id="stage"></div>
 
- <footer>
- ตอบเองก่อนเปิดเฉลย — ทุกข้อมีคำอธิบาย + เลขหน้าให้เปิดเทียบต้นฉบับได้<br>
- สร้างจากไฟล์ใน Christ/ ด้วย NotebookLM (local)
- </footer>
+  <footer>
+    ตอบเองก่อนเปิดเฉลย — ทุกข้อมีคำอธิบาย + เลขหน้าให้เปิดเทียบต้นฉบับได้<br>
+    สร้างจากไฟล์ใน Christ/ ด้วย NotebookLM (local)
+  </footer>
 </div>
 
 <script>
 /* ====== คลังคำถาม (อ้างอิงหน้าใน comment / ref) ====== */
 const BANK = [
  {q:"ศาสนาคริสต์อยู่ในกลุ่มใด",
- o:["Polytheism","Monotheism, Abrahamic","Henotheism","Pantheism"],
- a:1,e:"Christianity = Monotheism (เอกเทวนิยม) ในกลุ่ม Semitic/Abrahamic ร่วมกับ Judaism และ Islam",r:"Intro1 p.4–5"},
+  o:["Polytheism","Monotheism, Abrahamic","Henotheism","Pantheism"],
+  a:1,e:"Christianity = Monotheism (เอกเทวนิยม) ในกลุ่ม Semitic/Abrahamic ร่วมกับ Judaism และ Islam",r:"Intro1 p.4–5"},
 
  {q:"ข้อใดถูกเรื่องตรีเอกภาพ",
- o:["Three separate gods","A personal name of God","One God in Three Persons","A word written in the Bible"],
- a:2,e:"One God in Three Persons (Father–Son–Holy Spirit) ไม่ใช่ 3 องค์ และคำว่า 'Trinity' ไม่ได้ปรากฏในไบเบิล",r:"Intro1 p.17–20"},
+  o:["Three separate gods","A personal name of God","One God in Three Persons","A word written in the Bible"],
+  a:2,e:"One God in Three Persons (Father–Son–Holy Spirit) ไม่ใช่ 3 องค์ และคำว่า 'Trinity' ไม่ได้ปรากฏในไบเบิล",r:"Intro1 p.17–20"},
 
  {q:"3 สภาวะของตรีเอกภาพ",
- o:["Father – Son – Holy Spirit","Father – Word – Wisdom","Father – Mother – Child","Creator – Redeemer – Saint"],
- a:0,e:"The Father (พระบิดา), The Son = Jesus (พระบุตร), The Holy Spirit (พระจิต)",r:"Intro1 p.12, 16"},
+  o:["Father – Son – Holy Spirit","Father – Word – Wisdom","Father – Mother – Child","Creator – Redeemer – Saint"],
+  a:0,e:"The Father (พระบิดา), The Son = Jesus (พระบุตร), The Holy Spirit (พระจิต)",r:"Intro1 p.12, 16"},
 
  {q:"สถานะของพระเยซู",
- o:["fully human only","fully God only","fully human AND fully God","half human, half God"],
- a:2,e:"Jesus = fully human and fully God (มนุษย์แท้และพระเจ้าแท้) ในสภาวะ 'the Son' ตาม Trinity",r:"Intro2 p.3"},
+  o:["fully human only","fully God only","fully human AND fully God","half human, half God"],
+  a:2,e:"Jesus = fully human and fully God (มนุษย์แท้และพระเจ้าแท้) ในสภาวะ 'the Son' ตาม Trinity",r:"Intro2 p.3"},
 
  {q:"ยูดายมองพระเยซูอย่างไร",
- o:["accept Him as the Messiah","reject Him as the Messiah","worship Him as God","regard Him as the final prophet"],
- a:1,e:"Judaism rejects Jesus as the Messiah (ไม่ยอมรับ) และยังรอคอย Messiah อยู่",r:"Intro1 p.10"},
+  o:["accept Him as the Messiah","reject Him as the Messiah","worship Him as God","regard Him as the final prophet"],
+  a:1,e:"Judaism rejects Jesus as the Messiah (ไม่ยอมรับ) และยังรอคอย Messiah อยู่",r:"Intro1 p.10"},
 
  {q:"คำว่า Christ แปลว่า",
- o:["the Creator","the anointed one / Messiah","the Son of Man","the Lamb of God"],
- a:1,e:"Christ = Messiah = 'the anointed one (ผู้ถูกเจิมตั้งไว้)' เป็นสมัญญาของพระเยซู",r:"Intro2 p.2"},
+  o:["the Creator","the anointed one / Messiah","the Son of Man","the Lamb of God"],
+  a:1,e:"Christ = Messiah = 'the anointed one (ผู้ถูกเจิมตั้งไว้)' เป็นสมัญญาของพระเยซู",r:"Intro2 p.2"},
 
  {q:"พระเยซูประสูติที่เมืองใด",
- o:["Nazareth","Jerusalem","Bethlehem","Capernaum"],
- a:2,e:"Born in Bethlehem (เบธเลเฮม) — the city of King David, in Judea",r:"Intro2 p.45–52"},
+  o:["Nazareth","Jerusalem","Bethlehem","Capernaum"],
+  a:2,e:"Born in Bethlehem (เบธเลเฮม) — the city of King David, in Judea",r:"Intro2 p.45–52"},
 
  {q:"เมืองที่เติบโต",
- o:["Bethlehem","Nazareth","Jerusalem","Bethany"],
- a:1,e:"Nazareth (นาซาเร็ธ) in Galilee → จึงได้ชื่อ 'Jesus of Nazareth'",r:"Intro2 p.9, 72–74"},
+  o:["Bethlehem","Nazareth","Jerusalem","Bethany"],
+  a:1,e:"Nazareth (นาซาเร็ธ) in Galilee → จึงได้ชื่อ 'Jesus of Nazareth'",r:"Intro2 p.9, 72–74"},
 
  {q:"ทูตสวรรค์แจ้งข่าวมารีย์",
- o:["Michael","Raphael","Gabriel","Uriel"],
- a:2,e:"the angel Gabriel (กาเบรียล) — the Annunciation (ลูกา 1:26–38)",r:"Intro2 p.13–15"},
+  o:["Michael","Raphael","Gabriel","Uriel"],
+  a:2,e:"the angel Gabriel (กาเบรียล) — the Annunciation (ลูกา 1:26–38)",r:"Intro2 p.13–15"},
 
  {q:"ของขวัญโหราจารย์",
- o:["gold, frankincense, myrrh","bread, wine, oil","gold, silver, gems","wheat, salt, water"],
- a:0,e:"gold, frankincense, myrrh (ทองคำ กำยาน มดยอบ) — มัทธิว 2:1–11",r:"Intro2 p.28–30"},
+  o:["gold, frankincense, myrrh","bread, wine, oil","gold, silver, gems","wheat, salt, water"],
+  a:0,e:"gold, frankincense, myrrh (ทองคำ กำยาน มดยอบ) — มัทธิว 2:1–11",r:"Intro2 p.28–30"},
 
  {q:"ฟื้นคืนพระชนม์วันที่เท่าไร",
- o:["same day","3rd day","7th day","40th day"],
- a:1,e:"Resurrection on the 3rd day (วันที่ 3) หลังสิ้นพระชนม์บนกางเขน",r:"Intro2 p.10"},
+  o:["same day","3rd day","7th day","40th day"],
+  a:1,e:"Resurrection on the 3rd day (วันที่ 3) หลังสิ้นพระชนม์บนกางเขน",r:"Intro2 p.10"},
 
  {q:"NT มีกี่เล่ม",
- o:["27","39","46","66"],
- a:0,e:"NT = 27 books (เขียนหลังสมัยพระเยซู); OT ของ Protestant = 39",r:"Bible p.11, 42"},
+  o:["27","39","46","66"],
+  a:0,e:"NT = 27 books (เขียนหลังสมัยพระเยซู); OT ของ Protestant = 39",r:"Bible p.11, 42"},
 
  {q:"ภาษาต้นฉบับ OT/NT",
- o:["Greek / Hebrew","Hebrew / Greek","Latin / Greek","Aramaic / Latin"],
- a:1,e:"OT ส่วนใหญ่ Hebrew, NT ส่วนใหญ่ Greek — ทั้งคู่มี Aramaic บางส่วน",r:"Bible p.12, 16–20"},
+  o:["Greek / Hebrew","Hebrew / Greek","Latin / Greek","Aramaic / Latin"],
+  a:1,e:"OT ส่วนใหญ่ Hebrew, NT ส่วนใหญ่ Greek — ทั้งคู่มี Aramaic บางส่วน",r:"Bible p.12, 16–20"},
 
  {q:"พระวรสาร 4 เล่ม",
- o:["Genesis–Exodus–Leviticus–Numbers","Matthew–Mark–Luke–John","Acts–Romans–Hebrews–Revelation","Peter–John–James–Jude"],
- a:1,e:"The Gospels = Matthew, Mark, Luke, John (ชีวประวัติ+คำสอนพระเยซู)",r:"Bible p.43"},
+  o:["Genesis–Exodus–Leviticus–Numbers","Matthew–Mark–Luke–John","Acts–Romans–Hebrews–Revelation","Peter–John–James–Jude"],
+  a:1,e:"The Gospels = Matthew, Mark, Luke, John (ชีวประวัติ+คำสอนพระเยซู)",r:"Bible p.43"},
 
  {q:"ใครเขียน NT มากสุด",
- o:["St. Peter","St. John","St. Luke","St. Paul"],
- a:3,e:"St. Paul (เปาโล) เขียน 13 books — มากที่สุด ในหมวด Epistles (จดหมายฝาก)",r:"Bible p.45"},
+  o:["St. Peter","St. John","St. Luke","St. Paul"],
+  a:3,e:"St. Paul (เปาโล) เขียน 13 books — มากที่สุด ในหมวด Epistles (จดหมายฝาก)",r:"Bible p.45"},
 
  {q:"โมเสสรับสิ่งใดที่ภูเขาซีนาย",
- o:["the Ten Commandments","the Torah scroll","the Covenant box","the Sermon on the Mount"],
- a:0,e:"Moses received the Ten Commandments (บัญญัติ 10 ประการ) on Mount Sinai",r:"Bible p.36"},
+  o:["the Ten Commandments","the Torah scroll","the Covenant box","the Sermon on the Mount"],
+  a:0,e:"Moses received the Ten Commandments (บัญญัติ 10 ประการ) on Mount Sinai",r:"Bible p.36"},
 
  {q:"ความรักสูงสุด",
- o:["Eros","Philia","Storge","Agape"],
- a:3,e:"Agape = the highest, unconditional love (รักสูงสุด ไม่มีเงื่อนไข) — God's self-giving love",r:"Words p.78–83"},
+  o:["Eros","Philia","Storge","Agape"],
+  a:3,e:"Agape = the highest, unconditional love (รักสูงสุด ไม่มีเงื่อนไข) — God's self-giving love",r:"Words p.78–83"},
 
  {q:"คำสอนรากฐาน",
- o:["Love God + love your neighbor as yourself","An eye for an eye","Forgive seventy times seven","Faith without works is dead"],
- a:0,e:"'Love God with all your heart, and love your neighbor as yourself' (มัทธิว 22:37–39)",r:"Words p.71–73"},
+  o:["Love God + love your neighbor as yourself","An eye for an eye","Forgive seventy times seven","Faith without works is dead"],
+  a:0,e:"'Love God with all your heart, and love your neighbor as yourself' (มัทธิว 22:37–39)",r:"Words p.71–73"},
 
  {q:"ชีวิตหลังตาย",
- o:["reincarnation / rebirth","one life, then Judgment → Heaven/Hell","reborn until enlightened","the soul sleeps forever"],
- a:1,e:"No reincarnation — one birth, one death, then Judgment → Heaven or Hell",r:"Words p.97–98"},
+  o:["reincarnation / rebirth","one life, then Judgment → Heaven/Hell","reborn until enlightened","the soul sleeps forever"],
+  a:1,e:"No reincarnation — one birth, one death, then Judgment → Heaven or Hell",r:"Words p.97–98"},
 
  {q:"มหาบุญลาภ 8",
- o:["the Ten Commandments","the Sermon on the Mount","the Lord's Prayer","the Apostles' Creed"],
- a:1,e:"the Eight Beatitudes ('Blessed are…') open the Sermon on the Mount",r:"Words p.89–94"},
+  o:["the Ten Commandments","the Sermon on the Mount","the Lord's Prayer","the Apostles' Creed"],
+  a:1,e:"the Eight Beatitudes ('Blessed are…') open the Sermon on the Mount",r:"Words p.89–94"},
 
  {q:"ศีลศักดิ์สิทธิ์มีกี่ประการ",
- o:["5","7","10","12"],
- a:1,e:"the Seven Sacraments (ศีล 7 ประการ)",r:"Sacraments_1 p.4"},
+  o:["5","7","10","12"],
+  a:1,e:"the Seven Sacraments (ศีล 7 ประการ)",r:"Sacraments_1 p.4"},
 
  {q:"โปรเตสแตนต์ใช้กี่ศีล",
- o:["all 7","2: Baptism + Eucharist","3: Baptism + Confirmation + Eucharist","2: Baptism + Penance"],
- a:1,e:"Protestants keep 2: Baptism + Eucharist (Catholic/Orthodox keep all 7)",r:"Sacraments_1 p.5, 7"},
+  o:["all 7","2: Baptism + Eucharist","3: Baptism + Confirmation + Eucharist","2: Baptism + Penance"],
+  a:1,e:"Protestants keep 2: Baptism + Eucharist (Catholic/Orthodox keep all 7)",r:"Sacraments_1 p.5, 7"},
 
  {q:"ศีลที่ทำครั้งเดียว",
- o:["Eucharist, Penance, Anointing","Baptism, Matrimony, Holy Orders","Confirmation, Matrimony, Penance","Baptism, Confirmation, Eucharist"],
- a:1,e:"Once only = Baptism (ล้างบาป), Matrimony (สมรส), Holy Orders (บวช)",r:"Sacraments_1 p.6"},
+  o:["Eucharist, Penance, Anointing","Baptism, Matrimony, Holy Orders","Confirmation, Matrimony, Penance","Baptism, Confirmation, Eucharist"],
+  a:1,e:"Once only = Baptism (ล้างบาป), Matrimony (สมรส), Holy Orders (บวช)",r:"Sacraments_1 p.6"},
 
  {q:"ศีลสำคัญสุด/บ่อยสุด",
- o:["Baptism","Confirmation","Holy Eucharist","Penance"],
- a:2,e:"the Holy Eucharist (ศีลมหาสนิท) — most important and most frequent",r:"Sacraments_1 p.51, 75"},
+  o:["Baptism","Confirmation","Holy Eucharist","Penance"],
+  a:2,e:"the Holy Eucharist (ศีลมหาสนิท) — most important and most frequent",r:"Sacraments_1 p.51, 75"},
 
  {q:"ขนมปัง+ไวน์ แทนอะไร",
- o:["bread=Blood, wine=Body","bread=Body, wine=Blood","both = human sin","both = the Word"],
- a:1,e:"bread = Body (พระกาย), wine = Blood (พระโลหิต) — from the Last Supper",r:"Sacraments_1 p.66–69"},
+  o:["bread=Blood, wine=Body","bread=Body, wine=Blood","both = human sin","both = the Word"],
+  a:1,e:"bread = Body (พระกาย), wine = Blood (พระโลหิต) — from the Last Supper",r:"Sacraments_1 p.66–69"},
 
  {q:"ใครให้ศีลล้างบาปพระเยซู",
- o:["St. Peter","St. Paul","John the Baptist","St. Andrew"],
- a:2,e:"John the Baptist (ยอห์นผู้ให้บัพติศมา) baptized Jesus in the Jordan",r:"Sacraments_1 p.17"},
+  o:["St. Peter","St. Paul","John the Baptist","St. Andrew"],
+  a:2,e:"John the Baptist (ยอห์นผู้ให้บัพติศมา) baptized Jesus in the Jordan",r:"Sacraments_1 p.17"},
 
  {q:"ศีลล้างบาปชำระบาปใด",
- o:["personal/actual sin","Original Sin","every sin for life","no sin at all"],
- a:1,e:"Baptism cleanses Original Sin (บาปกำเนิด from Adam & Eve)",r:"Sacraments_1 p.10, 19"},
+  o:["personal/actual sin","Original Sin","every sin for life","no sin at all"],
+  a:1,e:"Baptism cleanses Original Sin (บาปกำเนิด from Adam & Eve)",r:"Sacraments_1 p.10, 19"},
 
  {q:"ใครประกอบพิธีสมรส",
- o:["the Priest","the Bishop","the bride and groom themselves","the Pope"],
- a:2,e:"Unique: the couple themselves are the ministers; the priest is only a witness (พยาน)",r:"Sacraments_2 p.33"},
+  o:["the Priest","the Bishop","the bride and groom themselves","the Pope"],
+  a:2,e:"Unique: the couple themselves are the ministers; the priest is only a witness (พยาน)",r:"Sacraments_2 p.33"},
 
  {q:"3 ขั้นศีลบวช",
- o:["Bishop → Priest → Deacon","Deacon → Priest → Bishop","Priest → Bishop → Cardinal","Deacon → Bishop → Priest"],
- a:1,e:"Deacon (สังฆานุกร) → Priest (บาทหลวง) → Bishop (พระสังฆราช)",r:"Sacraments_2 p.70"},
+  o:["Bishop → Priest → Deacon","Deacon → Priest → Bishop","Priest → Bishop → Cardinal","Deacon → Bishop → Priest"],
+  a:1,e:"Deacon (สังฆานุกร) → Priest (บาทหลวง) → Bishop (พระสังฆราช)",r:"Sacraments_2 p.70"},
 
  {q:"ใครโปรดศีลกำลัง+บวชได้",
- o:["a Priest","a Deacon","a Bishop","any layperson"],
- a:2,e:"Only a Bishop (บิชอป) can confer Confirmation (ศีลกำลัง) and Holy Orders (ศีลบวช)",r:"Sacraments_2 p.74"},
+  o:["a Priest","a Deacon","a Bishop","any layperson"],
+  a:2,e:"Only a Bishop (บิชอป) can confer Confirmation (ศีลกำลัง) and Holy Orders (ศีลบวช)",r:"Sacraments_2 p.74"},
 
  {q:"นิกายใดไม่ยกย่องมารีย์พิเศษ",
- o:["Catholic","Orthodox","Protestant","both Catholic and Orthodox"],
- a:2,e:"Protestant treats Mary as an ordinary faithful woman — no special status (unlike Catholic/Orthodox)",r:"Mary p.4"},
+  o:["Catholic","Orthodox","Protestant","both Catholic and Orthodox"],
+  a:2,e:"Protestant treats Mary as an ordinary faithful woman — no special status (unlike Catholic/Orthodox)",r:"Mary p.4"},
 
  {q:"เอเฟซัสประกาศมารีย์เป็น",
- o:["the greatest saint","Theotokos / Mother of God","Queen of Heaven only","a prophet"],
- a:1,e:"Theotokos = 'Mother of God' — เพราะพระเยซูเป็นทั้งมนุษย์แท้และพระเจ้าแท้",r:"Mary p.6"},
+  o:["the greatest saint","Theotokos / Mother of God","Queen of Heaven only","a prophet"],
+  a:1,e:"Theotokos = 'Mother of God' — เพราะพระเยซูเป็นทั้งมนุษย์แท้และพระเจ้าแท้",r:"Mary p.6"},
 
  {q:"โบสถ์ออร์โธดอกซ์ตกแต่งอย่างไร",
- o:["many free-standing statues","icons/paintings only, NO statues","no images at all","only a bare cross"],
- a:1,e:"Orthodox uses icons (ไอคอน) — NO statues — with an Iconostasis screen",r:"Church p.64–66"},
+  o:["many free-standing statues","icons/paintings only, NO statues","no images at all","only a bare cross"],
+  a:1,e:"Orthodox uses icons (ไอคอน) — NO statues — with an Iconostasis screen",r:"Church p.64–66"},
 
  {q:"crucifix ของนิกายใด",
- o:["Protestant","Catholic","all the same","none of them"],
- a:1,e:"Catholic uses a crucifix (มีรูปพระเยซู); Protestant uses an empty cross; Orthodox cross has 2 extra bars",r:"Church p.106, 110, 114"},
+  o:["Protestant","Catholic","all the same","none of them"],
+  a:1,e:"Catholic uses a crucifix (มีรูปพระเยซู); Protestant uses an empty cross; Orthodox cross has 2 extra bars",r:"Church p.106, 110, 114"},
 
  {q:"ศีลในคริสต์คืออะไร",
- o:["something forbidden/to abstain","a sacred rite / something to DO","a civil law","a prayer"],
- a:1,e:"In Christianity a Sacrament (ศีล) = a rite / something you DO (ต่างจากพุทธที่ศีล = สิ่งที่ห้ามทำ)",r:"Sacraments_1 p.3"},
+  o:["something forbidden/to abstain","a sacred rite / something to DO","a civil law","a prayer"],
+  a:1,e:"In Christianity a Sacrament (ศีล) = a rite / something you DO (ต่างจากพุทธที่ศีล = สิ่งที่ห้ามทำ)",r:"Sacraments_1 p.3"},
 
  {q:"หลักข้อเชื่อของอัครทูตคือ",
- o:["Catholic only","a statement of faith common to ALL denominations","a Jewish law","part of the marriage rite"],
- a:1,e:"the Apostles' Creed = an early statement of faith, common to all denominations",r:"Words p.67–69"},
+  o:["Catholic only","a statement of faith common to ALL denominations","a Jewish law","part of the marriage rite"],
+  a:1,e:"the Apostles' Creed = an early statement of faith, common to all denominations",r:"Words p.67–69"},
 
  {q:"นิกายใหญ่สุด ผู้นำคือโป๊ป",
- o:["Orthodox","Protestant","Roman Catholic","Anglican"],
- a:2,e:"Roman Catholic (~1.3 billion), led by the Pope, centered at the Vatican",r:"Sect p.6–7"},
+  o:["Orthodox","Protestant","Roman Catholic","Anglican"],
+  a:2,e:"Roman Catholic (~1.3 billion), led by the Pope, centered at the Vatican",r:"Sect p.6–7"},
 
  {q:"ผู้นำออร์โธดอกซ์เป็นอย่างไร",
- o:["a single global Pope","no global head; Patriarchs, 'first among equals'","led by Martin Luther","no leaders at all"],
- a:1,e:"Orthodox has no global head — Patriarchs (ปาตริอาร์ค) per region, 'first among equals'",r:"Sect p.36"},
+  o:["a single global Pope","no global head; Patriarchs, 'first among equals'","led by Martin Luther","no leaders at all"],
+  a:1,e:"Orthodox has no global head — Patriarchs (ปาตริอาร์ค) per region, 'first among equals'",r:"Sect p.36"},
 
  {q:"Schism 1054 ใครแยก",
- o:["Protestant","Orthodox","Lutheran","Anglican"],
- a:1,e:"AD 1054 the Eastern Church (Constantinople) split off as the Orthodox Church",r:"Sect p.27"},
+  o:["Protestant","Orthodox","Lutheran","Anglican"],
+  a:1,e:"AD 1054 the Eastern Church (Constantinople) split off as the Orthodox Church",r:"Sect p.27"},
 
  {q:"ไบเบิลโปรเตสแตนต์กี่เล่ม",
- o:["66","73","78","80"],
- a:0,e:"Protestant 66 (OT 39+NT 27); Catholic 73 (OT 46+NT 27); Orthodox 78 (OT 51+NT 27)",r:"Sect p.102"},
+  o:["66","73","78","80"],
+  a:0,e:"Protestant 66 (OT 39+NT 27); Catholic 73 (OT 46+NT 27); Orthodox 78 (OT 51+NT 27)",r:"Sect p.102"},
 
  {q:"เชื่อแดนชำระ",
- o:["all denominations","Catholic only","Protestant only","Orthodox only"],
- a:1,e:"Purgatory (แดนชำระ) — Catholic only; Orthodox & Protestant reject it (not explicit in the Bible)",r:"Sect p.16, 101"},
+  o:["all denominations","Catholic only","Protestant only","Orthodox only"],
+  a:1,e:"Purgatory (แดนชำระ) — Catholic only; Orthodox & Protestant reject it (not explicit in the Bible)",r:"Sect p.16, 101"},
 
  {q:"ข้อใดถูกเรื่องนักบวช",
- o:["Protestant clergy are celibate","Catholic priests may marry","Protestants have no clergy; Pastors may marry","all forbid clergy to marry"],
- a:2,e:"Protestants have no clergy — a Pastor (ศิษยาภิบาล) may marry; Catholic clergy are all celibate (ถือโสด)",r:"Sect p.96, 10"},
+  o:["Protestant clergy are celibate","Catholic priests may marry","Protestants have no clergy; Pastors may marry","all forbid clergy to marry"],
+  a:2,e:"Protestants have no clergy — a Pastor (ศิษยาภิบาล) may marry; Catholic clergy are all celibate (ถือโสด)",r:"Sect p.96, 10"},
 
  {q:"ในไทยคาทอลิกเรียกว่า",
- o:["Christian","Christang, from Portuguese","the Church","Orthodox"],
- a:1,e:"Catholic → 'คริสตัง' (Portuguese, since Ayutthaya); Protestant → 'คริสเตียน' (English, early Rattanakosin)",r:"Sect p.17"},
+  o:["Christian","Christang, from Portuguese","the Church","Orthodox"],
+  a:1,e:"Catholic → 'คริสตัง' (Portuguese, since Ayutthaya); Protestant → 'คริสเตียน' (English, early Rattanakosin)",r:"Sect p.17"},
 
  {q:"ใครจุดประกายการปฏิรูป",
- o:["John Calvin","Martin Luther","King Henry VIII","Huldrych Zwingli"],
- a:1,e:"Martin Luther (เยอรมัน) posted the 95 Theses in 1517 = the start of Protestantism",r:"Reformer p.2, 48"},
+  o:["John Calvin","Martin Luther","King Henry VIII","Huldrych Zwingli"],
+  a:1,e:"Martin Luther (เยอรมัน) posted the 95 Theses in 1517 = the start of Protestantism",r:"Reformer p.2, 48"},
 
  {q:"95 Theses ประท้วงเรื่องใด",
- o:["the sale of Indulgences","Bible translation","the Crusades","clerical celibacy"],
- a:0,e:"It condemned the sale of Indulgences (ใบไถ่บาป) by Pope Leo X (funding St. Peter's Basilica)",r:"Reformer p.24, 28"},
+  o:["the sale of Indulgences","Bible translation","the Crusades","clerical celibacy"],
+  a:0,e:"It condemned the sale of Indulgences (ใบไถ่บาป) by Pope Leo X (funding St. Peter's Basilica)",r:"Reformer p.24, 28"},
 
  {q:"ตั้งเพรสไบทีเรียน",
- o:["William Tyndale","John Knox","Jan Hus","Huldrych Zwingli"],
- a:1,e:"John Knox (Scottish) brought Calvinism to Scotland → founded the Presbyterian church",r:"Reformer p.117–118"},
+  o:["William Tyndale","John Knox","Jan Hus","Huldrych Zwingli"],
+  a:1,e:"John Knox (Scottish) brought Calvinism to Scotland → founded the Presbyterian church",r:"Reformer p.117–118"},
 
  {q:"เฮนรีที่ 8 ตั้งศาสนจักรใด",
- o:["Lutheran","Presbyterian","Church of England / Anglican","Baptist"],
- a:2,e:"Henry VIII broke from Rome (1534, over a divorce) → the Church of England / Anglican (closest to Catholic)",r:"Reformer p.42, 59"},
+  o:["Lutheran","Presbyterian","Church of England / Anglican","Baptist"],
+  a:2,e:"Henry VIII broke from Rome (1534, over a divorce) → the Church of England / Anglican (closest to Catholic)",r:"Reformer p.42, 59"},
 
  {q:"สังคายนาเตรนท์ของฝ่ายใด",
- o:["the Protestant side","the Catholic side","the Orthodox side","the Anglican side"],
- a:1,e:"Council of Trent (1545–63) = the Catholic Counter-Reformation — abolished selling Indulgences, reformed clergy",r:"Reformer p.148, 150"},
+  o:["the Protestant side","the Catholic side","the Orthodox side","the Anglican side"],
+  a:1,e:"Council of Trent (1545–63) = the Catholic Counter-Reformation — abolished selling Indulgences, reformed clergy",r:"Reformer p.148, 150"},
 
  {q:"ใครตั้งคณะเยซูอิต",
- o:["St. Paul","St. Ignatius of Loyola","St. Dominic","St. Augustine"],
- a:1,e:"the Jesuits were founded by St. Ignatius of Loyola (1540) — overseas mission + education",r:"Reformer p.156"},
+  o:["St. Paul","St. Ignatius of Loyola","St. Dominic","St. Augustine"],
+  a:1,e:"the Jesuits were founded by St. Ignatius of Loyola (1540) — overseas mission + education",r:"Reformer p.156"},
 
  {q:"Filioque เรื่องอะไร",
- o:["the number of sacraments","the procession of the Holy Spirit","the liturgical language","the date of Easter"],
- a:1,e:"Catholic: Spirit proceeds from 'the Father AND the Son' (Filioque); Orthodox: 'the Father only'",r:"Sect p.43, 68"},
+  o:["the number of sacraments","the procession of the Holy Spirit","the liturgical language","the date of Easter"],
+  a:1,e:"Catholic: Spirit proceeds from 'the Father AND the Son' (Filioque); Orthodox: 'the Father only'",r:"Sect p.43, 68"},
 
  /* ===== ชื่อคน (Names) ===== */
  {q:"อัครสาวกคนใดทรยศพระเยซู",
- o:["Peter","John","Judas Iscariot","Thomas"],
- a:2,e:"Judas Iscariot betrayed Jesus, then hanged himself (แขวนคอตาย)",r:"Intro2 p.113, 141"},
+  o:["Peter","John","Judas Iscariot","Thomas"],
+  a:2,e:"Judas Iscariot betrayed Jesus, then hanged himself (แขวนคอตาย)",r:"Intro2 p.113, 141"},
 
  {q:"ผู้ไม่เชื่อ",
- o:["Thomas","Peter","Andrew","Bartholomew"],
- a:0,e:"Doubting Thomas (โธมัส) — until he touched the nail-marks and side of Jesus",r:"Intro2 p.191"},
+  o:["Thomas","Peter","Andrew","Bartholomew"],
+  a:0,e:"Doubting Thomas (โธมัส) — until he touched the nail-marks and side of Jesus",r:"Intro2 p.191"},
 
  {q:"คนแรกที่เห็นพระเยซูฟื้น",
- o:["Peter","Mary Magdalene","Mary His mother","Salome"],
- a:1,e:"Mary Magdalene (มารีย์ชาวมักดาลา) was first to see the risen Jesus on Sunday morning",r:"Intro2 p.185"},
+  o:["Peter","Mary Magdalene","Mary His mother","Salome"],
+  a:1,e:"Mary Magdalene (มารีย์ชาวมักดาลา) was first to see the risen Jesus on Sunday morning",r:"Intro2 p.185"},
 
  {q:"ผู้ว่าฯโรมันตัดสินตรึง",
- o:["Caiaphas","Herod","Pontius Pilate","Quirinius"],
- a:2,e:"Pontius Pilate (ปอนทิอัส ปิลาต), Roman governor of Judea — found no fault but yielded to the crowd",r:"Intro2 p.148–150"},
+  o:["Caiaphas","Herod","Pontius Pilate","Quirinius"],
+  a:2,e:"Pontius Pilate (ปอนทิอัส ปิลาต), Roman governor of Judea — found no fault but yielded to the crowd",r:"Intro2 p.148–150"},
 
  {q:"ปล่อยแทนพระเยซู",
- o:["Barabbas","Judas","Caiaphas","Nicodemus"],
- a:0,e:"Barabbas (บารับบัส) — the crowd chose him released, sending Jesus to the cross instead",r:"Intro2 p.150"},
+  o:["Barabbas","Judas","Caiaphas","Nicodemus"],
+  a:0,e:"Barabbas (บารับบัส) — the crowd chose him released, sending Jesus to the cross instead",r:"Intro2 p.150"},
 
  {q:"มหาปุโรหิตไต่สวน",
- o:["Pilate","Caiaphas","Herod","Annas"],
- a:1,e:"Caiaphas (คายาฟาส), the High Priest, led the trial before the Sanhedrin (สภาแซนเฮดริน)",r:"Intro2 p.144"},
+  o:["Pilate","Caiaphas","Herod","Annas"],
+  a:1,e:"Caiaphas (คายาฟาส), the High Priest, led the trial before the Sanhedrin (สภาแซนเฮดริน)",r:"Intro2 p.144"},
 
  {q:"ขอพระศพไปฝัง",
- o:["Nicodemus","Joseph of Arimathea","Pilate","John"],
- a:1,e:"Joseph of Arimathea (โยเซฟชาวอาริมาเธีย) asked Pilate for the body and buried it (with Nicodemus)",r:"Intro2 p.166"},
+  o:["Nicodemus","Joseph of Arimathea","Pilate","John"],
+  a:1,e:"Joseph of Arimathea (โยเซฟชาวอาริมาเธีย) asked Pilate for the body and buried it (with Nicodemus)",r:"Intro2 p.166"},
 
  {q:"ปฏิเสธ 3 ครั้ง",
- o:["Judas","Peter","John","Thomas"],
- a:1,e:"Peter (เปโตร) — foretold at the Last Supper that he would deny Jesus 3 times before the cock crew",r:"Intro2 p.136"},
+  o:["Judas","Peter","John","Thomas"],
+  a:1,e:"Peter (เปโตร) — foretold at the Last Supper that he would deny Jesus 3 times before the cock crew",r:"Intro2 p.136"},
 
  /* ===== ความหมายคำ (Meanings) ===== */
  {q:"อิมมานูเอล แปลว่า",
- o:["the anointed one","God with us","Savior","Prince of Peace"],
- a:1,e:"Emmanuel = 'God with us (พระเจ้าสถิตกับเรา)' (มัทธิว 1:23)",r:"Intro2 p.17"},
+  o:["the anointed one","God with us","Savior","Prince of Peace"],
+  a:1,e:"Emmanuel = 'God with us (พระเจ้าสถิตกับเรา)' (มัทธิว 1:23)",r:"Intro2 p.17"},
 
  {q:"โกลโกธา หมายถึง",
- o:["the Mount of Olives","the place of the Skull","the Garden Tomb","the Temple Mount"],
- a:1,e:"Golgotha/Calvary = 'the place of the Skull (เนินเขาหัวกะโหลก)' outside Jerusalem, where Jesus was crucified",r:"Intro2 p.153"},
+  o:["the Mount of Olives","the place of the Skull","the Garden Tomb","the Temple Mount"],
+  a:1,e:"Golgotha/Calvary = 'the place of the Skull (เนินเขาหัวกะโหลก)' outside Jerusalem, where Jesus was crucified",r:"Intro2 p.153"},
 
  {q:"เกทเสมนี คือ",
- o:["the town of His birth","the garden where Jesus prayed before His arrest","the mount of the Commandments","the burial tomb"],
- a:1,e:"Gethsemane = the garden where Jesus prayed the night He was betrayed (by Judas) and arrested",r:"Intro2 p.138–141"},
+  o:["the town of His birth","the garden where Jesus prayed before His arrest","the mount of the Commandments","the burial tomb"],
+  a:1,e:"Gethsemane = the garden where Jesus prayed the night He was betrayed (by Judas) and arrested",r:"Intro2 p.138–141"},
 
  {q:"Orthodox แปลตามรากศัพท์",
- o:["Universal","protester","right belief","the anointed"],
- a:2,e:"Orthodox = orthos (right) + doxa (belief) = 'right belief (หลักธรรมที่เที่ยงตรง)'",r:"Sect p.27–28"},
+  o:["Universal","protester","right belief","the anointed"],
+  a:2,e:"Orthodox = orthos (right) + doxa (belief) = 'right belief (หลักธรรมที่เที่ยงตรง)'",r:"Sect p.27–28"},
 
  {q:"Catholic แปลว่า",
- o:["Universal","protester","love","apostolic"],
- a:0,e:"Catholic (Greek) = 'Universal (สากล)'",r:"Sect p.6"},
+  o:["Universal","protester","love","apostolic"],
+  a:0,e:"Catholic (Greek) = 'Universal (สากล)'",r:"Sect p.6"},
 
  {q:"Protestant แปลว่า",
- o:["the holy one","protester","preacher","reformer"],
- a:1,e:"Protestant = protester (ผู้ประท้วง) — from protesting the Church of Rome",r:"Sect p.92"},
+  o:["the holy one","protester","preacher","reformer"],
+  a:1,e:"Protestant = protester (ผู้ประท้วง) — from protesting the Church of Rome",r:"Sect p.92"},
 
  {q:"Theotokos แปลว่า",
- o:["Queen of Heaven","Mother of God","the Ever-Virgin","Mother of the Church"],
- a:1,e:"Theotokos = 'Mother of God (พระมารดาพระเจ้า)' — declared at the Council of Ephesus, AD 431",r:"Mary p.6"},
+  o:["Queen of Heaven","Mother of God","the Ever-Virgin","Mother of the Church"],
+  a:1,e:"Theotokos = 'Mother of God (พระมารดาพระเจ้า)' — declared at the Council of Ephesus, AD 431",r:"Mary p.6"},
 
  {q:"ใบไถ่บาปคือ",
- o:["a translated Bible","a document sold to reduce punishment for sin","a certificate of baptism","a prayer book"],
- a:1,e:"Indulgence = a document sold (by Pope Leo X) to reduce punishment for sin → Luther protested",r:"Reformer p.24"},
+  o:["a translated Bible","a document sold to reduce punishment for sin","a certificate of baptism","a prayer book"],
+  a:1,e:"Indulgence = a document sold (by Pope Leo X) to reduce punishment for sin → Luther protested",r:"Reformer p.24"},
 
  /* ===== เทศกาล (Festivals) ===== */
  {q:"มื้อสุดท้ายอยู่ในเทศกาลใด",
- o:["Pentecost","Passover","Sabbath","Tabernacles"],
- a:1,e:"the Last Supper was a Passover (ปัสกา) meal (unleavened bread, 7 days)",r:"Intro2 p.129–130"},
+  o:["Pentecost","Passover","Sabbath","Tabernacles"],
+  a:1,e:"the Last Supper was a Passover (ปัสกา) meal (unleavened bread, 7 days)",r:"Intro2 p.129–130"},
 
  {q:"เพนเทคอสต์เกิดอะไร",
- o:["the birth of Jesus","the Holy Spirit descended on them","the Resurrection","the crucifixion"],
- a:1,e:"Pentecost = the Holy Spirit descended on the apostles (tongues of fire) as Jesus promised",r:"Intro2 p.215–217"},
+  o:["the birth of Jesus","the Holy Spirit descended on them","the Resurrection","the crucifixion"],
+  a:1,e:"Pentecost = the Holy Spirit descended on the apostles (tongues of fire) as Jesus promised",r:"Intro2 p.215–217"},
 
  {q:"เพนเทคอสต์ห่างปัสกากี่วัน",
- o:["3 days","40 days","50 days","10 days"],
- a:2,e:"Pentecost = the 50th day after Passover (and 10 days after the Ascension)",r:"Intro2 p.214, 220"},
+  o:["3 days","40 days","50 days","10 days"],
+  a:2,e:"Pentecost = the 50th day after Passover (and 10 days after the Ascension)",r:"Intro2 p.214, 220"},
 
  {q:"ขึ้นสวรรค์หลังฟื้นกี่วัน",
- o:["3 days","40 days","50 days","7 days"],
- a:1,e:"Jesus appeared for 40 days after the Resurrection, then the Ascension",r:"Intro2 p.197–199"},
+  o:["3 days","40 days","50 days","7 days"],
+  a:1,e:"Jesus appeared for 40 days after the Resurrection, then the Ascension",r:"Intro2 p.197–199"},
 
  {q:"ของยิวหมายถึง",
- o:["remembering Creation","thanksgiving for the first harvest","the birth of Jesus","the New Year"],
- a:1,e:"For Jews, Pentecost (Shavuot) = thanksgiving for the first harvest; for Christians = receiving the Spirit",r:"Intro2 p.224"},
+  o:["remembering Creation","thanksgiving for the first harvest","the birth of Jesus","the New Year"],
+  a:1,e:"For Jews, Pentecost (Shavuot) = thanksgiving for the first harvest; for Christians = receiving the Spirit",r:"Intro2 p.224"},
 
  {q:"พระเยซูสิ้นพระชนม์ เกิดอะไรในพระวิหาร",
- o:["the Temple burned","the Temple veil was torn in two","the Temple collapsed","the Temple flooded"],
- a:1,e:"the Temple veil was torn in two (ม่านพระวิหารขาด 2 ท่อน) top to bottom, with darkness and an earthquake",r:"Intro2 p.159–160"},
+  o:["the Temple burned","the Temple veil was torn in two","the Temple collapsed","the Temple flooded"],
+  a:1,e:"the Temple veil was torn in two (ม่านพระวิหารขาด 2 ท่อน) top to bottom, with darkness and an earthquake",r:"Intro2 p.159–160"},
 
  {q:"พระมหาบัญชาคือ",
- o:["to build churches","go and baptize all nations","to write the scriptures","to choose a new leader"],
- a:1,e:"the Great Commission: go and baptize all nations in the name of Father, Son, Holy Spirit (มัทธิว 28:19–20)",r:"Intro2 p.205–206"},
+  o:["to build churches","go and baptize all nations","to write the scriptures","to choose a new leader"],
+  a:1,e:"the Great Commission: go and baptize all nations in the name of Father, Son, Holy Spirit (มัทธิว 28:19–20)",r:"Intro2 p.205–206"},
 
  /* ===== สารบบคัมภีร์ (Canon) ===== */
  {q:"สารบบหลักมีกี่เล่ม",
- o:["39","27","66","73"],
- a:2,e:"the Canon shared by all = 66 (OT 39 + NT 27) — cannot be added to or removed from",r:"Bible p.63–64"},
+  o:["39","27","66","73"],
+  a:2,e:"the Canon shared by all = 66 (OT 39 + NT 27) — cannot be added to or removed from",r:"Bible p.63–64"},
 
  {q:"สารบบรอง/อธิกธรรมคือ",
- o:["books accepted by all","books some denominations ADD to the OT","a translation of the NT","a 5th Gospel"],
- a:1,e:"Apocrypha/Deuterocanonical = books Catholic/Orthodox add to the OT → more than 66",r:"Bible p.63, 67"},
+  o:["books accepted by all","books some denominations ADD to the OT","a translation of the NT","a 5th Gospel"],
+  a:1,e:"Apocrypha/Deuterocanonical = books Catholic/Orthodox add to the OT → more than 66",r:"Bible p.63, 67"},
 
  {q:"จำนวนเล่ม 3 นิกาย",
- o:["66 / 73 / 78","73 / 78 / 66","78 / 66 / 73","73 / 66 / 78"],
- a:1,e:"Catholic 73 (OT 46+NT 27) · Orthodox 78/78+ (OT 51+NT 27) · Protestant 66 (OT 39+NT 27)",r:"Bible p.74–76"},
+  o:["66 / 73 / 78","73 / 78 / 66","78 / 66 / 73","73 / 66 / 78"],
+  a:1,e:"Catholic 73 (OT 46+NT 27) · Orthodox 78/78+ (OT 51+NT 27) · Protestant 66 (OT 39+NT 27)",r:"Bible p.74–76"},
 
  {q:"NT เท่ากันที่กี่เล่ม",
- o:["same for all","varies by denomination","39","46"],
- a:0,e:"NT = 27 for all; the difference in totals is only in the OT (whether Apocrypha is added)",r:"Bible p.61, 74"},
+  o:["same for all","varies by denomination","39","46"],
+  a:0,e:"NT = 27 for all; the difference in totals is only in the OT (whether Apocrypha is added)",r:"Bible p.61, 74"},
 
  {q:"สภาแจมเนียทำอะไร",
- o:["translated it into Greek","fixed the canon, cutting it to 39 books","added 7 Apocryphal books","wrote the Gospels"],
- a:1,e:"Jewish scholars fixed the Hebrew canon, cutting 7 books → 39 (the basis of the Protestant OT)",r:"Bible p.69, 71"},
+  o:["translated it into Greek","fixed the canon, cutting it to 39 books","added 7 Apocryphal books","wrote the Gospels"],
+  a:1,e:"Jewish scholars fixed the Hebrew canon, cutting 7 books → 39 (the basis of the Protestant OT)",r:"Bible p.69, 71"},
 
  {q:"เซปตัวจินต์ คือ",
- o:["the first Greek translation of the Hebrew scriptures","the Latin Bible","the four Gospels","a list of 70 saints"],
- a:0,e:"Septuagint (LXX, 'the 70') = the first Greek translation of the Hebrew scriptures, at Alexandria (~70 scholars, 3rd–1st c. BC)",r:"Bible p.70–71"},
+  o:["the first Greek translation of the Hebrew scriptures","the Latin Bible","the four Gospels","a list of 70 saints"],
+  a:0,e:"Septuagint (LXX, 'the 70') = the first Greek translation of the Hebrew scriptures, at Alexandria (~70 scholars, 3rd–1st c. BC)",r:"Bible p.70–71"},
 
  {q:"OT กี่เล่ม/เล่มแรก",
- o:["27 / Matthew","39 / Genesis","51 / Exodus","46 / Revelation"],
- a:1,e:"canonical OT = 39; the first book is Genesis (ปฐมกาล) — Creation and humanity",r:"Bible p.28, 77"},
+  o:["27 / Matthew","39 / Genesis","51 / Exodus","46 / Revelation"],
+  a:1,e:"canonical OT = 39; the first book is Genesis (ปฐมกาล) — Creation and humanity",r:"Bible p.28, 77"},
 
  {q:"Tanakh กี่เล่ม",
- o:["24","27","39","66"],
- a:0,e:"the Tanakh = 24 books (Torah/Nevi'im/Ketuvim) — same content as the Christian OT's 39, counted differently",r:"Bible p.72"},
+  o:["24","27","39","66"],
+  a:0,e:"the Tanakh = 24 books (Torah/Nevi'im/Ketuvim) — same content as the Christian OT's 39, counted differently",r:"Bible p.72"},
 
  {q:"ใครเขียนกิจการอัครทูต",
- o:["St. Paul","St. Luke","St. John","St. Peter"],
- a:1,e:"St. Luke (ลูกา) wrote Acts — the birth and growth of the early Church",r:"Bible p.48"},
+  o:["St. Paul","St. Luke","St. John","St. Peter"],
+  a:1,e:"St. Luke (ลูกา) wrote Acts — the birth and growth of the early Church",r:"Bible p.48"},
 
  {q:"เล่มสุดท้าย/ใครเขียน",
- o:["Genesis / Moses","Revelation / St. John","Acts / Luke","Matthew / Matthew"],
- a:1,e:"the last book = Revelation (วิวรณ์), St. John's vision of the end times / Last Judgment",r:"Bible p.56–57"},
+  o:["Genesis / Moses","Revelation / St. John","Acts / Luke","Matthew / Matthew"],
+  a:1,e:"the last book = Revelation (วิวรณ์), St. John's vision of the end times / Last Judgment",r:"Bible p.56–57"},
 
  /* ===== HARD / ข้อยากพิเศษ (English-only stems, tricky distractors) ===== */
  {q:"ภาษาที่พระเยซูพูด",
- o:["Hebrew","Aramaic","Koine Greek","Latin"],
- a:1,e:"Aramaic (อาราเมอิก) — the common spoken tongue; Hebrew was mainly liturgical, the NT was WRITTEN in Greek",r:"Bible p.22"},
+  o:["Hebrew","Aramaic","Koine Greek","Latin"],
+  a:1,e:"Aramaic (อาราเมอิก) — the common spoken tongue; Hebrew was mainly liturgical, the NT was WRITTEN in Greek",r:"Bible p.22"},
 
  {q:"กษัตริย์ประกาศอาราเมอิก",
- o:["Nebuchadnezzar","Cyrus the Great","Darius I","Xerxes"],
- a:2,e:"Darius I (ดาริอุสที่ 1) of Persia made Aramaic the official language of the western empire",r:"Bible p.19"},
+  o:["Nebuchadnezzar","Cyrus the Great","Darius I","Xerxes"],
+  a:2,e:"Darius I (ดาริอุสที่ 1) of Persia made Aramaic the official language of the western empire",r:"Bible p.19"},
 
  {q:"Oriental Orthodox แยกที่สภาใด",
- o:["Council of Nicaea 325","Council of Chalcedon 451","Council of Trent 1545","Council of Jamnia"],
- a:1,e:"the Council of Chalcedon (AD 451) — Oriental Orthodox (Coptic, Armenian, etc.) did NOT accept it; Eastern Orthodox did",r:"Sect p.47–51"},
+  o:["Council of Nicaea 325","Council of Chalcedon 451","Council of Trent 1545","Council of Jamnia"],
+  a:1,e:"the Council of Chalcedon (AD 451) — Oriental Orthodox (Coptic, Armenian, etc.) did NOT accept it; Eastern Orthodox did",r:"Sect p.47–51"},
 
  {q:"OT คาทอลิกกี่เล่ม",
- o:["39","46","51","53"],
- a:1,e:"Catholic OT = 46 (39 canonical + 7 Apocryphal); Orthodox OT = 51 (39 + 12)",r:"Bible p.74–76"},
+  o:["39","46","51","53"],
+  a:1,e:"Catholic OT = 46 (39 canonical + 7 Apocryphal); Orthodox OT = 51 (39 + 12)",r:"Bible p.74–76"},
 
  {q:"ผู้ปฏิรูปที่ถูกเผาทั้งเป็น",
- o:["John Wycliffe","Jan Hus","William Tyndale","Erasmus"],
- a:1,e:"Jan Hus (ยาน ฮุส, Bohemia) was burned at the stake in 1415; Tyndale was strangled & burned later (1536)",r:"Reformer p.105–108"},
+  o:["John Wycliffe","Jan Hus","William Tyndale","Erasmus"],
+  a:1,e:"Jan Hus (ยาน ฮุส, Bohemia) was burned at the stake in 1415; Tyndale was strangled & burned later (1536)",r:"Reformer p.105–108"},
 
  {q:"ตะวันออกใช้ขนมปังแบบใด",
- o:["unleavened bread too","leavened bread","no bread, only wine","rice cakes"],
- a:1,e:"East (Orthodox) uses LEAVENED bread (symbol of the risen Christ); West (Catholic) uses unleavened (the Last Supper)",r:"Sect p.67–77"},
+  o:["unleavened bread too","leavened bread","no bread, only wine","rice cakes"],
+  a:1,e:"East (Orthodox) uses LEAVENED bread (symbol of the risen Christ); West (Catholic) uses unleavened (the Last Supper)",r:"Sect p.67–77"},
 
  {q:"ยกเลิกบัพพาชนียกรรมปีใด",
- o:["1517","1648","1870","1965"],
- a:3,e:"lifted in 1965 by Pope Paul VI and Patriarch Athenagoras",r:"Sect p.77"},
+  o:["1517","1648","1870","1965"],
+  a:3,e:"lifted in 1965 by Pope Paul VI and Patriarch Athenagoras",r:"Sect p.77"},
 
  {q:"ใครแปลไบเบิลเป็นเยอรมัน",
- o:["John Calvin","Martin Luther","Ulrich Zwingli","John Knox"],
- a:1,e:"Martin Luther translated the Bible into German so ordinary people could read it",r:"Reformer p.2–55"},
+  o:["John Calvin","Martin Luther","Ulrich Zwingli","John Knox"],
+  a:1,e:"Martin Luther translated the Bible into German so ordinary people could read it",r:"Reformer p.2–55"},
 
  {q:"ศีลที่บิชอปโปรด+ครั้งเดียว",
- o:["Confirmation","Holy Orders","Holy Eucharist","Anointing of the Sick"],
- a:1,e:"Holy Orders — conferred by a Bishop and received once. (Confirmation is also by a Bishop but the trick is 'once-only': Orders/Baptism/Matrimony)",r:"Sacraments_2 p.70–74"},
+  o:["Confirmation","Holy Orders","Holy Eucharist","Anointing of the Sick"],
+  a:1,e:"Holy Orders — conferred by a Bishop and received once. (Confirmation is also by a Bishop but the trick is 'once-only': Orders/Baptism/Matrimony)",r:"Sacraments_2 p.70–74"},
 
  {q:"สนธิสัญญาออกซ์บูร์ก",
- o:["papal supremacy","'whose realm, his religion' — the ruler picks the faith","Bible only","clerical celibacy"],
- a:1,e:"Peace of Augsburg 1555: 'cuius regio, eius religio' — each ruler chooses his realm's denomination (recognized Lutheranism)",r:"Reformer p.129–139"},
+  o:["papal supremacy","'whose realm, his religion' — the ruler picks the faith","Bible only","clerical celibacy"],
+  a:1,e:"Peace of Augsburg 1555: 'cuius regio, eius religio' — each ruler chooses his realm's denomination (recognized Lutheranism)",r:"Reformer p.129–139"},
 
  /* ===== ⭐ ออกสอบจริง 2026 — เรื่องที่ออกสอบจริง (เพื่อนรายงานหลังสอบ) ===== */
 
  /* 1) ผู้ติดตามกลุ่มแรกของพระเยซู — The first Apostles */
  {tag:"⭐ ออกสอบจริง",h:"ทั้ง 4 คนเป็นชาวประมงแห่งกาลิลี และมีพี่น้อง 2 คู่",
- q:"อัครสาวกกลุ่มแรก คือใคร",
- o:["Peter, Andrew, James, John","Matthew, Mark, Luke, John","Paul, Barnabas, Timothy, Silas","Thomas, Philip, Simon, Judas"],
- a:0,e:"อัครสาวกกลุ่มแรก = Peter, Andrew, James, John — all fishermen of Galilee (ชาวประมงกาลิลี). อ้างใน 4 พระวรสาร (Matthew 4:18–22)",r:"Intro2 p.88–89"},
+  q:"อัครสาวกกลุ่มแรก คือใคร",
+  o:["Peter, Andrew, James, John","Matthew, Mark, Luke, John","Paul, Barnabas, Timothy, Silas","Thomas, Philip, Simon, Judas"],
+  a:0,e:"อัครสาวกกลุ่มแรก = Peter, Andrew, James, John — all fishermen of Galilee (ชาวประมงกาลิลี). อ้างใน 4 พระวรสาร (Matthew 4:18–22)",r:"Intro2 p.88–89"},
 
  {tag:"⭐ ออกสอบจริง",h:"พระเยซูเปลี่ยนชื่อเขาเป็น Cephas = 'ศิลา/rock'",
- q:"ชื่อเดิมของเปโตร",
- o:["Saul","Simon","Andrew","Levi"],
- a:1,e:"เดิมชื่อ Simon (ซีโมน); พระเยซูทรงตั้งชื่อใหม่ว่า Cephas (เคฟาส) = Peter = 'rock/ศิลา'",r:"Intro2 p.88 (John 1:42)"},
+  q:"ชื่อเดิมของเปโตร",
+  o:["Saul","Simon","Andrew","Levi"],
+  a:1,e:"เดิมชื่อ Simon (ซีโมน); พระเยซูทรงตั้งชื่อใหม่ว่า Cephas (เคฟาส) = Peter = 'rock/ศิลา'",r:"Intro2 p.88 (John 1:42)"},
 
  {tag:"⭐ ออกสอบจริง",h:"คนนี้คือผู้ที่ถูกตั้งให้เป็น 'หัวหน้า' และเป็น St. _____",
- q:"หัวหน้าอัครสาวก 12",
- o:["St. John","St. Paul","St. Peter","St. Andrew"],
- a:2,e:"St. Peter (เปโตร/ปีเตอร์) ถูกแต่งตั้งเป็นหัวหน้าของอัครสาวก 12 คน (ตัวแทน 12 เผ่าอิสราเอล)",r:"Intro2 p.90–92"},
+  q:"หัวหน้าอัครสาวก 12",
+  o:["St. John","St. Paul","St. Peter","St. Andrew"],
+  a:2,e:"St. Peter (เปโตร/ปีเตอร์) ถูกแต่งตั้งเป็นหัวหน้าของอัครสาวก 12 คน (ตัวแทน 12 เผ่าอิสราเอล)",r:"Intro2 p.90–92"},
 
  {tag:"⭐ ออกสอบจริง",h:"งานอาชีพเดียวกันของทั้ง 4 คน ริมทะเลสาบ",
- q:"อาชีพร่วมของอัครสาวกกลุ่มแรก",
- o:["tax collectors","fishermen of Galilee","carpenters","shepherds"],
- a:1,e:"ทั้ง 4 เป็น fishermen of Galilee (ชาวประมงแห่งกาลิลี) — พระเยซูตรัสว่าจะตั้งให้เป็น 'ผู้หาคนดั่งหาปลา'",r:"Intro2 p.89"},
+  q:"อาชีพร่วมของอัครสาวกกลุ่มแรก",
+  o:["tax collectors","fishermen of Galilee","carpenters","shepherds"],
+  a:1,e:"ทั้ง 4 เป็น fishermen of Galilee (ชาวประมงแห่งกาลิลี) — พระเยซูตรัสว่าจะตั้งให้เป็น 'ผู้หาคนดั่งหาปลา'",r:"Intro2 p.89"},
 
  /* 2) รูปภาพ/การแทนภาพ พระบิดา–พระบุตร–พระจิต — Depiction of the Trinity */
  {tag:"⭐ ออกสอบจริง",h:"นกชนิดหนึ่ง สีขาว — จากฉากรับบัพติศมา",
- q:"พระจิตแทนด้วยภาพอะไร",
- o:["a flame of fire","a white dove","a lamb","a lion"],
- a:1,e:"พระจิต (The Holy Spirit) = a white dove (นกพิราบสีขาว) — จากตอนพระเยซูรับบัพติศมา (Matthew 3:16)",r:"Intro2 p.85 / Words p.46–47"},
+  q:"พระจิตแทนด้วยภาพอะไร",
+  o:["a flame of fire","a white dove","a lamb","a lion"],
+  a:1,e:"พระจิต (The Holy Spirit) = a white dove (นกพิราบสีขาว) — จากตอนพระเยซูรับบัพติศมา (Matthew 3:16)",r:"Intro2 p.85 / Words p.46–47"},
 
  {tag:"⭐ ออกสอบจริง",h:"ภาพ 'Creation of Adam' ที่เพดาน Sistine Chapel",
- q:"พระบิดาในภาพใด",
- o:["The Last Supper","Creation of Adam by Michelangelo","The Pietà","The Sistine Madonna"],
- a:1,e:"พระบิดามักวาดเป็นชายชราเครายาว เช่นในภาพ 'Creation of Adam' ของ Michelangelo ที่เพดาน Sistine Chapel, Vatican",r:"Bible p.33"},
+  q:"พระบิดาในภาพใด",
+  o:["The Last Supper","Creation of Adam by Michelangelo","The Pietà","The Sistine Madonna"],
+  a:1,e:"พระบิดามักวาดเป็นชายชราเครายาว เช่นในภาพ 'Creation of Adam' ของ Michelangelo ที่เพดาน Sistine Chapel, Vatican",r:"Bible p.33"},
 
  {tag:"⭐ ออกสอบจริง",h:"ที่แม่น้ำจอร์แดน นกพิราบลงมาเหนือใคร",
- q:"นกพิราบในตอนรับบัพติศมา = ภาวะใด",
- o:["The Father","The Son","The Holy Spirit","an angel"],
- a:2,e:"นกพิราบ = The Holy Spirit (พระจิต) เสด็จลงมาเหนือพระเยซู ขณะพระสุรเสียงของพระบิดาดังจากสวรรค์ — ปรากฏครบทั้ง 3 ภาวะ",r:"Intro2 p.85"},
+  q:"นกพิราบในตอนรับบัพติศมา = ภาวะใด",
+  o:["The Father","The Son","The Holy Spirit","an angel"],
+  a:2,e:"นกพิราบ = The Holy Spirit (พระจิต) เสด็จลงมาเหนือพระเยซู ขณะพระสุรเสียงของพระบิดาดังจากสวรรค์ — ปรากฏครบทั้ง 3 ภาวะ",r:"Intro2 p.85"},
 
  /* 3) ชื่อภาษาอังกฤษทุกชื่อของ พระบิดา–พระบุตร–พระจิต — All English names */
  {tag:"⭐ ออกสอบจริง",h:"พระบิดา = พระเจ้าองค์เดียวกับของศาสนายูดาย ชื่อขึ้นต้นด้วย Y",
- q:"อีกชื่อของพระบิดา",
- o:["Immanuel","Yahweh / Jehovah","Messiah","Logos"],
- a:1,e:"พระบิดา (The Father) = พระเจ้าองค์เดียวกับศาสนายูดาย คือ Yahweh / Jehovah / YHWH (พระยาห์เวห์/พระเยโฮวาห์)",r:"Intro1 p.15, 22"},
+  q:"อีกชื่อของพระบิดา",
+  o:["Immanuel","Yahweh / Jehovah","Messiah","Logos"],
+  a:1,e:"พระบิดา (The Father) = พระเจ้าองค์เดียวกับศาสนายูดาย คือ Yahweh / Jehovah / YHWH (พระยาห์เวห์/พระเยโฮวาห์)",r:"Intro1 p.15, 22"},
 
  {tag:"⭐ ออกสอบจริง",h:"แปลว่า 'God with us' — ชื่อที่ทูตสวรรค์บอกไว้ตอนประสูติ",
- q:"อิมมานูเอล แปลว่า",
- o:["the anointed one","God with us","son of David","the Lamb of God"],
- a:1,e:"Immanuel (อิมมานูเอล) = 'God with us' (พระเจ้าสถิตกับเรา) — ชื่อของพระบุตรตามคำพยากรณ์",r:"Intro2 (นาติวิตี)"},
+  q:"อิมมานูเอล แปลว่า",
+  o:["the anointed one","God with us","son of David","the Lamb of God"],
+  a:1,e:"Immanuel (อิมมานูเอล) = 'God with us' (พระเจ้าสถิตกับเรา) — ชื่อของพระบุตรตามคำพยากรณ์",r:"Intro2 (นาติวิตี)"},
 
  {tag:"⭐ ออกสอบจริง",h:"'Messiah' กับชื่อนี้แปลเหมือนกัน = 'ผู้ถูกเจิม'",
- q:"เมสสิยาห์ = อีกชื่อว่า",
- o:["Christ","Immanuel","Yahweh","Lord"],
- a:0,e:"Messiah = Christ (พระคริสต์) = 'the anointed one / ผู้ถูกเจิมตั้งไว้' — เป็นสมัญญาของพระเยซู (พระบุตร)",r:"Intro1 p.10 / Intro2 p.2"},
+  q:"เมสสิยาห์ = อีกชื่อว่า",
+  o:["Christ","Immanuel","Yahweh","Lord"],
+  a:0,e:"Messiah = Christ (พระคริสต์) = 'the anointed one / ผู้ถูกเจิมตั้งไว้' — เป็นสมัญญาของพระเยซู (พระบุตร)",r:"Intro1 p.10 / Intro2 p.2"},
 
  {tag:"⭐ ออกสอบจริง",h:"คาทอลิกไทยเรียก 'พระจิต' ส่วนอีกนิกายเรียกอีกแบบ",
- q:"โปรเตสแตนต์เรียกพระจิตว่า",
- o:["พระจิตเจ้า (Catholic term)","พระวิญญาณบริสุทธิ์ (Protestant term)","พระบิดา (the Father)","พระยาห์เวห์ (Yahweh)"],
- a:1,e:"The Holy Spirit: Catholic ไทยใช้ 'พระจิต/พระจิตเจ้า'; Protestant ไทยใช้ 'พระวิญญาณบริสุทธิ์'",r:"Intro1 p.16"},
+  q:"โปรเตสแตนต์เรียกพระจิตว่า",
+  o:["พระจิตเจ้า (Catholic term)","พระวิญญาณบริสุทธิ์ (Protestant term)","พระบิดา (the Father)","พระยาห์เวห์ (Yahweh)"],
+  a:1,e:"The Holy Spirit: Catholic ไทยใช้ 'พระจิต/พระจิตเจ้า'; Protestant ไทยใช้ 'พระวิญญาณบริสุทธิ์'",r:"Intro1 p.16"},
 
  {tag:"⭐ ออกสอบจริง",h:"คำกลางๆ ทั่วไป ไม่ใช่ชื่อเฉพาะ — มี 2 คำ",
- q:"ชื่อเรียกทั่วไปของพระเจ้า",
- o:["God & Lord","Christ & Messiah","Father & Son","Alpha & Omega"],
- a:0,e:"ชื่อเรียกทั่วไป (general names) = God (พระเจ้า) และ Lord (พระผู้เป็นเจ้า/พระเป็นเจ้า)",r:"Intro1 p.13"},
+  q:"ชื่อเรียกทั่วไปของพระเจ้า",
+  o:["God & Lord","Christ & Messiah","Father & Son","Alpha & Omega"],
+  a:0,e:"ชื่อเรียกทั่วไป (general names) = God (พระเจ้า) และ Lord (พระผู้เป็นเจ้า/พระเป็นเจ้า)",r:"Intro1 p.13"},
 
  /* ===== บท 7 — สมณศักดิ์/ลำดับชั้นนักบวช (Hierarchy of the Catholic Church) ===== */
  {tag:"บท7 สมณศักดิ์",h:"เริ่มที่ผู้นำสูงสุดที่กรุงโรม จบที่ 'ประชาชน'",
- q:"ลำดับสมณศักดิ์ สูง→ต่ำ",
- o:["Pope → Cardinal → Archbishop → Bishop → Priest → Deacon → Laity","Pope → Archbishop → Cardinal → Priest → Bishop → Laity","Cardinal → Pope → Bishop → Archbishop → Priest","Bishop → Pope → Cardinal → Priest → Deacon"],
- a:0,e:"ลำดับ: Pope → Cardinal → Archbishop → Bishop → Priest → Deacon → The Laity",r:"Priest1 p.16–17"},
+  q:"ลำดับสมณศักดิ์ สูง→ต่ำ",
+  o:["Pope → Cardinal → Archbishop → Bishop → Priest → Deacon → Laity","Pope → Archbishop → Cardinal → Priest → Bishop → Laity","Cardinal → Pope → Bishop → Archbishop → Priest","Bishop → Pope → Cardinal → Priest → Deacon"],
+  a:0,e:"ลำดับ: Pope → Cardinal → Archbishop → Bishop → Priest → Deacon → The Laity",r:"Priest1 p.16–17"},
 
  {tag:"บท7 สมณศักดิ์",h:"คณะที่ปรึกษาของโป๊ป เลือกจากในหมู่พวกตน",
- q:"ใครเป็นผู้เลือกพระสันตะปาปา",
- o:["the Bishops","the Cardinals","the Archbishops","the Laity"],
- a:1,e:"the Cardinals (พระคาร์ดินาล) เลือกโป๊ปจากในหมู่พวกตน (elect the Pope from among their number) และโป๊ปอยู่ตำแหน่งตลอดชีวิต",r:"Priest1 p.12"},
+  q:"ใครเป็นผู้เลือกพระสันตะปาปา",
+  o:["the Bishops","the Cardinals","the Archbishops","the Laity"],
+  a:1,e:"the Cardinals (พระคาร์ดินาล) เลือกโป๊ปจากในหมู่พวกตน (elect the Pope from among their number) และโป๊ปอยู่ตำแหน่งตลอดชีวิต",r:"Priest1 p.12"},
 
  {tag:"บท7 สมณศักดิ์",h:"เป็น 'บิชอป' ของเมืองหลวงศาสนา",
- q:"โป๊ปมีอีกตำแหน่งว่า",
- o:["Bishop of Jerusalem","Bishop of Rome","Patriarch of Constantinople","Archbishop of Canterbury"],
- a:1,e:"Pope = Bishop of Rome (บิชอปแห่งกรุงโรม) และ Supreme Pontiff — ประมุขศาสนจักรโรมันคาทอลิก",r:"Priest1 p.8, 12"},
+  q:"โป๊ปมีอีกตำแหน่งว่า",
+  o:["Bishop of Jerusalem","Bishop of Rome","Patriarch of Constantinople","Archbishop of Canterbury"],
+  a:1,e:"Pope = Bishop of Rome (บิชอปแห่งกรุงโรม) และ Supreme Pontiff — ประมุขศาสนจักรโรมันคาทอลิก",r:"Priest1 p.8, 12"},
 
  {tag:"บท7 สมณศักดิ์",h:"หน่วยใหญ่ (มีหลายวัด) vs วัดเดียว",
- q:"บิชอปดูแล / บาทหลวงดูแล",
- o:["a parish / a diocese","a diocese / a parish","a monastery / a diocese","a province / a monastery"],
- a:1,e:"Bishop → a diocese (1 เขตสังฆมณฑล, หลายวัด); Priest → a parish (1 วัด/โบสถ์)",r:"Priest1 p.12, 17"},
+  q:"บิชอปดูแล / บาทหลวงดูแล",
+  o:["a parish / a diocese","a diocese / a parish","a monastery / a diocese","a province / a monastery"],
+  a:1,e:"Bishop → a diocese (1 เขตสังฆมณฑล, หลายวัด); Priest → a parish (1 วัด/โบสถ์)",r:"Priest1 p.12, 17"},
 
  {tag:"บท7 สมณศักดิ์",h:"เป็น 'ผู้ช่วย' บาทหลวงในศาสนพิธี",
- q:"สังฆานุกรทำหน้าที่อะไร",
- o:["leads a whole diocese","aids the Priest for Mass","elects the Pope","heads a monastery"],
- a:1,e:"Deacon (สังฆานุกร) = aid the Priest for Mass (ช่วยบาทหลวงในพิธีมิสซา)",r:"Priest1 p.17"},
+  q:"สังฆานุกรทำหน้าที่อะไร",
+  o:["leads a whole diocese","aids the Priest for Mass","elects the Pope","heads a monastery"],
+  a:1,e:"Deacon (สังฆานุกร) = aid the Priest for Mass (ช่วยบาทหลวงในพิธีมิสซา)",r:"Priest1 p.17"},
 
  {tag:"บท7 สมณศักดิ์",h:"ไม่ใช่ขั้นปกครอง แต่เป็น 'เกียรติ'",
- q:"มงซินญอร์ เป็นสมณศักดิ์แบบใด",
- o:["a governing rank above bishop","an honorary title","the head of all cardinals","a type of monk"],
- a:1,e:"Monsignor = an honorary title (สมณศักดิ์กิตติมศักดิ์) — ไม่ใช่ขั้นปกครอง",r:"Priest1 p.8, 10"},
+  q:"มงซินญอร์ เป็นสมณศักดิ์แบบใด",
+  o:["a governing rank above bishop","an honorary title","the head of all cardinals","a type of monk"],
+  a:1,e:"Monsignor = an honorary title (สมณศักดิ์กิตติมศักดิ์) — ไม่ใช่ขั้นปกครอง",r:"Priest1 p.8, 10"},
 
  {tag:"บท7 สมณศักดิ์",h:"หัวหน้าของ 'อาราม' (สายนักพรต)",
- q:"เจ้าอาวาส Abbot ดูแลอะไร",
- o:["a diocese","a monastery","the Vatican Curia","a parish church"],
- a:1,e:"Abbot (ชาย) / Abbess (หญิง) = หัวหน้า monastery (อาราม) — สายนักพรต ไม่ใช่สายปกครอง parish",r:"Priest1 p.11, 19"},
+  q:"เจ้าอาวาส Abbot ดูแลอะไร",
+  o:["a diocese","a monastery","the Vatican Curia","a parish church"],
+  a:1,e:"Abbot (ชาย) / Abbess (หญิง) = หัวหน้า monastery (อาราม) — สายนักพรต ไม่ใช่สายปกครอง parish",r:"Priest1 p.11, 19"},
 
  {tag:"บท7 สมณศักดิ์",h:"คำสุภาพที่คนไทยใช้เรียกบาทหลวงเวลาพูดคุย",
- q:"คนไทยเรียกบาทหลวงว่า",
- o:["'พระคุณเจ้า' (Your Grace)","'คุณพ่อ' (Father)","'ท่านสังฆราช' (Bishop)","'หลวงพ่อ' (Reverend Father)"],
- a:1,e:"Priest (บาทหลวง/พระสงฆ์) — คนไทยมักเรียกว่า 'คุณพ่อ' (Father) เวลาสนทนา",r:"Priest1 p.3"},
+  q:"คนไทยเรียกบาทหลวงว่า",
+  o:["'พระคุณเจ้า' (Your Grace)","'คุณพ่อ' (Father)","'ท่านสังฆราช' (Bishop)","'หลวงพ่อ' (Reverend Father)"],
+  a:1,e:"Priest (บาทหลวง/พระสงฆ์) — คนไทยมักเรียกว่า 'คุณพ่อ' (Father) เวลาสนทนา",r:"Priest1 p.3"},
 
  {tag:"บท7 สมณศักดิ์",h:"ภาพคู่ขนานยุคกลาง: ผู้นำศาสนา↔ผู้นำทางโลกสูงสุด",
- q:"ภาพยุคกลาง: โป๊ปคู่กับตำแหน่งทางโลกใด",
- o:["Knight","Emperor / King","Serf","Merchant"],
- a:1,e:"ในภาพ Medieval social structure: Pope ↔ Emperor/King; Cardinal/Archbishop/Bishop ↔ ขุนนาง; Priest/Monk ↔ พ่อค้า/ชาวนา; Believers ↔ Serfs",r:"Priest1 p.18"},
+  q:"ภาพยุคกลาง: โป๊ปคู่กับตำแหน่งทางโลกใด",
+  o:["Knight","Emperor / King","Serf","Merchant"],
+  a:1,e:"ในภาพ Medieval social structure: Pope ↔ Emperor/King; Cardinal/Archbishop/Bishop ↔ ขุนนาง; Priest/Monk ↔ พ่อค้า/ชาวนา; Believers ↔ Serfs",r:"Priest1 p.18"},
 
  /* ===== บท 4.2 — นักบุญ (Saint) ===== */
  {tag:"บท4.2 Saint",h:"ขั้นแรกสุด = เพิ่งเปิดกรณีสอบสวน, ขั้นสุดท้าย = ได้เป็นนักบุญเต็มตัว",
- q:"ลำดับสถาปนานักบุญ",
- o:["Servant of God → Venerable → Blessed → Saint","Blessed → Saint → Venerable → Servant of God","Saint → Blessed → Venerable → Servant of God","Venerable → Servant of God → Saint → Blessed"],
- a:0,e:"4 ขั้น: Servant of God (ผู้รับใช้พระเจ้า) → Venerable (ผู้น่าเคารพ/คารวียะ) → Blessed/Beatification (บุญราศี) → Saint/Canonization (นักบุญ)",r:"Saint p.24–29"},
+  q:"ลำดับสถาปนานักบุญ",
+  o:["Servant of God → Venerable → Blessed → Saint","Blessed → Saint → Venerable → Servant of God","Saint → Blessed → Venerable → Servant of God","Venerable → Servant of God → Saint → Blessed"],
+  a:0,e:"4 ขั้น: Servant of God (ผู้รับใช้พระเจ้า) → Venerable (ผู้น่าเคารพ/คารวียะ) → Blessed/Beatification (บุญราศี) → Saint/Canonization (นักบุญ)",r:"Saint p.24–29"},
 
  {tag:"บท4.2 Saint",h:"ภาษาอังกฤษของขั้น 'บุญราศี'",
- q:"ขั้น Beatification ได้สถานะใด",
- o:["Venerable","Blessed","Saint","Servant of God"],
- a:1,e:"Beatification = ขั้นได้เป็น 'Blessed' (บุญราศี) — ต้องมีอัศจรรย์พิสูจน์แล้ว + โป๊ปเห็นชอบ",r:"Saint p.26–28"},
+  q:"ขั้น Beatification ได้สถานะใด",
+  o:["Venerable","Blessed","Saint","Servant of God"],
+  a:1,e:"Beatification = ขั้นได้เป็น 'Blessed' (บุญราศี) — ต้องมีอัศจรรย์พิสูจน์แล้ว + โป๊ปเห็นชอบ",r:"Saint p.26–28"},
 
  {tag:"บท4.2 Saint",h:"คำที่แปลว่า 'การสถาปนาเป็นนักบุญ'",
- q:"ขั้นสุดท้ายเรียกว่า",
- o:["Beatification","Canonization","Confirmation","Veneration"],
- a:1,e:"Canonization (การสถาปนานักบุญ) — ประกาศโดยพระสันตะปาปา ที่มหาวิหารเซนต์ปีเตอร์",r:"Saint p.29"},
+  q:"ขั้นสุดท้ายเรียกว่า",
+  o:["Beatification","Canonization","Confirmation","Veneration"],
+  a:1,e:"Canonization (การสถาปนานักบุญ) — ประกาศโดยพระสันตะปาปา ที่มหาวิหารเซนต์ปีเตอร์",r:"Saint p.29"},
 
  {tag:"บท4.2 Saint",h:"ทนายที่คอยหาข้อบกพร่อง 'ขุดคุ้ย' มาคัดค้าน",
- q:"ทนายฝ่ายค้านเรียกว่า",
- o:["the Devil's Advocate","the Cardinal Elector","the Apostolic Notary","the Prosecutor of Rome"],
- a:0,e:"ฝ่ายค้านเรียก 'ทนายปีศาจ' (Devil's Advocate) คอยขุดข้อบกพร่องมาคัดค้าน; คู่กับทนายฝ่ายสนับสนุน",r:"Saint p.27"},
+  q:"ทนายฝ่ายค้านเรียกว่า",
+  o:["the Devil's Advocate","the Cardinal Elector","the Apostolic Notary","the Prosecutor of Rome"],
+  a:0,e:"ฝ่ายค้านเรียก 'ทนายปีศาจ' (Devil's Advocate) คอยขุดข้อบกพร่องมาคัดค้าน; คู่กับทนายฝ่ายสนับสนุน",r:"Saint p.27"},
 
  {tag:"บท4.2 Saint",h:"นิกายที่บูชา/ภาวนาผ่านนักบุญ — ไม่ใช่ Protestant กระแสหลัก",
- q:"การเคารพนักบุญพบในนิกายใด",
- o:["Mainstream Protestant only","Catholic, Orthodox & some Anglican","Orthodox only","All Protestant denominations"],
- a:1,e:"การภาวนาผ่านนักบุญมีใน Catholic, Orthodox และบางนิกาย Protestant เช่น Anglican (Church of England)",r:"Saint p.2"},
+  q:"การเคารพนักบุญพบในนิกายใด",
+  o:["Mainstream Protestant only","Catholic, Orthodox & some Anglican","Orthodox only","All Protestant denominations"],
+  a:1,e:"การภาวนาผ่านนักบุญมีใน Catholic, Orthodox และบางนิกาย Protestant เช่น Anglican (Church of England)",r:"Saint p.2"},
 
  {tag:"บท4.2 Saint",h:"ต้องรอหลังเสียชีวิตจำนวนปีหนึ่ง (ยกเว้นบางกรณีเร่ง)",
- q:"เริ่มกระบวนการหลังตายกี่ปี",
- o:["1 year","5 years","25 years","100 years"],
- a:1,e:"ปกติเริ่มได้หลังเสียชีวิตอย่างน้อย 5 ปี; ยกเว้น 'ทางลัด' เช่น John Paul II และ Mother Teresa of Calcutta",r:"Saint p.30"},
+  q:"เริ่มกระบวนการหลังตายกี่ปี",
+  o:["1 year","5 years","25 years","100 years"],
+  a:1,e:"ปกติเริ่มได้หลังเสียชีวิตอย่างน้อย 5 ปี; ยกเว้น 'ทางลัด' เช่น John Paul II และ Mother Teresa of Calcutta",r:"Saint p.30"},
 
  {tag:"บท4.2 Saint",h:"Orthodox=ภาพแบน 2 มิติ, Catholic=รูป 3 มิติ",
- q:"รูปนักบุญ Orthodox vs Catholic",
- o:["both use 3D statues","Orthodox = icons , Catholic = statues","Orthodox = statues, Catholic = icons","neither allows any image"],
- a:1,e:"Orthodox ใช้ภาพไอคอน (icon, จิตรกรรม 2 มิติ); Catholic นิยมรูปปั้น 3 มิติ (statue)",r:"Saint p.16–22"},
+  q:"รูปนักบุญ Orthodox vs Catholic",
+  o:["both use 3D statues","Orthodox = icons , Catholic = statues","Orthodox = statues, Catholic = icons","neither allows any image"],
+  a:1,e:"Orthodox ใช้ภาพไอคอน (icon, จิตรกรรม 2 มิติ); Catholic นิยมรูปปั้น 3 มิติ (statue)",r:"Saint p.16–22"},
 
  /* ===== บท 5 — โบสถ์ (Church) ===== */
  {tag:"บท5 Church",h:"นับได้: อาคาร / ชุมชนผู้เชื่อ / กลุ่มผู้เชื่อทั้งโลก",
- q:"คำว่า Church มีกี่ความหมาย",
- o:["1","2","3","5"],
- a:2,e:"3 ความหมาย: (1) ตัวอาคาร=โบสถ์/วัด (2) ชุมชนผู้เชื่อ=คริสตจักร/ชุมชนวัด (3) กลุ่มผู้เชื่อทั้งโลก=คริสตจักรสากล/พระศาสนจักรสากล",r:"Church p.2"},
+  q:"คำว่า Church มีกี่ความหมาย",
+  o:["1","2","3","5"],
+  a:2,e:"3 ความหมาย: (1) ตัวอาคาร=โบสถ์/วัด (2) ชุมชนผู้เชื่อ=คริสตจักร/ชุมชนวัด (3) กลุ่มผู้เชื่อทั้งโลก=คริสตจักรสากล/พระศาสนจักรสากล",r:"Church p.2"},
 
  {tag:"บท5 Church",h:"นิกายที่โบสถ์เรียบที่สุด มักมีแค่ไม้กางเขนเปล่า",
- q:"โบสถ์เรียบง่ายที่สุดของนิกายใด",
- o:["Catholic","Orthodox","Protestant","Anglican"],
- a:2,e:"Protestant — เรียบง่าย เน้นใช้งาน ไม่นิยมรูปปั้น/รูปภาพ มักมีแค่ไม้กางเขนเปล่า (bare cross)",r:"Church p.76–77"},
+  q:"โบสถ์เรียบง่ายที่สุดของนิกายใด",
+  o:["Catholic","Orthodox","Protestant","Anglican"],
+  a:2,e:"Protestant — เรียบง่าย เน้นใช้งาน ไม่นิยมรูปปั้น/รูปภาพ มักมีแค่ไม้กางเขนเปล่า (bare cross)",r:"Church p.76–77"},
 
  {tag:"บท5 Church",h:"ฉากกั้นพระแท่น (Altar) เฉพาะนิกายตะวันออก",
- q:"ฉากกั้นพระแท่นออร์โธดอกซ์",
- o:["Iconostasis","Tabernacle","Baptistery","Confessional"],
- a:0,e:"Iconostasis (icon screen) — ฉากกั้นระหว่างพระแท่น (Altar) กับที่นั่งสัตบุรุษ ในโบสถ์ Orthodox (หลังฉากเป็นเขตเฉพาะนักบวช)",r:"Church p.48–53"},
+  q:"ฉากกั้นพระแท่นออร์โธดอกซ์",
+  o:["Iconostasis","Tabernacle","Baptistery","Confessional"],
+  a:0,e:"Iconostasis (icon screen) — ฉากกั้นระหว่างพระแท่น (Altar) กับที่นั่งสัตบุรุษ ในโบสถ์ Orthodox (หลังฉากเป็นเขตเฉพาะนักบวช)",r:"Church p.48–53"},
 
  {tag:"บท5 Church",h:"รูป 3 มิติ พบเฉพาะนิกายนี้ (Orthodox/Protestant ไม่มี)",
- q:"รูปปั้น 3 มิติพบในนิกายใด",
- o:["Catholic","Orthodox","Protestant","All equally"],
- a:0,e:"รูปปั้น 3 มิติ (statue) พบในโบสถ์ Catholic; ไม่พบใน Orthodox และ Protestant",r:"Church p.4–15"},
+  q:"รูปปั้น 3 มิติพบในนิกายใด",
+  o:["Catholic","Orthodox","Protestant","All equally"],
+  a:0,e:"รูปปั้น 3 มิติ (statue) พบในโบสถ์ Catholic; ไม่พบใน Orthodox และ Protestant",r:"Church p.4–15"},
 
  {tag:"บท5 Church",h:"Orthodox อนุญาตเฉพาะภาพแบบใด",
- q:"ออร์โธดอกซ์อนุญาตเฉพาะภาพแบบใด",
- o:["3D statues","2D icons / paintings","no images at all","photographs"],
- a:1,e:"Orthodox ให้มีได้เฉพาะภาพ 2 มิติ = ไอคอน (icon) / จิตรกรรม / โมเสก — ห้ามรูปปั้น 3 มิติ",r:"Church p.47"},
+  q:"ออร์โธดอกซ์อนุญาตเฉพาะภาพแบบใด",
+  o:["3D statues","2D icons / paintings","no images at all","photographs"],
+  a:1,e:"Orthodox ให้มีได้เฉพาะภาพ 2 มิติ = ไอคอน (icon) / จิตรกรรม / โมเสก — ห้ามรูปปั้น 3 มิติ",r:"Church p.47"},
 
  {tag:"บท5 Church",h:"หลังคาทรงนี้เด่นในโบสถ์รัสเซีย/ตะวันออก",
- q:"โดมหัวหอมพบในโบสถ์นิกายใด",
- o:["Catholic","Orthodox","Protestant","Anglican"],
- a:1,e:"โดมทรงหัวหอม (onion dome) เป็นเอกลักษณ์ของโบสถ์ Eastern/Russian Orthodox",r:"Church p.37"},
+  q:"โดมหัวหอมพบในโบสถ์นิกายใด",
+  o:["Catholic","Orthodox","Protestant","Anglican"],
+  a:1,e:"โดมทรงหัวหอม (onion dome) เป็นเอกลักษณ์ของโบสถ์ Eastern/Russian Orthodox",r:"Church p.37"},
 
  {tag:"บท5 Church",h:"กางเขนที่มีรูปพระเยซู (corpus) ติดอยู่ด้วย",
- q:"กางเขนแบบมีรูปพระเยซู",
- o:["Catholic","Protestant","Anglican","All denominations"],
- a:0,e:"Catholic cross มักมีรูปพระเยซู (รูปปั้น/รูปนูน) ติดบนกางเขน; Orthodox cross มีขีดเพิ่ม 2 ขีดบน-ล่าง; Protestant ใช้กางเขนเปล่า",r:"Church p.106–116"},
+  q:"กางเขนแบบมีรูปพระเยซู",
+  o:["Catholic","Protestant","Anglican","All denominations"],
+  a:0,e:"Catholic cross มักมีรูปพระเยซู (รูปปั้น/รูปนูน) ติดบนกางเขน; Orthodox cross มีขีดเพิ่ม 2 ขีดบน-ล่าง; Protestant ใช้กางเขนเปล่า",r:"Church p.106–116"},
 
  /* ===== บท 4 — นิกาย (Sect / Denominations) ===== */
  {tag:"บท4 นิกาย",h:"กรีก แปลว่า 'ทั่วทั้งหมด/ครอบจักรวาล'",
- q:"Catholic มาจากภาษากรีกแปลว่า",
- o:["Universal","Holy","Roman","True"],
- a:0,e:"Catholic มาจากภาษากรีกแปลว่า Universal (สากล)",r:"Sect p.6"},
+  q:"Catholic มาจากภาษากรีกแปลว่า",
+  o:["Universal","Holy","Roman","True"],
+  a:0,e:"Catholic มาจากภาษากรีกแปลว่า Universal (สากล)",r:"Sect p.6"},
 
  {tag:"บท4 นิกาย",h:"กรีก orthos + doxa",
- q:"Orthodox แปลว่า",
- o:["Universal","Correct/True belief","Protester","Eastern"],
- a:1,e:"Orthodox = orthos (ถูกต้อง/เที่ยงตรง) + doxa (ศรัทธา) = 'หลักธรรมที่ถูกต้อง/เที่ยงตรง'",r:"Sect p.30"},
+  q:"Orthodox แปลว่า",
+  o:["Universal","Correct/True belief","Protester","Eastern"],
+  a:1,e:"Orthodox = orthos (ถูกต้อง/เที่ยงตรง) + doxa (ศรัทธา) = 'หลักธรรมที่ถูกต้อง/เที่ยงตรง'",r:"Sect p.30"},
 
  {tag:"บท4 นิกาย",h:"แปลว่า 'ผู้คัดค้าน'",
- q:"Protestant แปลว่า",
- o:["Reformer","Protester","Pure one","Free one"],
- a:1,e:"Protestant แปลว่า 'ผู้ประท้วง/ผู้คัดค้าน' (Protester) — กลุ่มที่แยกตัวจากอำนาจ Pope แห่งโรม",r:"Sect p.95"},
+  q:"Protestant แปลว่า",
+  o:["Reformer","Protester","Pure one","Free one"],
+  a:1,e:"Protestant แปลว่า 'ผู้ประท้วง/ผู้คัดค้าน' (Protester) — กลุ่มที่แยกตัวจากอำนาจ Pope แห่งโรม",r:"Sect p.95"},
 
  {tag:"บท4 นิกาย",h:"ผู้นับถือมากที่สุด ~50-51% ของโลก",
- q:"นิกายใหญ่สุดในโลก",
- o:["Catholic","Orthodox","Protestant","Anglican"],
- a:0,e:"Catholic ใหญ่สุด อันดับ 1 ~1300 ล้านคน (50-51%); Protestant อันดับ 2 ~1000 ล้าน; Orthodox อันดับ 3 ~270 ล้าน",r:"Sect p.6"},
+  q:"นิกายใหญ่สุดในโลก",
+  o:["Catholic","Orthodox","Protestant","Anglican"],
+  a:0,e:"Catholic ใหญ่สุด อันดับ 1 ~1300 ล้านคน (50-51%); Protestant อันดับ 2 ~1000 ล้าน; Orthodox อันดับ 3 ~270 ล้าน",r:"Sect p.6"},
 
  {tag:"บท4 นิกาย",h:"อันดับ 3 ของโลก ~10-11%",
- q:"นิกายใหญ่อันดับ 3",
- o:["Catholic","Protestant","Orthodox","Lutheran"],
- a:2,e:"Orthodox เป็นนิกายใหญ่อันดับ 3 ~270 ล้านคน (10-11% ของคริสต์ทั่วโลก)",r:"Sect p.32"},
+  q:"นิกายใหญ่อันดับ 3",
+  o:["Catholic","Protestant","Orthodox","Lutheran"],
+  a:2,e:"Orthodox เป็นนิกายใหญ่อันดับ 3 ~270 ล้านคน (10-11% ของคริสต์ทั่วโลก)",r:"Sect p.32"},
 
  {tag:"บท4 นิกาย",h:"ผู้นำสากลหนึ่งเดียว ศูนย์กลางที่ Vatican",
- q:"ผู้นำสากลของคาทอลิก",
- o:["Patriarch","Pope","Archbishop","Cardinal"],
- a:1,e:"Pope (พระสันตะปาปา) = Bishop of Rome ผู้นำสากลหนึ่งเดียว ศูนย์กลางที่ Vatican",r:"Sect p.7"},
+  q:"ผู้นำสากลของคาทอลิก",
+  o:["Patriarch","Pope","Archbishop","Cardinal"],
+  a:1,e:"Pope (พระสันตะปาปา) = Bishop of Rome ผู้นำสากลหนึ่งเดียว ศูนย์กลางที่ Vatican",r:"Sect p.7"},
 
  {tag:"บท4 นิกาย",h:"นิกายนี้ไม่มีผู้นำสากล มีแต่ผู้นำแต่ละเขต",
- q:"ผู้นำสูงสุดแต่ละเขตของออร์โธดอกซ์",
- o:["Pope","Patriarch","Cardinal","Pastor"],
- a:1,e:"Orthodox ไม่มีผู้นำสากล แต่มีผู้นำสูงสุดแต่ละเขต = Patriarch (อัครบิดร/พระอัยกา) — หลัก 'สูงสุดท่ามกลางเท่าเทียม'",r:"Sect p.38"},
+  q:"ผู้นำสูงสุดแต่ละเขตของออร์โธดอกซ์",
+  o:["Pope","Patriarch","Cardinal","Pastor"],
+  a:1,e:"Orthodox ไม่มีผู้นำสากล แต่มีผู้นำสูงสุดแต่ละเขต = Patriarch (อัครบิดร/พระอัยกา) — หลัก 'สูงสุดท่ามกลางเท่าเทียม'",r:"Sect p.38"},
 
  {tag:"บท4 นิกาย",h:"2 นิกายที่คล้ายกันมาก (อนุรักษ์นิยม 7 ศีล เน้น Saint)",
- q:"คาทอลิกคล้ายนิกายใดมากที่สุด",
- o:["Orthodox","Protestant","Anglican","Baptist"],
- a:0,e:"Catholic คล้าย Orthodox มาก (อนุรักษ์นิยม, 7 ศีล, เน้น Saint/Mary) ต่างกันหลักที่ยอมรับ Pope หรือไม่",r:"Sect p.6, p.31"},
+  q:"คาทอลิกคล้ายนิกายใดมากที่สุด",
+  o:["Orthodox","Protestant","Anglican","Baptist"],
+  a:0,e:"Catholic คล้าย Orthodox มาก (อนุรักษ์นิยม, 7 ศีล, เน้น Saint/Mary) ต่างกันหลักที่ยอมรับ Pope หรือไม่",r:"Sect p.6, p.31"},
 
  {tag:"บท4 นิกาย",h:"จำนวนเล่ม: Cath 73 / Orth 78 / Prot ?",
- q:"ไบเบิลโปรเตสแตนต์มีกี่เล่ม",
- o:["66 (39+27)","73 (46+27)","78 (51+27)","27"],
- a:0,e:"Protestant = 66 เล่ม (เดิม 39 + ใหม่ 27); Catholic = 73; Orthodox = 78",r:"Sect p.15, p.105"},
+  q:"ไบเบิลโปรเตสแตนต์มีกี่เล่ม",
+  o:["66 (39+27)","73 (46+27)","78 (51+27)","27"],
+  a:0,e:"Protestant = 66 เล่ม (เดิม 39 + ใหม่ 27); Catholic = 73; Orthodox = 78",r:"Sect p.15, p.105"},
 
  {tag:"บท4 นิกาย",h:"นิกายที่ 'ไม่มีนักบวช' — ผู้นำแต่งงานได้",
- q:"นิกายที่ไม่มีนักบวช ผู้นำแต่งงานได้",
- o:["Catholic","Orthodox","Protestant","All three have clergy"],
- a:2,e:"Protestant ไม่มีนักบวช เรียกผู้นำว่า 'ผู้สอนศาสนา' = Pastor/ศิษยาภิบาล ซึ่งแต่งงานได้",r:"Sect p.99"},
+  q:"นิกายที่ไม่มีนักบวช ผู้นำแต่งงานได้",
+  o:["Catholic","Orthodox","Protestant","All three have clergy"],
+  a:2,e:"Protestant ไม่มีนักบวช เรียกผู้นำว่า 'ผู้สอนศาสนา' = Pastor/ศิษยาภิบาล ซึ่งแต่งงานได้",r:"Sect p.99"},
 
  {tag:"บท4 นิกาย",h:"ความเชื่อเรื่อง 'แดนชำระ' มีในนิกายใด",
- q:"เชื่อเรื่องไฟชำระ",
- o:["Catholic","Protestant","All denominations","None believe it"],
- a:0,e:"Catholic เชื่อเรื่อง Purgatory (แดนชำระ); Orthodox ส่วนใหญ่และ Protestant ไม่เชื่อ",r:"Sect p.16, p.104"},
+  q:"เชื่อเรื่องไฟชำระ",
+  o:["Catholic","Protestant","All denominations","None believe it"],
+  a:0,e:"Catholic เชื่อเรื่อง Purgatory (แดนชำระ); Orthodox ส่วนใหญ่และ Protestant ไม่เชื่อ",r:"Sect p.16, p.104"},
 
  {tag:"บท4 นิกาย",h:"ค.ศ. นี้ Catholic แยกขาด Orthodox",
- q:"ปีที่แตกแยกใหญ่",
- o:["1054 AD","1517 AD","451 AD","1965 AD"],
- a:0,e:"The Great Schism of 1054 — Rome (Catholic) แยกขาดจาก Constantinople (Orthodox)",r:"Sect p.76"},
+  q:"ปีที่แตกแยกใหญ่",
+  o:["1054 AD","1517 AD","451 AD","1965 AD"],
+  a:0,e:"The Great Schism of 1054 — Rome (Catholic) แยกขาดจาก Constantinople (Orthodox)",r:"Sect p.76"},
 
  {tag:"บท4 นิกาย",h:"คำลาตินที่เป็นชนวนแตกแยก = 'และพระบุตร'",
- q:"ชนวน Filioque คือเติมคำว่า",
- o:["'and the Son'","'and the Spirit'","'and Mary'","'forever'"],
- a:0,e:"Filioque (ลาติน='และพระบุตร') — ตะวันตกเติมว่าพระจิตมาจากพระบิดา'และพระบุตร'; Orthodox ค้านว่าพระจิตมาจากพระบิดาเท่านั้น",r:"Sect p.46, p.71"},
+  q:"ชนวน Filioque คือเติมคำว่า",
+  o:["'and the Son'","'and the Spirit'","'and Mary'","'forever'"],
+  a:0,e:"Filioque (ลาติน='และพระบุตร') — ตะวันตกเติมว่าพระจิตมาจากพระบิดา'และพระบุตร'; Orthodox ค้านว่าพระจิตมาจากพระบิดาเท่านั้น",r:"Sect p.46, p.71"},
 
  {tag:"บท4 นิกาย",h:"5 ศูนย์กลางคริสต์ยุคแรก",
- q:"5 ศูนย์กลางยุคแรก",
- o:["Rome, Constantinople, Antioch, Jerusalem, Alexandria","Rome, Paris, London, Cairo, Athens","Vatican, Moscow, Greece, Egypt, India","Bangkok, Rome, Jerusalem, Cairo, Syria"],
- a:0,e:"Pentarchy = Rome, Constantinople, Antioch, Jerusalem, Alexandria",r:"Sect p.73"},
+  q:"5 ศูนย์กลางยุคแรก",
+  o:["Rome, Constantinople, Antioch, Jerusalem, Alexandria","Rome, Paris, London, Cairo, Athens","Vatican, Moscow, Greece, Egypt, India","Bangkok, Rome, Jerusalem, Cairo, Syria"],
+  a:0,e:"Pentarchy = Rome, Constantinople, Antioch, Jerusalem, Alexandria",r:"Sect p.73"},
 
  {tag:"บท4 นิกาย",h:"ในไทยเรียกคาทอลิกแบบนี้ (โปรตุเกสนำเข้า)",
- q:"ในไทยเรียกคาทอลิกว่า",
- o:["Christang (คริสตัง)","Christian (คริสเตียน)","the holy ones","the Church"],
- a:0,e:"ไทยเรียกคาทอลิกว่า 'คริสตัง' (จากโปรตุเกส เข้ามาสมัยอยุธยา-นิกายแรก) ส่วนโปรเตสแตนต์เรียก 'คริสเตียน'",r:"Sect p.17, p.106"},
+  q:"ในไทยเรียกคาทอลิกว่า",
+  o:["Christang (คริสตัง)","Christian (คริสเตียน)","the holy ones","the Church"],
+  a:0,e:"ไทยเรียกคาทอลิกว่า 'คริสตัง' (จากโปรตุเกส เข้ามาสมัยอยุธยา-นิกายแรก) ส่วนโปรเตสแตนต์เรียก 'คริสเตียน'",r:"Sect p.17, p.106"},
 
  {tag:"บท4 นิกาย",h:"สภาที่ทำให้ Orthodox แยกเป็น Eastern vs Oriental",
- q:"สภาที่แยกออร์โธดอกซ์ 2 กลุ่ม",
- o:["Council of Chalcedon","Council of Nicaea","Council of Trent","Council of Ephesus"],
- a:0,e:"Council of Chalcedon ค.ศ.451 — ฝ่ายยอมรับ = Eastern Orthodox (70%), ฝ่ายไม่ยอมรับ = Oriental Orthodox (30%)",r:"Sect p.50"},
+  q:"สภาที่แยกออร์โธดอกซ์ 2 กลุ่ม",
+  o:["Council of Chalcedon","Council of Nicaea","Council of Trent","Council of Ephesus"],
+  a:0,e:"Council of Chalcedon ค.ศ.451 — ฝ่ายยอมรับ = Eastern Orthodox (70%), ฝ่ายไม่ยอมรับ = Oriental Orthodox (30%)",r:"Sect p.50"},
 
  /* ===== บท 6 — ศีล 7 (Sacraments) เพิ่มเติม grounded ===== */
  {tag:"บท6 ศีล",h:"คริสต์ = สิ่งที่ต้องทำ; พุทธ = สิ่งที่งดเว้น",
- q:"ศีลในคริสต์หมายถึง",
- o:["a ritual / something to DO","something to abstain from","a commandment","a prayer"],
- a:0,e:"ศีลในคริสต์ = พิธีกรรม/สิ่งที่ต้องทำ (ต่างจากพุทธที่ศีล = สิ่งที่งดเว้น)",r:"Sacraments1 p.3"},
+  q:"ศีลในคริสต์หมายถึง",
+  o:["a ritual / something to DO","something to abstain from","a commandment","a prayer"],
+  a:0,e:"ศีลในคริสต์ = พิธีกรรม/สิ่งที่ต้องทำ (ต่างจากพุทธที่ศีล = สิ่งที่งดเว้น)",r:"Sacraments1 p.3"},
 
  {tag:"บท6 ศีล",h:"2 ศีลที่มีครบทั้ง 3 นิกาย",
- q:"2 ศีลที่มีครบทั้ง 3 นิกาย",
- o:["Baptism + Eucharist","Baptism + Confirmation","Eucharist + Penance","Matrimony + Holy Orders"],
- a:0,e:"Baptism + Eucharist มีครบทั้ง 3 นิกาย (Protestant ใช้แค่ 2 ศีลนี้); ที่เหลืออีก 5 มีเฉพาะ Catholic & Orthodox",r:"Sacraments1 p.5"},
+  q:"2 ศีลที่มีครบทั้ง 3 นิกาย",
+  o:["Baptism + Eucharist","Baptism + Confirmation","Eucharist + Penance","Matrimony + Holy Orders"],
+  a:0,e:"Baptism + Eucharist มีครบทั้ง 3 นิกาย (Protestant ใช้แค่ 2 ศีลนี้); ที่เหลืออีก 5 มีเฉพาะ Catholic & Orthodox",r:"Sacraments1 p.5"},
 
  {tag:"บท6 ศีล",h:"เฉพาะสมณศักดิ์ขั้นนี้เท่านั้นที่โปรดได้",
- q:"เฉพาะใครโปรด Confirmation + Holy Orders",
- o:["Deacon","Priest","Bishop","Cardinal"],
- a:2,e:"เฉพาะ Bishop เท่านั้นที่โปรด Confirmation + Holy Orders ได้ (Priest โปรดได้ 5 ศีล; Deacon โปรดได้ Baptism+Matrimony)",r:"Sacraments2 p.92"},
+  q:"เฉพาะใครโปรด Confirmation + Holy Orders",
+  o:["Deacon","Priest","Bishop","Cardinal"],
+  a:2,e:"เฉพาะ Bishop เท่านั้นที่โปรด Confirmation + Holy Orders ได้ (Priest โปรดได้ 5 ศีล; Deacon โปรดได้ Baptism+Matrimony)",r:"Sacraments2 p.92"},
 
  {tag:"บท6 ศีล",h:"เรียงจากต่ำไปสูง",
- q:"3 ขั้นของศีลบวช",
- o:["Deacon → Priest → Bishop","Priest → Bishop → Pope","Deacon → Bishop → Cardinal","Bishop → Priest → Deacon"],
- a:0,e:"ศีลบวช 3 ขั้น: Deacon (สังฆานุกร) → Priest (บาทหลวง) → Bishop (พระสังฆราช)",r:"Sacraments2 p.88"},
+  q:"3 ขั้นของศีลบวช",
+  o:["Deacon → Priest → Bishop","Priest → Bishop → Pope","Deacon → Bishop → Cardinal","Bishop → Priest → Deacon"],
+  a:0,e:"ศีลบวช 3 ขั้น: Deacon (สังฆานุกร) → Priest (บาทหลวง) → Bishop (พระสังฆราช)",r:"Sacraments2 p.88"},
 
  {tag:"บท6 ศีล",h:"ในศีลสมรส ใครคือ 'ผู้ประกอบพิธี' จริงๆ",
- q:"ผู้ประกอบพิธีศีลสมรสจริงๆ คือ",
- o:["the priest","the bride & groom","the Bishop","two witnesses"],
- a:1,e:"เจ้าบ่าว-เจ้าสาวเป็นผู้ประกอบพิธีเอง (กล่าวคำสาบานต่อกัน) ส่วนบาทหลวง+พยาน 2 คน เป็นเพียง 'พยาน'",r:"Sacraments2 p.42"},
+  q:"ผู้ประกอบพิธีศีลสมรสจริงๆ คือ",
+  o:["the priest","the bride & groom","the Bishop","two witnesses"],
+  a:1,e:"เจ้าบ่าว-เจ้าสาวเป็นผู้ประกอบพิธีเอง (กล่าวคำสาบานต่อกัน) ส่วนบาทหลวง+พยาน 2 คน เป็นเพียง 'พยาน'",r:"Sacraments2 p.42"},
 
  {tag:"บท6 ศีล",h:"ศีลที่สำคัญที่สุด + ทำบ่อยที่สุด มาจากมื้อสุดท้าย",
- q:"ศีลมหาสนิทมาจากเหตุการณ์ใด",
- o:["The Last Supper","The Baptism of Jesus","The Resurrection","The Sermon on the Mount"],
- a:0,e:"Eucharist มาจาก The Last Supper (คืน Holy Thursday) กับ 12 Apostles ช่วง Passover — ขนมปัง=พระกาย เหล้าองุ่น=พระโลหิต",r:"Sacraments1 p.60"},
+  q:"ศีลมหาสนิทมาจากเหตุการณ์ใด",
+  o:["The Last Supper","The Baptism of Jesus","The Resurrection","The Sermon on the Mount"],
+  a:0,e:"Eucharist มาจาก The Last Supper (คืน Holy Thursday) กับ 12 Apostles ช่วง Passover — ขนมปัง=พระกาย เหล้าองุ่น=พระโลหิต",r:"Sacraments1 p.60"},
 
  {tag:"บท6 ศีล",h:"คาทอลิกเชื่อว่าขนมปัง/ไวน์ 'เป็นจริง' ไม่ใช่แค่สัญลักษณ์",
- q:"คาทอลิกเชื่อว่า",
- o:["Real Presence","just a symbol","a memory only","transfiguration"],
- a:0,e:"Catholic & Orthodox เชื่อ Real Presence (พระกาย พระโลหิต พระวิญญาณ ความเป็นพระเจ้า จริง); Protestant เชื่อเป็น 'สัญลักษณ์' เท่านั้น",r:"Sacraments1 p.69"},
+  q:"คาทอลิกเชื่อว่า",
+  o:["Real Presence","just a symbol","a memory only","transfiguration"],
+  a:0,e:"Catholic & Orthodox เชื่อ Real Presence (พระกาย พระโลหิต พระวิญญาณ ความเป็นพระเจ้า จริง); Protestant เชื่อเป็น 'สัญลักษณ์' เท่านั้น",r:"Sacraments1 p.69"},
 
  {tag:"บท6 ศีล",h:"ใครให้บัพติศมาพระเยซู และที่แม่น้ำใด",
- q:"ใครให้บัพติศมาพระเยซู ที่แม่น้ำใด",
- o:["John the Baptist — Jordan River","St. Peter — Nile River","St. Paul — Galilee","Moses — Red Sea"],
- a:0,e:"John the Baptist (นักบุญยอห์น) ให้บัพติศมาพระเยซูที่แม่น้ำจอร์แดน (Jordan River)",r:"Sacraments1 p.17, p.26"},
+  q:"ใครให้บัพติศมาพระเยซู ที่แม่น้ำใด",
+  o:["John the Baptist — Jordan River","St. Peter — Nile River","St. Paul — Galilee","Moses — Red Sea"],
+  a:0,e:"John the Baptist (นักบุญยอห์น) ให้บัพติศมาพระเยซูที่แม่น้ำจอร์แดน (Jordan River)",r:"Sacraments1 p.17, p.26"},
 
  {tag:"บท6 ศีล",h:"ในมหาสนิทคาทอลิก ผู้ร่วมพิธีได้รับอะไร",
- q:"ผู้ร่วมพิธีคาทอลิกได้รับ",
- o:["bread only","wine only","both bread & wine","neither"],
- a:0,e:"นิกายคาทอลิก ผู้ร่วมพิธีรับ 'แต่ขนมปัง'; บาทหลวงเท่านั้นที่ดื่มไวน์ (ต่างจาก Orthodox/Protestant ที่ได้ทั้งสอง)",r:"Sacraments1 p.99, p.68"},
+  q:"ผู้ร่วมพิธีคาทอลิกได้รับ",
+  o:["bread only","wine only","both bread & wine","neither"],
+  a:0,e:"นิกายคาทอลิก ผู้ร่วมพิธีรับ 'แต่ขนมปัง'; บาทหลวงเท่านั้นที่ดื่มไวน์ (ต่างจาก Orthodox/Protestant ที่ได้ทั้งสอง)",r:"Sacraments1 p.99, p.68"},
 
  /* ===== ⭐ เรื่องคน (กลางภาค: สาวก/คนเขียน/สาเหตุตาย/ฉายา) ===== */
  {tag:"⭐ เรื่องคน",h:"2 คู่พี่น้อง อาชีพชาวประมง",
- q:"สาวกกลุ่มแรกที่พระเยซูเลือก",
- o:["Peter, Andrew, James, John","Paul, Luke, Mark, Thomas","Peter, Judas, Matthew, Philip","James, John, Paul, Andrew"],
- a:0,e:"สาวกกลุ่มแรก = Peter, Andrew (น้อง Peter), James, John (น้อง James) — ทั้ง 4 เป็นชาวประมงแห่งกาลิลี เป็น 2 คู่พี่น้อง",r:"Intro2 p.89"},
+  q:"สาวกกลุ่มแรกที่พระเยซูเลือก",
+  o:["Peter, Andrew, James, John","Paul, Luke, Mark, Thomas","Peter, Judas, Matthew, Philip","James, John, Paul, Andrew"],
+  a:0,e:"สาวกกลุ่มแรก = Peter, Andrew (น้อง Peter), James, John (น้อง James) — ทั้ง 4 เป็นชาวประมงแห่งกาลิลี เป็น 2 คู่พี่น้อง",r:"Intro2 p.89"},
 
  {tag:"⭐ เรื่องคน",h:"อาชีพริมทะเลสาบกาลิลี",
- q:"อาชีพเดิมของสาวกกลุ่มแรก",
- o:["fishermen","tax collectors","carpenters","shepherds"],
- a:0,e:"สาวกกลุ่มแรกทั้ง 4 (Peter/Andrew/James/John) เป็นชาวประมง (fishermen) แห่งกาลิลี",r:"Intro2 p.87"},
+  q:"อาชีพเดิมของสาวกกลุ่มแรก",
+  o:["fishermen","tax collectors","carpenters","shepherds"],
+  a:0,e:"สาวกกลุ่มแรกทั้ง 4 (Peter/Andrew/James/John) เป็นชาวประมง (fishermen) แห่งกาลิลี",r:"Intro2 p.87"},
 
  {tag:"⭐ เรื่องคน",h:"หัวหน้าอัครสาวก + โป๊ปองค์แรก",
- q:"ใครเป็นหัวหน้าอัครสาวก 12",
- o:["Peter","Paul","John","Andrew"],
- a:0,e:"Peter (เปโตร) = หัวหน้าอัครสาวก 12 คน และคาทอลิกถือว่าเป็นพระสันตะปาปา (Pope) องค์แรก",r:"Intro2 p.90"},
+  q:"ใครเป็นหัวหน้าอัครสาวก 12",
+  o:["Peter","Paul","John","Andrew"],
+  a:0,e:"Peter (เปโตร) = หัวหน้าอัครสาวก 12 คน และคาทอลิกถือว่าเป็นพระสันตะปาปา (Pope) องค์แรก",r:"Intro2 p.90"},
 
  {tag:"⭐ เรื่องคน",h:"ชื่อเดิมก่อนพระเยซูเปลี่ยนให้",
- q:"ชื่อเดิมของเปโตร",
- o:["Simon","Levi","Saul","Cephas"],
- a:0,e:"เดิมชื่อ Simon (ซีโมน) พระเยซูเปลี่ยนเป็น 'Peter/เปโตร' แปลว่าศิลา; ชื่ออื่น: Simon Peter, Cephas",r:"Intro2 p.100"},
+  q:"ชื่อเดิมของเปโตร",
+  o:["Simon","Levi","Saul","Cephas"],
+  a:0,e:"เดิมชื่อ Simon (ซีโมน) พระเยซูเปลี่ยนเป็น 'Peter/เปโตร' แปลว่าศิลา; ชื่ออื่น: Simon Peter, Cephas",r:"Intro2 p.100"},
 
  {tag:"⭐ เรื่องคน",h:"Cephas (อาราเมอิก) / Petros (กรีก) แปลเหมือนกัน",
- q:"เคฟาส/เปโตร แปลว่า",
- o:["rock / stone","fisher","light","father"],
- a:0,e:"Cephas (อาราเมอิก) และ Petros (กรีก) แปลว่า 'หิน/ศิลา' (rock) — 'บนศิลานี้เราจะสร้างคริสตจักร'",r:"Intro2 p.109"},
+  q:"เคฟาส/เปโตร แปลว่า",
+  o:["rock / stone","fisher","light","father"],
+  a:0,e:"Cephas (อาราเมอิก) และ Petros (กรีก) แปลว่า 'หิน/ศิลา' (rock) — 'บนศิลานี้เราจะสร้างคริสตจักร'",r:"Intro2 p.109"},
 
  {tag:"⭐ เรื่องคน",h:"ขอตายแบบไม่เหมือนพระเยซู เพราะไม่คู่ควร",
- q:"เปโตรตายอย่างไร",
- o:["crucified upside down","beheaded","hanged himself","died of old age"],
- a:0,e:"Peter ถูกตรึงกางเขน 'เอาหัวลง' (กลับหัว) ตามที่ขอเอง เพราะรู้สึกไม่คู่ควรจะตายแบบเดียวกับพระเยซู; ฝังที่เนินวาติกัน",r:"Intro2 p.101"},
+  q:"เปโตรตายอย่างไร",
+  o:["crucified upside down","beheaded","hanged himself","died of old age"],
+  a:0,e:"Peter ถูกตรึงกางเขน 'เอาหัวลง' (กลับหัว) ตามที่ขอเอง เพราะรู้สึกไม่คู่ควรจะตายแบบเดียวกับพระเยซู; ฝังที่เนินวาติกัน",r:"Intro2 p.101"},
 
  {tag:"⭐ เรื่องคน",h:"อัครสาวกที่ไม่ได้ถูกฆ่า",
- q:"อัครสาวกคนเดียวที่ตายชราภาพ",
- o:["John","Peter","Andrew","Thomas"],
- a:0,e:"John (ยอห์น) เป็นอัครสาวกคนเดียวที่ตายด้วยวัยชรา — ที่เหลือถูกสังหารเป็นมรณสักขี (martyr) หมด",r:"Intro2 p.108"},
+  q:"อัครสาวกคนเดียวที่ตายชราภาพ",
+  o:["John","Peter","Andrew","Thomas"],
+  a:0,e:"John (ยอห์น) เป็นอัครสาวกคนเดียวที่ตายด้วยวัยชรา — ที่เหลือถูกสังหารเป็นมรณสักขี (martyr) หมด",r:"Intro2 p.108"},
 
  {tag:"⭐ เรื่องคน",h:"ฉายาของยอห์น + อายุน้อยสุด",
- q:"อัครสาวกที่พระเยซูทรงรัก",
- o:["John","Peter","Paul","James"],
- a:0,e:"John = 'อัครสาวกที่พระเยซูทรงรัก' + อายุน้อยที่สุดใน 12 คน + อยู่ด้วยตอนพระเยซูถูกตรึง",r:"Intro2 p.108"},
+  q:"อัครสาวกที่พระเยซูทรงรัก",
+  o:["John","Peter","Paul","James"],
+  a:0,e:"John = 'อัครสาวกที่พระเยซูทรงรัก' + อายุน้อยที่สุดใน 12 คน + อยู่ด้วยตอนพระเยซูถูกตรึง",r:"Intro2 p.108"},
 
  {tag:"⭐ เรื่องคน",h:"แลก 30 เหรียญเงิน",
- q:"ใครทรยศพระเยซู",
- o:["Judas Iscariot","Thomas","Peter","Thaddeus"],
- a:0,e:"Judas Iscariot ทรยศพระเยซู (ระวัง! มี 'ยูดาส' 2 คน — อีกคนคือ Thaddeus/Judas อัครสาวกปกติ)",r:"Intro2 p.113"},
+  q:"ใครทรยศพระเยซู",
+  o:["Judas Iscariot","Thomas","Peter","Thaddeus"],
+  a:0,e:"Judas Iscariot ทรยศพระเยซู (ระวัง! มี 'ยูดาส' 2 คน — อีกคนคือ Thaddeus/Judas อัครสาวกปกติ)",r:"Intro2 p.113"},
 
  {tag:"⭐ เรื่องคน",h:"สำนึกผิดแล้วจบชีวิตตัวเอง",
- q:"ยูดาส อิสคาริโอท ตายอย่างไร",
- o:["hanged himself","crucified","stoned","beheaded"],
- a:0,e:"Judas Iscariot แขวนคอตาย (ฆ่าตัวตาย) หลังสำนึกผิดที่ทรยศพระเยซู",r:"Intro2 p.113"},
+  q:"ยูดาส อิสคาริโอท ตายอย่างไร",
+  o:["hanged himself","crucified","stoned","beheaded"],
+  a:0,e:"Judas Iscariot แขวนคอตาย (ฆ่าตัวตาย) หลังสำนึกผิดที่ทรยศพระเยซู",r:"Intro2 p.113"},
 
  {tag:"⭐ เรื่องคน",h:"คนที่ถูกเลือกมาแทนยูดาส",
- q:"ใครมาแทนยูดาส",
- o:["Matthias","Matthew","Paul","Mark"],
- a:0,e:"Matthias ถูกเลือกมาแทนที่ Judas Iscariot หลังยูดาสตาย (ระวังสับสนกับ Matthew/มัทธิว)",r:"Intro2 p.94"},
+  q:"ใครมาแทนยูดาส",
+  o:["Matthias","Matthew","Paul","Mark"],
+  a:0,e:"Matthias ถูกเลือกมาแทนที่ Judas Iscariot หลังยูดาสตาย (ระวังสับสนกับ Matthew/มัทธิว)",r:"Intro2 p.94"},
 
  {tag:"⭐ เรื่องคน",h:"อาชีพเดิมที่คนยิวรังเกียจ",
- q:"มัทธิวเดิมมีอาชีพ",
- o:["tax collector","fisherman","soldier","priest"],
- a:0,e:"Matthew (=Levi) เดิมเป็นคนเก็บภาษี (tax collector) ให้โรมัน ก่อนมาเป็นอัครสาวก + เขียน 1 ใน 4 พระวรสาร",r:"Intro2 p.110"},
+  q:"มัทธิวเดิมมีอาชีพ",
+  o:["tax collector","fisherman","soldier","priest"],
+  a:0,e:"Matthew (=Levi) เดิมเป็นคนเก็บภาษี (tax collector) ให้โรมัน ก่อนมาเป็นอัครสาวก + เขียน 1 ใน 4 พระวรสาร",r:"Intro2 p.110"},
 
  {tag:"⭐ เรื่องคน",h:"เขียน NT มากที่สุด",
- q:"เปาโลเขียน NT กี่เล่ม",
- o:["13","4","27","21"],
- a:0,e:"St. Paul เขียนพระคัมภีร์ NT มากที่สุด = 13 เล่ม (หมวดจดหมายฝาก/Epistles)",r:"Bible p.51, p.53"},
+  q:"เปาโลเขียน NT กี่เล่ม",
+  o:["13","4","27","21"],
+  a:0,e:"St. Paul เขียนพระคัมภีร์ NT มากที่สุด = 13 เล่ม (หมวดจดหมายฝาก/Epistles)",r:"Bible p.51, p.53"},
 
  {tag:"⭐ เรื่องคน",h:"เมืองที่เปาโลกลับใจระหว่างเดินทาง",
- q:"เปาโลกลับใจที่เมืองใด",
- o:["on the road to Damascus","Rome","Jerusalem","Athens"],
- a:0,e:"Paul เดิมเป็นยิวที่ข่มเหงคริสเตียน → กลับใจระหว่างเดินทางไปเมือง Damascus (ดามัสกัส) ที่ซีเรีย",r:"Intro2 p.94, Bible p.48"},
+  q:"เปาโลกลับใจที่เมืองใด",
+  o:["on the road to Damascus","Rome","Jerusalem","Athens"],
+  a:0,e:"Paul เดิมเป็นยิวที่ข่มเหงคริสเตียน → กลับใจระหว่างเดินทางไปเมือง Damascus (ดามัสกัส) ที่ซีเรีย",r:"Intro2 p.94, Bible p.48"},
 
  {tag:"⭐ เรื่องคน",h:"ทั้งคู่เป็นมรณสักขีที่เมืองหลวงจักรวรรดิ",
- q:"เปโตรกับเปาโลเป็นมรณสักขีที่เมืองใด",
- o:["Rome","Jerusalem","Damascus","Antioch"],
- a:0,e:"ทั้ง St. Peter และ St. Paul ถูกประหาร (เป็นมรณสักขี/Martyr) ที่กรุงโรม (Rome)",r:"Bible p.54"},
+  q:"เปโตรกับเปาโลเป็นมรณสักขีที่เมืองใด",
+  o:["Rome","Jerusalem","Damascus","Antioch"],
+  a:0,e:"ทั้ง St. Peter และ St. Paul ถูกประหาร (เป็นมรณสักขี/Martyr) ที่กรุงโรม (Rome)",r:"Bible p.54"},
 
  {tag:"⭐ เรื่องคน",h:"4 ผู้นิพนธ์พระวรสาร",
- q:"4 พระวรสารเขียนโดย",
- o:["Matthew, Mark, Luke, John","Peter, Paul, John, James","Matthew, Paul, Luke, Mark","Mark, Luke, Paul, Peter"],
- a:0,e:"พระวรสาร (Gospels) 4 เล่ม เขียนโดย 4 ผู้นิพนธ์: St. Matthew, St. Mark, St. Luke, St. John",r:"Bible p.46"},
+  q:"4 พระวรสารเขียนโดย",
+  o:["Matthew, Mark, Luke, John","Peter, Paul, John, James","Matthew, Paul, Luke, Mark","Mark, Luke, Paul, Peter"],
+  a:0,e:"พระวรสาร (Gospels) 4 เล่ม เขียนโดย 4 ผู้นิพนธ์: St. Matthew, St. Mark, St. Luke, St. John",r:"Bible p.46"},
 
  {tag:"⭐ เรื่องคน",h:"คนเดียวกับที่เขียน 1 พระวรสาร",
- q:"ใครเขียนกิจการอัครทูต",
- o:["St. Luke","St. Paul","St. John","St. Peter"],
- a:0,e:"St. Luke (นักบุญลูกา) เขียนกิจการอัครทูต (Acts) — บันทึกประวัติคริสตจักรยุคแรก + เขียนพระวรสารลูกาด้วย",r:"Bible p.48"},
+  q:"ใครเขียนกิจการอัครทูต",
+  o:["St. Luke","St. Paul","St. John","St. Peter"],
+  a:0,e:"St. Luke (นักบุญลูกา) เขียนกิจการอัครทูต (Acts) — บันทึกประวัติคริสตจักรยุคแรก + เขียนพระวรสารลูกาด้วย",r:"Bible p.48"},
 
  {tag:"⭐ เรื่องคน",h:"เล่มสุดท้ายของไบเบิล เรื่องวันสิ้นโลก",
- q:"ใครเขียนวิวรณ์ เล่มสุดท้าย",
- o:["St. John","St. Paul","St. Luke","St. Matthew"],
- a:0,e:"St. John (ยอห์น) เขียนวิวรณ์ (Revelation) = เล่มสุดท้ายของไบเบิล เรื่องวันสิ้นโลก/วันพิพากษา",r:"Bible p.56"},
+  q:"ใครเขียนวิวรณ์ เล่มสุดท้าย",
+  o:["St. John","St. Paul","St. Luke","St. Matthew"],
+  a:0,e:"St. John (ยอห์น) เขียนวิวรณ์ (Revelation) = เล่มสุดท้ายของไบเบิล เรื่องวันสิ้นโลก/วันพิพากษา",r:"Bible p.56"},
 
  {tag:"⭐ เรื่องคน",h:"ภาษาต้นฉบับคัมภีร์เดิม",
- q:"ต้นฉบับ OT ภาษาหลัก",
- o:["Hebrew","Greek","Latin","Aramaic"],
- a:0,e:"OT (คัมภีร์เดิม) เขียนต้นฉบับด้วยภาษา Hebrew (ฮีบรู) เป็นหลัก",r:"Bible p.16"},
+  q:"ต้นฉบับ OT ภาษาหลัก",
+  o:["Hebrew","Greek","Latin","Aramaic"],
+  a:0,e:"OT (คัมภีร์เดิม) เขียนต้นฉบับด้วยภาษา Hebrew (ฮีบรู) เป็นหลัก",r:"Bible p.16"},
 
  {tag:"⭐ เรื่องคน",h:"ภาษาต้นฉบับคัมภีร์ใหม่",
- q:"ต้นฉบับ NT ภาษาหลัก",
- o:["Greek","Hebrew","Latin","Thai"],
- a:0,e:"NT (คัมภีร์ใหม่) เขียนต้นฉบับด้วยภาษา Greek (กรีก) เป็นหลัก + บางส่วนเป็น Aramaic",r:"Bible p.19"},
+  q:"ต้นฉบับ NT ภาษาหลัก",
+  o:["Greek","Hebrew","Latin","Thai"],
+  a:0,e:"NT (คัมภีร์ใหม่) เขียนต้นฉบับด้วยภาษา Greek (กรีก) เป็นหลัก + บางส่วนเป็น Aramaic",r:"Bible p.19"},
 
  {tag:"⭐ เรื่องคน",h:"4+1+21+1",
- q:"คัมภีร์ใหม่ NT มีกี่เล่ม",
- o:["27 (4+1+21+1)","39","66","73"],
- a:0,e:"NT = 27 เล่ม: พระวรสาร 4 + กิจการ 1 + จดหมายฝาก 21 + วิวรณ์ 1",r:"Bible p.43"},
+  q:"คัมภีร์ใหม่ NT มีกี่เล่ม",
+  o:["27 (4+1+21+1)","39","66","73"],
+  a:0,e:"NT = 27 เล่ม: พระวรสาร 4 + กิจการ 1 + จดหมายฝาก 21 + วิวรณ์ 1",r:"Bible p.43"},
 
  {tag:"⭐ เรื่องคน",h:"รับที่ภูเขาซีนาย",
- q:"โมเสสรับบัญญัติ 10 ที่ภูเขาใด",
- o:["Mount Sinai","Mount Zion","Mount of Olives","Golgotha"],
- a:0,e:"Moses (โมเสส) รับบัญญัติ 10 ประการ (Ten Commandments) จากพระเจ้าที่ภูเขาซีนาย (Sinai)",r:"Bible p.37"},
+  q:"โมเสสรับบัญญัติ 10 ที่ภูเขาใด",
+  o:["Mount Sinai","Mount Zion","Mount of Olives","Golgotha"],
+  a:0,e:"Moses (โมเสส) รับบัญญัติ 10 ประการ (Ten Commandments) จากพระเจ้าที่ภูเขาซีนาย (Sinai)",r:"Bible p.37"},
 ];
 
 /* ====== shuffle-bag ====== */
-function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 /* ====== ตัวกรองบท (chapter filter) ====== */
 function chapterOf(it){
- const r=(it.r||'');
- if(/Sect/i.test(r))return '4';
- if(/Saint/i.test(r))return '4.2';
- if(/Reformer/i.test(r))return '4.3';
- if(/Church/i.test(r))return '5';
- if(/Sacrament/i.test(r))return '6';
- if(/Priest/i.test(r))return '7';
- return 'อื่นๆ';
+  const r=(it.r||'');
+  if(/Sect/i.test(r))return '4';
+  if(/Saint/i.test(r))return '4.2';
+  if(/Reformer/i.test(r))return '4.3';
+  if(/Church/i.test(r))return '5';
+  if(/Sacrament/i.test(r))return '6';
+  if(/Priest/i.test(r))return '7';
+  return 'อื่นๆ';
 }
 const FILTERS=[
- {key:'all',label:'ทั้งหมด',test:=>true},
- {key:'mid',label:'📕 กลางภาค (ยกเว้น Reformer)',cls:'focus5',test:it=>chapterOf(it)!=='4.3'},
- {key:'people',label:'⭐ เรื่องคน',cls:'focus5',test:it=>/เรื่องคน/.test(it.tag||'')},
- {key:'exam',label:'นิกาย+โบสถ์+ศีล (4·5·6)',test:it=>['4','5','6'].includes(chapterOf(it))},
- {key:'4',label:'4 นิกาย',test:it=>chapterOf(it)==='4'},
- {key:'5',label:'5 โบสถ์',test:it=>chapterOf(it)==='5'},
- {key:'6',label:'6 ศีล',test:it=>chapterOf(it)==='6'},
- {key:'4.2',label:'4.2 นักบุญ',test:it=>chapterOf(it)==='4.2'},
- {key:'4.3',label:'4.3 ปฏิรูป',test:it=>chapterOf(it)==='4.3'},
- {key:'7',label:'7 สมณศักดิ์',test:it=>chapterOf(it)==='7'},
+  {key:'all',label:'ทั้งหมด',test:()=>true},
+  {key:'mid',label:'📕 กลางภาค (ยกเว้น Reformer)',cls:'focus5',test:it=>chapterOf(it)!=='4.3'},
+  {key:'people',label:'⭐ เรื่องคน',cls:'focus5',test:it=>/เรื่องคน/.test(it.tag||'')},
+  {key:'exam',label:'นิกาย+โบสถ์+ศีล (4·5·6)',test:it=>['4','5','6'].includes(chapterOf(it))},
+  {key:'4',label:'4 นิกาย',test:it=>chapterOf(it)==='4'},
+  {key:'5',label:'5 โบสถ์',test:it=>chapterOf(it)==='5'},
+  {key:'6',label:'6 ศีล',test:it=>chapterOf(it)==='6'},
+  {key:'4.2',label:'4.2 นักบุญ',test:it=>chapterOf(it)==='4.2'},
+  {key:'4.3',label:'4.3 ปฏิรูป',test:it=>chapterOf(it)==='4.3'},
+  {key:'7',label:'7 สมณศักดิ์',test:it=>chapterOf(it)==='7'},
 ];
 let curFilter='all';
-let pool=[...BANK.keys];
+let pool=[...BANK.keys()];
 let bag=shuffle([...pool]);
 let idx=0,score=0,streak=0,answered=false;
 const KEYS=["ก","ข","ค","ง"];
 const $=id=>document.getElementById(id);
 
-function buildFilterBar{
- const fb=$("filterbar"); fb.innerHTML='';
- FILTERS.forEach(f=>{
- const n=BANK.filter(f.test).length;
- if(n===0)return;
- const b=document.createElement('button');
- b.className='fchip'+(f.cls?' '+f.cls:'')+(f.key===curFilter?' on':'');
- b.textContent=f.label+' ('+n+')';
- b.addEventListener('click',=>applyFilter(f.key));
- fb.appendChild(b);
- });
+function buildFilterBar(){
+  const fb=$("filterbar"); fb.innerHTML='';
+  FILTERS.forEach(f=>{
+    const n=BANK.filter(f.test).length;
+    if(n===0)return;
+    const b=document.createElement('button');
+    b.className='fchip'+(f.cls?' '+f.cls:'')+(f.key===curFilter?' on':'');
+    b.textContent=f.label+' ('+n+')';
+    b.addEventListener('click',()=>applyFilter(f.key));
+    fb.appendChild(b);
+  });
 }
 function applyFilter(key){
- curFilter=key;
- const f=FILTERS.find(x=>x.key===key);
- pool=[...BANK.keys].filter(i=>f.test(BANK[i]));
- bag=shuffle([...pool]);
- idx=0;score=0;streak=0;
- $("score").textContent=0;$("streak").textContent=0;
- $("qtot").textContent=bag.length;
- buildFilterBar;
- render;
+  curFilter=key;
+  const f=FILTERS.find(x=>x.key===key);
+  pool=[...BANK.keys()].filter(i=>f.test(BANK[i]));
+  bag=shuffle([...pool]);
+  idx=0;score=0;streak=0;
+  $("score").textContent=0;$("streak").textContent=0;
+  $("qtot").textContent=bag.length;
+  buildFilterBar();
+  render();
 }
-buildFilterBar;
+buildFilterBar();
 $("qtot").textContent=bag.length;
 
-function render{
- const stage=$("stage");
- if(idx>=bag.length){return end;}
- const item=BANK[bag[idx]];
- // สุ่มลำดับตัวเลือก แต่จำตำแหน่งคำตอบถูก
- const order=shuffle(item.o.map((t,i)=>({t,i})));
- const correctPos=order.findIndex(x=>x.i===item.a);
- answered=false;
- $("qnum").textContent=idx+1;
- $("pbar").style.width=((idx)/bag.length*100)+"%";
- let html=`<div class="card">
- <div class="tag">ข้อ ${idx+1} · ${item.tag||"ปรนัย"}</div>
- <div class="q">${item.q}</div>
- <div class="opts">`;
- order.forEach((op,i)=>{
- html+=`<button class="opt" data-i="${i}"><span class="k">${KEYS[i]}.</span><span>${op.t}</span></button>`;
- });
- html+=`</div>
- <button class="hintbtn" id="hintbtn">💡 ขอคำใบ้</button>
- <div class="hint" id="hint">${makeHint(item)}</div>
- <div class="fb" id="fb"></div>
- <button class="next" id="next">ข้อถัดไป →</button>
- </div>`;
- stage.innerHTML=html;
- stage.querySelectorAll(".opt").forEach(b=>{
- b.addEventListener("click",=>choose(b,correctPos,order,item));
- });
- $("hintbtn").addEventListener("click",=>{$("hint").classList.add("show");$("hintbtn").style.display="none"});
- $("next").addEventListener("click",=>{idx++;render;});
+function render(){
+  const stage=$("stage");
+  if(idx>=bag.length){return end();}
+  const item=BANK[bag[idx]];
+  // สุ่มลำดับตัวเลือก แต่จำตำแหน่งคำตอบถูก
+  const order=shuffle(item.o.map((t,i)=>({t,i})));
+  const correctPos=order.findIndex(x=>x.i===item.a);
+  answered=false;
+  $("qnum").textContent=idx+1;
+  $("pbar").style.width=((idx)/bag.length*100)+"%";
+  let html=`<div class="card">
+    <div class="tag">ข้อ ${idx+1} · ${item.tag||"ปรนัย"}</div>
+    <div class="q">${item.q}</div>
+    <div class="opts">`;
+  order.forEach((op,i)=>{
+    html+=`<button class="opt" data-i="${i}"><span class="k">${KEYS[i]}.</span><span>${op.t}</span></button>`;
+  });
+  html+=`</div>
+    <button class="hintbtn" id="hintbtn">💡 ขอคำใบ้</button>
+    <div class="hint" id="hint">${makeHint(item)}</div>
+    <div class="fb" id="fb"></div>
+    <button class="next" id="next">ข้อถัดไป →</button>
+  </div>`;
+  stage.innerHTML=html;
+  stage.querySelectorAll(".opt").forEach(b=>{
+    b.addEventListener("click",()=>choose(b,correctPos,order,item));
+  });
+  $("hintbtn").addEventListener("click",()=>{$("hint").classList.add("show");$("hintbtn").style.display="none"});
+  $("next").addEventListener("click",()=>{idx++;render();});
 }
 
 function makeHint(item){
- // ใบ้เป็นภาษาไทย ไม่สปอยล์คำตอบตรง ๆ — กดดูเองเมื่อจำเป็น
- if(item.h) return "คำใบ้: "+item.h+" · ทบทวนได้ที่ <b>"+item.r+"</b>";
- // ข้ออื่น ๆ: บอกแค่ตัวอักษรขึ้นต้นของคำตอบ (ไทยหรืออังกฤษ) + แหล่งทบทวน — ไม่เฉลยทั้งคำ
- const ans=item.o[item.a].trim;
- return "คำใบ้: คำตอบขึ้นต้นด้วย “<b>"+ans.charAt(0)+"</b>” · ทบทวนได้ที่ <b>"+item.r+"</b>";
+  // ใบ้เป็นภาษาไทย ไม่สปอยล์คำตอบตรง ๆ — กดดูเองเมื่อจำเป็น
+  if(item.h) return "คำใบ้: "+item.h+" · ทบทวนได้ที่ <b>"+item.r+"</b>";
+  // ข้ออื่น ๆ: บอกแค่ตัวอักษรขึ้นต้นของคำตอบ (ไทยหรืออังกฤษ) + แหล่งทบทวน — ไม่เฉลยทั้งคำ
+  const ans=item.o[item.a].trim();
+  return "คำใบ้: คำตอบขึ้นต้นด้วย “<b>"+ans.charAt(0)+"</b>” · ทบทวนได้ที่ <b>"+item.r+"</b>";
 }
 
 function choose(btn,correctPos,order,item){
- if(answered)return;answered=true;
- const chosen=+btn.dataset.i;
- const opts=document.querySelectorAll(".opt");
- opts.forEach((b,i)=>{
- b.disabled=true;
- if(i===correctPos)b.classList.add("correct");
- if(i===chosen&&chosen!==correctPos)b.classList.add("wrong");
- });
- const fb=$("fb");
- if(chosen===correctPos){
- score++;streak++;
- fb.className="fb ok show";
- fb.innerHTML=`<div class="head">✓ ถูกต้อง!</div><div>${item.e}</div><div class="ref">📖 ${item.r}</div>`;
- }else{
- streak=0;
- fb.className="fb no show";
- fb.innerHTML=`<div class="head">✗ ยังไม่ถูก</div><div>คำตอบที่ถูกคือ <b>${KEYS[correctPos]}. ${order[correctPos].t}</b><br>${item.e}</div><div class="ref">📖 ${item.r}</div>`;
- }
- $("score").textContent=score;
- $("streak").textContent=streak;
- $("hintbtn").style.display="none";
- $("next").classList.add("show");
- $("next").textContent = (idx+1>=bag.length)?"ดูผลคะแนน 🎉":"ข้อถัดไป →";
+  if(answered)return;answered=true;
+  const chosen=+btn.dataset.i;
+  const opts=document.querySelectorAll(".opt");
+  opts.forEach((b,i)=>{
+    b.disabled=true;
+    if(i===correctPos)b.classList.add("correct");
+    if(i===chosen&&chosen!==correctPos)b.classList.add("wrong");
+  });
+  const fb=$("fb");
+  if(chosen===correctPos){
+    score++;streak++;
+    fb.className="fb ok show";
+    fb.innerHTML=`<div class="head">✓ ถูกต้อง!</div><div>${item.e}</div><div class="ref">📖 ${item.r}</div>`;
+  }else{
+    streak=0;
+    fb.className="fb no show";
+    fb.innerHTML=`<div class="head">✗ ยังไม่ถูก</div><div>คำตอบที่ถูกคือ <b>${KEYS[correctPos]}. ${order[correctPos].t}</b><br>${item.e}</div><div class="ref">📖 ${item.r}</div>`;
+  }
+  $("score").textContent=score;
+  $("streak").textContent=streak;
+  $("hintbtn").style.display="none";
+  $("next").classList.add("show");
+  $("next").textContent = (idx+1>=bag.length)?"ดูผลคะแนน 🎉":"ข้อถัดไป →";
 }
 
-function end{
- $("pbar").style.width="100%";
- const pct=Math.round(score/bag.length*100);
- let msg,emoji;
- if(pct>=90){msg="เก่งมาก! พร้อมสอบสุด ๆ";emoji="🏆";}
- else if(pct>=70){msg="ดีมาก! ทบทวนข้อที่พลาดอีกนิด";emoji="🌟";}
- else if(pct>=50){msg="พอใช้ — เปิดสรุปเต็มทวนหัวข้อที่ยังไม่แม่น";emoji="📚";}
- else{msg="สู้ ๆ! ลองอ่าน Christ_สรุปเต็ม.md แล้วเล่นใหม่";emoji="💪";}
- $("stage").innerHTML=`<div class="card end">
- <div style="font-size:3rem">${emoji}</div>
- <div class="big">${score}/${bag.length}</div>
- <div>คิดเป็น ${pct}%</div>
- <div class="msg">${msg}</div>
- <button class="restart" id="restart">🔄 เล่นอีกครั้ง</button>
- </div>`;
- $("restart").addEventListener("click",=>{
- bag=shuffle([...pool]);idx=0;score=0;streak=0;
- $("score").textContent=0;$("streak").textContent=0;
- render;
- });
+function end(){
+  $("pbar").style.width="100%";
+  const pct=Math.round(score/bag.length*100);
+  let msg,emoji;
+  if(pct>=90){msg="เก่งมาก! พร้อมสอบสุด ๆ";emoji="🏆";}
+  else if(pct>=70){msg="ดีมาก! ทบทวนข้อที่พลาดอีกนิด";emoji="🌟";}
+  else if(pct>=50){msg="พอใช้ — เปิดสรุปเต็มทวนหัวข้อที่ยังไม่แม่น";emoji="📚";}
+  else{msg="สู้ ๆ! ลองอ่าน Christ_สรุปเต็ม.md แล้วเล่นใหม่";emoji="💪";}
+  $("stage").innerHTML=`<div class="card end">
+    <div style="font-size:3rem">${emoji}</div>
+    <div class="big">${score}/${bag.length}</div>
+    <div>คิดเป็น ${pct}%</div>
+    <div class="msg">${msg}</div>
+    <button class="restart" id="restart">🔄 เล่นอีกครั้ง</button>
+  </div>`;
+  $("restart").addEventListener("click",()=>{
+    bag=shuffle([...pool]);idx=0;score=0;streak=0;
+    $("score").textContent=0;$("streak").textContent=0;
+    render();
+  });
 }
 
-render;
+render();
 </script>
-<!--KIT-UI v2.7 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<!--KIT-UI v2.8 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>
 /* =============================================================================
- _kit/ui-controls.js — KIT UI v1.0
- แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
- 🌙/☀️ โหมดมืด / สว่าง (จำค่าไว้ใน localStorage)
- A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
- ✏️ ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
- 🧮 เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
+   _kit/ui-controls.js  —  KIT UI  v1.0
+   แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
+     🌙/☀️  โหมดมืด / สว่าง   (จำค่าไว้ใน localStorage)
+     A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
+     ✏️  ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
+     🧮  เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
 
- ── วิธีใช้ ────────────────────────────────────────────────────────────────
- ห้ามแก้โค้ดนี้ในไฟล์ widget! แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
- pwsh -File _kit/apply-ui.ps1
- สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
- (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
+   ── วิธีใช้ ────────────────────────────────────────────────────────────────
+   ห้ามแก้โค้ดนี้ในไฟล์ widget!  แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
+       pwsh -File _kit/apply-ui.ps1
+   สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
+   (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
 
- !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
- เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
+   !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
+      เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
 
- ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
- ใส่แอตทริบิวต์ที่ tag body: data-tools="pen,calc" = บังคับเปิด
- data-tools="none" = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
- ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
- หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
- ============================================================================= */
-(function{
-if(window.__KITUI__) return; window.__KITUI__='2.7';
+   ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
+   ใส่แอตทริบิวต์ที่ tag body:  data-tools="pen,calc"  = บังคับเปิด
+                              data-tools="none"      = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
+   ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
+              หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
+   ============================================================================= */
+(function(){
+if(window.__KITUI__) return; window.__KITUI__='2.8';   /* 2.8 = เพิ่มปุ่ม 🏠 กลับหน้าหลัก */
 
 /* ---------- helper ---------- */
 const D=document, R=D.documentElement;
@@ -1096,16 +1096,16 @@ const set=(k,v)=>{try{localStorage.setItem('kitui-'+k,v)}catch(e){}};
 const el=(t,c,h)=>{const e=D.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
 
 /* =============================================================================
- 1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
- ============================================================================= */
+   1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
+   ============================================================================= */
 const CSS=`
 /* ===== DARK TOKENS (คู่กับ _kit/design-tokens.css) ===== */
 :root[data-theme="dark"]{
- --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
- --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
- --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
- --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
- --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
+  --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
+  --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
+  --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
+  --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
+  --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
 }
 :root[data-theme="dark"] body{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f172a}
 :root[data-theme="dark"] body[data-subject="physics"]{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f1220}
@@ -1125,31 +1125,31 @@ const CSS=`
 
 /* ===== แถบเครื่องมือลอย ===== */
 #kitui-bar{position:fixed;right:10px;bottom:10px;z-index:99990;display:flex;gap:6px;align-items:center;
- background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
- box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
+  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
 #kitui-bar button{border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;
- font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
- align-items:center;justify-content:center;font-weight:700}
+  font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
+  align-items:center;justify-content:center;font-weight:700}
 #kitui-bar button:hover{background:var(--soft)}
 #kitui-bar button:active{transform:scale(.93)}
 #kitui-bar button.on{background:var(--accent);color:#fff}
 #kitui-bar .kitui-sep{width:1px;height:22px;background:var(--line);flex:0 0 1px}
 #kitui-bar .kitui-fs{font-size:11px;color:var(--muted);min-width:34px;text-align:center;font-weight:700}
-#kitui-bar.hidden > *:not(#kitui-grip){display:none}
+#kitui-bar.hidden > *:not(#kitui-grip):not(#kitui-home){display:none}
 #kitui-grip{font-size:17px}
 
 /* ===== แผงลอย (ที่ทด / เครื่องคิดเลข) ===== */
 .kitui-sheet{position:fixed;left:0;right:0;bottom:0;z-index:99991;background:var(--card);
- border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
- display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
- height:52vh;max-height:92vh;min-height:180px}
+  border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
+  display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
+  height:52vh;max-height:92vh;min-height:180px}
 .kitui-sheet.open{display:flex}
 .kitui-sheet.full{height:100vh;border-radius:0}
 .kitui-head{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--line);
- flex-wrap:wrap;touch-action:none;cursor:ns-resize}
+  flex-wrap:wrap;touch-action:none;cursor:ns-resize}
 .kitui-head b{font-size:.9rem;color:var(--accent-ink);margin-right:2px;white-space:nowrap}
 .kitui-head button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;
- padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
+  padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
 .kitui-head button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
 .kitui-head .kitui-spacer{flex:1}
 .kitui-sw{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;min-height:0}
@@ -1161,12 +1161,12 @@ const CSS=`
 /* ===== เครื่องคิดเลข ===== */
 #kitui-calc{height:auto;max-height:90vh}
 .kitui-disp{padding:8px 12px;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);
- border-bottom:1px solid var(--line)}
+  border-bottom:1px solid var(--line)}
 .kitui-disp .ex{font-size:.95rem;color:var(--muted);min-height:1.3em;word-break:break-all}
 .kitui-disp .rs{font-size:1.6rem;font-weight:700;color:var(--accent-ink);word-break:break-all}
 .kitui-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:7px}
 .kitui-keys button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:9px;
- font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
+  font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
 .kitui-keys button:active{transform:scale(.95)}
 .kitui-keys button.fn{font-size:.8rem;color:var(--accent-ink)}
 .kitui-keys button.op{background:var(--accent-soft);color:var(--accent-ink)}
@@ -1175,446 +1175,458 @@ const CSS=`
 .kitui-keys button.w3{grid-column:span 3}
 @media(max-width:420px){.kitui-keys button{font-size:.88rem;min-height:40px}.kitui-keys button.fn{font-size:.72rem}}
 @media(min-width:760px){
- .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
- .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
- #kitui-pad{width:560px}
+  .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
+  .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
+  #kitui-pad{width:560px}
 }
 @media print{#kitui-bar,.kitui-sheet{display:none!important}}
 `;
 const st=el('style'); st.id='kitui-style'; st.textContent=CSS; D.head.appendChild(st);
 
 /* -----------------------------------------------------------------------------
- 1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
- widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
- พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
- แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
- เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
+   1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
+   widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
+   พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
+   แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
+   เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
 ----------------------------------------------------------------------------- */
 /* สีพาสเทลสว่าง -> สีเข้มที่ยังคง "เฉดเดิม" ไว้ (เขียว=ถูก / แดง=ผิด ต้องยังแยกออก)
- ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
+   ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
 function darken(cr,cg,cb){
- const r=cr/255,g=cg/255,b=cb/255;
- const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
- let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
- /* ⚠️ ห้ามใช้ saturation ของ HSL ตรง ๆ ตัดสิน: ที่ความสว่างเกือบ 1 ตัวหารจะเล็กมาก
- ทำให้สีที่แทบเป็นสีขาว (เช่น #fdf8f4) ได้ค่าอิ่มสีสูงลิ่ว แล้วกลายเป็นสีน้ำตาลจัดตอนกดให้เข้ม
- ให้ดูจาก "ช่วงห่างของแม่สี" (chroma) แทน แล้วแปลงเป็นความอิ่มสีแบบไล่ระดับ */
- const s = Math.min(.45, Math.max(.08, d*4));
- const l = d<.02 ? .13 : .17; /* เทา/ขาวล้วนให้เข้มกว่าสีนิดหน่อย */
- const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
- let rr,gg,bb;
- if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
- else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
- return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
+  /* ⚠️ ห้ามใช้ saturation ของ HSL ตรง ๆ ตัดสิน: ที่ความสว่างเกือบ 1 ตัวหารจะเล็กมาก
+     ทำให้สีที่แทบเป็นสีขาว (เช่น #fdf8f4) ได้ค่าอิ่มสีสูงลิ่ว แล้วกลายเป็นสีน้ำตาลจัดตอนกดให้เข้ม
+     ให้ดูจาก "ช่วงห่างของแม่สี" (chroma) แทน แล้วแปลงเป็นความอิ่มสีแบบไล่ระดับ */
+  const s = Math.min(.45, Math.max(.08, d*4));
+  const l = d<.02 ? .13 : .17;                       /* เทา/ขาวล้วนให้เข้มกว่าสีนิดหน่อย */
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
 }
-function darkFix{
- const out=[], seen=new Set;
- const take=r=>{
- if(!r.style || !r.selectorText) return;
- if(r.selectorText.indexOf('kitui')>-1) return; /* ของเราเองใช้ token อยู่แล้ว */
- const bg=r.style.backgroundColor;
- if(!bg || bg.indexOf('var(')>-1) return;
- const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
- if(!m) return;
- if(m[4]!==undefined && +m[4]<0.6) return; /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
- const cr=+m[1], cg=+m[2], cb=+m[3];
- if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return; /* ไม่สว่างพอ ไม่ต้องยุ่ง */
- const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
- const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
- let css='background-color:'+repl;
- /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
- const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
- if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
- out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
- };
- /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
- ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
- const visit=rules=>{
- for(let i=0;i<rules.length;i++){
- const r=rules[i];
- if(r.selectorText) take(r);
- if(r.cssRules && r.cssRules.length) visit(r.cssRules); /* @media / @supports / nesting */
- }
- };
- for(let i=0;i<D.styleSheets.length;i++){
- let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; } /* ข้ามชีตข้ามโดเมน */
- if(rr) visit(rr);
- }
- if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
- return out.length;
+function darkFix(){
+  const out=[], seen=new Set();
+  const take=r=>{
+    if(!r.style || !r.selectorText) return;
+    if(r.selectorText.indexOf('kitui')>-1) return;               /* ของเราเองใช้ token อยู่แล้ว */
+    const bg=r.style.backgroundColor;
+    if(!bg || bg.indexOf('var(')>-1) return;
+    const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
+    if(!m) return;
+    if(m[4]!==undefined && +m[4]<0.6) return;                    /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
+    const cr=+m[1], cg=+m[2], cb=+m[3];
+    if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return;       /* ไม่สว่างพอ ไม่ต้องยุ่ง */
+    const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
+    const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
+    let css='background-color:'+repl;
+    /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
+    const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
+    out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
+  };
+  /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
+        ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
+  const visit=rules=>{
+    for(let i=0;i<rules.length;i++){
+      const r=rules[i];
+      if(r.selectorText) take(r);
+      if(r.cssRules && r.cssRules.length) visit(r.cssRules);     /* @media / @supports / nesting */
+    }
+  };
+  for(let i=0;i<D.styleSheets.length;i++){
+    let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; }   /* ข้ามชีตข้ามโดเมน */
+    if(rr) visit(rr);
+  }
+  if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
+  return out.length;
 }
-try{ window.__KITUI_DARKFIX__ = (D.body.getAttribute('data-kit-theme')==='off') ? 'locked' : darkFix; }
+try{ window.__KITUI_DARKFIX__ = (D.body.getAttribute('data-kit-theme')==='off') ? 'locked' : darkFix(); }
 catch(e){ window.__KITUI_DARKFIX__='err:'+e.message; }
 
 /* darkFix ข้างบนซ่อมได้เฉพาะสีที่เขียนตายตัวในไฟล์ CSS
- แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
- ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
- จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
+   แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
+   ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
+   จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
 const rgbOf=c=>{const m=c&&c.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null;};
 const lumOf=v=>v?(0.2126*v[0]+0.7152*v[1]+0.0722*v[2])/255:null;
-/* ตรงข้ามกับ darken: ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
- (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
+/* ตรงข้ามกับ darken(): ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
+   (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
 function lighten(cr,cg,cb){
- const r=cr/255,g=cg/255,b=cb/255;
- const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
- if(d<0.04) return 'var(--ink)'; /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
- let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
- const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
- const s=Math.min(.92,Math.max(.55,s0)), l=.72;
- const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
- let rr,gg,bb;
- if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
- else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
- return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  if(d<0.04) return 'var(--ink)';                    /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
+  let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
+  const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
+  const s=Math.min(.92,Math.max(.55,s0)), l=.72;
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
 }
 const SKIP={CANVAS:1,IMG:1,VIDEO:1,SVG:1,IFRAME:1,PICTURE:1,OBJECT:1};
 const OBS_OPT={childList:true,subtree:true,attributes:true,attributeFilter:['class','style']};
 let patched=[], obs=null;
-function elementFix{
- /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
- ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
- if(obs) obs.disconnect;
- try{ elementFixCore; } finally { if(obs) obs.observe(D.body,OBS_OPT); }
+function elementFix(){
+  /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
+        ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
+  if(obs) obs.disconnect();
+  try{ elementFixCore(); } finally { if(obs) obs.observe(D.body,OBS_OPT); }
 }
-function elementFixCore{
- if(D.body.getAttribute('data-kit-theme')==='off') return; /* หน้าที่ล็อกธีมไว้ ห้ามไปยุ่งสี */
- /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
- ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
- จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
- if(R.getAttribute('data-theme')!=='dark'){
- patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
- patched=[];
- return;
- }
- /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
- ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
- /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
- const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
- for(let i=0;i<all.length;i++){
- const e=all[i];
- if(e.id&&e.id.indexOf('kitui')===0) continue;
- if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
- if(SKIP[e.tagName]) continue; /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
- const s=getComputedStyle(e);
- const bg=rgbOf(s.backgroundColor);
- if(!bg || bg[3]<0.6) continue; /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
- if(lumOf(bg)<0.72) continue; /* เข้มพออยู่แล้ว */
- /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
- e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
- const fg=rgbOf(s.color);
- if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important'); /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
- patched.push(e);
- }
- /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
- ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
- const bgCache=new Map;
- const effBg=n=>{
- for(let p=n;p;p=p.parentElement){
- if(bgCache.has(p)) return bgCache.get(p);
- const b=rgbOf(getComputedStyle(p).backgroundColor);
- if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
- }
- return null;
- };
- for(let i=2;i<all.length;i++){
- const e=all[i];
- if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
- if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
- if(e.style.color) continue; /* จัดการไปแล้วในรอบแรก */
- if(!e.textContent || !e.textContent.trim) continue;
- const fg=rgbOf(getComputedStyle(e).color);
- if(!fg || lumOf(fg)>=0.45) continue; /* ตัวอักษรสว่างอยู่แล้ว */
- const bg=effBg(e);
- if(!bg || lumOf(bg)>=0.5) continue; /* พื้นยังสว่าง อ่านออกอยู่ */
- e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
- patched.push(e);
- }
+function elementFixCore(){
+  if(D.body.getAttribute('data-kit-theme')==='off') return;   /* หน้าที่ล็อกธีมไว้ ห้ามไปยุ่งสี */
+  /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
+     ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
+     จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
+  if(R.getAttribute('data-theme')!=='dark'){
+    patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
+    patched=[];
+    return;
+  }
+  /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
+     ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
+  /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
+  const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
+  for(let i=0;i<all.length;i++){
+    const e=all[i];
+    if(e.id&&e.id.indexOf('kitui')===0) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(SKIP[e.tagName]) continue;                      /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
+    const s=getComputedStyle(e);
+    const bg=rgbOf(s.backgroundColor);
+    if(!bg || bg[3]<0.6) continue;                     /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
+    if(lumOf(bg)<0.72) continue;                       /* เข้มพออยู่แล้ว */
+    /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
+    e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
+    const fg=rgbOf(s.color);
+    if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important');  /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
+    patched.push(e);
+  }
+  /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
+     ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
+  const bgCache=new Map();
+  const effBg=n=>{
+    for(let p=n;p;p=p.parentElement){
+      if(bgCache.has(p)) return bgCache.get(p);
+      const b=rgbOf(getComputedStyle(p).backgroundColor);
+      if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
+    }
+    return null;
+  };
+  for(let i=2;i<all.length;i++){
+    const e=all[i];
+    if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(e.style.color) continue;                         /* จัดการไปแล้วในรอบแรก */
+    if(!e.textContent || !e.textContent.trim()) continue;
+    const fg=rgbOf(getComputedStyle(e).color);
+    if(!fg || lumOf(fg)>=0.45) continue;                 /* ตัวอักษรสว่างอยู่แล้ว */
+    const bg=effBg(e);
+    if(!bg || lumOf(bg)>=0.5) continue;                  /* พื้นยังสว่าง อ่านออกอยู่ */
+    e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
+    patched.push(e);
+  }
 }
 let efT=0;
-const scheduleFix==>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
+const scheduleFix=()=>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
 try{
- obs=new MutationObserver(scheduleFix);
- obs.observe(D.body,OBS_OPT);
+  obs=new MutationObserver(scheduleFix);
+  obs.observe(D.body,OBS_OPT);
 }catch(e){}
 
 /* =============================================================================
- 2) ธีม + ขนาดตัวอักษร
- ============================================================================= */
+   2) ธีม + ขนาดตัวอักษร
+   ============================================================================= */
 const FS=[.85,1,1.15,1.3,1.5], FSNAME=['เล็กสุด','เล็ก','ปกติ','ใหญ่','ใหญ่สุด'];
 let fsIdx=parseInt(get('fs')); if(isNaN(fsIdx)||fsIdx<0||fsIdx>4) fsIdx=1;
 let theme=get('theme') || (matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
 
 /* หน้าที่ออกแบบธีมมาเองครบแล้ว (เช่น "หนังสือทบทวน" พื้นเข้มทั้งเล่ม) ให้ปิดระบบธีมของ KIT UI
- ไม่งั้นโทเคน --bg/--ink ของเราจะไปทับสีที่หน้านั้นตั้งไว้ แล้วหน้าเพี้ยน
- ใส่ที่ tag body: data-kit-theme="off" (ปุ่มปรับขนาดตัวอักษรยังใช้ได้ตามปกติ) */
+   ไม่งั้นโทเคน --bg/--ink ของเราจะไปทับสีที่หน้านั้นตั้งไว้ แล้วหน้าเพี้ยน
+   ใส่ที่ tag body:  data-kit-theme="off"   (ปุ่มปรับขนาดตัวอักษรยังใช้ได้ตามปกติ) */
 const themeLock = D.body.getAttribute('data-kit-theme')==='off';
 
-function applyTheme{
- if(themeLock) return;
- R.setAttribute('data-theme',theme);
- R.style.colorScheme = theme==='dark'?'dark':'light'; /* ให้ select/input เป็นสีเข้มด้วย */
- const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
- set('theme',theme);
- clearTimeout(efT); /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
- if(typeof elementFix==='function') elementFix;
- /* ⚠️ ห้ามอ้างถึงตัวแปรของส่วน "ที่ทด" ตรงนี้!
- applyTheme ถูกเรียกก่อนที่ `let pad` ในส่วนที่ 4 จะทำงาน → ชน temporal dead zone
- แล้ว ReferenceError จะทำให้สคริปต์ตายทั้งก้อน (ปุ่มขนาดอักษร/ที่ทด/เครื่องคิดเลขหายหมด)
- ใช้วิธียิง event แทน ใครสนใจค่อยไปดักฟังเอง */
- try{ D.dispatchEvent(new CustomEvent('kitui-theme')); }catch(e){}
+function applyTheme(){
+  if(themeLock) return;
+  R.setAttribute('data-theme',theme);
+  R.style.colorScheme = theme==='dark'?'dark':'light';   /* ให้ select/input เป็นสีเข้มด้วย */
+  const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
+  set('theme',theme);
+  clearTimeout(efT);                                   /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
+  if(typeof elementFix==='function') elementFix();
+  /* ⚠️ ห้ามอ้างถึงตัวแปรของส่วน "ที่ทด" ตรงนี้!
+     applyTheme() ถูกเรียกก่อนที่ `let pad` ในส่วนที่ 4 จะทำงาน → ชน temporal dead zone
+     แล้ว ReferenceError จะทำให้สคริปต์ตายทั้งก้อน (ปุ่มขนาดอักษร/ที่ทด/เครื่องคิดเลขหายหมด)
+     ใช้วิธียิง event แทน ใครสนใจค่อยไปดักฟังเอง */
+  try{ D.dispatchEvent(new CustomEvent('kitui-theme')); }catch(e){}
 }
-function applyFS{
- R.style.fontSize=(16*FS[fsIdx])+'px';
- const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
- set('fs',fsIdx);
+function applyFS(){
+  R.style.fontSize=(16*FS[fsIdx])+'px';
+  const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
+  set('fs',fsIdx);
 }
 
 /* =============================================================================
- 3) แถบเครื่องมือ
- ============================================================================= */
-const subj=(D.body.getAttribute('data-subject')||'').toLowerCase;
+   3) แถบเครื่องมือ
+   ============================================================================= */
+const subj=(D.body.getAttribute('data-subject')||'').toLowerCase();
 /* หลาย widget ไม่ได้ใส่ data-subject ที่ <body> → เดาจากโฟลเดอร์ที่ไฟล์อยู่ด้วย */
 const inPath=/\/(physics|math|chemist)\//i.test(decodeURIComponent(location.pathname));
 const tAttr=D.body.getAttribute('data-tools');
-const wantTools = tAttr!=null ? tAttr.toLowerCase
- : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
-const hasPen = wantTools.includes('pen');
+const wantTools = tAttr!=null ? tAttr.toLowerCase()
+                : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
+const hasPen  = wantTools.includes('pen');
 const hasCalc = wantTools.includes('calc');
+
+/* ปุ่มกลับหน้าหลัก — โผล่เฉพาะตอนเปิดจากเว็บห้องติว (พาธมี /app/ อยู่)
+   เปิดไฟล์จากเครื่องตรง ๆ จะไม่มีปุ่มนี้ เพราะไม่มีหน้าหลักให้กลับ ลิงก์จะเสียเปล่า ๆ */
+const homeHref = (()=>{
+  try{
+    const p = decodeURIComponent(location.pathname);
+    const i = p.indexOf('/app/');
+    return i < 0 ? null : p.slice(0, i+1) + 'index.html';
+  }catch(e){ return null; }
+})();
 
 const bar=el('div'); bar.id='kitui-bar';
 bar.innerHTML =
- `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
- (themeLock ? '' : `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button><span class="kitui-sep"></span>`)+
- `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
- `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
- `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
- (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
- (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
+  `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
+  (homeHref ? `<button id="kitui-home" title="กลับหน้าหลัก">🏠</button><span class="kitui-sep"></span>` : '')+
+  (themeLock ? '' : `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button><span class="kitui-sep"></span>`)+
+  `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
+  `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
+  `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
+  (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
+  (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
 D.body.appendChild(bar);
 
-if(!themeLock) D.getElementById('kitui-theme').onclick==>{theme=theme==='dark'?'light':'dark';applyTheme;};
-D.getElementById('kitui-fsup').onclick==>{if(fsIdx<4){fsIdx++;applyFS;}};
-D.getElementById('kitui-fsdown').onclick==>{if(fsIdx>0){fsIdx--;applyFS;}};
-D.getElementById('kitui-grip').onclick==>bar.classList.toggle('hidden');
-applyTheme; applyFS;
+if(!themeLock) D.getElementById('kitui-theme').onclick=()=>{theme=theme==='dark'?'light':'dark';applyTheme();};
+D.getElementById('kitui-fsup').onclick=()=>{if(fsIdx<4){fsIdx++;applyFS();}};
+D.getElementById('kitui-fsdown').onclick=()=>{if(fsIdx>0){fsIdx--;applyFS();}};
+D.getElementById('kitui-grip').onclick=()=>bar.classList.toggle('hidden');
+if(homeHref) D.getElementById('kitui-home').onclick=()=>{ location.href=homeHref; };
+applyTheme(); applyFS();
 
 /* ปิดแผงด้วยปุ่ม Esc */
 D.addEventListener('keydown',e=>{ if(e.key==='Escape') D.querySelectorAll('.kitui-sheet.open').forEach(s=>s.classList.remove('open')); });
 
 /* ลากหัวแผงเพื่อปรับความสูง */
 function makeResizable(sheet){
- const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
- head.addEventListener('pointerdown',e=>{
- if(e.target.closest('button'))return;
- drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect.height;head.setPointerCapture(e.pointerId);
- });
- head.addEventListener('pointermove',e=>{
- if(!drag)return;
- const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
- sheet.classList.remove('full'); sheet.style.height=h+'px';
- if(sheet.id==='kitui-pad') fitPad;
- });
- head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
+  const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
+  head.addEventListener('pointerdown',e=>{
+    if(e.target.closest('button'))return;
+    drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect().height;head.setPointerCapture(e.pointerId);
+  });
+  head.addEventListener('pointermove',e=>{
+    if(!drag)return;
+    const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
+    sheet.classList.remove('full'); sheet.style.height=h+'px';
+    if(sheet.id==='kitui-pad') fitPad();
+  });
+  head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
 }
 
 /* =============================================================================
- 4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ หลายหน้า เซฟอัตโนมัติ
- ============================================================================= */
+   4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ  หลายหน้า  เซฟอัตโนมัติ
+   ============================================================================= */
 let pad,padCv,padCx,pages=[[]],pg=0,undone=[],histo=[];
 let tool='pen',color='#111827',width=2.4,penSeen=0;
 const COLORS=['#111827','#2563eb','#dc2626','#16a34a','#f59e0b'];
-const PADKEY='pad-'+location.pathname.split('/').pop;
+const PADKEY='pad-'+location.pathname.split('/').pop();
 
-function buildPad{
- pad=el('div','kitui-sheet'); pad.id='kitui-pad';
- pad.innerHTML=
- `<div class="kitui-head">
- <b>✏️ ที่ทด</b>
- <button data-t="pen" class="on">🖊️</button>
- <button data-t="hl">🖍️</button>
- <button data-t="er">🧽</button>
- ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
- <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
- <span class="kitui-spacer"></span>
- <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
- <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
- <button id="kitui-pgadd">+ หน้า</button>
- <button id="kitui-clear">ล้างหน้านี้</button>
- <button id="kitui-full">⛶</button>
- <button id="kitui-padclose">✕</button>
- </div>
- <div class="kitui-padwrap"><canvas></canvas></div>`;
- D.body.appendChild(pad);
- padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
- makeResizable(pad);
+function buildPad(){
+  pad=el('div','kitui-sheet'); pad.id='kitui-pad';
+  pad.innerHTML=
+   `<div class="kitui-head">
+      <b>✏️ ที่ทด</b>
+      <button data-t="pen" class="on">🖊️</button>
+      <button data-t="hl">🖍️</button>
+      <button data-t="er">🧽</button>
+      ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
+      <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
+      <span class="kitui-spacer"></span>
+      <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
+      <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
+      <button id="kitui-pgadd">+ หน้า</button>
+      <button id="kitui-clear">ล้างหน้านี้</button>
+      <button id="kitui-full">⛶</button>
+      <button id="kitui-padclose">✕</button>
+    </div>
+    <div class="kitui-padwrap"><canvas></canvas></div>`;
+  D.body.appendChild(pad);
+  padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
+  makeResizable(pad);
 
- pad.querySelector('.kitui-head').addEventListener('click',e=>{
- const b=e.target.closest('button'); if(!b)return;
- if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
- if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
- if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
- });
- D.getElementById('kitui-undo').onclick==>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop; draw; save; } };
- D.getElementById('kitui-redo').onclick==>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop; draw; save; } };
- D.getElementById('kitui-clear').onclick==>{ snap; pages[pg]=[]; draw; save; };
- D.getElementById('kitui-pgadd').onclick==>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw; save; };
- D.getElementById('kitui-pgprev').onclick==>{ if(pg>0){pg--;histo=[];undone=[];draw;} };
- D.getElementById('kitui-pgnext').onclick==>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw;} };
- D.getElementById('kitui-full').onclick==>{ pad.classList.toggle('full'); pad.style.height=''; fitPad; };
- D.getElementById('kitui-padclose').onclick==>pad.classList.remove('open');
+  pad.querySelector('.kitui-head').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
+  });
+  D.getElementById('kitui-undo').onclick=()=>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop(); draw(); save(); } };
+  D.getElementById('kitui-redo').onclick=()=>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop(); draw(); save(); } };
+  D.getElementById('kitui-clear').onclick=()=>{ snap(); pages[pg]=[]; draw(); save(); };
+  D.getElementById('kitui-pgadd').onclick=()=>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw(); save(); };
+  D.getElementById('kitui-pgprev').onclick=()=>{ if(pg>0){pg--;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-pgnext').onclick=()=>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-full').onclick=()=>{ pad.classList.toggle('full'); pad.style.height=''; fitPad(); };
+  D.getElementById('kitui-padclose').onclick=()=>pad.classList.remove('open');
 
- /* ---- วาด ---- */
- let cur=null;
- padCv.addEventListener('pointerdown',e=>{
- if(e.pointerType==='pen') penSeen=Date.now;
- if(e.pointerType==='touch' && Date.now-penSeen<1500) return; /* กันฝ่ามือแตะตอนใช้สไตลัส */
- const p=pt(e);
- if(tool==='er'){ snap; erase(p); return; }
- snap;
- cur={c:color,w:width,hl:tool==='hl',pts:[p]};
- pages[pg].push(cur); draw;
- try{ padCv.setPointerCapture(e.pointerId); }catch(x){} /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
- });
- padCv.addEventListener('pointermove',e=>{
- if(e.pointerType==='touch' && Date.now-penSeen<1500) return;
- if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
- if(!cur||!e.buttons)return;
- /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
- let evs=[e];
- if(e.getCoalescedEvents){ const c=e.getCoalescedEvents; if(c&&c.length) evs=c; }
- evs.forEach(ev=>cur.pts.push(pt(ev)));
- draw;
- });
- const end==>{ if(cur){cur=null;save;} };
- padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
- padCv.addEventListener('pointerleave',end);
+  /* ---- วาด ---- */
+  let cur=null;
+  padCv.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='pen') penSeen=Date.now();
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;   /* กันฝ่ามือแตะตอนใช้สไตลัส */
+    const p=pt(e);
+    if(tool==='er'){ snap(); erase(p); return; }
+    snap();
+    cur={c:color,w:width,hl:tool==='hl',pts:[p]};
+    pages[pg].push(cur); draw();
+    try{ padCv.setPointerCapture(e.pointerId); }catch(x){}  /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
+  });
+  padCv.addEventListener('pointermove',e=>{
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;
+    if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
+    if(!cur||!e.buttons)return;
+    /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
+    let evs=[e];
+    if(e.getCoalescedEvents){ const c=e.getCoalescedEvents(); if(c&&c.length) evs=c; }
+    evs.forEach(ev=>cur.pts.push(pt(ev)));
+    draw();
+  });
+  const end=()=>{ if(cur){cur=null;save();} };
+  padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
+  padCv.addEventListener('pointerleave',end);
 
- addEventListener('resize',=>{ if(pad.classList.contains('open')) fitPad; });
- D.addEventListener('kitui-theme',=>draw); /* สลับธีมแล้ววาดลายใหม่ เส้นดำ<->ขาวตามพื้น */
- load; fitPad;
+  addEventListener('resize',()=>{ if(pad.classList.contains('open')) fitPad(); });
+  D.addEventListener('kitui-theme',()=>draw());   /* สลับธีมแล้ววาดลายใหม่ เส้นดำ<->ขาวตามพื้น */
+  load(); fitPad();
 }
 function pt(e){
- const r=padCv.getBoundingClientRect;
- return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
- p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5}; /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
+  const r=padCv.getBoundingClientRect();
+  return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
+          p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5};   /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
 }
-function snap{ histo.push(pages[pg].slice); if(histo.length>60)histo.shift; undone=[]; }
+function snap(){ histo.push(pages[pg].slice()); if(histo.length>60)histo.shift(); undone=[]; }
 function erase(p){
- const r=padCv.getBoundingClientRect, rad=18/r.width;
- const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
- if(keep.length!==pages[pg].length){ pages[pg]=keep; draw; save; }
+  const r=padCv.getBoundingClientRect(), rad=18/r.width;
+  const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
+  if(keep.length!==pages[pg].length){ pages[pg]=keep; draw(); save(); }
 }
-function fitPad{
- const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
- const dpr=Math.min(devicePixelRatio||1,2.5);
- padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
- draw;
+function fitPad(){
+  const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
+  const dpr=Math.min(devicePixelRatio||1,2.5);
+  padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
+  draw();
 }
-function draw{
- const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
- padCx.clearRect(0,0,W,H);
- /* เส้นตารางจาง ๆ ให้เขียนตรง */
- const dark=R.getAttribute('data-theme')==='dark';
- padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
- for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath;padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke;}
- padCx.lineCap='round'; padCx.lineJoin='round';
- pages[pg].forEach(s=>{
- padCx.globalAlpha=s.hl?0.32:1;
- padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
- for(let i=1;i<s.pts.length;i++){
- const a=s.pts[i-1],b=s.pts[i];
- padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
- padCx.beginPath; padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke;
- }
- if(s.pts.length===1){ /* จุดเดียว */
- padCx.fillStyle=padCx.strokeStyle; padCx.beginPath;
- padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill;
- }
- });
- padCx.globalAlpha=1;
- const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
+function draw(){
+  const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
+  padCx.clearRect(0,0,W,H);
+  /* เส้นตารางจาง ๆ ให้เขียนตรง */
+  const dark=R.getAttribute('data-theme')==='dark';
+  padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
+  for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath();padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke();}
+  padCx.lineCap='round'; padCx.lineJoin='round';
+  pages[pg].forEach(s=>{
+    padCx.globalAlpha=s.hl?0.32:1;
+    padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
+    for(let i=1;i<s.pts.length;i++){
+      const a=s.pts[i-1],b=s.pts[i];
+      padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
+      padCx.beginPath(); padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke();
+    }
+    if(s.pts.length===1){ /* จุดเดียว */
+      padCx.fillStyle=padCx.strokeStyle; padCx.beginPath();
+      padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill();
+    }
+  });
+  padCx.globalAlpha=1;
+  const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
 }
-function save{ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
-function load{
- try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
+function save(){ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
+function load(){
+  try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
 }
 
 if(hasPen){
- buildPad;
- D.getElementById('kitui-penbtn').onclick==>{
- const o=pad.classList.toggle('open');
- D.getElementById('kitui-penbtn').classList.toggle('on',o);
- if(o) fitPad;
- };
+  buildPad();
+  D.getElementById('kitui-penbtn').onclick=()=>{
+    const o=pad.classList.toggle('open');
+    D.getElementById('kitui-penbtn').classList.toggle('on',o);
+    if(o) fitPad();
+  };
 }
 
 /* =============================================================================
- 5) เครื่องคิดเลขวิทยาศาสตร์ (tokenizer → shunting-yard → RPN ไม่ใช้ eval)
- ============================================================================= */
+   5) เครื่องคิดเลขวิทยาศาสตร์  (tokenizer → shunting-yard → RPN  ไม่ใช้ eval)
+   ============================================================================= */
 const FN={sin:1,cos:1,tan:1,asin:1,acos:1,atan:1,ln:1,log:1,sqrt:1,abs:1,exp:1};
 const PREC={'+':1,'-':1,'*':2,'/':2,'^':4,'u-':3};
 function tokenize(s){
- s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
- const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!])/g; let m;
- while((m=re.exec(s))) out.push(m[1]);
- return out;
+  s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
+  const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!()])/g; let m;
+  while((m=re.exec(s))) out.push(m[1]);
+  return out;
 }
 function toRPN(tk){
- const out=[],op=[]; let prev=null;
- for(let t of tk){
- if(t==='**')t='^';
- if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
- else if(t==='PI'){ out.push(Math.PI); }
- else if(t==='e'||t==='E'){ out.push(Math.E); }
- else if(t==='ANS'){ out.push(ANS); }
- else if(FN[t]){ op.push(t); }
- else if(t==='('){ op.push(t); }
- else if(t===')'){
- while(op.length&&op[op.length-1]!=='(') out.push(op.pop);
- if(!op.length) throw 0; op.pop;
- if(op.length&&FN[op[op.length-1]]) out.push(op.pop);
- }
- else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
- else if('+-*/^'.includes(t)){
- let o=t;
- const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
- if(t==='-'&&unary) o='u-';
- else if(t==='+'&&unary){ prev=t; continue; }
- while(op.length){
- const top=op[op.length-1];
- if(top==='('||FN[top])break;
- const rightAssoc=(o==='^'||o==='u-');
- if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop); else break;
- }
- op.push(o);
- }
- else throw 0;
- prev=t;
- }
- while(op.length){ const o=op.pop; if(o==='(')throw 0; out.push(o); }
- return out;
+  const out=[],op=[]; let prev=null;
+  for(let t of tk){
+    if(t==='**')t='^';
+    if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
+    else if(t==='PI'){ out.push(Math.PI); }
+    else if(t==='e'||t==='E'){ out.push(Math.E); }
+    else if(t==='ANS'){ out.push(ANS); }
+    else if(FN[t]){ op.push(t); }
+    else if(t==='('){ op.push(t); }
+    else if(t===')'){
+      while(op.length&&op[op.length-1]!=='(') out.push(op.pop());
+      if(!op.length) throw 0; op.pop();
+      if(op.length&&FN[op[op.length-1]]) out.push(op.pop());
+    }
+    else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
+    else if('+-*/^'.includes(t)){
+      let o=t;
+      const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
+      if(t==='-'&&unary) o='u-';
+      else if(t==='+'&&unary){ prev=t; continue; }
+      while(op.length){
+        const top=op[op.length-1];
+        if(top==='('||FN[top])break;
+        const rightAssoc=(o==='^'||o==='u-');
+        if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop()); else break;
+      }
+      op.push(o);
+    }
+    else throw 0;
+    prev=t;
+  }
+  while(op.length){ const o=op.pop(); if(o==='(')throw 0; out.push(o); }
+  return out;
 }
 function evalRPN(rpn,deg){
- const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
- const pop==>{ if(!st.length)throw 0; return st.pop; };
- for(const t of rpn){
- if(typeof t==='number'){ st.push(t); continue; }
- if(t==='fact'){ const n=pop; if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
- if(t==='pct'){ st.push(pop/100); continue; }
- if(t==='u-'){ st.push(-pop); continue; }
- if(FN[t]){
- const a=pop;
- st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
- : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
- : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
- : t==='abs'?Math.abs(a) : Math.exp(a) );
- continue;
- }
- const b=pop,a=pop;
- st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
- }
- if(st.length!==1) throw 0;
- return st[0];
+  const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
+  const pop=()=>{ if(!st.length)throw 0; return st.pop(); };
+  for(const t of rpn){
+    if(typeof t==='number'){ st.push(t); continue; }
+    if(t==='fact'){ const n=pop(); if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
+    if(t==='pct'){ st.push(pop()/100); continue; }
+    if(t==='u-'){ st.push(-pop()); continue; }
+    if(FN[t]){
+      const a=pop();
+      st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
+             : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
+             : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
+             : t==='abs'?Math.abs(a) : Math.exp(a) );
+      continue;
+    }
+    const b=pop(),a=pop();
+    st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
+  }
+  if(st.length!==1) throw 0;
+  return st[0];
 }
 function calc(src,deg){ return evalRPN(toRPN(tokenize(src)),deg); }
 
@@ -1629,53 +1641,53 @@ const KEYS=[
  ['1','1',''],['2','2',''],['3','3',''],['.','.',''],['=','eq','eq'],
  ['0','0','w3'],['x²','^2','fn']
 ];
-function buildCalc{
- calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
- calcSheet.innerHTML=
- `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
- <button id="kitui-calcclose">✕</button></div>
- <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
- <div class="kitui-keys" id="kitui-keys">
- ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
- </div>`;
- D.body.appendChild(calcSheet);
- D.getElementById('kitui-calcclose').onclick==>calcSheet.classList.remove('open');
- const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
- const show==>{ ex.textContent=expr||' ';
- try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
- catch(e){ rs.style.opacity=.35; }
- };
- D.getElementById('kitui-keys').addEventListener('click',e=>{
- const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
- if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
- if(k==='del'){ expr=expr.slice(0,-1); show; return; }
- if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show; return; }
- if(k==='eq'){
- rs.style.opacity=1;
- try{
- const v=calc(expr,isDeg);
- if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
- if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
- ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
- }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
- return;
- }
- expr+=k; show;
- });
+function buildCalc(){
+  calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
+  calcSheet.innerHTML=
+   `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
+      <button id="kitui-calcclose">✕</button></div>
+    <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
+    <div class="kitui-keys" id="kitui-keys">
+      ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
+    </div>`;
+  D.body.appendChild(calcSheet);
+  D.getElementById('kitui-calcclose').onclick=()=>calcSheet.classList.remove('open');
+  const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
+  const show=()=>{ ex.textContent=expr||' ';
+    try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
+    catch(e){ rs.style.opacity=.35; }
+  };
+  D.getElementById('kitui-keys').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
+    if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
+    if(k==='del'){ expr=expr.slice(0,-1); show(); return; }
+    if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show(); return; }
+    if(k==='eq'){
+      rs.style.opacity=1;
+      try{
+        const v=calc(expr,isDeg);
+        if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
+        if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
+        ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
+      }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
+      return;
+    }
+    expr+=k; show();
+  });
 }
 function fmt(v){
- if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
- if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
- return String(Math.round(v*1e10)/1e10);
+  if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
+  if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
+  return String(Math.round(v*1e10)/1e10);
 }
 if(hasCalc){
- buildCalc;
- D.getElementById('kitui-calcbtn').onclick==>{
- const o=calcSheet.classList.toggle('open');
- D.getElementById('kitui-calcbtn').classList.toggle('on',o);
- };
+  buildCalc();
+  D.getElementById('kitui-calcbtn').onclick=()=>{
+    const o=calcSheet.classList.toggle('open');
+    D.getElementById('kitui-calcbtn').classList.toggle('on',o);
+  };
 }
-});
+})();
 
 </script>
 <!--/KIT-UI-->

@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>อิสลาม เสาหลัก 5 ประการ — ติวไทย/อังกฤษ</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- ============================================================
+     widget-template.html — ก๊อปไฟล์นี้ทั้งไฟล์เพื่อขึ้น widget ใหม่
+     สไตล์ inline มาให้แล้ว (ไฟล์เดียวจบ ส่งเพื่อน/เปิดเดี่ยวได้)
+     1) เปลี่ยน data-subject ที่ <body> ให้ตรงวิชา -> สีเปลี่ยนทั้งหน้า
+        physics | bio | chem | christ | islam | history | math | eng | thai
+     2) แก้ <title> + header + เนื้อในแท็บ
+     3) ต้นฉบับสไตล์ = ../_kit/design-tokens.css (แก้ที่นั่นถ้าจะเปลี่ยนมาตรฐานกลาง)
+     ============================================================ -->
+<style>
+/* ===== TOKENS (สำเนาจาก design-tokens.css — ดูคำอธิบายเต็มที่ไฟล์นั้น) ===== */
+:root{
+  --font:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
+  --bg:#eef2f7;--ink:#1e293b;--muted:#64748b;--line:#e2e8f0;--card:#fff;--soft:#f8fafc;
+  --shadow:0 1px 4px rgba(15,23,42,.08);
+  --ok:#059669;--bad:#dc2626;
+  --warn-bg:#fff7ed;--warn-bd:#f97316;--tip-bg:#ecfdf5;--tip-bd:#10b981;
+  --info-bg:#eff6ff;--info-bd:#3b82f6;--steps-bg:#fffbeb;--steps-bd:#fcd34d;--steps-dash:#fde68a;
+  --hot-bg:#fee2e2;--hot-ink:#b91c1c;--badge-bg:#fef9c3;--badge-ink:#854d0e;
+  --radius:14px;--radius-sm:10px;--radius-pill:999px;
+  --accent:#4f46e5;--accent-head:#312e81;--accent-ink:#3730a3;--accent-soft:#eef2ff;
+  --accent-bd:#c7d2fe;--accent-chip:#e0e7ff;--accent-ghost:#a5b4fc;
+}
+body[data-subject="physics"]{--accent:#4f46e5;--accent-head:#312e81;--accent-ink:#3730a3;--accent-soft:#eef2ff;--accent-bd:#c7d2fe;--accent-chip:#e0e7ff;--accent-ghost:#a5b4fc;--bg:#eef2f7}
+body[data-subject="bio"]{--accent:#16a34a;--accent-head:#14532d;--accent-ink:#166534;--accent-soft:#f0fdf4;--accent-bd:#bbf7d0;--accent-chip:#dcfce7;--accent-ghost:#86efac;--bg:#f0f4ef}
+body[data-subject="chem"]{--accent:#ea7317;--accent-head:#7c3a06;--accent-ink:#c2560c;--accent-soft:#fff7ed;--accent-bd:#fed7aa;--accent-chip:#ffedd5;--accent-ghost:#fdba74;--bg:#f6f2ec}
+body[data-subject="christ"]{--accent:#7c3aed;--accent-head:#4c1d95;--accent-ink:#6d28d9;--accent-soft:#f5f3ff;--accent-bd:#ddd6fe;--accent-chip:#ede9fe;--accent-ghost:#c4b5fd;--bg:#f2eff7}
+body[data-subject="islam"]{--accent:#0d9488;--accent-head:#134e4a;--accent-ink:#0f766e;--accent-soft:#f0fdfa;--accent-bd:#99f6e4;--accent-chip:#ccfbf1;--accent-ghost:#5eead4;--bg:#eef4f2}
+body[data-subject="history"]{--accent:#b45309;--accent-head:#78350f;--accent-ink:#92400e;--accent-soft:#fffbeb;--accent-bd:#fde68a;--accent-chip:#fef3c7;--accent-ghost:#fcd34d;--bg:#f5f1e8}
+body[data-subject="math"]{--accent:#0284c7;--accent-head:#0c4a6e;--accent-ink:#0369a1;--accent-soft:#f0f9ff;--accent-bd:#bae6fd;--accent-chip:#e0f2fe;--accent-ghost:#7dd3fc;--bg:#edf3f7}
+body[data-subject="eng"]{--accent:#db2777;--accent-head:#831843;--accent-ink:#be185d;--accent-soft:#fdf2f8;--accent-bd:#fbcfe8;--accent-chip:#fce7f3;--accent-ghost:#f9a8d4;--bg:#f7eef3}
+body[data-subject="thai"]{--accent:#dc2626;--accent-head:#7f1d1d;--accent-ink:#b91c1c;--accent-soft:#fef2f2;--accent-bd:#fecaca;--accent-chip:#fee2e2;--accent-ghost:#fca5a5;--bg:#f7efef}
+
+/* ===== COMPONENTS ===== */
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.6}
+.wrap{max-width:860px;margin:0 auto;padding:10px 12px 60px}
+header{padding:18px 4px 6px}
+header h1{font-size:1.35rem;color:var(--accent-head)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{background:var(--accent-chip);color:var(--accent-ink);border-radius:var(--radius-pill);padding:3px 12px;font-size:.82rem;font-weight:600}
+.chip.hot{background:var(--hot-bg);color:var(--hot-ink)}
+.badge{display:inline-block;background:var(--badge-bg);color:var(--badge-ink);border-radius:6px;padding:1px 8px;font-size:.78rem;font-weight:700;vertical-align:middle}
+.tabs{display:flex;gap:8px;overflow-x:auto;position:sticky;top:0;background:var(--bg);padding:10px 2px;z-index:10;-webkit-overflow-scrolling:touch}
+.tab-btn{white-space:nowrap;padding:8px 14px;border-radius:var(--radius-pill);border:1.5px solid var(--accent-bd);background:#fff;color:var(--accent-ink);cursor:pointer;font-size:.92rem;font-family:inherit;font-weight:600;flex-shrink:0}
+.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tab{display:none}
+.tab.show{display:block;animation:fade .25s}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.card{background:var(--card);border-radius:var(--radius);padding:16px;margin:12px 0;box-shadow:var(--shadow)}
+.card h2{font-size:1.15rem;color:var(--accent-head);margin-bottom:2px}
+.card h3{font-size:1.05rem;color:var(--ink);margin-bottom:6px}
+.sub{color:var(--muted);font-size:.85rem;margin-bottom:10px}
+details.concept{border:1px solid var(--line);border-radius:var(--radius-sm);margin:8px 0;overflow:hidden}
+details.concept summary{padding:10px 14px;cursor:pointer;font-weight:600;background:var(--soft);list-style:none}
+details.concept summary::before{content:"▸ ";color:var(--accent)}
+details.concept[open] summary::before{content:"▾ "}
+details.concept .body{padding:10px 14px;border-top:1px solid var(--line);font-size:.95rem}
+.formula{background:var(--accent-soft);border-radius:8px;padding:6px 12px;display:inline-block;margin:4px 4px 4px 0;font-weight:600;color:var(--accent-ink)}
+.warn{background:var(--warn-bg);border-left:4px solid var(--warn-bd);border-radius:8px;padding:10px 12px;margin:10px 0;font-size:.92rem}
+.tip{background:var(--tip-bg);border-left:4px solid var(--tip-bd);border-radius:8px;padding:10px 12px;margin:10px 0;font-size:.92rem}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:var(--radius-sm);padding:10px 16px;font-size:.95rem;cursor:pointer;font-family:inherit;font-weight:600}
+.btn:active{transform:scale(.97)}
+.btn.ghost{background:#fff;color:var(--accent);border:1.5px solid var(--accent-ghost)}
+.btn.small{padding:6px 12px;font-size:.85rem}
+.btn.green{background:var(--ok)}.btn.red{background:var(--bad)}
+.seg{display:inline-flex;border:1.5px solid var(--accent-bd);border-radius:var(--radius-sm);overflow:hidden;margin:4px 0;flex-wrap:wrap}
+.seg button{border:0;background:#fff;padding:8px 12px;cursor:pointer;font-family:inherit;font-size:.9rem;color:var(--accent-ink)}
+.seg button.on{background:var(--accent);color:#fff}
+input[type=range]{width:100%;accent-color:var(--accent);height:28px}
+.slider-row{margin:8px 0}.slider-row label{font-size:.92rem;font-weight:600}
+.slider-val{color:var(--accent);font-weight:700}
+.big-val{font-size:1.3rem;font-weight:700;color:var(--accent);margin:6px 0}
+.q-text,.tf-q{font-size:1rem;background:var(--soft);border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:6px}
+.ans-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:10px 0 4px}
+.ans-in{flex:1;min-width:120px;padding:10px 12px;border:2px solid #cbd5e1;border-radius:var(--radius-sm);font-size:1rem;font-family:inherit}
+.ans-in:focus{outline:none;border-color:var(--accent)}
+.ans-unit{font-weight:700;color:#475569;min-width:24px}
+.fb{margin:6px 0;font-weight:600;min-height:1.2em}
+.fb.ok{color:var(--ok)}.fb.bad{color:var(--bad)}
+.hint-box div{background:var(--info-bg);border-left:4px solid var(--info-bd);padding:8px 12px;margin:6px 0;border-radius:6px;font-size:.93rem}
+.drill-btns,.tf-btns{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.tf-btns .btn{flex:1;max-width:140px}
+.score{margin-top:8px;color:var(--muted);font-size:.88rem}
+.steps{background:var(--steps-bg);border:1px solid var(--steps-bd);border-radius:var(--radius-sm);padding:12px 14px;margin:8px 0;display:none;font-size:.95rem}
+.steps.show{display:block}
+.steps .st{padding:4px 0;border-bottom:1px dashed var(--steps-dash)}
+.steps .st:last-child{border-bottom:0}
+table.ref{border-collapse:collapse;width:100%;font-size:.9rem;margin:8px 0}
+table.ref th,table.ref td{border:1px solid var(--line);padding:6px 10px;text-align:center}
+table.ref th{background:var(--accent-soft);color:var(--accent-ink)}
+svg{max-width:100%;height:auto;display:block}
+.svg-box{background:var(--soft);border:1px solid var(--line);border-radius:var(--radius-sm);padding:8px;margin:8px 0}
+select{padding:8px;border:1.5px solid #cbd5e1;border-radius:8px;font-family:inherit;font-size:.9rem;background:#fff}
+sup,sub{font-size:.72em}
+@media(max-width:480px){.card{padding:12px}header h1{font-size:1.15rem}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+
+<!-- ▼▼ เปลี่ยน data-subject ให้ตรงวิชา = สีเปลี่ยนทั้งหน้า ▼▼ -->
+<body data-subject="islam">
+<div class="wrap">
+
+  <header>
+    <h1><span data-th="☪️ เสาหลัก 5 ประการ — ติวก่อนสอบ" data-en="☪️ The Five Pillars — Exam Review"></span></h1>
+    <div class="chips">
+      <span class="chip hot" data-th="สอบศุกร์ 21 ส.ค." data-en="Exam Fri 21 Aug"></span>
+      <span class="chip" data-th="ชะฮาดะฮ์ · ละหมาด · ซะกาต · ถือศีลอด" data-en="Shahada · Salah · Zakat · Sawm"></span>
+      <button class="btn small" id="langBtn" style="margin-left:auto">EN</button>
+    </div>
+    <div class="warn" style="margin-top:10px">
+      <span data-th="⚠️ อาจารย์ออกข้อสอบเป็นภาษาอังกฤษ แต่เราเรียนมาเป็นไทย — กดปุ่มมุมขวาสลับภาษาแล้วลองอ่านซ้ำเป็นอังกฤษดู"
+            data-en="⚠️ The exam is in English but you studied in Thai — use the button to switch and re-read everything in the other language."></span>
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <button class="tab-btn" data-tab="t1"><span data-th="🏛️ ภาพรวม" data-en="🏛️ Overview"></span></button>
+    <button class="tab-btn" data-tab="t2"><span data-th="🕌 ละหมาด" data-en="🕌 Salah"></span></button>
+    <button class="tab-btn" data-tab="t3"><span data-th="💰 ซะกาต" data-en="💰 Zakat"></span></button>
+    <button class="tab-btn" data-tab="t4"><span data-th="🌙 ถือศีลอด" data-en="🌙 Sawm"></span></button>
+    <button class="tab-btn" data-tab="t5"><span data-th="📝 ควิซ" data-en="📝 Quiz"></span></button>
+    <button class="tab-btn" data-tab="t6"><span data-th="📚 ศัพท์" data-en="📚 Glossary"></span></button>
+  </nav>
+
+  <!-- ================= แท็บ 1 ภาพรวม ================= -->
+  <section id="t1" class="tab">
+    <div class="card">
+      <h2><span data-th="คำสอนอิสลามแบ่ง 3 หมวด" data-en="Three categories of Islamic teaching"></span></h2>
+      <p class="sub" data-th="แตะการ์ดเพื่อดูว่าหมวดไหนคือเสาหลัก 5" data-en="Tap a card to see which one holds the Five Pillars"></p>
+      <div id="catRow" class="ans-row" style="flex-wrap:wrap"></div>
+      <div class="fb" id="catFb"></div>
+    </div>
+
+    <div class="card">
+      <h3><span data-th="เสาทั้ง 5" data-en="The Five Pillars"></span></h3>
+      <table class="ref"><thead><tr>
+        <th>#</th>
+        <th data-th="ชื่ออาหรับ" data-en="Arabic name"></th>
+        <th data-th="คือ" data-en="What it is"></th>
+      </tr></thead><tbody id="pillarBody"></tbody></table>
+      <div class="warn" style="margin-top:10px">
+        <span data-th="⚠️ อาจารย์ยังไม่ปล่อยสไลด์เสาที่ 5 (ฮัจญ์) — ในวอลต์จึงยังไม่มีสรุปจากสไลด์จริง อย่าท่องจากที่อื่นแล้วคิดว่าเป็นของอาจารย์"
+              data-en="⚠️ No slide deck for Pillar 5 (Hajj) has been released yet, so there is no slide-based summary for it. Do not assume outside material matches the teacher's."></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span data-th="ชะฮาดะฮ์ — องค์ประกอบ 3 ประการ" data-en="Shahada — the three components"></span></h3>
+      <p class="sub" data-th="ลากไม่ได้ แต่แตะให้ครบทั้ง 3 อันสิ" data-en="Tap all three to complete it"></p>
+      <div id="shaRow" class="ans-row" style="flex-wrap:wrap"></div>
+      <div class="fb" id="shaFb"></div>
+      <div class="tip" style="margin-top:10px">
+        <span data-th="💡 ท่องสั้น ๆ ว่า วาจา–ใจ–กาย" data-en="💡 Remember: speech – heart – body"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= แท็บ 2 ละหมาด ================= -->
+  <section id="t2" class="tab">
+    <div class="card">
+      <h3><span data-th="5 เวลา กี่ร็อกอะฮ์" data-en="Five daily prayers — how many rak'ah?"></span></h3>
+      <p class="sub" data-th="เติมจำนวนร็อกอะฮ์ให้ครบ แล้วกดตรวจ" data-en="Fill in the rak'ah counts, then check"></p>
+      <table class="ref"><thead><tr>
+        <th data-th="ชื่อ" data-en="Name"></th>
+        <th data-th="ช่วงเวลา" data-en="Time"></th>
+        <th data-th="ร็อกอะฮ์" data-en="Rak'ah"></th>
+      </tr></thead><tbody id="salahBody"></tbody></table>
+      <div class="ans-row">
+        <button class="btn" id="salahCheck" data-th="ตรวจ" data-en="Check"></button>
+        <button class="btn ghost small" id="salahHint" data-th="ขอคำใบ้" data-en="Hint"></button>
+      </div>
+      <div class="fb" id="salahFb"></div>
+      <div class="hint-box" id="salahHintBox" style="display:none">
+        <span data-th="รวมทั้งวัน 17 ร็อกอะฮ์ · มีสองเวลาที่ไม่ใช่ 4" data-en="17 rak'ah in total · only two of them are not 4"></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span data-th="3 ช่วงเวลาที่ห้ามละหมาด" data-en="The three forbidden prayer times"></span></h3>
+      <div id="forbidRow" class="ans-row" style="flex-wrap:wrap"></div>
+      <div class="fb" id="forbidFb"></div>
+      <div class="tip" style="margin-top:10px">
+        <span data-th="💡 ข้อยกเว้น: เวลาซาวัล (เที่ยง) ในวันศุกร์ ละหมาดได้" data-en="💡 Exception: Zawal (midday) is allowed on Fridays"></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <details class="concept" open><summary data-th="ฟัรฎู vs ซุนนะฮ์ · ฟัรฎุอัยน์ vs ฟัรฎูกิฟายะฮ์" data-en="Fard vs Sunnah · Fard al-Ayn vs Fard Kifaya"></summary>
+        <div class="body">
+          <p data-th="ฟัรฎู = บังคับ ไม่ทำเป็นบาปใหญ่ · ซุนนะฮ์ = สมัครใจ ทำได้บุญ ไม่ทำไม่บาป"
+             data-en="Fard = obligatory, skipping it is a major sin · Sunnah = voluntary, rewarded but not sinful to skip"></p>
+          <p data-th="ฟัรฎุอัยน์ (Fard al-Ayn) = หน้าที่ส่วนบุคคล เช่น ละหมาด 5 เวลา · ญุมอะฮ์"
+             data-en="Fard al-Ayn = individual duty, e.g. the five daily prayers, Jumu'ah"></p>
+          <p data-th="ฟัรฎูกิฟายะฮ์ (Fard Kifaya) = หน้าที่รายกลุ่ม มีคนทำแล้วคนอื่นพ้นผิด เช่น ละหมาดญะนาซะฮ์ — แต่ถ้าไม่มีใครทำเลย บาปทั้งชุมชน"
+             data-en="Fard Kifaya = communal duty; if some perform it the rest are excused, e.g. the funeral prayer — but if nobody does, the whole community sins"></p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ================= แท็บ 3 ซะกาต ================= -->
+  <section id="t3" class="tab">
+    <div class="card">
+      <h3><span data-th="เครื่องคำนวณซะกาตมาล" data-en="Zakat al-Maal calculator"></span></h3>
+      <p class="sub" data-th="ลองใส่ตัวเลขดู แล้วดูว่าถึงพิกัดไหม" data-en="Enter your numbers and see whether you reach the nisab"></p>
+      <div class="slider-row">
+        <label><span data-th="ราคาทองคำ (บาท/กรัม)" data-en="Gold price (THB per gram)"></span> = <span class="slider-val" id="gpVal">2500</span></label>
+        <input type="range" id="goldPrice" min="1000" max="5000" step="50" value="2500">
+      </div>
+      <div class="slider-row">
+        <label><span data-th="ทรัพย์สินที่ออมไว้ครบปี (บาท)" data-en="Savings held for one full year (THB)"></span> = <span class="slider-val" id="wVal">200,000</span></label>
+        <input type="range" id="wealth" min="0" max="2000000" step="10000" value="200000">
+      </div>
+      <div class="big-val" id="zakOut"></div>
+      <div class="fb" id="zakFb"></div>
+      <div class="tip" style="margin-top:10px">
+        <span data-th="💡 พิกัด (nisab) = มูลค่าทองคำหนัก 85 กรัม · อัตรา 2.5% · รอบปี 1 ปีจันทรคติ (354 วัน)"
+              data-en="💡 Nisab = value of 85 g of gold · rate 2.5% · one lunar year (354 days)"></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span data-th="ซะกาต · เศาะดะเกาะฮ์ · วะกัฟ ต่างกันตรงไหน" data-en="Zakat vs Sadaqah vs Waqf"></span></h3>
+      <p class="sub" data-th="แตะอันที่เป็น 1 ใน 5 เสาหลัก" data-en="Tap the one that is a Pillar of Islam"></p>
+      <div id="charityRow" class="ans-row" style="flex-wrap:wrap"></div>
+      <div class="fb" id="charityFb"></div>
+    </div>
+
+    <div class="card">
+      <h3><span data-th="ผู้มีสิทธิ์รับซะกาต 8 จำพวก" data-en="The eight categories eligible for Zakat"></span></h3>
+      <table class="ref"><thead><tr><th>#</th><th data-th="ไทย" data-en="Thai"></th><th data-th="อังกฤษ" data-en="English"></th></tr></thead>
+      <tbody id="recipBody"></tbody></table>
+      <div class="warn" style="margin-top:10px">
+        <span data-th="⚠️ จำพวกที่ 4 รับซะกาตได้แม้ยังไม่เป็นมุสลิม — ข้อนี้ตอบผิดกันเยอะ"
+              data-en="⚠️ Category 4 may receive Zakat even before becoming Muslim — a commonly missed point."></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= แท็บ 4 ถือศีลอด ================= -->
+  <section id="t4" class="tab">
+    <div class="card">
+      <h3><span data-th="อันไหนทำให้เสียศีลอด" data-en="Which of these breaks the fast?"></span></h3>
+      <p class="sub" data-th="แตะทุกอันที่คิดว่าทำให้เสียศีลอด แล้วกดตรวจ" data-en="Tap everything you think breaks the fast, then check"></p>
+      <div id="fastRow" class="ans-row" style="flex-wrap:wrap"></div>
+      <div class="ans-row">
+        <button class="btn" id="fastCheck" data-th="ตรวจ" data-en="Check"></button>
+        <button class="btn ghost small" id="fastReset" data-th="เริ่มใหม่" data-en="Reset"></button>
+      </div>
+      <div class="fb" id="fastFb"></div>
+      <div class="tip" style="margin-top:10px">
+        <span data-th="💡 คำชี้ขาดคือคำว่า “เจตนา” — ถ้าไม่ได้ตั้งใจ ส่วนใหญ่ไม่เสียศีลอด"
+              data-en="💡 The deciding word is “intentionally” — most accidents do not break the fast"></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span data-th="ชดใช้อย่างไร" data-en="How must it be made up?"></span></h3>
+      <p class="sub" data-th="เลือกกรณี แล้วดูว่าต้องทำอะไร" data-en="Pick a case and see what is required"></p>
+      <div id="makeupRow" class="ans-row" style="flex-wrap:wrap"></div>
+      <div class="fb" id="makeupFb"></div>
+      <div class="warn" style="margin-top:10px">
+        <span data-th="⚠️ กัฟฟาเราะฮ์ต้องทำตามลำดับ: ปล่อยทาส 1 คน → ถือศีลอด 2 เดือนติดกัน (ขาดวันเดียวเริ่มนับใหม่) → เลี้ยงคนจน 60 คน"
+              data-en="⚠️ Kaffarah must follow the order: free one slave → fast two consecutive months (miss one day and you restart) → feed 60 poor people"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= แท็บ 5 ควิซ ================= -->
+  <section id="t5" class="tab">
+    <div class="card">
+      <h3><span data-th="ควิซรวม" data-en="Mixed quiz"></span></h3>
+      <p class="sub" id="qProgress"></p>
+      <div class="q-text" id="qText"></div>
+      <div id="qChoices" class="ans-row" style="flex-direction:column;align-items:stretch"></div>
+      <div class="ans-row">
+        <button class="btn ghost small" id="qHint" data-th="คำใบ้" data-en="Hint"></button>
+        <button class="btn ghost small" id="qSkip" data-th="ข้าม" data-en="Skip"></button>
+      </div>
+      <div class="hint-box" id="qHintBox" style="display:none"></div>
+      <div class="fb" id="qFb"></div>
+      <div class="steps" id="qWhy"></div>
+    </div>
+  </section>
+
+  <!-- ================= แท็บ 6 ศัพท์อาหรับ ================= -->
+  <section id="t6" class="tab">
+    <div class="card">
+      <h3><span data-th="ศัพท์อาหรับ" data-en="Arabic glossary"></span></h3>
+      <p class="sub" data-th="พิมพ์ค้นได้ทั้งอาหรับ ไทย และอังกฤษ" data-en="Search in Arabic, Thai or English"></p>
+      <input class="ans-in" id="gSearch" style="width:100%"
+             data-th-ph="ค้นหา เช่น zakat หรือ ละหมาด" data-en-ph="Search, e.g. zakat or prayer">
+      <div class="ans-row" id="gCats"></div>
+      <table class="ref"><thead><tr>
+        <th data-th="อาหรับ" data-en="Arabic"></th>
+        <th data-th="ตัวโรมัน" data-en="Romanised"></th>
+        <th data-th="ความหมาย (ไทย)" data-en="Meaning (English)"></th>
+      </tr></thead><tbody id="gBody"></tbody></table>
+      <p class="sub" id="gCount"></p>
+      <div class="warn" style="margin-top:10px">
+        <span data-th="⚠️ สไลด์ของอาจารย์เขียนตัวโรมันกับไทยเท่านั้น ไม่มีอักษรอาหรับ — คอลัมน์อักษรอาหรับเป็นของเสริม ข้อสอบยึดตัวโรมัน/อังกฤษ"
+              data-en="⚠️ The teacher's slides use only romanised and Thai forms; the Arabic script column is supplementary. The exam uses the romanised/English forms."></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span data-th="ฝึกทายคำ" data-en="Flashcard drill"></span></h3>
+      <p class="sub" data-th="เห็นคำโรมัน แล้วนึกความหมายในใจ ก่อนกดเปิด" data-en="See the term, recall the meaning, then reveal"></p>
+      <div class="q-text" id="fcTerm"></div>
+      <div class="ans-row">
+        <button class="btn" id="fcShow" data-th="เปิดเฉลย" data-en="Reveal"></button>
+        <button class="btn ghost small" id="fcNext" data-th="คำถัดไป" data-en="Next"></button>
+      </div>
+      <div class="fb" id="fcAns"></div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+/* ================= ระบบสลับภาษา =================
+   หัวใจของวิดเจ็ตนี้ ปุ่มเดียวสลับทั้ง UI และเนื้อหา
+   ทุก element ที่แปลได้จะมี data-th / data-en อยู่แล้ว
+   ส่วนเนื้อหาที่สร้างด้วย JS เก็บเป็นคู่ {th,en} แล้วเรียก T() */
+/* บางบริบท (โหมดความเป็นส่วนตัวเข้ม, data: URL) ห้ามแตะ localStorage
+   ถ้าเข้าถึงไม่ได้ให้ใช้ค่าเริ่มต้นแทน อย่าให้ทั้งหน้าตายเพราะเรื่องนี้ */
+const store = {
+  get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } },
+  set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+};
+let LANG = store.get('islamLang') || 'th';
+const T = o => (o && typeof o === 'object') ? (o[LANG] ?? o.th) : o;
+
+function applyLang(){
+  document.querySelectorAll('[data-th]').forEach(el=>{
+    const v = el.dataset[LANG];
+    if(v !== undefined) el.textContent = v;
+  });
+  /* ช่องค้นหาใช้ placeholder ไม่ใช่ textContent จึงต้องแยกจัดการ */
+  document.querySelectorAll('[data-th-ph]').forEach(el=>{
+    el.placeholder = LANG==='th' ? el.dataset.thPh : el.dataset.enPh;
+  });
+  document.documentElement.lang = LANG === 'th' ? 'th' : 'en';
+  document.getElementById('langBtn').textContent = LANG === 'th' ? 'EN' : 'ไทย';
+  renderAll();
+}
+document.getElementById('langBtn').addEventListener('click',()=>{
+  LANG = LANG === 'th' ? 'en' : 'th';
+  store.set('islamLang', LANG);
+  applyLang();
+});
+
+/* ================= สลับแท็บ ================= */
+const tabs=document.getElementById('tabs');
+function openTab(id){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('show',t.id===id));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
+}
+tabs.addEventListener('click',e=>{const b=e.target.closest('.tab-btn');if(b)openTab(b.dataset.tab);});
+
+/* ================= ข้อมูล (คู่ไทย/อังกฤษ) ================= */
+const PILLARS=[
+  {ar:'Shahada',th:['ชะฮาดะฮ์','การปฏิญาณตนเป็นมุสลิม'],en:['Shahada','The Declaration of Faith']},
+  {ar:'Salah',  th:['ละหมาด','ละหมาดวันละ 5 เวลา'],      en:['Salah','Five daily prayers']},
+  {ar:'Zakat',  th:['ซะกาต','การบริจาคทานภาคบังคับ'],     en:['Zakat','Obligatory almsgiving']},
+  {ar:'Sawm',   th:['ถือศีลอด','ถือศีลอดเดือนรอมฎอน'],    en:['Sawm','Fasting in Ramadan']},
+  {ar:'Hajj',   th:['ฮัจญ์','การไปแสวงบุญที่มักกะฮ์'],     en:['Hajj','Pilgrimage to Mecca']}
+];
+const CATS=[
+  {k:'iman', th:'อีมาน (Iman)', en:'Iman', ok:false,
+   why:{th:'อีมาน = หลักศรัทธา 6 ประการ คือ "เชื่ออะไร" ไม่ใช่ "ทำอะไร"',
+        en:'Iman is the six articles of faith — what you believe, not what you do.'}},
+  {k:'ihsan',th:'อิห์ซาน (Ihsan)', en:'Ihsan', ok:false,
+   why:{th:'อิห์ซาน = หลักคุณธรรม จริยธรรม หลักความดี',
+        en:'Ihsan is moral excellence and good conduct.'}},
+  {k:'ibadat',th:'อิบาดะห์ (Ibadat)', en:'Ibadat', ok:true,
+   why:{th:'ถูกต้อง! อิบาดะห์ = หลักปฏิบัติ หน้าที่ในศาสนา เสาหลัก 5 อยู่หมวดนี้',
+        en:'Correct! Ibadat means religious practice and duty — the Five Pillars sit here.'}}
+];
+const SHA=[
+  {th:'กล่าวปฏิญาณด้วยวาจา', en:'Declare it with speech', ok:true},
+  {th:'เลื่อมใสด้วยจิตใจ',    en:'Believe it in the heart', ok:true},
+  {th:'ปฏิบัติด้วยร่างกาย',   en:'Act on it with the body', ok:true},
+  {th:'บริจาคเงินให้มัสยิด',   en:'Donate money to a mosque', ok:false},
+  {th:'เดินทางไปมักกะฮ์',     en:'Travel to Mecca', ok:false}
+];
+const SALAH=[
+  {n:'Fajr',    th:'ย่ำรุ่ง เช้ามืด',        en:'Dawn',            r:2},
+  {n:'Zuhr',    th:'ตะวันคล้อย เที่ยงกว่า',  en:'Just past midday', r:4},
+  {n:'Asr',     th:'ยามเย็น',               en:'Late afternoon',  r:4},
+  {n:'Maghrib', th:'ดวงอาทิตย์ตก',          en:'Sunset',          r:3},
+  {n:'Isha',    th:'ยามค่ำคืน',             en:'Night',           r:4}
+];
+const FORBID=[
+  {th:'ตอนดวงอาทิตย์กำลังขึ้น', en:'While the sun is rising', ok:true},
+  {th:'ตอนเที่ยงวัน (ซาวัล)',   en:'Midday (Zawal)',          ok:true},
+  {th:'ตอนดวงอาทิตย์กำลังจะตก', en:'While the sun is setting', ok:true},
+  {th:'ตอนเที่ยงคืน',           en:'At midnight',              ok:false},
+  {th:'ตอนฝนตก',                en:'While it is raining',      ok:false}
+];
+const CHARITY=[
+  {th:['ซะกาต (Zakat)','บังคับ · กำหนดจำนวนและเวลาชัดเจน'],
+   en:['Zakat','Obligatory · fixed amount and timing'], ok:true},
+  {th:['เศาะดะเกาะฮ์ (Sadaqah)','สมัครใจ · ทำได้ทุกเวลา · ไม่กำหนดจำนวน'],
+   en:['Sadaqah','Voluntary · any time · no fixed amount'], ok:false},
+  {th:['วะกัฟ (Waqf)','สมัครใจ · เพื่อสาธารณประโยชน์ · เจาะจงผู้รับ'],
+   en:['Waqf','Voluntary · for public benefit · named beneficiary'], ok:false}
+];
+const RECIP=[
+  {th:'คนยากจน', en:'The poor'},
+  {th:'คนขัดสน', en:'The needy'},
+  {th:'เจ้าหน้าที่จัดการซะกาต', en:'Zakat administrators'},
+  {th:'ผู้ที่มีหัวใจโน้มมาสู่อิสลาม', en:'New Muslims & friends of the community'},
+  {th:'ทาส เชลย ผู้ไร้อิสรภาพ', en:'Slaves & captives'},
+  {th:'คนมีหนี้สิน (ไม่ใช่หนี้พนัน)', en:'The debt-ridden (not gambling debt)'},
+  {th:'ผู้อยู่ในหนทางของอัลลอฮ์', en:'In the cause of Allah'},
+  {th:'คนติดขัดระหว่างเดินทาง', en:'The wayfarer'}
+];
+const FASTITEMS=[
+  {th:'เจตนากินหรือดื่ม',           en:'Eating or drinking intentionally',   ok:true},
+  {th:'เจตนาอาเจียน',               en:'Vomiting intentionally',             ok:true},
+  {th:'มีเพศสัมพันธ์',              en:'Sexual intercourse',                 ok:true},
+  {th:'เป็นลม สลบ เสียสติ',         en:'Fainting or losing consciousness',   ok:true},
+  {th:'มีประจำเดือน',               en:'Menstruation begins',                ok:true},
+  {th:'กลืนน้ำลาย',                 en:'Swallowing saliva',                  ok:false},
+  {th:'แปรงฟัน',                    en:'Brushing teeth',                     ok:false},
+  {th:'ชิมแกงแล้วบ้วนทิ้ง',          en:'Tasting food then spitting it out',  ok:false},
+  {th:'ดำน้ำแล้วน้ำเข้าปากโดยไม่ตั้งใจ', en:'Water enters the mouth accidentally', ok:false},
+  {th:'ฉีดยารักษาโรคที่จำเป็น',      en:'A necessary medical injection',      ok:false},
+  {th:'ดมยาดม ทายาหม่อง',           en:'Inhaling smelling salts, applying balm', ok:false}
+];
+const MAKEUP=[
+  {th:['ป่วย / เดินทาง / มีประจำเดือน','ถือศีลอดชดใช้ (กอฎออ์) เท่าจำนวนวันที่ขาด'],
+   en:['Illness / travel / menstruation','Qada only — make up the missed days']},
+  {th:['สตรีตั้งครรภ์ หรือ ให้นมบุตร','ต้องทั้ง ถือชดใช้ (กอฎออ์) และ จ่ายฟิดยะฮ์'],
+   en:['Pregnant or nursing','Both Qada and Fidyah']},
+  {th:['ผู้ชรา หรือ ป่วยเรื้อรังไม่มีหวังหาย','จ่ายฟิดยะฮ์อย่างเดียว ไม่ต้องถือชดใช้'],
+   en:['Elderly or incurably ill','Fidyah only — no make-up fasting']},
+  {th:['เสียศีลอดจากการมีเพศสัมพันธ์','ต้องทั้ง กอฎออ์ และ กัฟฟาเราะฮ์'],
+   en:['Fast broken by intercourse','Both Qada and Kaffarah']}
+];
+const QUIZ=[
+  {q:{th:'เสาหลัก 5 ประการอยู่ในคำสอนหมวดใด',en:'Which category of Islamic teaching contains the Five Pillars?'},
+   c:[{th:'อีมาน (Iman)',en:'Iman'},{th:'อิห์ซาน (Ihsan)',en:'Ihsan'},{th:'อิบาดะห์ (Ibadat)',en:'Ibadat'}],a:2,
+   h:{th:'หมวดที่แปลว่า "หน้าที่ในศาสนา"',en:'The one that means religious duty.'},
+   w:{th:'อีมาน = เชื่ออะไร (6 ข้อ) · อิบาดะห์ = ทำอะไร (5 ข้อ)',en:'Iman = what you believe (6) · Ibadat = what you do (5).'}},
+  {q:{th:'คำว่า "ละหมาด" มาจากภาษาใด',en:'The Thai word for prayer, "ละหมาด", comes from which language?'},
+   c:[{th:'อาหรับ',en:'Arabic'},{th:'เปอร์เซีย',en:'Persian'},{th:'มลายู',en:'Malay'}],a:1,
+   h:{th:'เพี้ยนมาจากคำว่า "นมาซ"',en:'It is a corruption of the word "Namaz".'},
+   w:{th:'เปอร์เซีย = นมาซ → ละหมาด · คำอาหรับคือ Salah/Salat · มลายูปัตตานีคือ มาแย',en:'Persian "Namaz" became "ละหมาด". The Arabic is Salah/Salat; Pattani Malay is "Maae".'}},
+  {q:{th:'ก่อนสมัยท่านนบีมูฮัมหมัด ผู้ศรัทธาหันหน้าไปทางใดเวลาละหมาด',en:'Before Prophet Muhammad, which direction did believers face in prayer?'},
+   c:[{th:'มักกะฮ์',en:'Mecca'},{th:'เยรูซาเล็ม',en:'Jerusalem'},{th:'เมดินะฮ์',en:'Medina'}],a:1,
+   h:{th:'เมืองศักดิ์สิทธิ์ที่ยูดายและคริสต์ก็นับถือ',en:'A city holy to Judaism and Christianity too.'},
+   w:{th:'เปลี่ยนมาเป็นกะอ์บะฮ์ นครเมกกะฮ์ ในสมัยท่านนบี',en:'It changed to the Kaaba in Mecca in the Prophet\'s time.'}},
+  {q:{th:'ละหมาดญุมอะฮ์ (วันศุกร์) ใช้แทนละหมาดเวลาใด',en:'The Friday prayer replaces which daily prayer?'},
+   c:[{th:'ฟัจร์ (Fajr)',en:'Fajr'},{th:'ซุฮริ (Zuhr)',en:'Zuhr'},{th:'อิชาอ์ (Isha)',en:'Isha'}],a:1,
+   h:{th:'ญุมอะฮ์ทำช่วงบ่ายหลังเที่ยง',en:'Jumu\'ah is performed just after midday.'},
+   w:{th:'ทำญุมอะฮ์แล้วไม่ต้องละหมาดซุฮริในวันนั้น · บังคับเฉพาะผู้ชาย · 2 ร็อกอะฮ์',en:'After Jumu\'ah you do not pray Zuhr that day. Obligatory for men only, 2 rak\'ah.'}},
+  {q:{th:'ละหมาดญะนาซะฮ์ต่างจากละหมาดทั่วไปอย่างไร',en:'How does the funeral prayer differ from ordinary prayer?'},
+   c:[{th:'ยืนอย่างเดียว ไม่ก้ม ไม่กราบ',en:'Standing only — no bowing, no prostration'},{th:'ทำเฉพาะกลางคืน',en:'It is performed only at night'},{th:'ต้องทำที่มักกะฮ์',en:'It must be performed in Mecca'}],a:0,
+   h:{th:'เพราะมีศพอยู่ด้านหน้าผู้ละหมาด',en:'Because the body lies in front of those praying.'},
+   w:{th:'เป็นฟัรฎูกิฟายะฮ์ มีคนทำแล้วคนอื่นพ้นผิด',en:'It is Fard Kifaya — if some perform it the rest are excused.'}},
+  {q:{th:'การบริจาคแบบใดเป็น 1 ใน 5 เสาหลัก',en:'Which form of giving is one of the Five Pillars?'},
+   c:[{th:'เศาะดะเกาะฮ์',en:'Sadaqah'},{th:'วะกัฟ',en:'Waqf'},{th:'ซะกาต',en:'Zakat'}],a:2,
+   h:{th:'อันที่บังคับและกำหนดจำนวนไว้ชัดเจน',en:'The one that is obligatory with a fixed amount.'},
+   w:{th:'อีกสองอย่างเป็นการบริจาคโดยสมัครใจ ไม่ใช่เสาหลัก',en:'The other two are voluntary and are not Pillars.'}},
+  {q:{th:'พิกัดขั้นต่ำ (nisab) ของซะกาตทองคำและเงินออม คือเท่าใด',en:'What is the nisab for gold and savings?'},
+   c:[{th:'ทองคำ 85 กรัม อัตรา 2.5%',en:'85 g of gold, rate 2.5%'},{th:'ทองคำ 100 กรัม อัตรา 5%',en:'100 g of gold, rate 5%'},{th:'ทองคำ 700 กรัม อัตรา 10%',en:'700 g of gold, rate 10%'}],a:0,
+   h:{th:'700 กับ 10% เป็นตัวเลขของผลผลิตเกษตร',en:'700 and 10% belong to agricultural produce.'},
+   w:{th:'เกษตร 700 กก. · น้ำฝน 10% · ชลประทาน 5% · ทรัพย์ที่ค้นพบ 20%',en:'Crops: 700 kg · rain-fed 10% · irrigated 5% · found treasure 20%.'}},
+  {q:{th:'คนที่ยังไม่เป็นมุสลิม รับซะกาตได้หรือไม่',en:'Can a non-Muslim receive Zakat?'},
+   c:[{th:'ได้',en:'Yes'},{th:'ไม่ได้',en:'No'}],a:0,
+   h:{th:'ดูจำพวกที่ 4 ใน 8 จำพวก',en:'Look at category 4 of the eight.'},
+   w:{th:'จำพวกที่ 4 "ผู้ที่มีหัวใจโน้มมาสู่อิสลาม" รับได้ เพื่อให้เขาเข้ารับอิสลามภายหลัง',en:'Category 4 — those whose hearts are inclined to Islam — may receive it.'}},
+  {q:{th:'ถ้าจ่ายซะกาตฟิตเราะห์หลังละหมาดอีด จะนับเป็นอะไร',en:'If Zakat al-Fitr is paid after the Eid prayer, what does it count as?'},
+   c:[{th:'ยังเป็นซะกาตฟิตเราะห์',en:'Still Zakat al-Fitr'},{th:'เป็นแค่เศาะดะเกาะฮ์',en:'Merely Sadaqah'},{th:'เป็นวะกัฟ',en:'Waqf'}],a:1,
+   h:{th:'กรอบเวลาของซะกาตฟิตเราะห์สั้นมาก ราว 3 วัน',en:'Its window is very short — about three days.'},
+   w:{th:'เวลาที่ประเสริฐสุดคือเช้าวันอีดิ้ลฟิตริ ก่อนละหมาดอีด',en:'The best time is the morning of Eid al-Fitr, before the Eid prayer.'}},
+  {q:{th:'รอมฎอนเป็นเดือนที่เท่าไรของปฏิทินอิสลาม',en:'Ramadan is which month of the Islamic calendar?'},
+   c:[{th:'เดือนที่ 1',en:'1st'},{th:'เดือนที่ 9',en:'9th'},{th:'เดือนที่ 12',en:'12th'}],a:1,
+   h:{th:'เดือนถัดไปคือเชาวาล ซึ่งวันที่ 1 คือวันอีดเล็ก',en:'The next month is Shawwal, whose 1st day is Eid al-Fitr.'},
+   w:{th:'ยาว 29 หรือ 30 วัน ตัดสินด้วยจันทร์เสี้ยว "ฮีลาล"',en:'It lasts 29 or 30 days, decided by sighting the crescent "Hilal".'}},
+  {q:{th:'ชิมแกงแล้วบ้วนทิ้ง ทำให้เสียศีลอดหรือไม่',en:'Does tasting food and spitting it out break the fast?'},
+   c:[{th:'เสีย',en:'Yes'},{th:'ไม่เสีย',en:'No'}],a:1,
+   h:{th:'คำชี้ขาดคือมันลงคอหรือเปล่า',en:'The deciding factor is whether it goes down.'},
+   w:{th:'ชิมได้ แต่ถ้ากลืนเข้าไปเสียทันที',en:'Tasting is allowed, but swallowing breaks it immediately.'}},
+  {q:{th:'เสียศีลอดจากการมีเพศสัมพันธ์ ต้องชดใช้อย่างไร',en:'If the fast is broken by intercourse, what is required?'},
+   c:[{th:'กอฎออ์อย่างเดียว',en:'Qada only'},{th:'ฟิดยะฮ์อย่างเดียว',en:'Fidyah only'},{th:'ทั้งกอฎออ์และกัฟฟาเราะฮ์',en:'Both Qada and Kaffarah'}],a:2,
+   h:{th:'กรณีนี้หนักกว่ากรณีอื่นทุกกรณี',en:'This case is heavier than every other.'},
+   w:{th:'กัฟฟาเราะฮ์ทำตามลำดับ ปล่อยทาส → ถือ 2 เดือนติดกัน → เลี้ยงคนจน 60 คน',en:'Kaffarah in order: free a slave → fast two consecutive months → feed 60 poor people.'}},
+  {q:{th:'ผู้ชราหรือป่วยเรื้อรังไม่มีหวังหาย ต้องทำอะไร',en:'What must the elderly or incurably ill do?'},
+   c:[{th:'จ่ายฟิดยะฮ์อย่างเดียว',en:'Pay Fidyah only'},{th:'ถือชดใช้อย่างเดียว',en:'Make up the fasts only'},{th:'ทั้งสองอย่าง',en:'Both'}],a:0,
+   h:{th:'ต่างจากสตรีตั้งครรภ์ที่ต้องทำสองอย่าง',en:'Different from pregnant women, who must do both.'},
+   w:{th:'เพราะไม่มีทางถือชดใช้ได้จริง จึงให้จ่ายทานแทน',en:'Since making them up is impossible, feeding the poor replaces it.'}},
+  {q:{th:'ละหมาดตะรอเวียะห์เป็นละหมาดประเภทใด',en:'What type of prayer is Tarawih?'},
+   c:[{th:'ฟัรฎู (บังคับ)',en:'Fard (obligatory)'},{th:'ซุนนะฮ์ (ไม่บังคับ)',en:'Sunnah (voluntary)'}],a:1,
+   h:{th:'ทำที่บ้านก็ได้ ไม่บังคับว่าต้องไปมัสยิด',en:'It may be prayed at home; the mosque is not required.'},
+   w:{th:'ทำเฉพาะคืนเดือนรอมฎอน 10–23 ร็อกอะฮ์',en:'Performed only on Ramadan nights, 10–23 rak\'ah.'}},
+  {q:{th:'ตามฮะดีษ ควรละศีลอดด้วยอะไรก่อน',en:'According to hadith, what should the fast be broken with?'},
+   c:[{th:'น้ำเปล่า',en:'Plain water'},{th:'ผลอินทผลัม',en:'Dates'},{th:'นม',en:'Milk'}],a:1,
+   h:{th:'ถ้าไม่มีของสิ่งนี้ ค่อยจิบน้ำ',en:'If it is unavailable, then sip water.'},
+   w:{th:'อินทผลัมสด → แห้ง → จิบน้ำ · ย่อยได้ใน 20 นาที เติมน้ำตาลลดหิวทันที',en:'Fresh dates → dried dates → sipping water. Dates digest within 20 minutes.'}}
+];
+
+/* ================= ศัพท์อาหรับ =================
+   ar = อักษรอาหรับ (ของเสริม ไม่ได้มาจากสไลด์ อ. สไลด์มีแต่ตัวโรมันกับไทย)
+   ro = ตัวโรมันตามที่ อ.ใช้ · th/en = ความหมาย · c = หมวด */
+const GLOSS=[
+ {c:'core',ar:'القرآن',ro:"Qur'an",th:'อัลกุรอาน · กุรอาน',en:'The Quran'},
+ {c:'core',ar:'الحديث',ro:'Hadith',th:'ฮะดีษ',en:'The Hadith'},
+ {c:'core',ar:'سورة',ro:'Surah',th:'ซูเราะฮ์ (บทในกุรอาน)',en:'chapter of the Quran'},
+ {c:'core',ar:'آية',ro:'Ayah',th:'อายะฮ์ · โองการ',en:'verse'},
+ {c:'core',ar:'الإيمان',ro:'Iman',th:'อีมาน = หลักศรัทธา 6 ข้อ',en:'faith — the six articles'},
+ {c:'core',ar:'الإحسان',ro:'Ihsan',th:'อิห์ซาน = หลักคุณธรรม',en:'moral excellence'},
+ {c:'core',ar:'العبادات',ro:'Ibadat',th:'อิบาดะห์ = หลักปฏิบัติ ← เสาหลัก 5 อยู่หมวดนี้',en:'religious practice — holds the Five Pillars'},
+ {c:'core',ar:'ركن',ro:'Rukun',th:'รุกุน = หลักปฏิบัติที่ต้องรู้และต้องทำ',en:'pillar · required practice'},
+ {c:'core',ar:'فرض',ro:'Fard / Fardhu',th:'ฟัรฎู = บังคับ ไม่ทำเป็นบาปใหญ่',en:'obligatory'},
+ {c:'core',ar:'واجب',ro:'Wajib',th:'วาญิบ = จำเป็นต้องทำ ไม่ทำต้องรับโทษ',en:'required'},
+ {c:'core',ar:'سنة',ro:'Sunnah / Sunnat',th:'ซุนนะฮ์ = ส่งเสริม ไม่ทำก็ไม่บาป',en:'recommended · voluntary'},
+ {c:'core',ar:'مستحب',ro:'Mustahabb',th:'มุสตะฮับบ์ = แนะนำให้ทำ',en:'recommended'},
+ {c:'core',ar:'مكروه',ro:'Makruh',th:'มักรูฮ์ = ไม่ควรทำ ยังไม่ถึงกับผิด',en:'disliked'},
+ {c:'core',ar:'حرام',ro:'Haram',th:'ฮะรอม = ต้องห้าม ทำแล้วถูกลงโทษ',en:'forbidden'},
+ {c:'core',ar:'حلال',ro:'Halal',th:'ฮาลาล = อนุมัติให้บริโภคได้',en:'permitted'},
+ {c:'core',ar:'نية',ro:'Niyyah',th:'เหนียต = ตั้งเจตนา (ในใจก็ได้)',en:'intention'},
+ {c:'core',ar:'دعاء',ro:'Dua',th:'ดุอาอ์ = การขอพร',en:'supplication'},
+ {c:'core',ar:'تقوى',ro:'Taqwa',th:'ตักวา = ความยำเกรงต่ออัลลอฮ์',en:'God-consciousness'},
+ {c:'core',ar:'توحيد',ro:'Tawhid',th:'เตาฮีด = ความเป็นหนึ่งเดียวของพระเจ้า',en:'oneness of God'},
+ {c:'core',ar:'شرك',ro:'Shirk',th:'ชิริก = การตั้งภาคี',en:'associating partners with God'},
+ {c:'core',ar:'كافر',ro:'Kafir',th:'กาฟิร = ผู้ปฏิเสธ ผู้เนรคุณ',en:'one who denies'},
+ {c:'core',ar:'أمة',ro:'Ummah',th:'อุมมะฮ์ = ประชาคมมุสลิม',en:'the Muslim community'},
+ {c:'core',ar:'صحابة',ro:'Sahabah',th:'เศาะฮาบะฮ์ = สาวกร่วมสมัยท่านนบี',en:'the companions of the Prophet'},
+ {c:'core',ar:'علماء',ro:'Ulama',th:'อุละมาอ์ = นักปราชญ์ผู้รู้',en:'Muslim scholars'},
+ {c:'core',ar:'شهادة',ro:'Shahada',th:'ชะฮาดะฮ์ = การปฏิญาณตน (เสา 1)',en:'Declaration of Faith (Pillar 1)'},
+ {c:'core',ar:'ختان',ro:'Khitan / Khatna',th:'คีตาน · คอตัน = การขลิบ (คำอาหรับ)',en:'circumcision (the Arabic term)'},
+ {c:'core',ar:'—',ro:'Sunat',th:'สุหนัต = การขลิบ ⚠️ คำมลายู ไม่ใช่อาหรับ',en:'circumcision ⚠️ a Malay word, not Arabic'},
+
+ {c:'salah',ar:'صلاة',ro:'Salah / Salat',th:'ละหมาด (คำอาหรับ) — เสา 2',en:'prayer (Arabic) — Pillar 2'},
+ {c:'salah',ar:'—',ro:'Namaz',th:'นมาซ ⚠️ คำเปอร์เซีย เพี้ยนเป็น "ละหมาด"',en:'⚠️ Persian, the source of the Thai word'},
+ {c:'salah',ar:'قبلة',ro:'Qibla',th:'กิบลัต = ทิศที่หันไปละหมาด',en:'the direction of prayer'},
+ {c:'salah',ar:'الكعبة',ro:'Kaaba',th:'กะอ์บะฮ์ = อาคารทรงสี่เหลี่ยมคลุมผ้าดำ',en:'the cube shrine in Mecca'},
+ {c:'salah',ar:'بيت الله',ro:'Baitullah',th:'บัยตุลลอฮ์ = "บ้านขององค์อัลลอฮ์"',en:'"the House of God"'},
+ {c:'salah',ar:'المسجد الحرام',ro:'Al-Masjid al-Haram',th:'มัสยิดอัล-ฮะรอม = มัสยิดที่กะอ์บะฮ์ตั้งอยู่',en:'the mosque housing the Kaaba'},
+ {c:'salah',ar:'طواف',ro:'Tawaf',th:'ฏอวาฟ = การเดินวนรอบกะอ์บะฮ์',en:'circumambulation'},
+ {c:'salah',ar:'مطاف',ro:'Mataf',th:'มะตาฟ = ลานเดินวนรอบกะอ์บะฮ์',en:'the circumambulation plaza'},
+ {c:'salah',ar:'وضوء',ro:'Wudu',th:'วุฎูอ์ = น้ำละหมาด (หน้า มือถึงศอก ศีรษะ เท้า)',en:'ablution before prayer'},
+ {c:'salah',ar:'عورة',ro:'Awrah',th:'เอาเราะฮ์ = ส่วนที่ต้องปกปิด',en:'the parts that must be covered'},
+ {c:'salah',ar:'حيض',ro:'Haidh / Hayd',th:'หัยฎ์ = มีประจำเดือน',en:'menstruation'},
+ {c:'salah',ar:'نفاس',ro:'Nifas',th:'นิฟาส = เลือดหลังคลอดบุตร',en:'post-natal bleeding'},
+ {c:'salah',ar:'ولادة',ro:'Wiladah',th:'วิลาดะฮ์ = การคลอดบุตร',en:'childbirth'},
+ {c:'salah',ar:'ركعة',ro:"Rak'ah",th:'ร็อกอะฮ์ = หน่วยย่อยหรือรอบของการละหมาด',en:'a unit of prayer'},
+ {c:'salah',ar:'تكبير',ro:'Takbir',th:'ตักบีร = ยกมือกล่าวสรรเสริญอัลลอฮ์',en:'saying Allahu Akbar'},
+ {c:'salah',ar:'قيام',ro:'Qiyam',th:'กิยาม = ท่ายืนตรง',en:'standing'},
+ {c:'salah',ar:'ركوع',ro:'Ruku',th:'รูกูอ = ก้มโค้ง มือจับเข่า',en:'bowing'},
+ {c:'salah',ar:'سجود',ro:'Sujud',th:'สุญูด = ก้มกราบ หน้าผากจดพื้น',en:'prostration'},
+ {c:'salah',ar:'تشهد',ro:'Tashahhud',th:'ตะชะฮุด = นั่งอ่านบทขอพร',en:'the sitting recitation'},
+ {c:'salah',ar:'سلام',ro:'Salam',th:'สลาม = คำกล่าวปิดท้ายละหมาด',en:'the closing greeting'},
+ {c:'salah',ar:'الفاتحة',ro:'Surah al-Fatiha',th:'ซูเราะฮ์อัลฟาติฮะฮ์ = บทที่อ่านตอนยืน',en:'the opening chapter'},
+ {c:'salah',ar:'فرض العين',ro:'Fard al-Ayn',th:'ฟัรฎุอัยน์ = หน้าที่ส่วนบุคคล',en:'individual obligation'},
+ {c:'salah',ar:'فرض الكفاية',ro:'Fard Kifaya',th:'ฟัรฎูกิฟายะฮ์ = หน้าที่รายกลุ่ม',en:'communal obligation'},
+ {c:'salah',ar:'جماعة',ro:"Jama'ah",th:'ญะมาอะห์ = ละหมาดรวมหมู่ ตั้งแต่ 2 คนขึ้นไป',en:'congregational prayer'},
+ {c:'salah',ar:'جمعة',ro:"Jumu'ah",th:'ญุมอะฮ์ = ละหมาดวันศุกร์ ชายเท่านั้น แทนซุฮริ',en:'Friday prayer'},
+ {c:'salah',ar:'جنازة',ro:'Janazah',th:'ญะนาซะฮ์ = ละหมาดคนตาย ยืนอย่างเดียว',en:'funeral prayer'},
+ {c:'salah',ar:'تراويح',ro:'Tarawih',th:'ตะรอเวียะห์ = ละหมาดกลางคืนรอมฎอน เป็นซุนนะฮ์',en:'the Ramadan night prayer'},
+ {c:'salah',ar:'فجر',ro:'Fajr',th:'ศุบฮิ = ย่ำรุ่ง 2 ร็อกอะฮ์',en:'dawn, 2 rak-ah'},
+ {c:'salah',ar:'ظهر',ro:'Zuhr',th:'ซุฮริ = ตะวันคล้อย 4 ร็อกอะฮ์',en:'past midday, 4 rak-ah'},
+ {c:'salah',ar:'عصر',ro:'Asr',th:'อัศริ = ยามเย็น 4 ร็อกอะฮ์',en:'afternoon, 4 rak-ah'},
+ {c:'salah',ar:'مغرب',ro:'Maghrib',th:'มัฆริบ = ดวงอาทิตย์ตก 3 ร็อกอะฮ์',en:'sunset, 3 rak-ah'},
+ {c:'salah',ar:'عشاء',ro:'Isha',th:'อิชาอ์ = ยามค่ำคืน 4 ร็อกอะฮ์',en:'night, 4 rak-ah'},
+ {c:'salah',ar:'زوال',ro:'Zawal',th:'ซาวัล = เที่ยงวัน ห้ามละหมาด ยกเว้นวันศุกร์',en:'midday — prayer forbidden, except Friday'},
+ {c:'salah',ar:'إمام',ro:'Imam',th:'อิหม่าม = ผู้นำละหมาด',en:'the prayer leader'},
+ {c:'salah',ar:'خطيب',ro:'Khatib',th:'คอเต็บ = ผู้กล่าวเทศนาวันศุกร์',en:'the Friday preacher'},
+ {c:'salah',ar:'خطبة',ro:'Khutbah',th:'คุฎบะฮ์ = บทเทศนาธรรม',en:'the sermon'},
+ {c:'salah',ar:'ميت',ro:'Mayyit',th:'มัยยิต = ศพ ผู้ตาย',en:'the deceased'},
+ {c:'salah',ar:'قبر',ro:'Qubur',th:'กุโบร์ = สุสาน',en:'grave · cemetery'},
+
+ {c:'zakat',ar:'زكاة',ro:'Zakat',th:'ซะกาต = บริจาคภาคบังคับ เสา 3',en:'obligatory almsgiving — Pillar 3'},
+ {c:'zakat',ar:'زكاة الفطر',ro:'Zakat al-Fitr',th:'ซะกาตฟิตเราะห์ = ทานอาหาร จ่ายท้ายรอมฎอน',en:'food alms at the end of Ramadan'},
+ {c:'zakat',ar:'زكاة المال',ro:'Zakat al-Mal',th:'ซะกาตมาล = ทานทรัพย์สิน จ่ายเมื่อครบรอบปี',en:'wealth alms, paid yearly'},
+ {c:'zakat',ar:'صدقة',ro:'Sadaqah',th:'เศาะดะเกาะฮ์ = ทานสมัครใจ ⚠️ ไม่ใช่เสาหลัก',en:'voluntary charity ⚠️ not a Pillar'},
+ {c:'zakat',ar:'وقف',ro:'Waqf',th:'วะกัฟ = ทานเพื่อสาธารณประโยชน์ ⚠️ ไม่ใช่เสาหลัก',en:'endowment ⚠️ not a Pillar'},
+ {c:'zakat',ar:'نصاب',ro:'Nisab',th:'พิกัดขั้นต่ำ = ทองคำ 85 กรัม อัตรา 2.5%',en:'the threshold — 85 g of gold, rate 2.5%'},
+ {c:'zakat',ar:'بيت المال',ro:'Bayt al-mal',th:'บัยตุลมาล = กองคลังของชุมชนมุสลิม',en:'the Muslim public treasury'},
+ {c:'zakat',ar:'مد',ro:'Mud',th:'มุด = หน่วยตวง ประมาณ 6 ขีด',en:'a dry measure, about 600 g'},
+
+ {c:'sawm',ar:'صوم',ro:'Sawm / Siyam',th:'ถือศีลอด (คำอาหรับ) — เสา 4',en:'fasting (Arabic) — Pillar 4'},
+ {c:'sawm',ar:'—',ro:'Rozah',th:'โรซาห์ ⚠️ คำเปอร์เซีย',en:'⚠️ the Persian word for fasting'},
+ {c:'sawm',ar:'—',ro:'Puasa',th:'ปอซอ ⚠️ คำมลายูปัตตานี',en:'⚠️ the Pattani Malay word for fasting'},
+ {c:'sawm',ar:'رمضان',ro:'Ramadan',th:'รอมฎอน = เดือนที่ 9 เดือนถือศีลอด',en:'the 9th month — the month of fasting'},
+ {c:'sawm',ar:'هلال',ro:'Hilal',th:'ฮีลาล = จันทร์เสี้ยวแรก ใช้ตัดสิน 29 หรือ 30 วัน',en:'the first crescent — decides 29 or 30 days'},
+ {c:'sawm',ar:'سحور',ro:'Suhoor',th:'ซูโฮร์ = มื้อก่อนรุ่งสาง ก่อนเริ่มถือศีลอด',en:'the pre-dawn meal'},
+ {c:'sawm',ar:'إفطار',ro:'Iftar',th:'อิฟตาร์ = มื้อค่ำหลังละศีลอด เริ่มด้วยอินทผลัม',en:'the meal that breaks the fast'},
+ {c:'sawm',ar:'قضاء',ro:'Qada',th:'กอฎออ์ = ถือศีลอดชดใช้เท่าวันที่ขาด',en:'making up missed fasts'},
+ {c:'sawm',ar:'فدية',ro:'Fidyah',th:'ฟิดยะฮ์ = ค่าปรับ ให้อาหารคนจน 1 คนต่อ 1 วัน',en:'compensation — feeding one poor person per missed day'},
+ {c:'sawm',ar:'كفارة',ro:'Kaffarah',th:'กัฟฟาเราะฮ์ = ค่าไถ่โทษ ปล่อยทาส แล้ว 2 เดือน แล้ว 60 คน',en:'expiation — a slave, then two months, then sixty people'},
+ {c:'sawm',ar:'نذر',ro:'Nazar',th:'นะซัร = ศีลอดตามที่บนบานไว้',en:'a vowed fast'},
+ {c:'sawm',ar:'تشريق',ro:'Tashriq',th:'ตัชรีก = วันที่ 11 ถึง 13 ซุลฮิจญะฮ์ ห้ามถือศีลอด',en:'11-13 Dhul-Hijjah — fasting forbidden'},
+
+ {c:'cal',ar:'محرم',ro:'Muharram',th:'มุฮัรรอม = เดือนที่ 1 วันอาชูรอคือวันที่ 10',en:'month 1 — Ashura falls on the 10th'},
+ {c:'cal',ar:'رجب',ro:'Rajab',th:'รอญับ = เดือนที่ 7 วันมับอัซคือวันที่ 27',en:'month 7'},
+ {c:'cal',ar:'شعبان',ro:"Sha'ban",th:'ชะอ์บาน = เดือนที่ 8 ก่อนรอมฎอน',en:'month 8, just before Ramadan'},
+ {c:'cal',ar:'شوال',ro:'Shawwal',th:'เชาวาล = เดือนที่ 10 วันที่ 1 คือวันอีดเล็ก',en:'month 10 — the 1st is Eid al-Fitr'},
+ {c:'cal',ar:'ذو الحجة',ro:'Dhul-Hijjah',th:'ซุลฮิจญะฮ์ = เดือนที่ 12 ฮัจญ์ อารอฟะฮ์ อีดใหญ่',en:'month 12 — Hajj, Arafah, Eid al-Adha'},
+ {c:'cal',ar:'عيد الفطر',ro:'Eid al-Fitr',th:'อีดิ้ลฟิตริ = วันอีดเล็ก 1 เชาวาล',en:'the festival ending Ramadan'},
+ {c:'cal',ar:'عيد الأضحى',ro:'Eid al-Adha',th:'อีดิ้ลอัฎฮา = วันอีดใหญ่ 10 ซุลฮิจญะฮ์',en:'the festival of sacrifice'},
+ {c:'cal',ar:'هجرة',ro:'Hijrah',th:'ฮิจเราะฮ์ = การอพยพ ปีที่ 1 ของปฏิทิน',en:'the migration — year 1 of the calendar'},
+ {c:'cal',ar:'حج',ro:'Hajj',th:'ฮัจญ์ = เสา 5 ⚠️ ยังไม่มีสไลด์จากอาจารย์',en:'Pillar 5 ⚠️ no slide deck released yet'}
+];
+const GCATS=[
+ {k:'all',  th:'ทั้งหมด',  en:'All'},
+ {k:'core', th:'กรอบใหญ่', en:'Core'},
+ {k:'salah',th:'ละหมาด',   en:'Salah'},
+ {k:'zakat',th:'ซะกาต',    en:'Zakat'},
+ {k:'sawm', th:'ถือศีลอด', en:'Sawm'},
+ {k:'cal',  th:'ปฏิทิน',   en:'Calendar'}
+];
+let gCat='all', fcIdx=0;
+
+/* ================= ตัวช่วยสร้าง UI ================= */
+function chipBtn(label, cls){
+  const b=document.createElement('button');
+  b.className='btn ghost small'+(cls?' '+cls:'');
+  b.textContent=label; b.style.margin='4px';
+  return b;
+}
+function setFb(el,msg,ok){ el.textContent=msg; el.className='fb '+(ok?'ok':'bad'); }
+
+/* ---- แท็บ 1 ---- */
+function renderCats(){
+  const row=document.getElementById('catRow'), fb=document.getElementById('catFb');
+  row.innerHTML=''; fb.textContent=''; fb.className='fb';
+  CATS.forEach(c=>{
+    const b=chipBtn(T(c));
+    b.textContent = LANG==='th'? c.th : c.en;
+    b.onclick=()=>{ setFb(fb, T(c.why), c.ok); };
+    row.appendChild(b);
+  });
+}
+function renderPillars(){
+  const tb=document.getElementById('pillarBody'); tb.innerHTML='';
+  PILLARS.forEach((p,i)=>{
+    const d = LANG==='th'? p.th : p.en;
+    tb.insertAdjacentHTML('beforeend',
+      '<tr><td>'+(i+1)+'</td><td><b>'+p.ar+'</b><br><span class="sub">'+d[0]+'</span></td><td>'+d[1]+'</td></tr>');
+  });
+}
+function renderSha(){
+  const row=document.getElementById('shaRow'), fb=document.getElementById('shaFb');
+  row.innerHTML=''; fb.textContent=''; fb.className='fb';
+  let got=0;
+  SHA.forEach(s=>{
+    const b=chipBtn(LANG==='th'? s.th : s.en);
+    b.onclick=()=>{
+      if(b.disabled) return;
+      if(s.ok){ b.classList.add('green'); b.disabled=true; got++;
+        setFb(fb, got===3 ? (LANG==='th'?'✓ ครบทั้ง 3 แล้ว — วาจา ใจ กาย':'✓ All three: speech, heart, body')
+                          : (LANG==='th'?'✓ ถูก เหลืออีก '+(3-got):'✓ Correct — '+(3-got)+' to go'), true);
+      } else { b.classList.add('red');
+        setFb(fb, LANG==='th'?'✗ อันนี้ไม่ใช่องค์ประกอบของชะฮาดะฮ์':'✗ Not a component of the Shahada', false);
+      }
+    };
+    row.appendChild(b);
+  });
+}
+
+/* ---- แท็บ 2 ---- */
+function renderSalah(){
+  const tb=document.getElementById('salahBody'); tb.innerHTML='';
+  SALAH.forEach((s,i)=>{
+    tb.insertAdjacentHTML('beforeend',
+      '<tr><td><b>'+s.n+'</b></td><td>'+(LANG==='th'?s.th:s.en)+
+      '</td><td><input class="ans-in" style="width:70px" inputmode="numeric" id="rk'+i+'"></td></tr>');
+  });
+  document.getElementById('salahFb').textContent='';
+  document.getElementById('salahHintBox').style.display='none';
+}
+document.getElementById('salahCheck').addEventListener('click',()=>{
+  let ok=0, blank=0;
+  SALAH.forEach((s,i)=>{
+    const el=document.getElementById('rk'+i); if(!el) return;
+    const v=el.value.trim();
+    if(!v){ blank++; el.style.borderColor=''; return; }
+    if(+v===s.r){ ok++; el.style.borderColor='#16a34a'; } else { el.style.borderColor='#dc2626'; }
+  });
+  const fb=document.getElementById('salahFb');
+  if(blank) setFb(fb, LANG==='th'?'กรอกให้ครบทั้ง 5 ช่องก่อน':'Fill in all five boxes first', false);
+  else if(ok===5) setFb(fb, LANG==='th'?'✓ ถูกหมด — 2 4 4 3 4 รวม 17 ร็อกอะฮ์':'✓ All correct — 2 4 4 3 4, seventeen in total', true);
+  else setFb(fb, (LANG==='th'?'ถูก ':'Correct ')+ok+'/5', false);
+});
+document.getElementById('salahHint').addEventListener('click',()=>{
+  const h=document.getElementById('salahHintBox');
+  h.style.display = h.style.display==='none' ? 'block' : 'none';
+});
+function renderForbid(){
+  const row=document.getElementById('forbidRow'), fb=document.getElementById('forbidFb');
+  row.innerHTML=''; fb.textContent=''; fb.className='fb';
+  let got=0;
+  FORBID.forEach(f=>{
+    const b=chipBtn(LANG==='th'? f.th : f.en);
+    b.onclick=()=>{
+      if(b.disabled) return;
+      if(f.ok){ b.classList.add('green'); b.disabled=true; got++;
+        setFb(fb, got===3 ? (LANG==='th'?'✓ ครบ 3 ช่วง — ขึ้น เที่ยง ตก ช่วงละ 15–30 นาที':'✓ All three — sunrise, midday, sunset, each 15–30 minutes')
+                          : (LANG==='th'?'✓ ถูก เหลืออีก '+(3-got):'✓ Correct — '+(3-got)+' to go'), true);
+      } else { b.classList.add('red');
+        setFb(fb, LANG==='th'?'✗ อันนี้ละหมาดได้ตามปกติ':'✗ Prayer is allowed at this time', false); }
+    };
+    row.appendChild(b);
+  });
+}
+
+/* ---- แท็บ 3 ---- */
+function calcZakat(){
+  const gp=+document.getElementById('goldPrice').value;
+  const w=+document.getElementById('wealth').value;
+  document.getElementById('gpVal').textContent=gp.toLocaleString();
+  document.getElementById('wVal').textContent=w.toLocaleString();
+  const nisab=85*gp;
+  const out=document.getElementById('zakOut'), fb=document.getElementById('zakFb');
+  out.textContent=(LANG==='th'?'พิกัด = ':'Nisab = ')+nisab.toLocaleString()+(LANG==='th'?' บาท':' THB');
+  if(w>=nisab){
+    const z=Math.round(w*0.025);
+    setFb(fb,(LANG==='th'?'ถึงพิกัดแล้ว ต้องจ่ายซะกาต 2.5% = ':'Nisab reached — Zakat due at 2.5% = ')+z.toLocaleString()+(LANG==='th'?' บาท':' THB'),true);
+  } else {
+    setFb(fb,(LANG==='th'?'ยังไม่ถึงพิกัด ไม่ต้องจ่ายซะกาตมาล (ขาดอีก ':'Below nisab — no Zakat al-Maal due (short by ')
+      +(nisab-w).toLocaleString()+(LANG==='th'?' บาท)':' THB)'),false);
+  }
+}
+['goldPrice','wealth'].forEach(id=>document.getElementById(id).addEventListener('input',calcZakat));
+function renderCharity(){
+  const row=document.getElementById('charityRow'), fb=document.getElementById('charityFb');
+  row.innerHTML=''; fb.textContent=''; fb.className='fb';
+  CHARITY.forEach(c=>{
+    const d = LANG==='th'? c.th : c.en;
+    const b=chipBtn(d[0]);
+    b.onclick=()=>setFb(fb, d[1]+' — '+(c.ok
+      ? (LANG==='th'?'ใช่ นี่คือเสาหลักที่ 3':'Yes — this is the third Pillar')
+      : (LANG==='th'?'ไม่ใช่เสาหลัก':'Not a Pillar')), c.ok);
+    row.appendChild(b);
+  });
+}
+function renderRecip(){
+  const tb=document.getElementById('recipBody'); tb.innerHTML='';
+  RECIP.forEach((r,i)=>tb.insertAdjacentHTML('beforeend',
+    '<tr><td>'+(i+1)+'</td><td>'+r.th+'</td><td>'+r.en+'</td></tr>'));
+}
+
+/* ---- แท็บ 4 ---- */
+let fastPicked=new Set();
+function renderFast(){
+  const row=document.getElementById('fastRow'); row.innerHTML='';
+  document.getElementById('fastFb').textContent='';
+  FASTITEMS.forEach((f,i)=>{
+    const b=chipBtn(LANG==='th'? f.th : f.en);
+    if(fastPicked.has(i)) b.classList.add('green');
+    b.onclick=()=>{
+      if(fastPicked.has(i)){ fastPicked.delete(i); b.classList.remove('green'); }
+      else { fastPicked.add(i); b.classList.add('green'); }
+    };
+    row.appendChild(b);
+  });
+}
+document.getElementById('fastCheck').addEventListener('click',()=>{
+  let miss=0, wrong=0;
+  FASTITEMS.forEach((f,i)=>{ if(f.ok && !fastPicked.has(i)) miss++; if(!f.ok && fastPicked.has(i)) wrong++; });
+  const fb=document.getElementById('fastFb');
+  if(!miss && !wrong) setFb(fb, LANG==='th'?'✓ ถูกหมด — 5 ข้อที่ทำให้เสียศีลอดล้วนมีคำว่า “เจตนา” หรือเป็นเรื่องร่างกายบังคับ'
+                                          :'✓ All correct — the five that break the fast are intentional acts or involuntary bodily states', true);
+  else setFb(fb, (LANG==='th'?'ยังไม่ครบ — ตกไป ':'Not yet — missed ')+miss+(LANG==='th'?' ข้อ · เลือกเกิน ':' · over-selected ')+wrong, false);
+});
+document.getElementById('fastReset').addEventListener('click',()=>{ fastPicked.clear(); renderFast(); });
+function renderMakeup(){
+  const row=document.getElementById('makeupRow'), fb=document.getElementById('makeupFb');
+  row.innerHTML=''; fb.textContent=''; fb.className='fb';
+  MAKEUP.forEach(m=>{
+    const d = LANG==='th'? m.th : m.en;
+    const b=chipBtn(d[0]);
+    b.onclick=()=>{ fb.textContent=d[1]; fb.className='fb ok'; };
+    row.appendChild(b);
+  });
+}
+
+/* ---- แท็บ 5 ควิซ ---- */
+let qi=0, qScore=0, qDone=false;
+function renderQuiz(){
+  const q=QUIZ[qi];
+  document.getElementById('qProgress').textContent =
+    (LANG==='th'?'ข้อ ':'Question ')+(qi+1)+'/'+QUIZ.length+
+    (LANG==='th'?' · ถูก ':' · score ')+qScore;
+  document.getElementById('qText').textContent=T(q.q);
+  document.getElementById('qFb').textContent='';
+  document.getElementById('qFb').className='fb';
+  document.getElementById('qWhy').classList.remove('show');
+  document.getElementById('qWhy').innerHTML='<div class="st">'+T(q.w)+'</div>';
+  document.getElementById('qHintBox').style.display='none';
+  document.getElementById('qHintBox').textContent=T(q.h);
+  const cw=document.getElementById('qChoices'); cw.innerHTML='';
+  qDone=false;
+  q.c.forEach((c,i)=>{
+    const b=document.createElement('button');
+    b.className='btn ghost'; b.style.margin='4px 0'; b.style.textAlign='left';
+    b.textContent=T(c);
+    b.onclick=()=>{
+      if(qDone) return; qDone=true;
+      const fb=document.getElementById('qFb');
+      if(i===q.a){ b.classList.add('green'); qScore++; setFb(fb, LANG==='th'?'✓ ถูกต้อง':'✓ Correct', true); }
+      else { b.classList.add('red'); setFb(fb, (LANG==='th'?'✗ คำตอบคือ ':'✗ The answer is ')+T(q.c[q.a]), false); }
+      document.getElementById('qWhy').classList.add('show');
+      setTimeout(()=>{ qi=(qi+1)%QUIZ.length; renderQuiz(); }, 3200);
+    };
+    cw.appendChild(b);
+  });
+}
+document.getElementById('qHint').addEventListener('click',()=>{
+  const h=document.getElementById('qHintBox');
+  h.style.display = h.style.display==='none' ? 'block' : 'none';
+});
+document.getElementById('qSkip').addEventListener('click',()=>{ qi=(qi+1)%QUIZ.length; renderQuiz(); });
+
+/* ---- แท็บ 6 ศัพท์อาหรับ ---- */
+function renderGloss(){
+  const cw=document.getElementById('gCats'); cw.innerHTML='';
+  GCATS.forEach(c=>{
+    const b=chipBtn(LANG==='th'?c.th:c.en);
+    if(c.k===gCat) b.classList.remove('ghost');
+    b.onclick=()=>{ gCat=c.k; renderGloss(); };
+    cw.appendChild(b);
+  });
+  const q=(document.getElementById('gSearch').value||'').trim().toLowerCase();
+  const rows=GLOSS.filter(g=>{
+    if(gCat!=='all' && g.c!==gCat) return false;
+    if(!q) return true;
+    return (g.ro+' '+g.th+' '+g.en+' '+g.ar).toLowerCase().includes(q);
+  });
+  const tb=document.getElementById('gBody'); tb.innerHTML='';
+  rows.forEach(g=>{
+    const tr=document.createElement('tr');
+    const a=document.createElement('td');
+    a.style.fontSize='1.25em'; a.dir='rtl'; a.textContent=g.ar;
+    const r=document.createElement('td'); r.innerHTML='<b></b>';
+    r.firstChild.textContent=g.ro;
+    const m=document.createElement('td'); m.textContent = LANG==='th'? g.th : g.en;
+    tr.append(a,r,m); tb.appendChild(tr);
+  });
+  document.getElementById('gCount').textContent =
+    (LANG==='th'?'แสดง ':'Showing ')+rows.length+(LANG==='th'?' คำ จากทั้งหมด ':' of ')+GLOSS.length;
+}
+document.getElementById('gSearch').addEventListener('input',renderGloss);
+
+/* ---- ฝึกทายคำ: เห็นคำโรมัน+อาหรับ แล้วนึกความหมายก่อนเปิด ---- */
+function renderFc(){
+  const g=GLOSS[fcIdx];
+  document.getElementById('fcTerm').textContent = g.ro + (g.ar!=='—' ? '   '+g.ar : '');
+  const a=document.getElementById('fcAns'); a.textContent=''; a.className='fb';
+}
+document.getElementById('fcShow').addEventListener('click',()=>{
+  const g=GLOSS[fcIdx], a=document.getElementById('fcAns');
+  a.textContent = LANG==='th'? g.th : g.en; a.className='fb ok';
+});
+document.getElementById('fcNext').addEventListener('click',()=>{
+  fcIdx=Math.floor(Math.random()*GLOSS.length); renderFc();
+});
+
+/* ================= วาดใหม่ทั้งหมดเมื่อสลับภาษา ================= */
+function renderAll(){
+  renderCats(); renderPillars(); renderSha();
+  renderSalah(); renderForbid();
+  calcZakat(); renderCharity(); renderRecip();
+  renderFast(); renderMakeup();
+  renderQuiz(); renderGloss(); renderFc();
+}
+applyLang();
+openTab('t1');
+</script>
+<!--KIT-UI v2.8 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<script>
+/* =============================================================================
+   _kit/ui-controls.js  —  KIT UI  v1.0
+   แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
+     🌙/☀️  โหมดมืด / สว่าง   (จำค่าไว้ใน localStorage)
+     A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
+     ✏️  ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
+     🧮  เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
+
+   ── วิธีใช้ ────────────────────────────────────────────────────────────────
+   ห้ามแก้โค้ดนี้ในไฟล์ widget!  แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
+       pwsh -File _kit/apply-ui.ps1
+   สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
+   (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
+
+   !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
+      เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
+
+   ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
+   ใส่แอตทริบิวต์ที่ tag body:  data-tools="pen,calc"  = บังคับเปิด
+                              data-tools="none"      = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
+   ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
+              หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
+   ============================================================================= */
+(function(){
+if(window.__KITUI__) return; window.__KITUI__='2.8';   /* 2.8 = เพิ่มปุ่ม 🏠 กลับหน้าหลัก */
+
+/* ---------- helper ---------- */
+const D=document, R=D.documentElement;
+const get=k=>{try{return localStorage.getItem('kitui-'+k)}catch(e){return null}};
+const set=(k,v)=>{try{localStorage.setItem('kitui-'+k,v)}catch(e){}};
+const el=(t,c,h)=>{const e=D.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
+
+/* =============================================================================
+   1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
+   ============================================================================= */
+const CSS=`
+/* ===== DARK TOKENS (คู่กับ _kit/design-tokens.css) ===== */
+:root[data-theme="dark"]{
+  --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
+  --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
+  --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
+  --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
+  --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
+}
+:root[data-theme="dark"] body{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f172a}
+:root[data-theme="dark"] body[data-subject="physics"]{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f1220}
+:root[data-theme="dark"] body[data-subject="bio"]{--accent:#4ade80;--accent-head:#bbf7d0;--accent-ink:#86efac;--accent-soft:#0f2a1a;--accent-bd:#256b41;--accent-chip:#14532d;--accent-ghost:#15803d;--bg:#0d1912}
+:root[data-theme="dark"] body[data-subject="chem"]{--accent:#fb923c;--accent-head:#fed7aa;--accent-ink:#fdba74;--accent-soft:#2b1a0c;--accent-bd:#8a3d12;--accent-chip:#6d2c10;--accent-ghost:#c2410c;--bg:#1a130c}
+:root[data-theme="dark"] body[data-subject="christ"]{--accent:#a78bfa;--accent-head:#ddd6fe;--accent-ink:#c4b5fd;--accent-soft:#241a3d;--accent-bd:#5b21b6;--accent-chip:#4c1d95;--accent-ghost:#6d28d9;--bg:#16121f}
+:root[data-theme="dark"] body[data-subject="islam"]{--accent:#2dd4bf;--accent-head:#99f6e4;--accent-ink:#5eead4;--accent-soft:#0d2b28;--accent-bd:#12615a;--accent-chip:#134e4a;--accent-ghost:#0f766e;--bg:#0c1917}
+:root[data-theme="dark"] body[data-subject="history"]{--accent:#fbbf24;--accent-head:#fde68a;--accent-ink:#fcd34d;--accent-soft:#2a1f0a;--accent-bd:#8a4b0c;--accent-chip:#6d3a0a;--accent-ghost:#b45309;--bg:#191509}
+:root[data-theme="dark"] body[data-subject="math"]{--accent:#38bdf8;--accent-head:#bae6fd;--accent-ink:#7dd3fc;--accent-soft:#0c2434;--accent-bd:#0b5a80;--accent-chip:#0c4a6e;--accent-ghost:#0369a1;--bg:#0b1620}
+:root[data-theme="dark"] body[data-subject="eng"]{--accent:#f472b6;--accent-head:#fbcfe8;--accent-ink:#f9a8d4;--accent-soft:#2e1122;--accent-bd:#8d1748;--accent-chip:#731839;--accent-ghost:#be185d;--bg:#1c0f16}
+:root[data-theme="dark"] body[data-subject="thai"]{--accent:#f87171;--accent-head:#fecaca;--accent-ink:#fca5a5;--accent-soft:#2d1414;--accent-bd:#8d2020;--accent-chip:#7f1d1d;--accent-ghost:#b91c1c;--bg:#1a0f0f}
+:root[data-theme="dark"] img,:root[data-theme="dark"] .svg-box{filter:brightness(.92)}
+/* ช่องกรอก/ดรอปดาวน์ที่ widget เก่ากำหนดพื้นขาวตายตัวไว้ */
+:root[data-theme="dark"] select,:root[data-theme="dark"] textarea,
+:root[data-theme="dark"] input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=color])
+{background-color:var(--soft);color:var(--ink);border-color:var(--line)}
+
+/* ===== แถบเครื่องมือลอย ===== */
+#kitui-bar{position:fixed;right:10px;bottom:10px;z-index:99990;display:flex;gap:6px;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
+#kitui-bar button{border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;
+  font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
+  align-items:center;justify-content:center;font-weight:700}
+#kitui-bar button:hover{background:var(--soft)}
+#kitui-bar button:active{transform:scale(.93)}
+#kitui-bar button.on{background:var(--accent);color:#fff}
+#kitui-bar .kitui-sep{width:1px;height:22px;background:var(--line);flex:0 0 1px}
+#kitui-bar .kitui-fs{font-size:11px;color:var(--muted);min-width:34px;text-align:center;font-weight:700}
+#kitui-bar.hidden > *:not(#kitui-grip):not(#kitui-home){display:none}
+#kitui-grip{font-size:17px}
+
+/* ===== แผงลอย (ที่ทด / เครื่องคิดเลข) ===== */
+.kitui-sheet{position:fixed;left:0;right:0;bottom:0;z-index:99991;background:var(--card);
+  border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
+  display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
+  height:52vh;max-height:92vh;min-height:180px}
+.kitui-sheet.open{display:flex}
+.kitui-sheet.full{height:100vh;border-radius:0}
+.kitui-head{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--line);
+  flex-wrap:wrap;touch-action:none;cursor:ns-resize}
+.kitui-head b{font-size:.9rem;color:var(--accent-ink);margin-right:2px;white-space:nowrap}
+.kitui-head button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;
+  padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
+.kitui-head button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.kitui-head .kitui-spacer{flex:1}
+.kitui-sw{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;min-height:0}
+.kitui-sw.on{border-color:var(--ink);transform:scale(1.12)}
+.kitui-padwrap{flex:1;position:relative;overflow:hidden;background:var(--soft)}
+.kitui-padwrap canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+:root[data-theme="dark"] .kitui-padwrap{background:#0c1220}
+
+/* ===== เครื่องคิดเลข ===== */
+#kitui-calc{height:auto;max-height:90vh}
+.kitui-disp{padding:8px 12px;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);
+  border-bottom:1px solid var(--line)}
+.kitui-disp .ex{font-size:.95rem;color:var(--muted);min-height:1.3em;word-break:break-all}
+.kitui-disp .rs{font-size:1.6rem;font-weight:700;color:var(--accent-ink);word-break:break-all}
+.kitui-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:7px}
+.kitui-keys button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:9px;
+  font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
+.kitui-keys button:active{transform:scale(.95)}
+.kitui-keys button.fn{font-size:.8rem;color:var(--accent-ink)}
+.kitui-keys button.op{background:var(--accent-soft);color:var(--accent-ink)}
+.kitui-keys button.eq{background:var(--accent);color:#fff;grid-row:span 2}
+.kitui-keys button.del{background:var(--hot-bg);color:var(--hot-ink)}
+.kitui-keys button.w3{grid-column:span 3}
+@media(max-width:420px){.kitui-keys button{font-size:.88rem;min-height:40px}.kitui-keys button.fn{font-size:.72rem}}
+@media(min-width:760px){
+  .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
+  .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
+  #kitui-pad{width:560px}
+}
+@media print{#kitui-bar,.kitui-sheet{display:none!important}}
+`;
+const st=el('style'); st.id='kitui-style'; st.textContent=CSS; D.head.appendChild(st);
+
+/* -----------------------------------------------------------------------------
+   1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
+   widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
+   พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
+   แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
+   เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
+----------------------------------------------------------------------------- */
+/* สีพาสเทลสว่าง -> สีเข้มที่ยังคง "เฉดเดิม" ไว้ (เขียว=ถูก / แดง=ผิด ต้องยังแยกออก)
+   ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
+function darken(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
+  /* ⚠️ ห้ามใช้ saturation ของ HSL ตรง ๆ ตัดสิน: ที่ความสว่างเกือบ 1 ตัวหารจะเล็กมาก
+     ทำให้สีที่แทบเป็นสีขาว (เช่น #fdf8f4) ได้ค่าอิ่มสีสูงลิ่ว แล้วกลายเป็นสีน้ำตาลจัดตอนกดให้เข้ม
+     ให้ดูจาก "ช่วงห่างของแม่สี" (chroma) แทน แล้วแปลงเป็นความอิ่มสีแบบไล่ระดับ */
+  const s = Math.min(.45, Math.max(.08, d*4));
+  const l = d<.02 ? .13 : .17;                       /* เทา/ขาวล้วนให้เข้มกว่าสีนิดหน่อย */
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+function darkFix(){
+  const out=[], seen=new Set();
+  const take=r=>{
+    if(!r.style || !r.selectorText) return;
+    if(r.selectorText.indexOf('kitui')>-1) return;               /* ของเราเองใช้ token อยู่แล้ว */
+    const bg=r.style.backgroundColor;
+    if(!bg || bg.indexOf('var(')>-1) return;
+    const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
+    if(!m) return;
+    if(m[4]!==undefined && +m[4]<0.6) return;                    /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
+    const cr=+m[1], cg=+m[2], cb=+m[3];
+    if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return;       /* ไม่สว่างพอ ไม่ต้องยุ่ง */
+    const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
+    const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
+    let css='background-color:'+repl;
+    /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
+    const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
+    out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
+  };
+  /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
+        ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
+  const visit=rules=>{
+    for(let i=0;i<rules.length;i++){
+      const r=rules[i];
+      if(r.selectorText) take(r);
+      if(r.cssRules && r.cssRules.length) visit(r.cssRules);     /* @media / @supports / nesting */
+    }
+  };
+  for(let i=0;i<D.styleSheets.length;i++){
+    let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; }   /* ข้ามชีตข้ามโดเมน */
+    if(rr) visit(rr);
+  }
+  if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
+  return out.length;
+}
+try{ window.__KITUI_DARKFIX__ = (D.body.getAttribute('data-kit-theme')==='off') ? 'locked' : darkFix(); }
+catch(e){ window.__KITUI_DARKFIX__='err:'+e.message; }
+
+/* darkFix ข้างบนซ่อมได้เฉพาะสีที่เขียนตายตัวในไฟล์ CSS
+   แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
+   ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
+   จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
+const rgbOf=c=>{const m=c&&c.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null;};
+const lumOf=v=>v?(0.2126*v[0]+0.7152*v[1]+0.0722*v[2])/255:null;
+/* ตรงข้ามกับ darken(): ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
+   (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
+function lighten(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  if(d<0.04) return 'var(--ink)';                    /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
+  let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
+  const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
+  const s=Math.min(.92,Math.max(.55,s0)), l=.72;
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+const SKIP={CANVAS:1,IMG:1,VIDEO:1,SVG:1,IFRAME:1,PICTURE:1,OBJECT:1};
+const OBS_OPT={childList:true,subtree:true,attributes:true,attributeFilter:['class','style']};
+let patched=[], obs=null;
+function elementFix(){
+  /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
+        ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
+  if(obs) obs.disconnect();
+  try{ elementFixCore(); } finally { if(obs) obs.observe(D.body,OBS_OPT); }
+}
+function elementFixCore(){
+  if(D.body.getAttribute('data-kit-theme')==='off') return;   /* หน้าที่ล็อกธีมไว้ ห้ามไปยุ่งสี */
+  /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
+     ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
+     จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
+  if(R.getAttribute('data-theme')!=='dark'){
+    patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
+    patched=[];
+    return;
+  }
+  /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
+     ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
+  /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
+  const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
+  for(let i=0;i<all.length;i++){
+    const e=all[i];
+    if(e.id&&e.id.indexOf('kitui')===0) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(SKIP[e.tagName]) continue;                      /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
+    const s=getComputedStyle(e);
+    const bg=rgbOf(s.backgroundColor);
+    if(!bg || bg[3]<0.6) continue;                     /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
+    if(lumOf(bg)<0.72) continue;                       /* เข้มพออยู่แล้ว */
+    /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
+    e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
+    const fg=rgbOf(s.color);
+    if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important');  /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
+    patched.push(e);
+  }
+  /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
+     ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
+  const bgCache=new Map();
+  const effBg=n=>{
+    for(let p=n;p;p=p.parentElement){
+      if(bgCache.has(p)) return bgCache.get(p);
+      const b=rgbOf(getComputedStyle(p).backgroundColor);
+      if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
+    }
+    return null;
+  };
+  for(let i=2;i<all.length;i++){
+    const e=all[i];
+    if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(e.style.color) continue;                         /* จัดการไปแล้วในรอบแรก */
+    if(!e.textContent || !e.textContent.trim()) continue;
+    const fg=rgbOf(getComputedStyle(e).color);
+    if(!fg || lumOf(fg)>=0.45) continue;                 /* ตัวอักษรสว่างอยู่แล้ว */
+    const bg=effBg(e);
+    if(!bg || lumOf(bg)>=0.5) continue;                  /* พื้นยังสว่าง อ่านออกอยู่ */
+    e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
+    patched.push(e);
+  }
+}
+let efT=0;
+const scheduleFix=()=>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
+try{
+  obs=new MutationObserver(scheduleFix);
+  obs.observe(D.body,OBS_OPT);
+}catch(e){}
+
+/* =============================================================================
+   2) ธีม + ขนาดตัวอักษร
+   ============================================================================= */
+const FS=[.85,1,1.15,1.3,1.5], FSNAME=['เล็กสุด','เล็ก','ปกติ','ใหญ่','ใหญ่สุด'];
+let fsIdx=parseInt(get('fs')); if(isNaN(fsIdx)||fsIdx<0||fsIdx>4) fsIdx=1;
+let theme=get('theme') || (matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+
+/* หน้าที่ออกแบบธีมมาเองครบแล้ว (เช่น "หนังสือทบทวน" พื้นเข้มทั้งเล่ม) ให้ปิดระบบธีมของ KIT UI
+   ไม่งั้นโทเคน --bg/--ink ของเราจะไปทับสีที่หน้านั้นตั้งไว้ แล้วหน้าเพี้ยน
+   ใส่ที่ tag body:  data-kit-theme="off"   (ปุ่มปรับขนาดตัวอักษรยังใช้ได้ตามปกติ) */
+const themeLock = D.body.getAttribute('data-kit-theme')==='off';
+
+function applyTheme(){
+  if(themeLock) return;
+  R.setAttribute('data-theme',theme);
+  R.style.colorScheme = theme==='dark'?'dark':'light';   /* ให้ select/input เป็นสีเข้มด้วย */
+  const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
+  set('theme',theme);
+  clearTimeout(efT);                                   /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
+  if(typeof elementFix==='function') elementFix();
+  /* ⚠️ ห้ามอ้างถึงตัวแปรของส่วน "ที่ทด" ตรงนี้!
+     applyTheme() ถูกเรียกก่อนที่ `let pad` ในส่วนที่ 4 จะทำงาน → ชน temporal dead zone
+     แล้ว ReferenceError จะทำให้สคริปต์ตายทั้งก้อน (ปุ่มขนาดอักษร/ที่ทด/เครื่องคิดเลขหายหมด)
+     ใช้วิธียิง event แทน ใครสนใจค่อยไปดักฟังเอง */
+  try{ D.dispatchEvent(new CustomEvent('kitui-theme')); }catch(e){}
+}
+function applyFS(){
+  R.style.fontSize=(16*FS[fsIdx])+'px';
+  const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
+  set('fs',fsIdx);
+}
+
+/* =============================================================================
+   3) แถบเครื่องมือ
+   ============================================================================= */
+const subj=(D.body.getAttribute('data-subject')||'').toLowerCase();
+/* หลาย widget ไม่ได้ใส่ data-subject ที่ <body> → เดาจากโฟลเดอร์ที่ไฟล์อยู่ด้วย */
+const inPath=/\/(physics|math|chemist)\//i.test(decodeURIComponent(location.pathname));
+const tAttr=D.body.getAttribute('data-tools');
+const wantTools = tAttr!=null ? tAttr.toLowerCase()
+                : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
+const hasPen  = wantTools.includes('pen');
+const hasCalc = wantTools.includes('calc');
+
+/* ปุ่มกลับหน้าหลัก — โผล่เฉพาะตอนเปิดจากเว็บห้องติว (พาธมี /app/ อยู่)
+   เปิดไฟล์จากเครื่องตรง ๆ จะไม่มีปุ่มนี้ เพราะไม่มีหน้าหลักให้กลับ ลิงก์จะเสียเปล่า ๆ */
+const homeHref = (()=>{
+  try{
+    const p = decodeURIComponent(location.pathname);
+    const i = p.indexOf('/app/');
+    return i < 0 ? null : p.slice(0, i+1) + 'index.html';
+  }catch(e){ return null; }
+})();
+
+const bar=el('div'); bar.id='kitui-bar';
+bar.innerHTML =
+  `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
+  (homeHref ? `<button id="kitui-home" title="กลับหน้าหลัก">🏠</button><span class="kitui-sep"></span>` : '')+
+  (themeLock ? '' : `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button><span class="kitui-sep"></span>`)+
+  `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
+  `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
+  `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
+  (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
+  (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
+D.body.appendChild(bar);
+
+if(!themeLock) D.getElementById('kitui-theme').onclick=()=>{theme=theme==='dark'?'light':'dark';applyTheme();};
+D.getElementById('kitui-fsup').onclick=()=>{if(fsIdx<4){fsIdx++;applyFS();}};
+D.getElementById('kitui-fsdown').onclick=()=>{if(fsIdx>0){fsIdx--;applyFS();}};
+D.getElementById('kitui-grip').onclick=()=>bar.classList.toggle('hidden');
+if(homeHref) D.getElementById('kitui-home').onclick=()=>{ location.href=homeHref; };
+applyTheme(); applyFS();
+
+/* ปิดแผงด้วยปุ่ม Esc */
+D.addEventListener('keydown',e=>{ if(e.key==='Escape') D.querySelectorAll('.kitui-sheet.open').forEach(s=>s.classList.remove('open')); });
+
+/* ลากหัวแผงเพื่อปรับความสูง */
+function makeResizable(sheet){
+  const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
+  head.addEventListener('pointerdown',e=>{
+    if(e.target.closest('button'))return;
+    drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect().height;head.setPointerCapture(e.pointerId);
+  });
+  head.addEventListener('pointermove',e=>{
+    if(!drag)return;
+    const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
+    sheet.classList.remove('full'); sheet.style.height=h+'px';
+    if(sheet.id==='kitui-pad') fitPad();
+  });
+  head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
+}
+
+/* =============================================================================
+   4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ  หลายหน้า  เซฟอัตโนมัติ
+   ============================================================================= */
+let pad,padCv,padCx,pages=[[]],pg=0,undone=[],histo=[];
+let tool='pen',color='#111827',width=2.4,penSeen=0;
+const COLORS=['#111827','#2563eb','#dc2626','#16a34a','#f59e0b'];
+const PADKEY='pad-'+location.pathname.split('/').pop();
+
+function buildPad(){
+  pad=el('div','kitui-sheet'); pad.id='kitui-pad';
+  pad.innerHTML=
+   `<div class="kitui-head">
+      <b>✏️ ที่ทด</b>
+      <button data-t="pen" class="on">🖊️</button>
+      <button data-t="hl">🖍️</button>
+      <button data-t="er">🧽</button>
+      ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
+      <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
+      <span class="kitui-spacer"></span>
+      <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
+      <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
+      <button id="kitui-pgadd">+ หน้า</button>
+      <button id="kitui-clear">ล้างหน้านี้</button>
+      <button id="kitui-full">⛶</button>
+      <button id="kitui-padclose">✕</button>
+    </div>
+    <div class="kitui-padwrap"><canvas></canvas></div>`;
+  D.body.appendChild(pad);
+  padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
+  makeResizable(pad);
+
+  pad.querySelector('.kitui-head').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
+  });
+  D.getElementById('kitui-undo').onclick=()=>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop(); draw(); save(); } };
+  D.getElementById('kitui-redo').onclick=()=>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop(); draw(); save(); } };
+  D.getElementById('kitui-clear').onclick=()=>{ snap(); pages[pg]=[]; draw(); save(); };
+  D.getElementById('kitui-pgadd').onclick=()=>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw(); save(); };
+  D.getElementById('kitui-pgprev').onclick=()=>{ if(pg>0){pg--;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-pgnext').onclick=()=>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-full').onclick=()=>{ pad.classList.toggle('full'); pad.style.height=''; fitPad(); };
+  D.getElementById('kitui-padclose').onclick=()=>pad.classList.remove('open');
+
+  /* ---- วาด ---- */
+  let cur=null;
+  padCv.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='pen') penSeen=Date.now();
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;   /* กันฝ่ามือแตะตอนใช้สไตลัส */
+    const p=pt(e);
+    if(tool==='er'){ snap(); erase(p); return; }
+    snap();
+    cur={c:color,w:width,hl:tool==='hl',pts:[p]};
+    pages[pg].push(cur); draw();
+    try{ padCv.setPointerCapture(e.pointerId); }catch(x){}  /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
+  });
+  padCv.addEventListener('pointermove',e=>{
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;
+    if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
+    if(!cur||!e.buttons)return;
+    /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
+    let evs=[e];
+    if(e.getCoalescedEvents){ const c=e.getCoalescedEvents(); if(c&&c.length) evs=c; }
+    evs.forEach(ev=>cur.pts.push(pt(ev)));
+    draw();
+  });
+  const end=()=>{ if(cur){cur=null;save();} };
+  padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
+  padCv.addEventListener('pointerleave',end);
+
+  addEventListener('resize',()=>{ if(pad.classList.contains('open')) fitPad(); });
+  D.addEventListener('kitui-theme',()=>draw());   /* สลับธีมแล้ววาดลายใหม่ เส้นดำ<->ขาวตามพื้น */
+  load(); fitPad();
+}
+function pt(e){
+  const r=padCv.getBoundingClientRect();
+  return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
+          p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5};   /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
+}
+function snap(){ histo.push(pages[pg].slice()); if(histo.length>60)histo.shift(); undone=[]; }
+function erase(p){
+  const r=padCv.getBoundingClientRect(), rad=18/r.width;
+  const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
+  if(keep.length!==pages[pg].length){ pages[pg]=keep; draw(); save(); }
+}
+function fitPad(){
+  const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
+  const dpr=Math.min(devicePixelRatio||1,2.5);
+  padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
+  draw();
+}
+function draw(){
+  const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
+  padCx.clearRect(0,0,W,H);
+  /* เส้นตารางจาง ๆ ให้เขียนตรง */
+  const dark=R.getAttribute('data-theme')==='dark';
+  padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
+  for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath();padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke();}
+  padCx.lineCap='round'; padCx.lineJoin='round';
+  pages[pg].forEach(s=>{
+    padCx.globalAlpha=s.hl?0.32:1;
+    padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
+    for(let i=1;i<s.pts.length;i++){
+      const a=s.pts[i-1],b=s.pts[i];
+      padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
+      padCx.beginPath(); padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke();
+    }
+    if(s.pts.length===1){ /* จุดเดียว */
+      padCx.fillStyle=padCx.strokeStyle; padCx.beginPath();
+      padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill();
+    }
+  });
+  padCx.globalAlpha=1;
+  const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
+}
+function save(){ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
+function load(){
+  try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
+}
+
+if(hasPen){
+  buildPad();
+  D.getElementById('kitui-penbtn').onclick=()=>{
+    const o=pad.classList.toggle('open');
+    D.getElementById('kitui-penbtn').classList.toggle('on',o);
+    if(o) fitPad();
+  };
+}
+
+/* =============================================================================
+   5) เครื่องคิดเลขวิทยาศาสตร์  (tokenizer → shunting-yard → RPN  ไม่ใช้ eval)
+   ============================================================================= */
+const FN={sin:1,cos:1,tan:1,asin:1,acos:1,atan:1,ln:1,log:1,sqrt:1,abs:1,exp:1};
+const PREC={'+':1,'-':1,'*':2,'/':2,'^':4,'u-':3};
+function tokenize(s){
+  s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
+  const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!()])/g; let m;
+  while((m=re.exec(s))) out.push(m[1]);
+  return out;
+}
+function toRPN(tk){
+  const out=[],op=[]; let prev=null;
+  for(let t of tk){
+    if(t==='**')t='^';
+    if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
+    else if(t==='PI'){ out.push(Math.PI); }
+    else if(t==='e'||t==='E'){ out.push(Math.E); }
+    else if(t==='ANS'){ out.push(ANS); }
+    else if(FN[t]){ op.push(t); }
+    else if(t==='('){ op.push(t); }
+    else if(t===')'){
+      while(op.length&&op[op.length-1]!=='(') out.push(op.pop());
+      if(!op.length) throw 0; op.pop();
+      if(op.length&&FN[op[op.length-1]]) out.push(op.pop());
+    }
+    else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
+    else if('+-*/^'.includes(t)){
+      let o=t;
+      const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
+      if(t==='-'&&unary) o='u-';
+      else if(t==='+'&&unary){ prev=t; continue; }
+      while(op.length){
+        const top=op[op.length-1];
+        if(top==='('||FN[top])break;
+        const rightAssoc=(o==='^'||o==='u-');
+        if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop()); else break;
+      }
+      op.push(o);
+    }
+    else throw 0;
+    prev=t;
+  }
+  while(op.length){ const o=op.pop(); if(o==='(')throw 0; out.push(o); }
+  return out;
+}
+function evalRPN(rpn,deg){
+  const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
+  const pop=()=>{ if(!st.length)throw 0; return st.pop(); };
+  for(const t of rpn){
+    if(typeof t==='number'){ st.push(t); continue; }
+    if(t==='fact'){ const n=pop(); if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
+    if(t==='pct'){ st.push(pop()/100); continue; }
+    if(t==='u-'){ st.push(-pop()); continue; }
+    if(FN[t]){
+      const a=pop();
+      st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
+             : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
+             : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
+             : t==='abs'?Math.abs(a) : Math.exp(a) );
+      continue;
+    }
+    const b=pop(),a=pop();
+    st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
+  }
+  if(st.length!==1) throw 0;
+  return st[0];
+}
+function calc(src,deg){ return evalRPN(toRPN(tokenize(src)),deg); }
+
+let ANS=0, expr='', calcSheet, isDeg=true;
+const KEYS=[
+ ['DEG','deg','fn'],['(','(',''],[')',')',''],['⌫','del','del'],['AC','ac','del'],
+ ['sin','sin(','fn'],['cos','cos(','fn'],['tan','tan(','fn'],['π','π','fn'],['÷','÷','op'],
+ ['sin⁻¹','asin(','fn'],['cos⁻¹','acos(','fn'],['tan⁻¹','atan(','fn'],['e','e','fn'],['×','×','op'],
+ ['ln','ln(','fn'],['log','log(','fn'],['√','√(','fn'],['xʸ','^','fn'],['−','−','op'],
+ ['7','7',''],['8','8',''],['9','9',''],['x!','!','fn'],['+','+','op'],
+ ['4','4',''],['5','5',''],['6','6',''],['%','%','fn'],['ANS','ANS','fn'],
+ ['1','1',''],['2','2',''],['3','3',''],['.','.',''],['=','eq','eq'],
+ ['0','0','w3'],['x²','^2','fn']
+];
+function buildCalc(){
+  calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
+  calcSheet.innerHTML=
+   `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
+      <button id="kitui-calcclose">✕</button></div>
+    <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
+    <div class="kitui-keys" id="kitui-keys">
+      ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
+    </div>`;
+  D.body.appendChild(calcSheet);
+  D.getElementById('kitui-calcclose').onclick=()=>calcSheet.classList.remove('open');
+  const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
+  const show=()=>{ ex.textContent=expr||' ';
+    try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
+    catch(e){ rs.style.opacity=.35; }
+  };
+  D.getElementById('kitui-keys').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
+    if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
+    if(k==='del'){ expr=expr.slice(0,-1); show(); return; }
+    if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show(); return; }
+    if(k==='eq'){
+      rs.style.opacity=1;
+      try{
+        const v=calc(expr,isDeg);
+        if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
+        if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
+        ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
+      }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
+      return;
+    }
+    expr+=k; show();
+  });
+}
+function fmt(v){
+  if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
+  if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
+  return String(Math.round(v*1e10)/1e10);
+}
+if(hasCalc){
+  buildCalc();
+  D.getElementById('kitui-calcbtn').onclick=()=>{
+    const o=calcSheet.classList.toggle('open');
+    D.getElementById('kitui-calcbtn').classList.toggle('on',o);
+  };
+}
+})();
+
+</script>
+<!--/KIT-UI-->
+</body>
+</html>

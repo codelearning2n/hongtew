@@ -2074,7 +2074,7 @@ document.querySelectorAll('.card-extra').forEach(el => {
 
 setTimeout(drawTypeNeurons, 1000);
 </script>
-<!--KIT-UI v2.7 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<!--KIT-UI v2.8 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>
 /* =============================================================================
    _kit/ui-controls.js  —  KIT UI  v1.0
@@ -2100,7 +2100,7 @@ setTimeout(drawTypeNeurons, 1000);
               หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
    ============================================================================= */
 (function(){
-if(window.__KITUI__) return; window.__KITUI__='2.7';
+if(window.__KITUI__) return; window.__KITUI__='2.8';   /* 2.8 = เพิ่มปุ่ม 🏠 กลับหน้าหลัก */
 
 /* ---------- helper ---------- */
 const D=document, R=D.documentElement;
@@ -2148,7 +2148,7 @@ const CSS=`
 #kitui-bar button.on{background:var(--accent);color:#fff}
 #kitui-bar .kitui-sep{width:1px;height:22px;background:var(--line);flex:0 0 1px}
 #kitui-bar .kitui-fs{font-size:11px;color:var(--muted);min-width:34px;text-align:center;font-weight:700}
-#kitui-bar.hidden > *:not(#kitui-grip){display:none}
+#kitui-bar.hidden > *:not(#kitui-grip):not(#kitui-home){display:none}
 #kitui-grip{font-size:17px}
 
 /* ===== แผงลอย (ที่ทด / เครื่องคิดเลข) ===== */
@@ -2394,9 +2394,20 @@ const wantTools = tAttr!=null ? tAttr.toLowerCase()
 const hasPen  = wantTools.includes('pen');
 const hasCalc = wantTools.includes('calc');
 
+/* ปุ่มกลับหน้าหลัก — โผล่เฉพาะตอนเปิดจากเว็บห้องติว (พาธมี /app/ อยู่)
+   เปิดไฟล์จากเครื่องตรง ๆ จะไม่มีปุ่มนี้ เพราะไม่มีหน้าหลักให้กลับ ลิงก์จะเสียเปล่า ๆ */
+const homeHref = (()=>{
+  try{
+    const p = decodeURIComponent(location.pathname);
+    const i = p.indexOf('/app/');
+    return i < 0 ? null : p.slice(0, i+1) + 'index.html';
+  }catch(e){ return null; }
+})();
+
 const bar=el('div'); bar.id='kitui-bar';
 bar.innerHTML =
   `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
+  (homeHref ? `<button id="kitui-home" title="กลับหน้าหลัก">🏠</button><span class="kitui-sep"></span>` : '')+
   (themeLock ? '' : `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button><span class="kitui-sep"></span>`)+
   `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
   `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
@@ -2409,6 +2420,7 @@ if(!themeLock) D.getElementById('kitui-theme').onclick=()=>{theme=theme==='dark'
 D.getElementById('kitui-fsup').onclick=()=>{if(fsIdx<4){fsIdx++;applyFS();}};
 D.getElementById('kitui-fsdown').onclick=()=>{if(fsIdx>0){fsIdx--;applyFS();}};
 D.getElementById('kitui-grip').onclick=()=>bar.classList.toggle('hidden');
+if(homeHref) D.getElementById('kitui-home').onclick=()=>{ location.href=homeHref; };
 applyTheme(); applyFS();
 
 /* ปิดแผงด้วยปุ่ม Esc */
