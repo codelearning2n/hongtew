@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>อิสลาม เสาหลัก 5 ประการ — ติวก่อนสอบ</title>
+<style>
+/* ============================================================================
+   สื่อติวอิสลามก่อนสอบ — สร้างอัตโนมัติจาก Islam/build_examkit.py (อย่าแก้ไฟล์นี้ตรง ๆ)
+   กติกาที่ต้องไม่พลาดซ้ำ (ดู Logs/2026-08-04.md):
+   ① ชื่อตัวแปรห้ามทับ token ของ _kit (--card --ink --line --ok --bg --muted --soft)
+   ② @media print ทับแค่ "ค่าตัวแปร" ห้ามเขียนสีสว่างตรง ๆ
+   ③ rem ทั้งหมด  ④ ลูก grid ใส่ min-width:0
+   ⑤ สีเน้นสว่างที่ใช้เป็นพื้น ใช้ background-image:linear-gradient(สี,สี)
+   ========================================================================== */
+*{ box-sizing:border-box; margin:0; padding:0; -webkit-text-size-adjust:100%; }
+:root{
+  --pg:#f2f5f3; --cd:#ffffff; --cd2:#f7faf8;
+  --tx:#1f2a25; --strong:#0d1512; --mut:#5d6b64; --bd:#dbe4df;
+  --ac:#0d7a5f; --acbg:#e9f7f1; --acbd:#b6e0d0; --achd:#0a5c47;
+  --gd:#b8860b; --hl:#fdf0a8; --hlink:#5e4708;
+  --good:#15803d; --goodbg:#e9f9ef; --wrong:#b91c1c; --wrongbg:#fdeceb;
+  --sh:0 1px 3px rgba(15,35,28,.08);
+}
+:root[data-theme="dark"]{
+  --pg:#080d0b; --cd:#121a16; --cd2:#18221d;
+  --tx:#e4ede8; --strong:#f4faf7; --mut:#93a49b; --bd:#26332c;
+  --ac:#4bd6a8; --acbg:#08281e; --acbd:#175946; --achd:#7fe8c4;
+  --gd:#e8c25a; --hl:#453a06; --hlink:#fde68a;
+  --good:#86efac; --goodbg:#0d2a1a; --wrong:#fca5a5; --wrongbg:#2c1414;
+  --sh:0 1px 3px rgba(0,0,0,.55);
+}
+html{ background:var(--pg); }
+body{ font-family:'Leelawadee UI','Sarabun','Noto Sans Thai','Tahoma',sans-serif;
+  background:var(--pg); color:var(--tx); line-height:1.75; font-size:1rem; padding-bottom:4rem; }
+.wrap{ max-width:58rem; margin:0 auto; padding:0 .7rem; }
+
+.cover{ text-align:center; padding:1rem 0 .7rem; border-bottom:3px solid var(--ac); margin-bottom:.5rem; }
+.cover h1{ font-size:1.3rem; color:var(--strong); }
+.cover .sub{ color:var(--mut); font-size:.84rem; margin-top:.2rem; }
+.cover .tag{ display:inline-block; font-size:.74rem; background:var(--acbg); color:var(--achd);
+  border:1px solid var(--acbd); border-radius:1.2rem; padding:.12rem .75rem; margin-top:.4rem; }
+
+.tabs{ position:sticky; top:0; z-index:30; background:var(--pg); margin:0 -.7rem;
+  padding:.5rem .7rem; border-bottom:1px solid var(--bd);
+  display:flex; gap:.32rem; overflow-x:auto; scrollbar-width:none; }
+.tabs::-webkit-scrollbar{ display:none; }
+.tab{ flex:0 0 auto; font:inherit; font-size:.8rem; cursor:pointer; white-space:nowrap;
+  background:var(--cd); color:var(--tx); border:1px solid var(--bd);
+  border-radius:1.2rem; padding:.3rem .68rem; box-shadow:var(--sh); }
+/* ⚠️ ปุ่มที่ "มีตัวหนังสือ" ห้ามใช้พื้นสีสว่างในโหมดมืด
+   เหตุผล: ถ้าทำพื้นด้วย background-image (gradient) เพื่อเลี่ยงไม่ให้ elementFix กดสีพื้น
+   elementFix จะอ่านพื้นไม่เห็น -> เข้าใจว่าตัวหนังสือเข้มวางบนพื้นมืด -> ไป "ทำให้ตัวหนังสือสว่าง" ให้
+   ผลคือเขียวอ่อนบนเขียวสด คอนทราสต์ 1.26 มองไม่เห็นเลย (เจอจากการวัดจริง)
+   ทางออก: โหมดมืดใช้ "พื้นเข้ม + ตัวหนังสือสว่าง" ไปเลย elementFix จะไม่แตะทั้งสองรอบ
+   (ส่วนแถบตกแต่งที่ไม่มีตัวหนังสือ เช่น .bar2 i ยังใช้ gradient ได้ตามเดิม) */
+.tab[aria-selected="true"]{ background:var(--ac); border-color:var(--ac); color:#fff; font-weight:700; }
+:root[data-theme="dark"] .tab[aria-selected="true"]{ background:var(--acbg); color:var(--achd); }
+
+.tools{ display:flex; gap:.4rem; align-items:center; margin:.55rem 0 .2rem; }
+.tools input{ flex:1; min-width:0; font:inherit; font-size:.85rem; color:var(--tx);
+  background:var(--cd); border:1px solid var(--bd); border-radius:.5rem; padding:.4rem .6rem; }
+.tools input::placeholder{ color:var(--mut); }
+.cnt{ font-size:.75rem; color:var(--mut); white-space:nowrap; }
+
+section[hidden]{ display:none; }
+section > h2:first-child{ margin-top:.6rem; }
+h2{ font-size:1.15rem; color:var(--achd); margin:1.5rem 0 .5rem; padding-bottom:.3rem;
+  border-bottom:2px solid var(--acbd); }
+h3{ font-size:1.02rem; color:var(--strong); margin:1.15rem 0 .4rem; }
+h4{ font-size:.94rem; color:var(--ac); margin:.9rem 0 .3rem; }
+p{ margin:.45rem 0; }
+ul,ol{ margin:.45rem 0 .7rem 1.35rem; } li{ margin:.28rem 0; }
+b,strong{ color:var(--strong); }
+code{ background:var(--cd2); border:1px solid var(--bd); border-radius:.25rem; padding:0 .25rem; font-size:.92em; }
+.pg{ color:var(--mut); font-size:.8em; white-space:nowrap; }
+blockquote{ border-left:4px solid var(--gd); background:var(--cd2); border-radius:0 .5rem .5rem 0;
+  padding:.5rem .8rem; margin:.6rem 0; }
+blockquote p{ margin:.2rem 0; }
+
+.tw{ overflow-x:auto; -webkit-overflow-scrolling:touch; border:1px solid var(--bd);
+  border-radius:.5rem; background:var(--cd); box-shadow:var(--sh); margin:.6rem 0; }
+.tw::-webkit-scrollbar{ height:.45rem; }
+.tw::-webkit-scrollbar-thumb{ background:var(--bd); border-radius:.5rem; }
+table{ width:100%; border-collapse:separate; border-spacing:0; font-size:.85rem; }
+th,td{ border-bottom:1px solid var(--bd); border-right:1px solid var(--bd);
+  padding:.38rem .55rem; text-align:left; vertical-align:top; }
+th:last-child,td:last-child{ border-right:0; }
+tr:last-child td{ border-bottom:0; }
+th{ background:var(--acbg); color:var(--achd); }
+tr:nth-child(even) td{ background:var(--cd2); }
+@media (max-width:52rem){ table{ min-width:26rem; } }
+
+/* ---------------- ควิซ ---------------- */
+.modebar{ display:flex; gap:.35rem; flex-wrap:wrap; margin:.6rem 0; }
+.mode{ font:inherit; font-size:.82rem; cursor:pointer; background:var(--cd); color:var(--tx);
+  border:1px solid var(--bd); border-radius:.45rem; padding:.35rem .7rem; }
+.mode[aria-pressed="true"]{ background:var(--ac); border-color:var(--ac); color:#fff; font-weight:700; }
+:root[data-theme="dark"] .mode[aria-pressed="true"]{ background:var(--acbg); color:var(--achd); }
+select{ font:inherit; font-size:.82rem; color:var(--tx); background:var(--cd);
+  border:1px solid var(--bd); border-radius:.45rem; padding:.35rem .5rem; }
+.stats{ display:flex; gap:.4rem; flex-wrap:wrap; margin:.5rem 0; }
+.st{ flex:1 1 5rem; background:var(--cd); border:1px solid var(--bd); border-radius:.5rem;
+  padding:.3rem .5rem; text-align:center; box-shadow:var(--sh); }
+.st .n{ font-size:1.05rem; font-weight:700; color:var(--strong); display:block; }
+.st .l{ font-size:.7rem; color:var(--mut); }
+.q{ background:var(--cd); border:1px solid var(--bd); border-radius:.6rem; padding:.75rem .8rem;
+  box-shadow:var(--sh); margin-bottom:.6rem; }
+.qhead{ display:flex; justify-content:space-between; gap:.5rem; font-size:.75rem;
+  color:var(--mut); margin-bottom:.35rem; flex-wrap:wrap; }
+.qtopic{ background:var(--acbg); color:var(--achd); border:1px solid var(--acbd);
+  border-radius:1rem; padding:.02rem .5rem; }
+.qtext{ font-size:1rem; color:var(--strong); margin:.25rem 0 .55rem; line-height:1.6; }
+.opts{ display:grid; gap:.3rem; }
+.opt{ font:inherit; font-size:.9rem; text-align:left; cursor:pointer; color:var(--tx);
+  background:var(--cd2); border:1px solid var(--bd); border-radius:.42rem; padding:.45rem .6rem; }
+.opt:hover{ border-color:var(--ac); }
+.opt.sel{ border-color:var(--ac); background:var(--acbg); }
+.opt.right{ border-color:var(--good); background:var(--goodbg); color:var(--good); font-weight:700; }
+.opt.wrong{ border-color:var(--wrong); background:var(--wrongbg); color:var(--wrong); }
+.opt[disabled]{ cursor:default; }
+.btn{ font:inherit; font-size:.88rem; cursor:pointer; border-radius:.45rem; padding:.42rem .85rem;
+  border:1px solid var(--ac); background:var(--ac); color:#fff; font-weight:700; }
+:root[data-theme="dark"] .btn{ background:var(--acbg); color:var(--achd); }
+.btn.ghost{ background:transparent; color:var(--ac); }
+.btn[disabled]{ opacity:.45; cursor:not-allowed; }
+.btnrow{ display:flex; gap:.4rem; flex-wrap:wrap; margin-top:.6rem; }
+.hintline{ font-size:.78rem; color:var(--mut); margin-top:.3rem; }
+.fb{ margin-top:.55rem; padding:.5rem .65rem; border-radius:.42rem; font-size:.88rem; display:none; }
+.fb.ok{ display:block; background:var(--goodbg); border:1px solid var(--good); color:var(--good); }
+.fb.bad{ display:block; background:var(--wrongbg); border:1px solid var(--wrong); color:var(--wrong); }
+.fb .why{ color:var(--tx); margin-top:.2rem; font-size:.85rem; }
+.bar2{ height:.5rem; background:var(--cd2); border:1px solid var(--bd); border-radius:1rem; overflow:hidden; }
+.bar2 i{ display:block; height:100%; background-image:linear-gradient(var(--ac),var(--ac)); }
+.rrow{ margin:.45rem 0; }
+.rrow .t{ display:flex; justify-content:space-between; font-size:.85rem; margin-bottom:.12rem; }
+.verdict{ border:1px solid var(--acbd); background:var(--acbg); border-radius:.55rem;
+  padding:.65rem .8rem; margin-top:.6rem; }
+.card{ background:var(--cd); border:1px solid var(--bd); border-radius:.6rem;
+  padding:.7rem .85rem; box-shadow:var(--sh); margin-bottom:.6rem; }
+.foot{ text-align:center; color:var(--mut); font-size:.75rem; margin-top:1.4rem;
+  padding-top:.6rem; border-top:1px solid var(--bd); }
+
+@media print{
+  :root,:root[data-theme="dark"]{
+    --pg:#fff; --cd:#fff; --cd2:#fafafa; --tx:#1f2a25; --strong:#0d1512; --mut:#5d6b64; --bd:#dbe4df;
+    --ac:#0d7a5f; --acbg:#e9f7f1; --acbd:#b6e0d0; --achd:#0a5c47; --gd:#b8860b;
+    --hl:#fdf0a8; --hlink:#5e4708; --good:#15803d; --goodbg:#e9f9ef;
+    --wrong:#b91c1c; --wrongbg:#fdeceb; --sh:none;
+  }
+  .tabs,.tools,.modebar,.btnrow,#kitui-bar{ display:none !important; }
+  section[hidden]{ display:block !important; }
+  .tw{ overflow:visible; } table{ min-width:0 !important; }
+}
+</style>
+</head>
+<body data-subject="islam">
+<div class="wrap">
+
+  <div class="cover">
+    <h1>☪️ อิสลาม เสาหลัก 5 ประการ — ติวก่อนสอบ</h1>
+    <div class="sub">สรุปจากสไลด์ อ.สอง เฉพาะ 5 ไฟล์ที่ออกสอบ · 370 หน้า</div>
+    <div class="tag">Islam1 บทนำ · Islam2 ศาสดา · Islam3 สัญลักษณ์ · Islam5_1 (A)+(B) หลักศรัทธา 6</div>
+  </div>
+
+  <div class="tabs" role="tablist"><button class="tab" role="tab" data-t="p1" aria-selected="true">①  ภาพรวม + ชะฮาดะฮ์</button><button class="tab" role="tab" data-t="p2" aria-selected="false">②  ละหมาด</button><button class="tab" role="tab" data-t="p3" aria-selected="false">③  ซะกาต</button><button class="tab" role="tab" data-t="p4" aria-selected="false">④  ถือศีลอด</button><button class="tab" role="tab" data-t="p5" aria-selected="false">⑤  ฮัจญ์</button><button class="tab" role="tab" data-t="quiz" aria-selected="false">🎯 ฝึกข้อสอบ (52)</button></div>
+
+  <div class="tools" id="findbar">
+    <input id="q" type="search" placeholder="🔍 ค้นในหัวข้อนี้ เช่น ญิบรีล, เตารอต, ฮิจเราะฮ์" autocomplete="off">
+    <span class="cnt" id="cnt"></span>
+  </div>
+
+  <section data-t="p1"><h2>ภาพรวมเสาหลัก 5 + เสาที่ 1 ชะฮาดะฮ์</h2>
+<h3>สรุปเนื้อหา</h3>
+<p>คำสอนของอิสลามแบ่งเป็น <b>3 หมวด</b> เสาหลัก 5 ประการอยู่ในหมวดที่สาม</p>
+<div class="tw"><table><tr><th>หมวด</th><th>อาหรับ</th><th>คือ</th></tr><tr><td>หลักศรัทธา</td><td><b>อีมาน (Iman)</b></td><td>เชื่ออะไร — 6 ข้อ</td></tr><tr><td>หลักคุณธรรม</td><td><b>อิห์ซาน (Ihsan)</b></td><td>หลักความดี</td></tr><tr><td><b>หลักปฏิบัติ</b></td><td><b>อิบาดะห์ (Ibadat)</b></td><td><b>ทำอะไร — เสาหลัก 5 อยู่ตรงนี้</b></td></tr></table></div>
+<p><b>เสาทั้ง 5</b> — Shahada ปฏิญาณตน · Salah ละหมาด · Zakat ซะกาต · Sawm ถือศีลอด · Hajj ฮัจญ์</p>
+<h4>ชะฮาดะฮ์ (Shahada)</h4>
+<p>ชื่ออังกฤษ <b>The Declaration of Faith · The Testimony · The Creed</b> เป็น <b>เสาที่ 1</b> และเป็น <b>พิธีกรรมแรกของมุสลิมใหม่</b> ต้องทำก่อนเป็นอย่างแรก ถือเป็นจุดเริ่มต้นของการเป็นมุสลิมที่สมบูรณ์แบบในทางความเชื่อ</p>
+<p><b>คำปฏิญาณ (ต้องกล่าวตามนี้เท่านั้น)</b> อาหรับ — *&quot;ลาอิลลาฮ์ อิลลัลลอฮ์ มุฮัมหมัด รอซูลลุลอฮ์&quot;* ไทย — *&quot;ไม่มีพระเจ้าอื่นใด นอกจากองค์อัลลอฮ์ และมูฮัมหมัดเป็นศาสนทูตขององค์อัลลอฮ์&quot;*</p>
+<p><b>องค์ประกอบ 3 ประการ ต้องครบทั้งสาม</b></p>
+<div class="tw"><table><tr><th>#</th><th>องค์ประกอบ</th></tr><tr><td>1</td><td><b>กล่าวปฏิญาณด้วยวาจา</b></td></tr><tr><td>2</td><td><b>เลื่อมใสด้วยจิตใจ</b></td></tr><tr><td>3</td><td><b>ปฏิบัติด้วยร่างกาย</b></td></tr></table></div>
+<p><b>ไม่ใช่อะไร</b> — ไม่ใช่การสบถสาบาน · ไม่ใช่การกล่าวอ้างสิ่งศักดิ์สิทธิ์อื่น · <b>ไม่ใช่คำสวดมนต์</b></p>
+<h4>สุหนัต</h4>
+<p>การขลิบหนังหุ้มปลายองคชาต <b>จำเป็นต้องทำเสมอ</b> ทั้งมุสลิมโดยกำเนิดและผู้เปลี่ยนศาสนา โดยปกติบังคับเฉพาะเพศชาย</p>
+<div class="tw"><table><tr><th>คำ</th><th>ภาษา</th></tr><tr><td><b>สุหนัต (Sunat)</b></td><td><b>มลายู</b></td></tr><tr><td><b>คีตาน / คอตัน (Khitan / Khatna)</b></td><td><b>อาหรับ</b></td></tr></table></div>
+<p>เกิดขึ้นครั้งแรกใน <b>ศาสนายูดาย</b> สมัย <b>นบีอิบรอฮีม (Abraham)</b> ปัจจุบันเป็นข้อกำหนดภาคบังคับใน <b>2 ศาสนา คือ ยูดาย และ อิสลาม</b></p>
+<h3>ตัวเลขที่ต้องจำ</h3>
+<div class="tw"><table><tr><th>ตัวเลข</th><th>คือ</th></tr><tr><td><b>3</b></td><td>หมวดคำสอน · องค์ประกอบชะฮาดะฮ์</td></tr><tr><td><b>5</b></td><td>เสาหลัก (อิบาดะห์)</td></tr><tr><td><b>6</b></td><td>หลักศรัทธา (อีมาน)</td></tr><tr><td><b>2</b></td><td>ศาสนาที่บังคับทำสุหนัต</td></tr></table></div>
+<h3>จุดที่น่าจะออกสอบ</h3>
+<ul><li><b>อีมาน ≠ อิบาดะห์</b> — อีมานคือ &quot;เชื่ออะไร&quot; (6) อิบาดะห์คือ &quot;ทำอะไร&quot; (5)</li><li>องค์ประกอบชะฮาดะฮ์ <b>วาจา–ใจ–กาย</b></li><li>ชะฮาดะฮ์ <b>ไม่ใช่คำสวดมนต์</b></li><li><b>&quot;สุหนัต&quot; เป็นคำมลายู ไม่ใช่อาหรับ</b> — อาหรับคือ Khitan/Khatna</li><li>สุหนัตเกิดครั้งแรกใน <b>ยูดาย</b> ไม่ใช่อิสลาม</li></ul>
+<h3>ข้อสอบ</h3></section><section data-t="p2" hidden><h2>เสาที่ 2 — การละหมาด (Salah)</h2>
+<h3>สรุปเนื้อหา</h3>
+<p><b>ชื่อเรียกและที่มาของคำ</b> — จุดหลอกที่ออกบ่อยที่สุดของบทนี้</p>
+<div class="tw"><table><tr><th>คำ</th><th>ภาษา</th></tr><tr><td><b>Salah / Salat</b></td><td><b>อาหรับ</b></td></tr><tr><td><b>Namaz (นมาซ)</b></td><td><b>เปอร์เซีย</b> — รากเดียวกับบาลีสันสกฤต &quot;นมัสการ&quot;</td></tr><tr><td><b>ละหมาด</b></td><td>เพี้ยนมาจาก &quot;นมาซ&quot; จึงมาจาก <b>เปอร์เซีย ไม่ใช่อาหรับ</b></td></tr><tr><td><b>มาแย</b></td><td>มลายูปัตตานี</td></tr></table></div>
+<p><b>เงื่อนไขของการละหมาด 7 ข้อ</b> — ร่างกาย เครื่องนุ่งห่ม <b>และสถานที่</b>ต้องสะอาด · ปราศจากหะดัษใหญ่และเล็ก · หันหน้าไปทางกิบลัต · ปกปิดเอาเราะฮ์ · ห่างจากสิ่งที่ทำให้เสียละหมาด · <b>ไม่ตั้งใจเปลี่ยนการละหมาดเป็นอย่างอื่น</b> · มีสติแน่วแน่</p>
+<p><b>คุณสมบัติผู้ละหมาด</b> — เป็นมุสลิม · บรรลุศาสนภาวะ · มีสติสัมปชัญญะ · ปราศจาก <b>หัยฎ์</b> (ประจำเดือน) <b>นิฟาส</b> (เลือดหลังคลอด) <b>วิลาดะฮ์</b> (คลอดบุตร)</p>
+<p>ฮะดีษเรื่องอายุ — <b>&quot;สั่งใช้ให้ละหมาดตอนอายุเจ็ดขวบ และตีให้ละหมาดตอนอายุสิบขวบ&quot;</b></p>
+<h4>กิบลัตและกะอ์บะฮ์</h4>
+<p><b>กิบลัต (Qibla)</b> คือทิศที่หันไปสู่ <b>กะอ์บะฮ์</b> ซึ่งเปรียบเป็น <b>บัยตุลลอฮ์ = บ้านของอัลลอฮ์</b> ตั้งอยู่ใน <b>มัสยิดอัล-ฮะรอม นครมักกะฮ์ ซาอุดีอาระเบีย</b> <b>ก่อนสมัยนบีมูฮัมหมัด ผู้ศรัทธาหันหน้าไปทางกรุงเยรูซาเล็ม</b></p>
+<p><b>มะตาฟ (Mataf)</b> = ลานเดินวน · <b>ฏอวาฟ (Tawaf)</b> = การเดินวนรอบกะอ์บะฮ์</p>
+<h4>น้ำละหมาด (วุฎูอ์ / Wudu)</h4>
+<p>ล้าง <b>ใบหน้า → มือถึงข้อศอกทั้งสอง → เช็ดศีรษะ → เท้าทั้งสองพร้อมตาตุ่ม</b> <b>ล้างข้างขวาก่อนข้างซ้าย</b> และทำ <b>อย่างน้อย 3 ครั้งติดกัน</b></p>
+<h4>ประเภทของการละหมาด</h4>
+<div class="tw"><table><tr><th>ประเภท</th><th>บังคับไหม</th><th>ไม่ทำแล้ว</th></tr><tr><td><b>ฟัรดู (Fard)</b></td><td>บังคับ</td><td><b>บาปใหญ่</b></td></tr><tr><td>↳ <b>ฟัรฎุอัยน์ (Fard al-Ayn)</b></td><td><b>หน้าที่ส่วนบุคคล</b> เช่น 5 เวลา ญุมอะฮ์</td><td>บาปเฉพาะตัว</td></tr><tr><td>↳ <b>ฟัรฎูกิฟายะฮ์ (Fard Kifaya)</b></td><td><b>หน้าที่รายกลุ่ม</b> เช่น ญะนาซะฮ์</td><td><b>มีคนทำแล้วพ้นผิด ไม่มีใครทำเลยบาปทั้งชุมชน</b></td></tr><tr><td><b>ซุนนะฮ์ / สุนัต</b></td><td>ไม่บังคับ มี 25 ประเภท</td><td><b>ไม่บาป</b></td></tr></table></div>
+<p><b>สำคัญ</b> ห้ามเอาเวลาของละหมาดฟัรดูไปทำละหมาดสุนัตแทน ต้องทำฟัรดูก่อนเสมอ</p>
+<h4>5 เวลาประจำวัน</h4>
+<div class="tw"><table><tr><th>ครั้งที่</th><th>ชื่อ</th><th>อังกฤษ</th><th>เวลา</th><th>ร็อกอะฮ์</th></tr><tr><td>1</td><td>ศุบฮิ</td><td><b>Fajr</b></td><td>ย่ำรุ่ง เช้ามืด</td><td><b>2</b></td></tr><tr><td>2</td><td>ซุฮริ</td><td><b>Zuhr</b></td><td>ตะวันคล้อย</td><td><b>4</b></td></tr><tr><td>3</td><td>อัศริ</td><td><b>Asr</b></td><td>ยามเย็น</td><td><b>4</b></td></tr><tr><td>4</td><td>มัฆริบ</td><td><b>Maghrib</b></td><td>ดวงอาทิตย์ตก</td><td><b>3</b></td></tr><tr><td>5</td><td>อิชาอ์</td><td><b>Isha</b></td><td>ยามค่ำคืน</td><td><b>4</b></td></tr></table></div>
+<p><b>ถ้าไม่ละหมาดประจำวันเลย ถือว่าไม่ใช่มุสลิม</b></p>
+<p><b>ขั้นตอนใน 1 ร็อกอะฮ์</b> — เหนียต (Niyyah) → ตักบีร (Takbir) → กิยาม (Qiyam) → รูกูอ (Ruku ก้มโค้ง) → กิยาม → <b>สุญูด (Sujud ก้มกราบ)</b> → <b>ญัลซะฮ์ (Jalsah นั่งระหว่างสองสุญูด)</b> → สุญูดครั้งที่ 2 → ตะชะฮุด (Tashahhud) → จบด้วย <b>สลาม (Salam)</b></p>
+<h4>3 ช่วงเวลาที่ห้ามละหมาด</h4>
+<p><b>ดวงอาทิตย์กำลังขึ้น · เที่ยงวัน (ซาวัล) · ดวงอาทิตย์กำลังจะตก</b> ช่วงละราว 15–30 นาที <b>ข้อยกเว้น — เวลาซาวัลในวันศุกร์ ละหมาดได้</b></p>
+<h4>ญุมอะฮ์ ญะมาอะห์ ญะนาซะฮ์</h4>
+<p><b>ญุมอะฮ์ (Jumu&#x27;ah)</b> ละหมาดวันศุกร์ <b>บังคับเฉพาะผู้ชาย</b> <b>ใช้แทนละหมาดซุฮริ</b> <b>2 ร็อกอะฮ์</b> ทำที่มัสยิดหลังคุฎบะฮ์ของคอเต็บ · วันศุกร์เรียกว่า <b>&quot;วันอีดประจำสัปดาห์&quot;</b> ผู้ไม่จำเป็นต้องทำ — คนชรา เด็ก <b>ผู้หญิง</b> ทาส นักเดินทาง คนป่วย คนตาบอด คนพิการ</p>
+<p><b>ญะมาอะห์ (Jama&#x27;ah)</b> ละหมาดรวมหมู่ตั้งแต่ <b>2 คนขึ้นไป</b> คนเดินทางรวมละหมาดได้ <b>เฉพาะคู่ Asr+Zuhr และ Isha+Maghrib</b></p>
+<p><b>ญะนาซะฮ์ (Janazah)</b> ละหมาดคนตาย เป็น <b>ฟัรฎูกิฟายะฮ์</b> <b>ยืนตรงอย่างเดียว ไม่ก้ม ไม่กราบ</b> เพราะมีมัยยัตอยู่ด้านหน้า วางศพ <b>ขวางทิศกิบลัต</b> · อิหม่ามยืนตรง <b>ศีรษะ</b>ของศพชาย <b>กลางลำตัว</b>ของศพหญิง</p>
+<h4>เมื่อมุสลิมเสียชีวิต — 4 ขั้นตอน</h4>
+<p><b>อาบน้ำศพ</b> (เพศเดียวกันเท่านั้น) → <b>กะฝั่น ห่อผ้าขาว</b> → <b>ละหมาดญะนาซะฮ์</b> → <b>ฝังภายใน 24 ชั่วโมง</b> สุสานเรียก <b>กุโบร์</b> ฝังท่านอนตะแคงหันศีรษะไปทางกิบลัต <b>ฝังเท่านั้นไม่เผา · ไม่ฝังของมีค่าลงไป</b></p>
+<h3>ตัวเลขที่ต้องจำ</h3>
+<div class="tw"><table><tr><th>ตัวเลข</th><th>คือ</th></tr><tr><td><b>5 เวลา · 17 ร็อกอะฮ์</b></td><td>ละหมาดประจำวัน</td></tr><tr><td><b>2-4-4-3-4</b></td><td>ร็อกอะฮ์เรียงตามเวลา</td></tr><tr><td><b>2</b></td><td>ร็อกอะฮ์ของญุมอะฮ์</td></tr><tr><td><b>3</b></td><td>ช่วงเวลาห้ามละหมาด</td></tr><tr><td><b>7 / 10</b></td><td>อายุที่สอน / ที่บังคับให้ละหมาด</td></tr><tr><td><b>24 ชั่วโมง</b></td><td>กรอบเวลาฝังศพ</td></tr></table></div>
+<h3>จุดที่น่าจะออกสอบ</h3>
+<ul><li><b>&quot;ละหมาด&quot; มาจากเปอร์เซีย ไม่ใช่อาหรับ</b></li><li>ร็อกอะฮ์ <b>2-4-4-3-4</b></li><li><b>ก่อนสมัยนบี หันหน้าไปเยรูซาเล็ม</b></li><li><b>Fard al-Ayn vs Fard Kifaya</b></li><li><b>3 ช่วงเวลาห้ามละหมาด + ข้อยกเว้นวันศุกร์</b></li><li><b>ญุมอะฮ์บังคับเฉพาะผู้ชาย และใช้แทนซุฮริ</b></li><li><b>ญะนาซะฮ์ยืนอย่างเดียว ไม่ก้มไม่กราบ</b></li></ul>
+<h3>ข้อสอบ</h3></section><section data-t="p3" hidden><h2>เสาที่ 3 — ซะกาต (Zakat)</h2>
+<h3>สรุปเนื้อหา</h3>
+<p><b>ความหมายทางภาษาศาสตร์</b> (คำอาหรับ) — <b>&quot;การขัดเกลาให้สะอาดบริสุทธิ์&quot; · &quot;ความจำเริญ&quot; · &quot;การเพิ่มพูน&quot; · &quot;การเจริญงอกงาม&quot;</b></p>
+<h4>การบริจาค 3 แบบ — จุดหลอกที่ชัดที่สุดของบทนี้</h4>
+<div class="tw"><table><tr><th></th><th><b>ซะกาต</b></th><th><b>เศาะดะเกาะฮ์ (Sadaqah)</b></th><th><b>วะกัฟ (Waqf)</b></th></tr><tr><td>บังคับ</td><td><b>ภาคบังคับ</b></td><td>สมัครใจ</td><td>สมัครใจ</td></tr><tr><td>จำนวน</td><td>กำหนดชัดเจน</td><td><b>ไม่กำหนด</b></td><td>ระบุตัวทรัพย์ชัดเจน</td></tr><tr><td>ผู้รับ</td><td>8 จำพวก</td><td>ใครก็ได้</td><td><b>เจาะจงผู้รับ</b></td></tr><tr><td><b>เป็นเสาหลัก?</b></td><td>✅ <b>เป็น</b></td><td>❌ ไม่เป็น</td><td>❌ ไม่เป็น</td></tr></table></div>
+<p>ซะกาตเป็น <b>วาญิบ (Wajib)</b> = ทำได้บุญ <b>ไม่ทำต้องรับโทษจากอัลลอฮ์</b> เป็น <b>รุกุนอิสลาม</b> และเป็น <b>หลักอิบาดะห์</b> หลักฐานมาจาก <b>อัลกุรอาน · ฮะดีษ · การปฏิบัติของเศาะฮาบะฮ์</b></p>
+<h4>ซะกาตมี 2 ประเภท ทั้งคู่บังคับ</h4>
+<p><b>ซะกาตฟิตเราะห์ (Zakat Fitrah)</b> = <b>ซะกาตอาหาร</b> จ่ายท้ายรอมฎอน บัญญัติขึ้นใน <b>ปีที่ 2 ฮิจเราะห์ศักราช ที่เมดินะห์</b> จุดประสงค์ ① <b>ชะล้างผู้ถือศีลอดจากความบกพร่อง</b> ② <b>จุนเจืออาหารคนยากจน</b> สำหรับไทยจ่าย <b>ข้าวสาร 2.75 ลิตร หรือ 4 ทะนาน</b> หรือเงินตามราคาข้าวในท้องถิ่น <b>ผู้จ่ายต้องเหนียต ผู้รับไม่ต้องเหนียต</b> <b>ถ้าถือศีลอดแต่ไม่จ่ายฟิตเราะห์ อัลลอฮ์จะไม่รับการถือศีลอด</b></p>
+<p><b>ซะกาตมาล (Zakat al-Maal)</b> = <b>ซะกาตทรัพย์สิน</b> คิดจาก<b>ทรัพย์ที่ออมไว้ ไม่ใช่รายได้</b> รอบปีใช้ <b>ปีจันทรคติ 354 วัน</b></p>
+<div class="tw"><table><tr><th>ทรัพย์สิน</th><th>พิกัดต่ำสุด</th><th>อัตรา</th></tr><tr><td>ทองคำ เงินออม หุ้น ธุรกิจ</td><td><b>ทองคำ 85 กรัม</b></td><td><b>2.5 %</b></td></tr><tr><td>ผลผลิตเพาะปลูก</td><td><b>700 กิโลกรัม</b></td><td><b>10% น้ำฝน · 5% ชลประทาน</b></td></tr><tr><td>ทรัพย์สินที่ค้นพบ</td><td>ตามพิกัดทองคำ</td><td><b>20 %</b></td></tr></table></div>
+<h4>ผู้มีสิทธิ์รับซะกาต 8 จำพวก</h4>
+<div class="tw"><table><tr><th>#</th><th>ไทย</th><th>อังกฤษ</th></tr><tr><td>1</td><td>คนยากจน</td><td>The poor</td></tr><tr><td>2</td><td>คนขัดสน</td><td>The needy</td></tr><tr><td>3</td><td>เจ้าหน้าที่จัดการซะกาต</td><td>Zakat administrators</td></tr><tr><td>4</td><td><b>ผู้ที่มีหัวใจโน้มมาสู่อิสลาม</b></td><td>New Muslims &amp; friends of the community</td></tr><tr><td>5</td><td>ทาส เชลย</td><td>Slaves &amp; captives</td></tr><tr><td>6</td><td>คนมีหนี้สิน (ไม่ใช่หนี้พนัน)</td><td>The debt-ridden</td></tr><tr><td>7</td><td>ผู้อยู่ในหนทางของอัลลอฮ์</td><td>In the cause of Allah</td></tr><tr><td>8</td><td>คนติดขัดระหว่างเดินทาง</td><td>The wayfarer</td></tr></table></div>
+<p><b>จำพวกที่ 4 รับได้แม้ยังไม่เป็นมุสลิม</b> · <b>เจ้าหน้าที่ซะกาตรับได้เฉพาะตามค่าจ้าง รับตลอดปีไม่ได้</b></p>
+<h4>โทษของผู้ไม่จ่าย</h4>
+<div class="tw"><table><tr><th>เจตนา</th><th>ผล</th></tr><tr><td><b>ปฏิเสธว่าไม่ใช่บทบัญญัติ</b></td><td>เป็น <b>กาฟิร ตกจากศาสนา</b> ต้องโทษประหารหากไม่เตาบัต</td></tr><tr><td><b>ไม่จ่ายเพราะตระหนี่</b></td><td>ไม่ตกจากศาสนา แต่เป็นบาปใหญ่ <b>ยึดทรัพย์ครึ่งหนึ่ง</b></td></tr></table></div>
+<h3>ตัวเลขที่ต้องจำ</h3>
+<div class="tw"><table><tr><th>ตัวเลข</th><th>คือ</th></tr><tr><td><b>85 กรัม / 2.5%</b></td><td>พิกัดทองคำและอัตรา</td></tr><tr><td><b>700 กก. / 10% / 5%</b></td><td>เกษตร น้ำฝน ชลประทาน</td></tr><tr><td><b>20%</b></td><td>ทรัพย์สินที่ค้นพบ</td></tr><tr><td><b>354 วัน</b></td><td>รอบปีจันทรคติ</td></tr><tr><td><b>8</b></td><td>จำพวกผู้มีสิทธิ์รับ</td></tr><tr><td><b>2.75 ลิตร / 4 ทะนาน</b></td><td>ข้าวสารซะกาตฟิตเราะห์ในไทย</td></tr></table></div>
+<h3>จุดที่น่าจะออกสอบ</h3>
+<ul><li><b>ซะกาต vs เศาะดะเกาะฮ์ vs วะกัฟ — มีแค่ซะกาตที่เป็นเสาหลัก</b></li><li><b>พิกัด 85 กรัม → 2.5%</b> และ <b>เกษตร น้ำฝน 10% ชลประทาน 5%</b> (ลงทุนมากจ่ายน้อย)</li><li><b>ผู้รับ 8 จำพวก</b> โดยเฉพาะจำพวกที่ 4 ที่<b>ยังไม่เป็นมุสลิมก็รับได้</b></li><li><b>หนี้จากการพนันรับซะกาตไม่ได้</b></li><li><b>จ่ายฟิตเราะห์หลังละหมาดอีด = ไม่นับ กลายเป็นเศาะดะเกาะฮ์</b></li><li>โทษ <b>กาฟิร vs ยึดทรัพย์ครึ่งหนึ่ง</b></li></ul>
+<h3>ข้อสอบ</h3></section><section data-t="p4" hidden><h2>เสาที่ 4 — การถือศีลอด (Sawm)</h2>
+<h3>สรุปเนื้อหา</h3>
+<div class="tw"><table><tr><th>คำ</th><th>ภาษา</th></tr><tr><td><b>Sawm / Siyam</b></td><td><b>อาหรับ</b></td></tr><tr><td><b>Rozah</b></td><td><b>เปอร์เซีย</b></td></tr><tr><td><b>Puasa (ปอซอ)</b></td><td><b>มลายูปัตตานี</b></td></tr></table></div>
+<p><b>ความหมายทางศาสนา</b> — งดเว้นจาก <b>การกิน ดื่ม เสพ และความสัมพันธ์ทางเพศ</b> ตั้งแต่ <b>ดวงอาทิตย์ขึ้นจนถึงดวงอาทิตย์ตก</b> ตลอดเดือนรอมฎอน <b>โดยมีเจตนาทำเพื่ออัลลอฮ์</b></p>
+<p><b>โองการหลัก</b> — *&quot;การถือศีลอดได้ถูกบัญญัติแก่พวกเจ้า ดังเช่นได้ถูกบัญญัติแก่ประชาชาติก่อนหน้า เพื่อว่าพวกเจ้าจะได้ยำเกรง&quot;* (2:183) และ 2:185 ระบุว่ารอมฎอนคือเดือนที่อัลกุรอานถูกประทานลงมา</p>
+<p><b>วัตถุประสงค์ 2 ข้อ</b> — <b>การยับยั้งตนเอง</b> และ <b>การยำเกรงพระเจ้า (ตักวา Taqwa)</b></p>
+<h4>ศีลอดมี 4 ประเภท</h4>
+<div class="tw"><table><tr><th>ประเภท</th><th>สถานะ</th></tr><tr><td><b>ฟัรฎู</b></td><td>บังคับ ไม่ทำเป็นบาปใหญ่ ต้องชดใช้</td></tr><tr><td><b>มุสตะฮับบ์ / ซุนนะฮ์</b></td><td>ส่งเสริม ไม่ทำก็ไม่บาป</td></tr><tr><td><b>มักรูฮ์</b></td><td><b>ไม่ควรทำ แต่ไม่ถึงกับบาป เลี่ยงได้จะได้ผลบุญ</b></td></tr><tr><td><b>ฮะรอม</b></td><td><b>ต้องห้าม ทำแล้วถูกลงโทษ</b></td></tr></table></div>
+<p><b>ศีลอดฟัรดู 4 ชนิด</b> — รอมฎอน · <b>กัฟฟาเราะฮ์</b> (ไถ่โทษ) · <b>เกาะฎอ</b> (ชดเชย) · <b>นะซัร</b> (บนบาน)</p>
+<p><b>ศีลอดฮะรอม</b> — วันอีดทั้งสอง · วันตัชรีก 11–13 ซุลฮิจญะฮ์ · <b>ศีลอดของภรรยาที่สามีไม่อนุญาต</b> · <b>ของบุตรที่บิดามารดาไม่อนุญาต</b></p>
+<p><b>ข้อห้ามในการถือศีลอด</b> — ห้ามเจาะจงเฉพาะวันศุกร์หรือวันเสาร์ · ห้ามถือตลอดปี · ห้ามถือในวันที่สงสัย · ห้ามถือโดยไม่ยอมละศีลอด</p>
+<h4>เหตุที่ทำให้เสียศีลอด (บวชแตก)</h4>
+<p><b>ต้องเกิดในเวลากลางวันและมิได้ถูกบังคับ</b> ① <b>เจตนากินหรือดื่มแม้เล็กน้อย</b> ② <b>เจตนาอาเจียน</b> ③ <b>เจตนามีเพศสัมพันธ์</b> ④ <b>เจตนาทำให้อสุจิเคลื่อน</b> ⑤ <b>เจตนาทำให้สิ่งใดล่วงล้ำเข้าอวัยวะที่เป็นรู</b> ⑥ <b>เสียสติ เป็นลม สลบ</b> ⑦ <b>มีประจำเดือนและคลอดลูก</b></p>
+<p><b>สิ่งที่ทำได้ ไม่เสียศีลอด</b> — กลืนน้ำลาย · แปรงฟัน · ขากเสลด · อาบน้ำดำน้ำ (น้ำเข้าปาก โดยไม่ตั้งใจไม่เสีย) · ถอนฟัน · แคะหู · ฉีดยาที่จำเป็น · ดมยาดม · ทายาหม่อง <b>ชิมแกงได้แต่ต้องบ้วนทิ้ง กลืนเมื่อไรเสียทันที</b></p>
+<h4>การชดใช้</h4>
+<div class="tw"><table><tr><th>คำ</th><th>คือ</th></tr><tr><td><b>กอฎออ์ (Qada)</b></td><td><b>ถือศีลอดชดใช้เท่าวันที่ขาด — วิธีแรกที่ควรทำ</b></td></tr><tr><td><b>ฟิดยะฮ์ (Fidyah)</b></td><td>ค่าปรับ ให้อาหารคนจน 1 คนต่อ 1 วันที่ขาด (ข้าวสารวันละ 1 มุด ~6 ขีด)</td></tr><tr><td><b>กัฟฟาเราะฮ์ (Kaffarah)</b></td><td>ค่าไถ่โทษ</td></tr></table></div>
+<div class="tw"><table><tr><th>กรณี</th><th>ต้องทำ</th></tr><tr><td>ป่วย เดินทาง มีประจำเดือน</td><td><b>กอฎออ์</b></td></tr><tr><td><b>สตรีตั้งครรภ์ / ให้นมบุตร</b></td><td><b>ทั้งกอฎออ์ และ ฟิดยะฮ์</b></td></tr><tr><td><b>ผู้ชรา / ป่วยเรื้อรังไม่มีหวังหาย</b></td><td><b>ฟิดยะฮ์อย่างเดียว ไม่ต้องถือชดใช้</b></td></tr><tr><td><b>เสียศีลอดจากการมีเพศสัมพันธ์</b></td><td><b>ทั้งกอฎออ์ และ กัฟฟาเราะฮ์</b></td></tr></table></div>
+<p><b>กัฟฟาเราะฮ์ทำตามลำดับ</b> ① ปล่อยทาส 1 คน → ② <b>ถือศีลอด 2 เดือนติดต่อกัน (ขาดวันเดียวเริ่มนับใหม่)</b> → ③ เลี้ยงอาหารคนยากจน 60 คน</p>
+<p><b>กอฎออ์ต้องเสร็จก่อนถึงรอมฎอนปีถัดไป ไม่งั้นเป็นบาป</b></p>
+<h4>ช่วงเวลาและสิ่งที่เกี่ยวข้อง</h4>
+<p><b>รอมฎอนคือเดือนที่ 9</b> ยาว <b>29 หรือ 30 วัน</b> ตัดสินโดยดู <b>พระจันทร์เสี้ยวแรก ฮีลาล (Hilal)</b> <b>ในไทย สำนักจุฬาราชมนตรีเป็นผู้ประกาศวันเริ่มและวันสิ้นสุด</b></p>
+<p><b>ซูโฮร์ (Suhoor)</b> มื้อก่อนรุ่งสาง ก่อนเข้าเวลาละหมาดซุบฮิ ควรกินโปรตีนสูง <b>อิฟตาร์ (Iftar)</b> มื้อค่ำหลังละศีลอด เริ่มทันทีหลังเสียงอะซานของมัฆริบ <b>ละศีลอดด้วยผลอินทผลัม ถ้าไม่มีใช้น้ำ</b> อาหารต้องเป็น <b>ฮาลาล</b> เท่านั้น</p>
+<p><b>ละหมาดตะรอเวียะห์</b> ทำเฉพาะคืนรอมฎอน <b>เป็นซุนนะฮ์ ไม่ใช่วาญิบ</b> ทำที่บ้านก็ได้</p>
+<h3>ตัวเลขที่ต้องจำ</h3>
+<div class="tw"><table><tr><th>ตัวเลข</th><th>คือ</th></tr><tr><td><b>9</b></td><td>รอมฎอนเป็นเดือนที่ 9</td></tr><tr><td><b>29 หรือ 30</b></td><td>จำนวนวันของรอมฎอน</td></tr><tr><td><b>4</b></td><td>ประเภทของศีลอด และชนิดของศีลอดฟัรฎู</td></tr><tr><td><b>2 เดือน / 60 คน</b></td><td>กัฟฟาเราะฮ์ขั้นที่ 2 และ 3</td></tr><tr><td><b>15</b></td><td>อายุที่บรรลุศาสนภาวะโดยประมาณ</td></tr></table></div>
+<h3>จุดที่น่าจะออกสอบ</h3>
+<ul><li><b>ศีลอด 4 ประเภท</b> โดยเฉพาะ <b>มักรูฮ์ กับ ฮะรอม</b></li><li><b>คำว่า &quot;เจตนา&quot; คือตัวชี้ขาดของการเสียศีลอด</b></li><li><b>ชิมแกงแล้วบ้วนทิ้งไม่เสีย กลืนถึงเสีย</b></li><li><b>กอฎออ์ vs ฟิดยะฮ์ vs กัฟฟาเราะฮ์</b> และกรณีที่ต้องทำทั้งสองอย่าง</li><li><b>ผู้ชรา/ป่วยเรื้อรัง จ่ายฟิดยะฮ์อย่างเดียว</b> ต่างจาก <b>สตรีตั้งครรภ์ที่ต้องทำทั้งสองอย่าง</b></li><li><b>ฮีลาล</b> และ <b>สำนักจุฬาราชมนตรี</b></li></ul>
+<h3>ข้อสอบ</h3></section><section data-t="p5" hidden><h2>เสาที่ 5 — การประกอบฮัจญ์ (Hajj)</h2>
+<h3>สรุปเนื้อหา</h3>
+<p><b>Hajj</b> แปลตามภาษาว่า <b>&quot;การมุ่งสู่&quot;</b> (to intend a journey) <b>Umrah</b> แปลว่า <b>&quot;การเยี่ยม&quot;</b></p>
+<div class="tw"><table><tr><th></th><th><b>ฮัจญ์</b></th><th><b>อุมเราะห์</b></th></tr><tr><td>ช่วงเวลา</td><td><b>กำหนดตายตัว ทำนอกเวลาไม่ได้</b></td><td><b>ทำได้ตลอดปี</b></td></tr><tr><td>วุกูฟที่อารอฟะฮ์</td><td>✅ มี</td><td>❌ ไม่มี</td></tr><tr><td>ค้างแรม / ขว้างเสาหิน</td><td>✅ มี</td><td>❌ ไม่มี</td></tr><tr><td>ขั้นตอน</td><td>อิห์รอม → วุกูฟ → ฏอวาฟ → สะแอ → ตัดผม</td><td>เหนียต → ฏอวาฟ → สะแอ → ตัดผม</td></tr></table></div>
+<p><b>โองการหลัก</b> — *&quot;การประกอบพิธีฮัจญ์ ณ บัยตุลลอฮ์ <b>สำหรับผู้ที่มีความสามารถเดินทางไปได้</b>&quot;* (อาลิ อิมรอน 3:97)</p>
+<h4>ทำไมต่างจาก 4 เสาแรก</h4>
+<p><b>ฮัจญ์ไม่ได้บังคับกับทุกคนอย่างสิ้นเชิง เพราะมีเงื่อนไขความพร้อมกำกับไว้</b> คือพร้อมด้าน <b>กาย · จิตใจ · ทรัพย์ · ความปลอดภัยของเส้นทาง</b> และ <b>ต้องทำหลักปฏิบัติอีก 4 ข้อครบสมบูรณ์มาก่อนแล้ว</b> ทำ <b>อย่างน้อย 1 ครั้งในชีวิต</b></p>
+<p><b>คุณสมบัติ 7 ข้อ</b> — เป็นมุสลิม · บรรลุศาสนภาวะ · มีสติสัมปชัญญะ · พร้อมด้านร่างกายจิตใจ · พร้อมด้านการเงิน · เส้นทางปลอดภัย · ไม่ก่อความเดือดร้อนต่อตนเองและผู้อื่น</p>
+<p><b>วัตถุประสงค์ 3 ข้อ</b> — <b>กำจัดอัตตาความเย่อหยิ่ง</b> · <b>ชำระตนให้พ้นบาป</b> · <b>แสดงศรัทธาอย่างแรงกล้าในอัลลอฮ์</b></p>
+<h4>3 รูปแบบของฮัจญ์</h4>
+<div class="tw"><table><tr><th>แบบ</th><th>ทำอะไร</th><th>อิห์รอม</th><th>เชือดสัตว์</th></tr><tr><td><b>อิฟรอด (Ifrad)</b></td><td><b>ฮัจญ์อย่างเดียว ไม่ทำอุมเราะห์</b></td><td>เฉพาะฮัจญ์</td><td><b>ไม่ต้อง</b></td></tr><tr><td><b>ตะมัตตุอ์ (Tamattu&#x27;)</b></td><td>อุมเราะห์ → พัก → ฮัจญ์</td><td><b>2 ครั้งแยกกัน</b></td><td><b>ต้อง</b></td></tr><tr><td><b>กิรอน (Qiran)</b></td><td>อุมเราะห์ + ฮัจญ์พร้อมกัน</td><td><b>ครั้งเดียวใช้ทั้งคู่</b></td><td><b>ต้อง</b></td></tr></table></div>
+<p><b>เสียดัม (Damm)</b> = เชือด <b>แพะหรือแกะ 1 ตัว</b></p>
+<h4>รุก่น vs วาญิบ — หัวใจของบทนี้</h4>
+<div class="tw"><table><tr><th></th><th><b>รุก่น (Rukun)</b></th><th><b>วาญิบ (Wajib)</b></th></tr><tr><td>ถ้าขาด</td><td><b>ฮัจญ์เสียเปล่า ต้องไปทำใหม่ปีหน้า</b></td><td><b>เสียดัมแล้วยังใช้ได้</b></td></tr></table></div>
+<p><b>รุก่น 6</b> — ครองอิห์รอมพร้อมเนียต · <b>วุกูฟที่อารอฟะฮ์</b> · <b>ฏอวาฟอิฟาเฎาะฮ์</b> · <b>สะแอ</b> · <b>ตะฮัลลุ้ล (ตัดผม)</b> · <b>เรียงลำดับให้ถูกต้อง</b></p>
+<p><b>วาญิบ 6</b> — ครองอิห์รอม<b>จากมีกอต</b> · ค้างแรม<b>มุซดะลิฟะฮ์</b> · ค้างแรม<b>มินา 3 คืน</b> · <b>ขว้างเสาหิน 3 ต้น</b> · <b>ฏอวาฟวิดาอ์ (อำลา)</b> · หลีกเลี่ยงข้อห้าม</p>
+<p><b>จุดหลอก — ฏอวาฟอยู่ทั้งสองฝั่ง</b> ฏอวาฟอิฟาเฎาะฮ์เป็นรุก่น แต่ <b>ฏอวาฟอำลาเป็นวาญิบ</b></p>
+<h4>สถานที่สำคัญ</h4>
+<p><b>มัสยิดอัล-ฮะรอม</b> — <b>ใหญ่ที่สุดในโลก</b> และ <b>สำคัญอันดับ 1</b> สร้างสมัยนบีอิบรอฮีม <b>กะอ์บะฮ์</b> แปลว่า <b>&quot;ลูกบาศก์&quot;</b> สูง <b>15 เมตร</b> คลุมด้วยผ้าไหมดำ <b>กิสวะฮ์</b> เปลี่ยนปีละครั้ง 4 มุมคือ <b>อิรอกี (ตะวันออกเฉียงเหนือ) · ชามี (เหนือ) · ยะมานี (ตะวันตก) · หินดำ (ใต้)</b> ส่วนประกอบรอบกะอ์บะฮ์ — <b>มุลตาซัม</b> (ผนังระหว่างหินดำกับประตู) · <b>ชาชีรวาน</b> (ฐาน) · <b>ฮิจร์อิสมาอีล / ฮะฏีม</b> (กำแพงโค้งที่เคยเป็นส่วนหนึ่งของกะอ์บะฮ์) · <b>มะกอมอิบรอฮีม</b> (ตู้กระจกครอบรอยเท้านบีอิบรอฮีม) · ประตูทองคำ <b>300 กก. ปี 1979</b></p>
+<p><b>หินดำ</b> — <b>ไม่ใช่วัตถุบูชา ถ้ากราบไหว้บูชาถือเป็นชิริกทันที</b> เป็นเพียง <b>จุดเริ่มต้นและจุดครบรอบของการฏอวาฟ</b> ปัจจุบัน <b>แตกเป็น 8 ก้อน</b> รัดด้วยลวดเงิน</p>
+<p><b>ซัมซัม</b> แปลว่า <b>&quot;ล้อม / กั้น&quot;</b> · <b>ซอฟา–มัรวะฮ์</b> ห่างกัน <b>450 เมตร</b> <b>มินา</b> ห่างอัลฮะรอม 5 กม. เป็นที่ตั้ง <b>เสาจามารัต 3 ต้น</b> <b>อารอฟะฮ์</b> แปลว่า <b>&quot;พบ / รู้จัก&quot;</b> เพราะ <b>นบีอาดัมกับฮาวาพบกันครั้งแรกที่นี่</b> <b>มุซดะลิฟะฮ์</b> อยู่<b>ระหว่างมินากับอารอฟะฮ์</b></p>
+<h4>ไทม์ไลน์</h4>
+<div class="tw"><table><tr><th>วัน</th><th>ที่ไหน</th><th>ทำอะไร</th></tr><tr><td><b>8</b></td><td>มินา</td><td>ครองอิห์รอม ค้างแรมคืนแรก</td></tr><tr><td><b>9</b></td><td><b>อารอฟะฮ์</b></td><td><b>วุกูฟ ตั้งแต่ตะวันคล้อยถึงตะวันตก · ละหมาดดุฮริ+อัศริรวมกัน · ห้ามค้างแรมที่นี่</b></td></tr><tr><td><b>คืน 9→10</b></td><td><b>มุซดะลิฟะฮ์</b></td><td><b>ละหมาดมัฆริบ+อิชาอ์รวมกัน · เก็บหิน 70 ก้อน · ค้าง 1 คืน</b></td></tr><tr><td><b>10</b></td><td>มินา + อัลฮะรอม</td><td><b>วันอีดิลอัฎฮา</b> · ขว้างเสาต้นใหญ่สุด 7 ก้อน · เชือดสัตว์ · ตัดผม · ฏอวาฟ + สะแอ</td></tr><tr><td><b>11–13</b></td><td>มินา</td><td><b>วันตัชรีก</b> ค้าง 3 คืน ขว้างครบ 3 ต้น</td></tr><tr><td>ก่อนกลับ</td><td>อัลฮะรอม</td><td><b>ฏอวาฟอำลา — ผู้หญิงมีประจำเดือนได้รับยกเว้น</b></td></tr></table></div>
+<p><b>ตะฮัลลุ้ล</b> — <b>ชายโกนศีรษะดีที่สุด · หญิงตัดปลายผมเท่าปลายนิ้ว ห้ามโกน</b> <b>วันตัชรีก</b> = 11–13 ซุลฮิจญะฮ์ <b>มุสลิมไม่ถือศีลอดในวันเหล่านี้</b> ชื่อมาจากการ <b>ตากเนื้อกุรบานให้แห้ง</b></p>
+<h3>ตัวเลขที่ต้องจำ</h3>
+<div class="tw"><table><tr><th>ตัวเลข</th><th>คือ</th></tr><tr><td><b>6 / 6</b></td><td>รุก่น / วาญิบ</td></tr><tr><td><b>7</b></td><td>รอบฏอวาฟ · เที่ยวสะแอ · ก้อนหินต่อเสา</td></tr><tr><td><b>70</b></td><td>ก้อนหินที่เก็บที่มุซดะลิฟะฮ์</td></tr><tr><td><b>3</b></td><td>เสาจามารัต · คืนที่มินา · รูปแบบฮัจญ์</td></tr><tr><td><b>8</b></td><td>จำนวนก้อนที่หินดำแตกออก</td></tr><tr><td><b>450 เมตร</b></td><td>ระยะซอฟา–มัรวะฮ์</td></tr><tr><td><b>15 เมตร</b></td><td>ความสูงกะอ์บะฮ์</td></tr><tr><td><b>9 / 10</b></td><td>วันอะรอฟะฮ์ / วันอีดใหญ่</td></tr></table></div>
+<h3>จุดที่น่าจะออกสอบ</h3>
+<ul><li><b>ฮัจญ์เป็นเสาเดียวที่ไม่บังคับทุกคน</b></li><li><b>Ifrad ไม่ต้องเชือดสัตว์ · Qiran ใช้อิห์รอมเดียว</b></li><li><b>ขาดรุก่น = ทำใหม่ปีหน้า · ขาดวาญิบ = เสียดัม</b></li><li><b>ฏอวาฟอำลาเป็นวาญิบ ไม่ใช่รุก่น</b></li><li><b>หินดำไม่ใช่วัตถุบูชา บูชาแล้วเป็นชิริก</b></li><li><b>อารอฟะฮ์แปลว่าพบ/รู้จัก</b> เพราะนบีอาดัมกับฮาวาพบกันที่นี่</li><li><b>มุซดะลิฟะฮ์เก็บหิน 70 ก้อน</b></li></ul>
+<h3>ข้อสอบ</h3></section>
+
+  <section data-t="quiz" hidden>
+    <div class="modebar">
+      <button class="mode" id="m-drill" aria-pressed="true">⚡ ฝึกทีละข้อ</button>
+      <button class="mode" id="m-exam" aria-pressed="false">📝 ชุดข้อสอบ</button>
+      <select id="topicsel"><option value="all">ทุกหัวข้อ</option></select>
+    </div>
+
+    <div id="drillwrap">
+      <div class="stats">
+        <div class="st"><span class="n" id="s-no">0</span><span class="l">ทำแล้ว</span></div>
+        <div class="st"><span class="n" id="s-streak">0</span><span class="l">ถูกติดกัน</span></div>
+        <div class="st"><span class="n" id="s-best">0</span><span class="l">สถิติสูงสุด</span></div>
+        <div class="st"><span class="n" id="s-acc">–</span><span class="l">ความแม่น</span></div>
+      </div>
+      <div id="quizbox"></div>
+      <div class="btnrow">
+        <button class="btn" id="b-next" disabled>ข้อต่อไป →</button>
+        <button class="btn ghost" id="b-end">🏁 ดูผลรวม</button>
+        <button class="btn ghost" id="b-reset">ล้างสถิติ</button>
+      </div>
+      <div class="hintline" id="b-hint">↑ ตอบข้อนี้ก่อน แล้วปุ่ม “ข้อต่อไป” จะกดได้</div>
+      <div id="result"></div>
+    </div>
+
+    <div id="examwrap" hidden>
+      <div id="examsetup" class="card">
+        <p>ทำเหมือนสอบจริง — ไม่เฉลยระหว่างทาง ส่งทีเดียวได้คะแนน + เฉลยรายข้อ</p>
+        <div class="btnrow">
+          <button class="btn" data-len="20">20 ข้อ</button>
+          <button class="btn" data-len="40">40 ข้อ</button>
+          <button class="btn" data-len="0">ทุกข้อ</button>
+        </div>
+      </div>
+      <div id="exambar" hidden>
+        <div class="stats">
+          <div class="st"><span class="n" id="e-done">0</span><span class="l">ทำแล้ว</span></div>
+          <div class="st"><span class="n" id="e-total">0</span><span class="l">ทั้งชุด</span></div>
+          <div class="st"><span class="n" id="e-left">0</span><span class="l">ยังไม่ตอบ</span></div>
+        </div>
+        <div class="bar2"><i id="e-prog" style="width:0%"></i></div>
+      </div>
+      <div id="examresult"></div>
+      <div id="exambox"></div>
+      <div class="btnrow" id="exambtns" hidden>
+        <button class="btn" id="e-submit">✅ ส่งคำตอบ</button>
+        <button class="btn ghost" id="e-new">🔄 ชุดใหม่</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">☪️ สรุปจากสไลด์อาจารย์สอง (Satit UP) · ทุกข้อเท็จจริงมีเลขหน้าอ้างอิงกลับไปยัง PDF ต้นฉบับ</div>
+</div>
+
+<script>
+var QUESTIONS = [{"type": "choice", "q": "เสาหลัก 5 ประการอยู่ในคำสอนหมวดใด", "choices": ["อีมาน (Iman)", "อิห์ซาน (Ihsan)", "อิบาดะห์ (Ibadat)"], "ans": 2, "why": "อิบาดะห์ = หลักปฏิบัติ/หน้าที่ในศาสนา ส่วนอีมานคือหลักศรัทธา 6 ข้อ และอิห์ซานคือหลักคุณธรรม", "topic": "p1", "topicName": "①  ภาพรวม + ชะฮาดะฮ์"}, {"type": "choice", "q": "What is the English name for Shahada?", "choices": ["The Fasting", "The Declaration of Faith", "The Almsgiving", "The Pilgrimage"], "ans": 1, "why": "สไลด์ใช้ทั้ง The Declaration of Faith, The Testimony และ The Creed", "topic": "p1", "topicName": "①  ภาพรวม + ชะฮาดะฮ์"}, {"type": "choice", "q": "องค์ประกอบของชะฮาดะฮ์มีกี่ประการ", "choices": ["2 ประการ", "3 ประการ", "4 ประการ", "5 ประการ"], "ans": 1, "why": "3 ประการ คือ กล่าวด้วยวาจา เลื่อมใสด้วยจิตใจ และปฏิบัติด้วยร่างกาย ท่องสั้น ๆ ว่า วาจา-ใจ-กาย", "topic": "p1", "topicName": "①  ภาพรวม + ชะฮาดะฮ์"}, {"type": "tf", "q": "ชะฮาดะฮ์เป็นคำสวดมนต์ชนิดหนึ่ง", "ans": false, "why": "สไลด์ระบุชัดว่าไม่ใช่คำสวดภาวนา ไม่ใช่การสบถสาบาน และไม่ใช่การกล่าวอ้างสิ่งศักดิ์สิทธิ์อื่น แต่เป็นการกล่าวประโยคที่แสดงความศรัทธา", "topic": "p1", "topicName": "①  ภาพรวม + ชะฮาดะฮ์"}, {"type": "choice", "q": "คำว่า \"สุหนัต\" มาจากภาษาใด", "choices": ["อาหรับ", "เปอร์เซีย", "มลายู", "สันสกฤต"], "ans": 2, "why": "สุหนัตเป็นคำมลายู ส่วนคำอาหรับคือ คีตาน หรือ คอตัน (Khitan / Khatna) เป็นจุดหลอกที่ออกบ่อย", "topic": "p1", "topicName": "①  ภาพรวม + ชะฮาดะฮ์"}, {"type": "choice", "q": "การทำสุหนัตปรากฏขึ้นครั้งแรกในศาสนาใด", "choices": ["อิสลาม", "ยูดาย", "คริสต์", "ฮินดู"], "ans": 1, "why": "เกิดครั้งแรกในศาสนายูดาย สมัยนบีอิบรอฮีม (อับราฮัม) ปัจจุบันบังคับใน 2 ศาสนาคือยูดายกับอิสลาม", "topic": "p1", "topicName": "①  ภาพรวม + ชะฮาดะฮ์"}, {"type": "tf", "q": "มุสลิมใหม่ต้องทำชะฮาดะฮ์เป็นพิธีกรรมแรกก่อนอย่างอื่น", "ans": true, "why": "ถือเป็นพิธีกรรมแรกและเป็นจุดเริ่มต้นของการเป็นมุสลิมที่สมบูรณ์แบบในทางความเชื่อ", "topic": "p1", "topicName": "①  ภาพรวม + ชะฮาดะฮ์"}, {"type": "choice", "q": "คำว่า \"ละหมาด\" ในภาษาไทยมีที่มาจากภาษาใด", "choices": ["อาหรับ", "เปอร์เซีย", "มลายู", "สันสกฤต"], "ans": 1, "why": "มาจากคำเปอร์เซีย นมาซ (Namaz) แล้วเพี้ยนเป็นละหมาด ส่วนคำอาหรับคือ Salah/Salat", "topic": "p2", "topicName": "②  ละหมาด"}, {"type": "choice", "q": "ละหมาด 5 เวลารวมกันได้กี่ร็อกอะฮ์", "choices": ["15", "16", "17", "18"], "ans": 2, "why": "Fajr 2 + Zuhr 4 + Asr 4 + Maghrib 3 + Isha 4 = 17 ร็อกอะฮ์ ท่องว่า 2-4-4-3-4", "topic": "p2", "topicName": "②  ละหมาด"}, {"type": "choice", "q": "ก่อนสมัยนบีมูฮัมหมัด ผู้ศรัทธาหันหน้าไปทางใดเวลาละหมาด", "choices": ["มักกะฮ์", "เยรูซาเล็ม", "เมดินะฮ์", "เจดดาห์"], "ans": 1, "why": "เดิมหันไปกรุงเยรูซาเล็ม เปลี่ยนมาเป็นกะอ์บะฮ์ที่มักกะฮ์ในสมัยท่านนบี", "topic": "p2", "topicName": "②  ละหมาด"}, {"type": "choice", "q": "ละหมาดญุมอะฮ์ใช้แทนละหมาดเวลาใด", "choices": ["ฟัจร์", "ซุฮริ", "อัศริ", "อิชาอ์"], "ans": 1, "why": "ญุมอะฮ์ทำช่วงบ่ายหลังเที่ยงวัน ใช้แทนซุฮริ ทำแล้วไม่ต้องละหมาดซุฮริในวันนั้น และบังคับเฉพาะผู้ชาย", "topic": "p2", "topicName": "②  ละหมาด"}, {"type": "tf", "q": "ละหมาดญุมอะฮ์บังคับทั้งผู้ชายและผู้หญิง", "ans": false, "why": "บังคับเฉพาะมุสลิมผู้ชาย ผู้หญิงไปได้แต่ไม่บังคับ ต้องแต่งกายมิดชิดและไม่ใส่น้ำหอมจนกลิ่นโชย", "topic": "p2", "topicName": "②  ละหมาด"}, {"type": "choice", "q": "ละหมาดญะนาซะฮ์ต่างจากละหมาดทั่วไปอย่างไร", "choices": ["ยืนตรงอย่างเดียว ไม่ก้มไม่กราบ", "ทำเฉพาะกลางคืน", "ต้องทำที่มักกะฮ์", "ไม่ต้องหันหน้าไปกิบลัต"], "ans": 0, "why": "ไม่มีรูกูอและสุญูด เพราะมีมัยยัตอยู่ด้านหน้าผู้ละหมาด และเป็นฟัรฎูกิฟายะฮ์", "topic": "p2", "topicName": "②  ละหมาด"}, {"type": "choice", "q": "ข้อใดคือ 3 ช่วงเวลาที่ห้ามละหมาด", "choices": ["เที่ยงคืน ตีสาม ย่ำรุ่ง", "ดวงอาทิตย์ขึ้น เที่ยงวัน ดวงอาทิตย์ตก", "ก่อนอาหาร หลังอาหาร ก่อนนอน", "วันศุกร์ วันเสาร์ วันอาทิตย์"], "ans": 1, "why": "สามช่วงคือขณะดวงอาทิตย์ขึ้น เวลาซาวัล (เที่ยง) และขณะดวงอาทิตย์จะตก ช่วงละราว 15-30 นาที โดยซาวัลในวันศุกร์ได้รับการยกเว้น", "topic": "p2", "topicName": "②  ละหมาด"}, {"type": "tf", "q": "ฟัรฎูกิฟายะฮ์ ถ้ามีมุสลิมกลุ่มหนึ่งทำแล้ว คนอื่นถือว่าพ้นผิด", "ans": true, "why": "เป็นหน้าที่รายกลุ่ม เช่นละหมาดญะนาซะฮ์ แต่ถ้าไม่มีใครทำเลยจะบาปแก่คนทั้งชุมชน", "topic": "p2", "topicName": "②  ละหมาด"}, {"type": "choice", "q": "คนเดินทางไกลรวมละหมาดคู่ใดได้", "choices": ["ฟัจร์+ซุฮริ", "อัศริ+ซุฮริ และ อิชาอ์+มัฆริบ", "มัฆริบ+ฟัจร์", "รวมได้ทุกคู่"], "ans": 1, "why": "อนุญาตเฉพาะสองคู่นี้เท่านั้น", "topic": "p2", "topicName": "②  ละหมาด"}, {"type": "choice", "q": "เมื่อมุสลิมเสียชีวิต ต้องฝังภายในกี่ชั่วโมง", "choices": ["12 ชั่วโมง", "24 ชั่วโมง", "48 ชั่วโมง", "7 วัน"], "ans": 1, "why": "โดยทั่วไปจัดการภายใน 24 ชั่วโมง ใช้การฝังเท่านั้นไม่เผา สุสานเรียกกุโบร์", "topic": "p2", "topicName": "②  ละหมาด"}, {"type": "choice", "q": "การบริจาคแบบใดเป็น 1 ใน 5 เสาหลักของอิสลาม", "choices": ["เศาะดะเกาะฮ์", "วะกัฟ", "ซะกาต", "ทั้งสามอย่าง"], "ans": 2, "why": "มีแค่ซะกาตที่เป็นเสาหลัก เพราะเป็นภาคบังคับและกำหนดจำนวนกับเวลาชัดเจน อีกสองอย่างเป็นการบริจาคโดยสมัครใจ", "topic": "p3", "topicName": "③  ซะกาต"}, {"type": "choice", "q": "คำว่า Zakat ในภาษาอาหรับแปลว่าอะไร", "choices": ["การขัดเกลาให้สะอาดบริสุทธิ์", "การเสียสละ", "การอดทน", "การนมัสการ"], "ans": 0, "why": "ยังแปลได้ว่า ความจำเริญ การเพิ่มพูน และการเจริญงอกงาม", "topic": "p3", "topicName": "③  ซะกาต"}, {"type": "choice", "q": "พิกัดขั้นต่ำและอัตราซะกาตของทองคำและเงินออมคือเท่าใด", "choices": ["ทองคำ 85 กรัม อัตรา 2.5%", "ทองคำ 100 กรัม อัตรา 5%", "ทองคำ 700 กรัม อัตรา 10%", "ทองคำ 50 กรัม อัตรา 20%"], "ans": 0, "why": "700 กับ 10% เป็นตัวเลขของผลผลิตเกษตร ส่วน 20% เป็นทรัพย์สินที่ค้นพบ", "topic": "p3", "topicName": "③  ซะกาต"}, {"type": "choice", "q": "ผลผลิตการเกษตรที่ใช้น้ำฝนอย่างเดียว เสียซะกาตอัตราเท่าใด", "choices": ["2.5%", "5%", "10%", "20%"], "ans": 2, "why": "น้ำฝนไม่ต้องลงทุนจึงจ่ายมาก 10% ส่วนชลประทานต้องลงทุนจึงจ่ายน้อย 5% จำว่าลงทุนมากจ่ายน้อย", "topic": "p3", "topicName": "③  ซะกาต"}, {"type": "choice", "q": "คัมภีร์อัลกุรอานจำแนกผู้มีสิทธิ์รับซะกาตไว้กี่จำพวก", "choices": ["6", "7", "8", "10"], "ans": 2, "why": "8 จำพวก ได้แก่ คนยากจน คนขัดสน เจ้าหน้าที่ซะกาต ผู้มีหัวใจโน้มมาสู่อิสลาม ทาส คนมีหนี้ ผู้อยู่ในหนทางของอัลลอฮ์ และคนติดขัดระหว่างเดินทาง", "topic": "p3", "topicName": "③  ซะกาต"}, {"type": "tf", "q": "คนที่ยังไม่เป็นมุสลิมไม่มีสิทธิ์รับซะกาตเลย", "ans": false, "why": "จำพวกที่ 4 คือผู้ที่มีหัวใจโน้มมาสู่อิสลาม รับซะกาตได้แม้ยังไม่ได้เข้ารับอิสลาม เพื่อให้เขาเข้ารับในภายหลัง", "topic": "p3", "topicName": "③  ซะกาต"}, {"type": "choice", "q": "หนี้แบบใดที่รับซะกาตไม่ได้", "choices": ["หนี้เพื่อการศึกษา", "หนี้จากการพนัน", "หนี้เพื่อรักษาพยาบาล", "หนี้เพื่อช่วยเหลือสังคม"], "ans": 1, "why": "ต้องเป็นหนี้ที่ไม่ได้เกิดจากการพนัน ส่วนหนี้เพื่อช่วยเหลือสังคมนั้นรับได้แม้ผู้นั้นจะร่ำรวย", "topic": "p3", "topicName": "③  ซะกาต"}, {"type": "choice", "q": "ถ้าจ่ายซะกาตฟิตเราะห์หลังละหมาดอีดแล้ว จะนับเป็นอะไร", "choices": ["ยังเป็นซะกาตฟิตเราะห์", "เป็นเพียงเศาะดะเกาะฮ์", "เป็นวะกัฟ", "เป็นซะกาตมาล"], "ans": 1, "why": "กรอบเวลาของฟิตเราะห์สั้นมากราว 3 วัน เวลาที่ประเสริฐสุดคือเช้าวันอีดิ้ลฟิตริก่อนละหมาดอีด ถ้าเลยไปแล้วจะไม่นับเป็นซะกาต", "topic": "p3", "topicName": "③  ซะกาต"}, {"type": "choice", "q": "ผู้ที่ไม่จ่ายซะกาตเพราะปฏิเสธว่าไม่ใช่บทบัญญัติทางศาสนา จะมีผลอย่างไร", "choices": ["ถูกยึดทรัพย์ครึ่งหนึ่ง", "ถือเป็นกาฟิรและตกจากศาสนา", "ต้องถือศีลอดชดใช้", "ไม่มีโทษ"], "ans": 1, "why": "ส่วนผู้ที่ไม่จ่ายเพราะความตระหนี่จะไม่ตกจากศาสนา แต่ต้องถูกจัดเก็บพร้อมยึดทรัพย์ครึ่งหนึ่ง", "topic": "p3", "topicName": "③  ซะกาต"}, {"type": "tf", "q": "ซะกาตมาลคิดจากรายได้ทั้งหมดที่หามาได้ในรอบปี", "ans": false, "why": "คิดจากทรัพย์สินที่ออมไว้หลังใช้จ่ายครบรอบปีแล้ว ไม่ใช่จากรายได้ และรอบปีใช้ปีจันทรคติ 354 วัน", "topic": "p3", "topicName": "③  ซะกาต"}, {"type": "choice", "q": "รอมฎอนเป็นเดือนที่เท่าไรตามปฏิทินอิสลาม", "choices": ["เดือนที่ 1", "เดือนที่ 8", "เดือนที่ 9", "เดือนที่ 12"], "ans": 2, "why": "เดือนที่ 9 ยาว 29 หรือ 30 วัน ตัดสินโดยการดูพระจันทร์เสี้ยวแรกที่เรียกว่า ฮีลาล", "topic": "p4", "topicName": "④  ถือศีลอด"}, {"type": "choice", "q": "ศีลอดแบ่งออกเป็นกี่ประเภท", "choices": ["2 ประเภท", "3 ประเภท", "4 ประเภท", "5 ประเภท"], "ans": 2, "why": "4 ประเภท คือ ฟัรฎู (บังคับ) มุสตะฮับบ์/ซุนนะฮ์ (อาสา) มักรูฮ์ (ไม่ควรทำ) และ ฮะรอม (ต้องห้าม)", "topic": "p4", "topicName": "④  ถือศีลอด"}, {"type": "tf", "q": "การชิมแกงแล้วบ้วนทิ้งทำให้เสียศีลอด", "ans": false, "why": "ชิมได้แต่เมื่อรู้รสแล้วต้องบ้วนทิ้ง ถ้ากลืนเข้าไปจึงจะเสียศีลอด", "topic": "p4", "topicName": "④  ถือศีลอด"}, {"type": "tf", "q": "ดำน้ำแล้วน้ำเข้าปากโดยไม่ได้ตั้งใจ ทำให้เสียศีลอด", "ans": false, "why": "คำชี้ขาดคือคำว่าเจตนา ถ้าไม่ได้ตั้งใจไม่เสียศีลอด เช่นเดียวกับการกลืนน้ำลายและการแปรงฟัน", "topic": "p4", "topicName": "④  ถือศีลอด"}, {"type": "choice", "q": "ผู้ที่เสียศีลอดจากการมีเพศสัมพันธ์ ต้องชดใช้อย่างไร", "choices": ["ถือศีลอดชดใช้อย่างเดียว", "จ่ายฟิดยะฮ์อย่างเดียว", "ต้องทั้งกอฎออ์และกัฟฟาเราะฮ์", "ไม่ต้องชดใช้"], "ans": 2, "why": "เป็นกรณีที่หนักที่สุด ต้องถือชดใช้เท่าวันที่ขาดและเสียค่าไถ่โทษด้วย", "topic": "p4", "topicName": "④  ถือศีลอด"}, {"type": "choice", "q": "กัฟฟาเราะฮ์ขั้นที่สอง คือถือศีลอดต่อเนื่องกี่เดือน", "choices": ["1 เดือน", "2 เดือน", "3 เดือน", "6 เดือน"], "ans": 1, "why": "ต้องถือ 2 เดือนติดต่อกัน ถ้าขาดแม้เพียงวันเดียวต้องเริ่มนับหนึ่งใหม่ ลำดับคือปล่อยทาส แล้วถือ 2 เดือน แล้วเลี้ยงคนจน 60 คน", "topic": "p4", "topicName": "④  ถือศีลอด"}, {"type": "choice", "q": "ผู้ชราภาพหรือผู้ป่วยเรื้อรังที่ไม่มีหวังหาย ต้องทำอย่างไร", "choices": ["จ่ายฟิดยะฮ์อย่างเดียว", "ถือศีลอดชดใช้อย่างเดียว", "ต้องทำทั้งสองอย่าง", "ไม่ต้องทำอะไร"], "ans": 0, "why": "เพราะไม่มีทางถือชดใช้ได้จริง จึงให้จ่ายทานแทน ต่างจากสตรีตั้งครรภ์และให้นมบุตรที่ต้องทำทั้งสองอย่าง", "topic": "p4", "topicName": "④  ถือศีลอด"}, {"type": "choice", "q": "ในประเทศไทย หน่วยงานใดเป็นผู้ประกาศวันเริ่มและวันสิ้นสุดการถือศีลอด", "choices": ["กระทรวงวัฒนธรรม", "สำนักจุฬาราชมนตรี", "คณะกรรมการอิสลามประจำจังหวัด", "มัสยิดกลาง"], "ans": 1, "why": "สำนักจุฬาราชมนตรีออกประกาศอย่างเป็นทางการ โดยให้ดูพระจันทร์เสี้ยวแรก (ฮีลาล) เมื่อจะสิ้นเดือนชะอ์บานและเมื่อจะสิ้นเดือนรอมฎอน", "topic": "p4", "topicName": "④  ถือศีลอด"}, {"type": "choice", "q": "ตามฮะดีษ ควรละศีลอดด้วยสิ่งใดก่อน", "choices": ["น้ำเปล่า", "ผลอินทผลัม", "นม", "ขนมหวาน"], "ans": 1, "why": "ละศีลอดด้วยอินทผลัมสด ถ้าไม่มีใช้อินทผลัมแห้ง ถ้าไม่มีอีกจึงจิบน้ำ อินทผลัมย่อยได้ในไม่เกิน 20 นาที", "topic": "p4", "topicName": "④  ถือศีลอด"}, {"type": "tf", "q": "ละหมาดตะรอเวียะห์เป็นละหมาดภาคบังคับในเดือนรอมฎอน", "ans": false, "why": "เป็นละหมาดซุนนะฮ์ ไม่ใช่วาญิบ ทำที่บ้านก็ได้ ไม่จำเป็นต้องไปมัสยิด", "topic": "p4", "topicName": "④  ถือศีลอด"}, {"type": "choice", "q": "คำว่า Hajj แปลตามภาษาว่าอะไร", "choices": ["การเยี่ยม", "การมุ่งสู่", "การเสียสละ", "การนมัสการ"], "ans": 1, "why": "Hajj แปลว่าการมุ่งสู่ (to intend a journey) ส่วน Umrah แปลว่าการเยี่ยม", "topic": "p5", "topicName": "⑤  ฮัจญ์"}, {"type": "choice", "q": "ข้อใดคือความต่างสำคัญระหว่างฮัจญ์กับอุมเราะห์", "choices": ["ฮัจญ์มีกำหนดเวลาตายตัว อุมเราะห์ทำได้ตลอดปี", "ฮัจญ์ทำที่เมดินะฮ์ อุมเราะห์ทำที่มักกะฮ์", "ฮัจญ์ทำได้เฉพาะผู้ชาย", "ไม่ต่างกันเลย"], "ans": 0, "why": "อีกจุดต่างคืออุมเราะห์ไม่มีวุกูฟที่อารอฟะฮ์ ไม่มีการค้างแรมและไม่มีการขว้างเสาหิน", "topic": "p5", "topicName": "⑤  ฮัจญ์"}, {"type": "choice", "q": "ทำไมฮัจญ์จึงต่างจากหลักปฏิบัติอีก 4 ข้อ", "choices": ["เพราะทำได้เฉพาะคนรวย", "เพราะไม่ได้บังคับทุกคน มีเงื่อนไขความพร้อมกำกับไว้", "เพราะทำปีละหลายครั้ง", "เพราะไม่ใช่เสาหลักจริง"], "ans": 1, "why": "เงื่อนไขคือความพร้อมด้านกาย จิตใจ ทรัพย์ และความปลอดภัยของเส้นทาง อีกทั้งต้องทำ 4 เสาแรกครบก่อน", "topic": "p5", "topicName": "⑤  ฮัจญ์"}, {"type": "choice", "q": "ฮัจญ์แบบใดที่ไม่ต้องเชือดสัตว์", "choices": ["อิฟรอด (Ifrad)", "ตะมัตตุอ์ (Tamattu)", "กิรอน (Qiran)", "ต้องเชือดทุกแบบ"], "ans": 0, "why": "อิฟรอดคือทำฮัจญ์อย่างเดียวไม่ทำอุมเราะห์ จึงไม่ต้องเสียดัม ส่วนตะมัตตุอ์และกิรอนต้องเชือดแพะหรือแกะ 1 ตัว", "topic": "p5", "topicName": "⑤  ฮัจญ์"}, {"type": "choice", "q": "ฮัจญ์แบบใดใช้อิห์รอมครั้งเดียวสำหรับทั้งฮัจญ์และอุมเราะห์", "choices": ["อิฟรอด", "ตะมัตตุอ์", "กิรอน", "ไม่มีแบบใดเลย"], "ans": 2, "why": "กิรอนใช้อิห์รอมเดียวสำหรับทั้งสองพิธี ส่วนตะมัตตุอ์ใช้ 2 ครั้งแยกกัน", "topic": "p5", "topicName": "⑤  ฮัจญ์"}, {"type": "choice", "q": "ถ้าผู้ประกอบฮัจญ์ละทิ้งรุก่นข้อใดข้อหนึ่ง จะเกิดอะไรขึ้น", "choices": ["เสียดัมแล้วใช้ได้", "ฮัจญ์เสียเปล่า ต้องไปทำใหม่ในปีต่อไป", "ไม่มีผลอะไร", "ต้องถือศีลอดชดใช้"], "ans": 1, "why": "รุก่นคือหลักการสำคัญที่ขาดไม่ได้ ส่วนการละทิ้งวาญิบนั้นเพียงเสียดัมแล้วฮัจญ์ยังครบสมบูรณ์", "topic": "p5", "topicName": "⑤  ฮัจญ์"}, {"type": "choice", "q": "ฏอวาฟวิดาอ์ (ฏอวาฟอำลา) จัดเป็นอะไร", "choices": ["รุก่น", "วาญิบ", "ซุนนะฮ์", "มักรูฮ์"], "ans": 1, "why": "เป็นจุดหลอก เพราะฏอวาฟอิฟาเฎาะฮ์เป็นรุก่น แต่ฏอวาฟอำลาเป็นวาญิบ ขาดแล้วเสียดัม และผู้หญิงมีประจำเดือนได้รับยกเว้น", "topic": "p5", "topicName": "⑤  ฮัจญ์"}, {"type": "choice", "q": "การฏอวาฟต้องเดินวนรอบกะอ์บะฮ์กี่รอบ และเริ่มที่จุดใด", "choices": ["5 รอบ เริ่มที่ประตู", "7 รอบ เริ่มที่หินดำ", "7 รอบ เริ่มที่มะกอมอิบรอฮีม", "3 รอบ เริ่มที่ซัมซัม"], "ans": 1, "why": "เดินเวียนซ้าย 7 รอบ โดยหินดำเป็นทั้งจุดเริ่มต้นและจุดครบรอบ", "topic": "p5", "topicName": "⑤  ฮัจญ์"}, {"type": "tf", "q": "หินดำเป็นสิ่งศักดิ์สิทธิ์ที่ชาวมุสลิมกราบไหว้บูชา", "ans": false, "why": "สไลด์ระบุชัดว่าหินดำไม่ใช่วัตถุบูชาหรือเครื่องรางของขลัง การกราบไหว้บูชาทำได้กับอัลลอฮ์เท่านั้น ถ้าเอาหินดำมาบูชาถือเป็นชิริกทันที", "topic": "p5", "topicName": "⑤  ฮัจญ์"}, {"type": "choice", "q": "ที่มุซดะลิฟะฮ์ ผู้ประกอบฮัจญ์ต้องเก็บก้อนหินกี่ก้อน", "choices": ["7 ก้อน", "21 ก้อน", "49 ก้อน", "70 ก้อน"], "ans": 3, "why": "เก็บ 70 ก้อนและเผื่ออีกเล็กน้อย เพื่อนำไปขว้างเสาจามารัตทั้ง 3 ต้นในวันที่ 10 ถึง 13", "topic": "p5", "topicName": "⑤  ฮัจญ์"}, {"type": "choice", "q": "คำว่า อารอฟะฮ์ ในภาษาอาหรับแปลว่าอะไร", "choices": ["ความเมตตา", "พบ และ รู้จัก", "การรอคอย", "ทุ่งกว้าง"], "ans": 1, "why": "เพราะเป็นที่ที่นบีอาดัมกับท่านหญิงฮาวาพบกันครั้งแรกบนโลกหลังถูกขับจากสวรรค์", "topic": "p5", "topicName": "⑤  ฮัจญ์"}, {"type": "choice", "q": "วันอะรอฟะฮ์ตรงกับวันที่เท่าไรของเดือนซุลฮิจญะฮ์", "choices": ["วันที่ 8", "วันที่ 9", "วันที่ 10", "วันที่ 13"], "ans": 1, "why": "วันที่ 9 เป็นวันวุกูฟที่ทุ่งอารอฟะฮ์ ส่วนวันที่ 10 คือวันอีดิลอัฎฮา", "topic": "p5", "topicName": "⑤  ฮัจญ์"}, {"type": "choice", "q": "กะอ์บะฮ์ (Kaaba) แปลว่าอะไร", "choices": ["บ้านศักดิ์สิทธิ์", "ลูกบาศก์", "หินดำ", "ศูนย์กลาง"], "ans": 1, "why": "เป็นคำอาหรับแปลว่าลูกบาศก์ ส่วนอีกชื่อคือบัยตุลลอฮ์ แปลว่าบ้านของอัลลอฮ์", "topic": "p5", "topicName": "⑤  ฮัจญ์"}, {"type": "choice", "q": "ตะฮัลลุ้ลของผู้หญิงทำอย่างไร", "choices": ["โกนศีรษะทั้งหมด", "ตัดปลายผมประมาณปลายนิ้วมือ", "ไม่ต้องทำ", "ตัดผมครึ่งศีรษะ"], "ans": 1, "why": "ส่งเสริมให้ตัดไม่ให้โกน ส่วนผู้ชายนั้นการโกนศีรษะประเสริฐกว่าการตัด", "topic": "p5", "topicName": "⑤  ฮัจญ์"}, {"type": "tf", "q": "มุสลิมถือศีลอดในวันตัชรีก (11-13 ซุลฮิจญะฮ์)", "ans": false, "why": "วันตัชรีกเป็นช่วงรื่นเริงเฉลิมฉลองต่อจากวันอีดิลอัฎฮา มุสลิมไม่ถือศีลอด และเป็นช่วงทำกุรบาน ชื่อมาจากการตากเนื้อกุรบานให้แห้ง", "topic": "p5", "topicName": "⑤  ฮัจญ์"}];
+(function(){
+var D=document;
+var $=function(s){return D.querySelector(s);};
+var $$=function(s){return [].slice.call(D.querySelectorAll(s));};
+var rnd=function(n){return Math.floor(Math.random()*n);};
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=rnd(i+1),t=a[i];a[i]=a[j];a[j]=t;}return a;}
+/* ⚠️ ค้นเฉพาะในกล่องของตัวเอง — หน้านี้มี .fb/.opt หลายชุด (ฝึกทีละข้อ + ชุดข้อสอบ)
+   ถ้าใช้ document.querySelector เฉย ๆ เฉลยจะไปโผล่ผิดกล่อง */
+var q1=function(s){return D.getElementById('quizbox').querySelector(s);};
+var qA=function(s){return [].slice.call(D.getElementById('quizbox').querySelectorAll(s));};
+
+/* ---------- แท็บ ---------- */
+$$('.tab').forEach(function(t){
+  t.onclick=function(){
+    $$('.tab').forEach(function(x){x.setAttribute('aria-selected',x===t?'true':'false');});
+    var k=t.getAttribute('data-t');
+    $$('section[data-t]').forEach(function(s){ s.hidden = s.getAttribute('data-t')!==k; });
+    $('#findbar').style.display = (k==='quiz') ? 'none' : '';
+    $('#q').value=''; doFind();
+    window.scrollTo({top:Math.max(0,$('.tabs').offsetTop-4),behavior:'smooth'});
+  };
+});
+
+/* ---------- ค้นหาในหัวข้อ ---------- */
+function doFind(){
+  var kw=$('#q').value.trim().toLowerCase();
+  var sec=$$('section[data-t]').filter(function(s){return !s.hidden;})[0];
+  if(!sec||sec.getAttribute('data-t')==='quiz'){ $('#cnt').textContent=''; return; }
+  var blocks=[].slice.call(sec.children), hit=0;
+  blocks.forEach(function(b){
+    var ok=!kw||(b.textContent||'').toLowerCase().indexOf(kw)>-1;
+    b.hidden=!ok; if(ok&&kw) hit++;
+  });
+  $('#cnt').textContent = kw ? (hit+' ย่อหน้า') : '';
+}
+$('#q').oninput=doFind;
+
+/* ---------- คลังข้อสอบ ---------- */
+var TOPICS={};
+QUESTIONS.forEach(function(q){ TOPICS[q.topic]=q.topicName; });
+var sel=$('#topicsel');
+Object.keys(TOPICS).forEach(function(k){
+  var o=D.createElement('option'); o.value=k;
+  o.textContent=TOPICS[k]+' ('+QUESTIONS.filter(function(q){return q.topic===k;}).length+')';
+  sel.appendChild(o);
+});
+function pool(){
+  var t=sel.value;
+  return t==='all'?QUESTIONS.slice():QUESTIONS.filter(function(q){return q.topic===t;});
+}
+function optsOf(q){ return q.type==='tf' ? ['ถูก','ผิด'] : q.choices.slice(); }
+function ansOf(q){ return q.type==='tf' ? (q.ans?'ถูก':'ผิด') : q.choices[q.ans]; }
+
+/* ---------- สลับโหมด ---------- */
+var mode='drill';
+function setMode(m){
+  mode=m;
+  $('#m-drill').setAttribute('aria-pressed', m==='drill');
+  $('#m-exam').setAttribute('aria-pressed', m==='exam');
+  $('#drillwrap').hidden = m!=='drill';
+  $('#examwrap').hidden  = m!=='exam';
+}
+$('#m-drill').onclick=function(){setMode('drill');};
+$('#m-exam').onclick=function(){setMode('exam');};
+sel.onchange=function(){ if(mode==='drill') newQ(); };
+
+/* ================= โหมดฝึกทีละข้อ ================= */
+var KEY='islam-examkit-stats';
+var stats=(function(){try{return JSON.parse(localStorage.getItem(KEY))||null;}catch(e){return null;}})();
+if(!stats||!stats.t) stats={n:0,ok:0,streak:0,best:0,t:{}};
+function save(){try{localStorage.setItem(KEY,JSON.stringify(stats));}catch(e){}}
+function paint(){
+  $('#s-no').textContent=stats.n; $('#s-streak').textContent=stats.streak;
+  $('#s-best').textContent=stats.best;
+  $('#s-acc').textContent=stats.n?Math.round(stats.ok/stats.n*100)+'%':'–';
+}
+var cur=null, answered=false, curOpts=null;
+function newQ(){
+  var p=pool(); if(!p.length){ $('#quizbox').innerHTML='<div class="card">ไม่มีข้อสอบในหัวข้อนี้</div>'; return; }
+  cur=p[rnd(p.length)]; answered=false; curOpts=shuffle(optsOf(cur));
+  $('#result').innerHTML='';
+  var h='<div class="q"><div class="qhead"><span class="qtopic">'+cur.topicName+'</span>'+
+        '<span>ข้อที่ '+(stats.n+1)+'</span></div><div class="qtext">'+cur.q+'</div><div class="opts">'+
+        curOpts.map(function(x){return '<button class="opt" data-v="'+String(x).replace(/"/g,'&quot;')+'">'+x+'</button>';}).join('')+
+        '</div><div class="fb"></div></div>';
+  $('#quizbox').innerHTML=h;
+  $('#b-next').disabled=true; $('#b-hint').style.display='';
+}
+function grade(val){
+  if(answered) return; answered=true;
+  try{ gradeCore(val); }
+  finally{ $('#b-next').disabled=false; $('#b-hint').style.display='none'; }
+}
+function gradeCore(val){
+  var right=ansOf(cur), ok=(val===right);
+  qA('.opt').forEach(function(b){
+    var v=b.getAttribute('data-v');
+    /* ⚠️ ห้าม classList.add('') เด็ดขาด — โยน SyntaxError แล้วโค้ดตายกลางคัน */
+    var cls = (v===right)?'right':((v===val)?'wrong':'');
+    if(cls) b.classList.add(cls);
+    b.disabled=true;
+  });
+  stats.n++; if(ok){stats.ok++;stats.streak++;if(stats.streak>stats.best)stats.best=stats.streak;} else stats.streak=0;
+  var t=stats.t[cur.topic]||(stats.t[cur.topic]={n:0,ok:0}); t.n++; if(ok)t.ok++;
+  save(); paint();
+  var fb=q1('.fb');
+  fb.className='fb '+(ok?'ok':'bad');
+  fb.innerHTML=(ok?'✓ ถูกต้อง!':'✗ ยังไม่ใช่ — เฉลย: <b>'+right+'</b>')+'<div class="why">'+cur.why+'</div>';
+}
+D.getElementById('quizbox').addEventListener('click',function(e){
+  var b=e.target.closest('.opt');
+  if(b&&!b.disabled) grade(b.getAttribute('data-v'));
+});
+$('#b-next').onclick=newQ;
+$('#b-reset').onclick=function(){
+  if(!confirm('ล้างสถิติทั้งหมด?')) return;
+  stats={n:0,ok:0,streak:0,best:0,t:{}}; save(); paint(); $('#result').innerHTML=''; newQ();
+};
+$('#b-end').onclick=function(){
+  var rows=Object.keys(TOPICS).map(function(k){
+    var t=stats.t[k]||{n:0,ok:0};
+    return {name:TOPICS[k],n:t.n,ok:t.ok,p:t.n?t.ok/t.n:-1};
+  }).sort(function(a,b){return (a.p<0?2:a.p)-(b.p<0?2:b.p);});
+  var done=rows.filter(function(r){return r.n>0;});
+  var h='<h2>ผลรวม — เรียงจากบทที่อ่อนที่สุด</h2>';
+  if(!done.length){ h+='<div class="card">ยังไม่ได้ทำข้อไหนเลย</div>'; }
+  else{
+    h+='<div class="card">';
+    rows.forEach(function(r){
+      if(r.n===0){ h+='<div class="rrow"><div class="t"><span>'+r.name+'</span><span>ยังไม่ได้ทำ</span></div></div>'; return; }
+      var p=Math.round(r.p*100), c=p>=80?'var(--good)':p>=50?'var(--gd)':'var(--wrong)';
+      h+='<div class="rrow"><div class="t"><span>'+r.name+'</span><span><b>'+r.ok+'/'+r.n+'</b> ('+p+'%)</span></div>'+
+         '<div class="bar2"><i style="width:'+p+'%;background-image:linear-gradient('+c+','+c+')"></i></div></div>';
+    });
+    h+='</div><div class="verdict">ทำไป <b>'+stats.n+'</b> ข้อ ถูก <b>'+stats.ok+'</b> ('+
+       Math.round(stats.ok/stats.n*100)+'%)<br>ควรกลับไปอ่าน <b>'+done[0].name+'</b> ('+done[0].ok+'/'+done[0].n+') ก่อน</div>';
+  }
+  $('#result').innerHTML=h;
+};
+
+/* ================= โหมดชุดข้อสอบ ================= */
+var exam=null;
+var eb=function(){return D.getElementById('exambox');};
+function buildExam(n){
+  var p=shuffle(pool());
+  exam={qs:(n>0?p.slice(0,n):p).map(function(q){return {q:q,opts:shuffle(optsOf(q))};}),done:false};
+  $('#examsetup').hidden=true; $('#exambar').hidden=false; $('#exambtns').hidden=false;
+  eb().innerHTML=exam.qs.map(function(it,i){
+    return '<div class="q" data-q="'+i+'"><div class="qhead"><span class="qtopic">'+it.q.topicName+'</span>'+
+      '<span>ข้อ '+(i+1)+' / '+exam.qs.length+'</span></div><div class="qtext">'+it.q.q+'</div><div class="opts">'+
+      it.opts.map(function(x){return '<button class="opt" data-i="'+i+'" data-v="'+String(x).replace(/"/g,'&quot;')+'">'+x+'</button>';}).join('')+
+      '</div><div class="fb"></div></div>';
+  }).join('');
+  $('#examresult').innerHTML=''; $('#e-total').textContent=exam.qs.length; prog();
+}
+function answered_(){ return eb().querySelectorAll('.opt.sel').length; }
+function prog(){
+  if(!exam||exam.done) return;
+  var a=answered_(), n=exam.qs.length;
+  $('#e-done').textContent=a; $('#e-left').textContent=n-a;
+  $('#e-prog').style.width=Math.round(a/n*100)+'%';
+}
+eb().addEventListener('click',function(e){
+  if(!exam||exam.done) return;
+  var b=e.target.closest('.opt'); if(!b||b.disabled) return;
+  var i=b.getAttribute('data-i');
+  [].slice.call(eb().querySelectorAll('.opt[data-i="'+i+'"]')).forEach(function(x){x.classList.remove('sel');});
+  b.classList.add('sel'); prog();
+});
+$$('#examsetup [data-len]').forEach(function(b){ b.onclick=function(){ buildExam(+b.getAttribute('data-len')); }; });
+$('#e-new').onclick=function(){
+  if(exam&&!exam.done&&answered_()>0&&!confirm('ทิ้งชุดนี้แล้วเริ่มใหม่?')) return;
+  exam=null; $('#examsetup').hidden=false; $('#exambar').hidden=true; $('#exambtns').hidden=true;
+  eb().innerHTML=''; $('#examresult').innerHTML='';
+};
+$('#e-submit').onclick=function(){
+  if(!exam||exam.done) return;
+  var left=exam.qs.length-answered_();
+  if(left>0&&!confirm('ยังไม่ได้ตอบ '+left+' ข้อ — ส่งเลยไหม? (นับว่าผิด)')) return;
+  exam.done=true;
+  var byT={}, score=0;
+  exam.qs.forEach(function(it,i){
+    var right=ansOf(it.q);
+    var s=eb().querySelector('.opt.sel[data-i="'+i+'"]');
+    var got=s?s.getAttribute('data-v'):null, ok=(got===right);
+    [].slice.call(eb().querySelectorAll('.opt[data-i="'+i+'"]')).forEach(function(x){
+      var v=x.getAttribute('data-v'); x.classList.remove('sel');
+      var cls=(v===right)?'right':((v===got)?'wrong':'');
+      if(cls) x.classList.add(cls);
+      x.disabled=true;
+    });
+    if(ok) score++;
+    var t=byT[it.q.topic]||(byT[it.q.topic]={n:0,ok:0}); t.n++; if(ok)t.ok++;
+    var fb=eb().querySelector('.q[data-q="'+i+'"] .fb');
+    fb.className='fb '+(ok?'ok':'bad');
+    fb.innerHTML=(ok?'✓ ถูก':'✗ ผิด — เฉลย: <b>'+right+'</b>')+'<div class="why">'+it.q.why+'</div>';
+  });
+  var n=exam.qs.length, pc=Math.round(score/n*100);
+  var rows=Object.keys(byT).map(function(k){var t=byT[k];
+    return {name:TOPICS[k],ok:t.ok,n:t.n,p:t.ok/t.n};}).sort(function(a,b){return a.p-b.p;});
+  var h='<h2>ผลสอบ</h2><div class="card"><div style="font-size:1.4rem;font-weight:700;color:var(--strong)">'+
+    score+' / '+n+' <span style="font-size:.95rem;color:var(--mut)">('+pc+'%)</span></div>';
+  rows.forEach(function(r){
+    var p=Math.round(r.p*100), c=p>=80?'var(--good)':p>=50?'var(--gd)':'var(--wrong)';
+    h+='<div class="rrow"><div class="t"><span>'+r.name+'</span><span><b>'+r.ok+'/'+r.n+'</b> ('+p+'%)</span></div>'+
+       '<div class="bar2"><i style="width:'+p+'%;background-image:linear-gradient('+c+','+c+')"></i></div></div>';
+  });
+  h+='</div><div class="verdict">เลื่อนลงไปดูเฉลยรายข้อได้เลย'+
+     (rows.length?'<br>บทที่ควรทบทวนก่อนคือ <b>'+rows[0].name+'</b> ('+rows[0].ok+'/'+rows[0].n+')':'')+'</div>';
+  $('#examresult').innerHTML=h;
+  $('#examresult').scrollIntoView({behavior:'smooth',block:'start'});
+};
+
+paint(); newQ(); $('#findbar').style.display='';
+})();
+</script>
+<!--KIT-UI v2.8 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<script>
+/* =============================================================================
+   _kit/ui-controls.js  —  KIT UI  v1.0
+   แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
+     🌙/☀️  โหมดมืด / สว่าง   (จำค่าไว้ใน localStorage)
+     A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
+     ✏️  ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
+     🧮  เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
+
+   ── วิธีใช้ ────────────────────────────────────────────────────────────────
+   ห้ามแก้โค้ดนี้ในไฟล์ widget!  แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
+       pwsh -File _kit/apply-ui.ps1
+   สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
+   (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
+
+   !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
+      เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
+
+   ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
+   ใส่แอตทริบิวต์ที่ tag body:  data-tools="pen,calc"  = บังคับเปิด
+                              data-tools="none"      = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
+   ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
+              หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
+   ============================================================================= */
+(function(){
+if(window.__KITUI__) return; window.__KITUI__='2.8';   /* 2.8 = เพิ่มปุ่ม 🏠 กลับหน้าหลัก */
+
+/* ---------- helper ---------- */
+const D=document, R=D.documentElement;
+const get=k=>{try{return localStorage.getItem('kitui-'+k)}catch(e){return null}};
+const set=(k,v)=>{try{localStorage.setItem('kitui-'+k,v)}catch(e){}};
+const el=(t,c,h)=>{const e=D.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
+
+/* =============================================================================
+   1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
+   ============================================================================= */
+const CSS=`
+/* ===== DARK TOKENS (คู่กับ _kit/design-tokens.css) ===== */
+:root[data-theme="dark"]{
+  --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
+  --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
+  --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
+  --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
+  --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
+}
+:root[data-theme="dark"] body{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f172a}
+:root[data-theme="dark"] body[data-subject="physics"]{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f1220}
+:root[data-theme="dark"] body[data-subject="bio"]{--accent:#4ade80;--accent-head:#bbf7d0;--accent-ink:#86efac;--accent-soft:#0f2a1a;--accent-bd:#256b41;--accent-chip:#14532d;--accent-ghost:#15803d;--bg:#0d1912}
+:root[data-theme="dark"] body[data-subject="chem"]{--accent:#fb923c;--accent-head:#fed7aa;--accent-ink:#fdba74;--accent-soft:#2b1a0c;--accent-bd:#8a3d12;--accent-chip:#6d2c10;--accent-ghost:#c2410c;--bg:#1a130c}
+:root[data-theme="dark"] body[data-subject="christ"]{--accent:#a78bfa;--accent-head:#ddd6fe;--accent-ink:#c4b5fd;--accent-soft:#241a3d;--accent-bd:#5b21b6;--accent-chip:#4c1d95;--accent-ghost:#6d28d9;--bg:#16121f}
+:root[data-theme="dark"] body[data-subject="islam"]{--accent:#2dd4bf;--accent-head:#99f6e4;--accent-ink:#5eead4;--accent-soft:#0d2b28;--accent-bd:#12615a;--accent-chip:#134e4a;--accent-ghost:#0f766e;--bg:#0c1917}
+:root[data-theme="dark"] body[data-subject="history"]{--accent:#fbbf24;--accent-head:#fde68a;--accent-ink:#fcd34d;--accent-soft:#2a1f0a;--accent-bd:#8a4b0c;--accent-chip:#6d3a0a;--accent-ghost:#b45309;--bg:#191509}
+:root[data-theme="dark"] body[data-subject="math"]{--accent:#38bdf8;--accent-head:#bae6fd;--accent-ink:#7dd3fc;--accent-soft:#0c2434;--accent-bd:#0b5a80;--accent-chip:#0c4a6e;--accent-ghost:#0369a1;--bg:#0b1620}
+:root[data-theme="dark"] body[data-subject="eng"]{--accent:#f472b6;--accent-head:#fbcfe8;--accent-ink:#f9a8d4;--accent-soft:#2e1122;--accent-bd:#8d1748;--accent-chip:#731839;--accent-ghost:#be185d;--bg:#1c0f16}
+:root[data-theme="dark"] body[data-subject="thai"]{--accent:#f87171;--accent-head:#fecaca;--accent-ink:#fca5a5;--accent-soft:#2d1414;--accent-bd:#8d2020;--accent-chip:#7f1d1d;--accent-ghost:#b91c1c;--bg:#1a0f0f}
+:root[data-theme="dark"] img,:root[data-theme="dark"] .svg-box{filter:brightness(.92)}
+/* ช่องกรอก/ดรอปดาวน์ที่ widget เก่ากำหนดพื้นขาวตายตัวไว้ */
+:root[data-theme="dark"] select,:root[data-theme="dark"] textarea,
+:root[data-theme="dark"] input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=color])
+{background-color:var(--soft);color:var(--ink);border-color:var(--line)}
+
+/* ===== แถบเครื่องมือลอย ===== */
+#kitui-bar{position:fixed;right:10px;bottom:10px;z-index:99990;display:flex;gap:6px;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
+#kitui-bar button{border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;
+  font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
+  align-items:center;justify-content:center;font-weight:700}
+#kitui-bar button:hover{background:var(--soft)}
+#kitui-bar button:active{transform:scale(.93)}
+#kitui-bar button.on{background:var(--accent);color:#fff}
+#kitui-bar .kitui-sep{width:1px;height:22px;background:var(--line);flex:0 0 1px}
+#kitui-bar .kitui-fs{font-size:11px;color:var(--muted);min-width:34px;text-align:center;font-weight:700}
+#kitui-bar.hidden > *:not(#kitui-grip):not(#kitui-home){display:none}
+#kitui-grip{font-size:17px}
+
+/* ===== แผงลอย (ที่ทด / เครื่องคิดเลข) ===== */
+.kitui-sheet{position:fixed;left:0;right:0;bottom:0;z-index:99991;background:var(--card);
+  border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
+  display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
+  height:52vh;max-height:92vh;min-height:180px}
+.kitui-sheet.open{display:flex}
+.kitui-sheet.full{height:100vh;border-radius:0}
+.kitui-head{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--line);
+  flex-wrap:wrap;touch-action:none;cursor:ns-resize}
+.kitui-head b{font-size:.9rem;color:var(--accent-ink);margin-right:2px;white-space:nowrap}
+.kitui-head button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;
+  padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
+.kitui-head button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.kitui-head .kitui-spacer{flex:1}
+.kitui-sw{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;min-height:0}
+.kitui-sw.on{border-color:var(--ink);transform:scale(1.12)}
+.kitui-padwrap{flex:1;position:relative;overflow:hidden;background:var(--soft)}
+.kitui-padwrap canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+:root[data-theme="dark"] .kitui-padwrap{background:#0c1220}
+
+/* ===== เครื่องคิดเลข ===== */
+#kitui-calc{height:auto;max-height:90vh}
+.kitui-disp{padding:8px 12px;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);
+  border-bottom:1px solid var(--line)}
+.kitui-disp .ex{font-size:.95rem;color:var(--muted);min-height:1.3em;word-break:break-all}
+.kitui-disp .rs{font-size:1.6rem;font-weight:700;color:var(--accent-ink);word-break:break-all}
+.kitui-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:7px}
+.kitui-keys button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:9px;
+  font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
+.kitui-keys button:active{transform:scale(.95)}
+.kitui-keys button.fn{font-size:.8rem;color:var(--accent-ink)}
+.kitui-keys button.op{background:var(--accent-soft);color:var(--accent-ink)}
+.kitui-keys button.eq{background:var(--accent);color:#fff;grid-row:span 2}
+.kitui-keys button.del{background:var(--hot-bg);color:var(--hot-ink)}
+.kitui-keys button.w3{grid-column:span 3}
+@media(max-width:420px){.kitui-keys button{font-size:.88rem;min-height:40px}.kitui-keys button.fn{font-size:.72rem}}
+@media(min-width:760px){
+  .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
+  .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
+  #kitui-pad{width:560px}
+}
+@media print{#kitui-bar,.kitui-sheet{display:none!important}}
+`;
+const st=el('style'); st.id='kitui-style'; st.textContent=CSS; D.head.appendChild(st);
+
+/* -----------------------------------------------------------------------------
+   1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
+   widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
+   พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
+   แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
+   เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
+----------------------------------------------------------------------------- */
+/* สีพาสเทลสว่าง -> สีเข้มที่ยังคง "เฉดเดิม" ไว้ (เขียว=ถูก / แดง=ผิด ต้องยังแยกออก)
+   ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
+function darken(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
+  /* ⚠️ ห้ามใช้ saturation ของ HSL ตรง ๆ ตัดสิน: ที่ความสว่างเกือบ 1 ตัวหารจะเล็กมาก
+     ทำให้สีที่แทบเป็นสีขาว (เช่น #fdf8f4) ได้ค่าอิ่มสีสูงลิ่ว แล้วกลายเป็นสีน้ำตาลจัดตอนกดให้เข้ม
+     ให้ดูจาก "ช่วงห่างของแม่สี" (chroma) แทน แล้วแปลงเป็นความอิ่มสีแบบไล่ระดับ */
+  const s = Math.min(.45, Math.max(.08, d*4));
+  const l = d<.02 ? .13 : .17;                       /* เทา/ขาวล้วนให้เข้มกว่าสีนิดหน่อย */
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+function darkFix(){
+  const out=[], seen=new Set();
+  const take=r=>{
+    if(!r.style || !r.selectorText) return;
+    if(r.selectorText.indexOf('kitui')>-1) return;               /* ของเราเองใช้ token อยู่แล้ว */
+    const bg=r.style.backgroundColor;
+    if(!bg || bg.indexOf('var(')>-1) return;
+    const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
+    if(!m) return;
+    if(m[4]!==undefined && +m[4]<0.6) return;                    /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
+    const cr=+m[1], cg=+m[2], cb=+m[3];
+    if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return;       /* ไม่สว่างพอ ไม่ต้องยุ่ง */
+    const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
+    const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
+    let css='background-color:'+repl;
+    /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
+    const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
+    out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
+  };
+  /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
+        ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
+  const visit=rules=>{
+    for(let i=0;i<rules.length;i++){
+      const r=rules[i];
+      if(r.selectorText) take(r);
+      if(r.cssRules && r.cssRules.length) visit(r.cssRules);     /* @media / @supports / nesting */
+    }
+  };
+  for(let i=0;i<D.styleSheets.length;i++){
+    let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; }   /* ข้ามชีตข้ามโดเมน */
+    if(rr) visit(rr);
+  }
+  if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
+  return out.length;
+}
+try{ window.__KITUI_DARKFIX__ = (D.body.getAttribute('data-kit-theme')==='off') ? 'locked' : darkFix(); }
+catch(e){ window.__KITUI_DARKFIX__='err:'+e.message; }
+
+/* darkFix ข้างบนซ่อมได้เฉพาะสีที่เขียนตายตัวในไฟล์ CSS
+   แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
+   ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
+   จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
+const rgbOf=c=>{const m=c&&c.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null;};
+const lumOf=v=>v?(0.2126*v[0]+0.7152*v[1]+0.0722*v[2])/255:null;
+/* ตรงข้ามกับ darken(): ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
+   (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
+function lighten(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  if(d<0.04) return 'var(--ink)';                    /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
+  let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
+  const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
+  const s=Math.min(.92,Math.max(.55,s0)), l=.72;
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+const SKIP={CANVAS:1,IMG:1,VIDEO:1,SVG:1,IFRAME:1,PICTURE:1,OBJECT:1};
+const OBS_OPT={childList:true,subtree:true,attributes:true,attributeFilter:['class','style']};
+let patched=[], obs=null;
+function elementFix(){
+  /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
+        ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
+  if(obs) obs.disconnect();
+  try{ elementFixCore(); } finally { if(obs) obs.observe(D.body,OBS_OPT); }
+}
+function elementFixCore(){
+  if(D.body.getAttribute('data-kit-theme')==='off') return;   /* หน้าที่ล็อกธีมไว้ ห้ามไปยุ่งสี */
+  /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
+     ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
+     จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
+  if(R.getAttribute('data-theme')!=='dark'){
+    patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
+    patched=[];
+    return;
+  }
+  /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
+     ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
+  /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
+  const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
+  for(let i=0;i<all.length;i++){
+    const e=all[i];
+    if(e.id&&e.id.indexOf('kitui')===0) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(SKIP[e.tagName]) continue;                      /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
+    const s=getComputedStyle(e);
+    const bg=rgbOf(s.backgroundColor);
+    if(!bg || bg[3]<0.6) continue;                     /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
+    if(lumOf(bg)<0.72) continue;                       /* เข้มพออยู่แล้ว */
+    /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
+    e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
+    const fg=rgbOf(s.color);
+    if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important');  /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
+    patched.push(e);
+  }
+  /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
+     ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
+  const bgCache=new Map();
+  const effBg=n=>{
+    for(let p=n;p;p=p.parentElement){
+      if(bgCache.has(p)) return bgCache.get(p);
+      const b=rgbOf(getComputedStyle(p).backgroundColor);
+      if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
+    }
+    return null;
+  };
+  for(let i=2;i<all.length;i++){
+    const e=all[i];
+    if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(e.style.color) continue;                         /* จัดการไปแล้วในรอบแรก */
+    if(!e.textContent || !e.textContent.trim()) continue;
+    const fg=rgbOf(getComputedStyle(e).color);
+    if(!fg || lumOf(fg)>=0.45) continue;                 /* ตัวอักษรสว่างอยู่แล้ว */
+    const bg=effBg(e);
+    if(!bg || lumOf(bg)>=0.5) continue;                  /* พื้นยังสว่าง อ่านออกอยู่ */
+    e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
+    patched.push(e);
+  }
+}
+let efT=0;
+const scheduleFix=()=>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
+try{
+  obs=new MutationObserver(scheduleFix);
+  obs.observe(D.body,OBS_OPT);
+}catch(e){}
+
+/* =============================================================================
+   2) ธีม + ขนาดตัวอักษร
+   ============================================================================= */
+const FS=[.85,1,1.15,1.3,1.5], FSNAME=['เล็กสุด','เล็ก','ปกติ','ใหญ่','ใหญ่สุด'];
+let fsIdx=parseInt(get('fs')); if(isNaN(fsIdx)||fsIdx<0||fsIdx>4) fsIdx=1;
+let theme=get('theme') || (matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+
+/* หน้าที่ออกแบบธีมมาเองครบแล้ว (เช่น "หนังสือทบทวน" พื้นเข้มทั้งเล่ม) ให้ปิดระบบธีมของ KIT UI
+   ไม่งั้นโทเคน --bg/--ink ของเราจะไปทับสีที่หน้านั้นตั้งไว้ แล้วหน้าเพี้ยน
+   ใส่ที่ tag body:  data-kit-theme="off"   (ปุ่มปรับขนาดตัวอักษรยังใช้ได้ตามปกติ) */
+const themeLock = D.body.getAttribute('data-kit-theme')==='off';
+
+function applyTheme(){
+  if(themeLock) return;
+  R.setAttribute('data-theme',theme);
+  R.style.colorScheme = theme==='dark'?'dark':'light';   /* ให้ select/input เป็นสีเข้มด้วย */
+  const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
+  set('theme',theme);
+  clearTimeout(efT);                                   /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
+  if(typeof elementFix==='function') elementFix();
+  /* ⚠️ ห้ามอ้างถึงตัวแปรของส่วน "ที่ทด" ตรงนี้!
+     applyTheme() ถูกเรียกก่อนที่ `let pad` ในส่วนที่ 4 จะทำงาน → ชน temporal dead zone
+     แล้ว ReferenceError จะทำให้สคริปต์ตายทั้งก้อน (ปุ่มขนาดอักษร/ที่ทด/เครื่องคิดเลขหายหมด)
+     ใช้วิธียิง event แทน ใครสนใจค่อยไปดักฟังเอง */
+  try{ D.dispatchEvent(new CustomEvent('kitui-theme')); }catch(e){}
+}
+function applyFS(){
+  R.style.fontSize=(16*FS[fsIdx])+'px';
+  const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
+  set('fs',fsIdx);
+}
+
+/* =============================================================================
+   3) แถบเครื่องมือ
+   ============================================================================= */
+const subj=(D.body.getAttribute('data-subject')||'').toLowerCase();
+/* หลาย widget ไม่ได้ใส่ data-subject ที่ <body> → เดาจากโฟลเดอร์ที่ไฟล์อยู่ด้วย */
+const inPath=/\/(physics|math|chemist)\//i.test(decodeURIComponent(location.pathname));
+const tAttr=D.body.getAttribute('data-tools');
+const wantTools = tAttr!=null ? tAttr.toLowerCase()
+                : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
+const hasPen  = wantTools.includes('pen');
+const hasCalc = wantTools.includes('calc');
+
+/* ปุ่มกลับหน้าหลัก — โผล่เฉพาะตอนเปิดจากเว็บห้องติว (พาธมี /app/ อยู่)
+   เปิดไฟล์จากเครื่องตรง ๆ จะไม่มีปุ่มนี้ เพราะไม่มีหน้าหลักให้กลับ ลิงก์จะเสียเปล่า ๆ */
+const homeHref = (()=>{
+  try{
+    const p = decodeURIComponent(location.pathname);
+    const i = p.indexOf('/app/');
+    return i < 0 ? null : p.slice(0, i+1) + 'index.html';
+  }catch(e){ return null; }
+})();
+
+const bar=el('div'); bar.id='kitui-bar';
+bar.innerHTML =
+  `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
+  (homeHref ? `<button id="kitui-home" title="กลับหน้าหลัก">🏠</button><span class="kitui-sep"></span>` : '')+
+  (themeLock ? '' : `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button><span class="kitui-sep"></span>`)+
+  `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
+  `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
+  `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
+  (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
+  (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
+D.body.appendChild(bar);
+
+if(!themeLock) D.getElementById('kitui-theme').onclick=()=>{theme=theme==='dark'?'light':'dark';applyTheme();};
+D.getElementById('kitui-fsup').onclick=()=>{if(fsIdx<4){fsIdx++;applyFS();}};
+D.getElementById('kitui-fsdown').onclick=()=>{if(fsIdx>0){fsIdx--;applyFS();}};
+D.getElementById('kitui-grip').onclick=()=>bar.classList.toggle('hidden');
+if(homeHref) D.getElementById('kitui-home').onclick=()=>{ location.href=homeHref; };
+applyTheme(); applyFS();
+
+/* ปิดแผงด้วยปุ่ม Esc */
+D.addEventListener('keydown',e=>{ if(e.key==='Escape') D.querySelectorAll('.kitui-sheet.open').forEach(s=>s.classList.remove('open')); });
+
+/* ลากหัวแผงเพื่อปรับความสูง */
+function makeResizable(sheet){
+  const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
+  head.addEventListener('pointerdown',e=>{
+    if(e.target.closest('button'))return;
+    drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect().height;head.setPointerCapture(e.pointerId);
+  });
+  head.addEventListener('pointermove',e=>{
+    if(!drag)return;
+    const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
+    sheet.classList.remove('full'); sheet.style.height=h+'px';
+    if(sheet.id==='kitui-pad') fitPad();
+  });
+  head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
+}
+
+/* =============================================================================
+   4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ  หลายหน้า  เซฟอัตโนมัติ
+   ============================================================================= */
+let pad,padCv,padCx,pages=[[]],pg=0,undone=[],histo=[];
+let tool='pen',color='#111827',width=2.4,penSeen=0;
+const COLORS=['#111827','#2563eb','#dc2626','#16a34a','#f59e0b'];
+const PADKEY='pad-'+location.pathname.split('/').pop();
+
+function buildPad(){
+  pad=el('div','kitui-sheet'); pad.id='kitui-pad';
+  pad.innerHTML=
+   `<div class="kitui-head">
+      <b>✏️ ที่ทด</b>
+      <button data-t="pen" class="on">🖊️</button>
+      <button data-t="hl">🖍️</button>
+      <button data-t="er">🧽</button>
+      ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
+      <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
+      <span class="kitui-spacer"></span>
+      <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
+      <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
+      <button id="kitui-pgadd">+ หน้า</button>
+      <button id="kitui-clear">ล้างหน้านี้</button>
+      <button id="kitui-full">⛶</button>
+      <button id="kitui-padclose">✕</button>
+    </div>
+    <div class="kitui-padwrap"><canvas></canvas></div>`;
+  D.body.appendChild(pad);
+  padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
+  makeResizable(pad);
+
+  pad.querySelector('.kitui-head').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
+  });
+  D.getElementById('kitui-undo').onclick=()=>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop(); draw(); save(); } };
+  D.getElementById('kitui-redo').onclick=()=>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop(); draw(); save(); } };
+  D.getElementById('kitui-clear').onclick=()=>{ snap(); pages[pg]=[]; draw(); save(); };
+  D.getElementById('kitui-pgadd').onclick=()=>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw(); save(); };
+  D.getElementById('kitui-pgprev').onclick=()=>{ if(pg>0){pg--;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-pgnext').onclick=()=>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-full').onclick=()=>{ pad.classList.toggle('full'); pad.style.height=''; fitPad(); };
+  D.getElementById('kitui-padclose').onclick=()=>pad.classList.remove('open');
+
+  /* ---- วาด ---- */
+  let cur=null;
+  padCv.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='pen') penSeen=Date.now();
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;   /* กันฝ่ามือแตะตอนใช้สไตลัส */
+    const p=pt(e);
+    if(tool==='er'){ snap(); erase(p); return; }
+    snap();
+    cur={c:color,w:width,hl:tool==='hl',pts:[p]};
+    pages[pg].push(cur); draw();
+    try{ padCv.setPointerCapture(e.pointerId); }catch(x){}  /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
+  });
+  padCv.addEventListener('pointermove',e=>{
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;
+    if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
+    if(!cur||!e.buttons)return;
+    /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
+    let evs=[e];
+    if(e.getCoalescedEvents){ const c=e.getCoalescedEvents(); if(c&&c.length) evs=c; }
+    evs.forEach(ev=>cur.pts.push(pt(ev)));
+    draw();
+  });
+  const end=()=>{ if(cur){cur=null;save();} };
+  padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
+  padCv.addEventListener('pointerleave',end);
+
+  addEventListener('resize',()=>{ if(pad.classList.contains('open')) fitPad(); });
+  D.addEventListener('kitui-theme',()=>draw());   /* สลับธีมแล้ววาดลายใหม่ เส้นดำ<->ขาวตามพื้น */
+  load(); fitPad();
+}
+function pt(e){
+  const r=padCv.getBoundingClientRect();
+  return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
+          p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5};   /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
+}
+function snap(){ histo.push(pages[pg].slice()); if(histo.length>60)histo.shift(); undone=[]; }
+function erase(p){
+  const r=padCv.getBoundingClientRect(), rad=18/r.width;
+  const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
+  if(keep.length!==pages[pg].length){ pages[pg]=keep; draw(); save(); }
+}
+function fitPad(){
+  const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
+  const dpr=Math.min(devicePixelRatio||1,2.5);
+  padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
+  draw();
+}
+function draw(){
+  const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
+  padCx.clearRect(0,0,W,H);
+  /* เส้นตารางจาง ๆ ให้เขียนตรง */
+  const dark=R.getAttribute('data-theme')==='dark';
+  padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
+  for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath();padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke();}
+  padCx.lineCap='round'; padCx.lineJoin='round';
+  pages[pg].forEach(s=>{
+    padCx.globalAlpha=s.hl?0.32:1;
+    padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
+    for(let i=1;i<s.pts.length;i++){
+      const a=s.pts[i-1],b=s.pts[i];
+      padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
+      padCx.beginPath(); padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke();
+    }
+    if(s.pts.length===1){ /* จุดเดียว */
+      padCx.fillStyle=padCx.strokeStyle; padCx.beginPath();
+      padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill();
+    }
+  });
+  padCx.globalAlpha=1;
+  const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
+}
+function save(){ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
+function load(){
+  try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
+}
+
+if(hasPen){
+  buildPad();
+  D.getElementById('kitui-penbtn').onclick=()=>{
+    const o=pad.classList.toggle('open');
+    D.getElementById('kitui-penbtn').classList.toggle('on',o);
+    if(o) fitPad();
+  };
+}
+
+/* =============================================================================
+   5) เครื่องคิดเลขวิทยาศาสตร์  (tokenizer → shunting-yard → RPN  ไม่ใช้ eval)
+   ============================================================================= */
+const FN={sin:1,cos:1,tan:1,asin:1,acos:1,atan:1,ln:1,log:1,sqrt:1,abs:1,exp:1};
+const PREC={'+':1,'-':1,'*':2,'/':2,'^':4,'u-':3};
+function tokenize(s){
+  s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
+  const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!()])/g; let m;
+  while((m=re.exec(s))) out.push(m[1]);
+  return out;
+}
+function toRPN(tk){
+  const out=[],op=[]; let prev=null;
+  for(let t of tk){
+    if(t==='**')t='^';
+    if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
+    else if(t==='PI'){ out.push(Math.PI); }
+    else if(t==='e'||t==='E'){ out.push(Math.E); }
+    else if(t==='ANS'){ out.push(ANS); }
+    else if(FN[t]){ op.push(t); }
+    else if(t==='('){ op.push(t); }
+    else if(t===')'){
+      while(op.length&&op[op.length-1]!=='(') out.push(op.pop());
+      if(!op.length) throw 0; op.pop();
+      if(op.length&&FN[op[op.length-1]]) out.push(op.pop());
+    }
+    else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
+    else if('+-*/^'.includes(t)){
+      let o=t;
+      const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
+      if(t==='-'&&unary) o='u-';
+      else if(t==='+'&&unary){ prev=t; continue; }
+      while(op.length){
+        const top=op[op.length-1];
+        if(top==='('||FN[top])break;
+        const rightAssoc=(o==='^'||o==='u-');
+        if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop()); else break;
+      }
+      op.push(o);
+    }
+    else throw 0;
+    prev=t;
+  }
+  while(op.length){ const o=op.pop(); if(o==='(')throw 0; out.push(o); }
+  return out;
+}
+function evalRPN(rpn,deg){
+  const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
+  const pop=()=>{ if(!st.length)throw 0; return st.pop(); };
+  for(const t of rpn){
+    if(typeof t==='number'){ st.push(t); continue; }
+    if(t==='fact'){ const n=pop(); if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
+    if(t==='pct'){ st.push(pop()/100); continue; }
+    if(t==='u-'){ st.push(-pop()); continue; }
+    if(FN[t]){
+      const a=pop();
+      st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
+             : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
+             : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
+             : t==='abs'?Math.abs(a) : Math.exp(a) );
+      continue;
+    }
+    const b=pop(),a=pop();
+    st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
+  }
+  if(st.length!==1) throw 0;
+  return st[0];
+}
+function calc(src,deg){ return evalRPN(toRPN(tokenize(src)),deg); }
+
+let ANS=0, expr='', calcSheet, isDeg=true;
+const KEYS=[
+ ['DEG','deg','fn'],['(','(',''],[')',')',''],['⌫','del','del'],['AC','ac','del'],
+ ['sin','sin(','fn'],['cos','cos(','fn'],['tan','tan(','fn'],['π','π','fn'],['÷','÷','op'],
+ ['sin⁻¹','asin(','fn'],['cos⁻¹','acos(','fn'],['tan⁻¹','atan(','fn'],['e','e','fn'],['×','×','op'],
+ ['ln','ln(','fn'],['log','log(','fn'],['√','√(','fn'],['xʸ','^','fn'],['−','−','op'],
+ ['7','7',''],['8','8',''],['9','9',''],['x!','!','fn'],['+','+','op'],
+ ['4','4',''],['5','5',''],['6','6',''],['%','%','fn'],['ANS','ANS','fn'],
+ ['1','1',''],['2','2',''],['3','3',''],['.','.',''],['=','eq','eq'],
+ ['0','0','w3'],['x²','^2','fn']
+];
+function buildCalc(){
+  calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
+  calcSheet.innerHTML=
+   `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
+      <button id="kitui-calcclose">✕</button></div>
+    <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
+    <div class="kitui-keys" id="kitui-keys">
+      ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
+    </div>`;
+  D.body.appendChild(calcSheet);
+  D.getElementById('kitui-calcclose').onclick=()=>calcSheet.classList.remove('open');
+  const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
+  const show=()=>{ ex.textContent=expr||' ';
+    try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
+    catch(e){ rs.style.opacity=.35; }
+  };
+  D.getElementById('kitui-keys').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
+    if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
+    if(k==='del'){ expr=expr.slice(0,-1); show(); return; }
+    if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show(); return; }
+    if(k==='eq'){
+      rs.style.opacity=1;
+      try{
+        const v=calc(expr,isDeg);
+        if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
+        if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
+        ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
+      }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
+      return;
+    }
+    expr+=k; show();
+  });
+}
+function fmt(v){
+  if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
+  if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
+  return String(Math.round(v*1e10)/1e10);
+}
+if(hasCalc){
+  buildCalc();
+  D.getElementById('kitui-calcbtn').onclick=()=>{
+    const o=calcSheet.classList.toggle('open');
+    D.getElementById('kitui-calcbtn').classList.toggle('on',o);
+  };
+}
+})();
+
+</script>
+<!--/KIT-UI-->
+</body>
+</html>
