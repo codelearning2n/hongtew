@@ -112,7 +112,7 @@ sup,sub{font-size:.72em}
     <h1><span data-th="☪️ เสาหลัก 5 ประการ — ติวก่อนสอบ" data-en="☪️ The Five Pillars — Exam Review"></span></h1>
     <div class="chips">
       <span class="chip hot" data-th="สอบศุกร์ 21 ส.ค." data-en="Exam Fri 21 Aug"></span>
-      <span class="chip" data-th="ชะฮาดะฮ์ · ละหมาด · ซะกาต · ถือศีลอด" data-en="Shahada · Salah · Zakat · Sawm"></span>
+      <span class="chip" data-th="ครบทั้ง 5 เสา" data-en="All five pillars"></span>
       <button class="btn small" id="langBtn" style="margin-left:auto">EN</button>
     </div>
     <div class="warn" style="margin-top:10px">
@@ -126,6 +126,7 @@ sup,sub{font-size:.72em}
     <button class="tab-btn" data-tab="t2"><span data-th="🕌 ละหมาด" data-en="🕌 Salah"></span></button>
     <button class="tab-btn" data-tab="t3"><span data-th="💰 ซะกาต" data-en="💰 Zakat"></span></button>
     <button class="tab-btn" data-tab="t4"><span data-th="🌙 ถือศีลอด" data-en="🌙 Sawm"></span></button>
+    <button class="tab-btn" data-tab="t7"><span data-th="🕋 ฮัจญ์" data-en="🕋 Hajj"></span></button>
     <button class="tab-btn" data-tab="t5"><span data-th="📝 ควิซ" data-en="📝 Quiz"></span></button>
     <button class="tab-btn" data-tab="t6"><span data-th="📚 ศัพท์" data-en="📚 Glossary"></span></button>
   </nav>
@@ -146,9 +147,9 @@ sup,sub{font-size:.72em}
         <th data-th="ชื่ออาหรับ" data-en="Arabic name"></th>
         <th data-th="คือ" data-en="What it is"></th>
       </tr></thead><tbody id="pillarBody"></tbody></table>
-      <div class="warn" style="margin-top:10px">
-        <span data-th="⚠️ อาจารย์ยังไม่ปล่อยสไลด์เสาที่ 5 (ฮัจญ์) — ในวอลต์จึงยังไม่มีสรุปจากสไลด์จริง อย่าท่องจากที่อื่นแล้วคิดว่าเป็นของอาจารย์"
-              data-en="⚠️ No slide deck for Pillar 5 (Hajj) has been released yet, so there is no slide-based summary for it. Do not assume outside material matches the teacher's."></span>
+      <div class="tip" style="margin-top:10px">
+        <span data-th="✅ ครบทั้ง 5 เสาแล้ว — สไลด์ฮัจญ์มาถึง 14 ส.ค. 2026 รวม 7 ไฟล์ 414 หน้า กดแท็บ 🕋 ฮัจญ์ ได้เลย"
+              data-en="✅ All five pillars are covered — the Hajj decks arrived on 14 Aug 2026 (7 files, 414 slides). See the 🕋 Hajj tab."></span>
       </div>
     </div>
 
@@ -288,6 +289,51 @@ sup,sub{font-size:.72em}
       <div class="hint-box" id="qHintBox" style="display:none"></div>
       <div class="fb" id="qFb"></div>
       <div class="steps" id="qWhy"></div>
+    </div>
+  </section>
+
+  <!-- ================= แท็บ 7 ฮัจญ์ ================= -->
+  <section id="t7" class="tab">
+    <div class="card">
+      <h3><span data-th="3 รูปแบบของฮัจญ์ — แบบไหนต้องเชือดสัตว์" data-en="Three types of Hajj — which need a sacrifice?"></span></h3>
+      <p class="sub" data-th="แตะดูทีละแบบ" data-en="Tap each one"></p>
+      <div id="hTypeRow" class="ans-row" style="flex-wrap:wrap"></div>
+      <div class="fb" id="hTypeFb"></div>
+      <div class="tip" style="margin-top:10px">
+        <span data-th="💡 ตารางนี้อยู่ในรูปของสไลด์ ดึงข้อความไม่ติด ต้องเรนเดอร์ภาพออกมาอ่าน"
+              data-en="💡 This comparison lives inside a slide image — it had to be rendered to be read."></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span data-th="รุก่น หรือ วาญิบ" data-en="Rukun or Wajib?"></span></h3>
+      <p class="sub" data-th="แตะเลือกว่าแต่ละอย่างเป็นรุก่นหรือวาญิบ ตอบผิดจะบอกว่าเพราะอะไร" data-en="Decide whether each item is a Rukun or a Wajib"></p>
+      <div class="ans-row">
+        <button class="btn" id="hRk" data-th="อันนี้เป็น รุก่น" data-en="This is a Rukun"></button>
+        <button class="btn ghost" id="hWj" data-th="อันนี้เป็น วาญิบ" data-en="This is a Wajib"></button>
+      </div>
+      <div class="q-text" id="hRvwQ"></div>
+      <div class="fb" id="hRvwFb"></div>
+      <p class="sub" id="hRvwScore"></p>
+      <div class="warn" style="margin-top:10px">
+        <span data-th="⚠️ ขาดรุก่น = ฮัจญ์เสียเปล่า ต้องไปทำใหม่ปีหน้า · ขาดวาญิบ = เสียดัม (เชือดแพะ/แกะ) แล้วยังใช้ได้"
+              data-en="⚠️ Missing a Rukun voids the Hajj — you must repeat it next year. Missing a Wajib only costs a Damm (a sheep or goat)."></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span data-th="ไทม์ไลน์ 8–13 ซุลฮิจญะฮ์" data-en="Timeline, 8–13 Dhul-Hijjah"></span></h3>
+      <p class="sub" data-th="แตะวันเพื่อดูว่าอยู่ที่ไหนและทำอะไร" data-en="Tap a day to see where you are and what you do"></p>
+      <div id="hDayRow" class="ans-row" style="flex-wrap:wrap"></div>
+      <div class="fb" id="hDayFb"></div>
+    </div>
+
+    <div class="card">
+      <h3><span data-th="ฮัจญ์ vs อุมเราะห์" data-en="Hajj vs Umrah"></span></h3>
+      <table class="ref"><thead><tr>
+        <th data-th="ประเด็น" data-en="Aspect"></th>
+        <th>Hajj</th><th>Umrah</th>
+      </tr></thead><tbody id="hUmBody"></tbody></table>
     </div>
   </section>
 
@@ -611,8 +657,53 @@ const GLOSS=[
  {c:'cal',ar:'عيد الفطر',ro:'Eid al-Fitr',th:'อีดิ้ลฟิตริ = วันอีดเล็ก 1 เชาวาล',en:'the festival ending Ramadan'},
  {c:'cal',ar:'عيد الأضحى',ro:'Eid al-Adha',th:'อีดิ้ลอัฎฮา = วันอีดใหญ่ 10 ซุลฮิจญะฮ์',en:'the festival of sacrifice'},
  {c:'cal',ar:'هجرة',ro:'Hijrah',th:'ฮิจเราะฮ์ = การอพยพ ปีที่ 1 ของปฏิทิน',en:'the migration — year 1 of the calendar'},
- {c:'cal',ar:'حج',ro:'Hajj',th:'ฮัจญ์ = เสา 5 การแสวงบุญที่มักกะฮ์',en:'Pillar 5 — pilgrimage to Mecca'}
+ {c:'cal',ar:'حج',ro:'Hajj',th:'ฮัจญ์ = เสา 5 ⚠️ ยังไม่มีสไลด์จากอาจารย์',en:'Pillar 5 ⚠️ no slide deck released yet'}
 ];
+/* ---------------- ข้อมูลฮัจญ์ ---------------- */
+const HTYPES=[
+ {th:['อิฟรอด (Ifrad)','ทำฮัจญ์อย่างเดียว ไม่ทำอุมเราะห์ · อิห์รอมเฉพาะฮัจญ์ · ✅ ไม่ต้องเชือดสัตว์'],
+  en:['Ifrad','Hajj only, no Umrah · Ihram for Hajj only · ✅ No sacrifice needed'], ok:true},
+ {th:['ตะมัตตุอ์ (Tamattu’)','อุมเราะห์ → พัก → ฮัจญ์ · อิห์รอม 2 ครั้งแยกกัน · ⛔ ต้องเชือดสัตว์'],
+  en:['Tamattu’','Umrah → break → Hajj · two separate Ihrams · ⛔ Sacrifice needed'], ok:false},
+ {th:['กิรอน (Qiran)','อุมเราะห์ + ฮัจญ์พร้อมกัน · อิห์รอมครั้งเดียวใช้ทั้งคู่ · ⛔ ต้องเชือดสัตว์'],
+  en:['Qiran','Umrah and Hajj together · a single Ihram for both · ⛔ Sacrifice needed'], ok:false}
+];
+const RVW=[
+ {th:'วุกูฟที่ทุ่งอารอฟะฮ์', en:'Wuquf at Arafah', r:1, w:{th:'เป็นรุก่น — ถ้าไม่ได้วุกูฟ ฮัจญ์ใช้ไม่ได้เลย',en:'A Rukun — without Wuquf there is no Hajj.'}},
+ {th:'ฏอวาฟอิฟาเฎาะฮ์ (เวียนรอบกะอ์บะฮ์ 7 รอบ)', en:'Tawaf al-Ifadah (7 circuits)', r:1, w:{th:'เป็นรุก่น — ฏอวาฟหลักของฮัจญ์',en:'A Rukun — the main Tawaf of Hajj.'}},
+ {th:'สะแอ ระหว่างซอฟาและมัรวะฮ์', en:'Sa’i between Safa and Marwah', r:1, w:{th:'เป็นรุก่น',en:'A Rukun.'}},
+ {th:'ตะฮัลลุ้ล (โกน/ตัดผม)', en:'Tahallul (shaving or cutting hair)', r:1, w:{th:'เป็นรุก่น',en:'A Rukun.'}},
+ {th:'ครองอิห์รอมพร้อมเนียต', en:'Entering Ihram with the intention', r:1, w:{th:'เป็นรุก่น',en:'A Rukun.'}},
+ {th:'เรียงลำดับขั้นตอนให้ถูกต้อง', en:'Performing the rites in the correct order', r:1, w:{th:'เป็นรุก่น ข้อที่คนลืมบ่อย',en:'A Rukun — the one people forget.'}},
+ {th:'ครองอิห์รอมจากมีกอต (จุดที่กำหนด)', en:'Entering Ihram at the Miqat', r:0, w:{th:'เป็นวาญิบ — ขาดแล้วเสียดัม',en:'A Wajib — missing it costs a Damm.'}},
+ {th:'ค้างแรมที่มุซดะลิฟะฮ์', en:'Staying overnight at Muzdalifah', r:0, w:{th:'เป็นวาญิบ',en:'A Wajib.'}},
+ {th:'ค้างแรมที่ทุ่งมินา 3 คืน', en:'Staying three nights at Mina', r:0, w:{th:'เป็นวาญิบ',en:'A Wajib.'}},
+ {th:'ขว้างเสาหินทั้ง 3 ต้น', en:'Stoning all three Jamarat', r:0, w:{th:'เป็นวาญิบ',en:'A Wajib.'}},
+ {th:'ฏอวาฟวิดาอ์ (ฏอวาฟอำลา)', en:'Tawaf al-Wada (farewell Tawaf)', r:0, w:{th:'⚠️ เป็นวาญิบ ไม่ใช่รุก่น — จุดหลอก เพราะฏอวาฟอีกตัวเป็นรุก่น',en:'⚠️ A Wajib, not a Rukun — the trap, since the other Tawaf is a Rukun.'}},
+ {th:'หลีกเลี่ยงข้อห้ามของฮัจญ์', en:'Avoiding the prohibitions of Hajj', r:0, w:{th:'เป็นวาญิบ',en:'A Wajib.'}}
+];
+const HDAYS=[
+ {d:'8', th:['ทุ่งมินา','ครองอิห์รอม · ค้างแรมคืนแรกที่มินา'],
+  en:['Mina','Enter Ihram · first night at Mina']},
+ {d:'9', th:['ทุ่งอารอฟะฮ์ ⭐','ละหมาดซุบฮิที่มินาแล้วไปอารอฟะฮ์ · ควรถึงก่อนเที่ยง · วุกูฟตั้งแต่ตะวันคล้อยถึงตะวันตก · ห้ามค้างแรมที่นี่'],
+  en:['Arafah ⭐','Fajr at Mina then travel · arrive before noon · Wuquf from midday to sunset · no overnight stay here']},
+ {d:'คืน 9→10', th:['มุซดะลิฟะฮ์','ละหมาดมัฆริบ+อิชาอ์รวมกัน · เก็บก้อนหิน 70 ก้อน · ค้างแรม 1 คืน (ผู้อ่อนแอและผู้หญิงออกได้หลังเที่ยงคืน)'],
+  en:['Muzdalifah','Combine Maghrib and Isha · collect 70 pebbles · stay the night (the weak and women may leave after midnight)']},
+ {d:'10', th:['มินา + อัลฮะรอม ⭐ วันอีดใหญ่','ขว้างเสาต้นใหญ่สุด 7 ก้อน · เชือดสัตว์ (ถ้า Tamattu/Qiran) · โกนหรือตัดผม · ฏอวาฟอิฟาเฎาะฮ์ + สะแอ'],
+  en:['Mina + Al-Haram ⭐ Eid al-Adha','Stone the largest pillar with 7 pebbles · sacrifice (Tamattu/Qiran) · shave or cut hair · Tawaf al-Ifadah + Sa’i']},
+ {d:'11–13', th:['ทุ่งมินา — วันตัชรีก','ค้างแรม 3 คืน · ขว้างครบทั้ง 3 ต้น ต้นละ 7 ก้อน · วันที่ 12 ถ้าจะออกต้องออกก่อนตะวันตกดิน'],
+  en:['Mina — days of Tashriq','Three nights · stone all three pillars, 7 pebbles each · on the 12th you must leave before sunset or stay another night']},
+ {d:'ก่อนกลับ', th:['อัลฮะรอม','ฏอวาฟวิดาอ์ (อำลา) — ภารกิจสุดท้าย ⭐ ผู้หญิงมีประจำเดือนได้รับยกเว้น'],
+  en:['Al-Haram','Tawaf al-Wada — the final rite ⭐ menstruating women are exempt']}
+];
+const HUM=[
+ {a:{th:'ความหมายตามภาษา',en:'Literal meaning'}, h:{th:'การมุ่งสู่',en:'to set out for'}, u:{th:'การเยี่ยม',en:'to visit'}},
+ {a:{th:'ช่วงเวลา',en:'Timing'}, h:{th:'กำหนดตายตัว ทำนอกเวลาไม่ได้',en:'Fixed period only'}, u:{th:'ทำได้ตลอดปี',en:'Any time of year'}},
+ {a:{th:'วุกูฟที่อารอฟะฮ์',en:'Wuquf at Arafah'}, h:{th:'✅ มี',en:'✅ Yes'}, u:{th:'❌ ไม่มี',en:'❌ No'}},
+ {a:{th:'ค้างแรม/ขว้างเสาหิน',en:'Overnight stays / stoning'}, h:{th:'✅ มี',en:'✅ Yes'}, u:{th:'❌ ไม่มี',en:'❌ No'}},
+ {a:{th:'ขั้นตอน',en:'Rites'}, h:{th:'อิห์รอม → วุกูฟ → ฏอวาฟ → สะแอ → ตัดผม',en:'Ihram → Wuquf → Tawaf → Sa’i → cut hair'}, u:{th:'เหนียต → ฏอวาฟ → สะแอ → ตัดผม',en:'Intention → Tawaf → Sa’i → cut hair'}}
+];
+
 const GCATS=[
  {k:'all',  th:'ทั้งหมด',  en:'All'},
  {k:'core', th:'กรอบใหญ่', en:'Core'},
@@ -824,6 +915,57 @@ document.getElementById('qHint').addEventListener('click',()=>{
 });
 document.getElementById('qSkip').addEventListener('click',()=>{ qi=(qi+1)%QUIZ.length; renderQuiz(); });
 
+/* ---- แท็บ 7 ฮัจญ์ ---- */
+function renderHType(){
+  const row=document.getElementById('hTypeRow'), fb=document.getElementById('hTypeFb');
+  row.innerHTML=''; fb.textContent=''; fb.className='fb';
+  HTYPES.forEach(t=>{
+    const d = LANG==='th'? t.th : t.en;
+    const b=chipBtn(d[0]);
+    b.onclick=()=>{ fb.textContent=d[1]; fb.className='fb '+(t.ok?'ok':'bad'); };
+    row.appendChild(b);
+  });
+}
+let rvwI=0, rvwScore=0, rvwDone=false;
+function renderRvw(){
+  const q=RVW[rvwI];
+  document.getElementById('hRvwQ').textContent = LANG==='th'? q.th : q.en;
+  const fb=document.getElementById('hRvwFb'); fb.textContent=''; fb.className='fb';
+  document.getElementById('hRvwScore').textContent =
+    (LANG==='th'?'ข้อ ':'Item ')+(rvwI+1)+'/'+RVW.length+(LANG==='th'?' · ถูก ':' · score ')+rvwScore;
+  rvwDone=false;
+}
+function answerRvw(isRukun){
+  if(rvwDone) return; rvwDone=true;
+  const q=RVW[rvwI], fb=document.getElementById('hRvwFb');
+  const right = (isRukun===(q.r===1));
+  if(right) rvwScore++;
+  fb.textContent = (right?(LANG==='th'?'✓ ถูก — ':'✓ Correct — ')
+                        :(LANG==='th'?'✗ ยังไม่ใช่ — ':'✗ Not quite — ')) + T(q.w);
+  fb.className='fb '+(right?'ok':'bad');
+  setTimeout(()=>{ rvwI=(rvwI+1)%RVW.length; renderRvw(); }, 3000);
+}
+document.getElementById('hRk').addEventListener('click',()=>answerRvw(true));
+document.getElementById('hWj').addEventListener('click',()=>answerRvw(false));
+function renderHDay(){
+  const row=document.getElementById('hDayRow'), fb=document.getElementById('hDayFb');
+  row.innerHTML=''; fb.textContent=''; fb.className='fb';
+  HDAYS.forEach(x=>{
+    const d = LANG==='th'? x.th : x.en;
+    const b=chipBtn(x.d);
+    b.onclick=()=>{ fb.textContent = d[0]+' — '+d[1]; fb.className='fb ok'; };
+    row.appendChild(b);
+  });
+}
+function renderHUm(){
+  const tb=document.getElementById('hUmBody'); tb.innerHTML='';
+  HUM.forEach(r=>{
+    const tr=document.createElement('tr');
+    [T(r.a),T(r.h),T(r.u)].forEach(v=>{const td=document.createElement('td');td.textContent=v;tr.appendChild(td);});
+    tb.appendChild(tr);
+  });
+}
+
 /* ---- แท็บ 6 ศัพท์อาหรับ ---- */
 function renderGloss(){
   const cw=document.getElementById('gCats'); cw.innerHTML='';
@@ -875,6 +1017,7 @@ function renderAll(){
   calcZakat(); renderCharity(); renderRecip();
   renderFast(); renderMakeup();
   renderQuiz(); renderGloss(); renderFc();
+  renderHType(); renderRvw(); renderHDay(); renderHUm();
 }
 applyLang();
 openTab('t1');
