@@ -850,17 +850,30 @@ function renderFast(){
   document.getElementById('fastFb').textContent='';
   FASTITEMS.forEach((f,i)=>{
     const b=chipBtn(LANG==='th'? f.th : f.en);
-    if(fastPicked.has(i)) b.classList.add('green');
+    const mark=()=>{ const on=fastPicked.has(i);
+      b.style.fontWeight = on?'700':'';
+      b.style.outline    = on?'2px solid currentColor':'';
+      b.textContent = (on?'✓ ':'') + (LANG==='th'? f.th : f.en); };
+    mark();
     b.onclick=()=>{
-      if(fastPicked.has(i)){ fastPicked.delete(i); b.classList.remove('green'); }
-      else { fastPicked.add(i); b.classList.add('green'); }
+      if(fastPicked.has(i)) fastPicked.delete(i); else fastPicked.add(i);
+      b.classList.remove('green','red'); mark();
     };
     row.appendChild(b);
   });
 }
 document.getElementById('fastCheck').addEventListener('click',()=>{
   let miss=0, wrong=0;
-  FASTITEMS.forEach((f,i)=>{ if(f.ok && !fastPicked.has(i)) miss++; if(!f.ok && fastPicked.has(i)) wrong++; });
+  const btns=[...document.querySelectorAll('#fastRow button')];
+  FASTITEMS.forEach((f,i)=>{
+    if(f.ok && !fastPicked.has(i)) miss++;
+    if(!f.ok && fastPicked.has(i)) wrong++;
+    /* ระบายสีหลังตรวจเท่านั้น เขียว=ตอบถูก แดง=ตอบผิด */
+    const b=btns[i]; if(!b) return;
+    b.classList.remove('green','red');
+    if(fastPicked.has(i)) b.classList.add(f.ok?'green':'red');
+    else if(f.ok) b.classList.add('red');
+  });
   const fb=document.getElementById('fastFb');
   if(!miss && !wrong) setFb(fb, LANG==='th'?'✓ ถูกหมด — 5 ข้อที่ทำให้เสียศีลอดล้วนมีคำว่า “เจตนา” หรือเป็นเรื่องร่างกายบังคับ'
                                           :'✓ All correct — the five that break the fast are intentional acts or involuntary bodily states', true);
