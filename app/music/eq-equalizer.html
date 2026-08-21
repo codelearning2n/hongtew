@@ -2,185 +2,417 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>ห้องติว ม.6 — เลือกวิชาที่จะฝึก</title>
-<meta name="description" content="รวมข้อสอบฝึก สื่อการสอน และสรุปทุกวิชา ม.6 เปิดในเบราว์เซอร์ได้เลย">
-<meta name="theme-color" content="#4f46e5">
-<!-- ไม่ให้เสิร์ชเอนจินเก็บไปทำดัชนี = คนแปลกหน้าค้นหาไม่เจอ (คู่กับ robots.txt)
-     ย้ำ: กันการ "ค้นเจอ" เท่านั้น ใครได้ลิงก์ไปแล้วยังเปิดได้อยู่ดี -->
-<meta name="robots" content="noindex,nofollow">
-<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EQ ทำงานยังไง — ลองปรับเอง</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --font:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
-  --bg:#eef2f7;--ink:#1e293b;--muted:#64748b;--line:#e2e8f0;--card:#fff;--soft:#f8fafc;
-  --shadow:0 1px 4px rgba(15,23,42,.08);--ok:#059669;--bad:#dc2626;
-  --warn-bg:#fff7ed;--warn-bd:#f97316;--tip-bg:#ecfdf5;--tip-bd:#10b981;
-  --info-bg:#eff6ff;--info-bd:#3b82f6;--hot-bg:#fee2e2;--hot-ink:#b91c1c;
-  --badge-bg:#fef9c3;--badge-ink:#854d0e;
-  --radius:14px;--radius-sm:10px;--radius-pill:999px;
-  --accent:#4f46e5;--accent-head:#312e81;--accent-ink:#3730a3;--accent-soft:#eef2ff;
-  --accent-bd:#c7d2fe;--accent-chip:#e0e7ff;--accent-ghost:#a5b4fc;
-}
-/* สีประจำวิชา — ใช้ตอนวาดการ์ด */
-.s-bio    {--c:#16a34a;--cs:#f0fdf4;--cb:#bbf7d0}
-.s-physics{--c:#4f46e5;--cs:#eef2ff;--cb:#c7d2fe}
-.s-math   {--c:#0284c7;--cs:#f0f9ff;--cb:#bae6fd}
-.s-chem   {--c:#ea7317;--cs:#fff7ed;--cb:#fed7aa}
-.s-christ {--c:#7c3aed;--cs:#f5f3ff;--cb:#ddd6fe}
-.s-islam  {--c:#0d9488;--cs:#f0fdfa;--cb:#99f6e4}
-.s-history{--c:#b45309;--cs:#fffbeb;--cb:#fde68a}
-.s-music{--c:#4d7c0f;--cs:#f7fee7;--cb:#bef264}
-.s-eng    {--c:#db2777;--cs:#fdf2f8;--cb:#fbcfe8}
-.s-thai   {--c:#dc2626;--cs:#fef2f2;--cb:#fecaca}
-.s-tsam   {--c:#475569;--cs:#f4f6f8;--cb:#cbd5e1}
-:root[data-theme="dark"] .s-bio{--cs:#0f2a1a;--cb:#256b41;--c:#4ade80}
-:root[data-theme="dark"] .s-physics{--cs:#1e1b4b;--cb:#3f3a8f;--c:#818cf8}
-:root[data-theme="dark"] .s-math{--cs:#0c2434;--cb:#0b5a80;--c:#38bdf8}
-:root[data-theme="dark"] .s-chem{--cs:#2b1a0c;--cb:#8a3d12;--c:#fb923c}
-:root[data-theme="dark"] .s-christ{--cs:#241a3d;--cb:#5b21b6;--c:#a78bfa}
-:root[data-theme="dark"] .s-islam{--cs:#0d2b28;--cb:#12615a;--c:#2dd4bf}
-:root[data-theme="dark"] .s-history{--cs:#2a1f0a;--cb:#8a4b0c;--c:#fbbf24}
-:root[data-theme="dark"] .s-eng{--cs:#2e1122;--cb:#8d1748;--c:#f472b6}
-:root[data-theme="dark"] .s-thai{--cs:#2d1414;--cb:#8d2020;--c:#f87171}
-:root[data-theme="dark"] .s-tsam{--cs:#171d26;--cb:#41506a;--c:#a9b8cc}
-:root[data-theme="dark"] .s-music{--cs:#1a2610;--cb:#4d7c0f;--c:#a3e635}
-
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.6;
-     padding-bottom:calc(64px + env(safe-area-inset-bottom))}
-.wrap{max-width:940px;margin:0 auto;padding:14px 14px 30px}
-
-.hero{background:linear-gradient(135deg,var(--accent) 0%,#7c3aed 100%);color:#fff;border-radius:18px;
-      padding:22px 20px;margin-bottom:14px;box-shadow:var(--shadow)}
-.hero h1{font-size:1.5rem;line-height:1.35;margin-bottom:4px}
-.hero p{opacity:.92;font-size:.95rem}
-.hero .stat{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:.85rem;font-weight:600}
-.hero .stat span{background:rgba(255,255,255,.2);padding:4px 12px;border-radius:999px;backdrop-filter:blur(4px)}
-
-.tools{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 6px}
-#q{flex:1;min-width:190px;padding:12px 14px;border:1.5px solid var(--line);border-radius:var(--radius-sm);
-   font-family:inherit;font-size:1rem;background:var(--card);color:var(--ink)}
-#q:focus{outline:none;border-color:var(--accent)}
-.chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 4px}
-.chip{border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:var(--radius-pill);
-      padding:7px 14px;font-size:.88rem;font-weight:600;cursor:pointer;font-family:inherit;min-height:38px}
-.chip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
-.chip .n{opacity:.6;font-size:.76rem;margin-left:3px}
-
-h2.sec{font-size:1.05rem;margin:20px 0 8px;color:var(--accent-head);display:flex;align-items:center;gap:8px}
-h2.sec .line{flex:1;height:1px;background:var(--line)}
-
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
-a.card{display:flex;flex-direction:column;gap:5px;background:var(--card);border:1px solid var(--line);
-  border-left:5px solid var(--c,var(--accent));border-radius:var(--radius);padding:13px 14px;
-  text-decoration:none;color:inherit;box-shadow:var(--shadow);min-height:86px}
-a.card:hover{border-color:var(--c);transform:translateY(-2px);transition:.15s}
-a.card:active{transform:scale(.985)}
-a.card .t{font-weight:600;font-size:.97rem;line-height:1.4}
-a.card .m{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:.76rem;color:var(--muted);margin-top:auto}
-a.card .k{background:var(--cs);color:var(--c);border-radius:6px;padding:1px 8px;font-weight:700}
-
-.note{background:var(--info-bg);border-left:4px solid var(--info-bd);border-radius:10px;padding:12px 14px;
-      margin:16px 0;font-size:.9rem}
-.warn{background:var(--warn-bg);border-left:4px solid var(--warn-bd);border-radius:10px;padding:12px 14px;
-      margin:16px 0;font-size:.9rem}
-.empty{text-align:center;color:var(--muted);padding:40px 12px}
-footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:26px;line-height:1.8}
-@media(max-width:480px){.wrap{padding:10px 10px 24px}.hero{padding:18px 16px}.hero h1{font-size:1.25rem}
-  .grid{grid-template-columns:1fr}}
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel2:#1c232c; --line:#2d3742;
+    --txt:#e6edf3; --dim:#9aa7b4; --acc:#4cc9f0; --acc2:#f72585;
+    --good:#56d364; --warn:#e3b341;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--txt);
+    font-family:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
+    line-height:1.6; padding:16px;
+  }
+  .wrap{max-width:920px; margin:0 auto}
+  h1{font-size:1.5rem; margin:0 0 4px}
+  .sub{color:var(--dim); margin:0 0 18px; font-size:.95rem}
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:16px; margin-bottom:16px}
+  .controls{display:flex; flex-wrap:wrap; gap:10px; align-items:center}
+  button{
+    font-family:inherit; font-size:.95rem; font-weight:600; cursor:pointer;
+    background:var(--panel2); color:var(--txt); border:1px solid var(--line);
+    border-radius:10px; padding:10px 16px; transition:.15s;
+  }
+  button:hover{border-color:var(--acc); color:var(--acc)}
+  button.primary{background:var(--acc); color:#06141c; border-color:var(--acc)}
+  button.primary:hover{background:#7ad8f5; color:#06141c}
+  button:disabled{opacity:.4; cursor:not-allowed}
+  button.on{background:var(--acc2); color:#fff; border-color:var(--acc2)}
+  .file-label{display:inline-flex; align-items:center; gap:6px}
+  input[type=file]{display:none}
+  canvas{width:100%; display:block; border-radius:10px; background:#05080c}
+  .specwrap{position:relative}
+  .hint{position:absolute; top:8px; left:12px; font-size:.78rem; color:var(--dim); pointer-events:none}
+  .legend{display:flex; gap:16px; font-size:.8rem; color:var(--dim); margin-top:8px; flex-wrap:wrap}
+  .legend span{display:inline-flex; align-items:center; gap:6px}
+  .dot{width:12px; height:3px; border-radius:2px; display:inline-block}
+  .bands{display:grid; grid-template-columns:repeat(6,1fr); gap:8px; margin-top:6px}
+  @media(max-width:560px){.bands{grid-template-columns:repeat(3,1fr)}}
+  .band{background:var(--panel2); border:1px solid var(--line); border-radius:10px; padding:10px 6px; text-align:center}
+  .band .freq{font-weight:700; font-size:.92rem}
+  .band .role{font-size:.7rem; color:var(--dim); min-height:2.2em; display:flex; align-items:center; justify-content:center}
+  input[type=range][orient=vertical]{
+    writing-mode:vertical-lr; direction:rtl; width:8px; height:130px; margin:8px auto; accent-color:var(--acc);
+  }
+  .gainval{font-variant-numeric:tabular-nums; font-weight:600; font-size:.85rem; color:var(--acc)}
+  .gainval.cut{color:var(--acc2)}
+  .row{display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-top:10px}
+  .presets button{padding:7px 12px; font-size:.85rem}
+  details{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin-bottom:12px}
+  summary{cursor:pointer; font-weight:600; color:var(--acc)}
+  details p{margin:10px 0 4px; color:var(--dim)}
+  details b{color:var(--txt)}
+  .tag{display:inline-block; background:var(--panel2); border:1px solid var(--line); border-radius:6px; padding:1px 7px; font-size:.78rem; margin:2px}
+  .status{font-size:.85rem; color:var(--warn); min-height:1.4em; margin-top:6px}
+  code{background:#05080c; padding:1px 6px; border-radius:5px; color:var(--good); font-size:.85em}
 </style>
 </head>
-<body data-subject="physics" data-tools="none">
+<body>
 <div class="wrap">
+  <h1>🎚️ EQ (Equalizer) ทำงานยังไง — ลองปรับเอง</h1>
+  <p class="sub">ตัวนี้ใช้ <b>Web Audio API</b> ของเบราว์เซอร์จริง ๆ (BiquadFilterNode ตัวเดียวกับ EQ มืออาชีพ) เปิดเสียง แล้วลากสไลเดอร์ดูว่าเสียง + กราฟเปลี่ยนยังไง</p>
 
-  <div class="hero">
-    <h1>📚 ห้องติว ม.6</h1>
-    <p>ข้อสอบฝึก · สื่อจำลอง · สรุป — กดเข้าได้เลย ไม่ต้องล็อกอิน ไม่ต้องติดตั้ง</p>
-    <div class="stat">
-      <span id="stTotal">— หน้า</span>
-      <span id="stSubj">— วิชา</span>
-      <span>เล่นบนมือถือได้</span>
+  <!-- แหล่งเสียง -->
+  <div class="card">
+    <div class="controls">
+      <button class="primary" id="playBtn" disabled>▶ เล่น</button>
+      <label class="file-label"><button onclick="document.getElementById('file').click()">📁 อัปโหลดเพลง</button>
+        <input type="file" id="file" accept="audio/*"></label>
+      <button id="toneBtn">🔊 เสียงทดสอบ (Sweep)</button>
+      <button id="noiseBtn">〰️ เสียงซ่า (Noise)</button>
+      <button class="on" id="bypassBtn" title="ปิด EQ ชั่วคราวเพื่อเทียบเสียง">EQ: เปิด</button>
+    </div>
+    <div class="status" id="status">เลือกแหล่งเสียงด้านบนก่อน แล้วกด ▶ เล่น</div>
+  </div>
+
+  <!-- กราฟ -->
+  <div class="card specwrap">
+    <span class="hint">แกนนอน = ความถี่ (ต่ำ→สูง) · แกนตั้ง = ความดัง</span>
+    <canvas id="cv" height="260"></canvas>
+    <div class="legend">
+      <span><i class="dot" style="background:var(--good)"></i> สเปกตรัมเสียงจริง (real-time)</span>
+      <span><i class="dot" style="background:var(--acc)"></i> เส้นโค้ง EQ ที่คุณตั้ง (เพิ่ม/ลดตรงไหน)</span>
+      <span><i class="dot" style="background:var(--dim)"></i> เส้น 0 dB (ไม่ปรับ)</span>
     </div>
   </div>
 
-  <div class="tools">
-    <input id="q" type="text" placeholder="🔍 พิมพ์ค้นหา เช่น ฮอร์โมน, วงจรไฟฟ้า, ข้อสอบ">
+  <!-- ปุ่มปรับ EQ -->
+  <div class="card">
+    <div class="presets row">
+      <b style="margin-right:4px">พรีเซ็ต:</b>
+      <button data-p="flat">เรียบ (Flat)</button>
+      <button data-p="bass">เพิ่มเบส</button>
+      <button data-p="vocal">เน้นเสียงร้อง</button>
+      <button data-p="treble">เพิ่มแหลม</button>
+      <button data-p="vshape">V-Shape</button>
+    </div>
+    <div class="bands" id="bands"></div>
+    <p class="sub" style="margin:12px 0 0">ลากขึ้น = <b style="color:var(--acc)">boost</b> (ดังขึ้น), ลากลง = <b style="color:var(--acc2)">cut</b> (เบาลง). ค่าหน่วยเป็น <b>dB</b></p>
   </div>
 
-  <div class="chips" id="kindRow">
-    <button class="chip on" data-kind="all">ทั้งหมด</button>
-    <button class="chip" data-kind="exam">📝 ข้อสอบ/เกมฝึก</button>
-    <button class="chip" data-kind="sim">🔬 สื่อจำลอง/3D</button>
-    <button class="chip" data-kind="note">📄 สรุป/ชีต</button>
-  </div>
-  <div class="chips" id="subjRow"></div>
+  <!-- คำอธิบาย -->
+  <details open>
+    <summary>EQ ทำงานยังไง? (อ่านหลังจากลองเล่นแล้ว)</summary>
+    <p>เสียงทุกเสียง = คลื่นหลาย <b>ความถี่ (Hz)</b> รวมกัน EQ คือการ "เพิ่ม/ลดความดัง" ของแต่ละย่านความถี่แยกกัน</p>
+    <p><b>แต่ละย่านในนี้:</b></p>
+    <p>
+      <span class="tag">60 Hz — เบสลึก</span>
+      <span class="tag">170 Hz — เบส/ความอิ่ม</span>
+      <span class="tag">350 Hz — กลางต่ำ</span>
+      <span class="tag">1 kHz — กลาง/เสียงร้อง</span>
+      <span class="tag">3.5 kHz — ความใส/ชัด</span>
+      <span class="tag">10 kHz — แหลม/ความเปิด</span>
+    </p>
+    <p><b>ข้างในใช้ filter 3 ชนิด:</b> ย่านล่างสุดเป็น <code>lowshelf</code> (ยก/ลดทุกอย่างที่ต่ำกว่าจุดนั้น), ย่านบนสุดเป็น <code>highshelf</code>, ย่านกลางเป็น <code>peaking</code> (ยก/ลดเป็นเนินโค้งรอบความถี่นั้น)</p>
+    <p>filter แต่ละตัวมีพารามิเตอร์หลัก: <b>frequency</b> (ปรับย่านไหน), <b>gain</b> (กี่ dB — สไลเดอร์คุมตัวนี้), <b>Q</b> (เนินแคบหรือกว้าง). สัญญาณเสียงวิ่งผ่าน filter ต่อกันเป็นทอด ๆ <code>source → 60Hz → 170Hz → ... → 10kHz → ลำโพง</code></p>
+    <p>👉 ลองกด <b>"EQ: เปิด/ปิด"</b> สลับไปมาเพื่อได้ยินผลต่างชัด ๆ และดูเส้นสีฟ้าเทียบกับเส้น 0 dB</p>
+  </details>
 
-  <div id="list"></div>
+  <details>
+    <summary>โค้ดหัวใจหลัก (เผื่ออยากเอาไปทำต่อ)</summary>
+    <p>หัวใจคือการสร้าง filter แล้วต่อสายสัญญาณ:</p>
+    <pre style="overflow:auto; background:#05080c; padding:12px; border-radius:10px; color:#e6edf3; font-size:.8rem"><code style="background:none; color:inherit">const ctx = new AudioContext();
+const f = ctx.createBiquadFilter();
+f.type = "peaking";        // หรือ lowshelf / highshelf
+f.frequency.value = 1000;  // ย่าน 1 kHz
+f.Q.value = 1;             // ความกว้างของเนิน
+f.gain.value = 6;          // +6 dB (สไลเดอร์คุมค่านี้)
 
-  <div class="note" id="hintTools">
-    💡 <b>ในหน้าเรียนทุกหน้ามีปุ่ม ⚙️ มุมขวาล่าง</b> — กดเพื่อ <b>สลับโหมดมืด/สว่าง</b> และ <b>ปรับขนาดตัวหนังสือ</b><br>
-    หน้าของ <b>คณิต · ฟิสิกส์ · เคมี</b> จะมีเพิ่มอีก 2 ปุ่ม: <b>✏️ ที่ทด</b> (เขียนด้วยนิ้ว/ปากกา มีหลายหน้า เซฟให้อัตโนมัติ)
-    และ <b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b>
-  </div>
-
-  <footer>
-    ทำไว้ใช้เองและแบ่งเพื่อน · เนื้อหาสรุปจากคาบเรียน ม.6<br>
-    เจอตรงไหนผิดบอกได้ จะได้แก้
-  </footer>
+source.connect(f);         // ต่อสายสัญญาณ
+f.connect(ctx.destination);// ออกลำโพง</code></pre>
+  </details>
 </div>
 
-<script src="catalog.js?v=202608211351"></script>
 <script>
-const LIST = window.CATALOG || [];
+// ===== ค่าย่านความถี่ของ EQ =====
+const BANDS = [
+  {f:60,   type:'lowshelf',  role:'เบสลึก'},
+  {f:170,  type:'peaking',   role:'เบส/อิ่ม'},
+  {f:350,  type:'peaking',   role:'กลางต่ำ'},
+  {f:1000, type:'peaking',   role:'กลาง/ร้อง'},
+  {f:3500, type:'peaking',   role:'ใส/ชัด'},
+  {f:10000,type:'highshelf', role:'แหลม'},
+];
+const PRESETS = {
+  flat:[0,0,0,0,0,0],
+  bass:[8,5,2,0,0,1],
+  vocal:[-2,-1,1,5,4,1],
+  treble:[0,0,0,1,4,7],
+  vshape:[7,3,-2,-3,2,7],
+};
+
+let ctx, analyser, filters=[], sourceNode=null, mediaEl=null, gainOut, bypass=false;
+let oscSweep=null, noiseNode=null, currentMode=null; // 'file' | 'sweep' | 'noise'
+let playing=false;
+
 const $ = s=>document.querySelector(s);
-let fKind='all', fSubj='all', fQ='';
+const statusEl = $('#status');
 
-/* ---- ชิปวิชา ---- */
-const subjects=[...new Set(LIST.map(x=>x.subj))];
-$('#subjRow').innerHTML = `<button class="chip on" data-subj="all">ทุกวิชา</button>` +
-  subjects.map(s=>{
-    const one=LIST.find(x=>x.subj===s);
-    return `<button class="chip" data-subj="${s}">${one.icon} ${s}<span class="n">${LIST.filter(x=>x.subj===s).length}</span></button>`;
-  }).join('');
-
-$('#stTotal').textContent = LIST.length+' หน้า';
-$('#stSubj').textContent  = subjects.length+' วิชา';
-
-function pass(x){
-  if(fKind!=='all' && x.kind!==fKind) return false;
-  if(fSubj!=='all' && x.subj!==fSubj) return false;
-  if(fQ && !(x.title+' '+x.subj+' '+x.path).toLowerCase().includes(fQ)) return false;
-  return true;
+// ===== สร้างกราฟ filter / ต่อสาย =====
+function ensureCtx(){
+  if(ctx) return;
+  ctx = new (window.AudioContext||window.webkitAudioContext)();
+  analyser = ctx.createAnalyser();
+  analyser.fftSize = 2048;
+  analyser.smoothingTimeConstant = 0.8;
+  gainOut = ctx.createGain();
+  gainOut.gain.value = 0.9;
+  // สร้าง filter ทุกย่าน ต่อกันเป็นลูกโซ่
+  filters = BANDS.map(b=>{
+    const f = ctx.createBiquadFilter();
+    f.type = b.type;
+    f.frequency.value = b.f;
+    f.Q.value = 1.0;
+    f.gain.value = 0;
+    return f;
+  });
+  for(let i=0;i<filters.length-1;i++) filters[i].connect(filters[i+1]);
+  // ปลายสาย → analyser → gain → ลำโพง
+  filters[filters.length-1].connect(analyser);
+  analyser.connect(gainOut);
+  gainOut.connect(ctx.destination);
+  draw();
 }
-const KIND={exam:'ข้อสอบ',sim:'สื่อจำลอง',note:'สรุป'};
 
-function render(){
-  const rows=LIST.filter(pass);
-  if(!LIST.length){
-    $('#list').innerHTML=`<div class="warn">ยังไม่มีรายการ — ต้องรัน <code>pwsh -File site/build.ps1</code> ก่อน
-      เพื่อคัดลอกหน้าเรียนเข้ามาและสร้าง <code>catalog.js</code></div>`; return;
-  }
-  if(!rows.length){ $('#list').innerHTML='<div class="empty">ไม่เจอที่ค้นหา ลองพิมพ์สั้นลง</div>'; return; }
-  let html='';
-  for(const s of subjects){
-    const g=rows.filter(x=>x.subj===s); if(!g.length) continue;
-    html += `<h2 class="sec">${g[0].icon} ${s} <span class="line"></span>
-             <span style="font-size:.8rem;font-weight:600;color:var(--muted)">${g.length}</span></h2>
-             <div class="grid">` +
-      g.map(x=>`<a class="card s-${x.key}" href="${x.path}">
-                  <div class="t">${x.title}</div>
-                  <div class="m"><span class="k">${KIND[x.kind]}</span></div>
-                </a>`).join('') + `</div>`;
-  }
-  $('#list').innerHTML=html;
+// ต่อ source เข้าหัวลูกโซ่ (หรือข้าม EQ ถ้า bypass)
+function connectSource(node){
+  ensureCtx();
+  sourceNode = node;
+  routeSource();
 }
-$('#kindRow').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;
-  fKind=b.dataset.kind; $('#kindRow').querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c===b)); render();});
-$('#subjRow').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;
-  fSubj=b.dataset.subj; $('#subjRow').querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c===b)); render();});
-$('#q').addEventListener('input',e=>{fQ=e.target.value.trim().toLowerCase();render();});
-render();
+function routeSource(){
+  if(!sourceNode) return;
+  try{ sourceNode.disconnect(); }catch(e){}
+  if(bypass){
+    sourceNode.connect(analyser); // ข้าม filter ทั้งหมด
+  }else{
+    sourceNode.connect(filters[0]);
+  }
+}
+
+// ===== สไลเดอร์แต่ละย่าน =====
+const bandsEl = $('#bands');
+const sliders = [];
+BANDS.forEach((b,i)=>{
+  const wrap = document.createElement('div');
+  wrap.className='band';
+  const label = b.f>=1000 ? (b.f/1000)+'k' : b.f;
+  wrap.innerHTML = `
+    <div class="freq">${label} Hz</div>
+    <input type="range" orient="vertical" min="-12" max="12" step="0.5" value="0" data-i="${i}">
+    <div class="gainval" id="g${i}">0 dB</div>
+    <div class="role">${b.role}</div>`;
+  bandsEl.appendChild(wrap);
+  const sl = wrap.querySelector('input');
+  sliders.push(sl);
+  sl.addEventListener('input',()=>setGain(i, parseFloat(sl.value)));
+});
+
+function setGain(i,val){
+  if(filters[i]) filters[i].gain.value = val;
+  const g = $('#g'+i);
+  g.textContent = (val>0?'+':'')+val+' dB';
+  g.className = 'gainval'+(val<0?' cut':'');
+}
+function applyPreset(name){
+  const p = PRESETS[name]; if(!p) return;
+  ensureCtx();
+  p.forEach((v,i)=>{ sliders[i].value=v; setGain(i,v); });
+}
+document.querySelectorAll('.presets button').forEach(btn=>{
+  btn.addEventListener('click',()=>applyPreset(btn.dataset.p));
+});
+
+// ===== แหล่งเสียง: ไฟล์ =====
+$('#file').addEventListener('change',e=>{
+  const file = e.target.files[0]; if(!file) return;
+  stopAll();
+  ensureCtx();
+  if(!mediaEl){ mediaEl = new Audio(); mediaEl.loop=true; }
+  mediaEl.src = URL.createObjectURL(file);
+  if(!mediaEl._node){ mediaEl._node = ctx.createMediaElementSource(mediaEl); }
+  currentMode='file';
+  connectSource(mediaEl._node);
+  $('#playBtn').disabled=false;
+  statusEl.textContent='โหลดแล้ว: '+file.name+' — กด ▶ เล่น';
+});
+
+// ===== แหล่งเสียง: Sweep (ไล่ความถี่ ฟังได้ว่าย่านไหนถูกปรับ) =====
+$('#toneBtn').addEventListener('click',()=>{
+  stopAll(); ensureCtx();
+  oscSweep = ctx.createOscillator();
+  oscSweep.type='sawtooth';
+  const now=ctx.currentTime;
+  oscSweep.frequency.setValueAtTime(80, now);
+  oscSweep.frequency.exponentialRampToValueAtTime(12000, now+8);
+  oscSweep.frequency.exponentialRampToValueAtTime(80, now+16);
+  // วนซ้ำด้วยการตั้งใหม่
+  oscSweep._loop = setInterval(()=>{
+    if(!oscSweep) return;
+    const t=ctx.currentTime;
+    oscSweep.frequency.cancelScheduledValues(t);
+    oscSweep.frequency.setValueAtTime(80,t);
+    oscSweep.frequency.exponentialRampToValueAtTime(12000,t+8);
+    oscSweep.frequency.exponentialRampToValueAtTime(80,t+16);
+  },16000);
+  const g=ctx.createGain(); g.gain.value=0.25;
+  oscSweep.connect(g);
+  currentMode='sweep';
+  connectSource(g);
+  oscSweep.start();
+  $('#playBtn').disabled=false;
+  startPlay();
+  statusEl.textContent='เสียง Sweep กำลังไล่ความถี่ต่ำ→สูง→ต่ำ — ลองปรับ EQ ฟังว่าย่านไหนเปลี่ยน';
+});
+
+// ===== แหล่งเสียง: Noise (ซ่า ฟังพร้อมกันทุกย่าน) =====
+$('#noiseBtn').addEventListener('click',()=>{
+  stopAll(); ensureCtx();
+  const len = ctx.sampleRate*2;
+  const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+  const d = buf.getChannelData(0);
+  for(let i=0;i<len;i++) d[i]=Math.random()*2-1;
+  noiseNode = ctx.createBufferSource();
+  noiseNode.buffer=buf; noiseNode.loop=true;
+  const g=ctx.createGain(); g.gain.value=0.18;
+  noiseNode.connect(g);
+  currentMode='noise';
+  connectSource(g);
+  noiseNode.start();
+  $('#playBtn').disabled=false;
+  startPlay();
+  statusEl.textContent='เสียงซ่า (มีทุกความถี่เท่ากัน) — เห็นชัดว่า EQ ปั้นรูปร่างความถี่ยังไง';
+});
+
+// ===== เล่น / หยุด =====
+const playBtn=$('#playBtn');
+playBtn.addEventListener('click',()=>{ playing?pausePlay():startPlay(); });
+function startPlay(){
+  if(ctx && ctx.state==='suspended') ctx.resume();
+  if(currentMode==='file' && mediaEl) mediaEl.play();
+  playing=true; playBtn.textContent='⏸ หยุด';
+}
+function pausePlay(){
+  if(currentMode==='file' && mediaEl) mediaEl.pause();
+  playing=false; playBtn.textContent='▶ เล่น';
+}
+function stopAll(){
+  if(mediaEl){ mediaEl.pause(); }
+  if(oscSweep){ try{clearInterval(oscSweep._loop); oscSweep.stop();}catch(e){} oscSweep=null; }
+  if(noiseNode){ try{noiseNode.stop();}catch(e){} noiseNode=null; }
+  playing=false; playBtn.textContent='▶ เล่น';
+}
+
+// ===== ปุ่ม bypass (เปิด/ปิด EQ) =====
+const bypassBtn=$('#bypassBtn');
+bypassBtn.addEventListener('click',()=>{
+  bypass=!bypass;
+  bypassBtn.textContent = bypass?'EQ: ปิด':'EQ: เปิด';
+  bypassBtn.className = bypass?'':'on';
+  routeSource();
+});
+
+// ===== วาดกราฟ =====
+const cv=$('#cv'), g=cv.getContext('2d');
+function resize(){ cv.width=cv.clientWidth*devicePixelRatio; cv.height=260*devicePixelRatio; g.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0); }
+window.addEventListener('resize',resize); resize();
+
+const fMin=20, fMax=20000;
+const xOf=fr=>{ const W=cv.clientWidth; return (Math.log10(fr)-Math.log10(fMin))/(Math.log10(fMax)-Math.log10(fMin))*W; };
+
+// คำนวณ magnitude response รวมของ filter ทุกตัว ที่ความถี่ fr
+function eqResponseDb(fr){
+  // ใช้ getFrequencyResponse ของ BiquadFilter
+  return totalDb(fr);
+}
+let freqArr=new Float32Array(1), magArr=new Float32Array(1), phaseArr=new Float32Array(1);
+function totalDb(fr){
+  if(!filters.length) return 0;
+  freqArr[0]=fr; let sum=0;
+  for(const f of filters){
+    f.getFrequencyResponse(freqArr,magArr,phaseArr);
+    sum += 20*Math.log10(magArr[0]||1e-6);
+  }
+  return sum;
+}
+
+function draw(){
+  requestAnimationFrame(draw);
+  const W=cv.clientWidth, H=260;
+  g.clearRect(0,0,W,H);
+
+  // เส้นกริดความถี่
+  g.font='10px Sarabun, sans-serif'; g.textAlign='center';
+  [50,100,200,500,1000,2000,5000,10000].forEach(fr=>{
+    const x=xOf(fr); g.strokeStyle='#1b232c'; g.lineWidth=1;
+    g.beginPath(); g.moveTo(x,0); g.lineTo(x,H-14); g.stroke();
+    g.fillStyle='#5b6776'; g.fillText(fr>=1000?(fr/1000)+'k':fr, x, H-3);
+  });
+
+  // เส้น 0 dB
+  const midY=H*0.5;
+  g.strokeStyle='#3a4654'; g.lineWidth=1; g.setLineDash([4,4]);
+  g.beginPath(); g.moveTo(0,midY); g.lineTo(W,midY); g.stroke();
+  g.setLineDash([]);
+
+  // สเปกตรัมเสียงจริง
+  if(analyser){
+    const bins=analyser.frequencyBinCount;
+    const data=new Uint8Array(bins);
+    analyser.getByteFrequencyData(data);
+    const nyq=ctx.sampleRate/2;
+    g.beginPath();
+    let started=false;
+    for(let i=1;i<bins;i++){
+      const fr=i/bins*nyq; if(fr<fMin||fr>fMax) continue;
+      const x=xOf(fr);
+      const y=H - (data[i]/255)*(H-20) - 4;
+      if(!started){g.moveTo(x,y);started=true;} else g.lineTo(x,y);
+    }
+    g.lineTo(W,H); g.lineTo(0,H); g.closePath();
+    g.fillStyle='rgba(86,211,100,0.18)'; g.fill();
+    g.strokeStyle='rgba(86,211,100,0.9)'; g.lineWidth=1.5;
+    g.stroke();
+  }
+
+  // เส้นโค้ง EQ (response รวม)
+  if(filters.length && !bypass){
+    const dbScale=8; // ±12dB map ครึ่งจอ -> ใช้ ~ H*0.5/12
+    const pxPerDb=(H*0.42)/12;
+    g.beginPath();
+    for(let px=0;px<=W;px+=2){
+      const fr=Math.pow(10, px/W*(Math.log10(fMax)-Math.log10(fMin))+Math.log10(fMin));
+      const db=totalDb(fr);
+      const y=midY - db*pxPerDb;
+      if(px===0)g.moveTo(px,y); else g.lineTo(px,y);
+    }
+    g.strokeStyle='#4cc9f0'; g.lineWidth=2.5; g.stroke();
+
+    // จุดบนแต่ละย่าน
+    BANDS.forEach((b,i)=>{
+      const x=xOf(b.f), db=totalDb(b.f), y=midY-db*pxPerDb;
+      g.fillStyle='#4cc9f0'; g.beginPath(); g.arc(x,y,3.5,0,7); g.fill();
+    });
+  } else if(bypass){
+    g.fillStyle='#5b6776'; g.textAlign='left'; g.font='12px Sarabun';
+    g.fillText('EQ ปิดอยู่ (เสียงดิบ) — กด "EQ: ปิด" เพื่อเปิดกลับ', 12, 20);
+  }
+}
 </script>
 <!--KIT-UI v2.8 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>

@@ -1,186 +1,317 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="th">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>ห้องติว ม.6 — เลือกวิชาที่จะฝึก</title>
-<meta name="description" content="รวมข้อสอบฝึก สื่อการสอน และสรุปทุกวิชา ม.6 เปิดในเบราว์เซอร์ได้เลย">
-<meta name="theme-color" content="#4f46e5">
-<!-- ไม่ให้เสิร์ชเอนจินเก็บไปทำดัชนี = คนแปลกหน้าค้นหาไม่เจอ (คู่กับ robots.txt)
-     ย้ำ: กันการ "ค้นเจอ" เท่านั้น ใครได้ลิงก์ไปแล้วยังเปิดได้อยู่ดี -->
-<meta name="robots" content="noindex,nofollow">
-<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no,maximum-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>ระนาดทุ้ม — ตีรัวได้ กดพร้อมกันได้ ทำมาเพื่อ iPad</title>
 <style>
 :root{
-  --font:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
-  --bg:#eef2f7;--ink:#1e293b;--muted:#64748b;--line:#e2e8f0;--card:#fff;--soft:#f8fafc;
-  --shadow:0 1px 4px rgba(15,23,42,.08);--ok:#059669;--bad:#dc2626;
-  --warn-bg:#fff7ed;--warn-bd:#f97316;--tip-bg:#ecfdf5;--tip-bd:#10b981;
-  --info-bg:#eff6ff;--info-bd:#3b82f6;--hot-bg:#fee2e2;--hot-ink:#b91c1c;
-  --badge-bg:#fef9c3;--badge-ink:#854d0e;
-  --radius:14px;--radius-sm:10px;--radius-pill:999px;
-  --accent:#4f46e5;--accent-head:#312e81;--accent-ink:#3730a3;--accent-soft:#eef2ff;
-  --accent-bd:#c7d2fe;--accent-chip:#e0e7ff;--accent-ghost:#a5b4fc;
+  --r-bg:#17120d; --r-panel:#221a13; --r-line:#3a2d20;
+  --wood:#c9964f; --wood-dark:#a9762f; --wood-hit:#ffd98a;
+  --trough:#5a3b1c; --trough-2:#7a5228;
+  --r-ink:#f3e7d3; --r-muted:#a8907a; --r-accent:#e0a44b; --r-warn:#ff9d5c;
 }
-/* สีประจำวิชา — ใช้ตอนวาดการ์ด */
-.s-bio    {--c:#16a34a;--cs:#f0fdf4;--cb:#bbf7d0}
-.s-physics{--c:#4f46e5;--cs:#eef2ff;--cb:#c7d2fe}
-.s-math   {--c:#0284c7;--cs:#f0f9ff;--cb:#bae6fd}
-.s-chem   {--c:#ea7317;--cs:#fff7ed;--cb:#fed7aa}
-.s-christ {--c:#7c3aed;--cs:#f5f3ff;--cb:#ddd6fe}
-.s-islam  {--c:#0d9488;--cs:#f0fdfa;--cb:#99f6e4}
-.s-history{--c:#b45309;--cs:#fffbeb;--cb:#fde68a}
-.s-music{--c:#4d7c0f;--cs:#f7fee7;--cb:#bef264}
-.s-eng    {--c:#db2777;--cs:#fdf2f8;--cb:#fbcfe8}
-.s-thai   {--c:#dc2626;--cs:#fef2f2;--cb:#fecaca}
-.s-tsam   {--c:#475569;--cs:#f4f6f8;--cb:#cbd5e1}
-:root[data-theme="dark"] .s-bio{--cs:#0f2a1a;--cb:#256b41;--c:#4ade80}
-:root[data-theme="dark"] .s-physics{--cs:#1e1b4b;--cb:#3f3a8f;--c:#818cf8}
-:root[data-theme="dark"] .s-math{--cs:#0c2434;--cb:#0b5a80;--c:#38bdf8}
-:root[data-theme="dark"] .s-chem{--cs:#2b1a0c;--cb:#8a3d12;--c:#fb923c}
-:root[data-theme="dark"] .s-christ{--cs:#241a3d;--cb:#5b21b6;--c:#a78bfa}
-:root[data-theme="dark"] .s-islam{--cs:#0d2b28;--cb:#12615a;--c:#2dd4bf}
-:root[data-theme="dark"] .s-history{--cs:#2a1f0a;--cb:#8a4b0c;--c:#fbbf24}
-:root[data-theme="dark"] .s-eng{--cs:#2e1122;--cb:#8d1748;--c:#f472b6}
-:root[data-theme="dark"] .s-thai{--cs:#2d1414;--cb:#8d2020;--c:#f87171}
-:root[data-theme="dark"] .s-tsam{--cs:#171d26;--cb:#41506a;--c:#a9b8cc}
-:root[data-theme="dark"] .s-music{--cs:#1a2610;--cb:#4d7c0f;--c:#a3e635}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--r-bg);color:var(--r-ink);
+  font-family:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
+  -webkit-text-size-adjust:100%;overscroll-behavior:none;
+  -webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+body{padding:.7rem;max-width:1200px;margin:0 auto;touch-action:manipulation}
+h1{font-size:1.15rem;margin:0 0 .15rem}
+.sub{color:var(--r-muted);font-size:.82rem;margin:0 0 .7rem;line-height:1.5}
 
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.6;
-     padding-bottom:calc(64px + env(safe-area-inset-bottom))}
-.wrap{max-width:940px;margin:0 auto;padding:14px 14px 30px}
+#unlock{position:fixed;inset:0;background:rgba(10,7,4,.96);z-index:50;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;padding:1.5rem;text-align:center}
+#unlock.hide{display:none}
+#unlock h2{margin:0;font-size:1.35rem}
+#unlock p{margin:0;color:var(--r-muted);max-width:28rem;line-height:1.65;font-size:.9rem}
+#unlock .ios{color:var(--r-warn);font-weight:700}
+.big{background:var(--r-accent);color:#211502;border:0;border-radius:999px;
+  padding:.95rem 2.4rem;font-size:1.1rem;font-weight:700;cursor:pointer;font-family:inherit}
 
-.hero{background:linear-gradient(135deg,var(--accent) 0%,#7c3aed 100%);color:#fff;border-radius:18px;
-      padding:22px 20px;margin-bottom:14px;box-shadow:var(--shadow)}
-.hero h1{font-size:1.5rem;line-height:1.35;margin-bottom:4px}
-.hero p{opacity:.92;font-size:.95rem}
-.hero .stat{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:.85rem;font-weight:600}
-.hero .stat span{background:rgba(255,255,255,.2);padding:4px 12px;border-radius:999px;backdrop-filter:blur(4px)}
+.rang{background:linear-gradient(180deg,var(--trough-2),var(--trough));
+  border:1px solid #3d2712;border-radius:14px;padding:.9rem .6rem 1.1rem;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.12), 0 6px 18px rgba(0,0,0,.45);
+  touch-action:none;user-select:none;-webkit-user-select:none}
+.bars{display:flex;align-items:flex-end;gap:.3rem;justify-content:center}
+.bar{position:relative;flex:1 1 0;min-width:0;
+  background:linear-gradient(180deg,var(--wood),var(--wood-dark));
+  border-radius:7px;border:1px solid #7d5520;
+  box-shadow:0 4px 0 #6d4718, inset 0 1px 0 rgba(255,255,255,.35);
+  cursor:pointer;transition:transform .04s, filter .04s;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+  padding-top:1.5rem;gap:.15rem}
+.bar.on{background:linear-gradient(180deg,var(--wood-hit),var(--wood));
+  transform:translateY(4px);box-shadow:0 0 0 #6d4718, inset 0 1px 0 rgba(255,255,255,.5);
+  filter:brightness(1.14)}
+.bar .n{font-size:1.35rem;line-height:1.5;font-weight:700;color:#3d2a0d;pointer-events:none}
+.bar .k{position:absolute;top:.28rem;left:50%;transform:translateX(-50%);
+  font-size:.6rem;color:#5c3d15;opacity:.5;pointer-events:none;font-weight:700}
+.bar .w{font-size:.62rem;color:#6b4718;opacity:.7;pointer-events:none;font-weight:700}
+.hidename .w{visibility:hidden}
 
-.tools{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 6px}
-#q{flex:1;min-width:190px;padding:12px 14px;border:1.5px solid var(--line);border-radius:var(--radius-sm);
-   font-family:inherit;font-size:1rem;background:var(--card);color:var(--ink)}
-#q:focus{outline:none;border-color:var(--accent)}
-.chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 4px}
-.chip{border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:var(--radius-pill);
-      padding:7px 14px;font-size:.88rem;font-weight:600;cursor:pointer;font-family:inherit;min-height:38px}
-.chip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
-.chip .n{opacity:.6;font-size:.76rem;margin-left:3px}
+.panel{background:var(--r-panel);border:1px solid var(--r-line);border-radius:12px;
+  padding:.75rem .85rem;margin-top:.8rem}
+.row{display:flex;flex-wrap:wrap;gap:.85rem 1.3rem;align-items:center}
+label{font-size:.82rem;color:var(--r-muted);display:flex;align-items:center;gap:.45rem}
+input[type=range]{width:8.5rem;accent-color:var(--r-accent)}
+select,button.mini{background:#2c2118;color:var(--r-ink);border:1px solid var(--r-line);
+  border-radius:8px;padding:.4rem .65rem;font-family:inherit;font-size:.82rem;cursor:pointer}
+.val{color:var(--r-accent);font-weight:700;min-width:2.6rem;display:inline-block}
+.stat{margin-top:.6rem;font-size:.78rem;color:var(--r-muted)}
+.stat b{color:var(--r-accent)}
+details{margin-top:.8rem;background:var(--r-panel);border:1px solid var(--r-line);border-radius:12px;padding:.6rem .85rem}
+summary{cursor:pointer;font-size:.86rem;font-weight:700}
+details p,details li{font-size:.82rem;color:var(--r-muted);line-height:1.7}
+kbd{background:#2c2118;border:1px solid var(--r-line);border-bottom-width:2px;border-radius:5px;
+  padding:.05rem .35rem;font-size:.75rem;color:var(--r-ink);font-family:inherit}
+.hidename .n{visibility:hidden}
 
-h2.sec{font-size:1.05rem;margin:20px 0 8px;color:var(--accent-head);display:flex;align-items:center;gap:8px}
-h2.sec .line{flex:1;height:1px;background:var(--line)}
-
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
-a.card{display:flex;flex-direction:column;gap:5px;background:var(--card);border:1px solid var(--line);
-  border-left:5px solid var(--c,var(--accent));border-radius:var(--radius);padding:13px 14px;
-  text-decoration:none;color:inherit;box-shadow:var(--shadow);min-height:86px}
-a.card:hover{border-color:var(--c);transform:translateY(-2px);transition:.15s}
-a.card:active{transform:scale(.985)}
-a.card .t{font-weight:600;font-size:.97rem;line-height:1.4}
-a.card .m{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:.76rem;color:var(--muted);margin-top:auto}
-a.card .k{background:var(--cs);color:var(--c);border-radius:6px;padding:1px 8px;font-weight:700}
-
-.note{background:var(--info-bg);border-left:4px solid var(--info-bd);border-radius:10px;padding:12px 14px;
-      margin:16px 0;font-size:.9rem}
-.warn{background:var(--warn-bg);border-left:4px solid var(--warn-bd);border-radius:10px;padding:12px 14px;
-      margin:16px 0;font-size:.9rem}
-.empty{text-align:center;color:var(--muted);padding:40px 12px}
-footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:26px;line-height:1.8}
-@media(max-width:480px){.wrap{padding:10px 10px 24px}.hero{padding:18px 16px}.hero h1{font-size:1.25rem}
-  .grid{grid-template-columns:1fr}}
+/* iPad แนวนอน — ลูกใหญ่ขึ้น ตีถนัดขึ้น */
+@media (min-width:820px){
+  .bar .n{font-size:1.6rem}
+  .bar .w{font-size:.72rem}
+}
+/* จอเล็ก — ตัดตัวอักษรคีย์ออก เหลือที่ให้นิ้ว */
+@media (max-width:640px){
+  .bar .k,.bar .w{display:none}
+  .bar .n{font-size:1.05rem}
+  .bars{gap:.18rem}
+}
 </style>
 </head>
-<body data-subject="physics" data-tools="none">
-<div class="wrap">
+<body data-kit-theme="off">
 
-  <div class="hero">
-    <h1>📚 ห้องติว ม.6</h1>
-    <p>ข้อสอบฝึก · สื่อจำลอง · สรุป — กดเข้าได้เลย ไม่ต้องล็อกอิน ไม่ต้องติดตั้ง</p>
-    <div class="stat">
-      <span id="stTotal">— หน้า</span>
-      <span id="stSubj">— วิชา</span>
-      <span>เล่นบนมือถือได้</span>
-    </div>
-  </div>
+<audio id="silent" loop playsinline preload="auto"
+ src="data:audio/wav;base64,UklGRkQDAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YSADAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgA=="></audio>
 
-  <div class="tools">
-    <input id="q" type="text" placeholder="🔍 พิมพ์ค้นหา เช่น ฮอร์โมน, วงจรไฟฟ้า, ข้อสอบ">
-  </div>
-
-  <div class="chips" id="kindRow">
-    <button class="chip on" data-kind="all">ทั้งหมด</button>
-    <button class="chip" data-kind="exam">📝 ข้อสอบ/เกมฝึก</button>
-    <button class="chip" data-kind="sim">🔬 สื่อจำลอง/3D</button>
-    <button class="chip" data-kind="note">📄 สรุป/ชีต</button>
-  </div>
-  <div class="chips" id="subjRow"></div>
-
-  <div id="list"></div>
-
-  <div class="note" id="hintTools">
-    💡 <b>ในหน้าเรียนทุกหน้ามีปุ่ม ⚙️ มุมขวาล่าง</b> — กดเพื่อ <b>สลับโหมดมืด/สว่าง</b> และ <b>ปรับขนาดตัวหนังสือ</b><br>
-    หน้าของ <b>คณิต · ฟิสิกส์ · เคมี</b> จะมีเพิ่มอีก 2 ปุ่ม: <b>✏️ ที่ทด</b> (เขียนด้วยนิ้ว/ปากกา มีหลายหน้า เซฟให้อัตโนมัติ)
-    และ <b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b>
-  </div>
-
-  <footer>
-    ทำไว้ใช้เองและแบ่งเพื่อน · เนื้อหาสรุปจากคาบเรียน ม.6<br>
-    เจอตรงไหนผิดบอกได้ จะได้แก้
-  </footer>
+<div id="unlock">
+  <h2>🎵 ระนาดทุ้ม</h2>
+  <p>เบราว์เซอร์ทุกตัวห้ามเล่นเสียงจนกว่าจะแตะหน้าจอก่อน กดปุ่มนี้ครั้งเดียวพอ</p>
+  <p class="ios">📱 iPad — ถ้ากดแล้วยังเงียบ ให้เช็ก<b>ปุ่มปิดเสียงข้างเครื่อง</b>
+     หรือเลื่อนศูนย์ควบคุมลงมาปิดโหมดเงียบ แล้วกดใหม่</p>
+  <button class="big" id="go">แตะเพื่อเปิดเสียง</button>
 </div>
 
-<script src="catalog.js?v=202608211351"></script>
+<h1>🎵 ระนาดทุ้ม</h1>
+<p class="sub">ตีรัวได้ · วางหลายนิ้วพร้อมกันได้ · ไม่มีเพดานจำนวนเสียง —
+สร้างเสียงสดด้วย Web Audio ไม่ใช้ไฟล์เสียง เปิดได้แม้ไม่มีเน็ต</p>
+
+<div class="rang"><div class="bars" id="bars"></div></div>
+
+<div class="panel">
+  <div class="row">
+    <label>ความดัง <input type="range" id="vol" min="0" max="100" value="75"><span class="val" id="volV">75</span></label>
+    <label>ความก้อง <input type="range" id="dec" min="30" max="250" value="100"><span class="val" id="decV">1.0s</span></label>
+    <label>ความแข็งไม้ตี <input type="range" id="hard" min="0" max="100" value="35"><span class="val" id="hardV">35</span></label>
+    <label>เสียงมาตรฐาน
+      <select id="tune">
+        <option value="thai">ไทย — 7 เสียงเท่ากัน</option>
+        <option value="west">สากล — 12 ครึ่งเสียง</option>
+      </select>
+    </label>
+    <button class="mini" id="names">ซ่อนชื่อโน้ต</button>
+  </div>
+  <div class="stat">กำลังดังอยู่ <b id="poly">0</b> เสียง · ตีไปแล้ว <b id="cnt">0</b> ครั้ง ·
+    เคยกดพร้อมกันมากสุด <b id="peak">0</b> ลูก · สถานะเสียง <b id="st">ยังไม่เปิด</b></div>
+</div>
+
+<details>
+  <summary>วิธีเล่น · แก้ปัญหา iPad · ทำไมของเดิมกดพร้อมกันไม่ได้</summary>
+  <p><b>บน iPad</b> — วางได้หลายนิ้วพร้อมกัน ลากนิ้วผ่านลูกระนาดเพื่อรูดเสียงได้
+     ถ้าอยากได้เต็มจอให้กดปุ่มแชร์ใน Safari แล้วเลือก <b>เพิ่มไปยังหน้าจอโฮม</b> จะเปิดแบบไม่มีแถบเบราว์เซอร์</p>
+  <p><b>ยังเงียบอยู่บน iPad?</b> เรียงตามที่เจอบ่อย —
+     ① เปิดโหมดเงียบอยู่ (iOS ปิดเสียงเว็บด้วย) ②
+     ยังไม่ได้กดปุ่มเปิดเสียง ③ เสียบหูฟังค้างไว้ ④ ระดับเสียงสื่อต่ำ</p>
+  <p><b>คีย์บอร์ด</b> (ถ้าต่อกับ iPad) — แถวล่าง <kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><kbd>F</kbd><kbd>G</kbd><kbd>H</kbd><kbd>J</kbd><kbd>K</kbd><kbd>L</kbd>
+     = ลูกที่ 1–9 · แถวบน <kbd>Q</kbd><kbd>W</kbd><kbd>E</kbd><kbd>R</kbd><kbd>T</kbd><kbd>Y</kbd><kbd>U</kbd><kbd>I</kbd> = ลูกที่ 10–17</p>
+  <p><b>ทำไมของเดิมกดเร็วและกดพร้อมกันไม่ได้</b> — เว็บที่ใช้ไฟล์เสียงมักมีช่องเสียงจำกัด
+     ตีซ้ำก่อนเสียงเดิมจบแล้วเสียงจะโดนตัด หน้านี้<b>สร้างเสียงชุดใหม่ทุกครั้งที่ตี</b>
+     เสียงเก่าดังค้างต่อจนหมดเอง จึงตีรัวหรือกดพร้อมกันกี่ลูกก็ได้
+     ดูตัวเลข "กำลังดังอยู่" ในแผงข้างบนจะเห็นว่ามันขึ้นพร้อมกันหลายเสียงจริง</p>
+  <p><b>เรื่องเสียงมาตรฐาน</b> — ระนาดไทยไม่ได้ตั้งเสียงแบบเปียโน ดนตรีไทยแบ่งหนึ่งคู่แปดเป็น
+     <b>7 ส่วนเท่ากัน</b> (ขั้นละราว 171 เซ็นต์) ต่างจากสากลที่แบ่ง 12 ครึ่งเสียง
+     ค่าเริ่มต้นตั้งเป็นแบบไทย ถ้าจะเล่นคู่กับเครื่องดนตรีสากลค่อยสลับ</p>
+</details>
+
 <script>
-const LIST = window.CATALOG || [];
-const $ = s=>document.querySelector(s);
-let fKind='all', fSubj='all', fQ='';
+/* ---------- อ้างอิงองค์ประกอบ (ประกาศก่อนใช้ ป้องกัน TDZ) ---------- */
+var bars=document.getElementById('bars');
+var vol=document.getElementById('vol'),  volV=document.getElementById('volV');
+var dec=document.getElementById('dec'),  decV=document.getElementById('decV');
+var hard=document.getElementById('hard'),hardV=document.getElementById('hardV');
+var tune=document.getElementById('tune');
+var poly=document.getElementById('poly'),cnt=document.getElementById('cnt');
+var pk=document.getElementById('peak'),  stEl=document.getElementById('st');
+var unlock=document.getElementById('unlock'), silent=document.getElementById('silent');
 
-/* ---- ชิปวิชา ---- */
-const subjects=[...new Set(LIST.map(x=>x.subj))];
-$('#subjRow').innerHTML = `<button class="chip on" data-subj="all">ทุกวิชา</button>` +
-  subjects.map(s=>{
-    const one=LIST.find(x=>x.subj===s);
-    return `<button class="chip" data-subj="${s}">${one.icon} ${s}<span class="n">${LIST.filter(x=>x.subj===s).length}</span></button>`;
-  }).join('');
+/* ================= เสียง =================
+   ตีแต่ละครั้ง = สร้างโหนดชุดใหม่แล้วปล่อยให้ดับเอง
+   จึงไม่มีเพดานจำนวนเสียง และตีซ้ำไม่ตัดเสียงเดิม        */
+var ctx=null, master=null, noiseBuf=null;
+var live=0, hits=0, peak=0;
 
-$('#stTotal').textContent = LIST.length+' หน้า';
-$('#stSubj').textContent  = subjects.length+' วิชา';
+function initAudio(){
+  if(ctx) return;
+  ctx = new (window.AudioContext||window.webkitAudioContext)({latencyHint:'interactive'});
+  master = ctx.createGain(); master.gain.value = vol.value/100;
+  var comp = ctx.createDynamicsCompressor();       /* กันเสียงแตกตอนกดพร้อมกันเยอะ */
+  comp.threshold.value=-14; comp.knee.value=24; comp.ratio.value=6;
+  comp.attack.value=.004; comp.release.value=.18;
+  master.connect(comp); comp.connect(ctx.destination);
 
-function pass(x){
-  if(fKind!=='all' && x.kind!==fKind) return false;
-  if(fSubj!=='all' && x.subj!==fSubj) return false;
-  if(fQ && !(x.title+' '+x.subj+' '+x.path).toLowerCase().includes(fQ)) return false;
-  return true;
+  var n = Math.floor(ctx.sampleRate*0.2);
+  noiseBuf = ctx.createBuffer(1,n,ctx.sampleRate);
+  var d = noiseBuf.getChannelData(0);
+  for(var i=0;i<n;i++) d[i] = Math.random()*2-1;
 }
-const KIND={exam:'ข้อสอบ',sim:'สื่อจำลอง',note:'สรุป'};
 
-function render(){
-  const rows=LIST.filter(pass);
-  if(!LIST.length){
-    $('#list').innerHTML=`<div class="warn">ยังไม่มีรายการ — ต้องรัน <code>pwsh -File site/build.ps1</code> ก่อน
-      เพื่อคัดลอกหน้าเรียนเข้ามาและสร้าง <code>catalog.js</code></div>`; return;
+/* พาร์เชียลของแท่งไม้ที่ถูกตี — ระนาดทุ้มเน้นเสียงต่ำ นุ่ม ไม่แหลม */
+var PARTIALS=[{r:1.00,g:1.00,d:1.00},{r:2.76,g:0.26,d:0.42},{r:5.40,g:0.09,d:0.22}];
+
+function strike(freq, vel){
+  if(!ctx) return;
+  var t=ctx.currentTime, decBase=+dec.value/100;
+  var low=Math.min(1.6, 220/freq);                 /* โน้ตต่ำก้องนานกว่า */
+  var hardness=+hard.value/100;
+
+  for(var i=0;i<PARTIALS.length;i++){
+    var p=PARTIALS[i];
+    var o=ctx.createOscillator(), g=ctx.createGain();
+    o.type='sine'; o.frequency.value=freq*p.r;
+    var life=decBase*p.d*low;
+    g.gain.setValueAtTime(0.0001,t);
+    g.gain.linearRampToValueAtTime(vel*p.g*0.42, t+0.004);
+    g.gain.exponentialRampToValueAtTime(0.0001, t+life);
+    o.connect(g); g.connect(master);
+    o.start(t); o.stop(t+life+0.02);
+    live++; o.onended=function(){ live--; };
   }
-  if(!rows.length){ $('#list').innerHTML='<div class="empty">ไม่เจอที่ค้นหา ลองพิมพ์สั้นลง</div>'; return; }
-  let html='';
-  for(const s of subjects){
-    const g=rows.filter(x=>x.subj===s); if(!g.length) continue;
-    html += `<h2 class="sec">${g[0].icon} ${s} <span class="line"></span>
-             <span style="font-size:.8rem;font-weight:600;color:var(--muted)">${g.length}</span></h2>
-             <div class="grid">` +
-      g.map(x=>`<a class="card s-${x.key}" href="${x.path}">
-                  <div class="t">${x.title}</div>
-                  <div class="m"><span class="k">${KIND[x.kind]}</span></div>
-                </a>`).join('') + `</div>`;
+  if(hardness>0.02){                                /* เสียงหัวไม้ตีกระทบ */
+    var s=ctx.createBufferSource(); s.buffer=noiseBuf;
+    var bp=ctx.createBiquadFilter(); bp.type='bandpass';
+    bp.frequency.value=freq*4.5; bp.Q.value=1.1;
+    var ng=ctx.createGain();
+    ng.gain.setValueAtTime(vel*hardness*0.22,t);
+    ng.gain.exponentialRampToValueAtTime(0.0001,t+0.05);
+    s.connect(bp); bp.connect(ng); ng.connect(master);
+    s.start(t); s.stop(t+0.06);
   }
-  $('#list').innerHTML=html;
+  hits++; cnt.textContent=hits;
+  requestAnimationFrame(function(){
+    var v=Math.round(live/PARTIALS.length);
+    poly.textContent=v; if(v>peak){ peak=v; pk.textContent=peak; }
+  });
 }
-$('#kindRow').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;
-  fKind=b.dataset.kind; $('#kindRow').querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c===b)); render();});
-$('#subjRow').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;
-  fSubj=b.dataset.subj; $('#subjRow').querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c===b)); render();});
-$('#q').addEventListener('input',e=>{fQ=e.target.value.trim().toLowerCase();render();});
-render();
+
+/* ================= ลูกระนาด ================= */
+/* ผืนระนาด 17 ลูก ตามโน้ตไทย — พินทุ(จุดล่าง)=เสียงต่ำ · ไม่มีเครื่องหมาย=กลาง · นิคหิต(วงบน)=สูง
+   จุดยึด: ด = C4 พอดี ทั้งสองระบบเสียง                                        */
+var N=17;
+var LABEL=['มฺ','ฟฺ','ซฺ','ลฺ','ทฺ','ด','ร','ม','ฟ','ซ','ล','ท','ดํ','รํ','มํ','ฟํ','ซํ'];
+var WNAME=['E3','F3','G3','A3','B3','C4','D4','E4','F4','G4','A4','B4','C5','D5','E5','F5','G5'];
+var WOFF =[0,1,3,5,7,8,10];        /* ครึ่งเสียงจาก E — สเกลขาวเริ่มที่ E */
+var BASE = 164.814;                /* E3 = ลูกทวน */
+var DO_I = 5;                      /* ตำแหน่งลูก ด ในผืน */
+var DO_HZ= 261.626;                /* C4 */
+var KEYS='asdfghjklqwertyui'.split('');
+var el=[];
+
+function freqOf(i){
+  return tune.value==='thai'
+    ? DO_HZ*Math.pow(2,(i-DO_I)/7)                                 /* ไทย 7 เสียงเท่ากัน ยึดที่ ด */
+    : BASE *Math.pow(2, WOFF[i%7]/12 + Math.floor(i/7));           /* สากล ตามตารางเทียบโน้ต */
+}
+function centsOff(i){              /* ไทยเพี้ยนจากสากลกี่เซ็นต์ */
+  return Math.round(1200*Math.log2(
+    (DO_HZ*Math.pow(2,(i-DO_I)/7)) / (BASE*Math.pow(2, WOFF[i%7]/12 + Math.floor(i/7)))));
+}
+function barH(i){ return 230; }        /* สูงเท่ากันทุกลูก นิ้วลงง่ายกว่า */
+
+for(var i=0;i<N;i++){
+  var b=document.createElement('div');
+  b.className='bar'; b.dataset.i=i; b.style.height=barH(i)+'px';
+  b.innerHTML='<span class="k">'+KEYS[i].toUpperCase()+'</span>'+
+              '<span class="n">'+LABEL[i]+'</span>'+
+              '<span class="w">'+WNAME[i]+'</span>';
+  bars.appendChild(b); el.push(b);
+}
+
+function hit(i,vel){
+  if(i<0||i>=N) return;
+  strike(freqOf(i), vel==null?1:vel);
+  var b=el[i]; b.classList.add('on');
+  clearTimeout(b._t); b._t=setTimeout(function(){ b.classList.remove('on'); },90);
+}
+
+/* ---- นิ้ว/เมาส์ : รับหลายจุดพร้อมกัน ---- */
+var at=new Map();
+function idxFrom(x,y){
+  var e=document.elementFromPoint(x,y);
+  if(!e) return -1;
+  if(!e.classList.contains('bar')) e=e.closest ? e.closest('.bar') : null;
+  return e ? +e.dataset.i : -1;
+}
+bars.addEventListener('pointerdown',function(e){
+  e.preventDefault();
+  var i=idxFrom(e.clientX,e.clientY);
+  if(i>=0){ at.set(e.pointerId,i); hit(i); }
+},{passive:false});
+bars.addEventListener('pointermove',function(e){
+  if(!at.has(e.pointerId)) return;
+  var i=idxFrom(e.clientX,e.clientY);
+  if(i>=0 && i!==at.get(e.pointerId)){ at.set(e.pointerId,i); hit(i,.85); }   /* รูดเสียง */
+},{passive:false});
+['pointerup','pointercancel','pointerleave'].forEach(function(ev){
+  bars.addEventListener(ev,function(e){ at.delete(e.pointerId); });
+});
+
+/* ---- คีย์บอร์ด : กดค้างหลายปุ่มพร้อมกันได้ ---- */
+var down=new Set();
+addEventListener('keydown',function(e){
+  if(e.repeat||e.ctrlKey||e.metaKey||e.altKey) return;
+  var i=KEYS.indexOf((e.key||'').toLowerCase());
+  if(i<0) return;
+  e.preventDefault();
+  if(down.has(i)) return;
+  down.add(i); hit(i);
+});
+addEventListener('keyup',function(e){
+  var i=KEYS.indexOf((e.key||'').toLowerCase());
+  if(i>=0) down.delete(i);
+});
+
+/* ================= แผงควบคุม ================= */
+vol.oninput =function(){ volV.textContent=vol.value; if(master) master.gain.value=vol.value/100; };
+dec.oninput =function(){ decV.textContent=(dec.value/100).toFixed(1)+'s'; };
+hard.oninput=function(){ hardV.textContent=hard.value; };
+document.getElementById('names').onclick=function(){
+  var on=bars.classList.toggle('hidename');
+  this.textContent = on ? 'แสดงชื่อโน้ต' : 'ซ่อนชื่อโน้ต';
+};
+
+/* ================= ปลดล็อกเสียง (จุดที่ของเดิมพัง) ================= */
+async function unlockAudio(){
+  initAudio();
+  /* iOS: บอกระบบว่านี่คือการเล่นสื่อ ไม่ใช่เสียงเตือน — ไม่งั้นโดนปุ่มปิดเสียงกดทับ */
+  try{ if(navigator.audioSession) navigator.audioSession.type='playback'; }catch(e){}
+  try{ silent.volume=0.001; await silent.play(); }catch(e){}
+  if(ctx.state==='suspended'){ try{ await ctx.resume(); }catch(e){} }
+  stEl.textContent = (ctx.state==='running') ? 'พร้อมเล่น' : 'ยังไม่พร้อม ('+ctx.state+')';
+  return ctx.state==='running';
+}
+document.getElementById('go').onclick=async function(){
+  var ok=await unlockAudio();
+  hit(0,.9);
+  if(ok) unlock.classList.add('hide');
+  else this.textContent='ยังไม่ติด — แตะอีกครั้ง';
+};
+/* เผื่อ iOS พักเสียงตอนสลับแอปหรือล็อกจอ */
+function wake(){ if(ctx&&ctx.state==='suspended'){ ctx.resume(); silent.play().catch(function(){}); } }
+addEventListener('pointerdown',wake);
+addEventListener('keydown',wake);
+document.addEventListener('visibilitychange',function(){ if(!document.hidden) wake(); });
 </script>
 <!--KIT-UI v2.8 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>
