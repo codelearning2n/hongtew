@@ -36,6 +36,7 @@ h1{font-size:1.15rem;margin:0 0 .15rem}
   touch-action:none;user-select:none;-webkit-user-select:none}
 .bars{display:flex;align-items:flex-end;gap:.3rem;justify-content:center}
 .bar{position:relative;flex:1 1 0;min-width:0;
+  height:clamp(240px, 52vh, 430px);
   background:linear-gradient(180deg,var(--wood),var(--wood-dark));
   border-radius:7px;border:1px solid #7d5520;
   box-shadow:0 4px 0 #6d4718, inset 0 1px 0 rgba(255,255,255,.35);
@@ -103,7 +104,7 @@ kbd{background:#2c2118;border:1px solid var(--r-line);border-bottom-width:2px;bo
 <div class="panel">
   <div class="row">
     <label>ความดัง <input type="range" id="vol" min="0" max="100" value="75"><span class="val" id="volV">75</span></label>
-    <label>ความก้อง <input type="range" id="dec" min="30" max="300" value="150"><span class="val" id="decV">1.5s</span></label>
+    <label>ความก้อง <input type="range" id="dec" min="30" max="600" value="280"><span class="val" id="decV">2.8s</span></label>
     <label>ความทุ้ม <input type="range" id="warm" min="0" max="100" value="65"><span class="val" id="warmV">65</span></label>
     <label>ความแข็งไม้ตี <input type="range" id="hard" min="0" max="100" value="22"><span class="val" id="hardV">22</span></label>
     <label>เสียงมาตรฐาน
@@ -151,7 +152,7 @@ var unlock=document.getElementById('unlock'), silent=document.getElementById('si
 /* ================= เสียง =================
    ตีแต่ละครั้ง = สร้างโหนดชุดใหม่แล้วปล่อยให้ดับเอง
    จึงไม่มีเพดานจำนวนเสียง และตีซ้ำไม่ตัดเสียงเดิม        */
-var ctx=null, master=null, noiseBuf=null;
+var ctx=null, master=null, noiseBuf=null, conv=null, wet=null;
 var live=0, hits=0, peak=0;
 
 function initAudio(){
@@ -167,14 +168,32 @@ function initAudio(){
   noiseBuf = ctx.createBuffer(1,n,ctx.sampleRate);
   var d = noiseBuf.getChannelData(0);
   for(var i=0;i<n;i++) d[i] = Math.random()*2-1;
+
+  /* เสียงสะท้อนของห้อง — ระนาดจริงตีในศาลาแล้วมีเสียงกลับมา
+     สร้างจากเสียงซ่าที่ค่อย ๆ เบาลง ไม่ต้องใช้ไฟล์ */
+  conv = ctx.createConvolver();
+  var rl = Math.floor(ctx.sampleRate*2.8), ir = ctx.createBuffer(2,rl,ctx.sampleRate);
+  for(var c=0;c<2;c++){
+    var ch = ir.getChannelData(c);
+    for(var k=0;k<rl;k++){
+      var e = Math.pow(1-k/rl, 2.3);
+      ch[k] = (Math.random()*2-1)*e*(k<ctx.sampleRate*0.012 ? 0.25 : 1);  /* หน่วงต้นนิดหนึ่ง */
+    }
+  }
+  conv.buffer = ir;
+  wet = ctx.createGain(); wet.gain.value = 0;
+  master.connect(conv); conv.connect(wet); wet.connect(comp);
+  setWet();
 }
+function setWet(){ /* ให้สไลเดอร์ทำงานตลอดช่วง ไม่ชนเพดานตั้งแต่ค่าเริ่มต้น */
+  if(wet) wet.gain.value = Math.min(0.85, Math.max(0, (dec.value/100-0.2)*0.20)); }
 
 /* พาร์เชียลของแท่งไม้ระนาดทุ้ม
    sub = เสียงก้องจากรางระนาด (กล่องไม้ใต้ลูก) ตัวที่ทำให้ "ทุ้ม"
    ตัวบนลดลงจากเดิมมาก เพราะไซน์สูง ๆ ทำให้ฟังใสแบบมาริมบาสังเคราะห์ */
 var PARTIALS=[
-  {r:0.50, g:0.34, d:1.30},   /* รางระนาด */
-  {r:1.00, g:1.00, d:1.00},   /* เสียงหลัก */
+  {r:0.50, g:0.38, d:1.75},   /* รางระนาด — ค้างยาวสุด เป็นตัวทำให้ก้อง */
+  {r:1.00, g:1.00, d:1.15},   /* เสียงหลัก */
   {r:2.71, g:0.15, d:0.34},
   {r:5.15, g:0.04, d:0.15}
 ];
@@ -182,7 +201,7 @@ var PARTIALS=[
 function strike(freq, vel){
   if(!ctx) return;
   var t=ctx.currentTime, decBase=+dec.value/100;
-  var low=Math.min(1.9, 260/freq);                 /* โน้ตต่ำก้องนานกว่า */
+  var low=Math.min(2.6, 300/freq);                 /* โน้ตต่ำก้องนานกว่า */
   var hardness=+hard.value/100;
   var warmth=+warm.value/100;
 
@@ -258,11 +277,11 @@ function centsOff(i){              /* ไทยเพี้ยนจากสา
   return Math.round(1200*Math.log2(
     (DO_HZ*Math.pow(2,(i-DO_I)/7)) / (BASE*Math.pow(2, WOFF[i%7]/12 + Math.floor(i/7)))));
 }
-function barH(i){ return 230; }        /* สูงเท่ากันทุกลูก นิ้วลงง่ายกว่า */
+/* ความสูงย้ายไปคุมใน CSS แล้ว ยืดตามจอ */
 
 for(var i=0;i<N;i++){
   var b=document.createElement('div');
-  b.className='bar'; b.dataset.i=i; b.style.height=barH(i)+'px';
+  b.className='bar'; b.dataset.i=i;
   b.innerHTML='<span class="k">'+KEYS[i].toUpperCase()+'</span>'+
               '<span class="n">'+LABEL[i]+'</span>'+
               '<span class="w">'+WNAME[i]+'</span>';
@@ -315,7 +334,7 @@ addEventListener('keyup',function(e){
 
 /* ================= แผงควบคุม ================= */
 vol.oninput =function(){ volV.textContent=vol.value; if(master) master.gain.value=vol.value/100; };
-dec.oninput =function(){ decV.textContent=(dec.value/100).toFixed(1)+'s'; };
+dec.oninput =function(){ decV.textContent=(dec.value/100).toFixed(1)+'s'; setWet(); };
 hard.oninput=function(){ hardV.textContent=hard.value; };
 warm.oninput=function(){ warmV.textContent=warm.value; };
 document.getElementById('names').onclick=function(){
