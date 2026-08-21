@@ -103,8 +103,9 @@ kbd{background:#2c2118;border:1px solid var(--r-line);border-bottom-width:2px;bo
 <div class="panel">
   <div class="row">
     <label>ความดัง <input type="range" id="vol" min="0" max="100" value="75"><span class="val" id="volV">75</span></label>
-    <label>ความก้อง <input type="range" id="dec" min="30" max="250" value="100"><span class="val" id="decV">1.0s</span></label>
-    <label>ความแข็งไม้ตี <input type="range" id="hard" min="0" max="100" value="35"><span class="val" id="hardV">35</span></label>
+    <label>ความก้อง <input type="range" id="dec" min="30" max="300" value="150"><span class="val" id="decV">1.5s</span></label>
+    <label>ความทุ้ม <input type="range" id="warm" min="0" max="100" value="65"><span class="val" id="warmV">65</span></label>
+    <label>ความแข็งไม้ตี <input type="range" id="hard" min="0" max="100" value="22"><span class="val" id="hardV">22</span></label>
     <label>เสียงมาตรฐาน
       <select id="tune">
         <option value="thai">ไทย — 7 เสียงเท่ากัน</option>
@@ -141,6 +142,7 @@ var bars=document.getElementById('bars');
 var vol=document.getElementById('vol'),  volV=document.getElementById('volV');
 var dec=document.getElementById('dec'),  decV=document.getElementById('decV');
 var hard=document.getElementById('hard'),hardV=document.getElementById('hardV');
+var warm=document.getElementById('warm'),warmV=document.getElementById('warmV');
 var tune=document.getElementById('tune');
 var poly=document.getElementById('poly'),cnt=document.getElementById('cnt');
 var pk=document.getElementById('peak'),  stEl=document.getElementById('st');
@@ -167,37 +169,66 @@ function initAudio(){
   for(var i=0;i<n;i++) d[i] = Math.random()*2-1;
 }
 
-/* พาร์เชียลของแท่งไม้ที่ถูกตี — ระนาดทุ้มเน้นเสียงต่ำ นุ่ม ไม่แหลม */
-var PARTIALS=[{r:1.00,g:1.00,d:1.00},{r:2.76,g:0.26,d:0.42},{r:5.40,g:0.09,d:0.22}];
+/* พาร์เชียลของแท่งไม้ระนาดทุ้ม
+   sub = เสียงก้องจากรางระนาด (กล่องไม้ใต้ลูก) ตัวที่ทำให้ "ทุ้ม"
+   ตัวบนลดลงจากเดิมมาก เพราะไซน์สูง ๆ ทำให้ฟังใสแบบมาริมบาสังเคราะห์ */
+var PARTIALS=[
+  {r:0.50, g:0.34, d:1.30},   /* รางระนาด */
+  {r:1.00, g:1.00, d:1.00},   /* เสียงหลัก */
+  {r:2.71, g:0.15, d:0.34},
+  {r:5.15, g:0.04, d:0.15}
+];
 
 function strike(freq, vel){
   if(!ctx) return;
   var t=ctx.currentTime, decBase=+dec.value/100;
-  var low=Math.min(1.6, 220/freq);                 /* โน้ตต่ำก้องนานกว่า */
+  var low=Math.min(1.9, 260/freq);                 /* โน้ตต่ำก้องนานกว่า */
   var hardness=+hard.value/100;
+  var warmth=+warm.value/100;
+
+  /* กรองความถี่สูงทิ้ง = ได้เนื้อไม้ ไม่ใช่เสียงไซน์ใส ๆ
+     ยิ่งทุ้มมาก ยิ่งตัดสูงทิ้งมาก */
+  var lp=ctx.createBiquadFilter();
+  lp.type='lowpass';
+  lp.frequency.value=Math.min(9000, freq*(9.5-warmth*6.5));
+  lp.Q.value=0.7;
+  lp.connect(master);
+
+  /* ไม้นวมตีแล้วเสียงค่อย ๆ ขึ้น ไม่กระชากเหมือนไม้แข็ง */
+  var atk=0.004+(1-hardness)*0.009;
 
   for(var i=0;i<PARTIALS.length;i++){
     var p=PARTIALS[i];
+    if(p.r===0.50 && warmth<0.05) continue;        /* ปิดรางระนาดได้ถ้าไม่อยากทุ้ม */
     var o=ctx.createOscillator(), g=ctx.createGain();
-    o.type='sine'; o.frequency.value=freq*p.r;
+    o.type='sine';
+    var f=freq*p.r;
+    /* แท่งไม้ตอนโดนตีจะเพี้ยนสูงนิดหนึ่งแล้วค่อยลงเข้าที่ */
+    o.frequency.setValueAtTime(f*1.012,t);
+    o.frequency.exponentialRampToValueAtTime(f, t+0.035);
+
+    var amp = p.g * (p.r===0.50 ? (0.35+warmth*0.9) : 1);   /* รางดังตามความทุ้ม */
     var life=decBase*p.d*low;
     g.gain.setValueAtTime(0.0001,t);
-    g.gain.linearRampToValueAtTime(vel*p.g*0.42, t+0.004);
+    g.gain.linearRampToValueAtTime(vel*amp*0.40, t+atk);
     g.gain.exponentialRampToValueAtTime(0.0001, t+life);
-    o.connect(g); g.connect(master);
+    o.connect(g); g.connect(lp);
     o.start(t); o.stop(t+life+0.02);
     live++; o.onended=function(){ live--; };
   }
-  if(hardness>0.02){                                /* เสียงหัวไม้ตีกระทบ */
+
+  /* หัวไม้กระทบ — ไม้นวมได้ "ทึบ" ไม่ใช่ "กึก" จึงกรองต่ำ ไม่ใช่ bandpass สูง */
+  if(hardness>0.02){
     var s=ctx.createBufferSource(); s.buffer=noiseBuf;
-    var bp=ctx.createBiquadFilter(); bp.type='bandpass';
-    bp.frequency.value=freq*4.5; bp.Q.value=1.1;
+    var nf=ctx.createBiquadFilter(); nf.type='lowpass';
+    nf.frequency.value=freq*(2.0+hardness*3.5); nf.Q.value=0.9;
     var ng=ctx.createGain();
-    ng.gain.setValueAtTime(vel*hardness*0.22,t);
-    ng.gain.exponentialRampToValueAtTime(0.0001,t+0.05);
-    s.connect(bp); bp.connect(ng); ng.connect(master);
+    ng.gain.setValueAtTime(vel*hardness*0.16,t);
+    ng.gain.exponentialRampToValueAtTime(0.0001,t+0.045);
+    s.connect(nf); nf.connect(ng); ng.connect(master);
     s.start(t); s.stop(t+0.06);
   }
+
   hits++; cnt.textContent=hits;
   requestAnimationFrame(function(){
     var v=Math.round(live/PARTIALS.length);
@@ -286,6 +317,7 @@ addEventListener('keyup',function(e){
 vol.oninput =function(){ volV.textContent=vol.value; if(master) master.gain.value=vol.value/100; };
 dec.oninput =function(){ decV.textContent=(dec.value/100).toFixed(1)+'s'; };
 hard.oninput=function(){ hardV.textContent=hard.value; };
+warm.oninput=function(){ warmV.textContent=warm.value; };
 document.getElementById('names').onclick=function(){
   var on=bars.classList.toggle('hidename');
   this.textContent = on ? 'แสดงชื่อโน้ต' : 'ซ่อนชื่อโน้ต';
