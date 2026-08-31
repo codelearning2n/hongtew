@@ -72,6 +72,17 @@ h2.sec{font-size:1.05rem;margin:20px 0 8px;color:var(--accent-head);display:flex
 h2.sec .line{flex:1;height:1px;background:var(--line)}
 
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+/* กลุ่มตามบท — เพิ่ม 2026-08-31 เพราะชีววิทยา 33 หน้าเรียงเรียบเป็นแถวเดียวแล้วรก */
+details.chap{border:1px solid var(--line);border-radius:10px;margin:8px 0;background:var(--soft);overflow:hidden}
+details.chap>summary{padding:10px 14px;cursor:pointer;font-weight:600;font-size:.95rem;color:var(--accent-ink);
+  list-style:none;display:flex;align-items:center;gap:8px}
+details.chap>summary::-webkit-details-marker{display:none}
+details.chap>summary::before{content:"▸";color:var(--accent);font-size:.9rem}
+details.chap[open]>summary::before{content:"▾"}
+details.chap>summary .n{margin-left:auto;font-size:.8rem;font-weight:700;color:var(--muted);
+  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:1px 9px}
+details.chap>summary:hover{background:var(--card)}
+details.chap>.grid{padding:0 12px 12px}
 a.card{display:flex;flex-direction:column;gap:5px;background:var(--card);border:1px solid var(--line);
   border-left:5px solid var(--c,var(--accent));border-radius:var(--radius);padding:13px 14px;
   text-decoration:none;color:inherit;box-shadow:var(--shadow);min-height:86px}
@@ -130,7 +141,7 @@ footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:26px;lin
   </footer>
 </div>
 
-<script src="catalog.js?v=202608312110"></script>
+<script src="catalog.js?v=202608312128"></script>
 <script>
 const LIST = window.CATALOG || [];
 const $ = s=>document.querySelector(s);
@@ -163,17 +174,31 @@ function render(){
   }
   if(!rows.length){ $('#list').innerHTML='<div class="empty">ไม่เจอที่ค้นหา ลองพิมพ์สั้นลง</div>'; return; }
   let html='';
+  const cards = g => g.map(x=>`<a class="card s-${x.key}" href="${x.path}">
+                  <div class="t">${x.title}</div>
+                  <div class="m"><span class="k">${KIND[x.kind]}</span></div>
+                </a>`).join('');
   for(const s of subjects){
     const g=rows.filter(x=>x.subj===s); if(!g.length) continue;
     html += `<h2 class="sec">${g[0].icon} ${s} <span class="line"></span>
-             <span style="font-size:.8rem;font-weight:600;color:var(--muted)">${g.length}</span></h2>
-             <div class="grid">` +
-      g.map(x=>`<a class="card s-${x.key}" href="${x.path}">
-                  <div class="t">${x.title}</div>
-                  <div class="m"><span class="k">${KIND[x.kind]}</span></div>
-                </a>`).join('') + `</div>`;
+             <span style="font-size:.8rem;font-weight:600;color:var(--muted)">${g.length}</span></h2>`;
+    /* จัดกลุ่มตามบท (grp) — วิชาที่ไม่มีโฟลเดอร์ย่อยจะได้กลุ่มเดียวชื่อว่าง แสดงเรียบเหมือนเดิม */
+    const groups=[...new Set(g.map(x=>x.grp||''))];
+    if(groups.length<=1){ html += `<div class="grid">${cards(g)}</div>`; continue; }
+    for(const gr of groups){
+      const gg=g.filter(x=>(x.grp||'')===gr); if(!gg.length) continue;
+      /* ค้นหาอยู่ = กางทุกบทให้เห็นผลลัพธ์ · ปกติ = จำสถานะที่ผู้ใช้เปิดไว้ */
+      let open;
+      try{ open = fQ ? true : (localStorage.getItem('grp:'+s+':'+gr)==='1'); }catch(e){ open=!!fQ; }
+      html += `<details class="chap"${open?' open':''} data-k="grp:${s}:${gr}">
+        <summary>${gr||'อื่น ๆ'}<span class="n">${gg.length}</span></summary>
+        <div class="grid">${cards(gg)}</div></details>`;
+    }
   }
   $('#list').innerHTML=html;
+  $('#list').querySelectorAll('details.chap').forEach(d=>{
+    d.addEventListener('toggle',()=>{ try{localStorage.setItem(d.dataset.k, d.open?'1':'0');}catch(e){} });
+  });
 }
 $('#kindRow').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;
   fKind=b.dataset.kind; $('#kindRow').querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c===b)); render();});
