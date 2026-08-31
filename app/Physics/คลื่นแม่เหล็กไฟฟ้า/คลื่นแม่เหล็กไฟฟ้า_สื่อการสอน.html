@@ -1,0 +1,1725 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>คลื่นแม่เหล็กไฟฟ้า — สื่อการสอนแบบเล่นได้</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- ============================================================
+     สร้างจาก _kit/widget-template.html ตามกฎ _kit/DESIGN.md
+     เนื้อหาอ้างอิง 04-คลื่นแม่เหล็กไฟฟ้า_st.pdf (71 หน้า) ในโฟลเดอร์เดียวกัน
+     ส่วนที่ไม่ได้มาจากสไลด์ ติดป้าย "นอกสไลด์" ไว้ทุกจุด
+     ============================================================ -->
+<style>
+/* ===== TOKENS (สำเนาจาก design-tokens.css) ===== */
+:root{
+  --font:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
+  --bg:#eef2f7;--ink:#1e293b;--muted:#64748b;--line:#e2e8f0;--card:#fff;--soft:#f8fafc;
+  --shadow:0 1px 4px rgba(15,23,42,.08);
+  --ok:#059669;--bad:#dc2626;
+  --warn-bg:#fff7ed;--warn-bd:#f97316;--tip-bg:#ecfdf5;--tip-bd:#10b981;
+  --info-bg:#eff6ff;--info-bd:#3b82f6;--steps-bg:#fffbeb;--steps-bd:#fcd34d;--steps-dash:#fde68a;
+  --hot-bg:#fee2e2;--hot-ink:#b91c1c;--badge-bg:#fef9c3;--badge-ink:#854d0e;
+  --radius:14px;--radius-sm:10px;--radius-pill:999px;
+  --accent:#4f46e5;--accent-head:#312e81;--accent-ink:#3730a3;--accent-soft:#eef2ff;
+  --accent-bd:#c7d2fe;--accent-chip:#e0e7ff;--accent-ghost:#a5b4fc;
+}
+body[data-subject="physics"]{--accent:#4f46e5;--accent-head:#312e81;--accent-ink:#3730a3;--accent-soft:#eef2ff;--accent-bd:#c7d2fe;--accent-chip:#e0e7ff;--accent-ghost:#a5b4fc;--bg:#eef2f7}
+body[data-subject="bio"]{--accent:#16a34a;--accent-head:#14532d;--accent-ink:#166534;--accent-soft:#f0fdf4;--accent-bd:#bbf7d0;--accent-chip:#dcfce7;--accent-ghost:#86efac;--bg:#f0f4ef}
+body[data-subject="chem"]{--accent:#ea7317;--accent-head:#7c3a06;--accent-ink:#c2560c;--accent-soft:#fff7ed;--accent-bd:#fed7aa;--accent-chip:#ffedd5;--accent-ghost:#fdba74;--bg:#f6f2ec}
+body[data-subject="math"]{--accent:#0284c7;--accent-head:#0c4a6e;--accent-ink:#0369a1;--accent-soft:#f0f9ff;--accent-bd:#bae6fd;--accent-chip:#e0f2fe;--accent-ghost:#7dd3fc;--bg:#edf3f7}
+
+/* ===== COMPONENTS ===== */
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.6}
+.wrap{max-width:860px;margin:0 auto;padding:10px 12px 60px}
+header{padding:18px 4px 6px}
+header h1{font-size:1.35rem;color:var(--accent-head)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{background:var(--accent-chip);color:var(--accent-ink);border-radius:var(--radius-pill);padding:3px 12px;font-size:.82rem;font-weight:600}
+.chip.hot{background:var(--hot-bg);color:var(--hot-ink)}
+.badge{display:inline-block;background:var(--badge-bg);color:var(--badge-ink);border-radius:6px;padding:1px 8px;font-size:.78rem;font-weight:700;vertical-align:middle}
+.tabs{display:flex;gap:8px;overflow-x:auto;position:sticky;top:0;background:var(--bg);padding:10px 2px;z-index:10;-webkit-overflow-scrolling:touch}
+.tab-btn{white-space:nowrap;padding:8px 14px;border-radius:var(--radius-pill);border:1.5px solid var(--accent-bd);background:#fff;color:var(--accent-ink);cursor:pointer;font-size:.92rem;font-family:inherit;font-weight:600;flex-shrink:0}
+.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tab{display:none}
+.tab.show{display:block;animation:fade .25s}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.card{background:var(--card);border-radius:var(--radius);padding:16px;margin:12px 0;box-shadow:var(--shadow)}
+.card h2{font-size:1.15rem;color:var(--accent-head);margin-bottom:2px}
+.card h3{font-size:1.05rem;color:var(--ink);margin-bottom:6px}
+.sub{color:var(--muted);font-size:.85rem;margin-bottom:10px}
+details.concept{border:1px solid var(--line);border-radius:var(--radius-sm);margin:8px 0;overflow:hidden}
+details.concept summary{padding:10px 14px;cursor:pointer;font-weight:600;background:var(--soft);list-style:none}
+details.concept summary::before{content:"▸ ";color:var(--accent)}
+details.concept[open] summary::before{content:"▾ "}
+details.concept .body{padding:10px 14px;border-top:1px solid var(--line);font-size:.95rem}
+.formula{background:var(--accent-soft);border-radius:8px;padding:6px 12px;display:inline-block;margin:4px 4px 4px 0;font-weight:600;color:var(--accent-ink)}
+.warn{background:var(--warn-bg);border-left:4px solid var(--warn-bd);border-radius:8px;padding:10px 12px;margin:10px 0;font-size:.92rem}
+.tip{background:var(--tip-bg);border-left:4px solid var(--tip-bd);border-radius:8px;padding:10px 12px;margin:10px 0;font-size:.92rem}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:var(--radius-sm);padding:10px 16px;font-size:.95rem;cursor:pointer;font-family:inherit;font-weight:600}
+.btn:active{transform:scale(.97)}
+.btn.ghost{background:#fff;color:var(--accent);border:1.5px solid var(--accent-ghost)}
+.btn.small{padding:6px 12px;font-size:.85rem}
+.btn.green{background:var(--ok)}.btn.red{background:var(--bad)}
+.seg{display:inline-flex;border:1.5px solid var(--accent-bd);border-radius:var(--radius-sm);overflow:hidden;margin:4px 0;flex-wrap:wrap}
+.seg button{border:0;background:#fff;padding:8px 12px;cursor:pointer;font-family:inherit;font-size:.9rem;color:var(--accent-ink)}
+.seg button.on{background:var(--accent);color:#fff}
+input[type=range]{width:100%;accent-color:var(--accent);height:28px}
+.slider-row{margin:8px 0}.slider-row label{font-size:.92rem;font-weight:600}
+.slider-val{color:var(--accent);font-weight:700}
+.big-val{font-size:1.3rem;font-weight:700;color:var(--accent);margin:6px 0}
+.q-text,.tf-q{font-size:1rem;background:var(--soft);border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:6px}
+.ans-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:10px 0 4px}
+.ans-in{flex:1;min-width:120px;padding:10px 12px;border:2px solid #cbd5e1;border-radius:var(--radius-sm);font-size:1rem;font-family:inherit}
+.ans-in:focus{outline:none;border-color:var(--accent)}
+.ans-unit{font-weight:700;color:#475569;min-width:24px}
+.fb{margin:6px 0;font-weight:600;min-height:1.2em}
+.fb.ok{color:var(--ok)}.fb.bad{color:var(--bad)}
+.hint-box div{background:var(--info-bg);border-left:4px solid var(--info-bd);padding:8px 12px;margin:6px 0;border-radius:6px;font-size:.93rem}
+.drill-btns,.tf-btns{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.tf-btns .btn{flex:1;max-width:140px}
+.score{margin-top:8px;color:var(--muted);font-size:.88rem}
+.steps{background:var(--steps-bg);border:1px solid var(--steps-bd);border-radius:var(--radius-sm);padding:12px 14px;margin:8px 0;display:none;font-size:.95rem}
+.steps.show{display:block}
+.steps .st{padding:4px 0;border-bottom:1px dashed var(--steps-dash)}
+.steps .st:last-child{border-bottom:0}
+table.ref{border-collapse:collapse;width:100%;font-size:.9rem;margin:8px 0}
+table.ref th,table.ref td{border:1px solid var(--line);padding:6px 10px;text-align:center}
+table.ref th{background:var(--accent-soft);color:var(--accent-ink)}
+svg{max-width:100%;height:auto;display:block}
+.svg-box{background:var(--soft);border:1px solid var(--line);border-radius:var(--radius-sm);padding:8px;margin:8px 0}
+select{padding:8px;border:1.5px solid #cbd5e1;border-radius:8px;font-family:inherit;font-size:.9rem;background:#fff}
+sup,sub{font-size:.72em}
+canvas{width:100%;height:auto;display:block;border-radius:var(--radius-sm)}
+@media(max-width:480px){.card{padding:12px}header h1{font-size:1.15rem}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+
+<body data-subject="physics">
+<div class="wrap">
+
+  <header>
+    <h1>⚡ คลื่นแม่เหล็กไฟฟ้า — เล่นให้เห็นภาพ</h1>
+    <div class="chips">
+      <span class="chip">บทที่ 4 · ฟิสิกส์ ม.6</span>
+      <span class="chip">4.1 – 4.5 ครบทุกหัวข้อ</span>
+      <span class="chip hot">แอนิเมชันเล่นได้ 5 ตัว</span>
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <button class="tab-btn" data-tab="t1">🌊 คลื่น E–B</button>
+    <button class="tab-btn" data-tab="t2">🌈 สเปกตรัม</button>
+    <button class="tab-btn" data-tab="t3">🕶️ โพลาไรซ์</button>
+    <button class="tab-btn" data-tab="t4">📻 AM / FM</button>
+    <button class="tab-btn" data-tab="t5">📖 ทฤษฎี</button>
+    <button class="tab-btn" data-tab="t6">📝 ฝึกทำ</button>
+    <button class="tab-btn" data-tab="t7">🎯 ข้อสอบเก่า</button>
+  </nav>
+
+  <!-- ═══════════ แท็บ 1 : คลื่น E–B ═══════════ -->
+  <section id="t1" class="tab">
+    <div class="card">
+      <h2>🌊 สนามไฟฟ้ากับสนามแม่เหล็กตั้งฉากกันตลอดเวลา</h2>
+      <p class="sub">ลองปิดสนามทีละอัน แล้วดูว่าเหลือแค่ระนาบเดียวจริงไหม</p>
+      <canvas id="cwave" width="820" height="330"></canvas>
+      <div class="seg" style="margin-top:8px">
+        <button id="wPlay" class="on">⏸ หยุด</button>
+        <button id="wE" class="on">แสดง E</button>
+        <button id="wB" class="on">แสดง B</button>
+        <button id="wArr" class="on">ลูกศร</button>
+      </div>
+      <div class="slider-row">
+        <label>ความถี่ (จำนวนลูกคลื่นบนจอ) = <span class="slider-val" id="wfV">3</span></label>
+        <input type="range" id="wf" min="1" max="8" step="0.5" value="3">
+      </div>
+      <div class="slider-row">
+        <label>แอมพลิจูด = <span class="slider-val" id="waV">60</span></label>
+        <input type="range" id="wa" min="15" max="85" value="60">
+      </div>
+      <div class="tip">💡 <b>ลองปรับความถี่ดูสิ</b> — สังเกตว่าพอลูกคลื่นถี่ขึ้น <b>ความยาวคลื่นสั้นลง</b>
+        เพราะอัตราเร็วคงที่ที่ 3×10<sup>8</sup> m/s เสมอ นี่คือ <span class="formula">v = fλ</span> ที่เห็นด้วยตา</div>
+      <div class="warn">⚠️ <b>ข้อสอบชอบถาม</b> — E, B และทิศการเคลื่อนที่ <b>ตั้งฉากกันทั้งสามตลอดเวลา</b>
+        จึงเป็น <b>คลื่นตามขวาง</b> และ <b>ไม่ต้องอาศัยตัวกลาง</b> <span class="badge">น.5</span></div>
+    </div>
+
+    <div class="card">
+      <h3>✋ กฎมือขวา — หาทิศการเคลื่อนที่</h3>
+      <p class="sub">เลือกทิศ E กับ B แล้วดูว่าคลื่นวิ่งไปทางไหน <span class="badge">น.6</span></p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+        <span>E ชี้ไป</span>
+        <select id="rhE"><option value="y">+y (ขึ้น)</option><option value="-y">−y (ลง)</option><option value="z">+z (เข้าจอ)</option><option value="-z">−z (ออกจากจอ)</option></select>
+        <span>B ชี้ไป</span>
+        <select id="rhB"><option value="z">+z (เข้าจอ)</option><option value="-z">−z (ออกจากจอ)</option><option value="y">+y (ขึ้น)</option><option value="-y">−y (ลง)</option></select>
+      </div>
+      <div class="big-val" id="rhOut">คลื่นเคลื่อนที่ไปทาง …</div>
+      <div class="tip">💡 <b>วิธีที่สไลด์เขียน</b> — แบมือขวา กางหัวแม่มือ <b>ชี้นิ้วทั้งสี่ไปตามทิศ E</b>
+        แล้ว<b>แบมือไปตามทิศ B</b> → <b>หัวแม่มือชี้ทิศการเคลื่อนที่</b></div>
+    </div>
+
+    <div class="card">
+      <h3>📡 ทำไมสายอากาศถึงแผ่คลื่นออกมาได้</h3>
+      <p class="sub">กดปุ่มสลับดูความต่างระหว่างไฟกระแสสลับกับไฟกระแสตรง <span class="badge">น.8–9</span></p>
+      <canvas id="cant" width="820" height="240"></canvas>
+      <div class="seg" style="margin-top:8px">
+        <button id="antAC" class="on">ไฟกระแสสลับ (AC)</button>
+        <button id="antDC">ไฟกระแสตรง (DC)</button>
+      </div>
+      <div id="antMsg" class="tip"></div>
+      <div class="warn">⚠️ <b>จุดที่ออกข้อสอบบ่อย</b> — อิเล็กตรอนสั่นจะแผ่คลื่นออก<b>รอบตัวทุกทิศทาง
+        ยกเว้นแนวที่ตรงกับการสั่น</b> (แนวเดียวกับสายอากาศ จะไม่มีคลื่นออกมา) <span class="badge">น.7, น.9</span></div>
+    </div>
+  </section>
+
+  <!-- ═══════════ แท็บ 2 : สเปกตรัม ═══════════ -->
+  <section id="t2" class="tab">
+    <div class="card">
+      <h2>🌈 ลากดูสเปกตรัมทั้งแถบ</h2>
+      <p class="sub">ลากแถบเลื่อน แล้วดูว่าความถี่นี้เป็นคลื่นอะไร ความยาวคลื่นเท่าไร พลังงานเท่าไร</p>
+      <canvas id="cspec" width="820" height="230"></canvas>
+      <div class="slider-row">
+        <label>ความถี่ f = <span class="slider-val" id="specF">1.0 × 10⁸ Hz</span></label>
+        <input type="range" id="spec" min="400" max="2200" value="800">
+      </div>
+      <div class="big-val" id="specName">คลื่นวิทยุ</div>
+      <table class="ref">
+        <tr><th>ความยาวคลื่น λ = c/f</th><th>พลังงาน E = hf</th><th>พลังงาน (eV)</th></tr>
+        <tr><td id="specLam">—</td><td id="specE">—</td><td id="specEv">—</td></tr>
+      </table>
+      <div id="specUse" class="tip"></div>
+    </div>
+
+    <div class="card">
+      <h3>📋 ตารางสรุปทั้ง 8 ชนิด — ตัวเลขจากสไลด์เป๊ะ ๆ</h3>
+      <table class="ref">
+        <tr><th>ชนิด</th><th>ความถี่ (Hz)</th><th>หน้า</th></tr>
+        <tr><td>1. คลื่นวิทยุ</td><td>10<sup>6</sup> – 10<sup>9</sup></td><td>น.18</td></tr>
+        <tr><td>2. คลื่นโทรทัศน์</td><td>ประมาณ 10<sup>8</sup></td><td>น.21</td></tr>
+        <tr><td>3. ไมโครเวฟ</td><td>1×10<sup>9</sup> – 3×10<sup>11</sup></td><td>น.22</td></tr>
+        <tr><td>4. รังสีอินฟราเรด</td><td>10<sup>11</sup> – 10<sup>14</sup></td><td>น.23</td></tr>
+        <tr><td>5. แสง</td><td>4×10<sup>14</sup> – 8×10<sup>14</sup></td><td>น.24</td></tr>
+        <tr><td style="color:var(--bad)">6. รังสีอัลตราไวโอเลต</td><td style="color:var(--bad)">ไม่มีในสไลด์<br><span style="font-size:.85em">PEC9 ให้ 10<sup>15</sup> – 10<sup>18</sup></span></td><td>PEC9 น.9</td></tr>
+        <tr><td>7. รังสีเอกซ์</td><td>10<sup>17</sup> – 10<sup>21</sup></td><td>น.25</td></tr>
+        <tr><td>8. รังสีแกมมา</td><td>สูงกว่ารังสีเอกซ์</td><td>น.25</td></tr>
+      </table>
+      <div class="warn">⚠️ <b>สไลด์ข้ามข้อ 6 ไป</b> — น.24 เป็น "5. แสง" แล้วน.25 กระโดดไป "7. รังสีเอกซ์" เลย
+        ช่วงว่างระหว่าง 8×10<sup>14</sup> ถึง 10<sup>17</sup> Hz นั่นแหละคือ <b>รังสีอัลตราไวโอเลต</b><br>
+        ✅ <b>ชุดข้อสอบเก่า PEC9 ให้ตัวเลขไว้ครบ — 10<sup>15</sup> – 10<sup>18</sup> Hz</b>
+        <b>ถ้าอาจารย์ออก ให้ใช้ตัวเลขชุดนี้</b> ดูรายละเอียดที่แท็บ 🎯 ข้อสอบเก่า</div>
+      <div class="warn">⚠️ <b>ตัวเลขในสไลด์ทับกันเอง 2 จุด</b> —
+        คลื่นโทรทัศน์ (~10<sup>8</sup>) อยู่ในช่วงคลื่นวิทยุพอดี · ไมโครเวฟกับอินฟราเรดทับกันช่วง 10<sup>11</sup>–3×10<sup>11</sup>
+        <b>ถ้าโจทย์ให้ค่าที่คาบเกี่ยว ให้ดูว่าโจทย์พูดถึงการใช้งานแบบไหน</b></div>
+      <div class="tip">💡 <b>เรียงจากความถี่ต่ำไปสูง</b> — วิทยุ → โทรทัศน์ → ไมโครเวฟ → อินฟราเรด → แสง →
+        อัลตราไวโอเลต → เอกซ์ → แกมมา · <b>ความยาวคลื่นเรียงกลับด้าน</b> เพราะ λ = c/f</div>
+    </div>
+  </section>
+
+  <!-- ═══════════ แท็บ 3 : โพลาไรซ์ ═══════════ -->
+  <section id="t3" class="tab">
+    <div class="card">
+      <h2>🕶️ โพลาไรเซชัน — หมุนแผ่นที่สองดูความสว่าง</h2>
+      <p class="sub">แสงไม่โพลาไรส์เข้ามาทางซ้าย ผ่านแผ่นที่ 1 แล้วผ่านแผ่นที่ 2 ที่หมุนได้</p>
+      <canvas id="cpol" width="820" height="290"></canvas>
+      <div class="slider-row">
+        <label>หมุนแผ่นที่ 2 ไป <span class="slider-val" id="polAV">0</span>° จากแผ่นที่ 1</label>
+        <input type="range" id="polA" min="0" max="180" value="0">
+      </div>
+      <div class="big-val" id="polOut">ความสว่างที่ออกมา: 100%</div>
+      <div class="seg">
+        <button class="polq" data-a="0">ตั้งเป็น 0°</button>
+        <button class="polq" data-a="45">45°</button>
+        <button class="polq" data-a="90">90°</button>
+      </div>
+      <div class="tip">💡 <b>ลองหมุนไป 90° ดูสิ</b> — จะมืดสนิท เพราะสนามไฟฟ้าที่ผ่านแผ่นแรกมา
+        <b>ตั้งฉาก</b>กับแนวโพลาไรส์ของแผ่นที่สองพอดี จึง<b>ถูกดูดกลืนหมด</b> <span class="badge">น.34</span></div>
+      <div class="warn">⚠️ <b>ที่สไลด์เขียนไว้ตรง ๆ</b> <span class="badge">น.34</span> —
+        สนามไฟฟ้าที่ <b>ตั้งฉาก</b> กับแนวโพลาไรส์ <b>ถูกดูดกลืน</b> ·
+        ที่ <b>ขนาน</b> กับแนวโพลาไรส์ <b>ผ่านได้</b> · ผลคือ<b>ความสว่างลดลง</b>เมื่อเทียบกับตอนไม่มีแผ่นกั้น</div>
+      <div class="warn">📌 <b>นอกสไลด์</b> — ตัวเลขความสว่างในแอนิเมชันนี้คำนวณจาก
+        <span class="formula">I = I₀ cos²θ</span> (กฎของมาลูส) <b>สไลด์บทนี้ไม่ได้ให้สูตรนี้ ให้แค่คำอธิบายเชิงคุณภาพ</b>
+        ใส่ไว้เพื่อให้เห็นภาพว่าทำไม 45° ถึงเหลือครึ่งเดียว <b>ถ้าข้อสอบไม่ได้ให้สูตร อย่าเผลอไปใช้</b></div>
+    </div>
+
+    <div class="card">
+      <h3>📐 คำถามจากสไลด์ น.31 — ตอบให้ได้ก่อนสอบ</h3>
+      <details class="concept"><summary>ทิศทางคลื่นแม่เหล็กไฟฟ้าแผ่ออกไปตามแนวแกนใด</summary>
+        <div class="body"><b>แกน x</b></div></details>
+      <details class="concept"><summary>ทิศทางการเปลี่ยนแปลงสนามไฟฟ้าอยู่ในแนวแกนใด</summary>
+        <div class="body"><b>แกน y</b></div></details>
+      <details class="concept"><summary>ระนาบการเปลี่ยนแปลงสนามไฟฟ้าอยู่ในระนาบใด และมีกี่ระนาบ</summary>
+        <div class="body"><b>ระนาบ xy · มี 1 ระนาบ</b> — สนามไฟฟ้าเปลี่ยนแปลงในแนวดิ่ง
+          เรียกว่า <b>โพลาไรส์เชิงเส้นในแนวดิ่ง</b> (vertically polarized)</div></details>
+      <div class="tip">💡 <b>เส้นแบ่งที่ต้องจำ</b> — เปลี่ยนแปลงใน <b>ระนาบเดียว</b> = <b>โพลาไรส์เชิงเส้น</b> ·
+        <b>หลายระนาบ</b>ที่ตั้งฉากกับทิศการเคลื่อนที่ = <b>แสงไม่โพลาไรส์</b> (ดวงอาทิตย์ หลอดไฟ แสงสะท้อน)
+        <span class="badge">น.32–33</span></div>
+    </div>
+  </section>
+
+  <!-- ═══════════ แท็บ 4 : AM/FM ═══════════ -->
+  <section id="t4" class="tab">
+    <div class="card">
+      <h2>📻 AM กับ FM ต่างกันตรงไหน</h2>
+      <p class="sub">เส้นบนคือสัญญาณเสียง เส้นล่างคือคลื่นพาหะหลังผสมสัญญาณแล้ว</p>
+      <div class="seg">
+        <button id="modAM" class="on">AM — ผสมทางแอมพลิจูด</button>
+        <button id="modFM">FM — ผสมทางความถี่</button>
+      </div>
+      <canvas id="cmod" width="820" height="300"></canvas>
+      <div class="slider-row">
+        <label>ความแรงสัญญาณเสียง = <span class="slider-val" id="modDV">70</span>%</label>
+        <input type="range" id="modD" min="0" max="100" value="70">
+      </div>
+      <div id="modMsg" class="tip"></div>
+      <table class="ref">
+        <tr><th></th><th>AM (เอเอ็ม)</th><th>FM (เอฟเอ็ม)</th></tr>
+        <tr><td>สิ่งที่เปลี่ยน</td><td><b>แอมพลิจูด</b>ของคลื่นพาหะ</td><td><b>ความถี่</b>ของคลื่นพาหะ</td></tr>
+        <tr><td>ช่วงความถี่</td><td><b>530 – 1600 kHz</b></td><td><b>88 – 108 MHz</b></td></tr>
+        <tr><td>สะท้อนไอโอโนสเฟียร์</td><td>สะท้อนได้ (คลื่นฟ้า)</td><td><b>สะท้อนน้อย</b></td></tr>
+        <tr><td>ส่งไกล ๆ ทำยังไง</td><td>อาศัยคลื่นฟ้าไปได้ไกล</td><td><b>ต้องมีสถานีถ่ายทอดเป็นระยะ</b></td></tr>
+        <tr><td>อ้างอิง</td><td>น.18, น.20</td><td>น.19, น.20</td></tr>
+      </table>
+      <div class="warn">⚠️ <b>ประโยคที่สไลด์เน้น</b> <span class="badge">น.20</span> —
+        "ระบบการส่งคลื่นแบบเอเอ็มและเอฟเอ็มต่างกันที่<b>วิธีการผสมคลื่น</b>
+        ดังนั้น<b>เครื่องรับวิทยุระบบเอเอ็มกับเอฟเอ็มจึงไม่สามารถรับคลื่นวิทยุของอีกระบบหนึ่งได้</b>"</div>
+      <div class="tip">💡 <b>คลื่นดิน vs คลื่นฟ้า</b> <span class="badge">น.20</span> —
+        <b>คลื่นดิน</b> = เคลื่อนที่ตรง ๆ ในระดับสายตา · <b>คลื่นฟ้า</b> = สะท้อนกลับลงมาจากชั้นไอโอโนสเฟียร์</div>
+    </div>
+
+    <div class="card">
+      <h3>〰️ สัญญาณแอนะล็อก vs ดิจิทัล <span class="badge">น.69–71</span></h3>
+      <canvas id="csig" width="820" height="210"></canvas>
+      <div class="slider-row">
+        <label>ความละเอียดของการแปลงเป็นดิจิทัล = <span class="slider-val" id="sigSV">12</span> ขั้น</label>
+        <input type="range" id="sigS" min="2" max="32" value="12">
+      </div>
+      <div class="tip">💡 <b>แอนะล็อก</b> = ค่าเปลี่ยนแปลง<b>อย่างต่อเนื่อง</b>ตามเวลา ·
+        <b>ดิจิทัล</b> = เปลี่ยนแปลง<b>เพียงสองสถานะ</b> เช่น มีหรือไม่มี เปิดหรือปิด</div>
+      <div class="warn">⚠️ <b>เหตุผลที่สไลด์ให้ว่าทำไมดิจิทัลได้รับความนิยม</b> —
+        "ทำให้เกิด<b>ความผิดพลาดในการรับส่งข้อมูลน้อยกว่า</b>สัญญาณแอนะล็อก" <span class="badge">น.71</span></div>
+    </div>
+  </section>
+
+  <!-- ═══════════ แท็บ 5 : ทฤษฎี ═══════════ -->
+  <section id="t5" class="tab">
+    <div class="card">
+      <h2>📖 4.1 การเกิดคลื่นแม่เหล็กไฟฟ้า</h2>
+      <p class="sub">กดหัวข้อเพื่อเปิดอ่าน</p>
+      <details class="concept" open><summary>ทฤษฎีของแมกซ์เวลล์ <span class="badge">น.3–4</span></summary>
+        <div class="body">
+          <p>"สนามแม่เหล็กที่มีการเปลี่ยนแปลง สามารถ<b>เหนี่ยวนำให้เกิดสนามไฟฟ้า</b>
+          และสนามไฟฟ้าที่เปลี่ยนแปลงสามารถ<b>ทำให้เกิดสนามแม่เหล็ก</b>ได้
+          <b>แม้ว่าบริเวณนั้น ๆ จะเป็นตัวนำหรือฉนวนหรือสุญญากาศก็ตาม</b>"</p>
+          <p style="margin-top:6px">เมื่อเหนี่ยวนำกันไปมา<b>อย่างต่อเนื่อง</b> จึงเกิดเป็นคลื่น เรียกว่า <b>คลื่นแม่เหล็กไฟฟ้า</b></p>
+        </div></details>
+      <details class="concept"><summary>7 ข้อเรื่องการแผ่คลื่น — ที่สไลด์ไล่มาเป็นข้อ ๆ <span class="badge">น.5–8</span></summary>
+        <div class="body">
+          <p><b>1.</b> E, B และทิศการเคลื่อนที่ <b>ตั้งฉากกันตลอดเวลา</b> → เป็น<b>คลื่นตามขวางที่ไม่ต้องอาศัยตัวกลาง</b>
+          (มีอัตราเร็วน้อยลงเมื่อผ่านตัวกลาง และไม่เท่ากันในตัวกลางต่างชนิด)</p>
+          <p><b>2.</b> หาทิศคลื่นได้จาก<b>กฎมือขวา</b></p>
+          <p><b>3.</b> <b>อิเล็กตรอนที่สั่นสะเทือน</b>จะเหนี่ยวนำให้เกิดคลื่นรอบแนวการสั่น เช่น
+          อิเล็กตรอนในลวดที่มีไฟสลับไหลผ่าน · ในวัตถุอุณหภูมิสูง · ที่เปลี่ยนวงโคจรรอบอะตอม</p>
+          <p><b>4.</b> <b>อิเล็กตรอนที่เคลื่อนที่ด้วยความเร่ง</b>ก็เหนี่ยวนำให้เกิดคลื่นได้เช่นกัน</p>
+          <p><b>5.</b> แผ่ออก<b>ทุกทิศทาง ยกเว้นแนวที่ตรงกับการสั่นสะเทือน</b></p>
+          <p><b>6.</b> คลื่นแม่เหล็กไฟฟ้า<b>ทุกชนิด</b>เคลื่อนที่ด้วยความเร็วเท่ากัน = <b>3×10<sup>8</sup> m/s</b></p>
+          <p><b>7.</b> สนามแม่เหล็กและสนามไฟฟ้าทุกสนาม<b>เกิดพร้อมกัน</b></p>
+        </div></details>
+      <details class="concept"><summary>⚡ ทำไมไฟกระแสตรงถึงแผ่คลื่นไม่ได้ <span class="badge">น.8 หมายเหตุ</span></summary>
+        <div class="body">อิเล็กตรอนในไฟกระแสตรงเคลื่อนที่<b>ไปทิศทางเดียวโดยไม่มีความเร่ง</b> →
+          เหนี่ยวนำให้เกิดสนามแม่เหล็กก็จริง แต่เป็น<b>สนามแม่เหล็กคงที่ ไม่มีการเปลี่ยนแปลง</b>
+          จึง<b>ไม่เหนี่ยวนำให้เกิดสนามไฟฟ้าต่อเนื่องอีก</b> → แผ่คลื่นออกมาไม่ได้
+          <div class="tip" style="margin-top:8px">💡 <b>นี่คือข้อที่ออกข้อสอบง่ายที่สุดของหัวข้อนี้</b>
+            คำกุญแจคือ <b>"ไม่มีความเร่ง" → "สนามคงที่" → "ไม่เกิดคลื่น"</b></div>
+        </div></details>
+    </div>
+
+    <div class="card">
+      <h2>🧮 สูตรที่ต้องจำทั้งหมด <span class="badge">น.26, น.27</span></h2>
+      <span class="formula">v = fλ</span>
+      <span class="formula">c = 3×10<sup>8</sup> m/s</span>
+      <span class="formula">E = hf</span>
+      <span class="formula">E = hc / λ</span>
+      <span class="formula">E(eV) = hf / e</span>
+      <span class="formula">E(eV) = hc / (eλ)</span>
+      <table class="ref">
+        <tr><th>สัญลักษณ์</th><th>คือ</th><th>ค่า / หน่วย</th></tr>
+        <tr><td>E</td><td>พลังงานของคลื่น</td><td>จูล (J)</td></tr>
+        <tr><td>h</td><td>ค่านิจของพลังค์</td><td><b>6.62 × 10<sup>−34</sup></b> J·s</td></tr>
+        <tr><td>f</td><td>ความถี่</td><td>เฮิรตซ์ (Hz)</td></tr>
+        <tr><td>λ</td><td>ความยาวคลื่น</td><td>เมตร (m)</td></tr>
+        <tr><td>c</td><td>ความเร็วคลื่นแม่เหล็กไฟฟ้า</td><td><b>3 × 10<sup>8</sup></b> m/s</td></tr>
+        <tr><td>e</td><td>ประจุอิเล็กตรอน</td><td><b>1.6 × 10<sup>−19</sup></b> C</td></tr>
+      </table>
+      <div class="tip">💡 <b>หมายเหตุจากสไลด์</b> — <b>1 อิเล็กตรอนโวลต์ = 1.6 × 10<sup>−19</sup> จูล</b>
+        เพราะฉะนั้นถ้าโจทย์ให้ตอบเป็น eV ก็แค่ <b>เอาคำตอบหน่วยจูลไปหารด้วย 1.6×10<sup>−19</sup></b></div>
+      <div class="warn">⚠️ <b>อัตราเร็วคงตัว แปลว่า</b> ถ้า<b>ความถี่เพิ่ม ความยาวคลื่นต้องลด</b> เสมอ
+        <span class="badge">น.26</span> — โจทย์ชอบถามกลับหัวกลับหางแบบนี้</div>
+    </div>
+
+    <div class="card">
+      <h2>🔧 4.4 อุปกรณ์ที่ใช้คลื่นแม่เหล็กไฟฟ้า <span class="badge">น.42–59</span></h2>
+      <details class="concept"><summary>เครื่องฉายรังสีเอกซ์ · เครื่องเอกซ์เรย์คอมพิวเตอร์ (CT)</summary>
+        <div class="body">
+          <p><b>เอกซ์เรย์ธรรมดา</b> — รังสีผ่านร่างกาย <b>เนื้อเยื่อกับกระดูกดูดกลืนรังสีในปริมาณต่างกัน</b>
+          ได้ภาพขาวดำ แต่<b>ภาพทุกอวัยวะซ้อนกัน จึงขาดความชัดเจน</b></p>
+          <p style="margin-top:6px"><b>CT</b> — แหล่งกำเนิดรังสี<b>หมุนรอบร่างกาย</b>พร้อมฉายรังสี
+          สร้าง<b>ภาพ 3 มิติ</b>ได้ <b>สีของภาพแต่ละจุดขึ้นกับการดูดกลืนรังสีเอกซ์ของเนื้อเยื่อแต่ละชนิด</b></p>
+        </div></details>
+      <details class="concept"><summary>เครื่องควบคุมระยะไกล (รีโมท)</summary>
+        <div class="body">รีโมท<b>ประมวลผลการกดปุ่มเป็นรหัสคำสั่ง แปลงเป็นสัญญาณไฟฟ้า</b> แล้วส่งออกไป
+          — ใช้<b>รังสีอินฟราเรด</b> <span class="badge">น.23</span> ·
+          อุปกรณ์อื่นที่ควบคุมระยะไกล เช่น คีย์บอร์ดไร้สาย เมาส์ไร้สาย</div></details>
+      <details class="concept"><summary>GPS — ระบุตำแหน่งบนพื้นโลก</summary>
+        <div class="body">ใช้<b>สัญญาณไมโครเวฟ</b>สื่อสารกับดาวเทียม ·
+          ตำแหน่งเกิดจาก<b>การตัดกันของผิวทรงกลมของดาวเทียมทั้ง 3 ดวง</b>
+          <div class="tip" style="margin-top:8px">💡 <b>แต่โลกไม่ได้ผิวเรียบ มีทั้งภูเขาและหุบเหว</b>
+            จึงต้องใช้<b>ดาวเทียมดวงที่ 4</b> เพื่อความแม่นยำ <b>ตัวเลข 3 กับ 4 นี้ออกข้อสอบได้ตรง ๆ</b></div>
+        </div></details>
+      <details class="concept"><summary>MRI — เครื่องถ่ายภาพการสั่นพ้องแม่เหล็ก</summary>
+        <div class="body">มี<b>สนามแม่เหล็กความเข้มสูง</b>จัดระเบียบ<b>นิวเคลียสของไฮโดรเจน</b>ในเนื้อเยื่อ
+          แล้วสร้าง<b>ภาพตัดขวางเป็น 3 มิติ</b>
+          <div class="warn" style="margin-top:8px">⚠️ <b>ประโยคที่ออกข้อสอบแน่</b> —
+            "<b>คลื่นวิทยุที่ใช้ในการทำงานนี้ไม่เป็นอันตรายต่อมนุษย์ แตกต่างจากการตรวจด้วยรังสีเอกซ์</b>"
+            <span class="badge">น.59</span></div>
+        </div></details>
+    </div>
+
+    <div class="card">
+      <h2>📡 4.5 การสื่อสาร <span class="badge">น.60–71</span></h2>
+      <details class="concept"><summary>คลื่นที่ใช้สื่อสารมีอะไรบ้าง</summary>
+        <div class="body"><b>คลื่นวิทยุ · ไมโครเวฟ · แสงที่ตามองเห็น</b></div></details>
+      <details class="concept"><summary>ลำดับการทำงานของสถานีวิทยุ <span class="badge">น.63</span></summary>
+        <div class="body">แปลง<b>คลื่นเสียง → สัญญาณไฟฟ้า</b> → <b>ผสมกับคลื่นพาหะ</b> → กระจายออกสายอากาศ →
+          เครื่องรับ<b>แยกสัญญาณเสียงออกจากคลื่นวิทยุ</b> → <b>ขยายแอมพลิจูด</b> → ลำโพงแปลงเป็นเสียง</div></details>
+      <details class="concept"><summary>ไมโครเวฟกับใยแก้วนำแสง</summary>
+        <div class="body"><b>ไมโครเวฟ</b> ใช้สื่อสารได้เช่นเดียวกับคลื่นวิทยุ <b>ผ่านชั้นบรรยากาศ</b> ·
+          <b>การสื่อสารด้วยแสง</b> ใช้<b>เส้นใยนำแสง</b>รับส่งสัญญาณ
+          <div class="tip" style="margin-top:8px">💡 <b>สไลด์ น.23 บอกไว้ด้วยว่า</b>
+            คลื่นพาหะที่นำสัญญาณในเส้นใยนำแสงคือ<b>รังสีอินฟราเรด</b>
+            เพราะ<b>แสงธรรมดาถูกรบกวนโดยแสงภายนอกได้ง่าย</b></div>
+        </div></details>
+      <details class="concept"><summary>คลื่นโทรทัศน์ทำไมต้องมีสถานีถ่ายทอด <span class="badge">น.21</span></summary>
+        <div class="body">คลื่นโทรทัศน์<b>ไม่สะท้อนที่ชั้นไอโอโนสเฟียร์ แต่ทะลุผ่านออกไปนอกโลก</b> ·
+          การส่งไปไกล ๆ ในแนวเส้นตรงบนผิวโลกจะ<b>ถูกส่วนโค้งของโลกบังไว้</b>
+          จึงต้องใช้<b>สถานีถ่ายทอดเป็นระยะ</b> หรือใช้<b>ไมโครเวฟส่งผ่านดาวเทียม</b></div></details>
+    </div>
+  </section>
+
+  <!-- ═══════════ แท็บ 6 : ฝึกทำ ═══════════ -->
+  <section id="t6" class="tab">
+    <div class="card">
+      <h3>🧮 ฝึกคำนวณ — สุ่มโจทย์ใหม่ได้เรื่อย ๆ</h3>
+      <div class="q-text" id="calcQ">…</div>
+      <div class="ans-row">
+        <input class="ans-in" id="calcA" placeholder="พิมพ์คำตอบ เช่น 3e8 หรือ 3x10^8">
+        <button class="btn" id="calcCheck">ตรวจ</button>
+        <button class="btn ghost small" id="calcStep">ดูวิธีทำ</button>
+        <button class="btn ghost small" id="calcNew">ข้อใหม่</button>
+      </div>
+      <div class="fb" id="calcFb"></div>
+      <div class="steps" id="calcSteps"></div>
+      <div class="score" id="calcScore">ตอบถูก 0 จาก 0 ข้อ</div>
+      <div class="tip">💡 <b>พิมพ์ยังไงก็ได้</b> — <code>3e8</code> · <code>3x10^8</code> ·
+        <code>3*10^8</code> · <code>300000000</code> ระบบอ่านออกหมด และยอมรับความคลาดเคลื่อน 2%</div>
+    </div>
+
+    <div class="card">
+      <h3>🌈 ทายชนิดคลื่นจากความถี่</h3>
+      <div class="q-text" id="bandQ">…</div>
+      <div class="drill-btns" id="bandBtns"></div>
+      <div class="fb" id="bandFb"></div>
+      <div class="score" id="bandScore">ตอบถูก 0 จาก 0 ข้อ</div>
+    </div>
+
+    <div class="card">
+      <h3>✔️ ถูกหรือผิด — ประโยคจากสไลด์</h3>
+      <div class="tf-q" id="tfQ">…</div>
+      <div class="tf-btns">
+        <button class="btn green" id="tfT">ถูก</button>
+        <button class="btn red" id="tfF">ผิด</button>
+      </div>
+      <div class="fb" id="tfFb"></div>
+      <div class="score" id="tfScore">ตอบถูก 0 จาก 0 ข้อ</div>
+    </div>
+  </section>
+
+  <!-- ═══════════ แท็บ 7 : ข้อสอบเก่า PEC9 ═══════════ -->
+  <section id="t7" class="tab">
+    <div class="card">
+      <h2>🎯 ข้อสอบเก่า — มช. / Entrance</h2>
+      <p class="sub">คัดจาก <code>Physics/Pec 9/18-คลื่นแม่เหล็กไฟฟ้า.pdf</code> · เฉลยตามที่เอกสารกำกับไว้</p>
+      <div class="q-text" id="peQ">…</div>
+      <div class="drill-btns" id="peC"></div>
+      <div class="fb" id="peFb"></div>
+      <div class="hint-box" id="peWhy"></div>
+      <div class="ans-row">
+        <button class="btn ghost small" id="pePrev">◀ ข้อก่อน</button>
+        <button class="btn ghost small" id="peNext">ข้อถัดไป ▶</button>
+        <span class="score" id="peScore">ตอบถูก 0 จาก 0 ข้อ</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🧮 โจทย์คำนวณจากชุด PEC9 — ตัวเลขและคำตอบตรงตามเอกสาร</h3>
+      <table class="ref">
+        <tr><th>ข้อ</th><th>โจทย์</th><th>คำตอบ</th></tr>
+        <tr><td>14</td><td>คลื่นความถี่ 1×10<sup>14</sup> Hz มีพลังงานกี่จูล</td><td><b>6.62×10<sup>−20</sup> J</b></td></tr>
+        <tr><td>15</td><td>คลื่นความยาวคลื่น 600 nm มีพลังงานกี่จูล</td><td><b>3.31×10<sup>−19</sup> J</b></td></tr>
+        <tr><td>16</td><td>คลื่นพลังงาน 1.324×10<sup>−20</sup> J มีความถี่เท่าใด</td><td><b>2×10<sup>13</sup> Hz</b></td></tr>
+        <tr><td>17 <span class="badge">มช 36</span></td><td>โฟตอนพลังงาน 1.5 eV มีความถี่กี่เฮิรตซ์</td><td><b>3.63×10<sup>14</sup> Hz</b></td></tr>
+      </table>
+      <details class="concept"><summary>ดูวิธีทำทั้ง 4 ข้อ</summary>
+        <div class="body">
+          <p><b>14.</b> E = hf = 6.62×10<sup>−34</sup> × 1×10<sup>14</sup> = <b>6.62×10<sup>−20</sup> J</b></p>
+          <p><b>15.</b> E = hc/λ = (6.62×10<sup>−34</sup> × 3×10<sup>8</sup>) ÷ 600×10<sup>−9</sup>
+             = 1.986×10<sup>−25</sup> ÷ 6×10<sup>−7</sup> = <b>3.31×10<sup>−19</sup> J</b></p>
+          <p><b>16.</b> f = E/h = 1.324×10<sup>−20</sup> ÷ 6.62×10<sup>−34</sup> = <b>2×10<sup>13</sup> Hz</b></p>
+          <p><b>17.</b> แปลง eV เป็นจูลก่อน — 1.5 × 1.6×10<sup>−19</sup> = 2.4×10<sup>−19</sup> J<br>
+             แล้วค่อย f = E/h = 2.4×10<sup>−19</sup> ÷ 6.62×10<sup>−34</sup> = <b>3.63×10<sup>14</sup> Hz</b>
+             <span class="badge">ข้อนี้คนพลาดเพราะลืมแปลงหน่วย</span></p>
+        </div></details>
+    </div>
+
+    <div class="card">
+      <h3>🔍 สามจุดที่ชุด PEC9 มี แต่สไลด์อาจารย์ไม่มี</h3>
+      <div class="warn">⚠️ <b>1) รังสีอัลตราไวโอเลต — PEC9 ให้ตัวเลขไว้</b>
+        <b>10<sup>15</sup> – 10<sup>18</sup> Hz</b> ส่วนสไลด์อาจารย์<b>ข้ามข้อ 6 ไปเลย</b>
+        <b>ถ้าอาจารย์ออก UV ให้ใช้ตัวเลขชุดนี้</b> · UV ในธรรมชาติส่วนใหญ่มาจากดวงอาทิตย์
+        และถ้าได้รับมากเกินอาจเป็น<b>มะเร็งผิวหนัง</b></div>
+      <div class="warn">⚠️ <b>2) กฎของบรูสเตอร์ — ทำให้แสงโพลาไรส์ด้วยการสะท้อน</b>
+        <span class="formula">tan θ<sub>B</sub> = n</span>
+        เมื่อ n คือดัชนีหักเหของสสารที่แสงตกกระทบ · <b>สไลด์อาจารย์มีแต่วิธีใช้แผ่นโพลารอยด์</b>
+        PEC9 ยังมีวิธีที่ 3 คือ <b>โพลาไรเซชันโดยการกระเจิงของแสง</b></div>
+      <div class="warn">🚨 <b>3) กับดักที่อันตรายที่สุด — "ตั้งฉาก/ขนาน" กับอะไร</b><br>
+        <b>สไลด์อาจารย์ น.34</b> เทียบกับ <b>"แนวโพลาไรส์"</b> →
+        ตั้งฉาก = <b>ถูกดูดกลืน</b> · ขนาน = <b>ผ่านได้</b><br>
+        <b>PEC9</b> เทียบกับ <b>"แนวการเรียงตัวของโมเลกุล"</b> →
+        ตั้งฉาก = <b>ผ่านได้</b> · ขนาน = <b>ถูกดูดกลืน</b><br>
+        <b>อ่านเผิน ๆ จะนึกว่าขัดกัน แต่ที่จริงตรงกัน</b> เพราะ PEC9 นิยามไว้ว่า
+        <b>"แนวโพลาไรส์" = แนวที่ตั้งฉากกับแนวการเรียงตัวของโมเลกุล</b>
+        <div class="tip" style="margin-top:8px">💡 <b>เวลาทำข้อสอบให้ดูก่อนว่าโจทย์เทียบกับอะไร</b>
+          ถ้าโจทย์พูดถึง <b>แนวโพลาไรส์</b> → <b>ขนานผ่าน</b> ·
+          ถ้าพูดถึง <b>แนวโมเลกุล</b> → <b>ตั้งฉากผ่าน</b> · จำผิดข้างเดียวคือผิดทั้งข้อ</div></div>
+      <div class="tip">💡 <b>อีกอย่างที่ PEC9 เสริม</b> — คลื่นวิทยุ<b>ทะลุเข้าไปในโลหะได้ยาก</b>
+        เพราะโลหะสะท้อนและดูดกลืนคลื่นแม่เหล็กไฟฟ้าได้ดี <b>สังเกตได้ตอนฟังวิทยุในรถแล้วลอดใต้สะพานเหล็ก
+        เสียงจะเบาลงหรือหายไป</b> · และคลื่นวิทยุจะ<b>เลี้ยวเบน</b>อ้อมสิ่งกีดขวางที่มีขนาดใกล้เคียงความยาวคลื่นได้</div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+/* ═══════════ แท็บ ═══════════ */
+const tabs=document.getElementById('tabs');
+function openTab(id){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('show',t.id===id));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
+}
+tabs.addEventListener('click',e=>{const b=e.target.closest('.tab-btn');if(b)openTab(b.dataset.tab);});
+openTab('t1');
+
+/* ═══════════ ตัวช่วยวาด ═══════════ */
+const REDUCED = matchMedia('(prefers-reduced-motion:reduce)').matches;
+function cssv(n,f){const v=getComputedStyle(document.body).getPropertyValue(n).trim();return v||f;}
+/* สีชุดนี้อ่านจากตัวแปร CSS ทุกเฟรม โหมดมืดของ KIT UI จึงมีผลกับ canvas ด้วย */
+function pal(){return{
+  ink:cssv('--ink','#1e293b'), muted:cssv('--muted','#64748b'),
+  line:cssv('--line','#e2e8f0'), soft:cssv('--soft','#f8fafc'),
+  acc:cssv('--accent','#4f46e5'), E:'#e11d48', B:'#2563eb', ok:cssv('--ok','#059669')
+};}
+function setup(cv){
+  const r=Math.min(devicePixelRatio||1,2), w=cv.clientWidth||cv.width, h=cv.height*(w/cv.width);
+  if(cv._w!==w){cv.width=w*r;cv.height=h*r;cv.style.height=h+'px';cv._w=w;cv._h=h;}
+  const x=cv.getContext('2d'); x.setTransform(r,0,0,r,0,0);
+  x.clearRect(0,0,cv._w,cv._h); return [x,cv._w,cv._h];
+}
+function arrow(x,x0,y0,x1,y1,col,wd){
+  x.strokeStyle=col;x.fillStyle=col;x.lineWidth=wd||2;
+  x.beginPath();x.moveTo(x0,y0);x.lineTo(x1,y1);x.stroke();
+  const a=Math.atan2(y1-y0,x1-x0),s=6;
+  x.beginPath();x.moveTo(x1,y1);
+  x.lineTo(x1-s*Math.cos(a-.4),y1-s*Math.sin(a-.4));
+  x.lineTo(x1-s*Math.cos(a+.4),y1-s*Math.sin(a+.4));
+  x.closePath();x.fill();
+}
+function label(x,t,px,py,col,sz,al){
+  x.fillStyle=col;x.font='600 '+(sz||12)+'px Sarabun,sans-serif';
+  x.textAlign=al||'left';x.textBaseline='middle';x.fillText(t,px,py);x.textAlign='left';
+}
+
+/* ═══════════ 1) คลื่น E–B ═══════════ */
+const cw=document.getElementById('cwave');
+const W={play:true,E:true,B:true,arr:true,f:3,a:60,t:0};
+document.getElementById('wPlay').onclick=e=>{W.play=!W.play;e.target.classList.toggle('on',W.play);e.target.textContent=W.play?'⏸ หยุด':'▶ เล่น';};
+document.getElementById('wE').onclick=e=>{W.E=!W.E;e.target.classList.toggle('on',W.E);};
+document.getElementById('wB').onclick=e=>{W.B=!W.B;e.target.classList.toggle('on',W.B);};
+document.getElementById('wArr').onclick=e=>{W.arr=!W.arr;e.target.classList.toggle('on',W.arr);};
+document.getElementById('wf').oninput=e=>{W.f=+e.target.value;document.getElementById('wfV').textContent=W.f;};
+document.getElementById('wa').oninput=e=>{W.a=+e.target.value;document.getElementById('waV').textContent=W.a;};
+
+/* ฉาย 3 มิติแบบง่าย: x=ไปขวา, y=สนามไฟฟ้า(ขึ้น), z=สนามแม่เหล็ก(เฉียงเข้าจอ) */
+const PZX=.42, PZY=-.30;
+function proj(ox,oy,x,y,z){return [ox+x+z*PZX, oy-y+z*PZY];}
+function drawWave(){
+  const [x,w,h]=setup(cw), p=pal();
+  const ox=54, oy=h*.55, len=w-110, A=W.a*(w/820);
+  /* แกน */
+  const [ax0,ay0]=proj(ox,oy,0,0,0), [ax1,ay1]=proj(ox,oy,len,0,0);
+  x.strokeStyle=p.muted;x.lineWidth=1.2;x.setLineDash([4,4]);
+  x.beginPath();x.moveTo(ax0,ay0);x.lineTo(ax1,ay1);x.stroke();x.setLineDash([]);
+  arrow(x,ax1-16,ay1,ax1+14,ay1,p.muted,1.5);
+  label(x,'ทิศการเคลื่อนที่ของคลื่น (x)',ax1+2,ay1+16,p.muted,11,'right');
+  /* แกน y และ z ที่จุดเริ่ม */
+  const [ey0,ey1]=[proj(ox,oy,0,0,0),proj(ox,oy,0,A*1.15,0)];
+  arrow(x,ey0[0],ey0[1],ey1[0],ey1[1],p.muted,1.2); label(x,'y',ey1[0]-12,ey1[1],p.muted,12);
+  const zz=proj(ox,oy,0,0,A*1.15);
+  arrow(x,ey0[0],ey0[1],zz[0],zz[1],p.muted,1.2); label(x,'z',zz[0]+8,zz[1],p.muted,12);
+
+  const k=W.f*2*Math.PI/len, ph=W.t;
+  /* เส้นโค้ง */
+  function curve(isE){
+    x.strokeStyle=isE?p.E:p.B; x.lineWidth=2.4; x.beginPath();
+    for(let i=0;i<=len;i+=2){
+      const s=A*Math.sin(k*i-ph);
+      const [sx,sy]=proj(ox,oy,i,isE?s:0,isE?0:s);
+      i?x.lineTo(sx,sy):x.moveTo(sx,sy);
+    } x.stroke();
+  }
+  /* ลูกศรเวกเตอร์ */
+  function arrows(isE){
+    const step=len/28;
+    for(let i=0;i<=len;i+=step){
+      const s=A*Math.sin(k*i-ph); if(Math.abs(s)<2) continue;
+      const [x0,y0]=proj(ox,oy,i,0,0);
+      const [x1,y1]=proj(ox,oy,i,isE?s:0,isE?0:s);
+      x.globalAlpha=.55; arrow(x,x0,y0,x1,y1,isE?p.E:p.B,1.4); x.globalAlpha=1;
+    }
+  }
+  if(W.B){ if(W.arr)arrows(false); curve(false); }
+  if(W.E){ if(W.arr)arrows(true);  curve(true);  }
+  /* ป้าย */
+  label(x,'E  สนามไฟฟ้า',12,20,p.E,13);
+  label(x,'B  สนามแม่เหล็ก',12,40,p.B,13);
+  if(!W.E&&!W.B) label(x,'เปิดสนามอย่างน้อยหนึ่งอันสิ',w/2,h/2,p.muted,14,'center');
+  else if(W.E&&!W.B) label(x,'เหลือแต่ระนาบ xy ระนาบเดียว = โพลาไรส์เชิงเส้นในแนวดิ่ง',w/2,h-14,p.acc,12,'center');
+  else if(!W.E&&W.B) label(x,'สนามแม่เหล็กอยู่ในระนาบ xz ตั้งฉากกับสนามไฟฟ้าเสมอ',w/2,h-14,p.acc,12,'center');
+  else label(x,'สังเกตว่า E กับ B ขึ้นสูงสุด–ต่ำสุดพร้อมกัน (เกิดพร้อมกัน · น.8 ข้อ 7)',w/2,h-14,p.acc,12,'center');
+}
+
+/* กฎมือขวา */
+const V={y:[0,1,0],'-y':[0,-1,0],z:[0,0,1],'-z':[0,0,-1]};
+const NAME={'1,0,0':'+x (ไปทางขวา)','-1,0,0':'−x (ไปทางซ้าย)','0,1,0':'+y (ขึ้น)','0,-1,0':'−y (ลง)',
+            '0,0,1':'+z (เข้าจอ)','0,0,-1':'−z (ออกจากจอ)'};
+function rh(){
+  const a=V[document.getElementById('rhE').value], b=V[document.getElementById('rhB').value];
+  const c=[a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0]];
+  const out=document.getElementById('rhOut');
+  if(c.every(v=>v===0)){out.textContent='⚠️ E กับ B ขนานกัน — เป็นคลื่นแม่เหล็กไฟฟ้าไม่ได้ ต้องตั้งฉากกัน';out.style.color='var(--bad)';}
+  else{out.textContent='คลื่นเคลื่อนที่ไปทาง '+(NAME[c.join(',')]||c.join(','));out.style.color='';}
+}
+document.getElementById('rhE').onchange=rh; document.getElementById('rhB').onchange=rh; rh();
+
+/* ═══════════ สายอากาศ AC/DC ═══════════ */
+const ca=document.getElementById('cant'); let antAC=true, antT=0;
+const antMsg=document.getElementById('antMsg');
+function setAnt(v){
+  antAC=v;
+  document.getElementById('antAC').classList.toggle('on',v);
+  document.getElementById('antDC').classList.toggle('on',!v);
+  antMsg.innerHTML = v
+    ? '💡 <b>อิเล็กตรอนเคลื่อนที่กลับไปมาด้วยความเร่ง</b>ในแนวดิ่ง → สนามเปลี่ยนแปลงตลอด → <b>แผ่คลื่นออกมาได้</b> <span class="badge">น.9</span>'
+    : '⚠️ <b>อิเล็กตรอนไปทิศทางเดียวโดยไม่มีความเร่ง</b> → เกิดสนามแม่เหล็ก<b>คงที่</b> → <b>ไม่เหนี่ยวนำต่อ จึงไม่มีคลื่นแผ่ออกมา</b> <span class="badge">น.8</span>';
+}
+document.getElementById('antAC').onclick=()=>setAnt(true);
+document.getElementById('antDC').onclick=()=>setAnt(false);
+setAnt(true);
+function drawAnt(){
+  const [x,w,h]=setup(ca), p=pal(), cx=w*.30, cy=h/2;
+  /* สายอากาศ */
+  x.strokeStyle=p.ink;x.lineWidth=4;
+  x.beginPath();x.moveTo(cx,cy-62);x.lineTo(cx,cy+62);x.stroke();
+  label(x,'สายอากาศ',cx,cy+80,p.muted,11,'center');
+  /* อิเล็กตรอน */
+  const off = antAC ? 42*Math.sin(antT*2) : 0;
+  for(let i=-2;i<=2;i++){
+    const yy = antAC ? cy+off+i*17 : cy - ((antT*46+i*17)%124) + 62;
+    x.fillStyle=p.acc;x.beginPath();x.arc(cx,yy,5,0,7);x.fill();
+  }
+  if(antAC){
+    /* วงคลื่นแผ่ออก — เว้นแนวดิ่งที่ตรงกับการสั่น */
+    for(let n=0;n<4;n++){
+      const r=((antT*52)+n*46)%184; if(r<8) continue;
+      x.strokeStyle=p.E; x.globalAlpha=Math.max(0,.55*(1-r/184)); x.lineWidth=2;
+      x.beginPath();x.arc(cx,cy,r,-1.15,1.15);x.stroke();
+      x.beginPath();x.arc(cx,cy,r,Math.PI-1.15,Math.PI+1.15);x.stroke();
+      x.globalAlpha=1;
+    }
+    label(x,'ไม่มีคลื่นออกในแนวเดียวกับสายอากาศ',cx,cy-92,p.E,11,'center');
+    label(x,'↑',cx+2,cy-78,p.E,13,'center');
+  } else {
+    x.strokeStyle=p.muted;x.setLineDash([5,5]);x.lineWidth=1.6;
+    x.beginPath();x.arc(cx,cy,58,0,7);x.stroke();x.setLineDash([]);
+    label(x,'สนามแม่เหล็กคงที่ — ไม่เปลี่ยนแปลง',cx,cy-92,p.muted,11,'center');
+    label(x,'ไม่มีคลื่นแผ่ออกมา',w*.76,cy,p.bad||'#dc2626',15,'center');
+  }
+}
+
+/* ═══════════ 2) สเปกตรัม ═══════════ */
+const cs=document.getElementById('cspec'), sEl=document.getElementById('spec');
+const BANDS=[
+  {a:4 ,b:6   ,n:'ต่ำกว่าช่วงในสไลด์'      ,c:'#94a3b8',u:'สไลด์บทนี้เริ่มที่คลื่นวิทยุ 10⁶ Hz จึงไม่ได้ครอบคลุมช่วงนี้'},
+  {a:6 ,b:9   ,n:'คลื่นวิทยุ'              ,c:'#a855f7',u:'<b>AM 530–1600 kHz</b> ผสมสัญญาณโดยเปลี่ยน<b>แอมพลิจูด</b> · <b>FM 88–108 MHz</b> เปลี่ยน<b>ความถี่</b> · เดินทางได้ทั้ง<b>คลื่นดิน</b>และ<b>คลื่นฟ้า</b> <span class="badge">น.18–20</span>'},
+  {a:9 ,b:11.5,n:'ไมโครเวฟ'                ,c:'#3b82f6',u:'ทำอาหาร · เปิดปิดประตูด้วยรีโมทคอนโทรล · ถ่ายภาพพื้นผิวดาวเคราะห์ · ศึกษากำเนิดจักรวาล · <b>สะท้อนผิวโลหะได้ดีจึงใช้ทำเรดาร์</b>ตรวจหาอากาศยานและจับความเร็วรถ <span class="badge">น.22</span>'},
+  {a:11.5,b:14,n:'รังสีอินฟราเรด'          ,c:'#ef4444',u:'แบ่ง 3 ช่วง — <b>ใกล้ 0.7–1.5 µm · ปานกลาง 1.5–4.0 µm · ไกล 4.0–1000 µm</b> · สิ่งมีชีวิตทุกชนิดแผ่ออกตลอดเวลา · <b>ทะลุเมฆหมอกได้ดีกว่าแสงธรรมดา</b> · ใช้ในรีโมท และเป็น<b>คลื่นพาหะในเส้นใยนำแสง</b> <span class="badge">น.23</span>'},
+  {a:14,b:14.95,n:'แสงที่ตามองเห็น'        ,c:'#22c55e',u:'<b>4×10¹⁴ – 8×10¹⁴ Hz</b> · <b>700 nm = สีแดง</b> ยิ่งความยาวคลื่นน้อยลงยิ่งไล่ไปทาง ส้ม เหลือง เขียว น้ำเงิน จนถึงม่วง · รวมกันพอเหมาะ = <b>แสงสีขาว</b> · <b>LASER</b> = Light Amplification by Stimulated Emission of Radiation <span class="badge">น.24</span>'},
+  {a:14.95,b:17,n:'รังสีอัลตราไวโอเลต',c:'#8b5cf6',u:'⚠️ <b>สไลด์อาจารย์ข้ามข้อ 6 ไป</b> — กระโดดจาก "5. แสง" ไป "7. รังสีเอกซ์" เลย · <b>แต่ชุด PEC9 ให้ตัวเลขไว้ว่า 10¹⁵ – 10¹⁸ Hz</b> · ส่วนใหญ่ในธรรมชาติมาจากดวงอาทิตย์ ได้รับมากเกินอาจเป็น<b>มะเร็งผิวหนัง</b> <span class="badge">PEC9 น.9–10</span>'},
+  {a:17,b:21 ,n:'รังสีเอกซ์'               ,c:'#0ea5e9',u:'<b>ทะลุผ่านสิ่งกีดขวางหนา ๆ ได้</b> · <b>ถูกขวางกั้นโดยอะตอมของธาตุหนักได้ดีกว่าธาตุเบา</b> จึงเห็นกระดูกชัด · ใช้ตรวจรอยร้าวในโลหะ · ด่านตรวจใช้หาอาวุธปืนหรือวัตถุระเบิด <span class="badge">น.25</span>'},
+  {a:21,b:22 ,n:'รังสีแกมมา'               ,c:'#f59e0b',u:'<b>ความถี่สูงกว่ารังสีเอกซ์</b> · มาจากปฏิกิริยานิวเคลียร์ · <b>ความถี่สูงทำให้เป็นอันตรายต่อสิ่งมีชีวิตทุกชนิด</b> · มีที่ไม่ได้เกิดจากธาตุกัมมันตรังสีด้วย เช่น จากอวกาศและรังสีคอสมิก <span class="badge">น.25</span>'}
+];
+const SUP='⁰¹²³⁴⁵⁶⁷⁸⁹';
+function sup(n){return String(n).split('').map(ch=>ch==='-'?'⁻':SUP[+ch]||ch).join('');}
+function sci(v,d){ if(v===0)return '0'; const e=Math.floor(Math.log10(Math.abs(v)));
+  const m=(v/Math.pow(10,e)).toFixed(d===undefined?2:d); return m+' × 10'+sup(e); }
+function bandOf(L){return BANDS.find(b=>L>=b.a&&L<b.b)||BANDS[BANDS.length-1];}
+function specUpd(){
+  const L=+sEl.value/100, f=Math.pow(10,L), b=bandOf(L);
+  const lam=3e8/f, E=6.62e-34*f, eV=E/1.6e-19;
+  document.getElementById('specF').textContent=sci(f,1)+' Hz';
+  document.getElementById('specName').textContent=b.n;
+  document.getElementById('specName').style.color=b.c;
+  document.getElementById('specLam').innerHTML=sci(lam)+' m';
+  document.getElementById('specE').innerHTML=sci(E)+' J';
+  document.getElementById('specEv').innerHTML=sci(eV)+' eV';
+  document.getElementById('specUse').innerHTML='💡 '+b.u;
+}
+sEl.oninput=specUpd; specUpd();
+function drawSpec(){
+  const [x,w,h]=setup(cs), p=pal();
+  const L=+sEl.value/100, x0=20, x1=w-20, bx=t=>x0+(t-4)/18*(x1-x0);
+  /* แถบสี */
+  BANDS.forEach(b=>{
+    x.fillStyle=b.c; x.globalAlpha=.75;
+    x.fillRect(bx(b.a),34,bx(b.b)-bx(b.a),34); x.globalAlpha=1;
+  });
+  x.strokeStyle=p.line;x.lineWidth=1;x.strokeRect(x0,34,x1-x0,34);
+  /* สเกล */
+  for(let e=4;e<=22;e+=2){
+    x.strokeStyle=p.line;x.beginPath();x.moveTo(bx(e),68);x.lineTo(bx(e),74);x.stroke();
+    label(x,'10'+sup(e),bx(e),84,p.muted,10,'center');
+  }
+  label(x,'ความถี่ต่ำ · ความยาวคลื่นยาว',x0,20,p.muted,11);
+  label(x,'ความถี่สูง · ความยาวคลื่นสั้น',x1,20,p.muted,11,'right');
+  /* เครื่องหมายตำแหน่ง */
+  const mx=bx(L);
+  x.strokeStyle=p.ink;x.lineWidth=2;x.beginPath();x.moveTo(mx,28);x.lineTo(mx,74);x.stroke();
+  x.fillStyle=p.ink;x.beginPath();x.moveTo(mx,26);x.lineTo(mx-6,16);x.lineTo(mx+6,16);x.closePath();x.fill();
+  /* คลื่นตัวอย่าง — ความยาวคลื่นเปลี่ยนตามสไลเดอร์จริง */
+  const b=bandOf(L), cy=150, amp=30;
+  const wl=Math.max(7, 300*Math.pow(10,-(L-4)/18*2.6));
+  x.strokeStyle=b.c;x.lineWidth=2.2;x.beginPath();
+  for(let i=x0;i<=x1;i+=1.5){
+    const yy=cy+amp*Math.sin((i-x0)/wl*2*Math.PI - specT*3);
+    i===x0?x.moveTo(i,yy):x.lineTo(i,yy);
+  } x.stroke();
+  /* วัดความยาวคลื่นให้ดู */
+  x.strokeStyle=p.muted;x.setLineDash([3,3]);x.lineWidth=1;
+  x.beginPath();x.moveTo(x0,cy-amp-12);x.lineTo(x0+wl,cy-amp-12);x.stroke();x.setLineDash([]);
+  arrow(x,x0,cy-amp-12,x0+Math.max(wl,10),cy-amp-12,p.muted,1);
+  label(x,'λ',x0+wl/2,cy-amp-24,p.muted,12,'center');
+  label(x,b.n,w/2,h-16,b.c,14,'center');
+}
+
+/* ═══════════ 3) โพลาไรซ์ ═══════════ */
+const cp=document.getElementById('cpol'), pa=document.getElementById('polA');
+function polUpd(){
+  const a=+pa.value, I=Math.cos(a*Math.PI/180)**2;
+  document.getElementById('polAV').textContent=a;
+  const o=document.getElementById('polOut');
+  o.textContent='ความสว่างที่ออกมา: '+(I*100).toFixed(0)+'%';
+  o.style.color = I<0.02?'var(--bad)':(I>0.9?'var(--ok)':'');
+}
+pa.oninput=polUpd; polUpd();
+document.querySelectorAll('.polq').forEach(b=>b.onclick=()=>{pa.value=b.dataset.a;polUpd();});
+function drawPol(){
+  const [x,w,h]=setup(cp), p=pal();
+  const a=+pa.value, rad=a*Math.PI/180, I=Math.cos(rad)**2;
+  const y=h*.44, s=w/820, p1=w*.34, p2=w*.62, R=46*s;
+  /* ลำแสงพื้นหลัง */
+  x.fillStyle=p.soft;x.fillRect(0,y-R-14,w,2*R+28);
+  /* แผ่นโพลารอยด์ */
+  function sheet(px,ang,txt,col){
+    x.save();x.translate(px,y);
+    x.fillStyle=col;x.globalAlpha=.13;x.fillRect(-11,-R-8,22,2*R+16);x.globalAlpha=1;
+    x.strokeStyle=col;x.lineWidth=1.8;x.strokeRect(-11,-R-8,22,2*R+16);
+    x.strokeStyle=col;x.lineWidth=1.4;x.globalAlpha=.8;
+    for(let i=-R;i<=R;i+=9){ /* ขีดแนวโพลาไรส์ */
+      x.save();x.rotate(ang);
+      x.beginPath();x.moveTo(-9,i);x.lineTo(9,i);x.stroke();x.restore();
+    }
+    x.globalAlpha=1;x.restore();
+    label(x,txt,px,y+R+30,col,12,'center');
+  }
+  /* ก่อนแผ่นที่ 1 : แสงไม่โพลาไรส์ = หลายระนาบ */
+  const n=9;
+  for(let i=0;i<n;i++){
+    const ph=polT*2+i*.7, px=30+((ph*46)%(p1-40));
+    const ang=(i*37+Math.floor(ph)*23)%180, r=ang*Math.PI/180;
+    x.strokeStyle=p.E;x.globalAlpha=.75;x.lineWidth=2;
+    x.beginPath();
+    x.moveTo(px-16*Math.cos(r+Math.PI/2), y-16*Math.sin(r+Math.PI/2));
+    x.lineTo(px+16*Math.cos(r+Math.PI/2), y+16*Math.sin(r+Math.PI/2));
+    x.stroke();x.globalAlpha=1;
+  }
+  label(x,'แสงไม่โพลาไรส์',p1/2,y-R-24,p.muted,12,'center');
+  label(x,'สนามไฟฟ้าหลายระนาบ',p1/2,y+R+30,p.muted,11,'center');
+
+  sheet(p1,0,'แผ่นที่ 1 · แนวโพลาไรส์ 0°',p.acc);
+
+  /* ระหว่างแผ่น : โพลาไรส์แนวดิ่ง */
+  for(let i=0;i<5;i++){
+    const px=p1+22+((polT*46+i*40)%(p2-p1-40));
+    x.strokeStyle=p.E;x.lineWidth=2.2;
+    x.beginPath();x.moveTo(px,y-18);x.lineTo(px,y+18);x.stroke();
+  }
+  label(x,'โพลาไรส์เชิงเส้น',(p1+p2)/2,y-R-24,p.E,12,'center');
+
+  sheet(p2,rad,'แผ่นที่ 2 · หมุนไป '+a+'°',p.B);
+
+  /* หลังแผ่นที่ 2 */
+  if(I>0.01){
+    for(let i=0;i<5;i++){
+      const px=p2+22+((polT*46+i*40)%(w-p2-40));
+      x.strokeStyle=p.E;x.globalAlpha=Math.max(.15,I);x.lineWidth=2.2;
+      const L=18*Math.sqrt(I);
+      x.beginPath();
+      x.moveTo(px-L*Math.sin(rad),y-L*Math.cos(rad));
+      x.lineTo(px+L*Math.sin(rad),y+L*Math.cos(rad));
+      x.stroke();x.globalAlpha=1;
+    }
+  } else {
+    label(x,'มืดสนิท',(p2+w)/2,y,'#dc2626',16,'center');
+  }
+  /* แถบความสว่าง */
+  const bw=w-40, by=h-26;
+  x.fillStyle=p.line;x.fillRect(20,by,bw,12);
+  x.fillStyle=I<0.02?'#dc2626':p.ok;x.fillRect(20,by,bw*I,12);
+  label(x,'ความสว่าง '+(I*100).toFixed(0)+'%',20,by-10,p.muted,11);
+}
+
+/* ═══════════ 4) AM / FM ═══════════ */
+const cm=document.getElementById('cmod'); let isAM=true;
+const modD=document.getElementById('modD'), modMsg=document.getElementById('modMsg');
+function setMod(v){
+  isAM=v;
+  document.getElementById('modAM').classList.toggle('on',v);
+  document.getElementById('modFM').classList.toggle('on',!v);
+  modMsg.innerHTML = v
+    ? '💡 <b>AM</b> — "สัญญาณเสียงจะบังคับให้<b>แอมพลิจูดของคลื่นพาหะเปลี่ยนแปลงไป</b>" สังเกตว่า<b>ความสูง</b>ของคลื่นล่างขยับตามเส้นบน แต่<b>ความถี่คงที่</b> <span class="badge">น.18</span>'
+    : '💡 <b>FM</b> — "ผสมสัญญาณเสียงเข้ากับคลื่นพาหะโดยให้<b>ความถี่ของคลื่นพาหะเปลี่ยนแปลง</b>ตามสัญญาณเสียง" สังเกตว่า<b>ความสูงคงที่</b> แต่คลื่น<b>ถี่–ห่าง</b>สลับกัน <span class="badge">น.19</span>';
+}
+document.getElementById('modAM').onclick=()=>setMod(true);
+document.getElementById('modFM').onclick=()=>setMod(false);
+modD.oninput=()=>document.getElementById('modDV').textContent=modD.value;
+setMod(true);
+function drawMod(){
+  const [x,w,h]=setup(cm), p=pal(), d=+modD.value/100;
+  const x0=16, x1=w-16, sy=h*.22, cy=h*.68;
+  const msg=i=>Math.sin((i-x0)/(x1-x0)*4*Math.PI - modT*1.5);
+  /* สัญญาณเสียง */
+  x.strokeStyle=p.acc;x.lineWidth=2.2;x.beginPath();
+  for(let i=x0;i<=x1;i+=1.5){const yy=sy-26*d*msg(i); i===x0?x.moveTo(i,yy):x.lineTo(i,yy);}
+  x.stroke();
+  label(x,'สัญญาณเสียง (จากไมโครโฟน)',x0,sy-44,p.acc,12);
+  /* คลื่นพาหะหลังผสม */
+  const base=34, kc=(x1-x0)/26;
+  x.strokeStyle=p.E;x.lineWidth=2;x.beginPath();
+  let ph=0;
+  for(let i=x0;i<=x1;i+=1){
+    let yy;
+    if(isAM){
+      yy=cy - base*(1+.75*d*msg(i))/1.75 * Math.sin((i-x0)/kc*2*Math.PI - modT*4);
+    }else{
+      ph += (1 + .8*d*msg(i))/kc*2*Math.PI;
+      yy=cy - base*Math.sin(ph - modT*4);
+    }
+    i===x0?x.moveTo(i,yy):x.lineTo(i,yy);
+  }
+  x.stroke();
+  /* เส้นขอบ envelope ของ AM */
+  if(isAM){
+    x.strokeStyle=p.acc;x.setLineDash([4,4]);x.lineWidth=1.4;x.globalAlpha=.85;
+    [1,-1].forEach(s=>{
+      x.beginPath();
+      for(let i=x0;i<=x1;i+=1.5){
+        const yy=cy - s*base*(1+.75*d*msg(i))/1.75;
+        i===x0?x.moveTo(i,yy):x.lineTo(i,yy);
+      } x.stroke();
+    });
+    x.setLineDash([]);x.globalAlpha=1;
+    label(x,'เส้นประ = ขอบบน–ล่าง เปลี่ยนตามเสียง',x1,cy+base+26,p.acc,11,'right');
+  } else {
+    label(x,'ความสูงเท่าเดิมตลอด — เปลี่ยนแค่ความถี่',x1,cy+base+26,p.acc,11,'right');
+  }
+  label(x,(isAM?'AM · คลื่นพาหะผสมทางแอมพลิจูด':'FM · คลื่นพาหะผสมทางความถี่'),x0,cy-base-22,p.E,13);
+}
+
+/* ═══════════ แอนะล็อก vs ดิจิทัล ═══════════ */
+const cg=document.getElementById('csig'), sigS=document.getElementById('sigS');
+sigS.oninput=()=>document.getElementById('sigSV').textContent=sigS.value;
+function drawSig(){
+  const [x,w,h]=setup(cg), p=pal(), x0=16, x1=w-16, cy=h*.55, A=48, n=+sigS.value;
+  const f=i=>Math.sin((i-x0)/(x1-x0)*4*Math.PI - sigT*1.2);
+  /* แอนะล็อก */
+  x.strokeStyle=p.acc;x.lineWidth=2.4;x.beginPath();
+  for(let i=x0;i<=x1;i+=1.5){const yy=cy-A*f(i); i===x0?x.moveTo(i,yy):x.lineTo(i,yy);}
+  x.stroke();
+  /* ดิจิทัล — ขั้นบันได */
+  x.strokeStyle=p.ok;x.lineWidth=2.2;x.beginPath();
+  const step=(x1-x0)/40; let prev=null;
+  for(let i=x0;i<=x1;i+=step){
+    const q=Math.round((f(i)+1)/2*(n-1))/(n-1)*2-1, yy=cy-A*q;
+    if(prev===null){x.moveTo(i,yy);}else{x.lineTo(i,prev);x.lineTo(i,yy);}
+    x.lineTo(Math.min(i+step,x1),yy); prev=yy;
+  }
+  x.stroke();
+  label(x,'แอนะล็อก — ต่อเนื่อง',x0,18,p.acc,12);
+  label(x,'ดิจิทัล — เป็นขั้น ('+n+' ระดับ)',x1,18,p.ok,12,'right');
+  label(x,'ยิ่งขั้นเยอะ ยิ่งใกล้เคียงของจริง แต่ก็ยังเป็นค่าไม่ต่อเนื่องอยู่ดี',w/2,h-12,p.muted,11,'center');
+}
+
+/* ═══════════ ลูปแอนิเมชันตัวเดียว วาดเฉพาะแท็บที่เปิดอยู่ ═══════════ */
+let specT=0, polT=0, modT=0, sigT=0, last=performance.now();
+function shown(id){const e=document.getElementById(id);return e&&e.classList.contains('show');}
+function loop(now){
+  const dt=Math.min(.05,(now-last)/1000); last=now;
+  const k = REDUCED ? 0 : dt;
+  if(shown('t1')){ if(W.play)W.t+=k*3.4; antT+=k; drawWave(); drawAnt(); }
+  if(shown('t2')){ specT+=k; drawSpec(); }
+  if(shown('t3')){ polT+=k; drawPol(); }
+  if(shown('t4')){ modT+=k; sigT+=k; drawMod(); drawSig(); }
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+addEventListener('resize',()=>{[cw,ca,cs,cp,cm,cg].forEach(c=>c._w=null);});
+
+/* ═══════════ 6) ฝึกทำ ═══════════ */
+function num(s){
+  s=(s||'').trim().toLowerCase().replace(/\s|,/g,'')
+    .replace(/×|x(?=10)/g,'*').replace(/\^/g,'e_').replace(/\*10e_/g,'e').replace(/e_/g,'e');
+  const m=s.match(/^(-?[\d.]+)(?:\*?10?e(-?\d+))?$/);
+  if(m) return parseFloat(m[1])*(m[2]!==undefined?Math.pow(10,+m[2]):1);
+  const v=parseFloat(s); return isNaN(v)?null:v;
+}
+let cScore=[0,0], cur=null;
+const CT=[
+  ()=>{const f=[9.5e7,1.005e8,5.5e14,2.4e9,6e14][Math.floor(Math.random()*5)];
+    return{q:'คลื่นแม่เหล็กไฟฟ้าความถี่ '+sci(f,2)+' Hz มีความยาวคลื่นเท่าไร (เมตร)',
+      a:3e8/f,u:'m',
+      s:['ใช้สูตร v = fλ → λ = c / f','c = 3 × 10⁸ m/s (เท่ากันทุกชนิดของคลื่นแม่เหล็กไฟฟ้า)',
+         'λ = 3 × 10⁸ ÷ '+sci(f,2),'λ = '+sci(3e8/f)+' m']};},
+  ()=>{const l=[500e-9,3,0.03,1e-10,700e-9][Math.floor(Math.random()*5)];
+    return{q:'คลื่นแม่เหล็กไฟฟ้าความยาวคลื่น '+sci(l,2)+' m มีความถี่เท่าไร (Hz)',
+      a:3e8/l,u:'Hz',
+      s:['จาก v = fλ → f = c / λ','f = 3 × 10⁸ ÷ '+sci(l,2),'f = '+sci(3e8/l)+' Hz']};},
+  ()=>{const f=[6e14,1e18,2.5e9,4.5e14][Math.floor(Math.random()*4)];
+    return{q:'คลื่นความถี่ '+sci(f,2)+' Hz มีพลังงานกี่จูล',
+      a:6.62e-34*f,u:'J',
+      s:['ใช้สูตร E = hf','h = 6.62 × 10⁻³⁴ J·s','E = 6.62 × 10⁻³⁴ × '+sci(f,2),
+         'E = '+sci(6.62e-34*f)+' J']};},
+  ()=>{const l=[500e-9,1e-11,650e-9][Math.floor(Math.random()*3)];
+    return{q:'คลื่นความยาวคลื่น '+sci(l,2)+' m มีพลังงานกี่จูล',
+      a:6.62e-34*3e8/l,u:'J',
+      s:['ใช้สูตร E = hc / λ','h = 6.62 × 10⁻³⁴ · c = 3 × 10⁸',
+         'E = (6.62 × 10⁻³⁴ × 3 × 10⁸) ÷ '+sci(l,2),'E = '+sci(6.62e-34*3e8/l)+' J']};},
+  ()=>{const f=[6e14,1e15,3e14][Math.floor(Math.random()*3)];
+    return{q:'คลื่นความถี่ '+sci(f,2)+' Hz มีพลังงานกี่อิเล็กตรอนโวลต์ (eV)',
+      a:6.62e-34*f/1.6e-19,u:'eV',
+      s:['ใช้สูตร E = hf / e','e = 1.6 × 10⁻¹⁹ C (และ 1 eV = 1.6 × 10⁻¹⁹ J)',
+         'E = (6.62 × 10⁻³⁴ × '+sci(f,2)+') ÷ 1.6 × 10⁻¹⁹','E = '+sci(6.62e-34*f/1.6e-19)+' eV']};}
+];
+function newCalc(){
+  cur=CT[Math.floor(Math.random()*CT.length)]();
+  document.getElementById('calcQ').innerHTML=cur.q+' <b>('+cur.u+')</b>';
+  document.getElementById('calcA').value='';
+  document.getElementById('calcFb').textContent='';
+  const st=document.getElementById('calcSteps');
+  st.classList.remove('show');
+  st.innerHTML=cur.s.map(t=>'<div class="st">'+t+'</div>').join('');
+}
+document.getElementById('calcNew').onclick=newCalc;
+document.getElementById('calcStep').onclick=()=>document.getElementById('calcSteps').classList.toggle('show');
+document.getElementById('calcCheck').onclick=()=>{
+  const v=num(document.getElementById('calcA').value), fb=document.getElementById('calcFb');
+  if(v===null){fb.textContent='พิมพ์ตัวเลขก่อนนะ เช่น 3e8';fb.className='fb bad';return;}
+  cScore[1]++;
+  if(Math.abs(v-cur.a)/Math.abs(cur.a)<0.02){
+    cScore[0]++; fb.textContent='✓ ถูกต้อง! = '+sci(cur.a)+' '+cur.u; fb.className='fb ok';
+  }else{
+    fb.textContent='✗ ยังไม่ใช่ — ลองกด "ดูวิธีทำ" แล้วลองใหม่'; fb.className='fb bad';
+  }
+  document.getElementById('calcScore').textContent='ตอบถูก '+cScore[0]+' จาก '+cScore[1]+' ข้อ';
+};
+newCalc();
+
+/* ทายชนิดคลื่น */
+const QB=BANDS.filter(b=>b.a>=6&&b.a<21);
+let bScore=[0,0], bAns=null;
+function newBand(){
+  const b=QB[Math.floor(Math.random()*QB.length)];
+  const L=b.a+Math.random()*(b.b-b.a)*.9+ (b.b-b.a)*.05;
+  bAns=b.n;
+  document.getElementById('bandQ').innerHTML='คลื่นแม่เหล็กไฟฟ้าความถี่ <b>'+sci(Math.pow(10,L),1)+' Hz</b> เป็นคลื่นชนิดใด';
+  const box=document.getElementById('bandBtns'); box.innerHTML='';
+  QB.map(v=>v.n).sort(()=>Math.random()-.5).forEach(n=>{
+    const btn=document.createElement('button'); btn.className='btn ghost small'; btn.textContent=n;
+    btn.onclick=()=>{
+      bScore[1]++; const fb=document.getElementById('bandFb');
+      if(n===bAns){bScore[0]++;fb.textContent='✓ ถูกต้อง — '+bAns;fb.className='fb ok';}
+      else{fb.textContent='✗ ไม่ใช่ '+n+' · คำตอบคือ '+bAns;fb.className='fb bad';}
+      document.getElementById('bandScore').textContent='ตอบถูก '+bScore[0]+' จาก '+bScore[1]+' ข้อ';
+      setTimeout(newBand,1400);
+    };
+    box.appendChild(btn);
+  });
+}
+newBand();
+
+/* ถูก/ผิด */
+const TF=[
+  ['คลื่นแม่เหล็กไฟฟ้าทุกชนิดเคลื่อนที่ในสุญญากาศด้วยอัตราเร็วเท่ากัน',true,'ถูก — 3 × 10⁸ m/s เท่ากันหมด (น.8 ข้อ 6)'],
+  ['คลื่นแม่เหล็กไฟฟ้าต้องอาศัยตัวกลางในการเคลื่อนที่',false,'ผิด — เป็นคลื่นตามขวางที่<b>ไม่ต้อง</b>อาศัยตัวกลาง (น.5)'],
+  ['ไฟฟ้ากระแสตรงสามารถแผ่คลื่นแม่เหล็กไฟฟ้าออกมาได้',false,'ผิด — อิเล็กตรอนไม่มีความเร่ง สนามแม่เหล็กคงที่ จึงไม่เกิดคลื่น (น.8)'],
+  ['อิเล็กตรอนที่สั่นสะเทือนจะแผ่คลื่นออกมาทุกทิศทางรวมทั้งแนวที่ตรงกับการสั่น',false,'ผิด — แผ่ทุกทิศทาง<b>ยกเว้น</b>แนวที่ตรงกับการสั่นสะเทือน (น.7 ข้อ 5)'],
+  ['ถ้าความถี่เพิ่มขึ้น ความยาวคลื่นจะลดลง',true,'ถูก — เพราะอัตราเร็วเป็นค่าคงตัว จาก v = fλ (น.26)'],
+  ['สนามไฟฟ้ากับสนามแม่เหล็กในคลื่นแม่เหล็กไฟฟ้าเกิดไม่พร้อมกัน',false,'ผิด — สไลด์ระบุว่า<b>เกิดพร้อมกัน</b> (น.8 ข้อ 7)'],
+  ['คลื่นวิทยุระบบ AM ใช้ช่วงความถี่ 88 – 108 MHz',false,'ผิด — นั่นคือ <b>FM</b> · AM คือ 530 – 1600 kHz (น.18–20)'],
+  ['เครื่องรับวิทยุระบบ AM สามารถรับคลื่นระบบ FM ได้',false,'ผิด — สไลด์เขียนชัดว่า<b>รับของอีกระบบไม่ได้</b> เพราะวิธีผสมคลื่นต่างกัน (น.20)'],
+  ['คลื่นโทรทัศน์สะท้อนที่ชั้นไอโอโนสเฟียร์ได้ดี',false,'ผิด — <b>ไม่สะท้อน แต่ทะลุออกไปนอกโลก</b> จึงต้องมีสถานีถ่ายทอด (น.21)'],
+  ['GPS ใช้ดาวเทียม 3 ดวงก็เพียงพอสำหรับความแม่นยำ',false,'ผิด — เพราะโลกไม่ได้ผิวเรียบ จึงต้องใช้<b>ดวงที่ 4</b> เพิ่ม (น.53–55)'],
+  ['คลื่นวิทยุที่ใช้ในเครื่อง MRI ไม่เป็นอันตรายต่อมนุษย์',true,'ถูก — สไลด์ระบุตรง ๆ ว่าต่างจากการตรวจด้วยรังสีเอกซ์ (น.59)'],
+  ['สนามไฟฟ้าของแสงที่ตั้งฉากกับแนวโพลาไรส์ของแผ่นโพลารอยด์จะผ่านไปได้',false,'ผิด — ที่<b>ตั้งฉากจะถูกดูดกลืน</b> ที่<b>ขนาน</b>ถึงจะผ่านได้ (น.34)'],
+  ['แสงจากดวงอาทิตย์และหลอดไฟเป็นแสงไม่โพลาไรส์',true,'ถูก — สนามไฟฟ้าเปลี่ยนแปลงอยู่<b>หลายระนาบ</b> (น.33)'],
+  ['สัญญาณดิจิทัลได้รับความนิยมเพราะเกิดความผิดพลาดในการรับส่งน้อยกว่าแอนะล็อก',true,'ถูก — เป็นเหตุผลที่สไลด์ให้ไว้ตรง ๆ (น.71)'],
+  ['รังสีแกมมามีความถี่ต่ำกว่ารังสีเอกซ์',false,'ผิด — <b>สูงกว่า</b>รังสีเอกซ์ จึงเป็นอันตรายต่อสิ่งมีชีวิตทุกชนิด (น.25)'],
+  ['เส้นใยนำแสงใช้รังสีอินฟราเรดเป็นคลื่นพาหะ',true,'ถูก — เพราะแสงธรรมดาถูกรบกวนโดยแสงภายนอกได้ง่าย (น.23)']
+];
+let tScore=[0,0], tIdx=0, tOrder=TF.map((_,i)=>i).sort(()=>Math.random()-.5);
+function newTF(){
+  document.getElementById('tfQ').textContent=TF[tOrder[tIdx%TF.length]][0];
+  document.getElementById('tfFb').textContent='';
+}
+function ansTF(v){
+  const it=TF[tOrder[tIdx%TF.length]], fb=document.getElementById('tfFb');
+  tScore[1]++; if(v===it[1])tScore[0]++;
+  fb.innerHTML=(v===it[1]?'✓ ':'✗ ')+it[2]; fb.className='fb '+(v===it[1]?'ok':'bad');
+  document.getElementById('tfScore').textContent='ตอบถูก '+tScore[0]+' จาก '+tScore[1]+' ข้อ';
+  tIdx++; setTimeout(newTF,2200);
+}
+document.getElementById('tfT').onclick=()=>ansTF(true);
+document.getElementById('tfF').onclick=()=>ansTF(false);
+newTF();
+
+/* ═══════════ 7) ข้อสอบเก่า PEC9 ═══════════ */
+const PE=[
+ {s:'มช 38',q:'คลื่นแม่เหล็กไฟฟ้าเกิดจากข้อใด',
+  c:['กระแสไฟฟ้าที่มีค่าคงที่ไหลจากแบตเตอรี่ผ่านตัวนำในวงจร','การเคลื่อนที่ของนิวตรอนด้วยความเร่ง',
+     'วัตถุที่มีอุณหภูมิสูง','การเคลื่อนที่ของประจุไฟฟ้าด้วยความเร็วคงที่'],a:2,
+  w:'วัตถุอุณหภูมิสูงมีอิเล็กตรอนสั่นสะเทือน → แผ่คลื่นได้ · ข้อ 1 กับ 4 ไม่มีความเร่ง · <b>นิวตรอนไม่มีประจุ</b> จึงไม่แผ่คลื่น'},
+ {s:'มช 31',q:'ข้อใด <b>ไม่ใช่</b> แหล่งกำเนิดของคลื่นแม่เหล็กไฟฟ้า',
+  c:['วัตถุมีอุณหภูมิสูง','อะตอมปลดปล่อยพลังงาน','อิเล็กตรอนปลดปล่อยพลังงาน',
+     'อิเล็กตรอนในกระแสไฟฟ้าตรงปลดปล่อยพลังงาน'],a:3,
+  w:'ตรงกับหมายเหตุในสไลด์ น.8 — อิเล็กตรอนในไฟกระแสตรง<b>ไม่มีความเร่ง</b> เกิดสนามแม่เหล็กคงที่ จึงไม่แผ่คลื่น'},
+ {s:'En 33',q:'ก. อิเล็กตรอนเคลื่อนที่ด้วยความเร็วสูง · ข. กลุ่มอิเล็กตรอนเคลื่อนที่ในตัวนำ · ค. อิเล็กตรอนเคลื่อนที่ด้วยความหน่วง<br><b>เหตุการณ์ที่จะทำให้เกิดคลื่นแม่เหล็กไฟฟ้าคือข้อใด</b>',
+  c:['ก และ ข','ข และ ค','ข','ค'],a:3,
+  w:'<b>ความหน่วงก็คือความเร่ง</b> (แค่ทิศตรงข้ามกับการเคลื่อนที่) จึงแผ่คลื่นได้ · ก. เร็วสูงแต่<b>คงที่</b> ไม่มีความเร่ง · ข. คือไฟกระแสตรง'},
+ {s:'มช 33',q:'สนามแม่เหล็กที่มาพร้อมกับการเคลื่อนที่ของแสงจะมีทิศทางอย่างไร',
+  c:['ขนานกับทิศทางการเคลื่อนที่ของแสง','ขนานกับสนามไฟฟ้า แต่เฟสต่างกัน 90°',
+     'ตั้งฉากกับทั้งสนามไฟฟ้าและทิศทางการเคลื่อนที่ของแสง','ตั้งฉากกับสนามไฟฟ้า แต่ขนานกับทิศทางการเคลื่อนที่'],a:2,
+  w:'สไลด์ น.5 ข้อ 1 — <b>ทั้งสามตั้งฉากกันตลอดเวลา</b> จึงเป็นคลื่นตามขวาง'},
+ {s:'มช 33',q:'ข้อใด <b>ไม่ถูกต้อง</b>',
+  c:['สนามไฟฟ้าที่เปลี่ยนแปลงทำให้เกิดสนามแม่เหล็ก และกลับกัน',
+     'สนามไฟฟ้าและสนามแม่เหล็กของคลื่นแม่เหล็กไฟฟ้ามีเฟสต่างกัน 90°',
+     'สนามไฟฟ้าและสนามแม่เหล็กตั้งฉากกันและตั้งฉากกับทิศการเคลื่อนที่',
+     'ในตัวกลางเดียวกัน คลื่นแม่เหล็กไฟฟ้าทุกความถี่มีความเร็วเท่ากัน'],a:1,
+  w:'สไลด์ น.8 ข้อ 7 ระบุว่าสนามทั้งสอง <b>เกิดพร้อมกัน</b> → <b>เฟสตรงกัน ไม่ใช่ต่างกัน 90°</b> · ข้อนี้เป็นตัวลวงยอดฮิต'},
+ {s:'มช 32',q:'ประจุเคลื่อนกลับไปมาคู่หนึ่งจะแผ่คลื่นแม่เหล็กไฟฟ้าออกมา แต่มีแนวหนึ่งที่ไม่มีคลื่นแผ่ออกมาเลย แนวนั้นคือ',
+  c:['แนวเดียวกับการสั่นของประจุ','แนวตั้งฉากกับการสั่น','แนวทำมุม 45° กับการสั่น','ไม่มีแนวใดเลย คลื่นออกทุกทิศ'],a:0,
+  w:'สไลด์ น.7 ข้อ 5 — แผ่ออกทุกทิศทาง <b>ยกเว้นแนวที่ตรงกับการสั่นสะเทือน</b> · ในเฉลยต้นฉบับคือข้อ ก. ตำแหน่ง A'},
+ {s:'มช 32',q:'คลื่นแม่เหล็กไฟฟ้าทุกชนิดขณะเคลื่อนที่ในสุญญากาศจะมีสิ่งหนึ่งเท่ากันเสมอ คือ',
+  c:['ความยาวคลื่น','แอมพลิจูด','ความถี่','ความเร็ว'],a:3,
+  w:'<b>3 × 10⁸ m/s เท่ากันหมด</b> (สไลด์ น.8 ข้อ 6) ส่วนความถี่กับความยาวคลื่นต่างกันไปตามชนิด'},
+ {s:'En 42/1',q:'คลื่นวิทยุ ไมโครเวฟ และแสงเลเซอร์ มีความถี่ 10<sup>4</sup>–10<sup>9</sup>, 10<sup>8</sup>–10<sup>12</sup> และ 10<sup>14</sup> Hz ตามลำดับ ถ้าส่งคลื่นเหล่านี้จากโลกไปยังดาวเทียมดวงหนึ่ง ข้อใดถูกต้องที่สุด',
+  c:['คลื่นวิทยุใช้เวลาน้อยที่สุด','แสงเลเซอร์ใช้เวลาน้อยที่สุด','คลื่นทั้งสามใช้เวลาเท่ากัน','หาคำตอบไม่ได้เพราะไม่ได้ให้ความยาวคลื่น'],a:2,
+  w:'ระยะทางเท่ากันและ<b>ความเร็วเท่ากันหมด</b> เวลาจึงเท่ากัน · <b>ความถี่ไม่เกี่ยวกับความเร็วเลย</b> — โจทย์จงใจให้ตัวเลขความถี่มาหลอก'},
+ {s:'มช 33',q:'การแผ่รังสีคลื่นแม่เหล็กไฟฟ้าต่อไปนี้ ข้อใดมีความยาวคลื่นสั้นที่สุด',
+  c:['รังสีแกมมา','แสงที่ตามองเห็น','ไมโครเวฟ','รังสีอัลตราไวโอเลต'],a:0,
+  w:'ความยาวคลื่นสั้นสุด = <b>ความถี่สูงสุด</b> → รังสีแกมมา (สูงกว่ารังสีเอกซ์ด้วยซ้ำ)'},
+ {s:'PEC9',q:'คลื่นแม่เหล็กไฟฟ้าต่อไปนี้ ชนิดใดมีพลังงานมากที่สุด',
+  c:['ไมโครเวฟ','อินฟราเรด','แสง','รังสีเอกซ์'],a:3,
+  w:'จาก <b>E = hf</b> พลังงานแปรผันตรงกับความถี่ → ในสี่ตัวนี้รังสีเอกซ์ความถี่สูงสุด'},
+ {s:'PEC9',q:'ข้อใดกล่าวถูกต้องตามทฤษฎีคลื่นแม่เหล็กไฟฟ้า<br>1. ขณะประจุเคลื่อนที่ด้วยความเร่งหรือความหน่วง จะแผ่คลื่นแม่เหล็กไฟฟ้า<br>2. เมื่อสนามแม่เหล็กเปลี่ยนแปลงจะเหนี่ยวนำให้เกิดสนามไฟฟ้าโดยรอบ <b>ยกเว้น</b>บริเวณนั้นเป็นฉนวน<br>3. บริเวณรอบตัวนำที่มีกระแสไฟฟ้าจะเกิดสนามแม่เหล็ก',
+  c:['1, 2 และ 3','1 และ 3','3 เท่านั้น','ตอบเป็นอย่างอื่น'],a:1,
+  w:'<b>ข้อ 2 ผิด</b> — แมกซ์เวลล์บอกว่าเหนี่ยวนำได้ <b>"แม้ว่าบริเวณนั้นจะเป็นตัวนำหรือฉนวนหรือสุญญากาศก็ตาม"</b> (สไลด์ น.3) จึงไม่มีข้อยกเว้นเรื่องฉนวน'}
+];
+let peI=0, peScore=[0,0], peDone=[];
+function peShow(){
+  const it=PE[peI];
+  document.getElementById('peQ').innerHTML='<b>ข้อ '+(peI+1)+'/'+PE.length+'</b> <span class="badge">'+it.s+'</span><br>'+it.q;
+  const box=document.getElementById('peC'); box.innerHTML='';
+  document.getElementById('peFb').textContent='';
+  document.getElementById('peWhy').innerHTML='';
+  it.c.forEach((c,i)=>{
+    const b=document.createElement('button'); b.className='btn ghost small';
+    b.style.textAlign='left'; b.innerHTML='<b>'+'กขคง'[i]+'.</b> '+c;
+    b.onclick=()=>{
+      if(peDone[peI])return; peDone[peI]=true; peScore[1]++;
+      const fb=document.getElementById('peFb');
+      if(i===it.a){peScore[0]++;fb.textContent='✓ ถูกต้อง';fb.className='fb ok';}
+      else{fb.innerHTML='✗ ยังไม่ใช่ — คำตอบคือข้อ <b>'+'กขคง'[it.a]+'</b>';fb.className='fb bad';}
+      [...box.children].forEach((el,j)=>{
+        if(j===it.a){el.className='btn green small';el.style.textAlign='left';}
+        else if(j===i){el.className='btn red small';el.style.textAlign='left';}
+      });
+      document.getElementById('peWhy').innerHTML='<div>💡 '+it.w+'</div>';
+      document.getElementById('peScore').textContent='ตอบถูก '+peScore[0]+' จาก '+peScore[1]+' ข้อ';
+    };
+    box.appendChild(b);
+  });
+}
+document.getElementById('peNext').onclick=()=>{peI=(peI+1)%PE.length;peShow();};
+document.getElementById('pePrev').onclick=()=>{peI=(peI-1+PE.length)%PE.length;peShow();};
+peShow();
+</script>
+<!--KIT-UI v2.8 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<script>
+/* =============================================================================
+   _kit/ui-controls.js  —  KIT UI  v1.0
+   แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
+     🌙/☀️  โหมดมืด / สว่าง   (จำค่าไว้ใน localStorage)
+     A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
+     ✏️  ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
+     🧮  เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
+
+   ── วิธีใช้ ────────────────────────────────────────────────────────────────
+   ห้ามแก้โค้ดนี้ในไฟล์ widget!  แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
+       pwsh -File _kit/apply-ui.ps1
+   สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
+   (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
+
+   !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
+      เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
+
+   ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
+   ใส่แอตทริบิวต์ที่ tag body:  data-tools="pen,calc"  = บังคับเปิด
+                              data-tools="none"      = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
+   ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
+              หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
+   ============================================================================= */
+(function(){
+if(window.__KITUI__) return; window.__KITUI__='2.8';   /* 2.8 = เพิ่มปุ่ม 🏠 กลับหน้าหลัก */
+
+/* ---------- helper ---------- */
+const D=document, R=D.documentElement;
+const get=k=>{try{return localStorage.getItem('kitui-'+k)}catch(e){return null}};
+const set=(k,v)=>{try{localStorage.setItem('kitui-'+k,v)}catch(e){}};
+const el=(t,c,h)=>{const e=D.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
+
+/* =============================================================================
+   1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
+   ============================================================================= */
+const CSS=`
+/* ===== DARK TOKENS (คู่กับ _kit/design-tokens.css) ===== */
+:root[data-theme="dark"]{
+  --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
+  --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
+  --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
+  --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
+  --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
+}
+:root[data-theme="dark"] body{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f172a}
+:root[data-theme="dark"] body[data-subject="physics"]{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f1220}
+:root[data-theme="dark"] body[data-subject="bio"]{--accent:#4ade80;--accent-head:#bbf7d0;--accent-ink:#86efac;--accent-soft:#0f2a1a;--accent-bd:#256b41;--accent-chip:#14532d;--accent-ghost:#15803d;--bg:#0d1912}
+:root[data-theme="dark"] body[data-subject="chem"]{--accent:#fb923c;--accent-head:#fed7aa;--accent-ink:#fdba74;--accent-soft:#2b1a0c;--accent-bd:#8a3d12;--accent-chip:#6d2c10;--accent-ghost:#c2410c;--bg:#1a130c}
+:root[data-theme="dark"] body[data-subject="christ"]{--accent:#a78bfa;--accent-head:#ddd6fe;--accent-ink:#c4b5fd;--accent-soft:#241a3d;--accent-bd:#5b21b6;--accent-chip:#4c1d95;--accent-ghost:#6d28d9;--bg:#16121f}
+:root[data-theme="dark"] body[data-subject="islam"]{--accent:#2dd4bf;--accent-head:#99f6e4;--accent-ink:#5eead4;--accent-soft:#0d2b28;--accent-bd:#12615a;--accent-chip:#134e4a;--accent-ghost:#0f766e;--bg:#0c1917}
+:root[data-theme="dark"] body[data-subject="history"]{--accent:#fbbf24;--accent-head:#fde68a;--accent-ink:#fcd34d;--accent-soft:#2a1f0a;--accent-bd:#8a4b0c;--accent-chip:#6d3a0a;--accent-ghost:#b45309;--bg:#191509}
+:root[data-theme="dark"] body[data-subject="math"]{--accent:#38bdf8;--accent-head:#bae6fd;--accent-ink:#7dd3fc;--accent-soft:#0c2434;--accent-bd:#0b5a80;--accent-chip:#0c4a6e;--accent-ghost:#0369a1;--bg:#0b1620}
+:root[data-theme="dark"] body[data-subject="eng"]{--accent:#f472b6;--accent-head:#fbcfe8;--accent-ink:#f9a8d4;--accent-soft:#2e1122;--accent-bd:#8d1748;--accent-chip:#731839;--accent-ghost:#be185d;--bg:#1c0f16}
+:root[data-theme="dark"] body[data-subject="thai"]{--accent:#f87171;--accent-head:#fecaca;--accent-ink:#fca5a5;--accent-soft:#2d1414;--accent-bd:#8d2020;--accent-chip:#7f1d1d;--accent-ghost:#b91c1c;--bg:#1a0f0f}
+:root[data-theme="dark"] img,:root[data-theme="dark"] .svg-box{filter:brightness(.92)}
+/* ช่องกรอก/ดรอปดาวน์ที่ widget เก่ากำหนดพื้นขาวตายตัวไว้ */
+:root[data-theme="dark"] select,:root[data-theme="dark"] textarea,
+:root[data-theme="dark"] input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=color])
+{background-color:var(--soft);color:var(--ink);border-color:var(--line)}
+
+/* ===== แถบเครื่องมือลอย ===== */
+#kitui-bar{position:fixed;right:10px;bottom:10px;z-index:99990;display:flex;gap:6px;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
+#kitui-bar button{border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;
+  font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
+  align-items:center;justify-content:center;font-weight:700}
+#kitui-bar button:hover{background:var(--soft)}
+#kitui-bar button:active{transform:scale(.93)}
+#kitui-bar button.on{background:var(--accent);color:#fff}
+#kitui-bar .kitui-sep{width:1px;height:22px;background:var(--line);flex:0 0 1px}
+#kitui-bar .kitui-fs{font-size:11px;color:var(--muted);min-width:34px;text-align:center;font-weight:700}
+#kitui-bar.hidden > *:not(#kitui-grip):not(#kitui-home){display:none}
+#kitui-grip{font-size:17px}
+
+/* ===== แผงลอย (ที่ทด / เครื่องคิดเลข) ===== */
+.kitui-sheet{position:fixed;left:0;right:0;bottom:0;z-index:99991;background:var(--card);
+  border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
+  display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
+  height:52vh;max-height:92vh;min-height:180px}
+.kitui-sheet.open{display:flex}
+.kitui-sheet.full{height:100vh;border-radius:0}
+.kitui-head{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--line);
+  flex-wrap:wrap;touch-action:none;cursor:ns-resize}
+.kitui-head b{font-size:.9rem;color:var(--accent-ink);margin-right:2px;white-space:nowrap}
+.kitui-head button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;
+  padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
+.kitui-head button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.kitui-head .kitui-spacer{flex:1}
+.kitui-sw{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;min-height:0}
+.kitui-sw.on{border-color:var(--ink);transform:scale(1.12)}
+.kitui-padwrap{flex:1;position:relative;overflow:hidden;background:var(--soft)}
+.kitui-padwrap canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+:root[data-theme="dark"] .kitui-padwrap{background:#0c1220}
+
+/* ===== เครื่องคิดเลข ===== */
+#kitui-calc{height:auto;max-height:90vh}
+.kitui-disp{padding:8px 12px;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);
+  border-bottom:1px solid var(--line)}
+.kitui-disp .ex{font-size:.95rem;color:var(--muted);min-height:1.3em;word-break:break-all}
+.kitui-disp .rs{font-size:1.6rem;font-weight:700;color:var(--accent-ink);word-break:break-all}
+.kitui-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:7px}
+.kitui-keys button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:9px;
+  font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
+.kitui-keys button:active{transform:scale(.95)}
+.kitui-keys button.fn{font-size:.8rem;color:var(--accent-ink)}
+.kitui-keys button.op{background:var(--accent-soft);color:var(--accent-ink)}
+.kitui-keys button.eq{background:var(--accent);color:#fff;grid-row:span 2}
+.kitui-keys button.del{background:var(--hot-bg);color:var(--hot-ink)}
+.kitui-keys button.w3{grid-column:span 3}
+@media(max-width:420px){.kitui-keys button{font-size:.88rem;min-height:40px}.kitui-keys button.fn{font-size:.72rem}}
+@media(min-width:760px){
+  .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
+  .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
+  #kitui-pad{width:560px}
+}
+@media print{#kitui-bar,.kitui-sheet{display:none!important}}
+`;
+const st=el('style'); st.id='kitui-style'; st.textContent=CSS; D.head.appendChild(st);
+
+/* -----------------------------------------------------------------------------
+   1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
+   widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
+   พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
+   แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
+   เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
+----------------------------------------------------------------------------- */
+/* สีพาสเทลสว่าง -> สีเข้มที่ยังคง "เฉดเดิม" ไว้ (เขียว=ถูก / แดง=ผิด ต้องยังแยกออก)
+   ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
+function darken(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
+  /* ⚠️ ห้ามใช้ saturation ของ HSL ตรง ๆ ตัดสิน: ที่ความสว่างเกือบ 1 ตัวหารจะเล็กมาก
+     ทำให้สีที่แทบเป็นสีขาว (เช่น #fdf8f4) ได้ค่าอิ่มสีสูงลิ่ว แล้วกลายเป็นสีน้ำตาลจัดตอนกดให้เข้ม
+     ให้ดูจาก "ช่วงห่างของแม่สี" (chroma) แทน แล้วแปลงเป็นความอิ่มสีแบบไล่ระดับ */
+  const s = Math.min(.45, Math.max(.08, d*4));
+  const l = d<.02 ? .13 : .17;                       /* เทา/ขาวล้วนให้เข้มกว่าสีนิดหน่อย */
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+function darkFix(){
+  const out=[], seen=new Set();
+  const take=r=>{
+    if(!r.style || !r.selectorText) return;
+    if(r.selectorText.indexOf('kitui')>-1) return;               /* ของเราเองใช้ token อยู่แล้ว */
+    const bg=r.style.backgroundColor;
+    if(!bg || bg.indexOf('var(')>-1) return;
+    const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
+    if(!m) return;
+    if(m[4]!==undefined && +m[4]<0.6) return;                    /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
+    const cr=+m[1], cg=+m[2], cb=+m[3];
+    if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return;       /* ไม่สว่างพอ ไม่ต้องยุ่ง */
+    const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
+    const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
+    let css='background-color:'+repl;
+    /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
+    const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
+    out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
+  };
+  /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
+        ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
+  const visit=rules=>{
+    for(let i=0;i<rules.length;i++){
+      const r=rules[i];
+      if(r.selectorText) take(r);
+      if(r.cssRules && r.cssRules.length) visit(r.cssRules);     /* @media / @supports / nesting */
+    }
+  };
+  for(let i=0;i<D.styleSheets.length;i++){
+    let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; }   /* ข้ามชีตข้ามโดเมน */
+    if(rr) visit(rr);
+  }
+  if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
+  return out.length;
+}
+try{ window.__KITUI_DARKFIX__ = (D.body.getAttribute('data-kit-theme')==='off') ? 'locked' : darkFix(); }
+catch(e){ window.__KITUI_DARKFIX__='err:'+e.message; }
+
+/* darkFix ข้างบนซ่อมได้เฉพาะสีที่เขียนตายตัวในไฟล์ CSS
+   แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
+   ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
+   จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
+const rgbOf=c=>{const m=c&&c.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null;};
+const lumOf=v=>v?(0.2126*v[0]+0.7152*v[1]+0.0722*v[2])/255:null;
+/* ตรงข้ามกับ darken(): ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
+   (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
+function lighten(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  if(d<0.04) return 'var(--ink)';                    /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
+  let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
+  const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
+  const s=Math.min(.92,Math.max(.55,s0)), l=.72;
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+const SKIP={CANVAS:1,IMG:1,VIDEO:1,SVG:1,IFRAME:1,PICTURE:1,OBJECT:1};
+const OBS_OPT={childList:true,subtree:true,attributes:true,attributeFilter:['class','style']};
+let patched=[], obs=null;
+function elementFix(){
+  /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
+        ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
+  if(obs) obs.disconnect();
+  try{ elementFixCore(); } finally { if(obs) obs.observe(D.body,OBS_OPT); }
+}
+function elementFixCore(){
+  if(D.body.getAttribute('data-kit-theme')==='off') return;   /* หน้าที่ล็อกธีมไว้ ห้ามไปยุ่งสี */
+  /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
+     ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
+     จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
+  if(R.getAttribute('data-theme')!=='dark'){
+    patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
+    patched=[];
+    return;
+  }
+  /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
+     ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
+  /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
+  const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
+  for(let i=0;i<all.length;i++){
+    const e=all[i];
+    if(e.id&&e.id.indexOf('kitui')===0) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(SKIP[e.tagName]) continue;                      /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
+    const s=getComputedStyle(e);
+    const bg=rgbOf(s.backgroundColor);
+    if(!bg || bg[3]<0.6) continue;                     /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
+    if(lumOf(bg)<0.72) continue;                       /* เข้มพออยู่แล้ว */
+    /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
+    e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
+    const fg=rgbOf(s.color);
+    if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important');  /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
+    patched.push(e);
+  }
+  /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
+     ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
+  const bgCache=new Map();
+  const effBg=n=>{
+    for(let p=n;p;p=p.parentElement){
+      if(bgCache.has(p)) return bgCache.get(p);
+      const b=rgbOf(getComputedStyle(p).backgroundColor);
+      if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
+    }
+    return null;
+  };
+  for(let i=2;i<all.length;i++){
+    const e=all[i];
+    if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(e.style.color) continue;                         /* จัดการไปแล้วในรอบแรก */
+    if(!e.textContent || !e.textContent.trim()) continue;
+    const fg=rgbOf(getComputedStyle(e).color);
+    if(!fg || lumOf(fg)>=0.45) continue;                 /* ตัวอักษรสว่างอยู่แล้ว */
+    const bg=effBg(e);
+    if(!bg || lumOf(bg)>=0.5) continue;                  /* พื้นยังสว่าง อ่านออกอยู่ */
+    e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
+    patched.push(e);
+  }
+}
+let efT=0;
+const scheduleFix=()=>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
+try{
+  obs=new MutationObserver(scheduleFix);
+  obs.observe(D.body,OBS_OPT);
+}catch(e){}
+
+/* =============================================================================
+   2) ธีม + ขนาดตัวอักษร
+   ============================================================================= */
+const FS=[.85,1,1.15,1.3,1.5], FSNAME=['เล็กสุด','เล็ก','ปกติ','ใหญ่','ใหญ่สุด'];
+let fsIdx=parseInt(get('fs')); if(isNaN(fsIdx)||fsIdx<0||fsIdx>4) fsIdx=1;
+let theme=get('theme') || (matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+
+/* หน้าที่ออกแบบธีมมาเองครบแล้ว (เช่น "หนังสือทบทวน" พื้นเข้มทั้งเล่ม) ให้ปิดระบบธีมของ KIT UI
+   ไม่งั้นโทเคน --bg/--ink ของเราจะไปทับสีที่หน้านั้นตั้งไว้ แล้วหน้าเพี้ยน
+   ใส่ที่ tag body:  data-kit-theme="off"   (ปุ่มปรับขนาดตัวอักษรยังใช้ได้ตามปกติ) */
+const themeLock = D.body.getAttribute('data-kit-theme')==='off';
+
+function applyTheme(){
+  if(themeLock) return;
+  R.setAttribute('data-theme',theme);
+  R.style.colorScheme = theme==='dark'?'dark':'light';   /* ให้ select/input เป็นสีเข้มด้วย */
+  const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
+  set('theme',theme);
+  clearTimeout(efT);                                   /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
+  if(typeof elementFix==='function') elementFix();
+  /* ⚠️ ห้ามอ้างถึงตัวแปรของส่วน "ที่ทด" ตรงนี้!
+     applyTheme() ถูกเรียกก่อนที่ `let pad` ในส่วนที่ 4 จะทำงาน → ชน temporal dead zone
+     แล้ว ReferenceError จะทำให้สคริปต์ตายทั้งก้อน (ปุ่มขนาดอักษร/ที่ทด/เครื่องคิดเลขหายหมด)
+     ใช้วิธียิง event แทน ใครสนใจค่อยไปดักฟังเอง */
+  try{ D.dispatchEvent(new CustomEvent('kitui-theme')); }catch(e){}
+}
+function applyFS(){
+  R.style.fontSize=(16*FS[fsIdx])+'px';
+  const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
+  set('fs',fsIdx);
+}
+
+/* =============================================================================
+   3) แถบเครื่องมือ
+   ============================================================================= */
+const subj=(D.body.getAttribute('data-subject')||'').toLowerCase();
+/* หลาย widget ไม่ได้ใส่ data-subject ที่ <body> → เดาจากโฟลเดอร์ที่ไฟล์อยู่ด้วย */
+const inPath=/\/(physics|math|chemist)\//i.test(decodeURIComponent(location.pathname));
+const tAttr=D.body.getAttribute('data-tools');
+const wantTools = tAttr!=null ? tAttr.toLowerCase()
+                : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
+const hasPen  = wantTools.includes('pen');
+const hasCalc = wantTools.includes('calc');
+
+/* ปุ่มกลับหน้าหลัก — โผล่เฉพาะตอนเปิดจากเว็บห้องติว (พาธมี /app/ อยู่)
+   เปิดไฟล์จากเครื่องตรง ๆ จะไม่มีปุ่มนี้ เพราะไม่มีหน้าหลักให้กลับ ลิงก์จะเสียเปล่า ๆ */
+const homeHref = (()=>{
+  try{
+    const p = decodeURIComponent(location.pathname);
+    const i = p.indexOf('/app/');
+    return i < 0 ? null : p.slice(0, i+1) + 'index.html';
+  }catch(e){ return null; }
+})();
+
+const bar=el('div'); bar.id='kitui-bar';
+bar.innerHTML =
+  `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
+  (homeHref ? `<button id="kitui-home" title="กลับหน้าหลัก">🏠</button><span class="kitui-sep"></span>` : '')+
+  (themeLock ? '' : `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button><span class="kitui-sep"></span>`)+
+  `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
+  `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
+  `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
+  (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
+  (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
+D.body.appendChild(bar);
+
+if(!themeLock) D.getElementById('kitui-theme').onclick=()=>{theme=theme==='dark'?'light':'dark';applyTheme();};
+D.getElementById('kitui-fsup').onclick=()=>{if(fsIdx<4){fsIdx++;applyFS();}};
+D.getElementById('kitui-fsdown').onclick=()=>{if(fsIdx>0){fsIdx--;applyFS();}};
+D.getElementById('kitui-grip').onclick=()=>bar.classList.toggle('hidden');
+if(homeHref) D.getElementById('kitui-home').onclick=()=>{ location.href=homeHref; };
+applyTheme(); applyFS();
+
+/* ปิดแผงด้วยปุ่ม Esc */
+D.addEventListener('keydown',e=>{ if(e.key==='Escape') D.querySelectorAll('.kitui-sheet.open').forEach(s=>s.classList.remove('open')); });
+
+/* ลากหัวแผงเพื่อปรับความสูง */
+function makeResizable(sheet){
+  const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
+  head.addEventListener('pointerdown',e=>{
+    if(e.target.closest('button'))return;
+    drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect().height;head.setPointerCapture(e.pointerId);
+  });
+  head.addEventListener('pointermove',e=>{
+    if(!drag)return;
+    const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
+    sheet.classList.remove('full'); sheet.style.height=h+'px';
+    if(sheet.id==='kitui-pad') fitPad();
+  });
+  head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
+}
+
+/* =============================================================================
+   4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ  หลายหน้า  เซฟอัตโนมัติ
+   ============================================================================= */
+let pad,padCv,padCx,pages=[[]],pg=0,undone=[],histo=[];
+let tool='pen',color='#111827',width=2.4,penSeen=0;
+const COLORS=['#111827','#2563eb','#dc2626','#16a34a','#f59e0b'];
+const PADKEY='pad-'+location.pathname.split('/').pop();
+
+function buildPad(){
+  pad=el('div','kitui-sheet'); pad.id='kitui-pad';
+  pad.innerHTML=
+   `<div class="kitui-head">
+      <b>✏️ ที่ทด</b>
+      <button data-t="pen" class="on">🖊️</button>
+      <button data-t="hl">🖍️</button>
+      <button data-t="er">🧽</button>
+      ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
+      <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
+      <span class="kitui-spacer"></span>
+      <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
+      <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
+      <button id="kitui-pgadd">+ หน้า</button>
+      <button id="kitui-clear">ล้างหน้านี้</button>
+      <button id="kitui-full">⛶</button>
+      <button id="kitui-padclose">✕</button>
+    </div>
+    <div class="kitui-padwrap"><canvas></canvas></div>`;
+  D.body.appendChild(pad);
+  padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
+  makeResizable(pad);
+
+  pad.querySelector('.kitui-head').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
+  });
+  D.getElementById('kitui-undo').onclick=()=>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop(); draw(); save(); } };
+  D.getElementById('kitui-redo').onclick=()=>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop(); draw(); save(); } };
+  D.getElementById('kitui-clear').onclick=()=>{ snap(); pages[pg]=[]; draw(); save(); };
+  D.getElementById('kitui-pgadd').onclick=()=>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw(); save(); };
+  D.getElementById('kitui-pgprev').onclick=()=>{ if(pg>0){pg--;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-pgnext').onclick=()=>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-full').onclick=()=>{ pad.classList.toggle('full'); pad.style.height=''; fitPad(); };
+  D.getElementById('kitui-padclose').onclick=()=>pad.classList.remove('open');
+
+  /* ---- วาด ---- */
+  let cur=null;
+  padCv.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='pen') penSeen=Date.now();
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;   /* กันฝ่ามือแตะตอนใช้สไตลัส */
+    const p=pt(e);
+    if(tool==='er'){ snap(); erase(p); return; }
+    snap();
+    cur={c:color,w:width,hl:tool==='hl',pts:[p]};
+    pages[pg].push(cur); draw();
+    try{ padCv.setPointerCapture(e.pointerId); }catch(x){}  /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
+  });
+  padCv.addEventListener('pointermove',e=>{
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;
+    if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
+    if(!cur||!e.buttons)return;
+    /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
+    let evs=[e];
+    if(e.getCoalescedEvents){ const c=e.getCoalescedEvents(); if(c&&c.length) evs=c; }
+    evs.forEach(ev=>cur.pts.push(pt(ev)));
+    draw();
+  });
+  const end=()=>{ if(cur){cur=null;save();} };
+  padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
+  padCv.addEventListener('pointerleave',end);
+
+  addEventListener('resize',()=>{ if(pad.classList.contains('open')) fitPad(); });
+  D.addEventListener('kitui-theme',()=>draw());   /* สลับธีมแล้ววาดลายใหม่ เส้นดำ<->ขาวตามพื้น */
+  load(); fitPad();
+}
+function pt(e){
+  const r=padCv.getBoundingClientRect();
+  return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
+          p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5};   /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
+}
+function snap(){ histo.push(pages[pg].slice()); if(histo.length>60)histo.shift(); undone=[]; }
+function erase(p){
+  const r=padCv.getBoundingClientRect(), rad=18/r.width;
+  const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
+  if(keep.length!==pages[pg].length){ pages[pg]=keep; draw(); save(); }
+}
+function fitPad(){
+  const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
+  const dpr=Math.min(devicePixelRatio||1,2.5);
+  padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
+  draw();
+}
+function draw(){
+  const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
+  padCx.clearRect(0,0,W,H);
+  /* เส้นตารางจาง ๆ ให้เขียนตรง */
+  const dark=R.getAttribute('data-theme')==='dark';
+  padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
+  for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath();padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke();}
+  padCx.lineCap='round'; padCx.lineJoin='round';
+  pages[pg].forEach(s=>{
+    padCx.globalAlpha=s.hl?0.32:1;
+    padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
+    for(let i=1;i<s.pts.length;i++){
+      const a=s.pts[i-1],b=s.pts[i];
+      padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
+      padCx.beginPath(); padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke();
+    }
+    if(s.pts.length===1){ /* จุดเดียว */
+      padCx.fillStyle=padCx.strokeStyle; padCx.beginPath();
+      padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill();
+    }
+  });
+  padCx.globalAlpha=1;
+  const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
+}
+function save(){ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
+function load(){
+  try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
+}
+
+if(hasPen){
+  buildPad();
+  D.getElementById('kitui-penbtn').onclick=()=>{
+    const o=pad.classList.toggle('open');
+    D.getElementById('kitui-penbtn').classList.toggle('on',o);
+    if(o) fitPad();
+  };
+}
+
+/* =============================================================================
+   5) เครื่องคิดเลขวิทยาศาสตร์  (tokenizer → shunting-yard → RPN  ไม่ใช้ eval)
+   ============================================================================= */
+const FN={sin:1,cos:1,tan:1,asin:1,acos:1,atan:1,ln:1,log:1,sqrt:1,abs:1,exp:1};
+const PREC={'+':1,'-':1,'*':2,'/':2,'^':4,'u-':3};
+function tokenize(s){
+  s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
+  const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!()])/g; let m;
+  while((m=re.exec(s))) out.push(m[1]);
+  return out;
+}
+function toRPN(tk){
+  const out=[],op=[]; let prev=null;
+  for(let t of tk){
+    if(t==='**')t='^';
+    if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
+    else if(t==='PI'){ out.push(Math.PI); }
+    else if(t==='e'||t==='E'){ out.push(Math.E); }
+    else if(t==='ANS'){ out.push(ANS); }
+    else if(FN[t]){ op.push(t); }
+    else if(t==='('){ op.push(t); }
+    else if(t===')'){
+      while(op.length&&op[op.length-1]!=='(') out.push(op.pop());
+      if(!op.length) throw 0; op.pop();
+      if(op.length&&FN[op[op.length-1]]) out.push(op.pop());
+    }
+    else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
+    else if('+-*/^'.includes(t)){
+      let o=t;
+      const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
+      if(t==='-'&&unary) o='u-';
+      else if(t==='+'&&unary){ prev=t; continue; }
+      while(op.length){
+        const top=op[op.length-1];
+        if(top==='('||FN[top])break;
+        const rightAssoc=(o==='^'||o==='u-');
+        if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop()); else break;
+      }
+      op.push(o);
+    }
+    else throw 0;
+    prev=t;
+  }
+  while(op.length){ const o=op.pop(); if(o==='(')throw 0; out.push(o); }
+  return out;
+}
+function evalRPN(rpn,deg){
+  const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
+  const pop=()=>{ if(!st.length)throw 0; return st.pop(); };
+  for(const t of rpn){
+    if(typeof t==='number'){ st.push(t); continue; }
+    if(t==='fact'){ const n=pop(); if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
+    if(t==='pct'){ st.push(pop()/100); continue; }
+    if(t==='u-'){ st.push(-pop()); continue; }
+    if(FN[t]){
+      const a=pop();
+      st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
+             : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
+             : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
+             : t==='abs'?Math.abs(a) : Math.exp(a) );
+      continue;
+    }
+    const b=pop(),a=pop();
+    st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
+  }
+  if(st.length!==1) throw 0;
+  return st[0];
+}
+function calc(src,deg){ return evalRPN(toRPN(tokenize(src)),deg); }
+
+let ANS=0, expr='', calcSheet, isDeg=true;
+const KEYS=[
+ ['DEG','deg','fn'],['(','(',''],[')',')',''],['⌫','del','del'],['AC','ac','del'],
+ ['sin','sin(','fn'],['cos','cos(','fn'],['tan','tan(','fn'],['π','π','fn'],['÷','÷','op'],
+ ['sin⁻¹','asin(','fn'],['cos⁻¹','acos(','fn'],['tan⁻¹','atan(','fn'],['e','e','fn'],['×','×','op'],
+ ['ln','ln(','fn'],['log','log(','fn'],['√','√(','fn'],['xʸ','^','fn'],['−','−','op'],
+ ['7','7',''],['8','8',''],['9','9',''],['x!','!','fn'],['+','+','op'],
+ ['4','4',''],['5','5',''],['6','6',''],['%','%','fn'],['ANS','ANS','fn'],
+ ['1','1',''],['2','2',''],['3','3',''],['.','.',''],['=','eq','eq'],
+ ['0','0','w3'],['x²','^2','fn']
+];
+function buildCalc(){
+  calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
+  calcSheet.innerHTML=
+   `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
+      <button id="kitui-calcclose">✕</button></div>
+    <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
+    <div class="kitui-keys" id="kitui-keys">
+      ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
+    </div>`;
+  D.body.appendChild(calcSheet);
+  D.getElementById('kitui-calcclose').onclick=()=>calcSheet.classList.remove('open');
+  const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
+  const show=()=>{ ex.textContent=expr||' ';
+    try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
+    catch(e){ rs.style.opacity=.35; }
+  };
+  D.getElementById('kitui-keys').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
+    if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
+    if(k==='del'){ expr=expr.slice(0,-1); show(); return; }
+    if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show(); return; }
+    if(k==='eq'){
+      rs.style.opacity=1;
+      try{
+        const v=calc(expr,isDeg);
+        if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
+        if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
+        ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
+      }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
+      return;
+    }
+    expr+=k; show();
+  });
+}
+function fmt(v){
+  if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
+  if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
+  return String(Math.round(v*1e10)/1e10);
+}
+if(hasCalc){
+  buildCalc();
+  D.getElementById('kitui-calcbtn').onclick=()=>{
+    const o=calcSheet.classList.toggle('open');
+    D.getElementById('kitui-calcbtn').classList.toggle('on',o);
+  };
+}
+})();
+
+</script>
+<!--/KIT-UI-->
+</body>
+</html>
