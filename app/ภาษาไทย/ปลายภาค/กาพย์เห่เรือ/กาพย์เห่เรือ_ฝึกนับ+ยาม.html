@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>กาพย์เห่เรือ — ฝึกนับ ปลา เรือ ไม้ นก + ยาม</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- สร้างจาก _kit/widget-template.html ตามกฎ _kit/DESIGN.md
+     ตัวบททุกวรรคคัดจากภาพถ่ายหนังสือเรียน น.๙๑–๙๖ ในโฟลเดอร์เดียวกัน -->
+<style>
+
+/* ===== TOKENS (สำเนาจาก design-tokens.css — ดูคำอธิบายเต็มที่ไฟล์นั้น) ===== */
+:root{
+  --font:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
+  --bg:#eef2f7;--ink:#1e293b;--muted:#64748b;--line:#e2e8f0;--card:#fff;--soft:#f8fafc;
+  --shadow:0 1px 4px rgba(15,23,42,.08);
+  --ok:#059669;--bad:#dc2626;
+  --warn-bg:#fff7ed;--warn-bd:#f97316;--tip-bg:#ecfdf5;--tip-bd:#10b981;
+  --info-bg:#eff6ff;--info-bd:#3b82f6;--steps-bg:#fffbeb;--steps-bd:#fcd34d;--steps-dash:#fde68a;
+  --hot-bg:#fee2e2;--hot-ink:#b91c1c;--badge-bg:#fef9c3;--badge-ink:#854d0e;
+  --radius:14px;--radius-sm:10px;--radius-pill:999px;
+  --accent:#4f46e5;--accent-head:#312e81;--accent-ink:#3730a3;--accent-soft:#eef2ff;
+  --accent-bd:#c7d2fe;--accent-chip:#e0e7ff;--accent-ghost:#a5b4fc;
+}
+body[data-subject="physics"]{--accent:#4f46e5;--accent-head:#312e81;--accent-ink:#3730a3;--accent-soft:#eef2ff;--accent-bd:#c7d2fe;--accent-chip:#e0e7ff;--accent-ghost:#a5b4fc;--bg:#eef2f7}
+body[data-subject="bio"]{--accent:#16a34a;--accent-head:#14532d;--accent-ink:#166534;--accent-soft:#f0fdf4;--accent-bd:#bbf7d0;--accent-chip:#dcfce7;--accent-ghost:#86efac;--bg:#f0f4ef}
+body[data-subject="chem"]{--accent:#ea7317;--accent-head:#7c3a06;--accent-ink:#c2560c;--accent-soft:#fff7ed;--accent-bd:#fed7aa;--accent-chip:#ffedd5;--accent-ghost:#fdba74;--bg:#f6f2ec}
+body[data-subject="christ"]{--accent:#7c3aed;--accent-head:#4c1d95;--accent-ink:#6d28d9;--accent-soft:#f5f3ff;--accent-bd:#ddd6fe;--accent-chip:#ede9fe;--accent-ghost:#c4b5fd;--bg:#f2eff7}
+body[data-subject="islam"]{--accent:#0d9488;--accent-head:#134e4a;--accent-ink:#0f766e;--accent-soft:#f0fdfa;--accent-bd:#99f6e4;--accent-chip:#ccfbf1;--accent-ghost:#5eead4;--bg:#eef4f2}
+body[data-subject="history"]{--accent:#b45309;--accent-head:#78350f;--accent-ink:#92400e;--accent-soft:#fffbeb;--accent-bd:#fde68a;--accent-chip:#fef3c7;--accent-ghost:#fcd34d;--bg:#f5f1e8}
+body[data-subject="math"]{--accent:#0284c7;--accent-head:#0c4a6e;--accent-ink:#0369a1;--accent-soft:#f0f9ff;--accent-bd:#bae6fd;--accent-chip:#e0f2fe;--accent-ghost:#7dd3fc;--bg:#edf3f7}
+body[data-subject="eng"]{--accent:#db2777;--accent-head:#831843;--accent-ink:#be185d;--accent-soft:#fdf2f8;--accent-bd:#fbcfe8;--accent-chip:#fce7f3;--accent-ghost:#f9a8d4;--bg:#f7eef3}
+body[data-subject="thai"]{--accent:#dc2626;--accent-head:#7f1d1d;--accent-ink:#b91c1c;--accent-soft:#fef2f2;--accent-bd:#fecaca;--accent-chip:#fee2e2;--accent-ghost:#fca5a5;--bg:#f7efef}
+
+/* ===== COMPONENTS ===== */
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.6}
+.wrap{max-width:860px;margin:0 auto;padding:10px 12px 60px}
+header{padding:18px 4px 6px}
+header h1{font-size:1.35rem;color:var(--accent-head)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{background:var(--accent-chip);color:var(--accent-ink);border-radius:var(--radius-pill);padding:3px 12px;font-size:.82rem;font-weight:600}
+.chip.hot{background:var(--hot-bg);color:var(--hot-ink)}
+.badge{display:inline-block;background:var(--badge-bg);color:var(--badge-ink);border-radius:6px;padding:1px 8px;font-size:.78rem;font-weight:700;vertical-align:middle}
+.tabs{display:flex;gap:8px;overflow-x:auto;position:sticky;top:0;background:var(--bg);padding:10px 2px;z-index:10;-webkit-overflow-scrolling:touch}
+.tab-btn{white-space:nowrap;padding:8px 14px;border-radius:var(--radius-pill);border:1.5px solid var(--accent-bd);background:#fff;color:var(--accent-ink);cursor:pointer;font-size:.92rem;font-family:inherit;font-weight:600;flex-shrink:0}
+.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tab{display:none}
+.tab.show{display:block;animation:fade .25s}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.card{background:var(--card);border-radius:var(--radius);padding:16px;margin:12px 0;box-shadow:var(--shadow)}
+.card h2{font-size:1.15rem;color:var(--accent-head);margin-bottom:2px}
+.card h3{font-size:1.05rem;color:var(--ink);margin-bottom:6px}
+.sub{color:var(--muted);font-size:.85rem;margin-bottom:10px}
+details.concept{border:1px solid var(--line);border-radius:var(--radius-sm);margin:8px 0;overflow:hidden}
+details.concept summary{padding:10px 14px;cursor:pointer;font-weight:600;background:var(--soft);list-style:none}
+details.concept summary::before{content:"▸ ";color:var(--accent)}
+details.concept[open] summary::before{content:"▾ "}
+details.concept .body{padding:10px 14px;border-top:1px solid var(--line);font-size:.95rem}
+.formula{background:var(--accent-soft);border-radius:8px;padding:6px 12px;display:inline-block;margin:4px 4px 4px 0;font-weight:600;color:var(--accent-ink)}
+.warn{background:var(--warn-bg);border-left:4px solid var(--warn-bd);border-radius:8px;padding:10px 12px;margin:10px 0;font-size:.92rem}
+.tip{background:var(--tip-bg);border-left:4px solid var(--tip-bd);border-radius:8px;padding:10px 12px;margin:10px 0;font-size:.92rem}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:var(--radius-sm);padding:10px 16px;font-size:.95rem;cursor:pointer;font-family:inherit;font-weight:600}
+.btn:active{transform:scale(.97)}
+.btn.ghost{background:#fff;color:var(--accent);border:1.5px solid var(--accent-ghost)}
+.btn.small{padding:6px 12px;font-size:.85rem}
+.btn.green{background:var(--ok)}.btn.red{background:var(--bad)}
+.seg{display:inline-flex;border:1.5px solid var(--accent-bd);border-radius:var(--radius-sm);overflow:hidden;margin:4px 0;flex-wrap:wrap}
+.seg button{border:0;background:#fff;padding:8px 12px;cursor:pointer;font-family:inherit;font-size:.9rem;color:var(--accent-ink)}
+.seg button.on{background:var(--accent);color:#fff}
+input[type=range]{width:100%;accent-color:var(--accent);height:28px}
+.slider-row{margin:8px 0}.slider-row label{font-size:.92rem;font-weight:600}
+.slider-val{color:var(--accent);font-weight:700}
+.big-val{font-size:1.3rem;font-weight:700;color:var(--accent);margin:6px 0}
+.q-text,.tf-q{font-size:1rem;background:var(--soft);border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:6px}
+.ans-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:10px 0 4px}
+.ans-in{flex:1;min-width:120px;padding:10px 12px;border:2px solid #cbd5e1;border-radius:var(--radius-sm);font-size:1rem;font-family:inherit}
+.ans-in:focus{outline:none;border-color:var(--accent)}
+.ans-unit{font-weight:700;color:#475569;min-width:24px}
+.fb{margin:6px 0;font-weight:600;min-height:1.2em}
+.fb.ok{color:var(--ok)}.fb.bad{color:var(--bad)}
+.hint-box div{background:var(--info-bg);border-left:4px solid var(--info-bd);padding:8px 12px;margin:6px 0;border-radius:6px;font-size:.93rem}
+.drill-btns,.tf-btns{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.tf-btns .btn{flex:1;max-width:140px}
+.score{margin-top:8px;color:var(--muted);font-size:.88rem}
+.steps{background:var(--steps-bg);border:1px solid var(--steps-bd);border-radius:var(--radius-sm);padding:12px 14px;margin:8px 0;display:none;font-size:.95rem}
+.steps.show{display:block}
+.steps .st{padding:4px 0;border-bottom:1px dashed var(--steps-dash)}
+.steps .st:last-child{border-bottom:0}
+table.ref{border-collapse:collapse;width:100%;font-size:.9rem;margin:8px 0}
+table.ref th,table.ref td{border:1px solid var(--line);padding:6px 10px;text-align:center}
+table.ref th{background:var(--accent-soft);color:var(--accent-ink)}
+svg{max-width:100%;height:auto;display:block}
+.svg-box{background:var(--soft);border:1px solid var(--line);border-radius:var(--radius-sm);padding:8px;margin:8px 0}
+select{padding:8px;border:1.5px solid #cbd5e1;border-radius:8px;font-family:inherit;font-size:.9rem;background:#fff}
+sup,sub{font-size:.72em}
+@media(max-width:480px){.card{padding:12px}header h1{font-size:1.15rem}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.big{font-size:1.6rem;font-weight:700;color:var(--accent);text-align:center;margin:10px 0}
+.chip2{display:inline-block;padding:4px 12px;border-radius:var(--radius-pill);background:var(--accent-chip);
+  color:var(--accent-ink);font-size:.82rem;font-weight:600;margin:2px}
+.choice{display:block;width:100%;text-align:left;margin:6px 0;padding:11px 14px;border-radius:var(--radius-sm);
+  border:1.5px solid var(--accent-bd);background:var(--card);color:var(--ink);cursor:pointer;
+  font-family:inherit;font-size:.97rem;line-height:1.5}
+.choice:hover{border-color:var(--accent)}
+.choice.ok{background:#dcfce7;border-color:var(--ok);color:#065f46;font-weight:600}
+.choice.bad{background:#fee2e2;border-color:var(--bad);color:#7f1d1d}
+.choice .k{font-weight:700;color:var(--accent-ink);margin-right:6px}
+.verse{background:var(--accent-soft);border:1.5px solid var(--accent-bd);border-radius:var(--radius-sm);
+  padding:16px 14px;margin:10px 0;text-align:center;line-height:2.5}
+.tok{display:inline-block;padding:6px 10px;margin:3px;border-radius:8px;border:1.5px dashed var(--accent-ghost);
+  background:var(--card);cursor:pointer;font-size:1.05rem;font-family:inherit;color:var(--ink)}
+.tok.pick{background:var(--accent);color:#fff;border-style:solid;border-color:var(--accent)}
+.tok.right{background:#dcfce7;border:2px solid var(--ok);color:#065f46;font-weight:700}
+.tok.wrong{background:#fee2e2;border:2px solid var(--bad);color:#7f1d1d;text-decoration:line-through}
+.bar{height:9px;background:var(--line);border-radius:999px;overflow:hidden;margin:8px 0}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:999px;transition:width .3s}
+.stat{display:flex;gap:14px;flex-wrap:wrap;font-size:.9rem;color:var(--muted);margin-top:8px}
+.stat b{color:var(--accent);font-size:1.05rem}
+.pillrow{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.pill{padding:5px 11px;border-radius:var(--radius-pill);border:1.5px solid var(--accent-bd);
+  background:var(--card);color:var(--accent-ink);cursor:pointer;font-family:inherit;font-size:.85rem;font-weight:600}
+.pill.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+</style>
+</head>
+<body data-subject="thai">
+<div class="wrap">
+  <header>
+    <h1>🚣 กาพย์เห่เรือ — ฝึกนับ + เรื่องยาม</h1>
+    <div class="chips">
+      <span class="chip hot">อาจารย์บอกแนวเอง: ปลากี่ตัว · ยาม · มีเรืออะไร</span>
+      <span class="chip">ตัวบทจากหนังสือเรียน น.๙๑–๙๖</span>
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <button class="tab-btn" data-tab="t1">🔢 ตัวเลข</button>
+    <button class="tab-btn" data-tab="t2">🔍 ล่าชื่อในวรรค</button>
+    <button class="tab-btn" data-tab="t3">⏰ ยาม</button>
+    <button class="tab-btn" data-tab="t4">📝 ข้อสอบรวม</button>
+    <button class="tab-btn" data-tab="t5">📋 รายชื่อทั้งหมด</button>
+  </nav>
+
+  <!-- ── ตัวเลข ── -->
+  <section id="t1" class="tab">
+    <div class="card">
+      <h2>🔢 สี่ตัวเลขที่ต้องจำ</h2>
+      <p class="sub">แตะการ์ดเพื่อเฉลย · แล้วเลื่อนลงไปฝึกทำโจทย์</p>
+      <div id="numCards"></div>
+    </div>
+    <div class="card">
+      <h3>ฝึกโจทย์นับ</h3>
+      <div class="q-text" id="cQ">…</div>
+      <div id="cC"></div>
+      <div class="fb" id="cFb"></div>
+      <div class="hint-box" id="cW"></div>
+      <div class="stat"><span>ถูก <b id="cOk">0</b> / <b id="cN">0</b></span></div>
+    </div>
+  </section>
+
+  <!-- ── ล่าชื่อ ── -->
+  <section id="t2" class="tab">
+    <div class="card">
+      <h2>🔍 แตะคำที่เป็น "ชื่อ" ในวรรคนี้</h2>
+      <p class="sub" id="hSub">…</p>
+      <div class="verse" id="hV"></div>
+      <div class="ans-row">
+        <button class="btn" id="hCheck">ตรวจ</button>
+        <button class="btn ghost small" id="hNext">วรรคถัดไป ▶</button>
+      </div>
+      <div class="fb" id="hFb"></div>
+      <div class="hint-box" id="hW"></div>
+      <div class="bar"><i id="hBar" style="width:0%"></i></div>
+      <div class="stat"><span>ผ่าน <b id="hOk">0</b> / <b id="hN">0</b> วรรค</span></div>
+      <div class="tip">💡 <b>นี่คือทักษะที่อาจารย์จะวัดจริง</b> — ชื่อหลายชื่อ<b>ซ่อนอยู่กลางวรรค</b>
+        ไม่ได้ขึ้นต้นบรรทัด ถ้าอ่านผ่าน ๆ จะนับตก</div>
+    </div>
+  </section>
+
+  <!-- ── ยาม ── -->
+  <section id="t3" class="tab">
+    <div class="card">
+      <h2>⏰ ระบบยาม — กลางคืน 4 ยาม ยามละ 3 ชั่วโมง</h2>
+      <p class="sub">แตะแต่ละยามบนหน้าปัดเพื่อดูเวลา</p>
+      <div class="svg-box"><svg id="clock" viewBox="0 0 320 320"></svg></div>
+      <div class="big" id="clockOut">แตะยามบนหน้าปัด</div>
+      <div class="tip">💡 <b>เริ่มนับที่ 18.00 น. บวกทีละ 3 ชั่วโมง</b> ครบ 4 ยามพอดีที่ 06.00 น.
+        · ยามใช้กับ<b>กลางคืนเท่านั้น</b></div>
+      <div class="warn">⚠️ <b>สองวรรคที่ออกข้อสอบแน่</b> —
+        <b>“ยามสองฆ้องยาม่ำ”</b> = 21.00–24.00 น. ·
+        <b>“ล่วงสามยามปลายแล้ว”</b> = พ้นปลายยาม ๓ ใกล้ 03.00 น. แล้ว<b>ไก่ขัน</b> = เข้ายาม ๔ <span class="badge">น.๙๖</span></div>
+    </div>
+    <div class="card">
+      <h3>ฝึกโจทย์เรื่องยามและเวลา</h3>
+      <div class="q-text" id="yQ">…</div>
+      <div id="yC"></div>
+      <div class="fb" id="yFb"></div>
+      <div class="stat"><span>ถูก <b id="yOk">0</b> / <b id="yN">0</b></span></div>
+    </div>
+    <div class="card">
+      <h3>🕐 ไทม์ไลน์ของทั้งเรื่อง</h3>
+      <table class="ref">
+        <tr><th>ช่วงเวลา</th><th>บทเห่</th><th>วรรคที่บอกเวลา</th></tr>
+        <tr><td>เช้า–กลางวัน</td><td><b>เห่ชมเรือกระบวน</b></td><td>แสงแดดจับเรือแวววับ</td></tr>
+        <tr><td>กลางวัน</td><td><b>เห่ชมปลา</b></td><td>มองลงน้ำ</td></tr>
+        <tr><td>บ่าย</td><td><b>เห่ชมไม้</b></td><td>มองเข้าฝั่ง</td></tr>
+        <tr><td>เย็น–ค่ำ</td><td><b>เห่ชมนก</b></td><td>รอนรอนสุริยโอ้ อัษดงค์ · สนธยาจะใกล้ค่ำ</td></tr>
+        <tr><td>กลางคืน</td><td><b>เห่ครวญ</b></td><td>ยามสองฆ้องยาม่ำ → ล่วงสามยามปลายแล้ว → ไก่ขัน</td></tr>
+      </table>
+      <div class="tip">💡 <b>นี่คือเหตุผลที่อาจารย์สั่งให้ดูเรื่องยาม</b> — <b>เวลาเป็นตัวเรียงลำดับบทเห่ทั้งเรื่อง</b></div>
+    </div>
+  </section>
+
+  <!-- ── ข้อสอบรวม ── -->
+  <section id="t4" class="tab">
+    <div class="card">
+      <h3>📝 ข้อสอบรวมทุกหัวข้อ</h3>
+      <p class="sub">สุ่มจากทั้งเรื่อง — นับจำนวน · ยาม · เรือ · ทำนองเห่ · ที่มา</p>
+      <div class="q-text" id="mQ">…</div>
+      <div id="mC"></div>
+      <div class="fb" id="mFb"></div>
+      <div class="hint-box" id="mW"></div>
+      <div class="stat"><span>ถูก <b id="mOk">0</b> / <b id="mN">0</b></span>
+        <span>ความแม่น <b id="mPct">—</b></span></div>
+    </div>
+  </section>
+
+  <!-- ── รายชื่อ ── -->
+  <section id="t5" class="tab">
+    <div class="card">
+      <h3>📋 รายชื่อทั้งหมดพร้อมวรรคอ้างอิง</h3>
+      <div class="pillrow" id="lTabs"></div>
+      <div class="ans-row"><input class="ans-in" id="lq" placeholder="พิมพ์ค้นหาชื่อหรือวรรค"></div>
+      <p class="sub" id="lN"></p>
+      <div id="lBody"></div>
+    </div>
+    <div class="card">
+      <h3>⚠️ เรื่องเกณฑ์การนับ</h3>
+      <div class="warn">📌 ตัวเลขในนี้นับแบบ <b>เก็บครบทุกชื่อ ไม่ว่าจะอยู่ตรงไหนของวรรค</b>
+        ถ้านับเฉพาะคำที่ขึ้นต้นวรรคหรือที่หนังสือขีดเส้นใต้ จะได้ <b>ปลา 13 · ไม้ 11 · นก 9</b>
+        <b>ถ้าอาจารย์เฉลยตัวเลขมาแล้วต่างจากนี้ ให้ยึดของอาจารย์</b></div>
+      <div class="tip">💡 หลักฐานที่ทำให้เชื่อว่าอาจารย์นับแบบครบทุกชื่อ —
+        <b>ในหนังสือมีคนเขียนเลข ๔ กำกับวรรค “เต็งแต้วแก้วกาหลง” ไว้</b> ซึ่งแปลว่านับชื่อกลางวรรคด้วย</div>
+    </div>
+  </section>
+</div>
+
+<script>
+const D={"fish":[["นวลจันทร์","นวลจันทร์เป็นนวลจริง / เจ้างามพริ้งยิ่งนวลปลา","ช้าละวะเห่ น.๙๒"],["คางเบือน","คางเบือนเบือนหน้ามา / ไม่งามเท่าเจ้าเบือนชาย","ช้าละวะเห่ น.๙๒"],["เพียนทอง","เพียนทองงามดั่งทอง / ไม่เหมือนน้องห่มตาดพราย","ช้าละวะเห่ น.๙๒"],["กระแห","กระแหแหห่างชาย / ดังสายสวาทคลาศจากสม","ช้าละวะเห่ น.๙๒"],["แก้มช้ำ","แก้มช้ำช้ำใครต้อง / อันแก้มน้องช้ำเพราะชม","ทรงแปลง น.๙๓"],["ปลาทุก","ปลาทุกทุกข์อกกรม / เหมือนทุกข์พี่ที่จากนาง","ทรงแปลง น.๙๓"],["น้ำเงิน","น้ำเงินคือเงินยวง / ขาวพรายช่วงสีสำอาง","มูลเห่ น.๙๓"],["ปลากราย","ปลากรายว่ายเคียงคู่ / เคล้ากันอยู่ดูงามดี","มูลเห่ น.๙๓"],["หางไก่","หางไก่ว่ายแหวกว่าย / หางไก่คล้ายไม่มีหงอน","มูลเห่ น.๙๓"],["ปลาสร้อย","ปลาสร้อยลอยล่องชล / ว่ายเวียนวนปนกันไป","มูลเห่ น.๙๓"],["เนื้ออ่อน","เนื้ออ่อนอ่อนแต่ชื่อ / เนื้อน้องฤอ่อนทั้งกาย","มูลเห่ น.๙๓"],["ปลาเสือ","ปลาเสือเหลือที่ตา / เลื่อมแหลมกว่าปลาทั้งปวง","มูลเห่ น.๙๓"],["แมลงภู่","แมลงภู่คู่เคียงว่าย / เห็นคล้ายคล้ายน่าเชยชม","มูลเห่ น.๙๓"],["หวีเกศ","หวีเกศเพศชื่อปลา / คิดสุดาอ่าองค์นาง","มูลเห่ น.๙๓"],["ชะแวง","ชะแวงแฝงฝั่งแนบ / เหมือนพี่แนบแอบถนอม","มูลเห่ น.๙๓"],["ชะวาด","ชะวาดแอบแปบปนปลอม / จอมสวาทนาฏบังอร","มูลเห่ น.๙๓"],["แปบ","ชะวาดแอบแปบปนปลอม  ← ซ่อนกลางวรรค","มูลเห่ น.๙๓"]],"boat":[["เรือพระที่นั่งกิ่ง","ทรงรัตนพิมานไชย กิ่งแก้ว / กิ่งแก้วแพร้วพรรณราย","โคลง+ช้าละวะเห่ น.๙๑"],["เรือต้น","พระเสด็จโดยแดนชล / ทรงเรือต้นงามเฉิดฉาย","ช้าละวะเห่ น.๙๑"],["เรือครุฑ","เรือครุฑยุดนาคหิ้ว / ลิ่วลอยมาพาผันผยอง","ช้าละวะเห่ น.๙๑"],["เรือสรมุข","สรมุขมุลี่ด้าน / เพียงพิมานผ่านเมฆา","ช้าละวะเห่ น.๙๑"],["เรือสมรรถไชย","สมรรถไชยไกรกาบแก้ว / แสงแวววับจับสาคร","ช้าละวะเห่ น.๙๑"],["เรือสุวรรณหงส์","สุวรรณหงส์ทรงพู่ห้อย / งามชดช้อยลอยหลังสินธุ์","ช้าละวะเห่ น.๙๑"],["เรือไชย","เรือไชยไวว่องวิ่ง / รวดเร็วจริงยิ่งอย่างลม","ช้าละวะเห่ น.๙๑"],["เรือคชสีห์","คชสีห์ทีผาดเผ่น / ดูดังเป็นเห็นขบขัน","มูลเห่ น.๙๒"],["เรือราชสีห์","ราชสีห์ทียืนยัน / คั่นสองคู่ดูยิ่งยง","มูลเห่ น.๙๒"],["เรือม้า","เรือม้าหน้ามุ่งน้ำ / แล่นเฉื่อยฉ่ำลำระหง","มูลเห่ น.๙๒"],["เรือสิงห์","เรือสิงห์วิ่งเผ่นโผน / โจนตามคลื่นฝืนฝ่าฟอง","มูลเห่ น.๙๒"],["เรือนาคา","นาคาหน้าดังเป็น / ดูขะเม่นเห็นขบขัน","มูลเห่ น.๙๒"],["เรือเลียงผา","เลียงผาง่าเท้าโผน / เพียงโจนไปในวารี","มูลเห่ น.๙๒"],["เรืออินทรี","นาวาหน้าอินทรีย์ / มีปีกเหมือนเลื่อนลอยโพยม","มูลเห่ น.๙๒"],["เรือดนตรี","ดนตรีมี่อึงอล / ก้องกาหลพลแห่โหม","มูลเห่ น.๙๒"]],"tree":[["นางแย้ม","ชมดวงพวงนางแย้ม / บานแสล้มแย้มเกสร","ช้าละวะเห่ น.๙๔"],["จำปา","จำปาหนาแน่นเนื่อง / คลี่กลีบเหลืองเรืองอร่าม","ช้าละวะเห่ น.๙๔"],["ประยงค์","ประยงค์ทรงพวงห้อย / ระย้าย้อยห้อยพวงกรอง","ช้าละวะเห่ น.๙๔"],["พุดจีบ","พุดจีบกลีบแสล้ม / พิกุลแกมแซมสุกรม","ช้าละวะเห่ น.๙๔"],["สาวหยุด","สาวหยุดพุทธชาด / บานเกลื่อนกลาดดาษดาไป","ช้าละวะเห่ น.๙๔"],["พุทธชาด","สาวหยุดพุทธชาด  ← 2 ต้นในวรรคเดียว","ช้าละวะเห่ น.๙๔"],["พิกุล","พิกุลบุนนาคบาน / กลิ่นหอมหวานซ่านขจร","มูลเห่ น.๙๔"],["บุนนาค","พิกุลบุนนาคบาน  ← 2 ต้นในวรรคเดียว","มูลเห่ น.๙๔"],["เต็ง","เต็งแต้วแก้วกาหลง / บานบุษบงส่งกลิ่นอาย","มูลเห่ น.๙๔"],["แต้ว","เต็งแต้วแก้วกาหลง  ← 4 ต้นในวรรคเดียว","มูลเห่ น.๙๔"],["แก้ว","เต็งแต้วแก้วกาหลง  ← 4 ต้นในวรรคเดียว","มูลเห่ น.๙๔"],["กาหลง","เต็งแต้วแก้วกาหลง  ← 4 ต้นในวรรคเดียว","มูลเห่ น.๙๔"],["มะลิวัน","มะลิวันพันจิกจวง / ดอกเป็นพวงร่วงเรณู","มูลเห่ น.๙๔"],["จิก","มะลิวันพันจิกจวง  ← 3 ต้นในวรรคเดียว","มูลเห่ น.๙๔"],["จวง","มะลิวันพันจิกจวง  ← 3 ต้นในวรรคเดียว","มูลเห่ น.๙๔"],["ลำดวน","ลำดวนหวลหอมตระหลบ / กลิ่นอายอบสบนาสา","มูลเห่ น.๙๔"],["รำเพย","รวยรินกลิ่นรำเพย / คิดพี่เคยเชยกลิ่นปราง","มูลเห่ น.๙๔"],["พวงมาลี","ชมดวงพวงมาลี / ศรีเสาวภาคหลากหลายพรรณ","มูลเห่ น.๙๔"]],"bird":[["ยูง","เห็นฝูงยูงรำฟ้อน / คิดบังอรร่อนรำกราย","ช้าละวะเห่ น.๙๕"],["สร้อยทอง","สร้อยทองย่องเยื้องชาย / เหมือนสายสวาทนาดนวยจร","ช้าละวะเห่ น.๙๕"],["สาลิกา","สาลิกามาตามคู่ / ชมกันอยู่สู่สมสมร","ช้าละวะเห่ น.๙๕"],["นางนวล","นางนวลนวลน่ารัก / ไม่นวลพักตร์เหมือนทรามสงวน","ช้าละวะเห่ น.๙๕"],["นกแก้ว","นกแก้วแจ้วแจ่มเสียง / จับไม้เรียงเคียงคู่สอง","ช้าละวะเห่ น.๙๕"],["ไก่ฟ้า","ไก่ฟ้ามาตัวเดียว / เดินท่องเที่ยวเลี้ยวเหลี่ยมเขา","มูลเห่ น.๙๕"],["แขกเต้า","แขกเต้าเคล้าคู่เคียง / เรียงจับไม้ไซ้ปีกหาง","มูลเห่ น.๙๕"],["ดุเหว่า","ดุเหว่าเจ่าจับร้อง / สนั่นก้องซ้องเสียงหวาน","มูลเห่ น.๙๕"],["โนรี","โนรีสีปานชาด / เหมือนช่างฉลาดวาดแต้มลาย","มูลเห่ น.๙๕"],["สัตวา","สัตวาน่าเอ็นดู / คอยหาคู่อยู่เอกา","มูลเห่ น.๙๕"]],"hunt":[{"c":"ปลา","v":[["ชะแวง",1],["แฝงฝั่งแนบ",0],["ชะวาด",1],["แอบ",0],["แปบ",1],["ปนปลอม",0]],"w":"วรรคนี้มีปลา 3 ตัว — คนนับตกมากที่สุดทั้งเรื่อง"},{"c":"ไม้","v":[["เต็ง",1],["แต้ว",1],["แก้ว",1],["กาหลง",1]],"w":"4 ต้นในวรรคเดียว ในหนังสือมีคนเขียนเลข ๔ กำกับไว้"},{"c":"ไม้","v":[["มะลิวัน",1],["พัน",0],["จิก",1],["จวง",1]],"w":"3 ต้น — คำว่า พัน เป็นกริยา ไม่ใช่ชื่อไม้"},{"c":"ไม้","v":[["พิกุล",1],["บุนนาค",1],["บาน",0]],"w":"2 ต้น"},{"c":"ไม้","v":[["สาวหยุด",1],["พุทธชาด",1]],"w":"2 ต้น"},{"c":"ปลา","v":[["นวลจันทร์",1],["เป็นนวลจริง",0],["คางเบือน",1],["เบือนหน้ามา",0]],"w":"คางเบือน เป็นชื่อปลา แม้หนังสือไม่ได้ขีดเส้นใต้"},{"c":"ปลา","v":[["เพียนทอง",1],["งามดั่งทอง",0],["กระแห",1],["แหห่างชาย",0]],"w":"กระแห เป็นชื่อปลา อยู่ต้นวรรครับ"},{"c":"ปลา","v":[["แก้มช้ำ",1],["ช้ำใครต้อง",0],["ปลาทุก",1],["ทุกข์อกกรม",0]],"w":"บทเล่นคำที่เก่งที่สุดในเรื่อง ชื่อปลาซ้อนกับความหมาย"},{"c":"นก","v":[["ยูง",1],["รำฟ้อน",0],["สร้อยทอง",1],["ย่องเยื้องชาย",0]],"w":"สร้อยทอง อยู่วรรครับ นับตกบ่อย"},{"c":"เรือ","v":[["คชสีห์",1],["ทีผาดเผ่น",0],["ราชสีห์",1],["ทียืนยัน",0]],"w":"สองลำในบทเดียว ชื่อคล้ายกันมาก"},{"c":"เรือ","v":[["เลียงผา",1],["ง่าเท้าโผน",0],["อินทรี",1],["มีปีก",0]],"w":"เลียงผา กับ อินทรี เป็นหัวเรือรูปสัตว์"},{"c":"ปลา","v":[["มัศยา",0],["ยังพัวพัน",0],["มัจฉา",0],["ว่ายแหวก",0]],"w":"ไม่มีชื่อปลาสักตัว! มัศยา กับ มัจฉา เป็นคำไวพจน์แปลว่า ปลา เฉย ๆ"}],"yam":[{"q":"ยาม ๑ ตรงกับเวลาใด","a":"18.00 – 21.00 น.","c":["18.00 – 21.00 น.","06.00 – 09.00 น.","21.00 – 24.00 น.","00.00 – 03.00 น."]},{"q":"ยาม ๒ ตรงกับเวลาใด","a":"21.00 – 24.00 น.","c":["21.00 – 24.00 น.","18.00 – 21.00 น.","03.00 – 06.00 น.","12.00 – 15.00 น."]},{"q":"ยาม ๓ ตรงกับเวลาใด","a":"24.00 – 03.00 น.","c":["24.00 – 03.00 น.","21.00 – 24.00 น.","03.00 – 06.00 น.","15.00 – 18.00 น."]},{"q":"ยาม ๔ ตรงกับเวลาใด","a":"03.00 – 06.00 น.","c":["03.00 – 06.00 น.","24.00 – 03.00 น.","06.00 – 09.00 น.","18.00 – 21.00 น."]},{"q":"กลางคืนแบ่งเป็นกี่ยาม ยามละกี่ชั่วโมง","a":"4 ยาม ยามละ 3 ชั่วโมง","c":["4 ยาม ยามละ 3 ชั่วโมง","3 ยาม ยามละ 4 ชั่วโมง","4 ยาม ยามละ 4 ชั่วโมง","6 ยาม ยามละ 2 ชั่วโมง"]},{"q":"“ยามสองฆ้องยาม่ำ” ตรงกับเวลาใด","a":"21.00 – 24.00 น.","c":["21.00 – 24.00 น.","18.00 – 21.00 น.","24.00 – 03.00 น.","03.00 – 06.00 น."]},{"q":"“ล่วงสามยามปลายแล้ว” ประมาณกี่โมง","a":"ใกล้ 03.00 น.","c":["ใกล้ 03.00 น.","ใกล้ 24.00 น.","ใกล้ 21.00 น.","ใกล้ 06.00 น."]},{"q":"“จนไก่แก้วแว่วขันขาน” บอกเวลาใด","a":"ใกล้รุ่ง เข้าสู่ยาม ๔","c":["ใกล้รุ่ง เข้าสู่ยาม ๔","เที่ยงคืนตรง","หัวค่ำ","เที่ยงวัน"]},{"q":"“รอนรอนสุริยโอ้ อัษดงค์” อยู่ในบทเห่ใด และบอกเวลาใด","a":"เห่ชมนก · ดวงอาทิตย์ตก","c":["เห่ชมนก · ดวงอาทิตย์ตก","เห่ชมปลา · เที่ยงวัน","เห่ครวญ · เที่ยงคืน","เห่ชมเรือ · เช้าตรู่"]},{"q":"บทเห่ใดเกิดขึ้นตอนกลางคืน","a":"เห่ครวญ","c":["เห่ครวญ","เห่ชมไม้","เห่ชมเรือกระบวน","เห่ชมปลา"]},{"q":"เรียงบทเห่ตามเวลาของวัน ข้อใดถูก","a":"ชมเรือ → ชมปลา → ชมไม้ → ชมนก → ครวญ","c":["ชมเรือ → ชมปลา → ชมไม้ → ชมนก → ครวญ","ครวญ → ชมเรือ → ชมปลา → ชมไม้ → ชมนก","ชมนก → ชมไม้ → ชมปลา → ชมเรือ → ครวญ","ชมปลา → ชมเรือ → ชมนก → ชมไม้ → ครวญ"]},{"q":"“ทิพากร” ในวรรค “ทิพากรจะตกต่ำ” หมายถึงอะไร","a":"ดวงอาทิตย์","c":["ดวงอาทิตย์","ดวงจันทร์","ดวงดาว","สายน้ำ"]},{"q":"“ฆ้องยาม่ำ” หมายถึงอะไร","a":"การตีฆ้องบอกยามในเวลากลางคืน","c":["การตีฆ้องบอกยามในเวลากลางคืน","เสียงฆ้องในขบวนเรือ","การตีฆ้องเรียกให้ตื่นตอนเช้า","ชื่อเพลงเห่"]}],"misc":[{"q":"เรือพระที่นั่งที่ปรากฏในกาพย์เห่เรือชื่ออะไร","a":"สุวรรณหงส์","c":["สุวรรณหงส์","สุพรรณหงส์","ศรีสุพรรณหงส์","อนันตนาคราช"],"w":"สมัยอยุธยาเรียก สุวรรณหงส์ · ปัจจุบันคือ สุพรรณหงส์"},{"q":"เรือพระที่นั่งลำที่ต่อใหม่ในรัชกาลที่ ๑ เรียกว่าอะไร","a":"ศรีสุพรรณหงส์","c":["ศรีสุพรรณหงส์","สุพรรณหงส์","สุวรรณหงส์","นารายณ์ทรงสุบรรณ"],"w":"ลำดับคือ สุวรรณหงส์ (อยุธยา) → ศรีสุพรรณหงส์ (ร.๑) → สุพรรณหงส์ (ร.๕–๖)"},{"q":"ทำนองเห่ใดใช้เริ่มต้นการเห่ จังหวะช้า","a":"ช้าละวะเห่","c":["ช้าละวะเห่","มูลเห่","ทรงแปลง","ทรงแทรก"],"w":"ช้าละวะเห่ = ให้สัญญาณเริ่มเคลื่อนเรือทุกลำพร้อมกัน"},{"q":"ทำนองเห่ใดจังหวะกระชั้นกระชับ มีลูกคู่รับว่า ขะ...ขะ...ฮ้าไฮ้","a":"มูลเห่","c":["มูลเห่","ช้าละวะเห่","สวะเห่","ทรงแทรก"],"w":"ต่อท้ายบทว่า เฮ้ เฮ เฮ เฮ เฮ...เห่ เฮ"},{"q":"“ทรงแปลง” และ “ทรงแทรก” เกี่ยวข้องกับวรรณคดีเรื่องใด","a":"นิราศธารโศก","c":["นิราศธารโศก","นิราศนรินทร์","กาพย์ห่อโคลงนิราศธารทองแดง","ลิลิตพระลอ"],"w":"เชิงอรรถ น.๙๓ บอกว่าบางบทคล้ายคลึงกับนิราศธารโศก"},{"q":"บทเห่แต่ละตอนขึ้นต้นด้วยคำประพันธ์ชนิดใด","a":"โคลงสี่สุภาพ 1 บท แล้วตามด้วยกาพย์ยานี 11","c":["โคลงสี่สุภาพ 1 บท แล้วตามด้วยกาพย์ยานี 11","กาพย์ยานี 11 ล้วน","กาพย์ฉบัง 16 แล้วตามด้วยโคลง","ร่ายยาวแล้วตามด้วยกาพย์"],"w":"และกาพย์บทแรกจะถอดความจากโคลงบทนั้น"},{"q":"เรือลำใดที่กวีว่าเร็วเหมือนลม","a":"เรือไชย","c":["เรือไชย","เรือครุฑ","เรือสิงห์","เรือม้า"],"w":"เรือไชยไวว่องวิ่ง / รวดเร็วจริงยิ่งอย่างลม"},{"q":"เรือลำใดมีหลังคาแดงลายมังกร","a":"เรือสรมุข","c":["เรือสรมุข","เรือสมรรถไชย","เรือสุวรรณหงส์","เรือคชสีห์"],"w":"ม่านกรองทองรจนา / หลังคาแดงแย่งมังกร"},{"q":"เรือลำใดเปรียบกับหงส์ทรงของพระพรหม","a":"เรือสุวรรณหงส์","c":["เรือสุวรรณหงส์","เรือครุฑ","เรือนาคา","เรืออินทรี"],"w":"เพียงหงส์ทรงพรหมินทร์ / ลินลาศเลื่อนเตือนตาชม"},{"q":"บทอาขยานบทหลักของ ม.๖ คือส่วนใด","a":"โคลง + ช้าละวะเห่ ของเห่ชมเรือกระบวน","c":["โคลง + ช้าละวะเห่ ของเห่ชมเรือกระบวน","เห่ชมปลาทั้งบท","เห่ครวญทั้งบท","โคลงปิดเรื่อง"],"w":"หนังสือระบุว่าเป็นบทที่อยู่ในกรอบสีส้ม น.๙๑"},{"q":"คำว่า “มัศยา” และ “มัจฉา” ในบทเห่ชมปลาคืออะไร","a":"คำไวพจน์แปลว่า ปลา ไม่ใช่ชื่อชนิด","c":["คำไวพจน์แปลว่า ปลา ไม่ใช่ชื่อชนิด","ชื่อปลาสองชนิด","ชื่อปลาในวรรณคดีอินเดีย","ชื่อเรือ"],"w":"ห้ามนับรวมเป็นชนิดของปลา"},{"q":"ผู้ทรงพระนิพนธ์กาพย์เห่เรือคือใคร","a":"เจ้าฟ้าธรรมธิเบศ","c":["เจ้าฟ้าธรรมธิเบศ","สุนทรภู่","พระยาตรัง","เจ้าพระยาพระคลัง (หน)"],"w":"หนังสือระบุ ผู้ทรงพระนิพนธ์ : เจ้าฟ้าธรรมธิเบศ"}],"counts":[{"q":"บทเห่ชมปลา มีชื่อปลากี่ชนิด","a":"17","c":["17","15","13","20"],"w":"นับครบทุกชื่อรวมที่ซ่อนกลางวรรค — คางเบือน กระแห แปบ คือสามตัวที่คนนับตกบ่อยสุด"},{"q":"บทเห่ชมเรือกระบวน มีชื่อเรือกี่ชนิด","a":"15","c":["15","13","12","18"],"w":"นับรวมเรือพระที่นั่งกิ่งและเรือต้นด้วย"},{"q":"บทเห่ชมไม้ มีชื่อไม้กี่ชนิด","a":"18","c":["18","15","12","20"],"w":"เพราะ เต็งแต้วแก้วกาหลง = 4 ต้น และ มะลิวันพันจิกจวง = 3 ต้น"},{"q":"บทเห่ชมนก มีชื่อนกกี่ชนิด","a":"10","c":["10","9","8","12"],"w":"อย่าลืม สร้อยทอง ที่อยู่วรรครับของ เห็นฝูงยูงรำฟ้อน"},{"q":"วรรคใดมีชื่อไม้มากที่สุดในวรรคเดียว","a":"เต็งแต้วแก้วกาหลง","c":["เต็งแต้วแก้วกาหลง","มะลิวันพันจิกจวง","พิกุลบุนนาคบาน","สาวหยุดพุทธชาด"],"w":"4 ต้น — เต็ง แต้ว แก้ว กาหลง"},{"q":"“ชะแวงแฝงฝั่งแนบ / ชะวาดแอบแปบปนปลอม” มีชื่อปลากี่ตัว","a":"3","c":["3","2","4","1"],"w":"ชะแวง ชะวาด แปบ"},{"q":"“มะลิวันพันจิกจวง” มีชื่อไม้กี่ต้น","a":"3","c":["3","2","4","1"],"w":"มะลิวัน จิก จวง — คำว่า พัน เป็นกริยา"},{"q":"“พิกุลบุนนาคบาน” มีชื่อไม้กี่ต้น","a":"2","c":["2","1","3","4"],"w":"พิกุล กับ บุนนาค"}]};
+const $=i=>document.getElementById(i);
+const tabsEl=$('tabs');
+function openTab(id){document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('show',t.id===id));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));}
+tabsEl.addEventListener('click',e=>{const b=e.target.closest('.tab-btn');if(b)openTab(b.dataset.tab);});
+openTab('t1');
+const sh=a=>{for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;};
+
+/* ── การ์ดตัวเลข ── */
+const GRP=[['ปลา','fish','🐟'],['เรือ','boat','🚣'],['ไม้','tree','🌸'],['นก','bird','🐦']];
+$('numCards').innerHTML=GRP.map(([n,k,e])=>
+ `<details class="concept"><summary>${e} บทเห่ชม${n} — มีกี่ชนิด</summary>
+  <div class="body"><div class="big">${D[k].length} ชนิด</div>
+  <div>${D[k].map(x=>'<span class="chip2">'+x[0]+'</span>').join('')}</div></div></details>`).join('');
+
+/* ── โจทย์นับ ── */
+function mcq(pool,ids,st){
+  let q=null,lock=false;
+  function next(){
+    q=pool[Math.random()*pool.length|0]; lock=false;
+    $(ids.q).innerHTML=q.q; $(ids.fb).textContent=''; if(ids.w)$(ids.w).innerHTML='';
+    const box=$(ids.c); box.innerHTML='';
+    sh(q.c.slice()).forEach((o,i)=>{
+      const b=document.createElement('button'); b.className='choice';
+      b.innerHTML='<span class="k">'+'กขคง'[i]+'.</span>'+o;
+      b.onclick=()=>{
+        if(lock)return; lock=true; st.n++;
+        [...box.children].forEach(el=>{if(el.textContent.slice(2)===q.a)el.className='choice ok';});
+        if(o===q.a){st.ok++;$(ids.fb).textContent='✓ ถูกต้อง';$(ids.fb).className='fb ok';}
+        else{b.className='choice bad';$(ids.fb).innerHTML='✗ คำตอบคือ <b>'+q.a+'</b>';$(ids.fb).className='fb bad';}
+        if(ids.w&&q.w)$(ids.w).innerHTML='<div>💡 '+q.w+'</div>';
+        $(ids.ok).textContent=st.ok; $(ids.N).textContent=st.n;
+        if(ids.pct)$(ids.pct).textContent=Math.round(st.ok/st.n*100)+'%';
+        setTimeout(next,o===q.a?1000:2600);
+      };
+      box.appendChild(b);
+    });
+  }
+  next();
+}
+mcq(D.counts,{q:'cQ',c:'cC',fb:'cFb',w:'cW',ok:'cOk',N:'cN'},{ok:0,n:0});
+mcq(D.yam.map(x=>({q:x.q,a:x.a,c:x.c})),{q:'yQ',c:'yC',fb:'yFb',ok:'yOk',N:'yN'},{ok:0,n:0});
+mcq(D.counts.concat(D.misc,D.yam.map(x=>({q:x.q,a:x.a,c:x.c}))),
+    {q:'mQ',c:'mC',fb:'mFb',w:'mW',ok:'mOk',N:'mN',pct:'mPct'},{ok:0,n:0});
+
+/* ── ล่าชื่อในวรรค ── */
+let hQ=sh(D.hunt.slice()), hI=0, hSt={ok:0,n:0};
+function drawH(){
+  const it=hQ[hI%hQ.length];
+  $('hSub').innerHTML='แตะทุกคำที่เป็นชื่อ<b>'+it.c+'</b> แล้วกดตรวจ';
+  $('hFb').textContent=''; $('hW').innerHTML='';
+  const v=$('hV'); v.innerHTML='';
+  it.v.forEach((t,i)=>{
+    const b=document.createElement('button'); b.className='tok'; b.textContent=t[0]; b.dataset.i=i;
+    b.onclick=()=>{ if(v.dataset.lock)return; b.classList.toggle('pick'); };
+    v.appendChild(b);
+  });
+  v.dataset.lock='';
+  $('hBar').style.width=(hI/hQ.length*100)+'%';
+}
+$('hCheck').onclick=()=>{
+  const it=hQ[hI%hQ.length], v=$('hV'); if(v.dataset.lock)return; v.dataset.lock=1; hSt.n++;
+  let allRight=true;
+  [...v.children].forEach((el,i)=>{
+    const isName=it.v[i][1]===1, picked=el.classList.contains('pick');
+    el.classList.remove('pick');
+    if(isName){ el.classList.add('right'); if(!picked)allRight=false; }
+    else if(picked){ el.classList.add('wrong'); allRight=false; }
+  });
+  const n=it.v.filter(x=>x[1]===1).length;
+  if(allRight){hSt.ok++;$('hFb').innerHTML='✓ ถูกหมด — วรรคนี้มี <b>'+n+'</b> ชื่อ';$('hFb').className='fb ok';}
+  else{$('hFb').innerHTML='✗ ยังไม่ครบ — วรรคนี้มี <b>'+n+'</b> ชื่อ (สีเขียวคือคำตอบ)';$('hFb').className='fb bad';}
+  $('hW').innerHTML='<div>💡 '+it.w+'</div>';
+  $('hOk').textContent=hSt.ok; $('hN').textContent=hSt.n;
+};
+$('hNext').onclick=()=>{hI++;drawH();};
+drawH();
+
+/* ── หน้าปัดยาม ── */
+const YAMS=[['ยาม ๑','18.00 – 21.00 น.','หัวค่ำ'],['ยาม ๒','21.00 – 24.00 น.','“ยามสองฆ้องยาม่ำ”'],
+            ['ยาม ๓','24.00 – 03.00 น.','“ล่วงสามยามปลายแล้ว”'],['ยาม ๔','03.00 – 06.00 น.','ไก่ขัน ใกล้รุ่ง']];
+const COL=['#f59e0b','#8b5cf6','#1e3a8a','#0ea5e9'];
+(function(){
+  const s=$('clock'); let h='';
+  const cx=160,cy=160,R=120;
+  YAMS.forEach((y,i)=>{
+    const a0=-Math.PI/2+i*Math.PI/2, a1=a0+Math.PI/2;
+    const x0=cx+R*Math.cos(a0), y0=cy+R*Math.sin(a0), x1=cx+R*Math.cos(a1), y1=cy+R*Math.sin(a1);
+    h+=`<path d="M${cx},${cy} L${x0},${y0} A${R},${R} 0 0 1 ${x1},${y1} Z" fill="${COL[i]}" fill-opacity=".78"
+         stroke="#fff" stroke-width="2" style="cursor:pointer" data-i="${i}"/>`;
+    const am=(a0+a1)/2, tx=cx+R*0.62*Math.cos(am), ty=cy+R*0.62*Math.sin(am);
+    h+=`<text x="${tx}" y="${ty}" text-anchor="middle" dominant-baseline="middle" fill="#fff"
+         font-size="17" font-weight="700" font-family="Sarabun,sans-serif" pointer-events="none">${y[0]}</text>`;
+  });
+  [['18.00',cx,cy-R-10],['24.00',cx+R+26,cy+4],['06.00',cx,cy+R+22],['03.00',cx-R-26,cy+4]]
+    .forEach(([t,x,y])=>{h+=`<text x="${x}" y="${y}" text-anchor="middle" fill="#64748b" font-size="13"
+      font-family="Sarabun,sans-serif">${t}</text>`;});
+  s.innerHTML=h;
+  s.addEventListener('click',e=>{
+    const p=e.target.closest('path'); if(!p)return;
+    const y=YAMS[+p.dataset.i];
+    $('clockOut').innerHTML=y[0]+' = <b>'+y[1]+'</b><br><span style="font-size:.95rem;color:var(--muted)">'+y[2]+'</span>';
+  });
+})();
+
+/* ── รายชื่อ ── */
+let lK='fish';
+function drawL(){
+  $('lTabs').innerHTML=GRP.map(([n,k,e])=>
+    `<button class="pill${k===lK?' on':''}" data-k="${k}">${e} ${n} (${D[k].length})</button>`).join('');
+  const q=$('lq').value.trim();
+  const rows=D[lK].filter(r=>!q||(r[0]+r[1]+r[2]).includes(q));
+  $('lN').textContent='แสดง '+rows.length+' จาก '+D[lK].length+' ชนิด';
+  $('lBody').innerHTML='<table class="ref"><tr><th style="width:3rem">#</th><th>ชื่อ</th><th>วรรคในหนังสือ</th><th style="width:7rem">บท</th></tr>'+
+    rows.map((r,i)=>'<tr><td>'+(D[lK].indexOf(r)+1)+'</td><td style="text-align:left"><b>'+r[0]+
+    '</b></td><td style="text-align:left">'+r[1]+'</td><td>'+r[2]+'</td></tr>').join('')+'</table>';
+}
+$('lTabs').addEventListener('click',e=>{const b=e.target.closest('.pill');if(b){lK=b.dataset.k;drawL();}});
+$('lq').oninput=drawL;
+drawL();
+</script>
+<!--KIT-UI v2.8 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<script>
+/* =============================================================================
+   _kit/ui-controls.js  —  KIT UI  v1.0
+   แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
+     🌙/☀️  โหมดมืด / สว่าง   (จำค่าไว้ใน localStorage)
+     A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
+     ✏️  ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
+     🧮  เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
+
+   ── วิธีใช้ ────────────────────────────────────────────────────────────────
+   ห้ามแก้โค้ดนี้ในไฟล์ widget!  แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
+       pwsh -File _kit/apply-ui.ps1
+   สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
+   (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
+
+   !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
+      เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
+
+   ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
+   ใส่แอตทริบิวต์ที่ tag body:  data-tools="pen,calc"  = บังคับเปิด
+                              data-tools="none"      = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
+   ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
+              หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
+   ============================================================================= */
+(function(){
+if(window.__KITUI__) return; window.__KITUI__='2.8';   /* 2.8 = เพิ่มปุ่ม 🏠 กลับหน้าหลัก */
+
+/* ---------- helper ---------- */
+const D=document, R=D.documentElement;
+const get=k=>{try{return localStorage.getItem('kitui-'+k)}catch(e){return null}};
+const set=(k,v)=>{try{localStorage.setItem('kitui-'+k,v)}catch(e){}};
+const el=(t,c,h)=>{const e=D.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
+
+/* =============================================================================
+   1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
+   ============================================================================= */
+const CSS=`
+/* ===== DARK TOKENS (คู่กับ _kit/design-tokens.css) ===== */
+:root[data-theme="dark"]{
+  --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
+  --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
+  --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
+  --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
+  --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
+}
+:root[data-theme="dark"] body{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f172a}
+:root[data-theme="dark"] body[data-subject="physics"]{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f1220}
+:root[data-theme="dark"] body[data-subject="bio"]{--accent:#4ade80;--accent-head:#bbf7d0;--accent-ink:#86efac;--accent-soft:#0f2a1a;--accent-bd:#256b41;--accent-chip:#14532d;--accent-ghost:#15803d;--bg:#0d1912}
+:root[data-theme="dark"] body[data-subject="chem"]{--accent:#fb923c;--accent-head:#fed7aa;--accent-ink:#fdba74;--accent-soft:#2b1a0c;--accent-bd:#8a3d12;--accent-chip:#6d2c10;--accent-ghost:#c2410c;--bg:#1a130c}
+:root[data-theme="dark"] body[data-subject="christ"]{--accent:#a78bfa;--accent-head:#ddd6fe;--accent-ink:#c4b5fd;--accent-soft:#241a3d;--accent-bd:#5b21b6;--accent-chip:#4c1d95;--accent-ghost:#6d28d9;--bg:#16121f}
+:root[data-theme="dark"] body[data-subject="islam"]{--accent:#2dd4bf;--accent-head:#99f6e4;--accent-ink:#5eead4;--accent-soft:#0d2b28;--accent-bd:#12615a;--accent-chip:#134e4a;--accent-ghost:#0f766e;--bg:#0c1917}
+:root[data-theme="dark"] body[data-subject="history"]{--accent:#fbbf24;--accent-head:#fde68a;--accent-ink:#fcd34d;--accent-soft:#2a1f0a;--accent-bd:#8a4b0c;--accent-chip:#6d3a0a;--accent-ghost:#b45309;--bg:#191509}
+:root[data-theme="dark"] body[data-subject="math"]{--accent:#38bdf8;--accent-head:#bae6fd;--accent-ink:#7dd3fc;--accent-soft:#0c2434;--accent-bd:#0b5a80;--accent-chip:#0c4a6e;--accent-ghost:#0369a1;--bg:#0b1620}
+:root[data-theme="dark"] body[data-subject="eng"]{--accent:#f472b6;--accent-head:#fbcfe8;--accent-ink:#f9a8d4;--accent-soft:#2e1122;--accent-bd:#8d1748;--accent-chip:#731839;--accent-ghost:#be185d;--bg:#1c0f16}
+:root[data-theme="dark"] body[data-subject="thai"]{--accent:#f87171;--accent-head:#fecaca;--accent-ink:#fca5a5;--accent-soft:#2d1414;--accent-bd:#8d2020;--accent-chip:#7f1d1d;--accent-ghost:#b91c1c;--bg:#1a0f0f}
+:root[data-theme="dark"] img,:root[data-theme="dark"] .svg-box{filter:brightness(.92)}
+/* ช่องกรอก/ดรอปดาวน์ที่ widget เก่ากำหนดพื้นขาวตายตัวไว้ */
+:root[data-theme="dark"] select,:root[data-theme="dark"] textarea,
+:root[data-theme="dark"] input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=color])
+{background-color:var(--soft);color:var(--ink);border-color:var(--line)}
+
+/* ===== แถบเครื่องมือลอย ===== */
+#kitui-bar{position:fixed;right:10px;bottom:10px;z-index:99990;display:flex;gap:6px;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
+#kitui-bar button{border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;
+  font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
+  align-items:center;justify-content:center;font-weight:700}
+#kitui-bar button:hover{background:var(--soft)}
+#kitui-bar button:active{transform:scale(.93)}
+#kitui-bar button.on{background:var(--accent);color:#fff}
+#kitui-bar .kitui-sep{width:1px;height:22px;background:var(--line);flex:0 0 1px}
+#kitui-bar .kitui-fs{font-size:11px;color:var(--muted);min-width:34px;text-align:center;font-weight:700}
+#kitui-bar.hidden > *:not(#kitui-grip):not(#kitui-home){display:none}
+#kitui-grip{font-size:17px}
+
+/* ===== แผงลอย (ที่ทด / เครื่องคิดเลข) ===== */
+.kitui-sheet{position:fixed;left:0;right:0;bottom:0;z-index:99991;background:var(--card);
+  border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
+  display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
+  height:52vh;max-height:92vh;min-height:180px}
+.kitui-sheet.open{display:flex}
+.kitui-sheet.full{height:100vh;border-radius:0}
+.kitui-head{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--line);
+  flex-wrap:wrap;touch-action:none;cursor:ns-resize}
+.kitui-head b{font-size:.9rem;color:var(--accent-ink);margin-right:2px;white-space:nowrap}
+.kitui-head button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;
+  padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
+.kitui-head button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.kitui-head .kitui-spacer{flex:1}
+.kitui-sw{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;min-height:0}
+.kitui-sw.on{border-color:var(--ink);transform:scale(1.12)}
+.kitui-padwrap{flex:1;position:relative;overflow:hidden;background:var(--soft)}
+.kitui-padwrap canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+:root[data-theme="dark"] .kitui-padwrap{background:#0c1220}
+
+/* ===== เครื่องคิดเลข ===== */
+#kitui-calc{height:auto;max-height:90vh}
+.kitui-disp{padding:8px 12px;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);
+  border-bottom:1px solid var(--line)}
+.kitui-disp .ex{font-size:.95rem;color:var(--muted);min-height:1.3em;word-break:break-all}
+.kitui-disp .rs{font-size:1.6rem;font-weight:700;color:var(--accent-ink);word-break:break-all}
+.kitui-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:7px}
+.kitui-keys button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:9px;
+  font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
+.kitui-keys button:active{transform:scale(.95)}
+.kitui-keys button.fn{font-size:.8rem;color:var(--accent-ink)}
+.kitui-keys button.op{background:var(--accent-soft);color:var(--accent-ink)}
+.kitui-keys button.eq{background:var(--accent);color:#fff;grid-row:span 2}
+.kitui-keys button.del{background:var(--hot-bg);color:var(--hot-ink)}
+.kitui-keys button.w3{grid-column:span 3}
+@media(max-width:420px){.kitui-keys button{font-size:.88rem;min-height:40px}.kitui-keys button.fn{font-size:.72rem}}
+@media(min-width:760px){
+  .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
+  .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
+  #kitui-pad{width:560px}
+}
+@media print{#kitui-bar,.kitui-sheet{display:none!important}}
+`;
+const st=el('style'); st.id='kitui-style'; st.textContent=CSS; D.head.appendChild(st);
+
+/* -----------------------------------------------------------------------------
+   1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
+   widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
+   พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
+   แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
+   เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
+----------------------------------------------------------------------------- */
+/* สีพาสเทลสว่าง -> สีเข้มที่ยังคง "เฉดเดิม" ไว้ (เขียว=ถูก / แดง=ผิด ต้องยังแยกออก)
+   ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
+function darken(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
+  /* ⚠️ ห้ามใช้ saturation ของ HSL ตรง ๆ ตัดสิน: ที่ความสว่างเกือบ 1 ตัวหารจะเล็กมาก
+     ทำให้สีที่แทบเป็นสีขาว (เช่น #fdf8f4) ได้ค่าอิ่มสีสูงลิ่ว แล้วกลายเป็นสีน้ำตาลจัดตอนกดให้เข้ม
+     ให้ดูจาก "ช่วงห่างของแม่สี" (chroma) แทน แล้วแปลงเป็นความอิ่มสีแบบไล่ระดับ */
+  const s = Math.min(.45, Math.max(.08, d*4));
+  const l = d<.02 ? .13 : .17;                       /* เทา/ขาวล้วนให้เข้มกว่าสีนิดหน่อย */
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+function darkFix(){
+  const out=[], seen=new Set();
+  const take=r=>{
+    if(!r.style || !r.selectorText) return;
+    if(r.selectorText.indexOf('kitui')>-1) return;               /* ของเราเองใช้ token อยู่แล้ว */
+    const bg=r.style.backgroundColor;
+    if(!bg || bg.indexOf('var(')>-1) return;
+    const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
+    if(!m) return;
+    if(m[4]!==undefined && +m[4]<0.6) return;                    /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
+    const cr=+m[1], cg=+m[2], cb=+m[3];
+    if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return;       /* ไม่สว่างพอ ไม่ต้องยุ่ง */
+    const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
+    const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
+    let css='background-color:'+repl;
+    /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
+    const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
+    out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
+  };
+  /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
+        ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
+  const visit=rules=>{
+    for(let i=0;i<rules.length;i++){
+      const r=rules[i];
+      if(r.selectorText) take(r);
+      if(r.cssRules && r.cssRules.length) visit(r.cssRules);     /* @media / @supports / nesting */
+    }
+  };
+  for(let i=0;i<D.styleSheets.length;i++){
+    let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; }   /* ข้ามชีตข้ามโดเมน */
+    if(rr) visit(rr);
+  }
+  if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
+  return out.length;
+}
+try{ window.__KITUI_DARKFIX__ = (D.body.getAttribute('data-kit-theme')==='off') ? 'locked' : darkFix(); }
+catch(e){ window.__KITUI_DARKFIX__='err:'+e.message; }
+
+/* darkFix ข้างบนซ่อมได้เฉพาะสีที่เขียนตายตัวในไฟล์ CSS
+   แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
+   ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
+   จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
+const rgbOf=c=>{const m=c&&c.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null;};
+const lumOf=v=>v?(0.2126*v[0]+0.7152*v[1]+0.0722*v[2])/255:null;
+/* ตรงข้ามกับ darken(): ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
+   (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
+function lighten(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  if(d<0.04) return 'var(--ink)';                    /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
+  let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
+  const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
+  const s=Math.min(.92,Math.max(.55,s0)), l=.72;
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+const SKIP={CANVAS:1,IMG:1,VIDEO:1,SVG:1,IFRAME:1,PICTURE:1,OBJECT:1};
+const OBS_OPT={childList:true,subtree:true,attributes:true,attributeFilter:['class','style']};
+let patched=[], obs=null;
+function elementFix(){
+  /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
+        ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
+  if(obs) obs.disconnect();
+  try{ elementFixCore(); } finally { if(obs) obs.observe(D.body,OBS_OPT); }
+}
+function elementFixCore(){
+  if(D.body.getAttribute('data-kit-theme')==='off') return;   /* หน้าที่ล็อกธีมไว้ ห้ามไปยุ่งสี */
+  /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
+     ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
+     จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
+  if(R.getAttribute('data-theme')!=='dark'){
+    patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
+    patched=[];
+    return;
+  }
+  /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
+     ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
+  /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
+  const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
+  for(let i=0;i<all.length;i++){
+    const e=all[i];
+    if(e.id&&e.id.indexOf('kitui')===0) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(SKIP[e.tagName]) continue;                      /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
+    const s=getComputedStyle(e);
+    const bg=rgbOf(s.backgroundColor);
+    if(!bg || bg[3]<0.6) continue;                     /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
+    if(lumOf(bg)<0.72) continue;                       /* เข้มพออยู่แล้ว */
+    /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
+    e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
+    const fg=rgbOf(s.color);
+    if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important');  /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
+    patched.push(e);
+  }
+  /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
+     ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
+  const bgCache=new Map();
+  const effBg=n=>{
+    for(let p=n;p;p=p.parentElement){
+      if(bgCache.has(p)) return bgCache.get(p);
+      const b=rgbOf(getComputedStyle(p).backgroundColor);
+      if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
+    }
+    return null;
+  };
+  for(let i=2;i<all.length;i++){
+    const e=all[i];
+    if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(e.style.color) continue;                         /* จัดการไปแล้วในรอบแรก */
+    if(!e.textContent || !e.textContent.trim()) continue;
+    const fg=rgbOf(getComputedStyle(e).color);
+    if(!fg || lumOf(fg)>=0.45) continue;                 /* ตัวอักษรสว่างอยู่แล้ว */
+    const bg=effBg(e);
+    if(!bg || lumOf(bg)>=0.5) continue;                  /* พื้นยังสว่าง อ่านออกอยู่ */
+    e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
+    patched.push(e);
+  }
+}
+let efT=0;
+const scheduleFix=()=>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
+try{
+  obs=new MutationObserver(scheduleFix);
+  obs.observe(D.body,OBS_OPT);
+}catch(e){}
+
+/* =============================================================================
+   2) ธีม + ขนาดตัวอักษร
+   ============================================================================= */
+const FS=[.85,1,1.15,1.3,1.5], FSNAME=['เล็กสุด','เล็ก','ปกติ','ใหญ่','ใหญ่สุด'];
+let fsIdx=parseInt(get('fs')); if(isNaN(fsIdx)||fsIdx<0||fsIdx>4) fsIdx=1;
+let theme=get('theme') || (matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+
+/* หน้าที่ออกแบบธีมมาเองครบแล้ว (เช่น "หนังสือทบทวน" พื้นเข้มทั้งเล่ม) ให้ปิดระบบธีมของ KIT UI
+   ไม่งั้นโทเคน --bg/--ink ของเราจะไปทับสีที่หน้านั้นตั้งไว้ แล้วหน้าเพี้ยน
+   ใส่ที่ tag body:  data-kit-theme="off"   (ปุ่มปรับขนาดตัวอักษรยังใช้ได้ตามปกติ) */
+const themeLock = D.body.getAttribute('data-kit-theme')==='off';
+
+function applyTheme(){
+  if(themeLock) return;
+  R.setAttribute('data-theme',theme);
+  R.style.colorScheme = theme==='dark'?'dark':'light';   /* ให้ select/input เป็นสีเข้มด้วย */
+  const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
+  set('theme',theme);
+  clearTimeout(efT);                                   /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
+  if(typeof elementFix==='function') elementFix();
+  /* ⚠️ ห้ามอ้างถึงตัวแปรของส่วน "ที่ทด" ตรงนี้!
+     applyTheme() ถูกเรียกก่อนที่ `let pad` ในส่วนที่ 4 จะทำงาน → ชน temporal dead zone
+     แล้ว ReferenceError จะทำให้สคริปต์ตายทั้งก้อน (ปุ่มขนาดอักษร/ที่ทด/เครื่องคิดเลขหายหมด)
+     ใช้วิธียิง event แทน ใครสนใจค่อยไปดักฟังเอง */
+  try{ D.dispatchEvent(new CustomEvent('kitui-theme')); }catch(e){}
+}
+function applyFS(){
+  R.style.fontSize=(16*FS[fsIdx])+'px';
+  const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
+  set('fs',fsIdx);
+}
+
+/* =============================================================================
+   3) แถบเครื่องมือ
+   ============================================================================= */
+const subj=(D.body.getAttribute('data-subject')||'').toLowerCase();
+/* หลาย widget ไม่ได้ใส่ data-subject ที่ <body> → เดาจากโฟลเดอร์ที่ไฟล์อยู่ด้วย */
+const inPath=/\/(physics|math|chemist)\//i.test(decodeURIComponent(location.pathname));
+const tAttr=D.body.getAttribute('data-tools');
+const wantTools = tAttr!=null ? tAttr.toLowerCase()
+                : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
+const hasPen  = wantTools.includes('pen');
+const hasCalc = wantTools.includes('calc');
+
+/* ปุ่มกลับหน้าหลัก — โผล่เฉพาะตอนเปิดจากเว็บห้องติว (พาธมี /app/ อยู่)
+   เปิดไฟล์จากเครื่องตรง ๆ จะไม่มีปุ่มนี้ เพราะไม่มีหน้าหลักให้กลับ ลิงก์จะเสียเปล่า ๆ */
+const homeHref = (()=>{
+  try{
+    const p = decodeURIComponent(location.pathname);
+    const i = p.indexOf('/app/');
+    return i < 0 ? null : p.slice(0, i+1) + 'index.html';
+  }catch(e){ return null; }
+})();
+
+const bar=el('div'); bar.id='kitui-bar';
+bar.innerHTML =
+  `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
+  (homeHref ? `<button id="kitui-home" title="กลับหน้าหลัก">🏠</button><span class="kitui-sep"></span>` : '')+
+  (themeLock ? '' : `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button><span class="kitui-sep"></span>`)+
+  `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
+  `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
+  `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
+  (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
+  (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
+D.body.appendChild(bar);
+
+if(!themeLock) D.getElementById('kitui-theme').onclick=()=>{theme=theme==='dark'?'light':'dark';applyTheme();};
+D.getElementById('kitui-fsup').onclick=()=>{if(fsIdx<4){fsIdx++;applyFS();}};
+D.getElementById('kitui-fsdown').onclick=()=>{if(fsIdx>0){fsIdx--;applyFS();}};
+D.getElementById('kitui-grip').onclick=()=>bar.classList.toggle('hidden');
+if(homeHref) D.getElementById('kitui-home').onclick=()=>{ location.href=homeHref; };
+applyTheme(); applyFS();
+
+/* ปิดแผงด้วยปุ่ม Esc */
+D.addEventListener('keydown',e=>{ if(e.key==='Escape') D.querySelectorAll('.kitui-sheet.open').forEach(s=>s.classList.remove('open')); });
+
+/* ลากหัวแผงเพื่อปรับความสูง */
+function makeResizable(sheet){
+  const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
+  head.addEventListener('pointerdown',e=>{
+    if(e.target.closest('button'))return;
+    drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect().height;head.setPointerCapture(e.pointerId);
+  });
+  head.addEventListener('pointermove',e=>{
+    if(!drag)return;
+    const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
+    sheet.classList.remove('full'); sheet.style.height=h+'px';
+    if(sheet.id==='kitui-pad') fitPad();
+  });
+  head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
+}
+
+/* =============================================================================
+   4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ  หลายหน้า  เซฟอัตโนมัติ
+   ============================================================================= */
+let pad,padCv,padCx,pages=[[]],pg=0,undone=[],histo=[];
+let tool='pen',color='#111827',width=2.4,penSeen=0;
+const COLORS=['#111827','#2563eb','#dc2626','#16a34a','#f59e0b'];
+const PADKEY='pad-'+location.pathname.split('/').pop();
+
+function buildPad(){
+  pad=el('div','kitui-sheet'); pad.id='kitui-pad';
+  pad.innerHTML=
+   `<div class="kitui-head">
+      <b>✏️ ที่ทด</b>
+      <button data-t="pen" class="on">🖊️</button>
+      <button data-t="hl">🖍️</button>
+      <button data-t="er">🧽</button>
+      ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
+      <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
+      <span class="kitui-spacer"></span>
+      <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
+      <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
+      <button id="kitui-pgadd">+ หน้า</button>
+      <button id="kitui-clear">ล้างหน้านี้</button>
+      <button id="kitui-full">⛶</button>
+      <button id="kitui-padclose">✕</button>
+    </div>
+    <div class="kitui-padwrap"><canvas></canvas></div>`;
+  D.body.appendChild(pad);
+  padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
+  makeResizable(pad);
+
+  pad.querySelector('.kitui-head').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
+  });
+  D.getElementById('kitui-undo').onclick=()=>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop(); draw(); save(); } };
+  D.getElementById('kitui-redo').onclick=()=>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop(); draw(); save(); } };
+  D.getElementById('kitui-clear').onclick=()=>{ snap(); pages[pg]=[]; draw(); save(); };
+  D.getElementById('kitui-pgadd').onclick=()=>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw(); save(); };
+  D.getElementById('kitui-pgprev').onclick=()=>{ if(pg>0){pg--;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-pgnext').onclick=()=>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-full').onclick=()=>{ pad.classList.toggle('full'); pad.style.height=''; fitPad(); };
+  D.getElementById('kitui-padclose').onclick=()=>pad.classList.remove('open');
+
+  /* ---- วาด ---- */
+  let cur=null;
+  padCv.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='pen') penSeen=Date.now();
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;   /* กันฝ่ามือแตะตอนใช้สไตลัส */
+    const p=pt(e);
+    if(tool==='er'){ snap(); erase(p); return; }
+    snap();
+    cur={c:color,w:width,hl:tool==='hl',pts:[p]};
+    pages[pg].push(cur); draw();
+    try{ padCv.setPointerCapture(e.pointerId); }catch(x){}  /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
+  });
+  padCv.addEventListener('pointermove',e=>{
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;
+    if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
+    if(!cur||!e.buttons)return;
+    /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
+    let evs=[e];
+    if(e.getCoalescedEvents){ const c=e.getCoalescedEvents(); if(c&&c.length) evs=c; }
+    evs.forEach(ev=>cur.pts.push(pt(ev)));
+    draw();
+  });
+  const end=()=>{ if(cur){cur=null;save();} };
+  padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
+  padCv.addEventListener('pointerleave',end);
+
+  addEventListener('resize',()=>{ if(pad.classList.contains('open')) fitPad(); });
+  D.addEventListener('kitui-theme',()=>draw());   /* สลับธีมแล้ววาดลายใหม่ เส้นดำ<->ขาวตามพื้น */
+  load(); fitPad();
+}
+function pt(e){
+  const r=padCv.getBoundingClientRect();
+  return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
+          p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5};   /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
+}
+function snap(){ histo.push(pages[pg].slice()); if(histo.length>60)histo.shift(); undone=[]; }
+function erase(p){
+  const r=padCv.getBoundingClientRect(), rad=18/r.width;
+  const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
+  if(keep.length!==pages[pg].length){ pages[pg]=keep; draw(); save(); }
+}
+function fitPad(){
+  const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
+  const dpr=Math.min(devicePixelRatio||1,2.5);
+  padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
+  draw();
+}
+function draw(){
+  const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
+  padCx.clearRect(0,0,W,H);
+  /* เส้นตารางจาง ๆ ให้เขียนตรง */
+  const dark=R.getAttribute('data-theme')==='dark';
+  padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
+  for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath();padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke();}
+  padCx.lineCap='round'; padCx.lineJoin='round';
+  pages[pg].forEach(s=>{
+    padCx.globalAlpha=s.hl?0.32:1;
+    padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
+    for(let i=1;i<s.pts.length;i++){
+      const a=s.pts[i-1],b=s.pts[i];
+      padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
+      padCx.beginPath(); padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke();
+    }
+    if(s.pts.length===1){ /* จุดเดียว */
+      padCx.fillStyle=padCx.strokeStyle; padCx.beginPath();
+      padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill();
+    }
+  });
+  padCx.globalAlpha=1;
+  const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
+}
+function save(){ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
+function load(){
+  try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
+}
+
+if(hasPen){
+  buildPad();
+  D.getElementById('kitui-penbtn').onclick=()=>{
+    const o=pad.classList.toggle('open');
+    D.getElementById('kitui-penbtn').classList.toggle('on',o);
+    if(o) fitPad();
+  };
+}
+
+/* =============================================================================
+   5) เครื่องคิดเลขวิทยาศาสตร์  (tokenizer → shunting-yard → RPN  ไม่ใช้ eval)
+   ============================================================================= */
+const FN={sin:1,cos:1,tan:1,asin:1,acos:1,atan:1,ln:1,log:1,sqrt:1,abs:1,exp:1};
+const PREC={'+':1,'-':1,'*':2,'/':2,'^':4,'u-':3};
+function tokenize(s){
+  s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
+  const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!()])/g; let m;
+  while((m=re.exec(s))) out.push(m[1]);
+  return out;
+}
+function toRPN(tk){
+  const out=[],op=[]; let prev=null;
+  for(let t of tk){
+    if(t==='**')t='^';
+    if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
+    else if(t==='PI'){ out.push(Math.PI); }
+    else if(t==='e'||t==='E'){ out.push(Math.E); }
+    else if(t==='ANS'){ out.push(ANS); }
+    else if(FN[t]){ op.push(t); }
+    else if(t==='('){ op.push(t); }
+    else if(t===')'){
+      while(op.length&&op[op.length-1]!=='(') out.push(op.pop());
+      if(!op.length) throw 0; op.pop();
+      if(op.length&&FN[op[op.length-1]]) out.push(op.pop());
+    }
+    else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
+    else if('+-*/^'.includes(t)){
+      let o=t;
+      const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
+      if(t==='-'&&unary) o='u-';
+      else if(t==='+'&&unary){ prev=t; continue; }
+      while(op.length){
+        const top=op[op.length-1];
+        if(top==='('||FN[top])break;
+        const rightAssoc=(o==='^'||o==='u-');
+        if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop()); else break;
+      }
+      op.push(o);
+    }
+    else throw 0;
+    prev=t;
+  }
+  while(op.length){ const o=op.pop(); if(o==='(')throw 0; out.push(o); }
+  return out;
+}
+function evalRPN(rpn,deg){
+  const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
+  const pop=()=>{ if(!st.length)throw 0; return st.pop(); };
+  for(const t of rpn){
+    if(typeof t==='number'){ st.push(t); continue; }
+    if(t==='fact'){ const n=pop(); if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
+    if(t==='pct'){ st.push(pop()/100); continue; }
+    if(t==='u-'){ st.push(-pop()); continue; }
+    if(FN[t]){
+      const a=pop();
+      st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
+             : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
+             : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
+             : t==='abs'?Math.abs(a) : Math.exp(a) );
+      continue;
+    }
+    const b=pop(),a=pop();
+    st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
+  }
+  if(st.length!==1) throw 0;
+  return st[0];
+}
+function calc(src,deg){ return evalRPN(toRPN(tokenize(src)),deg); }
+
+let ANS=0, expr='', calcSheet, isDeg=true;
+const KEYS=[
+ ['DEG','deg','fn'],['(','(',''],[')',')',''],['⌫','del','del'],['AC','ac','del'],
+ ['sin','sin(','fn'],['cos','cos(','fn'],['tan','tan(','fn'],['π','π','fn'],['÷','÷','op'],
+ ['sin⁻¹','asin(','fn'],['cos⁻¹','acos(','fn'],['tan⁻¹','atan(','fn'],['e','e','fn'],['×','×','op'],
+ ['ln','ln(','fn'],['log','log(','fn'],['√','√(','fn'],['xʸ','^','fn'],['−','−','op'],
+ ['7','7',''],['8','8',''],['9','9',''],['x!','!','fn'],['+','+','op'],
+ ['4','4',''],['5','5',''],['6','6',''],['%','%','fn'],['ANS','ANS','fn'],
+ ['1','1',''],['2','2',''],['3','3',''],['.','.',''],['=','eq','eq'],
+ ['0','0','w3'],['x²','^2','fn']
+];
+function buildCalc(){
+  calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
+  calcSheet.innerHTML=
+   `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
+      <button id="kitui-calcclose">✕</button></div>
+    <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
+    <div class="kitui-keys" id="kitui-keys">
+      ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
+    </div>`;
+  D.body.appendChild(calcSheet);
+  D.getElementById('kitui-calcclose').onclick=()=>calcSheet.classList.remove('open');
+  const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
+  const show=()=>{ ex.textContent=expr||' ';
+    try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
+    catch(e){ rs.style.opacity=.35; }
+  };
+  D.getElementById('kitui-keys').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
+    if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
+    if(k==='del'){ expr=expr.slice(0,-1); show(); return; }
+    if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show(); return; }
+    if(k==='eq'){
+      rs.style.opacity=1;
+      try{
+        const v=calc(expr,isDeg);
+        if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
+        if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
+        ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
+      }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
+      return;
+    }
+    expr+=k; show();
+  });
+}
+function fmt(v){
+  if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
+  if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
+  return String(Math.round(v*1e10)/1e10);
+}
+if(hasCalc){
+  buildCalc();
+  D.getElementById('kitui-calcbtn').onclick=()=>{
+    const o=calcSheet.classList.toggle('open');
+    D.getElementById('kitui-calcbtn').classList.toggle('on',o);
+  };
+}
+})();
+
+</script>
+<!--/KIT-UI-->
+</body>
+</html>
