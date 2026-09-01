@@ -617,7 +617,7 @@ loadPreset();
 redrawAll();
 window.addEventListener('resize',redrawAll);
 </script>
-<!--KIT-UI v2.8 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<!--KIT-UI v2.9 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>
 /* =============================================================================
    _kit/ui-controls.js  —  KIT UI  v1.0
@@ -643,7 +643,7 @@ window.addEventListener('resize',redrawAll);
               หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
    ============================================================================= */
 (function(){
-if(window.__KITUI__) return; window.__KITUI__='2.8';   /* 2.8 = เพิ่มปุ่ม 🏠 กลับหน้าหลัก */
+if(window.__KITUI__) return; window.__KITUI__='2.9';   /* 2.9 = เพิ่มธีมวิชา hindu (โทนทอง) · 2.8 = เพิ่มปุ่ม 🏠 กลับหน้าหลัก */
 
 /* ---------- helper ---------- */
 const D=document, R=D.documentElement;
@@ -673,6 +673,7 @@ const CSS=`
 :root[data-theme="dark"] body[data-subject="math"]{--accent:#38bdf8;--accent-head:#bae6fd;--accent-ink:#7dd3fc;--accent-soft:#0c2434;--accent-bd:#0b5a80;--accent-chip:#0c4a6e;--accent-ghost:#0369a1;--bg:#0b1620}
 :root[data-theme="dark"] body[data-subject="eng"]{--accent:#f472b6;--accent-head:#fbcfe8;--accent-ink:#f9a8d4;--accent-soft:#2e1122;--accent-bd:#8d1748;--accent-chip:#731839;--accent-ghost:#be185d;--bg:#1c0f16}
 :root[data-theme="dark"] body[data-subject="thai"]{--accent:#f87171;--accent-head:#fecaca;--accent-ink:#fca5a5;--accent-soft:#2d1414;--accent-bd:#8d2020;--accent-chip:#7f1d1d;--accent-ghost:#b91c1c;--bg:#1a0f0f}
+:root[data-theme="dark"] body[data-subject="hindu"]{--accent:#facc15;--accent-head:#fef08a;--accent-ink:#fde047;--accent-soft:#2a2408;--accent-bd:#7a6410;--accent-chip:#5c4b0c;--accent-ghost:#a16207;--bg:#191708}
 :root[data-theme="dark"] img,:root[data-theme="dark"] .svg-box{filter:brightness(.92)}
 /* ช่องกรอก/ดรอปดาวน์ที่ widget เก่ากำหนดพื้นขาวตายตัวไว้ */
 :root[data-theme="dark"] select,:root[data-theme="dark"] textarea,
