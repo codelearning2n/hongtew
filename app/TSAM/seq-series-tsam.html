@@ -149,7 +149,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .lbl,.ex .exq .lbl{color:#c9adff}
 </style>
 </head>
-<body>
+<body data-kit-ui="off">
 <div class="wrap">
   <div class="hero">
     <span class="pill">ติว TSAM '70 · คณิต · เก็บ 🟢 ลำดับ-อนุกรม (6 ข้อ)</span>
@@ -747,5 +747,6 @@ function redrawActive(){const a=document.querySelector('.panel.active').id;
 window.addEventListener('resize',()=>requestAnimationFrame(redrawActive));
 drawSeq();drawDecider();drawInf();
 </script>
+
 </body>
 </html>

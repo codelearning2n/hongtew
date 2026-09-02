@@ -346,7 +346,7 @@ math{font-family:'Cambria Math','Latin Modern Math','STIX Two Math',serif;
   <div class="foot">สัดส่วนข้อสอบอ้างจากตัวแปร MATH ใน TSAM/index.html<br>
   สูตรเขียนด้วย LaTeX แปลงเป็น MathML ตอนสร้างไฟล์ · เบราว์เซอร์วาดเอง ไม่ต้องต่อเน็ต · 8 ส.ค. 2569</div>
 </div>
-<!--KIT-UI v2.7 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<!--KIT-UI v3.2 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>
 /* =============================================================================
    _kit/ui-controls.js  —  KIT UI  v1.0
@@ -372,7 +372,7 @@ math{font-family:'Cambria Math','Latin Modern Math','STIX Two Math',serif;
               หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
    ============================================================================= */
 (function(){
-if(window.__KITUI__) return; window.__KITUI__='2.7';
+if(window.__KITUI__) return; window.__KITUI__='3.2';   /* 3.2 = ปุ่ม 🔎 ถาม AI ข้างปุ่มกลับ (ไม่มีใครย้อนกลับหน้ารวมเพื่อไปถาม) · 3.1 = ขยายปุ่มกลับ 44px · 3.0 = ปุ่มกลับลอย */
 
 /* ---------- helper ---------- */
 const D=document, R=D.documentElement;
@@ -402,6 +402,7 @@ const CSS=`
 :root[data-theme="dark"] body[data-subject="math"]{--accent:#38bdf8;--accent-head:#bae6fd;--accent-ink:#7dd3fc;--accent-soft:#0c2434;--accent-bd:#0b5a80;--accent-chip:#0c4a6e;--accent-ghost:#0369a1;--bg:#0b1620}
 :root[data-theme="dark"] body[data-subject="eng"]{--accent:#f472b6;--accent-head:#fbcfe8;--accent-ink:#f9a8d4;--accent-soft:#2e1122;--accent-bd:#8d1748;--accent-chip:#731839;--accent-ghost:#be185d;--bg:#1c0f16}
 :root[data-theme="dark"] body[data-subject="thai"]{--accent:#f87171;--accent-head:#fecaca;--accent-ink:#fca5a5;--accent-soft:#2d1414;--accent-bd:#8d2020;--accent-chip:#7f1d1d;--accent-ghost:#b91c1c;--bg:#1a0f0f}
+:root[data-theme="dark"] body[data-subject="hindu"]{--accent:#facc15;--accent-head:#fef08a;--accent-ink:#fde047;--accent-soft:#2a2408;--accent-bd:#7a6410;--accent-chip:#5c4b0c;--accent-ghost:#a16207;--bg:#191708}
 :root[data-theme="dark"] img,:root[data-theme="dark"] .svg-box{filter:brightness(.92)}
 /* ช่องกรอก/ดรอปดาวน์ที่ widget เก่ากำหนดพื้นขาวตายตัวไว้ */
 :root[data-theme="dark"] select,:root[data-theme="dark"] textarea,
@@ -420,7 +421,7 @@ const CSS=`
 #kitui-bar button.on{background:var(--accent);color:#fff}
 #kitui-bar .kitui-sep{width:1px;height:22px;background:var(--line);flex:0 0 1px}
 #kitui-bar .kitui-fs{font-size:11px;color:var(--muted);min-width:34px;text-align:center;font-weight:700}
-#kitui-bar.hidden > *:not(#kitui-grip){display:none}
+#kitui-bar.hidden > *:not(#kitui-grip):not(#kitui-home){display:none}
 #kitui-grip{font-size:17px}
 
 /* ===== แผงลอย (ที่ทด / เครื่องคิดเลข) ===== */
@@ -464,7 +465,26 @@ const CSS=`
   .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
   #kitui-pad{width:560px}
 }
-@media print{#kitui-bar,.kitui-sheet{display:none!important}}
+#kitui-nav{position:fixed;top:8px;left:8px;z-index:99992;display:flex;gap:8px;align-items:center}
+#kitui-ask{border:1.5px solid var(--accent);background:var(--accent);color:#fff;border-radius:999px;
+  padding:0 16px 0 13px;height:44px;font-family:inherit;font-size:15.5px;font-weight:700;cursor:pointer;
+  box-shadow:0 3px 14px rgba(15,23,42,.22);line-height:1;display:flex;align-items:center;gap:6px;
+  text-decoration:none;white-space:nowrap}
+#kitui-ask .ar{font-size:18px;line-height:1}
+#kitui-ask:active{transform:scale(.95)}
+#kitui-back{display:flex;align-items:center;gap:7px;
+  border:1.5px solid var(--accent-bd,var(--line));background:var(--card);color:var(--ink);
+  border-radius:999px;padding:0 18px 0 14px;height:44px;font-family:inherit;font-size:15.5px;
+  font-weight:700;cursor:pointer;box-shadow:0 3px 14px rgba(15,23,42,.22);line-height:1}
+#kitui-back .ar{font-size:20px;line-height:1;margin-top:-1px}
+#kitui-back{white-space:nowrap}
+#kitui-back:active{transform:scale(.95)}
+#kitui-back:hover{background:var(--soft)}
+/* แท็บเป็น sticky top:0 ถ้าไม่ดันลงมาปุ่มจะทับแท็บแรกจนกดไม่ได้
+   ตัวเลขนี้ผูกกับความสูงปุ่ม (8 บน + 44 ปุ่ม + ระยะห่าง) แก้ความสูงปุ่มต้องแก้ตรงนี้ด้วย */
+body.kitui-hasback .tabs{top:60px}
+body.kitui-hasback .wrap{padding-top:56px}
+@media print{#kitui-bar,.kitui-sheet,#kitui-back{display:none!important}}
 `;
 const st=el('style'); st.id='kitui-style'; st.textContent=CSS; D.head.appendChild(st);
 
@@ -666,9 +686,22 @@ const wantTools = tAttr!=null ? tAttr.toLowerCase()
 const hasPen  = wantTools.includes('pen');
 const hasCalc = wantTools.includes('calc');
 
+/* ปุ่มกลับหน้าหลัก — โผล่เฉพาะตอนเปิดจากเว็บห้องติว (พาธมี /app/ อยู่)
+   เปิดไฟล์จากเครื่องตรง ๆ จะไม่มีปุ่มนี้ เพราะไม่มีหน้าหลักให้กลับ ลิงก์จะเสียเปล่า ๆ */
+const homeHref = (()=>{
+  const attr = D.body.getAttribute('data-home');     /* หน้าไหนไม่ได้อยู่ใต้ /app/ ให้ระบุเองได้ */
+  if(attr) return attr;
+  try{
+    const p = decodeURIComponent(location.pathname);
+    const i = p.indexOf('/app/');
+    return i < 0 ? null : p.slice(0, i+1) + 'index.html';
+  }catch(e){ return null; }
+})();
+
 const bar=el('div'); bar.id='kitui-bar';
 bar.innerHTML =
   `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
+  (homeHref ? `<button id="kitui-home" title="กลับหน้าหลัก">🏠</button><span class="kitui-sep"></span>` : '')+
   (themeLock ? '' : `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button><span class="kitui-sep"></span>`)+
   `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
   `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
@@ -681,6 +714,32 @@ if(!themeLock) D.getElementById('kitui-theme').onclick=()=>{theme=theme==='dark'
 D.getElementById('kitui-fsup').onclick=()=>{if(fsIdx<4){fsIdx++;applyFS();}};
 D.getElementById('kitui-fsdown').onclick=()=>{if(fsIdx>0){fsIdx--;applyFS();}};
 D.getElementById('kitui-grip').onclick=()=>bar.classList.toggle('hidden');
+if(homeHref) D.getElementById('kitui-home').onclick=()=>{ location.href=homeHref; };
+
+/* ปุ่มกลับแบบลอยมุมซ้ายบน — มีคำว่า "กลับ" เต็ม ๆ ไม่ใช่ไอคอนเปล่า
+   (ของเดิมเป็น 🏠 เล็ก ๆ ปนอยู่ในแถบมุมขวาล่าง เพื่อนหาไม่เจอเลยไม่กด) */
+if(homeHref){
+  const back=el('button'); back.id='kitui-back';
+  back.type='button'; back.title='กลับหน้ารวมวิชา';
+  back.innerHTML='<span class="ar">←</span><span>กลับ</span>';
+  back.onclick=()=>{ location.href=homeHref; };
+  const nav=el('div'); nav.id='kitui-nav';
+  nav.appendChild(back);
+
+  /* ปุ่มถาม AI — เจ้าของทักว่าไม่มีใครย้อนกลับไปหน้ารวมเพื่อกดถาม ต้องถามจากหน้าที่เรียนอยู่ได้เลย
+     ส่งวิชาของหน้านี้ไปด้วย (?s=) หน้าถามจะได้เลือกวิชาให้เอง ไม่ต้องมากดซ้ำ */
+  const onAsk = /(^|\/)ask\.html$/.test(location.pathname);
+  if(!onAsk){
+    const subj = D.body.getAttribute('data-subject') || '';
+    const a=el('a'); a.id='kitui-ask';
+    a.href = homeHref.replace(/index\.html$/,'ask.html') + (subj ? '?s='+encodeURIComponent(subj) : '');
+    a.title='ถาม AI เรื่องที่กำลังอ่านอยู่';
+    a.innerHTML='<span class="ar">🔎</span><span>ถาม AI</span>';
+    nav.appendChild(a);
+  }
+  D.body.appendChild(nav);
+  D.body.classList.add('kitui-hasback');
+}
 applyTheme(); applyFS();
 
 /* ปิดแผงด้วยปุ่ม Esc */
