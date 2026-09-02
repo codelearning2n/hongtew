@@ -157,6 +157,18 @@ details.keybox .body{padding:.7rem .8rem;border-top:1px solid var(--line)}
 
 <script>
 const $=i=>document.getElementById(i);
+
+/* มาจากปุ่ม "ถาม AI" ในหน้าเรียน -> ปุ่มกลับต้องย้อนไปหน้านั้น ไม่ใช่เด้งไปหน้ารวม
+   ต้องตั้งตรงนี้ (ซิงโครนัส) เพราะ KIT UI อ่าน data-home ตอนบูตซึ่งอยู่ท้ายไฟล์ */
+(function(){
+  try{
+    const from=new URLSearchParams(location.search).get('from');
+    /* รับเฉพาะพาธภายในเว็บเดียวกัน กัน //evil.com ที่เบราว์เซอร์มองเป็นลิงก์ข้ามเว็บ */
+    if(from && from.charAt(0)==='/' && from.charCodeAt(1)!==47 && from.charCodeAt(1)!==92){
+      document.body.setAttribute('data-home', from);
+    }
+  }catch(e){}
+})();
 let MAN=[], SUB='', DATA=[], HITS=[], LOADED={};
 
 /* ── ตัดคำไทย: ใช้ตัวตัดคำของเบราว์เซอร์ถ้ามี ไม่มีค่อยถอยไปใช้ n-gram ── */
@@ -195,9 +207,12 @@ function cnt(h,n){ let c=0,i=0; while((i=h.indexOf(n,i))>=0){ c++; i+=n.length; 
    จะลากผลที่ไม่เกี่ยวขึ้นมาเต็มไปหมด แล้วผู้ใช้จะเข้าใจผิดว่าสรุปมีเรื่องนี้ */
 function idfOf(T){
   const N=DATA.length, idf={};
+  idf.__absent=[];                                   /* คำที่ไม่โผล่ในคลังนี้เลยแม้แต่ที่เดียว */
   for(const w of T.w){
     let df=0;
     for(const c of DATA) if(c._x.indexOf(w)>=0) df++;
+    if(df===0 && !(w.length>=7)) idf.__absent.push(w);
+    else if(df===0) idf.__absent.push(w);
     /* ยกกำลังสองเพื่อถ่างช่องว่าง: คำหายากต้องชนะคำโหลแบบขาดลอย ไม่ใช่ชนะนิดเดียว */
     if(df===0 && w.length>=7){                 /* ลองตัดหางดูก่อนว่ามีเค้าอยู่ในคลังไหม */
       let ok=false;
@@ -298,21 +313,34 @@ function run(){
     $('res').innerHTML='<div class="card"><div class="warn">⚠️ คำที่พิมพ์สั้นหรือกว้างเกินไป ลองใส่คำเฉพาะเจาะจงกว่านี้</div></div>';
     $('aicard').style.display=''; wireAI(q); return; }
   const idf=idfOf(T);
-  if(!Object.values(idf).some(v=>v>0)){
+  const absent=T.core.filter(w=>idf.__absent.indexOf(w)>=0);
+  const dead=T.core.filter(w=>!idf[w]);
+
+  /* ① ไม่มีคำนี้ในคลังเลย — ต้องแยกจากกรณี "คำโหลเกินไป" ให้ชัด ไม่งั้นผู้ใช้งงว่าพิมพ์ผิดตรงไหน */
+  if(T.core.length && absent.length/T.core.length>=0.5){
+    HITS=[];
+    const isEn=!/[฀-๿]/.test(absent.join(''));
+    $('res').innerHTML='<div class="card"><div class="warn">⚠️ <b>ไม่มีคำนี้ในสรุปวิชา'+
+      ((MAN.find(x=>x.key===SUB)||{}).name||'')+'</b><br>คำว่า '+
+      absent.slice(0,4).map(w=>'<b>'+esc(w)+'</b>').join(' · ')+' ไม่ปรากฏในสรุปเลยสักที่<br>'+
+      (isEn ? '· สรุปอาจเขียนเป็น<b>ภาษาไทย</b> ลองพิมพ์คำไทยดู'
+            : '· สรุปหลายที่เขียนศัพท์เป็น<b>ภาษาอังกฤษ</b> ลองพิมพ์คำอังกฤษดู')+'<br>'+
+      '· ลองเปลี่ยนวิชา · หรือกดถาม AI ข้างล่าง มันจะตอบจากความรู้ทั่วไปแล้วติดป้าย [นอกสไลด์] ให้</div></div>';
+    $('aicard').style.display=''; wireAI(q); return;
+  }
+  /* ② มีคำอยู่ แต่โหลจนไม่ช่วยแยกแยะอะไรเลย */
+  if(!T.w.some(w=>idf[w]>0)){
+    HITS=[];
     $('res').innerHTML='<div class="card"><div class="warn">⚠️ คำที่พิมพ์<b>กว้างเกินไป</b> '+
       '(เจอเกือบทุกหน้าเลยบอกอะไรไม่ได้) ลองใส่ศัพท์เฉพาะของเรื่องนั้นแทน</div></div>';
-    $('aicard').style.display=''; wireAI(q); HITS=[]; return;
+    $('aicard').style.display=''; wireAI(q); return;
   }
-  /* คำที่ "ไม่มีอยู่ในคลังนี้เลย" — ถ้าคำสำคัญตายไปเกินครึ่ง แปลว่าวิชานี้ไม่มีเรื่องนี้จริง ๆ
-     ต้องบอกตรง ๆ ไม่ใช่ไปคว้าคำโหลที่เหลือมาตอบ */
-  const dead=T.core.filter(w=>!idf[w]);
+  /* ③ คำสำคัญตายไปเกินครึ่งด้วยสาเหตุปนกัน */
   if(T.core.length && dead.length/T.core.length>=0.5){
     HITS=[];
-    $('res').innerHTML='<div class="card"><div class="warn">⚠️ <b>ไม่มีเรื่องนี้ในสรุปวิชา'+
-      ((MAN.find(x=>x.key===SUB)||{}).name||'')+'</b><br>คำว่า '+
-      dead.slice(0,4).map(w=>'<b>'+esc(w)+'</b>').join(' · ')+' ไม่ปรากฏในสรุปเลยสักที่<br>'+
-      '· ถ้าเป็นศัพท์เทคนิค ลองพิมพ์<b>คำอังกฤษ</b>ดู · ลองเปลี่ยนวิชา<br>'+
-      '· หรือกดถาม AI ข้างล่าง มันจะตอบจากความรู้ทั่วไปแล้วติดป้าย [นอกสไลด์] ให้</div></div>';
+    $('res').innerHTML='<div class="card"><div class="warn">⚠️ <b>ไม่เจอเรื่องนี้ในสรุปวิชา'+
+      ((MAN.find(x=>x.key===SUB)||{}).name||'')+'</b><br>ลองใช้คำอื่น เปลี่ยนวิชา '+
+      'หรือกดถาม AI ข้างล่างได้เลย</div></div>';
     $('aicard').style.display=''; wireAI(q); return;
   }
   const live=T.core.filter(w=>idf[w]).length||1;
@@ -448,8 +476,8 @@ async function callAI(q){
 }
 </script>
 
-<script src="updates.js?v=202609021421"></script>
-<!--KIT-UI v3.2 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<script src="updates.js?v=202609021429"></script>
+<!--KIT-UI v3.3 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>
 /* =============================================================================
    _kit/ui-controls.js  —  KIT UI  v1.0
@@ -475,7 +503,7 @@ async function callAI(q){
               หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
    ============================================================================= */
 (function(){
-if(window.__KITUI__) return; window.__KITUI__='3.2';   /* 3.2 = ปุ่ม 🔎 ถาม AI ข้างปุ่มกลับ (ไม่มีใครย้อนกลับหน้ารวมเพื่อไปถาม) · 3.1 = ขยายปุ่มกลับ 44px · 3.0 = ปุ่มกลับลอย */
+if(window.__KITUI__) return; window.__KITUI__='3.3';   /* 3.3 = ส่ง ?from= ไปด้วย ปุ่มกลับในหน้าถามจะได้กลับหน้าเดิม ไม่ใช่หน้ารวม · 3.2 = ปุ่ม 🔎 ถาม AI · 3.1 = ขยายปุ่มกลับ */
 
 /* ---------- helper ---------- */
 const D=document, R=D.documentElement;
@@ -835,7 +863,11 @@ if(homeHref){
   if(!onAsk){
     const subj = D.body.getAttribute('data-subject') || '';
     const a=el('a'); a.id='kitui-ask';
-    a.href = homeHref.replace(/index\.html$/,'ask.html') + (subj ? '?s='+encodeURIComponent(subj) : '');
+    /* ส่งหน้าปัจจุบันไปด้วย หน้าถามจะได้ทำปุ่มกลับให้ย้อนมาที่หน้านี้ ไม่ใช่เด้งไปหน้ารวม */
+    const q=[];
+    if(subj) q.push('s='+encodeURIComponent(subj));
+    q.push('from='+encodeURIComponent(location.pathname));
+    a.href = homeHref.replace(/index\.html$/,'ask.html') + '?' + q.join('&');
     a.title='ถาม AI เรื่องที่กำลังอ่านอยู่';
     a.innerHTML='<span class="ar">🔎</span><span>ถาม AI</span>';
     nav.appendChild(a);

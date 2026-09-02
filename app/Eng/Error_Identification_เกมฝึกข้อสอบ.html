@@ -253,7 +253,7 @@ function skip(){ done++; idx++; streak=0; render(); }
 
 start();
 </script>
-<!--KIT-UI v3.2 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<!--KIT-UI v3.3 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>
 /* =============================================================================
    _kit/ui-controls.js  —  KIT UI  v1.0
@@ -279,7 +279,7 @@ start();
               หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
    ============================================================================= */
 (function(){
-if(window.__KITUI__) return; window.__KITUI__='3.2';   /* 3.2 = ปุ่ม 🔎 ถาม AI ข้างปุ่มกลับ (ไม่มีใครย้อนกลับหน้ารวมเพื่อไปถาม) · 3.1 = ขยายปุ่มกลับ 44px · 3.0 = ปุ่มกลับลอย */
+if(window.__KITUI__) return; window.__KITUI__='3.3';   /* 3.3 = ส่ง ?from= ไปด้วย ปุ่มกลับในหน้าถามจะได้กลับหน้าเดิม ไม่ใช่หน้ารวม · 3.2 = ปุ่ม 🔎 ถาม AI · 3.1 = ขยายปุ่มกลับ */
 
 /* ---------- helper ---------- */
 const D=document, R=D.documentElement;
@@ -639,7 +639,11 @@ if(homeHref){
   if(!onAsk){
     const subj = D.body.getAttribute('data-subject') || '';
     const a=el('a'); a.id='kitui-ask';
-    a.href = homeHref.replace(/index\.html$/,'ask.html') + (subj ? '?s='+encodeURIComponent(subj) : '');
+    /* ส่งหน้าปัจจุบันไปด้วย หน้าถามจะได้ทำปุ่มกลับให้ย้อนมาที่หน้านี้ ไม่ใช่เด้งไปหน้ารวม */
+    const q=[];
+    if(subj) q.push('s='+encodeURIComponent(subj));
+    q.push('from='+encodeURIComponent(location.pathname));
+    a.href = homeHref.replace(/index\.html$/,'ask.html') + '?' + q.join('&');
     a.title='ถาม AI เรื่องที่กำลังอ่านอยู่';
     a.innerHTML='<span class="ar">🔎</span><span>ถาม AI</span>';
     nav.appendChild(a);
