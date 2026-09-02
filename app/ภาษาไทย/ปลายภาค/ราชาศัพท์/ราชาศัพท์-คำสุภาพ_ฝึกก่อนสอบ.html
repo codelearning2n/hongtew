@@ -693,8 +693,21 @@ function paint(){
 }
 
 var cur=null, answered=false;
+/* กันโจทย์ซ้ำที่เพิ่งออกไป — เทียบจากตัวโจทย์จริง ไม่ใช่แค่ชนิดของโจทย์
+   (ตัวสร้างเดิมสุ่มคำได้หลายแบบ สิ่งที่ผู้ใช้เห็นซ้ำคือข้อความโจทย์) */
+var __seenQ=[];
+function freshQ(make){
+  var q=null;
+  for(var i=0;i<40;i++){
+    q=make();
+    var k=String(q&&q.q||'')+'|'+String(q&&q.ans||'');
+    if(__seenQ.indexOf(k)<0){ __seenQ.push(k); if(__seenQ.length>8) __seenQ.shift(); return q; }
+  }
+  return q;
+}
+
 function newQ(){
-  cur=GEN[rnd(GEN.length)](); answered=false;
+  cur=freshQ(function(){ return GEN[rnd(GEN.length)](); }); answered=false;
   $('#result').innerHTML='';
   var h='<div class="q"><div class="qhead"><span class="qtopic">'+TOPICS[cur.topic]+'</span>'+
         '<span>ข้อที่ '+(stats.n+1)+'</span></div><div class="qtext">'+cur.q+'</div>';

@@ -469,17 +469,25 @@ let qScore=0,qStreak=0,qNo=0,qCur=null,qAnswered=false;
 $('toQuiz').onclick=()=>{stopPlay();$('learn').classList.add('hidden');$('quiz').classList.remove('hidden');nextQ();};
 $('toLearn').onclick=()=>{$('quiz').classList.add('hidden');$('learn').classList.remove('hidden');selectOrg(curKey);};
 
+const qRecent=[];   /* ชุดผสมที่เพิ่งออกไป กันสุ่มได้ข้อเดิมติด ๆ กัน */
 function nextQ(){
   qAnswered=false;
   $('qFb').classList.remove('show','ok','no');
   document.querySelectorAll('.qopt').forEach(o=>o.disabled=false);
-  // random organism + phase + muscle
-  const k=ORDER[Math.floor(Math.random()*ORDER.length)];
-  const d=DATA[k];
-  const pi=Math.floor(Math.random()*d.phases.length);
-  const ph=d.phases[pi];
-  const ms=d.muscles.filter(m=>ph.s[m.id]); // muscles defined in this phase
-  const m=ms[Math.floor(Math.random()*ms.length)];
+  // สุ่ม สัตว์ + ช่วงจังหวะ + กล้ามเนื้อ
+  // กันซ้ำที่ "ชุดผสม" ไม่ใช่ทีละตัว เพราะโจทย์เดิมคือชุดผสมเดิม
+  let k,d,pi,ph,ms,m,key;
+  for(let g=0;g<40;g++){
+    k=ORDER[Math.floor(Math.random()*ORDER.length)];
+    d=DATA[k];
+    pi=Math.floor(Math.random()*d.phases.length);
+    ph=d.phases[pi];
+    ms=d.muscles.filter(m2=>ph.s[m2.id]);   // เอาเฉพาะกล้ามเนื้อที่ช่วงนี้นิยามไว้
+    m=ms[Math.floor(Math.random()*ms.length)];
+    key=k+'|'+pi+'|'+(m&&m.id);
+    if(qRecent.indexOf(key)<0) break;
+  }
+  qRecent.push(key); if(qRecent.length>6) qRecent.shift();
   qCur={k,d,pi,ph,m,ans:ph.s[m.id]};
   qNo++; $('qNo').textContent=qNo;
   $('qText').textContent=`${d.em} ${d.name} — ใน "${ph.label}" กล้ามเนื้อ "${m.name}" ทำงานแบบใด?`;

@@ -253,13 +253,29 @@ $('sqReset').onclick=drawSq;
 $('sqNext').onclick=()=>{sqI++;drawSq();};
 drawSq();
 
+/* กันสุ่มซ้ำข้อที่เพิ่งออกไป — จำไว้ราว 1/3 ของกอง (อย่างน้อย 1 มากสุด 8)
+   ของเดิมสุ่มสด ๆ ทุกครั้งโดยไม่จำอะไรเลย เลยเจอข้อเดิมติดกันหลายรอบได้ */
+function mkPick(n){
+  /* กองเล็กต้องจำเยอะเป็นสัดส่วน ไม่งั้นยังวนซ้ำถี่อยู่ดี (กอง 5 ข้อ จำแค่ 1 = ซ้ำแบบเว้นข้อรัว ๆ)
+     n-1 คือเพดานสูงสุดที่ยังหาตัวเลือกได้ · 8 คือเพดานกันจำยาวเกินจนกองใหญ่วนไม่ทั่ว */
+  const keep=Math.min(n-1,Math.max(1,Math.min(8,Math.round(n/2))));
+  let recent=[];
+  return function(){
+    let i,g=0;
+    do{ i=Math.random()*n|0; }while(recent.indexOf(i)>=0 && ++g<40);
+    recent.push(i); if(recent.length>keep) recent.shift();
+    return i;
+  };
+}
+
 /* MCQ engine */
 function mcq(pool,ids,st,noRepeat){
   let queue=[], cur=null;
+  const rpick=mkPick(pool.length);
   function fill(){queue=sh(pool.slice());}
   function next(){
     if(noRepeat){ if(!queue.length){ if(st.n>0){$(ids.q).innerHTML='🎉 <b>ทำครบทุกข้อแล้ว</b> กดเริ่มชุดใหม่เพื่อวนอีกรอบ';$(ids.c).innerHTML='';return;} fill(); } cur=queue.shift(); }
-    else cur=pool[Math.random()*pool.length|0];
+    else cur=pool[rpick()];
     $(ids.q).innerHTML=cur.q; $(ids.fb).textContent=''; if(ids.w)$(ids.w).innerHTML='';
     const box=$(ids.c); box.innerHTML=''; box.dataset.lock='';
     sh([cur.a].concat(cur.c)).forEach((o,i)=>{

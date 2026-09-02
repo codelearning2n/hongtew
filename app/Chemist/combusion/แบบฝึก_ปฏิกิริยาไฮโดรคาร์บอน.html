@@ -709,9 +709,22 @@ function updHead(){
   $('#sAcc').textContent='ถูก '+correct+' ('+(total?Math.round(correct/total*100):0)+'%)';
 }
 
+/* กันโจทย์ซ้ำที่เพิ่งออกไป — เทียบจากตัวโจทย์จริง ไม่ใช่แค่ชนิดของโจทย์
+   (ตัวสร้างเดิมสุ่มคำได้หลายแบบ สิ่งที่ผู้ใช้เห็นซ้ำคือข้อความโจทย์) */
+var __seenQ=[];
+function freshQ(make){
+  var q=null;
+  for(var i=0;i<40;i++){
+    q=make();
+    var k=String(q&&q.q||'')+'|'+String(q&&q.ans||'');
+    if(__seenQ.indexOf(k)<0){ __seenQ.push(k); if(__seenQ.length>8) __seenQ.shift(); return q; }
+  }
+  return q;
+}
+
 /* --- แสดงโจทย์ --- */
 function nextQuestion(){
-  curQ=GEN[Math.floor(Math.random()*GEN.length)]();
+  curQ=freshQ(function(){ return GEN[Math.floor(Math.random()*GEN.length)](); });
   answered=false;
   $('#nextQ').style.display='none';
   const q=curQ;
