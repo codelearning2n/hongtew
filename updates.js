@@ -8,7 +8,7 @@
    ถ้าหน้านั้นมีปุ่ม/ลิงก์ id="updLink" อยู่แล้ว จะถูกผูกให้เปิดหน้าต่างนี้ด้วยอัตโนมัติ
    ========================================================================== */
 (function(){
-  if(window.__UPD__) return; window.__UPD__='1.0';
+  if(window.__UPD__) return; window.__UPD__='1.1';
   var D=document, KEY='seenUpd', all=[];
 
   /* หา updates.json จากตำแหน่งของไฟล์สคริปต์เอง — หน้าไหนอยู่ลึกแค่ไหนก็ยังหาเจอ */
@@ -45,14 +45,14 @@
   '#updLink{background:none;border:0;color:#fff;font-family:inherit;font-size:.88rem;font-weight:600;',
   '  cursor:pointer;text-decoration:underline;opacity:.92;padding:0;margin-top:10px;display:inline-block}',
   /* ปุ่มลอยเปิดดูย้อนหลัง — วางมุมขวาบน คู่กับปุ่มกลับที่อยู่มุมซ้ายบน */
-  '#updFab{position:fixed;top:8px;right:8px;z-index:99992;border:1px solid var(--line,#e2e8f0);',
-  '  background:var(--card,#fff);color:var(--ink,#1e293b);border-radius:999px;height:38px;',
-  '  min-width:38px;padding:0 11px;font-size:17px;line-height:1;cursor:pointer;font-family:inherit;',
-  '  box-shadow:0 2px 10px rgba(15,23,42,.18);display:flex;align-items:center;gap:5px}',
+  '#updFab{position:fixed;top:8px;right:8px;z-index:99992;border:1.5px solid var(--accent-bd,#e2e8f0);',
+  '  background:var(--card,#fff);color:var(--ink,#1e293b);border-radius:999px;height:44px;',
+  '  min-width:44px;padding:0 13px;font-size:20px;line-height:1;cursor:pointer;font-family:inherit;',
+  '  box-shadow:0 3px 14px rgba(15,23,42,.22);display:flex;align-items:center;gap:6px}',
   '#updFab:active{transform:scale(.95)}',
-  '#updFab .lb{font-size:12.5px;font-weight:700;display:none}',
+  '#updFab .lb{font-size:14px;font-weight:700;display:none}',
   '@media(min-width:520px){#updFab .lb{display:inline}}',
-  '#updFab .dot{position:absolute;top:-3px;right:-3px;width:11px;height:11px;border-radius:50%;',
+  '#updFab .dot{position:absolute;top:-3px;right:-3px;width:13px;height:13px;border-radius:50%;',
   '  background:#dc2626;border:2px solid var(--card,#fff);display:none}',
   '#updFab.new .dot{display:block}',
   '@media print{#updBack,#updFab{display:none!important}}'
