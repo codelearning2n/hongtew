@@ -102,26 +102,6 @@ a.card .k{background:var(--cs);color:var(--c);border-radius:6px;padding:1px 8px;
 footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:26px;line-height:1.8}
 @media(max-width:480px){.wrap{padding:10px 10px 24px}.hero{padding:18px 16px}.hero h1{font-size:1.25rem}
   .grid{grid-template-columns:1fr}}
-/* ── หน้าต่าง "มีอะไรใหม่" ── */
-#updBack{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:99993;display:none;
-  align-items:center;justify-content:center;padding:16px}
-#updBack.open{display:flex}
-#updCard{background:var(--card);color:var(--ink);border-radius:16px;max-width:520px;width:100%;
-  max-height:82vh;overflow:auto;box-shadow:0 12px 40px rgba(15,23,42,.35)}
-#updCard .hd{background:linear-gradient(135deg,var(--accent) 0%,#7c3aed 100%);color:#fff;
-  padding:16px 18px;border-radius:16px 16px 0 0;position:sticky;top:0}
-#updCard .hd h3{font-size:1.1rem;margin:0}
-#updCard .hd p{opacity:.9;font-size:.85rem;margin:2px 0 0}
-#updCard .bd{padding:14px 18px 18px}
-.updItem{border-left:3px solid var(--accent-bd);padding:2px 0 2px 12px;margin:0 0 14px}
-.updItem h4{font-size:.98rem;margin:0 0 2px;color:var(--accent-head)}
-.updItem .dt{font-size:.76rem;color:var(--muted);font-weight:700}
-.updItem ul{margin:6px 0 0;padding-left:18px;font-size:.9rem;line-height:1.65}
-.updItem li{margin-bottom:3px}
-#updOk{width:100%;background:var(--accent);color:#fff;border:0;border-radius:10px;padding:11px;
-  font-family:inherit;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:4px}
-#updLink{background:none;border:0;color:#fff;font-family:inherit;font-size:.88rem;font-weight:600;
-  cursor:pointer;text-decoration:underline;opacity:.92;padding:0;margin-top:10px;display:inline-block}
 </style>
 </head>
 <body data-subject="physics" data-tools="none">
@@ -167,7 +147,7 @@ footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:26px;lin
   </footer>
 </div>
 
-<script src="catalog.js?v=202609021352"></script>
+<script src="catalog.js?v=202609021402"></script>
 <script>
 const LIST = window.CATALOG || [];
 const $ = s=>document.querySelector(s);
@@ -234,43 +214,7 @@ $('#q').addEventListener('input',e=>{fQ=e.target.value.trim().toLowerCase();rend
 render();
 </script>
 
-<div id="updBack"><div id="updCard">
-  <div class="hd"><h3>🆕 มีอะไรใหม่</h3><p id="updSub"></p></div>
-  <div class="bd"><div id="updBody"></div><button id="updOk">รับทราบ</button></div>
-</div></div>
-<script>
-/* หน้าต่างสรุปของใหม่ — เพื่อนจะได้รู้ว่าอะไรเปลี่ยน ไม่ต้องมาไล่ดูเอง
-   จำ id ล่าสุดที่กดรับทราบไว้ ครั้งหน้าจะโชว์เฉพาะที่ยังไม่เคยเห็น */
-(function(){
-  var KEY='seenUpd', back=document.getElementById('updBack'), all=[];
-  function render(list,total){
-    document.getElementById('updSub').textContent =
-      list.length===total ? 'อัปเดตทั้งหมด '+total+' รายการ' : 'มี '+list.length+' อย่างใหม่ตั้งแต่ครั้งก่อน';
-    document.getElementById('updBody').innerHTML = list.map(function(u){
-      return '<div class="updItem"><div class="dt">'+u.date+'</div><h4>'+u.title+'</h4>'+
-        '<ul>'+u.items.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul></div>';
-    }).join('');
-    back.classList.add('open');
-  }
-  function seen(){ try{ return localStorage.getItem(KEY); }catch(e){ return null; } }
-  function markSeen(){ try{ if(all[0]) localStorage.setItem(KEY, all[0].id); }catch(e){} }
-  document.getElementById('updOk').onclick=function(){ back.classList.remove('open'); markSeen(); };
-  back.onclick=function(e){ if(e.target===back){ back.classList.remove('open'); markSeen(); } };
-  document.addEventListener('keydown',function(e){
-    if(e.key==='Escape'&&back.classList.contains('open')){ back.classList.remove('open'); markSeen(); } });
-
-  fetch('updates.json?v='+Date.now()).then(function(r){return r.json();}).then(function(d){
-    all=d; if(!d.length) return;
-    var lnk=document.getElementById('updLink');
-    if(lnk) lnk.onclick=function(){ render(all,all.length); };
-    var last=seen();
-    if(last===d[0].id) return;                     /* เห็นครบแล้ว ไม่ต้องเด้ง */
-    var i=d.findIndex(function(u){return u.id===last;});
-    var fresh = (last===null||i<0) ? d.slice(0,3) : d.slice(0,i);   /* เข้าครั้งแรก โชว์ 3 อันล่าสุดพอ */
-    if(fresh.length) render(fresh,d.length);
-  }).catch(function(){});
-})();
-</script>
+<script src="updates.js?v=202609021402"></script>
 <!--KIT-UI v3.0 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>
 /* =============================================================================
