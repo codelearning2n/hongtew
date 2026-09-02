@@ -2,212 +2,561 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>ห้องติว ม.6 — เลือกวิชาที่จะฝึก</title>
-<meta name="description" content="รวมข้อสอบฝึก สื่อการสอน และสรุปทุกวิชา ม.6 เปิดในเบราว์เซอร์ได้เลย">
-<meta name="theme-color" content="#4f46e5">
-<!-- ไม่ให้เสิร์ชเอนจินเก็บไปทำดัชนี = คนแปลกหน้าค้นหาไม่เจอ (คู่กับ robots.txt)
-     ย้ำ: กันการ "ค้นเจอ" เท่านั้น ใครได้ลิงก์ไปแล้วยังเปิดได้อยู่ดี -->
-<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ไดอะแฟรมคุมกำเนิด — เห็นภาพใน 1 นาที</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- สร้างจาก _kit/widget-template.html ตามกฎ _kit/DESIGN.md
+     ภาพทั้งหมดเป็น SVG ที่วาดขึ้นเอง ไม่ได้ดึงรูปจากอินเทอร์เน็ต (ไม่มีปัญหาลิขสิทธิ์ ขึ้นเว็บได้)
+     ชื่ออวัยวะยึดตามสไลด์อาจารย์ น.44 (มดลูก/ปากมดลูก/ช่องคลอด/ท่อนำไข่/รังไข่) -->
 <style>
+
+/* ===== TOKENS (สำเนาจาก design-tokens.css — ดูคำอธิบายเต็มที่ไฟล์นั้น) ===== */
 :root{
   --font:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
   --bg:#eef2f7;--ink:#1e293b;--muted:#64748b;--line:#e2e8f0;--card:#fff;--soft:#f8fafc;
-  --shadow:0 1px 4px rgba(15,23,42,.08);--ok:#059669;--bad:#dc2626;
+  --shadow:0 1px 4px rgba(15,23,42,.08);
+  --ok:#059669;--bad:#dc2626;
   --warn-bg:#fff7ed;--warn-bd:#f97316;--tip-bg:#ecfdf5;--tip-bd:#10b981;
-  --info-bg:#eff6ff;--info-bd:#3b82f6;--hot-bg:#fee2e2;--hot-ink:#b91c1c;
-  --badge-bg:#fef9c3;--badge-ink:#854d0e;
+  --info-bg:#eff6ff;--info-bd:#3b82f6;--steps-bg:#fffbeb;--steps-bd:#fcd34d;--steps-dash:#fde68a;
+  --hot-bg:#fee2e2;--hot-ink:#b91c1c;--badge-bg:#fef9c3;--badge-ink:#854d0e;
   --radius:14px;--radius-sm:10px;--radius-pill:999px;
   --accent:#4f46e5;--accent-head:#312e81;--accent-ink:#3730a3;--accent-soft:#eef2ff;
   --accent-bd:#c7d2fe;--accent-chip:#e0e7ff;--accent-ghost:#a5b4fc;
 }
-/* สีประจำวิชา — ใช้ตอนวาดการ์ด */
-.s-bio    {--c:#16a34a;--cs:#f0fdf4;--cb:#bbf7d0}
-.s-physics{--c:#4f46e5;--cs:#eef2ff;--cb:#c7d2fe}
-.s-math   {--c:#0284c7;--cs:#f0f9ff;--cb:#bae6fd}
-.s-chem   {--c:#ea7317;--cs:#fff7ed;--cb:#fed7aa}
-.s-christ {--c:#7c3aed;--cs:#f5f3ff;--cb:#ddd6fe}
-.s-islam  {--c:#0d9488;--cs:#f0fdfa;--cb:#99f6e4}
-.s-history{--c:#b45309;--cs:#fffbeb;--cb:#fde68a}
-.s-music{--c:#4d7c0f;--cs:#f7fee7;--cb:#bef264}
-.s-eng    {--c:#db2777;--cs:#fdf2f8;--cb:#fbcfe8}
-.s-thai   {--c:#dc2626;--cs:#fef2f2;--cb:#fecaca}
-.s-hindu  {--c:#ca8a04;--cs:#fefce8;--cb:#fef08a}
-.s-tsam   {--c:#475569;--cs:#f4f6f8;--cb:#cbd5e1}
-:root[data-theme="dark"] .s-bio{--cs:#0f2a1a;--cb:#256b41;--c:#4ade80}
-:root[data-theme="dark"] .s-physics{--cs:#1e1b4b;--cb:#3f3a8f;--c:#818cf8}
-:root[data-theme="dark"] .s-math{--cs:#0c2434;--cb:#0b5a80;--c:#38bdf8}
-:root[data-theme="dark"] .s-chem{--cs:#2b1a0c;--cb:#8a3d12;--c:#fb923c}
-:root[data-theme="dark"] .s-christ{--cs:#241a3d;--cb:#5b21b6;--c:#a78bfa}
-:root[data-theme="dark"] .s-islam{--cs:#0d2b28;--cb:#12615a;--c:#2dd4bf}
-:root[data-theme="dark"] .s-history{--cs:#2a1f0a;--cb:#8a4b0c;--c:#fbbf24}
-:root[data-theme="dark"] .s-eng{--cs:#2e1122;--cb:#8d1748;--c:#f472b6}
-:root[data-theme="dark"] .s-thai{--cs:#2d1414;--cb:#8d2020;--c:#f87171}
-:root[data-theme="dark"] .s-hindu{--cs:#2a2408;--cb:#7a6410;--c:#facc15}
-:root[data-theme="dark"] .s-tsam{--cs:#171d26;--cb:#41506a;--c:#a9b8cc}
-:root[data-theme="dark"] .s-music{--cs:#1a2610;--cb:#4d7c0f;--c:#a3e635}
+body[data-subject="physics"]{--accent:#4f46e5;--accent-head:#312e81;--accent-ink:#3730a3;--accent-soft:#eef2ff;--accent-bd:#c7d2fe;--accent-chip:#e0e7ff;--accent-ghost:#a5b4fc;--bg:#eef2f7}
+body[data-subject="bio"]{--accent:#16a34a;--accent-head:#14532d;--accent-ink:#166534;--accent-soft:#f0fdf4;--accent-bd:#bbf7d0;--accent-chip:#dcfce7;--accent-ghost:#86efac;--bg:#f0f4ef}
+body[data-subject="chem"]{--accent:#ea7317;--accent-head:#7c3a06;--accent-ink:#c2560c;--accent-soft:#fff7ed;--accent-bd:#fed7aa;--accent-chip:#ffedd5;--accent-ghost:#fdba74;--bg:#f6f2ec}
+body[data-subject="christ"]{--accent:#7c3aed;--accent-head:#4c1d95;--accent-ink:#6d28d9;--accent-soft:#f5f3ff;--accent-bd:#ddd6fe;--accent-chip:#ede9fe;--accent-ghost:#c4b5fd;--bg:#f2eff7}
+body[data-subject="islam"]{--accent:#0d9488;--accent-head:#134e4a;--accent-ink:#0f766e;--accent-soft:#f0fdfa;--accent-bd:#99f6e4;--accent-chip:#ccfbf1;--accent-ghost:#5eead4;--bg:#eef4f2}
+body[data-subject="history"]{--accent:#b45309;--accent-head:#78350f;--accent-ink:#92400e;--accent-soft:#fffbeb;--accent-bd:#fde68a;--accent-chip:#fef3c7;--accent-ghost:#fcd34d;--bg:#f5f1e8}
+body[data-subject="math"]{--accent:#0284c7;--accent-head:#0c4a6e;--accent-ink:#0369a1;--accent-soft:#f0f9ff;--accent-bd:#bae6fd;--accent-chip:#e0f2fe;--accent-ghost:#7dd3fc;--bg:#edf3f7}
+body[data-subject="eng"]{--accent:#db2777;--accent-head:#831843;--accent-ink:#be185d;--accent-soft:#fdf2f8;--accent-bd:#fbcfe8;--accent-chip:#fce7f3;--accent-ghost:#f9a8d4;--bg:#f7eef3}
+body[data-subject="thai"]{--accent:#dc2626;--accent-head:#7f1d1d;--accent-ink:#b91c1c;--accent-soft:#fef2f2;--accent-bd:#fecaca;--accent-chip:#fee2e2;--accent-ghost:#fca5a5;--bg:#f7efef}
+body[data-subject="hindu"]{--accent:#ca8a04;--accent-head:#713f12;--accent-ink:#a16207;--accent-soft:#fefce8;--accent-bd:#fef08a;--accent-chip:#fef9c3;--accent-ghost:#fde047;--bg:#f6f4e8}
 
+/* ===== COMPONENTS ===== */
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.6;
-     padding-bottom:calc(64px + env(safe-area-inset-bottom))}
-.wrap{max-width:940px;margin:0 auto;padding:14px 14px 30px}
+body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.6}
+.wrap{max-width:860px;margin:0 auto;padding:10px 12px 60px}
+header{padding:18px 4px 6px}
+header h1{font-size:1.35rem;color:var(--accent-head)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{background:var(--accent-chip);color:var(--accent-ink);border-radius:var(--radius-pill);padding:3px 12px;font-size:.82rem;font-weight:600}
+.chip.hot{background:var(--hot-bg);color:var(--hot-ink)}
+.badge{display:inline-block;background:var(--badge-bg);color:var(--badge-ink);border-radius:6px;padding:1px 8px;font-size:.78rem;font-weight:700;vertical-align:middle}
+.tabs{display:flex;gap:8px;overflow-x:auto;position:sticky;top:0;background:var(--bg);padding:10px 2px;z-index:10;-webkit-overflow-scrolling:touch}
+.tab-btn{white-space:nowrap;padding:8px 14px;border-radius:var(--radius-pill);border:1.5px solid var(--accent-bd);background:#fff;color:var(--accent-ink);cursor:pointer;font-size:.92rem;font-family:inherit;font-weight:600;flex-shrink:0}
+.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tab{display:none}
+.tab.show{display:block;animation:fade .25s}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.card{background:var(--card);border-radius:var(--radius);padding:16px;margin:12px 0;box-shadow:var(--shadow)}
+.card h2{font-size:1.15rem;color:var(--accent-head);margin-bottom:2px}
+.card h3{font-size:1.05rem;color:var(--ink);margin-bottom:6px}
+.sub{color:var(--muted);font-size:.85rem;margin-bottom:10px}
+details.concept{border:1px solid var(--line);border-radius:var(--radius-sm);margin:8px 0;overflow:hidden}
+details.concept summary{padding:10px 14px;cursor:pointer;font-weight:600;background:var(--soft);list-style:none}
+details.concept summary::before{content:"▸ ";color:var(--accent)}
+details.concept[open] summary::before{content:"▾ "}
+details.concept .body{padding:10px 14px;border-top:1px solid var(--line);font-size:.95rem}
+.formula{background:var(--accent-soft);border-radius:8px;padding:6px 12px;display:inline-block;margin:4px 4px 4px 0;font-weight:600;color:var(--accent-ink)}
+.warn{background:var(--warn-bg);border-left:4px solid var(--warn-bd);border-radius:8px;padding:10px 12px;margin:10px 0;font-size:.92rem}
+.tip{background:var(--tip-bg);border-left:4px solid var(--tip-bd);border-radius:8px;padding:10px 12px;margin:10px 0;font-size:.92rem}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:var(--radius-sm);padding:10px 16px;font-size:.95rem;cursor:pointer;font-family:inherit;font-weight:600}
+.btn:active{transform:scale(.97)}
+.btn.ghost{background:#fff;color:var(--accent);border:1.5px solid var(--accent-ghost)}
+.btn.small{padding:6px 12px;font-size:.85rem}
+.btn.green{background:var(--ok)}.btn.red{background:var(--bad)}
+.seg{display:inline-flex;border:1.5px solid var(--accent-bd);border-radius:var(--radius-sm);overflow:hidden;margin:4px 0;flex-wrap:wrap}
+.seg button{border:0;background:#fff;padding:8px 12px;cursor:pointer;font-family:inherit;font-size:.9rem;color:var(--accent-ink)}
+.seg button.on{background:var(--accent);color:#fff}
+input[type=range]{width:100%;accent-color:var(--accent);height:28px}
+.slider-row{margin:8px 0}.slider-row label{font-size:.92rem;font-weight:600}
+.slider-val{color:var(--accent);font-weight:700}
+.big-val{font-size:1.3rem;font-weight:700;color:var(--accent);margin:6px 0}
+.q-text,.tf-q{font-size:1rem;background:var(--soft);border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:6px}
+.ans-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:10px 0 4px}
+.ans-in{flex:1;min-width:120px;padding:10px 12px;border:2px solid #cbd5e1;border-radius:var(--radius-sm);font-size:1rem;font-family:inherit}
+.ans-in:focus{outline:none;border-color:var(--accent)}
+.ans-unit{font-weight:700;color:#475569;min-width:24px}
+.fb{margin:6px 0;font-weight:600;min-height:1.2em}
+.fb.ok{color:var(--ok)}.fb.bad{color:var(--bad)}
+.hint-box div{background:var(--info-bg);border-left:4px solid var(--info-bd);padding:8px 12px;margin:6px 0;border-radius:6px;font-size:.93rem}
+.drill-btns,.tf-btns{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.tf-btns .btn{flex:1;max-width:140px}
+.score{margin-top:8px;color:var(--muted);font-size:.88rem}
+.steps{background:var(--steps-bg);border:1px solid var(--steps-bd);border-radius:var(--radius-sm);padding:12px 14px;margin:8px 0;display:none;font-size:.95rem}
+.steps.show{display:block}
+.steps .st{padding:4px 0;border-bottom:1px dashed var(--steps-dash)}
+.steps .st:last-child{border-bottom:0}
+table.ref{border-collapse:collapse;width:100%;font-size:.9rem;margin:8px 0}
+table.ref th,table.ref td{border:1px solid var(--line);padding:6px 10px;text-align:center}
+table.ref th{background:var(--accent-soft);color:var(--accent-ink)}
+svg{max-width:100%;height:auto;display:block}
+.svg-box{background:var(--soft);border:1px solid var(--line);border-radius:var(--radius-sm);padding:8px;margin:8px 0}
+select{padding:8px;border:1.5px solid #cbd5e1;border-radius:8px;font-family:inherit;font-size:.9rem;background:#fff}
+sup,sub{font-size:.72em}
+@media(max-width:480px){.card{padding:12px}header h1{font-size:1.15rem}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
-.hero{background:linear-gradient(135deg,var(--accent) 0%,#7c3aed 100%);color:#fff;border-radius:18px;
-      padding:22px 20px;margin-bottom:14px;box-shadow:var(--shadow)}
-.hero h1{font-size:1.5rem;line-height:1.35;margin-bottom:4px}
-.hero p{opacity:.92;font-size:.95rem}
-.hero .stat{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:.85rem;font-weight:600}
-.hero .stat span{background:rgba(255,255,255,.2);padding:4px 12px;border-radius:999px;backdrop-filter:blur(4px)}
-
-.tools{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 6px}
-#q{flex:1;min-width:190px;padding:12px 14px;border:1.5px solid var(--line);border-radius:var(--radius-sm);
-   font-family:inherit;font-size:1rem;background:var(--card);color:var(--ink)}
-#q:focus{outline:none;border-color:var(--accent)}
-.chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 4px}
-.chip{border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:var(--radius-pill);
-      padding:7px 14px;font-size:.88rem;font-weight:600;cursor:pointer;font-family:inherit;min-height:38px}
-.chip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
-.chip .n{opacity:.6;font-size:.76rem;margin-left:3px}
-
-h2.sec{font-size:1.05rem;margin:20px 0 8px;color:var(--accent-head);display:flex;align-items:center;gap:8px}
-h2.sec .line{flex:1;height:1px;background:var(--line)}
-
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
-/* กลุ่มตามบท — เพิ่ม 2026-08-31 เพราะชีววิทยา 33 หน้าเรียงเรียบเป็นแถวเดียวแล้วรก */
-details.chap{border:1px solid var(--line);border-radius:10px;margin:8px 0;background:var(--soft);overflow:hidden}
-details.chap>summary{padding:10px 14px;cursor:pointer;font-weight:600;font-size:.95rem;color:var(--accent-ink);
-  list-style:none;display:flex;align-items:center;gap:8px}
-details.chap>summary::-webkit-details-marker{display:none}
-details.chap>summary::before{content:"▸";color:var(--accent);font-size:.9rem}
-details.chap[open]>summary::before{content:"▾"}
-details.chap>summary .n{margin-left:auto;font-size:.8rem;font-weight:700;color:var(--muted);
-  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:1px 9px}
-details.chap>summary:hover{background:var(--card)}
-details.chap>.grid{padding:0 12px 12px}
-a.card{display:flex;flex-direction:column;gap:5px;background:var(--card);border:1px solid var(--line);
-  border-left:5px solid var(--c,var(--accent));border-radius:var(--radius);padding:13px 14px;
-  text-decoration:none;color:inherit;box-shadow:var(--shadow);min-height:86px}
-a.card:hover{border-color:var(--c);transform:translateY(-2px);transition:.15s}
-a.card:active{transform:scale(.985)}
-a.card .t{font-weight:600;font-size:.97rem;line-height:1.4}
-a.card .m{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:.76rem;color:var(--muted);margin-top:auto}
-a.card .k{background:var(--cs);color:var(--c);border-radius:6px;padding:1px 8px;font-weight:700}
-
-.note{background:var(--info-bg);border-left:4px solid var(--info-bd);border-radius:10px;padding:12px 14px;
-      margin:16px 0;font-size:.9rem}
-.warn{background:var(--warn-bg);border-left:4px solid var(--warn-bd);border-radius:10px;padding:12px 14px;
-      margin:16px 0;font-size:.9rem}
-.empty{text-align:center;color:var(--muted);padding:40px 12px}
-footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:26px;line-height:1.8}
-@media(max-width:480px){.wrap{padding:10px 10px 24px}.hero{padding:18px 16px}.hero h1{font-size:1.25rem}
-  .grid{grid-template-columns:1fr}}
+/* ---- เฉพาะหน้านี้ ---- */
+.svg-box svg{width:100%;height:auto;display:block}
+.stagebar{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 4px}
+.stagebar .btn{flex:1 1 auto;min-width:7.5rem}
+.stagebar .btn:not(.on){background:var(--card);color:var(--accent-ink);border:1.5px solid var(--accent-bd)}
+.stagetxt{background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:8px;
+  padding:.7rem .8rem;margin:.5rem 0;font-size:.95rem;line-height:1.65;min-height:4.6rem}
+.legend{display:flex;gap:.9rem;flex-wrap:wrap;font-size:.82rem;color:var(--muted);margin-top:.4rem}
+.legend i{display:inline-block;width:.8rem;height:.8rem;border-radius:3px;margin-right:.25rem;vertical-align:-1px}
+.choice{display:block;width:100%;text-align:left;margin:.35rem 0;padding:.65rem .85rem;border-radius:var(--radius-sm);
+  border:1.5px solid var(--accent-bd);background:var(--card);color:var(--ink);cursor:pointer;
+  font-family:inherit;font-size:.95rem;line-height:1.5}
+.choice:hover{border-color:var(--accent)}
+.choice.ok{background:#dcfce7;border-color:var(--ok);color:#065f46;font-weight:600}
+.choice.bad{background:#fee2e2;border-color:var(--bad);color:#7f1d1d}
+.choice .k{font-weight:700;color:var(--accent-ink);margin-right:.35rem}
+.bar{height:.55rem;background:var(--line);border-radius:999px;overflow:hidden;margin:.5rem 0}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:999px;transition:width .3s}
+.stat{display:flex;gap:.9rem;flex-wrap:wrap;font-size:.88rem;color:var(--muted);margin-top:.5rem}
+.stat b{color:var(--accent);font-size:1.05rem}
+.sizewrap{text-align:center;padding:.5rem 0}
+.mini{font-size:.85rem;color:var(--muted);text-align:center;margin-top:.3rem}
 </style>
 </head>
-<body data-subject="physics" data-tools="none">
+
+<body data-subject="bio">
 <div class="wrap">
 
-  <div class="hero">
-    <h1>📚 ห้องติว ม.6</h1>
-    <p>ข้อสอบฝึก · สื่อจำลอง · สรุป — กดเข้าได้เลย ไม่ต้องล็อกอิน ไม่ต้องติดตั้ง</p>
-    <div class="stat">
-      <span id="stTotal">— หน้า</span>
-      <span id="stSubj">— วิชา</span>
-      <span>เล่นบนมือถือได้</span>
+  <header>
+    <h1>🔵 ไดอะแฟรมคุมกำเนิด — เห็นภาพใน 1 นาที</h1>
+    <div class="chips">
+      <span class="chip">ลากดูทีละขั้น</span>
+      <span class="chip">ภาพวาดเอง ไม่ใช่รูปจากเน็ต</span>
     </div>
-  </div>
+  </header>
 
-  <div class="tools">
-    <input id="q" type="text" placeholder="🔍 พิมพ์ค้นหา เช่น ฮอร์โมน, วงจรไฟฟ้า, ข้อสอบ">
-  </div>
+  <nav class="tabs" id="tabs">
+    <button class="tab-btn" data-tab="t1">📍 มันอยู่ตรงไหน</button>
+    <button class="tab-btn" data-tab="t2">📏 ใหญ่แค่ไหน</button>
+    <button class="tab-btn" data-tab="t3">⚖️ เทียบวิธีอื่น</button>
+    <button class="tab-btn" data-tab="t4">📝 ฝึกทำ</button>
+  </nav>
 
-  <div class="chips" id="kindRow">
-    <button class="chip on" data-kind="all">ทั้งหมด</button>
-    <button class="chip" data-kind="exam">📝 ข้อสอบ/เกมฝึก</button>
-    <button class="chip" data-kind="sim">🔬 สื่อจำลอง/3D</button>
-    <button class="chip" data-kind="note">📄 สรุป/ชีต</button>
-  </div>
-  <div class="chips" id="subjRow"></div>
+  <!-- ══════════ แท็บ 1 ══════════ -->
+  <section id="t1" class="tab">
+    <div class="card">
+      <h2>📍 ภาพตัดข้าง — กดดูทีละขั้น</h2>
+      <p class="sub">มองจากด้านข้าง ด้านซ้ายของภาพ = ด้านหน้าของลำตัว</p>
 
-  <div id="list"></div>
+      <div class="stagebar" id="stagebar">
+        <button class="btn small" data-st="0">① ยังไม่ใส่</button>
+        <button class="btn small" data-st="1">② พับสอดเข้าไป</button>
+        <button class="btn small" data-st="2">③ กางออกครอบไว้</button>
+        <button class="btn small" data-st="3">④ อสุจิมาถึง</button>
+      </div>
 
-  <div class="note" id="hintTools">
-    💡 <b>ในหน้าเรียนทุกหน้ามีปุ่ม ⚙️ มุมขวาล่าง</b> — กดเพื่อ <b>สลับโหมดมืด/สว่าง</b> และ <b>ปรับขนาดตัวหนังสือ</b><br>
-    หน้าของ <b>คณิต · ฟิสิกส์ · เคมี</b> จะมีเพิ่มอีก 2 ปุ่ม: <b>✏️ ที่ทด</b> (เขียนด้วยนิ้ว/ปากกา มีหลายหน้า เซฟให้อัตโนมัติ)
-    และ <b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b>
-  </div>
+      <div class="svg-box">
+        <svg viewBox="0 0 520 380" xmlns="http://www.w3.org/2000/svg" role="img"
+     aria-label="ภาพตัดข้างแสดงตำแหน่งไดอะแฟรมคุมกำเนิดครอบปากมดลูก">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/>
+    </marker>
+    <style>.ax{font-size:12px;fill:#94a3b8;font-weight:600}
+           .lb{font-size:13px;font-weight:600;fill:#475569}
+           .ld{stroke:#94a3b8;stroke-width:1.6;fill:none}</style>
+  </defs>
 
-  <footer>
-    ทำไว้ใช้เองและแบ่งเพื่อน · เนื้อหาสรุปจากคาบเรียน ม.6<br>
-    เจอตรงไหนผิดบอกได้ จะได้แก้
-  </footer>
+  <!-- ท่อนำไข่ + รังไข่ (ข้างที่มองเห็น) -->
+  <path d="M246,102 C222,84 202,80 188,88" stroke="#e0a3b8" stroke-width="7" fill="none" stroke-linecap="round"/>
+  <ellipse cx="176" cy="92" rx="15" ry="11" fill="#f6c6d4" stroke="#c2698a" stroke-width="2"/>
+
+  <!-- ── ช่องคลอด: ท่อต่อเนื่อง ปลายบนเป็นแอ่งรับปากมดลูก ── -->
+  <path d="M152,336 L305,208" stroke="#d98a9c" stroke-width="62" fill="none" stroke-linecap="round"/>
+  <path d="M152,336 L305,208" stroke="#fdf0f2" stroke-width="48" fill="none" stroke-linecap="round"/>
+
+  <!-- กระเพาะปัสสาวะ -->
+  <ellipse cx="186" cy="200" rx="44" ry="33" fill="#ffe6ae" stroke="#d9a441" stroke-width="2.5"/>
+
+  <!-- กระดูกหัวหน่าว -->
+  <ellipse cx="168" cy="272" rx="13" ry="17" transform="rotate(-22 168 272)"
+           fill="#ece5d6" stroke="#a99a80" stroke-width="2.5"/>
+
+  <!-- มดลูก -->
+  <ellipse cx="282" cy="140" rx="52" ry="45" transform="rotate(-18 282 140)"
+           fill="#f0a9a0" stroke="#c2695e" stroke-width="2.5"/>
+  <path d="M262,116 C252,136 262,160 290,168 C308,152 310,126 300,112 Z" fill="#fdeceb" opacity=".95"/>
+
+  <!-- ปากมดลูก (ยื่นลงในแอ่งช่องคลอด) -->
+  <path d="M290,164 L324,154 L328,192 C324,206 302,210 296,198 Z"
+        fill="#e08c84" stroke="#c2695e" stroke-width="2.5"/>
+  <path d="M308,168 L310,202" stroke="#fdeceb" stroke-width="4.5" stroke-linecap="round"/>
+
+  <!-- ══ ไดอะแฟรม ══ -->
+  <g id="gFold" style="display:none">
+    <ellipse cx="192" cy="306" rx="32" ry="6" transform="rotate(-40 192 306)"
+             fill="#8ea9db" stroke="#3f5c9a" stroke-width="2.5"/>
+    <path d="M148,352 L178,328" class="ld" marker-end="url(#ar)"/>
+    <text x="142" y="356" class="ax" text-anchor="end">บีบให้แบนก่อนสอด</text>
+  </g>
+
+  <g id="gSeat" style="display:none">
+    <path d="M200,263 C238,274 288,256 328,210 L328,195 C288,242 238,259 200,248 Z"
+          fill="#8ea9db" opacity=".55"/>
+    <path d="M200,263 C238,274 288,256 328,210" fill="none"
+          stroke="#3f5c9a" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="200" cy="256" r="7.5" fill="#2f4578"/>
+    <circle cx="328" cy="203" r="7.5" fill="#2f4578"/>
+    <g id="gSpermicide" style="display:none">
+      <circle cx="218" cy="267" r="3.4" fill="#22c55e"/>
+      <circle cx="237" cy="266" r="3.4" fill="#22c55e"/>
+      <circle cx="263" cy="258" r="3.4" fill="#22c55e"/>
+      <circle cx="290" cy="244" r="3.4" fill="#22c55e"/>
+      <circle cx="313" cy="225" r="3.4" fill="#22c55e"/>
+    </g>
+  </g>
+
+  <!-- อสุจิ -->
+  <g id="gSperm" style="display:none"></g>
+
+  <!-- ══ ป้ายชื่อ ══ -->
+  <g id="labels">
+    <path d="M188,86 L134,68" class="ld"/>
+    <text x="130" y="66" class="lb" text-anchor="end">รังไข่</text>
+
+    <path d="M240,96 L238,60" class="ld"/>
+    <text x="238" y="52" class="lb" text-anchor="middle">ท่อนำไข่</text>
+
+    <path d="M330,126 L390,116" class="ld"/>
+    <text x="396" y="120" class="lb">มดลูก</text>
+
+    <path d="M332,186 L390,196" class="ld"/>
+    <text x="396" y="200" class="lb">ปากมดลูก</text>
+
+    <path d="M150,196 L120,192" class="ld"/>
+    <text x="114" y="196" class="lb" text-anchor="end">กระเพาะปัสสาวะ</text>
+
+    <path d="M154,281 L112,296" class="ld"/>
+    <text x="106" y="300" class="lb" text-anchor="end">กระดูกหัวหน่าว</text>
+
+    <path d="M232,300 L282,344" class="ld"/>
+    <text x="288" y="350" class="lb">ช่องคลอด</text>
+
+    <g id="lblDia" style="display:none">
+      <path d="M272,262 L344,300" stroke="#3f5c9a" stroke-width="1.8" fill="none"/>
+      <text x="350" y="306" class="lb" fill="#2f4578">ไดอะแฟรม</text>
+    </g>
+  </g>
+</svg>
+      </div>
+
+      <div class="stagetxt" id="stagetxt"></div>
+
+      <div class="legend">
+        <span><i style="background:#c2695e"></i>มดลูก/ปากมดลูก</span>
+        <span><i style="background:#d98a9c"></i>ช่องคลอด</span>
+        <span><i style="background:#d9a441"></i>กระเพาะปัสสาวะ</span>
+        <span><i style="background:#4f6cae"></i>ไดอะแฟรม</span>
+        <span><i style="background:#22c55e"></i>สารฆ่าอสุจิ</span>
+      </div>
+
+      <div class="tip">💡 <b>จุดที่คนมองไม่ออกที่สุด:</b> ไดอะแฟรม<b>ไม่ได้เล็กเท่าปากมดลูก</b>
+        มันกางพาดขวาง<b>ช่องคลอดส่วนบนทั้งหมด</b> — ขอบด้านหน้ายันอยู่<b>หลังกระดูกหัวหน่าว</b>
+        ขอบด้านหลังตกลงใน<b>แอ่งหลังปากมดลูก</b> ปากมดลูกจึงถูกขังอยู่ในโดมเหมือนคว่ำถ้วยครอบไว้</div>
+
+      <div class="warn">⚠️ <b>ไม่มีในสไลด์อาจารย์</b> — สแกนครบทั้ง 116 หน้าแล้วไม่มีเรื่องคุมกำเนิดเลย
+        ไฟล์นี้เป็นความรู้เสริมเพื่อให้เห็นภาพ ไม่ใช่ขอบเขตสอบเก็บคะแนน</div>
+    </div>
+  </section>
+
+  <!-- ══════════ แท็บ 2 ══════════ -->
+  <section id="t2" class="tab">
+    <div class="card">
+      <h2>📏 ของจริงใหญ่แค่ไหน</h2>
+      <p class="sub">เทียบกับเหรียญ 10 บาท (เส้นผ่านศูนย์กลาง 26 มม.) — ลากดูขนาดต่าง ๆ</p>
+
+      <div class="slider-row">
+        <label>เส้นผ่านศูนย์กลาง = <span class="slider-val" id="mmVal">75</span> มม.</label>
+        <input type="range" id="mm" min="55" max="95" step="5" value="75">
+      </div>
+
+      <div class="sizewrap svg-box">
+        <svg viewBox="0 0 320 178" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="เปรียบเทียบขนาดไดอะแฟรมกับเหรียญ 10 บาท">
+          <circle id="cDia" cx="115" cy="80" r="55" fill="#8ea9db" opacity=".45" stroke="#3f5c9a" stroke-width="3"/>
+          <circle cx="262" cy="80" r="19" fill="#e2c275" stroke="#9a7b2e" stroke-width="3"/>
+          <text x="262" y="86" text-anchor="middle" font-size="13" font-weight="700" fill="#6b5316">10</text>
+          <text id="tDia" x="115" y="172" text-anchor="middle" font-size="13" font-weight="700" fill="#3f5c9a">75 มม.</text>
+          <text x="262" y="172" text-anchor="middle" font-size="13" font-weight="700" fill="#9a7b2e">26 มม.</text>
+        </svg>
+      </div>
+      <p class="mini" id="cmp"></p>
+
+      <div class="tip">💡 ขนาดที่ใช้จริงส่วนใหญ่ <b>65–80 มม.</b> — ต้องให้แพทย์วัดขนาดให้
+        เพราะ<b>ใหญ่ไปจะเจ็บ เล็กไปจะหลุด</b> คนละคนใช้ขนาดไม่เท่ากัน และหลังคลอด/น้ำหนักเปลี่ยนมากอาจต้องวัดใหม่</div>
+
+      <div class="card" style="box-shadow:none;border:1px solid var(--line)">
+        <h3>รูปร่างจริง</h3>
+        <div class="svg-box">
+          <svg viewBox="0 0 260 134" xmlns="http://www.w3.org/2000/svg" role="img"
+               aria-label="ภาพตัดขวางไดอะแฟรมแสดงขอบวงแหวนและโดม">
+            <path d="M40,78 C70,26 190,26 220,78" fill="#8ea9db" opacity=".45" stroke="#3f5c9a" stroke-width="4"/>
+            <circle cx="40" cy="78" r="9" fill="#2f4578"/>
+            <circle cx="220" cy="78" r="9" fill="#2f4578"/>
+            <path d="M40,90 L40,102 M220,90 L220,102" stroke="#94a3b8" stroke-width="1.6" fill="none"/>
+            <path d="M40,102 L220,102" stroke="#94a3b8" stroke-width="1.6" fill="none" stroke-dasharray="3 3"/>
+            <text x="130" y="20" text-anchor="middle" font-size="12.5" font-weight="600" fill="#3f5c9a">โดมยาง/ซิลิโคน</text>
+            <text x="130" y="122" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2f4578">ขอบวงแหวนสปริง — ยันผนังช่องคลอด</text>
+          </svg>
+        </div>
+        <p class="mini">ตื้น ๆ เหมือนถ้วยคว่ำ <b>ด้านเว้าหงายขึ้นรับปากมดลูก</b> · ขอบเป็นวงแหวนสปริงที่บีบให้แบนได้แล้วดีดกลับเป็นวงกลมเอง</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ แท็บ 3 ══════════ -->
+  <section id="t3" class="tab">
+    <div class="card">
+      <h2>⚖️ ไดอะแฟรมอยู่ตรงไหนของภาพรวม</h2>
+      <p class="sub">แยกตามกลไก — ข้อสอบชอบถามว่า "วิธีนี้จัดเป็นประเภทใด"</p>
+
+      <table class="ref">
+        <tr><th>วิธี</th><th>กลไก</th><th>กันโรคติดต่อฯ</th><th>ชั่วคราว/ถาวร</th></tr>
+        <tr><td><b>ไดอะแฟรม</b></td><td>กั้น (barrier)<br>ปิดปากมดลูก</td><td>❌ ไม่ได้</td><td>ชั่วคราว</td></tr>
+        <tr><td>หมวกครอบปากมดลูก</td><td>กั้น — เล็กกว่า ดูดติดปากมดลูกตรง ๆ</td><td>❌ ไม่ได้</td><td>ชั่วคราว</td></tr>
+        <tr><td>ถุงยางอนามัย</td><td>กั้น — ดักอสุจิไว้ทั้งหมด</td><td>✅ <b>ได้</b></td><td>ชั่วคราว</td></tr>
+        <tr><td>ยาเม็ด / ยาฉีด / ยาฝัง</td><td>ฮอร์โมน — <b>ยับยั้งการตกไข่</b></td><td>❌ ไม่ได้</td><td>ชั่วคราว</td></tr>
+        <tr><td>ห่วงอนามัย (IUD)</td><td>ใส่ใน<b>โพรงมดลูก</b> ขัดขวางการฝังตัว/อสุจิ</td><td>❌ ไม่ได้</td><td>ชั่วคราว (นาน)</td></tr>
+        <tr><td>ทำหมันชาย</td><td>ตัด/ผูก<b>ท่อนำอสุจิ</b></td><td>❌ ไม่ได้</td><td><b>ถาวร</b></td></tr>
+        <tr><td>ทำหมันหญิง</td><td>ตัด/ผูก<b>ท่อนำไข่</b></td><td>❌ ไม่ได้</td><td><b>ถาวร</b></td></tr>
+      </table>
+
+      <details class="concept"><summary>ไดอะแฟรม vs หมวกครอบปากมดลูก — จุดหลอกคลาสสิก</summary>
+        <div class="body">
+          <p>สองอันนี้ไม่ใช่อันเดียวกัน แม้จะเป็นวิธีกั้นเหมือนกัน</p>
+          <table class="ref">
+            <tr><th></th><th>ไดอะแฟรม</th><th>หมวกครอบปากมดลูก</th></tr>
+            <tr><td>ขนาด</td><td>55–95 มม.</td><td>เล็กกว่ามาก</td></tr>
+            <tr><td>ยันกับอะไร</td><td><b>กระดูกหัวหน่าว</b> + แอ่งหลังปากมดลูก</td><td>ดูดติด<b>ตัวปากมดลูก</b>โดยตรง</td></tr>
+            <tr><td>ครอบคลุม</td><td>ช่องคลอดส่วนบนทั้งหมด</td><td>เฉพาะปากมดลูก</td></tr>
+          </table>
+        </div>
+      </details>
+
+      <details class="concept"><summary>ทำไมลำพังไดอะแฟรมอย่างเดียวไม่พอ</summary>
+        <div class="body">
+          <p>ขอบยางไม่ได้แนบสนิท 100% และตัวไดอะแฟรมอาจ<b>ขยับ</b>ระหว่างมีเพศสัมพันธ์
+             อสุจิที่เล็ดลอดตามขอบยังว่ายต่อได้ จึงต้องทา<b>สารฆ่าอสุจิ (spermicide)</b> ที่โดมและขอบทุกครั้ง
+             — <b>กั้นทางกายภาพ + ฆ่าเคมี</b> ทำงานคู่กัน</p>
+          <p class="sub" style="margin-top:.5rem">อัตราล้มเหลวเมื่อใช้จริงราว 12–17% ต่อปี ซึ่ง<b>สูงกว่า</b>
+             ห่วงอนามัยหรือยาฝังมาก เพราะขึ้นกับการใส่ให้ถูกทุกครั้ง</p>
+        </div>
+      </details>
+
+      <details class="concept"><summary>ลำดับเวลาที่ต้องจำ</summary>
+        <div class="body">
+          <table class="ref">
+            <tr><th>ช่วง</th><th>ทำอะไร</th></tr>
+            <tr><td>ก่อนมีเพศสัมพันธ์</td><td>ทาสารฆ่าอสุจิ แล้วใส่ล่วงหน้าได้ไม่เกินราว 2 ชม.</td></tr>
+            <tr><td>หลังเสร็จ</td><td><b>คาไว้อย่างน้อย 6 ชม.</b> ห้ามถอดทันที (อสุจิยังมีชีวิต)</td></tr>
+            <tr><td>ไม่เกิน</td><td><b>24 ชม.</b> — คาไว้นานเกินเสี่ยงติดเชื้อ/ภาวะช็อกจากพิษแบคทีเรีย</td></tr>
+            <tr><td>หลังใช้</td><td>ล้าง ผึ่งแห้ง เก็บไว้ใช้ซ้ำได้</td></tr>
+          </table>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ══════════ แท็บ 4 ══════════ -->
+  <section id="t4" class="tab">
+    <div class="card">
+      <h2>📝 ฝึกทำ</h2>
+      <div class="bar"><i id="bar" style="width:0%"></i></div>
+      <div class="q-text" id="q">—</div>
+      <div id="ch"></div>
+      <div class="fb" id="fb"></div>
+      <div id="why"></div>
+      <div class="stat">
+        <span>ทำไป <b id="done">0</b> / <b id="tot">0</b></span>
+        <span>ถูก <b id="ok">0</b></span>
+        <span>ความแม่น <b id="pct">—</b></span>
+      </div>
+      <div class="ans-row"><button class="btn ghost small" id="re">เริ่มชุดใหม่</button></div>
+    </div>
+  </section>
+
 </div>
 
-<script src="catalog.js?v=202609020940"></script>
 <script>
-const LIST = window.CATALOG || [];
-const $ = s=>document.querySelector(s);
-let fKind='all', fSubj='all', fQ='';
+const $=i=>document.getElementById(i);
+const sh=a=>{for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;};
 
-/* ---- ชิปวิชา ---- */
-const subjects=[...new Set(LIST.map(x=>x.subj))];
-$('#subjRow').innerHTML = `<button class="chip on" data-subj="all">ทุกวิชา</button>` +
-  subjects.map(s=>{
-    const one=LIST.find(x=>x.subj===s);
-    return `<button class="chip" data-subj="${s}">${one.icon} ${s}<span class="n">${LIST.filter(x=>x.subj===s).length}</span></button>`;
-  }).join('');
-
-$('#stTotal').textContent = LIST.length+' หน้า';
-$('#stSubj').textContent  = subjects.length+' วิชา';
-
-function pass(x){
-  if(fKind!=='all' && x.kind!==fKind) return false;
-  if(fSubj!=='all' && x.subj!==fSubj) return false;
-  if(fQ && !(x.title+' '+x.subj+' '+x.path).toLowerCase().includes(fQ)) return false;
-  return true;
+/* ── แท็บ ── */
+function openTab(id){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('show',t.id===id));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
+  scrollTo(0,0);
 }
-const KIND={exam:'ข้อสอบ',sim:'สื่อจำลอง',note:'สรุป'};
+$('tabs').addEventListener('click',e=>{const b=e.target.closest('.tab-btn');if(b)openTab(b.dataset.tab);});
+openTab('t1');
 
-function render(){
-  const rows=LIST.filter(pass);
-  if(!LIST.length){
-    $('#list').innerHTML=`<div class="warn">ยังไม่มีรายการ — ต้องรัน <code>pwsh -File site/build.ps1</code> ก่อน
-      เพื่อคัดลอกหน้าเรียนเข้ามาและสร้าง <code>catalog.js</code></div>`; return;
+/* ══════════ แท็บ 1 : ขั้นตอน ══════════ */
+const TXT=[
+ '<b>① ยังไม่ใส่อะไร</b> — ดูตำแหน่งก่อน ช่องคลอดวิ่งเฉียงขึ้นไปด้านหลัง ปลายบนสุดมี<b>ปากมดลูก</b>ยื่นลงมา นั่นคือประตูเข้าสู่มดลูก สิ่งที่ไดอะแฟรมต้องปิดคือประตูบานนี้',
+ '<b>② บีบให้แบนแล้วสอด</b> — ขอบเป็นวงแหวนสปริง บีบให้เป็นแท่งยาวได้ ตอนสอดจึงผ่านเข้าไปได้ทั้งที่จริง ๆ กว้างกว่าปากช่องคลอด',
+ '<b>③ ปล่อยให้กางออก</b> — วงแหวนดีดกลับเป็นวงกลม <b>ขอบหน้าไปยันหลังกระดูกหัวหน่าว</b> (จุดน้ำเงินซ้าย) <b>ขอบหลังตกลงในแอ่งหลังปากมดลูก</b> (จุดน้ำเงินขวา) โดมจึงคว่ำครอบปากมดลูกไว้ทั้งบาน + ทาสารฆ่าอสุจิสีเขียวไว้ด้วย',
+ '<b>④ อสุจิว่ายขึ้นมา</b> — ชนโดมแล้วไปต่อไม่ได้ ตัวที่เล็ดตามขอบเจอสารฆ่าอสุจิ จึงเข้าโพรงมดลูกไม่ได้ → ไม่มีการปฏิสนธิ<br><span style="color:var(--muted)">กดปุ่ม ④ ซ้ำเพื่อดูเทียบว่า<b>ถ้าไม่ใส่</b>จะเป็นยังไง</span>'
+];
+const ROUTE=[[152,336],[195,300],[237,264],[275,232],[303,210],[311,186],[303,148],[290,110]];
+const BLOCK=2;
+let stage=-1, blocked=true, sperms=[], timer=null;
+
+function setStage(s){
+  const replay = (s===3 && stage===3);
+  stage=s;
+  if(replay) blocked=!blocked; else if(s===3) blocked=true;
+  $('gFold').style.display = s===1?'':'none';
+  $('gSeat').style.display = s>=2?'':'none';
+  $('gSpermicide').style.display = s>=2?'':'none';
+  $('lblDia').style.display = s>=2?'':'none';
+  $('gSperm').style.display = s===3?'':'none';
+  document.querySelectorAll('#stagebar .btn').forEach(b=>b.classList.toggle('on',+b.dataset.st===s));
+  let t=TXT[s];
+  if(s===3 && !blocked) t='<b>④ เทียบ: ถ้า<u>ไม่ใส่</u></b> — ไม่มีอะไรกั้น อสุจิว่ายผ่านปากมดลูกเข้าโพรงมดลูกได้ทั้งฝูง แล้วขึ้นต่อไปที่ท่อนำไข่ซึ่งเป็นจุดที่เกิดการปฏิสนธิจริง<br><span style="color:var(--muted)">กด ④ อีกครั้งเพื่อกลับไปดูแบบใส่</span>';
+  $('stagetxt').innerHTML=t;
+  $('gSeat').style.opacity = (s===3 && !blocked)?'.18':'1';
+  if(s===3) startSperm(); else stopSperm();
+}
+$('stagebar').addEventListener('click',e=>{const b=e.target.closest('.btn'); if(b) setStage(+b.dataset.st);});
+
+function ptAt(p){                       /* p: 0..1 ตามแนว ROUTE */
+  const lim = blocked ? BLOCK/(ROUTE.length-1) : 1;
+  p=Math.min(p,lim);
+  const f=p*(ROUTE.length-1), i=Math.min(Math.floor(f),ROUTE.length-2), t=f-i;
+  return [ROUTE[i][0]+(ROUTE[i+1][0]-ROUTE[i][0])*t, ROUTE[i][1]+(ROUTE[i+1][1]-ROUTE[i][1])*t];
+}
+function startSperm(){
+  const g=$('gSperm'); g.innerHTML=''; sperms=[];
+  for(let i=0;i<13;i++){
+    const el=document.createElementNS('http://www.w3.org/2000/svg','path');
+    el.setAttribute('d','M0,0 a4.6,3.2 0 1,0 .1,0 M-4,0 q-6,3.4 -13,0');
+    el.setAttribute('fill','#475569'); el.setAttribute('stroke','#475569');
+    el.setAttribute('stroke-width','1.6'); el.setAttribute('fill-rule','evenodd');
+    el.setAttribute('opacity','0');
+    g.appendChild(el);
+    sperms.push({el, p:-Math.random()*0.35, v:0.0060+Math.random()*0.004,
+                 off:(Math.random()-.5)*26, ph:Math.random()*6.3});
   }
-  if(!rows.length){ $('#list').innerHTML='<div class="empty">ไม่เจอที่ค้นหา ลองพิมพ์สั้นลง</div>'; return; }
-  let html='';
-  const cards = g => g.map(x=>`<a class="card s-${x.key}" href="${x.path}">
-                  <div class="t">${x.title}</div>
-                  <div class="m"><span class="k">${KIND[x.kind]}</span></div>
-                </a>`).join('');
-  for(const s of subjects){
-    const g=rows.filter(x=>x.subj===s); if(!g.length) continue;
-    html += `<h2 class="sec">${g[0].icon} ${s} <span class="line"></span>
-             <span style="font-size:.8rem;font-weight:600;color:var(--muted)">${g.length}</span></h2>`;
-    /* จัดกลุ่มตามบท (grp) — วิชาที่ไม่มีโฟลเดอร์ย่อยจะได้กลุ่มเดียวชื่อว่าง แสดงเรียบเหมือนเดิม */
-    const groups=[...new Set(g.map(x=>x.grp||''))];
-    if(groups.length<=1){ html += `<div class="grid">${cards(g)}</div>`; continue; }
-    for(const gr of groups){
-      const gg=g.filter(x=>(x.grp||'')===gr); if(!gg.length) continue;
-      /* ค้นหาอยู่ = กางทุกบทให้เห็นผลลัพธ์ · ปกติ = จำสถานะที่ผู้ใช้เปิดไว้ */
-      let open;
-      try{ open = fQ ? true : (localStorage.getItem('grp:'+s+':'+gr)==='1'); }catch(e){ open=!!fQ; }
-      html += `<details class="chap"${open?' open':''} data-k="grp:${s}:${gr}">
-        <summary>${gr||'อื่น ๆ'}<span class="n">${gg.length}</span></summary>
-        <div class="grid">${cards(gg)}</div></details>`;
-    }
+  if(!timer) timer=setInterval(step,33);   /* ใช้ setInterval ไม่ใช่ rAF — เดินแน่นอนทุกเบราว์เซอร์ */
+}
+function stopSperm(){ if(timer){clearInterval(timer); timer=null;} }
+function step(){
+  const ts=performance.now(), lim=blocked?BLOCK/(ROUTE.length-1):1;
+  for(const s of sperms){
+    s.p+=s.v;
+    /* ชนโดมแล้วค้างไว้พักหนึ่งค่อยเกิดใหม่ ให้เห็นเป็นสายที่ไหลมาชนไม่ขาด */
+    if(s.p > (blocked ? lim+0.5 : 1.15)) s.p=-Math.random()*0.4;
+    const [x,y]=ptAt(Math.max(s.p,0));
+    const stuck=s.p>=lim-0.004;                 /* ชนโดมแล้วดิ้นอยู่กับที่ */
+    const d=s.off*(stuck?0.55:1)+Math.sin(ts/150+s.ph)*(stuck?2:3.4);
+    s.el.setAttribute('transform','translate('+(x+d*0.56).toFixed(1)+','+(y+d*0.83).toFixed(1)+') rotate(-34)');
+    s.el.setAttribute('opacity', s.p<0?0:1);
   }
-  $('#list').innerHTML=html;
-  $('#list').querySelectorAll('details.chap').forEach(d=>{
-    d.addEventListener('toggle',()=>{ try{localStorage.setItem(d.dataset.k, d.open?'1':'0');}catch(e){} });
+}
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden) stopSperm(); else if(stage===3) startSperm();
+});
+setStage(0);
+
+/* ══════════ แท็บ 2 : ขนาด ══════════ */
+const PXMM=19/26;                              /* เหรียญ 26 มม. = รัศมี 19px */
+function drawSize(){
+  const mm=+$('mm').value;
+  $('mmVal').textContent=mm;
+  $('cDia').setAttribute('r', (mm/2*PXMM*2).toFixed(1));   /* ×2 ขยายให้เห็นชัด เหรียญก็สเกลเดียวกัน */
+  $('tDia').textContent=mm+' มม.';
+  $('cmp').innerHTML='กว้างประมาณ <b>'+(mm/26).toFixed(1)+' เท่า</b>ของเหรียญ 10 บาท'+
+    (mm>=65&&mm<=80?' — อยู่ในช่วงที่ใช้จริงบ่อยที่สุด':'');
+}
+$('mm').addEventListener('input',drawSize);
+drawSize();
+
+/* ══════════ แท็บ 4 : ข้อสอบ ══════════ */
+const Q=[
+ {q:'ไดอะแฟรมคุมกำเนิดจัดอยู่ในวิธีคุมกำเนิดประเภทใด',
+  a:'วิธีกั้น (barrier method)',
+  w:['วิธีใช้ฮอร์โมน','วิธีถาวร','วิธีนับระยะปลอดภัย'],
+  e:'กั้นทางกายภาพไม่ให้อสุจิผ่าน ไม่ได้ยุ่งกับฮอร์โมนเลย'},
+ {q:'ไดอะแฟรมทำหน้าที่ปิดกั้นบริเวณใดโดยตรง',
+  a:'ปากมดลูก (cervix)',
+  w:['ท่อนำไข่','ท่อนำอสุจิ','โพรงมดลูก'],
+  e:'ปิดประตูทางเข้ามดลูก อสุจิจึงขึ้นไปที่ท่อนำไข่ไม่ได้'},
+ {q:'ต้องใช้ไดอะแฟรมร่วมกับสิ่งใดจึงจะได้ผลดี',
+  a:'สารฆ่าอสุจิ (spermicide)',
+  w:['ฮอร์โมนโพรเจสเทอโรน','ยาปฏิชีวนะ','ห่วงอนามัย'],
+  e:'ขอบไม่ได้แนบสนิท 100% ต้องมีเคมีช่วยฆ่าตัวที่เล็ดลอด'},
+ {q:'ข้อใดคือความแตกต่างสำคัญระหว่างไดอะแฟรมกับถุงยางอนามัย',
+  a:'ถุงยางป้องกันโรคติดต่อทางเพศสัมพันธ์ได้ แต่ไดอะแฟรมไม่ได้',
+  w:['ไดอะแฟรมใช้ฮอร์โมน แต่ถุงยางไม่ใช้','ถุงยางเป็นวิธีถาวร แต่ไดอะแฟรมชั่วคราว','ไดอะแฟรมยับยั้งการตกไข่ แต่ถุงยางไม่ยับยั้ง'],
+  e:'ไดอะแฟรมกั้นแค่ปากมดลูก ผนังช่องคลอดยังสัมผัสกันอยู่ เชื้อจึงผ่านได้'},
+ {q:'หลังมีเพศสัมพันธ์ ควรคาไดอะแฟรมไว้อย่างน้อยกี่ชั่วโมง',
+  a:'6 ชั่วโมง',
+  w:['ถอดได้ทันที','1 ชั่วโมง','48 ชั่วโมง'],
+  e:'ถอดเร็วเกินไปอสุจิที่ยังมีชีวิตจะว่ายเข้าปากมดลูกได้ แต่ก็ไม่ควรเกิน 24 ชม.'},
+ {q:'ไดอะแฟรมต่างจากหมวกครอบปากมดลูกอย่างไร',
+  a:'ไดอะแฟรมใหญ่กว่า ขอบยันหลังกระดูกหัวหน่าว ครอบช่องคลอดส่วนบนทั้งหมด',
+  w:['ไดอะแฟรมเล็กกว่าและดูดติดปากมดลูกโดยตรง','ไดอะแฟรมเป็นวิธีถาวร','ไดอะแฟรมใส่ในโพรงมดลูก'],
+  e:'อันที่ดูดติดปากมดลูกตรง ๆ และเล็กกว่าคือหมวกครอบปากมดลูก'},
+ {q:'วิธีคุมกำเนิดใดออกฤทธิ์โดยยับยั้งการตกไข่',
+  a:'ยาเม็ดคุมกำเนิด',
+  w:['ไดอะแฟรม','ถุงยางอนามัย','ทำหมันชาย'],
+  e:'ฮอร์โมนไปกดการหลั่ง FSH/LH ฟอลลิเคิลจึงไม่สุก'},
+ {q:'ห่วงอนามัย (IUD) ถูกใส่ไว้ที่ใด',
+  a:'โพรงมดลูก',
+  w:['ช่องคลอดส่วนบน','ท่อนำไข่','ผิวหนังใต้ท้องแขน'],
+  e:'ใส่ในโพรงมดลูก — คนละที่กับไดอะแฟรมที่อยู่ในช่องคลอด'},
+ {q:'ข้อใด "ไม่ใช่" ผลของการใช้ไดอะแฟรม',
+  a:'ยับยั้งการตกไข่',
+  w:['กั้นอสุจิไม่ให้เข้าปากมดลูก','ใช้ซ้ำได้หลังล้างทำความสะอาด','ต้องวัดขนาดให้พอดีกับผู้ใช้'],
+  e:'การตกไข่ยังเกิดตามปกติทุกรอบเดือน ไดอะแฟรมไม่ยุ่งกับฮอร์โมนเลย'},
+ {q:'การทำหมันหญิงคือการตัดหรือผูกส่วนใด',
+  a:'ท่อนำไข่',
+  w:['ท่อนำอสุจิ','ปากมดลูก','รังไข่'],
+  e:'ตัดท่อนำไข่ ไข่กับอสุจิจึงไม่มีโอกาสเจอกัน (ท่อนำอสุจิคือการทำหมันชาย)'}
+];
+let queue=[],cur=null,st={ok:0,n:0};
+function startQ(){queue=sh(Q.slice());st={ok:0,n:0};$('tot').textContent=Q.length;nextQ();}
+function nextQ(){
+  $('fb').textContent=''; $('why').innerHTML='';
+  if(!queue.length){
+    $('q').textContent='🎉 ทำครบแล้ว';
+    $('ch').innerHTML='<div class="tip">กด "เริ่มชุดใหม่" เพื่อวนอีกรอบ</div>';
+    return;
+  }
+  cur=queue.shift();
+  $('q').textContent=cur.q;
+  const box=$('ch'); box.innerHTML=''; box.dataset.lock='';
+  sh([cur.a].concat(cur.w)).forEach((o,i)=>{
+    const b=document.createElement('button');
+    b.className='choice';
+    b.innerHTML='<span class="k">'+'กขคง'[i]+'.</span>'+o;
+    b.onclick=()=>{
+      if(box.dataset.lock)return; box.dataset.lock=1; st.n++;
+      [...box.children].forEach(el=>{ if(el.textContent.slice(2)===cur.a) el.className='choice ok'; });
+      if(o===cur.a){st.ok++;$('fb').textContent='✓ ถูกต้อง';$('fb').className='fb ok';}
+      else{b.className='choice bad';$('fb').innerHTML='✗ ตอบ <b>'+cur.a+'</b>';$('fb').className='fb bad';
+           queue.splice(Math.min(queue.length,2+(Math.random()*3|0)),0,cur);}
+      $('why').innerHTML='<div class="tip">💡 '+cur.e+'</div>';
+      $('ok').textContent=st.ok; $('done').textContent=st.n;
+      $('pct').textContent=Math.round(st.ok/st.n*100)+'%';
+      $('bar').style.width=((Q.length-queue.length)/Q.length*100)+'%';
+      setTimeout(nextQ, o===cur.a?1500:3600);
+    };
+    box.appendChild(b);
   });
 }
-$('#kindRow').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;
-  fKind=b.dataset.kind; $('#kindRow').querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c===b)); render();});
-$('#subjRow').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;
-  fSubj=b.dataset.subj; $('#subjRow').querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c===b)); render();});
-$('#q').addEventListener('input',e=>{fQ=e.target.value.trim().toLowerCase();render();});
-render();
+$('re').onclick=startQ;
+startQ();
 </script>
 <!--KIT-UI v2.9 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>
