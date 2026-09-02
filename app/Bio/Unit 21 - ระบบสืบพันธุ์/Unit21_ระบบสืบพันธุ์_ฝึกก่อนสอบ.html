@@ -308,7 +308,7 @@ const QB=D.q.map(([q,a,c,w])=>({q:q,a:a,c:c,w:w}));
 const qEng=mcq(QB,{q:'qQ',c:'qC',fb:'qFb',w:'qW',ok:'qOk',done:'qDone',pct:'qPct',bar:'qBar'},{ok:0,n:0},true);
 $('qRe').onclick=()=>qEng.restart();
 </script>
-<!--KIT-UI v3.3 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<!--KIT-UI v3.4 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>
 /* =============================================================================
    _kit/ui-controls.js  —  KIT UI  v1.0
@@ -334,7 +334,7 @@ $('qRe').onclick=()=>qEng.restart();
               หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
    ============================================================================= */
 (function(){
-if(window.__KITUI__) return; window.__KITUI__='3.3';   /* 3.3 = ส่ง ?from= ไปด้วย ปุ่มกลับในหน้าถามจะได้กลับหน้าเดิม ไม่ใช่หน้ารวม · 3.2 = ปุ่ม 🔎 ถาม AI · 3.1 = ขยายปุ่มกลับ */
+if(window.__KITUI__) return; window.__KITUI__='3.4';   /* 3.4 = โหลด feedback.js ให้ทุกหน้าเรียน */   /* เดิม 3.3 = ส่ง ?from= ไปด้วย ปุ่มกลับในหน้าถามจะได้กลับหน้าเดิม ไม่ใช่หน้ารวม · 3.2 = ปุ่ม 🔎 ถาม AI · 3.1 = ขยายปุ่มกลับ */
 
 /* ---------- helper ---------- */
 const D=document, R=D.documentElement;
@@ -705,6 +705,12 @@ if(homeHref){
   }
   D.body.appendChild(nav);
   D.body.classList.add('kitui-hasback');
+
+  /* ปุ่ม 💬 ส่งความเห็น — เก็บโค้ดไว้ที่ site/feedback.js ไฟล์เดียว ไม่ฝังซ้ำใน 200 กว่าไฟล์
+     homeHref ลงท้ายด้วย index.html เสมอ (ยาว 10 ตัว) ตัดออกแล้วต่อชื่อไฟล์ใหม่ */
+  const rootURL = homeHref.slice(0, homeHref.length-10);
+  const s=el('script'); s.src=rootURL+'feedback.js'; s.defer=true;
+  D.body.appendChild(s);
 }
 applyTheme(); applyFS();
 
