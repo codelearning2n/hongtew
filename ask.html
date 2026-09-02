@@ -3,11 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>ห้องติว ม.6 — เลือกวิชาที่จะฝึก</title>
-<meta name="description" content="รวมข้อสอบฝึก สื่อการสอน และสรุปทุกวิชา ม.6 เปิดในเบราว์เซอร์ได้เลย">
+<title>ถามเนื้อหา — ผู้ช่วยอิงสรุปของเรา</title>
+<meta name="description" content="ค้นเนื้อหาจากสรุปทุกวิชา พร้อมเลขหน้าสไลด์ แล้วส่งต่อให้ AI ตอบ">
 <meta name="theme-color" content="#4f46e5">
-<!-- ไม่ให้เสิร์ชเอนจินเก็บไปทำดัชนี = คนแปลกหน้าค้นหาไม่เจอ (คู่กับ robots.txt)
-     ย้ำ: กันการ "ค้นเจอ" เท่านั้น ใครได้ลิงก์ไปแล้วยังเปิดได้อยู่ดี -->
 <meta name="robots" content="noindex,nofollow">
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -16,201 +14,427 @@
   --bg:#eef2f7;--ink:#1e293b;--muted:#64748b;--line:#e2e8f0;--card:#fff;--soft:#f8fafc;
   --shadow:0 1px 4px rgba(15,23,42,.08);--ok:#059669;--bad:#dc2626;
   --warn-bg:#fff7ed;--warn-bd:#f97316;--tip-bg:#ecfdf5;--tip-bd:#10b981;
-  --info-bg:#eff6ff;--info-bd:#3b82f6;--hot-bg:#fee2e2;--hot-ink:#b91c1c;
-  --badge-bg:#fef9c3;--badge-ink:#854d0e;
+  --info-bg:#eff6ff;--info-bd:#3b82f6;--badge-bg:#fef9c3;--badge-ink:#854d0e;
   --radius:14px;--radius-sm:10px;--radius-pill:999px;
   --accent:#4f46e5;--accent-head:#312e81;--accent-ink:#3730a3;--accent-soft:#eef2ff;
   --accent-bd:#c7d2fe;--accent-chip:#e0e7ff;--accent-ghost:#a5b4fc;
 }
-/* สีประจำวิชา — ใช้ตอนวาดการ์ด */
-.s-bio    {--c:#16a34a;--cs:#f0fdf4;--cb:#bbf7d0}
-.s-physics{--c:#4f46e5;--cs:#eef2ff;--cb:#c7d2fe}
-.s-math   {--c:#0284c7;--cs:#f0f9ff;--cb:#bae6fd}
-.s-chem   {--c:#ea7317;--cs:#fff7ed;--cb:#fed7aa}
-.s-christ {--c:#7c3aed;--cs:#f5f3ff;--cb:#ddd6fe}
-.s-islam  {--c:#0d9488;--cs:#f0fdfa;--cb:#99f6e4}
-.s-history{--c:#b45309;--cs:#fffbeb;--cb:#fde68a}
-.s-music{--c:#4d7c0f;--cs:#f7fee7;--cb:#bef264}
-.s-eng    {--c:#db2777;--cs:#fdf2f8;--cb:#fbcfe8}
-.s-thai   {--c:#dc2626;--cs:#fef2f2;--cb:#fecaca}
-.s-hindu  {--c:#ca8a04;--cs:#fefce8;--cb:#fef08a}
-.s-tsam   {--c:#475569;--cs:#f4f6f8;--cb:#cbd5e1}
-:root[data-theme="dark"] .s-bio{--cs:#0f2a1a;--cb:#256b41;--c:#4ade80}
-:root[data-theme="dark"] .s-physics{--cs:#1e1b4b;--cb:#3f3a8f;--c:#818cf8}
-:root[data-theme="dark"] .s-math{--cs:#0c2434;--cb:#0b5a80;--c:#38bdf8}
-:root[data-theme="dark"] .s-chem{--cs:#2b1a0c;--cb:#8a3d12;--c:#fb923c}
-:root[data-theme="dark"] .s-christ{--cs:#241a3d;--cb:#5b21b6;--c:#a78bfa}
-:root[data-theme="dark"] .s-islam{--cs:#0d2b28;--cb:#12615a;--c:#2dd4bf}
-:root[data-theme="dark"] .s-history{--cs:#2a1f0a;--cb:#8a4b0c;--c:#fbbf24}
-:root[data-theme="dark"] .s-eng{--cs:#2e1122;--cb:#8d1748;--c:#f472b6}
-:root[data-theme="dark"] .s-thai{--cs:#2d1414;--cb:#8d2020;--c:#f87171}
-:root[data-theme="dark"] .s-hindu{--cs:#2a2408;--cb:#7a6410;--c:#facc15}
-:root[data-theme="dark"] .s-tsam{--cs:#171d26;--cb:#41506a;--c:#a9b8cc}
-:root[data-theme="dark"] .s-music{--cs:#1a2610;--cb:#4d7c0f;--c:#a3e635}
-
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.6;
      padding-bottom:calc(64px + env(safe-area-inset-bottom))}
 .wrap{max-width:940px;margin:0 auto;padding:14px 14px 30px}
+a{color:var(--accent-ink)}
 
 .hero{background:linear-gradient(135deg,var(--accent) 0%,#7c3aed 100%);color:#fff;border-radius:18px;
-      padding:22px 20px;margin-bottom:14px;box-shadow:var(--shadow)}
-.hero h1{font-size:1.5rem;line-height:1.35;margin-bottom:4px}
-.hero p{opacity:.92;font-size:.95rem}
-.hero .stat{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:.85rem;font-weight:600}
-.hero .stat span{background:rgba(255,255,255,.2);padding:4px 12px;border-radius:999px;backdrop-filter:blur(4px)}
+      padding:20px;margin-bottom:14px;box-shadow:var(--shadow)}
+.hero h1{font-size:1.35rem;line-height:1.35;margin-bottom:4px}
+.hero p{opacity:.93;font-size:.92rem}
+.hero a{color:#fff;font-weight:600}
 
-.tools{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 6px}
-#q{flex:1;min-width:190px;padding:12px 14px;border:1.5px solid var(--line);border-radius:var(--radius-sm);
-   font-family:inherit;font-size:1rem;background:var(--card);color:var(--ink)}
-#q:focus{outline:none;border-color:var(--accent)}
-.chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 4px}
-.chip{border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:var(--radius-pill);
-      padding:7px 14px;font-size:.88rem;font-weight:600;cursor:pointer;font-family:inherit;min-height:38px}
-.chip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
-.chip .n{opacity:.6;font-size:.76rem;margin-left:3px}
+.card{background:var(--card);border-radius:var(--radius);padding:14px;margin:12px 0;box-shadow:var(--shadow)}
+.card h2{font-size:1.05rem;color:var(--accent-head);margin-bottom:2px}
+.sub{color:var(--muted);font-size:.85rem}
 
-h2.sec{font-size:1.05rem;margin:20px 0 8px;color:var(--accent-head);display:flex;align-items:center;gap:8px}
-h2.sec .line{flex:1;height:1px;background:var(--line)}
+.chips{display:flex;gap:.35rem;flex-wrap:wrap;margin:.6rem 0}
+.chip{font-family:inherit;font-size:.84rem;cursor:pointer;border:1.5px solid var(--accent-bd);
+  background:var(--card);color:var(--accent-ink);padding:.3rem .75rem;border-radius:var(--radius-pill)}
+.chip.on{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:700}
+.chip .n{opacity:.65;font-size:.78rem;margin-left:.25rem}
 
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
-/* กลุ่มตามบท — เพิ่ม 2026-08-31 เพราะชีววิทยา 33 หน้าเรียงเรียบเป็นแถวเดียวแล้วรก */
-details.chap{border:1px solid var(--line);border-radius:10px;margin:8px 0;background:var(--soft);overflow:hidden}
-details.chap>summary{padding:10px 14px;cursor:pointer;font-weight:600;font-size:.95rem;color:var(--accent-ink);
-  list-style:none;display:flex;align-items:center;gap:8px}
-details.chap>summary::-webkit-details-marker{display:none}
-details.chap>summary::before{content:"▸";color:var(--accent);font-size:.9rem}
-details.chap[open]>summary::before{content:"▾"}
-details.chap>summary .n{margin-left:auto;font-size:.8rem;font-weight:700;color:var(--muted);
-  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:1px 9px}
-details.chap>summary:hover{background:var(--card)}
-details.chap>.grid{padding:0 12px 12px}
-a.card{display:flex;flex-direction:column;gap:5px;background:var(--card);border:1px solid var(--line);
-  border-left:5px solid var(--c,var(--accent));border-radius:var(--radius);padding:13px 14px;
-  text-decoration:none;color:inherit;box-shadow:var(--shadow);min-height:86px}
-a.card:hover{border-color:var(--c);transform:translateY(-2px);transition:.15s}
-a.card:active{transform:scale(.985)}
-a.card .t{font-weight:600;font-size:.97rem;line-height:1.4}
-a.card .m{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:.76rem;color:var(--muted);margin-top:auto}
-a.card .k{background:var(--cs);color:var(--c);border-radius:6px;padding:1px 8px;font-weight:700}
+.askrow{display:flex;gap:.5rem;margin-top:.5rem}
+.askin{flex:1;min-width:0;padding:.7rem .85rem;border:2px solid var(--accent-bd);border-radius:var(--radius-sm);
+  font-size:1rem;font-family:inherit;background:var(--card);color:var(--ink)}
+.askin:focus{outline:none;border-color:var(--accent)}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:var(--radius-sm);padding:.7rem 1.1rem;
+  font-size:.95rem;cursor:pointer;font-family:inherit;font-weight:600;white-space:nowrap}
+.btn:disabled{opacity:.5;cursor:default}
+.btn.ghost{background:var(--card);color:var(--accent);border:1.5px solid var(--accent-ghost)}
+.btn.small{padding:.4rem .8rem;font-size:.85rem}
 
-.note{background:var(--info-bg);border-left:4px solid var(--info-bd);border-radius:10px;padding:12px 14px;
-      margin:16px 0;font-size:.9rem}
-.warn{background:var(--warn-bg);border-left:4px solid var(--warn-bd);border-radius:10px;padding:12px 14px;
-      margin:16px 0;font-size:.9rem}
-.empty{text-align:center;color:var(--muted);padding:40px 12px}
-footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:26px;line-height:1.8}
-@media(max-width:480px){.wrap{padding:10px 10px 24px}.hero{padding:18px 16px}.hero h1{font-size:1.25rem}
-  .grid{grid-template-columns:1fr}}
+.hit{border:1px solid var(--line);border-radius:var(--radius-sm);padding:.7rem .8rem;margin:.55rem 0;
+  background:var(--soft)}
+.hit .meta{font-size:.78rem;color:var(--muted);margin-bottom:.3rem;display:flex;gap:.4rem;flex-wrap:wrap;
+  align-items:center}
+.hit .meta b{color:var(--accent-ink)}
+.hit .txt{font-size:.93rem;white-space:pre-wrap;word-break:break-word}
+.hit .txt.clip{max-height:8.5rem;overflow:hidden;position:relative}
+.hit .txt.clip::after{content:'';position:absolute;left:0;right:0;bottom:0;height:2.6rem;
+  background:linear-gradient(transparent,var(--soft))}
+.hit mark{background:var(--badge-bg);color:var(--badge-ink);border-radius:3px;padding:0 .1rem}
+.pg{display:inline-block;background:var(--badge-bg);color:var(--badge-ink);border-radius:5px;
+  padding:0 .4rem;font-size:.75rem;font-weight:700}
+.more{background:none;border:0;color:var(--accent);font-family:inherit;font-size:.82rem;cursor:pointer;
+  padding:.2rem 0;font-weight:600}
+
+.tip{background:var(--tip-bg);border-left:4px solid var(--tip-bd);border-radius:8px;padding:.7rem .8rem;
+  margin:.6rem 0;font-size:.9rem}
+.warn{background:var(--warn-bg);border-left:4px solid var(--warn-bd);border-radius:8px;padding:.7rem .8rem;
+  margin:.6rem 0;font-size:.9rem}
+.info{background:var(--info-bg);border-left:4px solid var(--info-bd);border-radius:8px;padding:.7rem .8rem;
+  margin:.6rem 0;font-size:.9rem}
+
+.aibtns{display:flex;gap:.45rem;flex-wrap:wrap;margin-top:.5rem}
+.aibtns a.btn{text-decoration:none;display:inline-block}
+details.keybox{border:1px solid var(--line);border-radius:var(--radius-sm);margin-top:.7rem;overflow:hidden}
+details.keybox summary{padding:.55rem .8rem;cursor:pointer;font-weight:600;background:var(--soft);
+  list-style:none;font-size:.9rem}
+details.keybox summary::before{content:"⚙️ "}
+details.keybox .body{padding:.7rem .8rem;border-top:1px solid var(--line)}
+.kin{width:100%;padding:.55rem .7rem;border:1.5px solid var(--line);border-radius:var(--radius-sm);
+  font-family:inherit;font-size:.9rem;margin:.3rem 0;background:var(--card);color:var(--ink)}
+.ans{white-space:pre-wrap;font-size:.95rem;line-height:1.75}
+.ans .out{background:var(--warn-bg);border-left:3px solid var(--warn-bd);padding:.1rem .4rem;
+  border-radius:4px;font-weight:600}
+.spin{display:inline-block;width:.9rem;height:.9rem;border:2px solid var(--accent-bd);
+  border-top-color:var(--accent);border-radius:50%;animation:sp .7s linear infinite;vertical-align:-2px}
+@keyframes sp{to{transform:rotate(360deg)}}
+.foot{text-align:center;color:var(--muted);font-size:.82rem;margin-top:1.2rem}
 </style>
 </head>
+
 <body data-subject="physics" data-tools="none">
 <div class="wrap">
 
   <div class="hero">
-    <h1>📚 ห้องติว ม.6</h1>
-    <p>ข้อสอบฝึก · สื่อจำลอง · สรุป — กดเข้าได้เลย ไม่ต้องล็อกอิน ไม่ต้องติดตั้ง</p>
-    <div class="stat">
-      <span id="stTotal">— หน้า</span>
-      <span id="stSubj">— วิชา</span>
-      <span>เล่นบนมือถือได้</span>
+    <h1>🔎 ถามเนื้อหา</h1>
+    <p>ค้นจาก<b>สรุปที่เราเขียนเอง</b>ทุกวิชา พร้อมเลขหน้าสไลด์ แล้วส่งต่อให้ AI ตอบได้ในคลิกเดียว</p>
+    <p style="margin-top:.5rem"><a href="index.html">← กลับหน้ารวมวิชา</a></p>
+  </div>
+
+  <div class="card">
+    <h2>① เลือกวิชา</h2>
+    <p class="sub">โหลดเฉพาะวิชาที่เลือก จะได้ไม่กินเน็ต</p>
+    <div class="chips" id="subs"><span class="sub">กำลังโหลด…</span></div>
+
+    <h2 style="margin-top:.8rem">② พิมพ์สิ่งที่อยากรู้</h2>
+    <p class="sub">พิมพ์เป็นคำถามหรือแค่คำสำคัญก็ได้ เช่น <i>อะโครโซมัลรีแอกชัน</i> · <i>วันสำคัญฮินดู</i></p>
+    <div class="askrow">
+      <input class="askin" id="q" placeholder="อยากรู้เรื่องอะไร…" enterkeyhint="search">
+      <button class="btn" id="go">ค้น</button>
     </div>
-    <a href="ask.html" style="display:inline-block;margin-top:12px;background:rgba(255,255,255,.18);
-       border:1px solid rgba(255,255,255,.45);border-radius:999px;padding:8px 16px;color:#fff;
-       text-decoration:none;font-weight:700;font-size:.92rem">🔎 ถามเนื้อหา — ค้นจากสรุปทุกวิชา แล้วให้ AI ตอบ</a>
+    <div id="status" class="sub" style="margin-top:.5rem"></div>
   </div>
 
-  <div class="tools">
-    <input id="q" type="text" placeholder="🔍 พิมพ์ค้นหา เช่น ฮอร์โมน, วงจรไฟฟ้า, ข้อสอบ">
+  <div id="res"></div>
+
+  <div class="card" id="aicard" style="display:none">
+    <h2>③ ให้ AI ช่วยเรียบเรียง</h2>
+    <p class="sub">ระบบจะแนบเนื้อหาที่ค้นเจอไปด้วย AI จะได้ตอบจากสรุปของเรา ไม่ใช่เดาเอง</p>
+
+    <div class="aibtns">
+      <button class="btn" id="copy">📋 คัดลอกคำถาม + เนื้อหา</button>
+      <a class="btn ghost" id="lnkG" target="_blank" rel="noopener">เปิด Gemini</a>
+      <a class="btn ghost" id="lnkC" target="_blank" rel="noopener">เปิด ChatGPT</a>
+      <a class="btn ghost" id="lnkA" target="_blank" rel="noopener">เปิด Claude</a>
+    </div>
+    <div class="tip">💡 <b>ไม่ต้องใช้คีย์ ไม่เสียเงิน</b> — กดคัดลอก แล้วเปิด AI ตัวไหนก็ได้ วางแล้วส่ง
+      คำสั่งที่แนบไปบอกให้ AI <b>อ้างเลขหน้าทุกครั้ง</b> และถ้าเรื่องไหนไม่มีในสรุป
+      ให้ติดป้าย <span class="out">[นอกสไลด์]</span> ไว้ จะได้รู้ว่าอันนั้นอาจารย์ไม่ได้สอน</div>
+
+    <details class="keybox">
+      <summary>อยากให้ตอบในหน้านี้เลย (ต้องใส่คีย์ของตัวเอง)</summary>
+      <div class="body">
+        <div class="warn">⚠️ <b>อ่านก่อนใส่</b> — เว็บนี้เป็นหน้าเว็บนิ่ง ไม่มีเซิร์ฟเวอร์ คีย์จึงถูกเก็บไว้
+          <b>ในเบราว์เซอร์ของเครื่องนี้เท่านั้น</b> (localStorage) ไม่ได้ส่งไปที่ไหนนอกจากผู้ให้บริการ AI โดยตรง<br>
+          • ใช้<b>คีย์ฟรี</b> (Google AI Studio) อย่าใช้คีย์ที่ผูกบัตร<br>
+          • <b>อย่าใส่ในเครื่องคนอื่นหรือเครื่องสาธารณะ</b><br>
+          • เพื่อนที่เปิดเว็บนี้ต้องใส่คีย์ของตัวเอง ไม่ได้ใช้ของเรา</div>
+        <input class="kin" id="key" type="password" placeholder="วางคีย์ที่นี่ (AIza… ของ Gemini หรือ sk-ant-… ของ Claude)">
+        <input class="kin" id="model" placeholder="ชื่อโมเดล (เว้นว่าง = gemini-2.0-flash)">
+        <div class="aibtns">
+          <button class="btn" id="ask">🤖 ถามเลย</button>
+          <button class="btn ghost small" id="forget">ลบคีย์ออกจากเครื่อง</button>
+        </div>
+        <div id="ansbox" style="margin-top:.7rem"></div>
+      </div>
+    </details>
   </div>
 
-  <div class="chips" id="kindRow">
-    <button class="chip on" data-kind="all">ทั้งหมด</button>
-    <button class="chip" data-kind="exam">📝 ข้อสอบ/เกมฝึก</button>
-    <button class="chip" data-kind="sim">🔬 สื่อจำลอง/3D</button>
-    <button class="chip" data-kind="note">📄 สรุป/ชีต</button>
-  </div>
-  <div class="chips" id="subjRow"></div>
-
-  <div id="list"></div>
-
-  <div class="note" id="hintTools">
-    💡 <b>ในหน้าเรียนทุกหน้ามีปุ่ม ⚙️ มุมขวาล่าง</b> — กดเพื่อ <b>สลับโหมดมืด/สว่าง</b> และ <b>ปรับขนาดตัวหนังสือ</b><br>
-    หน้าของ <b>คณิต · ฟิสิกส์ · เคมี</b> จะมีเพิ่มอีก 2 ปุ่ม: <b>✏️ ที่ทด</b> (เขียนด้วยนิ้ว/ปากกา มีหลายหน้า เซฟให้อัตโนมัติ)
-    และ <b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b>
-  </div>
-
-  <footer>
-    ทำไว้ใช้เองและแบ่งเพื่อน · เนื้อหาสรุปจากคาบเรียน ม.6<br>
-    เจอตรงไหนผิดบอกได้ จะได้แก้
-  </footer>
+  <div class="foot">ดัชนีสร้างจากสรุปที่เราเขียนเอง <b id="nchunk">—</b> ชิ้น ·
+    ไม่ได้เอาข้อความจากไฟล์สไลด์ขึ้นเว็บ (ลิขสิทธิ์)</div>
 </div>
 
-<script src="catalog.js?v=202609021343"></script>
 <script>
-const LIST = window.CATALOG || [];
-const $ = s=>document.querySelector(s);
-let fKind='all', fSubj='all', fQ='';
+const $=i=>document.getElementById(i);
+let MAN=[], SUB='', DATA=[], HITS=[], LOADED={};
 
-/* ---- ชิปวิชา ---- */
-const subjects=[...new Set(LIST.map(x=>x.subj))];
-$('#subjRow').innerHTML = `<button class="chip on" data-subj="all">ทุกวิชา</button>` +
-  subjects.map(s=>{
-    const one=LIST.find(x=>x.subj===s);
-    return `<button class="chip" data-subj="${s}">${one.icon} ${s}<span class="n">${LIST.filter(x=>x.subj===s).length}</span></button>`;
-  }).join('');
+/* ── ตัดคำไทย: ใช้ตัวตัดคำของเบราว์เซอร์ถ้ามี ไม่มีค่อยถอยไปใช้ n-gram ── */
+let SEG=null; try{ SEG=new Intl.Segmenter('th',{granularity:'word'}); }catch(e){}
+const STOP=new Set(('คือ อะไร ทำไม ยังไง อย่างไร ของ ที่ และ ใน กับ จาก มี เป็น การ ความ ได้ ให้ ไม่ ก็ '+
+  'แล้ว หรือ ถ้า เมื่อ โดย ซึ่ง นี้ นั้น ต้อง จะ ไหน บ้าง ช่วย อธิบาย หน่อย ขอ ครับ ค่ะ '+
+  'what is are the a an of and how why to in for').split(/\s+/));
 
-$('#stTotal').textContent = LIST.length+' หน้า';
-$('#stSubj').textContent  = subjects.length+' วิชา';
-
-function pass(x){
-  if(fKind!=='all' && x.kind!==fKind) return false;
-  if(fSubj!=='all' && x.subj!==fSubj) return false;
-  if(fQ && !(x.title+' '+x.subj+' '+x.path).toLowerCase().includes(fQ)) return false;
-  return true;
-}
-const KIND={exam:'ข้อสอบ',sim:'สื่อจำลอง',note:'สรุป'};
-
-function render(){
-  const rows=LIST.filter(pass);
-  if(!LIST.length){
-    $('#list').innerHTML=`<div class="warn">ยังไม่มีรายการ — ต้องรัน <code>pwsh -File site/build.ps1</code> ก่อน
-      เพื่อคัดลอกหน้าเรียนเข้ามาและสร้าง <code>catalog.js</code></div>`; return;
-  }
-  if(!rows.length){ $('#list').innerHTML='<div class="empty">ไม่เจอที่ค้นหา ลองพิมพ์สั้นลง</div>'; return; }
-  let html='';
-  const cards = g => g.map(x=>`<a class="card s-${x.key}" href="${x.path}">
-                  <div class="t">${x.title}</div>
-                  <div class="m"><span class="k">${KIND[x.kind]}</span></div>
-                </a>`).join('');
-  for(const s of subjects){
-    const g=rows.filter(x=>x.subj===s); if(!g.length) continue;
-    html += `<h2 class="sec">${g[0].icon} ${s} <span class="line"></span>
-             <span style="font-size:.8rem;font-weight:600;color:var(--muted)">${g.length}</span></h2>`;
-    /* จัดกลุ่มตามบท (grp) — วิชาที่ไม่มีโฟลเดอร์ย่อยจะได้กลุ่มเดียวชื่อว่าง แสดงเรียบเหมือนเดิม */
-    const groups=[...new Set(g.map(x=>x.grp||''))];
-    if(groups.length<=1){ html += `<div class="grid">${cards(g)}</div>`; continue; }
-    for(const gr of groups){
-      const gg=g.filter(x=>(x.grp||'')===gr); if(!gg.length) continue;
-      /* ค้นหาอยู่ = กางทุกบทให้เห็นผลลัพธ์ · ปกติ = จำสถานะที่ผู้ใช้เปิดไว้ */
-      let open;
-      try{ open = fQ ? true : (localStorage.getItem('grp:'+s+':'+gr)==='1'); }catch(e){ open=!!fQ; }
-      html += `<details class="chap"${open?' open':''} data-k="grp:${s}:${gr}">
-        <summary>${gr||'อื่น ๆ'}<span class="n">${gg.length}</span></summary>
-        <div class="grid">${cards(gg)}</div></details>`;
+function tok(q){
+  q=q.toLowerCase().trim();
+  let w=[];
+  if(SEG){ for(const s of SEG.segment(q)) if(s.isWordLike) w.push(s.segment); }
+  else w=q.split(/[^0-9a-z\u0E00-\u0E7F]+/);
+  w=w.filter(x=>x.length>1 && !STOP.has(x));
+  /* ตัวตัดคำซอยศัพท์เทคนิคยาว ๆ จนพัง (อะโครโซมัลรีแอกชัน -> อะ|โคร|โซ|มัล|...)
+     จึงเก็บ "ก้อนไทยที่พิมพ์ติดกัน" ไว้เป็นคำค้นอีกตัว แล้วให้ไปไล่ตัดหางเอา */
+  let core=[...new Set(w)];
+  const runs=(q.match(/[฀-๿]{6,}/g)||[]);
+  for(const r of runs){
+    let frs=[];
+    if(SEG) for(const s of SEG.segment(r)) if(s.isWordLike) frs.push(s.segment);
+    /* ซอยถี่เกิน 0.35 ชิ้น/ตัวอักษร = ตัวตัดคำไม่รู้จักศัพท์นี้ เลยสับเป็นเศษ
+       (อะโครโซมัลรีแอกชัน = 0.44 ซอยเละ · หยุดที่ระยะไหน = 0.29 วลีปกติ อย่าไปยุ่ง) */
+    if(frs.length && frs.length/r.length > 0.35){
+      core=core.filter(x=>r.indexOf(x)<0);
+      if(!core.includes(r)) core.push(r);
     }
   }
-  $('#list').innerHTML=html;
-  $('#list').querySelectorAll('details.chap').forEach(d=>{
-    d.addEventListener('toggle',()=>{ try{localStorage.setItem(d.dataset.k, d.open?'1':'0');}catch(e){} });
-  });
+  const all=core.slice();
+  for(const r of runs) if(!all.includes(r)) all.push(r);
+  return {w:all, core};
 }
-$('#kindRow').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;
-  fKind=b.dataset.kind; $('#kindRow').querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c===b)); render();});
-$('#subjRow').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;
-  fSubj=b.dataset.subj; $('#subjRow').querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c===b)); render();});
-$('#q').addEventListener('input',e=>{fQ=e.target.value.trim().toLowerCase();render();});
-render();
+function cnt(h,n){ let c=0,i=0; while((i=h.indexOf(n,i))>=0){ c++; i+=n.length; if(c>5)break; } return c; }
+
+/* น้ำหนักตามความหายากของคำ (IDF) — ถ้าไม่มี คำโหลอย่าง "ดาว" หรือ "การ"
+   จะลากผลที่ไม่เกี่ยวขึ้นมาเต็มไปหมด แล้วผู้ใช้จะเข้าใจผิดว่าสรุปมีเรื่องนี้ */
+function idfOf(T){
+  const N=DATA.length, idf={};
+  for(const w of T.w){
+    let df=0;
+    for(const c of DATA) if(c._x.indexOf(w)>=0) df++;
+    /* ยกกำลังสองเพื่อถ่างช่องว่าง: คำหายากต้องชนะคำโหลแบบขาดลอย ไม่ใช่ชนะนิดเดียว */
+    if(df===0 && w.length>=7){                 /* ลองตัดหางดูก่อนว่ามีเค้าอยู่ในคลังไหม */
+      let ok=false;
+      for(let L=w.length-1; L>=6 && !ok; L--){ const p=w.slice(0,L);
+        for(const c of DATA) if(c._x.indexOf(p)>=0){ ok=true; break; } }
+      if(!ok){ idf[w]=0; continue; }
+    } else if(df===0){ idf[w]=0; continue; }   /* ไม่มีในคลังและสั้นเกินกว่าจะตัดหาง = ตัดทิ้ง */
+    idf[w] = df > N*0.5 ? 0 : Math.pow(Math.log(N/(df+1)), 2);
+  }
+  return idf;
+}
+let LOOSE=0.5;
+function score(c,T,idf){
+  const x=c._x, hl=c._h;
+  let s=0, hit=0;
+  for(const w of T.w){
+    const iw=idf[w]; if(!iw) continue;
+    const n=cnt(x,w);
+    if(n){ hit++;
+           s+=Math.pow(w.length,1.2)*iw*Math.min(n,4);
+           if(hl.includes(w)) s+=Math.pow(w.length,1.2)*iw*2.2;  /* โดนที่หัวข้อ = ตรงประเด็นกว่า */
+           continue; }
+    /* สะกดไม่ตรงเป๊ะ: ไล่ตัดหางคำลงมา ตรงกับวิธีประสมคำไทย
+       เช่น "อะโครโซมัลรีแอกชัน" -> "อะโครโซม" ที่มีอยู่จริงในสรุป */
+    if(w.length>=7){
+      for(let L=w.length-1; L>=6; L--){
+        if(x.indexOf(w.slice(0,L))>=0){ hit+=0.6; s+=Math.pow(L,1.2)*iw*(L/w.length); break; }
+      }
+    }
+  }
+  if(!hit) return 0;                                 /* ไม่โดนอะไรเลย = ไม่ต้องเดา */
+  /* นับความครอบคลุมจากคำที่ผู้ใช้พิมพ์จริงเท่านั้น (ก้อนยาวที่เราเติมเองไม่นับเป็นตัวหาร) */
+  let ch=0;
+  for(const w of T.core){ if(!idf[w]) continue;
+    if(x.indexOf(w)>=0) ch++;
+    else if(w.length>=7){ for(let L=w.length-1;L>=6;L--) if(x.indexOf(w.slice(0,L))>=0){ ch+=0.6; break; } } }
+  const live=T.core.filter(w=>idf[w]).length || 1;
+  const cov=ch/live;
+  if(cov < LOOSE) return 0;                          /* โดนแค่คำเดียวจากหลายคำ = ไม่เกี่ยว */
+  return s*Math.pow(cov,1.6);
+}
+
+/* ── โหลดรายชื่อวิชา ── */
+fetch('ask-data/manifest.json').then(r=>r.json()).then(m=>{
+  MAN=m;
+  $('nchunk').textContent=m.reduce((a,b)=>a+b.n,0).toLocaleString('th-TH');
+  $('subs').innerHTML=m.map(s=>'<button class="chip" data-k="'+s.key+'">'+s.icon+' '+s.name+
+    '<span class="n">'+s.n+'</span></button>').join('');
+  $('subs').onclick=e=>{ const b=e.target.closest('.chip'); if(b) pick(b.dataset.k); };
+  let last=''; try{ last=localStorage.getItem('askSub')||''; }catch(e){}
+  pick(m.some(x=>x.key===last)?last:m[0].key);
+}).catch(e=>{ $('subs').innerHTML='<span class="sub">โหลดรายชื่อวิชาไม่ได้: '+e+'</span>'; });
+
+function pick(k){
+  SUB=k;
+  try{ localStorage.setItem('askSub',k); }catch(e){}
+  [...document.querySelectorAll('.chip')].forEach(b=>b.classList.toggle('on',b.dataset.k===k));
+  const meta=MAN.find(x=>x.key===k)||{};
+  if(LOADED[k]){ DATA=LOADED[k]; $('status').textContent='พร้อมค้น '+DATA.length+' ชิ้น'; return; }
+  $('status').innerHTML='<span class="spin"></span> กำลังโหลด '+(meta.name||k)+' ('+(meta.kb||'?')+' KB)…';
+  DATA=[];
+  fetch('ask-data/'+k+'.json').then(r=>r.json()).then(d=>{
+    d.forEach(c=>{ c._x=c.x.toLowerCase(); c._h=((c.h||'')+' '+(c.t||'')).toLowerCase(); });
+    LOADED[k]=d; DATA=d;
+    $('status').textContent='พร้อมค้น '+d.length+' ชิ้น';
+    if($('q').value.trim()) run();
+  }).catch(e=>{ $('status').textContent='โหลดไม่สำเร็จ: '+e; });
+}
+
+/* ── ค้นหา ── */
+function esc(s){ return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function hl(t,T){
+  let h=esc(t);
+  const uniq=[...T.w].sort((a,b)=>b.length-a.length).slice(0,8);
+  for(const w of uniq){
+    if(w.length<2) continue;
+    h=h.replace(new RegExp(w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi'),m=>'\u0001'+m+'\u0002');
+  }
+  return h.split('\u0001').map(p=>p.split('\u0002')).map(a=>a.length>1?'<mark>'+a[0]+'</mark>'+a[1]:a[0]).join('');
+}
+
+function run(){
+  const q=$('q').value.trim();
+  if(!q){ $('res').innerHTML=''; $('aicard').style.display='none'; return; }
+  if(!DATA.length){ $('status').textContent='ยังโหลดวิชานี้ไม่เสร็จ รอแป๊บ'; return; }
+  const T=tok(q);
+  if(!T.w.length){ HITS=[];   /* ต้องล้าง ไม่งั้น AI จะได้เนื้อหาของคำถามก่อนหน้าไปตอบ */
+    $('res').innerHTML='<div class="card"><div class="warn">⚠️ คำที่พิมพ์สั้นหรือกว้างเกินไป ลองใส่คำเฉพาะเจาะจงกว่านี้</div></div>';
+    $('aicard').style.display=''; wireAI(q); return; }
+  const idf=idfOf(T);
+  if(!Object.values(idf).some(v=>v>0)){
+    $('res').innerHTML='<div class="card"><div class="warn">⚠️ คำที่พิมพ์<b>กว้างเกินไป</b> '+
+      '(เจอเกือบทุกหน้าเลยบอกอะไรไม่ได้) ลองใส่ศัพท์เฉพาะของเรื่องนั้นแทน</div></div>';
+    $('aicard').style.display=''; wireAI(q); HITS=[]; return;
+  }
+  /* คำที่ "ไม่มีอยู่ในคลังนี้เลย" — ถ้าคำสำคัญตายไปเกินครึ่ง แปลว่าวิชานี้ไม่มีเรื่องนี้จริง ๆ
+     ต้องบอกตรง ๆ ไม่ใช่ไปคว้าคำโหลที่เหลือมาตอบ */
+  const dead=T.core.filter(w=>!idf[w]);
+  if(T.core.length && dead.length/T.core.length>=0.5){
+    HITS=[];
+    $('res').innerHTML='<div class="card"><div class="warn">⚠️ <b>ไม่มีเรื่องนี้ในสรุปวิชา'+
+      ((MAN.find(x=>x.key===SUB)||{}).name||'')+'</b><br>คำว่า '+
+      dead.slice(0,4).map(w=>'<b>'+esc(w)+'</b>').join(' · ')+' ไม่ปรากฏในสรุปเลยสักที่<br>'+
+      '· ถ้าเป็นศัพท์เทคนิค ลองพิมพ์<b>คำอังกฤษ</b>ดู · ลองเปลี่ยนวิชา<br>'+
+      '· หรือกดถาม AI ข้างล่าง มันจะตอบจากความรู้ทั่วไปแล้วติดป้าย [นอกสไลด์] ให้</div></div>';
+    $('aicard').style.display=''; wireAI(q); return;
+  }
+  const live=T.core.filter(w=>idf[w]).length||1;
+  let approx=false;
+  /* คำเดียว: ยอมให้ผ่านด้วยการตัดหางคำ (0.6) · สองคำ: ต้องโดนทั้งคู่ · หลายคำ: เกินครึ่ง */
+  LOOSE = live<=1 ? 0.5 : (live===2 ? 0.75 : 0.45);
+  let all=DATA.map(c=>({c,s:score(c,T,idf)})).filter(o=>o.s>0).sort((a,b)=>b.s-a.s);
+  if(!all.length && live>1){                         /* ไม่เจอแบบตรงเป๊ะ ค่อยผ่อนแล้วบอกให้รู้ */
+    approx=true; LOOSE=0.4;
+    all=DATA.map(c=>({c,s:score(c,T,idf)})).filter(o=>o.s>0).sort((a,b)=>b.s-a.s);
+  }
+  /* ตัดหางที่คะแนนต่ำกว่าตัวนำมาก ๆ ทิ้ง — พวกนั้นบังเอิญโดนคำเดียวแล้วไม่เกี่ยวเลย */
+  const top=all.length?all[0].s:0;
+  HITS=all.filter(o=>o.s>=Math.max(8,top*0.2)).slice(0,8);
+  if(!HITS.length){
+    $('res').innerHTML='<div class="card"><div class="warn">⚠️ <b>ไม่เจอในสรุปวิชานี้</b><br>'+
+      '· สรุปหลายที่เขียนศัพท์เป็น<b>ภาษาอังกฤษ</b> ลองพิมพ์คำอังกฤษดู (เช่น <i>acrosome</i> แทน <i>อะโครโซม</i>)<br>'+
+      '· ลองคำสั้นลงหรือเปลี่ยนวิชา<br>'+
+      '· ถ้าอาจารย์ไม่ได้สอนเรื่องนี้จริง ๆ กดถาม AI ข้างล่างได้เลย '+
+      'มันจะตอบจากความรู้ทั่วไปแล้วติดป้าย [นอกสไลด์] ให้</div></div>';
+    $('aicard').style.display=''; wireAI(q); return;
+  }
+  const meta=MAN.find(x=>x.key===SUB)||{};
+  $('res').innerHTML='<div class="card"><h2>เจอ '+HITS.length+' ที่ใน'+(meta.name||'')+'</h2>'+
+    (approx?'<div class="warn">⚠️ <b>ไม่เจอที่ตรงทุกคำ</b> — ข้างล่างคือที่ใกล้เคียงที่สุด อาจไม่ตรงประเด็น</div>'
+           :'<p class="sub">เรียงตามความตรงกับคำถาม · ตัวเลข น.X คือหน้าในสไลด์เรียน เปิดตามได้</p>')+
+    HITS.map((o,i)=>{
+      const c=o.c, pg=(c.p||[]).length?'<span class="pg">น.'+c.p.join(', ')+'</span>':'';
+      const link=c.u?'<a href="'+esc(c.u)+'" target="_blank" rel="noopener">เปิดหน้าเต็ม ↗</a>':'';
+      const long=c.x.length>380;
+      return '<div class="hit"><div class="meta"><b>['+(i+1)+']</b> '+esc(c.t||'')+
+        (c.h?' › '+esc(c.h):'')+' '+pg+' '+link+'</div>'+
+        '<div class="txt'+(long?' clip':'')+'" id="tx'+i+'">'+hl(c.x,T)+'</div>'+
+        (long?'<button class="more" data-i="'+i+'">อ่านต่อ ▾</button>':'')+'</div>';
+    }).join('')+'</div>';
+  $('res').onclick=e=>{
+    const b=e.target.closest('.more'); if(!b) return;
+    const t=$('tx'+b.dataset.i), open=t.classList.toggle('clip');
+    b.textContent=open?'อ่านต่อ ▾':'ย่อ ▴';
+  };
+  $('aicard').style.display=''; wireAI(q);
+}
+$('go').onclick=run;
+$('q').addEventListener('keydown',e=>{ if(e.key==='Enter') run(); });
+
+/* ── ประกอบคำสั่งให้ AI: แนบเนื้อหาที่เจอไปด้วย = ตอบจากสรุปเรา ไม่ใช่เดา ── */
+function prompt_(q){
+  const meta=MAN.find(x=>x.key===SUB)||{};
+  let p='คำถาม: '+q+'\n\n';
+  if(HITS.length){
+    p+='ต่อไปนี้คือเนื้อหาจากสรุปวิชา'+(meta.name||'')+'ของฉันเอง (น.X = เลขหน้าในสไลด์ที่อาจารย์สอน):\n\n';
+    HITS.forEach((o,i)=>{
+      const c=o.c;
+      p+='['+(i+1)+'] '+(c.t||'')+(c.h?' › '+c.h:'')+((c.p||[]).length?' (น.'+c.p.join(', ')+')':'')+'\n'+c.x+'\n\n';
+    });
+  } else {
+    p+='(ค้นในสรุปวิชา'+(meta.name||'')+'ของฉันแล้วไม่เจอเรื่องนี้)\n\n';
+  }
+  p+='กติกาในการตอบ:\n'+
+     '1. ตอบเป็นภาษาไทย กระชับ ตรงประเด็น ระดับนักเรียน ม.6\n'+
+     '2. ใช้เนื้อหาข้างบนเป็นหลัก และอ้างเลข [1] [2] ทุกครั้งที่หยิบมาใช้\n'+
+     '3. ถ้าเนื้อหาข้างบนตอบไม่ได้ ให้บอกตรง ๆ ว่าไม่มีในสรุป แล้วค่อยตอบจากความรู้ทั่วไป '+
+       'โดยขึ้นต้นย่อหน้านั้นด้วย [นอกสไลด์] เพื่อให้ฉันรู้ว่าส่วนนี้อาจารย์ไม่ได้สอน\n'+
+     '4. ห้ามแต่งเลขหน้าขึ้นมาเอง ถ้าไม่แน่ใจก็ไม่ต้องใส่เลขหน้า\n'+
+     '5. ถ้าเนื้อหาข้างบนขัดแย้งกันเอง ให้ชี้ว่าขัดกันตรงไหน อย่าเลือกข้างเงียบ ๆ';
+  return p;
+}
+function wireAI(q){
+  $('copy').onclick=async()=>{
+    const t=prompt_(q);
+    try{ await navigator.clipboard.writeText(t); $('copy').textContent='✓ คัดลอกแล้ว ไปวางใน AI ได้เลย'; }
+    catch(e){                                   /* มือถือบางตัวไม่ให้ใช้ clipboard ถ้าไม่ใช่ https */
+      const ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta);
+      ta.select(); try{ document.execCommand('copy'); $('copy').textContent='✓ คัดลอกแล้ว'; }
+      catch(e2){ $('copy').textContent='คัดลอกไม่ได้ — กดค้างเพื่อเลือกเองในกล่องด้านล่าง';
+        $('ansbox').innerHTML='<textarea class="kin" rows="8"></textarea>';
+        $('ansbox').firstChild.value=t; }
+      ta.remove();
+    }
+    setTimeout(()=>{ $('copy').textContent='📋 คัดลอกคำถาม + เนื้อหา'; },2600);
+  };
+  $('lnkG').href='https://gemini.google.com/app';
+  $('lnkC').href='https://chatgpt.com/';
+  $('lnkA').href='https://claude.ai/new';
+  $('ask').onclick=()=>callAI(q);
+}
+
+/* ── โหมดใส่คีย์เอง: เรียก API ตรงจากเบราว์เซอร์ ── */
+try{ $('key').value=localStorage.getItem('askKey')||''; $('model').value=localStorage.getItem('askModel')||''; }catch(e){}
+$('forget').onclick=()=>{ try{ localStorage.removeItem('askKey'); localStorage.removeItem('askModel'); }catch(e){}
+  $('key').value=''; $('model').value=''; $('ansbox').innerHTML='<div class="tip">ลบคีย์ออกจากเครื่องแล้ว</div>'; };
+
+function renderAns(txt){
+  /* ทำป้าย [นอกสไลด์] ให้เด่น จะได้แยกออกทันทีว่าอันไหนไม่ได้มาจากที่อาจารย์สอน */
+  $('ansbox').innerHTML='<div class="info"><div class="ans">'+
+    esc(txt).replace(/\[นอกสไลด์\]/g,'<span class="out">[นอกสไลด์]</span>')+'</div></div>';
+}
+
+async function callAI(q){
+  const key=$('key').value.trim();
+  if(!key){ $('ansbox').innerHTML='<div class="warn">⚠️ ยังไม่ได้ใส่คีย์ — ถ้าไม่มีคีย์ ใช้ปุ่ม "คัดลอก" ข้างบนแทนได้ ฟรีเหมือนกัน</div>'; return; }
+  try{ localStorage.setItem('askKey',key); localStorage.setItem('askModel',$('model').value.trim()); }catch(e){}
+  const body=prompt_(q);
+  $('ask').disabled=true;
+  $('ansbox').innerHTML='<div class="sub"><span class="spin"></span> กำลังถาม…</div>';
+  try{
+    let txt;
+    if(key.startsWith('sk-ant-')){
+      const model=$('model').value.trim()||'claude-sonnet-5';
+      const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
+        headers:{'content-type':'application/json','x-api-key':key,
+                 'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+        body:JSON.stringify({model,max_tokens:1400,messages:[{role:'user',content:body}]})});
+      const j=await r.json();
+      if(!r.ok) throw new Error((j.error&&j.error.message)||JSON.stringify(j));
+      txt=(j.content||[]).map(b=>b.text||'').join('');
+    }else{
+      const model=$('model').value.trim()||'gemini-2.0-flash';
+      const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+
+        encodeURIComponent(model)+':generateContent?key='+encodeURIComponent(key),
+        {method:'POST',headers:{'content-type':'application/json'},
+         body:JSON.stringify({contents:[{parts:[{text:body}]}]})});
+      const j=await r.json();
+      if(!r.ok) throw new Error((j.error&&j.error.message)||JSON.stringify(j));
+      txt=((j.candidates||[])[0]||{}).content?.parts?.map(p=>p.text||'').join('')||'(ไม่มีคำตอบกลับมา)';
+    }
+    renderAns(txt);
+  }catch(e){
+    $('ansbox').innerHTML='<div class="warn">⚠️ <b>เรียก AI ไม่สำเร็จ</b><br>'+esc(String(e.message||e))+
+      '<br><span class="sub">เช็คว่าคีย์ถูก · ชื่อโมเดลถูก (ลองเว้นว่างให้ใช้ค่าเริ่มต้น) · '+
+      'หรือใช้ปุ่มคัดลอกข้างบนแทน ไม่ต้องใช้คีย์</span></div>';
+  }finally{ $('ask').disabled=false; }
+}
 </script>
 <!--KIT-UI v2.9 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>
