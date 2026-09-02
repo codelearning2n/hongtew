@@ -400,7 +400,7 @@ updateReadout(); updateScore();
 redrawStatic();
 window.addEventListener('load',redrawStatic);
 </script>
-<!--KIT-UI v2.9 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<!--KIT-UI v3.0 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>
 /* =============================================================================
    _kit/ui-controls.js  —  KIT UI  v1.0
@@ -426,7 +426,7 @@ window.addEventListener('load',redrawStatic);
               หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
    ============================================================================= */
 (function(){
-if(window.__KITUI__) return; window.__KITUI__='2.9';   /* 2.9 = เพิ่มธีมวิชา hindu (โทนทอง) · 2.8 = เพิ่มปุ่ม 🏠 กลับหน้าหลัก */
+if(window.__KITUI__) return; window.__KITUI__='3.0';   /* 3.0 = ปุ่มกลับลอยมุมซ้ายบน (เพื่อนหาปุ่ม 🏠 ในแถบล่างไม่เจอ) · 2.9 = ธีมฮินดู · 2.8 = ปุ่ม 🏠 */
 
 /* ---------- helper ---------- */
 const D=document, R=D.documentElement;
@@ -519,7 +519,16 @@ const CSS=`
   .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
   #kitui-pad{width:560px}
 }
-@media print{#kitui-bar,.kitui-sheet{display:none!important}}
+#kitui-back{position:fixed;top:8px;left:8px;z-index:99992;display:flex;align-items:center;gap:5px;
+  border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;
+  padding:7px 13px 7px 10px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;
+  box-shadow:0 2px 10px rgba(15,23,42,.18);line-height:1}
+#kitui-back:active{transform:scale(.95)}
+#kitui-back:hover{background:var(--soft)}
+/* แท็บเป็น sticky top:0 ถ้าไม่ดันลงมาปุ่มจะทับแท็บแรกจนกดไม่ได้ */
+body.kitui-hasback .tabs{top:46px}
+body.kitui-hasback .wrap{padding-top:42px}
+@media print{#kitui-bar,.kitui-sheet,#kitui-back{display:none!important}}
 `;
 const st=el('style'); st.id='kitui-style'; st.textContent=CSS; D.head.appendChild(st);
 
@@ -724,6 +733,8 @@ const hasCalc = wantTools.includes('calc');
 /* ปุ่มกลับหน้าหลัก — โผล่เฉพาะตอนเปิดจากเว็บห้องติว (พาธมี /app/ อยู่)
    เปิดไฟล์จากเครื่องตรง ๆ จะไม่มีปุ่มนี้ เพราะไม่มีหน้าหลักให้กลับ ลิงก์จะเสียเปล่า ๆ */
 const homeHref = (()=>{
+  const attr = D.body.getAttribute('data-home');     /* หน้าไหนไม่ได้อยู่ใต้ /app/ ให้ระบุเองได้ */
+  if(attr) return attr;
   try{
     const p = decodeURIComponent(location.pathname);
     const i = p.indexOf('/app/');
@@ -748,6 +759,17 @@ D.getElementById('kitui-fsup').onclick=()=>{if(fsIdx<4){fsIdx++;applyFS();}};
 D.getElementById('kitui-fsdown').onclick=()=>{if(fsIdx>0){fsIdx--;applyFS();}};
 D.getElementById('kitui-grip').onclick=()=>bar.classList.toggle('hidden');
 if(homeHref) D.getElementById('kitui-home').onclick=()=>{ location.href=homeHref; };
+
+/* ปุ่มกลับแบบลอยมุมซ้ายบน — มีคำว่า "กลับ" เต็ม ๆ ไม่ใช่ไอคอนเปล่า
+   (ของเดิมเป็น 🏠 เล็ก ๆ ปนอยู่ในแถบมุมขวาล่าง เพื่อนหาไม่เจอเลยไม่กด) */
+if(homeHref){
+  const back=el('button'); back.id='kitui-back';
+  back.type='button'; back.title='กลับหน้ารวมวิชา';
+  back.innerHTML='<span style="font-size:15px">←</span><span>กลับ</span>';
+  back.onclick=()=>{ location.href=homeHref; };
+  D.body.appendChild(back);
+  D.body.classList.add('kitui-hasback');
+}
 applyTheme(); applyFS();
 
 /* ปิดแผงด้วยปุ่ม Esc */
