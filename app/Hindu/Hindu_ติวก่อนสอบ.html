@@ -271,7 +271,7 @@ function next(){
 $('qRe').onclick=start;
 drawCats();start();
 </script>
-<!--KIT-UI v3.5 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<!--KIT-UI v3.6 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>
 /* =============================================================================
    _kit/ui-controls.js  —  KIT UI  v1.0
@@ -297,7 +297,7 @@ drawCats();start();
               หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
    ============================================================================= */
 (function(){
-if(window.__KITUI__) return; window.__KITUI__='3.5';   /* 3.5 = โหลด tour.js (ทัวร์แนะนำปุ่ม) · 3.4 = โหลด feedback.js */   /* เดิม 3.3 = ส่ง ?from= ไปด้วย ปุ่มกลับในหน้าถามจะได้กลับหน้าเดิม ไม่ใช่หน้ารวม · 3.2 = ปุ่ม 🔎 ถาม AI · 3.1 = ขยายปุ่มกลับ */
+if(window.__KITUI__) return; window.__KITUI__='3.6';   /* 3.6 = แถบพื้นหลังใต้ปุ่มลอย (กันเนื้อหาไหลผ่านช่องเหนือแท็บ) · 3.5 = tour.js · 3.4 = feedback.js */   /* เดิม 3.3 = ส่ง ?from= ไปด้วย ปุ่มกลับในหน้าถามจะได้กลับหน้าเดิม ไม่ใช่หน้ารวม · 3.2 = ปุ่ม 🔎 ถาม AI · 3.1 = ขยายปุ่มกลับ */
 
 /* ---------- helper ---------- */
 const D=document, R=D.documentElement;
@@ -409,6 +409,11 @@ const CSS=`
    ตัวเลขนี้ผูกกับความสูงปุ่ม (8 บน + 44 ปุ่ม + ระยะห่าง) แก้ความสูงปุ่มต้องแก้ตรงนี้ด้วย */
 body.kitui-hasback .tabs{top:60px}
 body.kitui-hasback .wrap{padding-top:56px}
+/* พื้นหลังทึบใต้ปุ่มลอย — พอดันแท็บ sticky ลงมา 60px จะเกิดช่องว่างเหนือมัน
+   แล้วเนื้อหาที่เลื่อนผ่านช่องนั้นจะโผล่ให้เห็น ดูเหมือนมีแถบลอยซ้อนกันสองชั้น
+   ใช้ element จริงไม่ใช่ body::before เพราะหน้า Unit18 ใช้ ::before ของตัวเองอยู่แล้ว */
+#kitui-topbg{position:fixed;top:0;left:0;right:0;height:60px;background:var(--bg);
+  z-index:99988;pointer-events:none}
 @media print{#kitui-bar,.kitui-sheet,#kitui-back{display:none!important}}
 `;
 const st=el('style'); st.id='kitui-style'; st.textContent=CSS; D.head.appendChild(st);
@@ -666,6 +671,7 @@ if(homeHref){
     a.innerHTML='<span class="ar">🔎</span><span>ถาม AI</span>';
     nav.appendChild(a);
   }
+  const tb=el('div'); tb.id='kitui-topbg'; D.body.appendChild(tb);
   D.body.appendChild(nav);
   D.body.classList.add('kitui-hasback');
 
