@@ -96,6 +96,26 @@ svg{max-width:100%;height:auto;display:block}
 select{padding:8px;border:1.5px solid #cbd5e1;border-radius:8px;font-family:inherit;font-size:.9rem;background:#fff}
 sup,sub{font-size:.72em}
 @media(max-width:480px){.card{padding:12px}header h1{font-size:1.15rem}}
+
+/* ===== หน้าต่างดูภาพเต็มจอ (แตะที่ภาพ) =====
+   จอมือถือย่อภาพ 1200px ลงเหลือ ~350px = เล็กลง 3.5 เท่า ตัวหนังสือในภาพอ่านไม่ออก
+   หน้าต่างนี้เปิดภาพที่ขนาดจริง เลื่อนดูได้ ถ่างนิ้วซูมได้ */
+.lbx{position:fixed;inset:0;z-index:2147483400;background:#101010;display:none;flex-direction:column}
+.lbx.on{display:flex}
+.lbx .lbxbar{display:flex;align-items:center;gap:8px;padding:8px 10px;background:#1c1c1c;color:#f1f1f1;
+  flex:0 0 auto;font-size:14px}
+.lbx .lbxbar b{flex:1 1 0;min-width:0;font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lbx .lbxbar button{border:1px solid #555;background:#2a2a2a;color:#f1f1f1;border-radius:8px;
+  min-width:38px;height:36px;padding:0 9px;font:700 15px system-ui;cursor:pointer;flex:0 0 auto}
+.lbx .lbxbar button:active{background:#3a3a3a}
+.lbx .lbxbody{flex:1 1 auto;overflow:auto;-webkit-overflow-scrolling:touch;background:#101010;
+  touch-action:pan-x pan-y pinch-zoom}
+.lbx .lbxbody img{display:block;max-width:none;height:auto;background:#1d1d1d}
+.lbx .lbxtip{flex:0 0 auto;padding:6px 10px;background:#1c1c1c;color:#9aa0a6;font-size:12px;text-align:center}
+.zoomopen{display:inline-flex;align-items:center;gap:6px;margin:6px 0 2px;padding:8px 14px;
+  border:1.5px solid var(--accent-bd);background:var(--card);color:var(--accent-ink);
+  border-radius:var(--radius-pill);font:700 .92rem inherit;font-family:inherit;cursor:pointer}
+.zoomopen:active{background:var(--accent-soft)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* ===== เฉพาะหน้านี้: Blender ===== */
@@ -147,8 +167,8 @@ kbd{background:var(--ink);color:var(--card);border-radius:6px;padding:2px 9px;fo
   padding:0;cursor:pointer;transition:background .15s,border-color .15s}
 .hot:hover,.hot.on{border-color:#ff9800;background:rgba(255,152,0,.22)}
 .hot .dot{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-  width:1.55rem;height:1.55rem;border-radius:50%;background:#ff9800;color:#111;
-  font:700 .9rem system-ui;display:flex;align-items:center;justify-content:center;
+  width:26px;height:26px;border-radius:50%;background:#ff9800;color:#111;
+  font:700 14px system-ui;display:flex;align-items:center;justify-content:center;
   box-shadow:0 1px 4px rgba(0,0,0,.6);pointer-events:none}
 .hot.tall .dot{top:12px;transform:translate(-50%,0)}
 .modeseg{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
@@ -160,11 +180,11 @@ kbd{background:var(--ink);color:var(--card);border-radius:6px;padding:2px 9px;fo
 .zinfo .t{font-weight:700;color:var(--accent-head);font-size:1.06rem;display:block;margin-bottom:4px}
 .zinfo .en{color:var(--muted);font-weight:400;font-size:.87rem}
 .zoomrow{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start;margin:10px 0}
-.zoomcard{flex:1 1 15rem;border:1px solid var(--line);border-radius:var(--radius-sm);
+.zoomcard{flex:1 1 240px;border:1px solid var(--line);border-radius:var(--radius-sm);
   background:var(--soft);padding:10px}
 .zoomcard h4{margin:.1rem 0 .5rem}
 .zoomcard img{display:block;max-width:100%;height:auto;border-radius:6px;background:#1d1d1d}
-.zoomcard.tallpic img{max-height:26rem;width:auto;margin:0 auto;cursor:zoom-in}
+.zoomcard.tallpic img{max-height:420px;width:auto;margin:0 auto;cursor:zoom-in}
 .zoomcard.tallpic img.big{max-height:none;width:auto;cursor:zoom-out}
 .zoomcard img{cursor:zoom-in}
 .zoomcard img.big{max-width:none;cursor:zoom-out}
@@ -180,6 +200,23 @@ kbd{background:var(--ink);color:var(--card);border-radius:6px;padding:2px 9px;fo
   border:1.5px solid var(--line);border-bottom-width:3px;border-radius:6px;
   background:var(--card);font-weight:700;font-size:.95rem}
 .keyrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0;line-height:2.2}
+
+/* ===== มือถือ: ให้ภาพหน้าจอกินเต็มความกว้างจอ ไม่ต้องเสียขอบให้ padding =====
+   ที่ 375px เดิมภาพได้แค่ 325px (เสียให้ .wrap 12 + .card 12/16 สองข้าง)
+   ดึงคืนด้วย margin ติดลบ ได้ภาพกว้างขึ้น ~15% โดยไม่แตะโครงหน้าเดิม
+   ⚠️ ต้องวางบล็อกนี้ "ท้ายสุดของ <style>" — เพราะ .shotwrap ข้างบนตั้ง margin:8px 0 ไว้
+      ถ้าวางไว้ก่อน กฎ margin ติดลบจะโดนทับ (เจอตอนวัดจริง: ความกว้างขยายแต่ไม่ชิดขอบ) */
+@media(max-width:480px){
+  .shotwrap,.zoomcard{margin:8px -24px;width:calc(100% + 48px);
+    border-radius:0;border-left:0;border-right:0}
+  .zoomcard{padding-left:12px;padding-right:12px}
+}
+@media(min-width:481px) and (max-width:640px){
+  .shotwrap,.zoomcard{margin:8px -28px;width:calc(100% + 56px);
+    border-radius:0;border-left:0;border-right:0}
+  .zoomcard{padding-left:14px;padding-right:14px}
+}
+@media(max-width:640px){ .zoomrow{gap:18px} }
 </style>
 </head>
 
@@ -337,6 +374,10 @@ kbd{background:var(--ink);color:var(--card);border-radius:6px;padding:2px 9px;fo
         <button class="hot" data-z="9"  style="left:84.6%;top:35%;width:15.3%;height:57.5%"><span class="dot">9</span></button>
         <button class="hot" data-z="10" style="left:0.2%;top:91.6%;width:82.4%;height:5.9%"><span class="dot">10</span></button>
       </div>
+
+      <button class="zoomopen" id="openShot" type="button">🔍 เปิดภาพเต็มจอ — เลื่อนดู/ซูมได้</button>
+      <div class="sub" style="margin:2px 0 8px">จอมือถือย่อภาพลงเกือบ 4 เท่า ตัวหนังสือในภาพจะอ่านไม่ออก
+        — กดปุ่มนี้ (หรือแตะที่ภาพซูมข้างล่าง) เพื่อดูขนาดจริง</div>
 
       <div class="zinfo" id="zInfo">👆 กดจุดสีส้มบนภาพเพื่อดูว่าโซนนั้นคืออะไร ใช้ทำอะไร และตรงกับใบแนวข้อไหน</div>
     </div>
@@ -732,9 +773,103 @@ var ZONE={
     img.src = b.getAttribute('data-m')==='edit' ? SHOT.full_edit : SHOT.full_obj;
   });
 
-  /* กดภาพซูมเพื่อขยายเต็มขนาด แล้วกดอีกทีย่อกลับ */
+  /* ── หน้าต่างดูภาพเต็มจอ ────────────────────────────────────────────────
+     เดิมกดภาพแล้วแค่ toggle .big ให้ล้นกรอบการ์ดแล้วเลื่อนแนวนอนในกรอบแคบ ๆ
+     บนมือถือกรอบกว้างแค่ ~325px เลยเห็นทีละนิด ("โดนตัดขอบ")
+     ของใหม่: เปิดเต็มจอ เลื่อนได้ทุกทาง มีปุ่มย่อ/ขยาย/พอดีจอ ปิดด้วย Esc หรือปุ่ม ✕ */
+  var lbx=document.createElement('div');
+  lbx.className='lbx';
+  lbx.innerHTML='<div class="lbxbar"><b id="lbxT"></b>'+
+    '<button id="lbxOut" title="ย่อ">−</button>'+
+    '<button id="lbxFit" title="พอดีจอ">พอดีจอ</button>'+
+    '<button id="lbxIn" title="ขยาย">+</button>'+
+    '<button id="lbxX" title="ปิด (Esc)">✕</button></div>'+
+    '<div class="lbxbody" id="lbxBody"><img id="lbxImg" alt=""></div>'+
+    '<div class="lbxtip">เปิดมาที่ขนาดจริง — ลากเลื่อนดูได้ · กด <b>พอดีจอ</b> เพื่อเห็นทั้งภาพ · แตะสองครั้งสลับไปมา</div>';
+  document.body.appendChild(lbx);
+
+  var lbxBody=lbx.querySelector('#lbxBody'), lbxImg=lbx.querySelector('#lbxImg'),
+      lbxT=lbx.querySelector('#lbxT'), scale=1, natW=1;
+
+  function applyScale(){
+    lbxImg.style.width=Math.round(natW*scale)+'px';
+  }
+  function fitScale(){
+    var w=lbxBody.clientWidth||innerWidth;
+    return natW ? Math.min(1, w/natW) : 1;
+  }
+  function openLB(src,title){
+    lbxT.textContent=title||'';
+    lbxImg.onload=function(){
+      natW=lbxImg.naturalWidth||1;
+      var fit=fitScale();
+      /* จอเล็ก: ถ้า "พอดีจอ" แปลว่าต้องย่อลงเกินครึ่ง เปิดมาก็ยังอ่านไม่ออกอยู่ดี
+         -> เปิดที่ขนาดจริงเลย แล้วเลื่อนไปกลางภาพให้ ผู้ใช้กด "พอดีจอ" เองได้ถ้าอยากเห็นทั้งภาพ */
+      var big = fit < 0.6;
+      scale = big ? 1 : fit; applyScale();
+      lbxBody.scrollTop=0;
+      lbxBody.scrollLeft = big ? Math.max(0,(lbxBody.scrollWidth-lbxBody.clientWidth)/2) : 0;
+    };
+    lbxImg.src=src;
+    lbx.classList.add('on');
+    /* ล็อกทั้ง html และ body — ถ้าล็อกแค่ body แถบเลื่อนของหน้ายังอยู่
+       แล้ว position:fixed จะกว้างเท่า innerWidth (รวมแถบเลื่อน) = ล้นออกนอกจอที่มองเห็นจริง
+       ทำให้ปุ่ม ✕ มุมขวาโดนบังไปครึ่งปุ่ม (เจอตอนวัดจริง: clientWidth 375 แต่ innerWidth 399) */
+    document.documentElement.style.overflow='hidden';
+    document.body.style.overflow='hidden';
+  }
+  function closeLB(){
+    lbx.classList.remove('on');
+    document.documentElement.style.overflow='';
+    document.body.style.overflow='';
+  }
+
+  lbx.querySelector('#lbxX').onclick=closeLB;
+  lbx.querySelector('#lbxIn').onclick=function(){ scale=Math.min(scale*1.4,6); applyScale(); };
+  lbx.querySelector('#lbxOut').onclick=function(){ scale=Math.max(scale/1.4,0.1); applyScale(); };
+  lbx.querySelector('#lbxFit').onclick=function(){ scale=fitScale(); applyScale(); };
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape' && lbx.classList.contains('on')) closeLB();
+  });
+
+  /* แตะสองครั้ง = สลับ พอดีจอ / ขนาดจริง */
+  var lastTap=0;
+  lbxImg.addEventListener('click',function(){
+    var now=Date.now();
+    if(now-lastTap<350){ scale = (scale<1) ? 1 : fitScale(); applyScale(); }
+    lastTap=now;
+  });
+
+  /* ลากเลื่อนด้วยเมาส์ (มือถือใช้การเลื่อนของเบราว์เซอร์เองอยู่แล้ว) */
+  (function(){
+    var down=false,x0=0,y0=0,sl=0,st=0;
+    lbxBody.addEventListener('pointerdown',function(e){
+      if(e.pointerType==='touch') return;
+      down=true; x0=e.clientX; y0=e.clientY; sl=lbxBody.scrollLeft; st=lbxBody.scrollTop;
+      lbxBody.setPointerCapture(e.pointerId); e.preventDefault();
+    });
+    lbxBody.addEventListener('pointermove',function(e){
+      if(!down) return;
+      lbxBody.scrollLeft=sl-(e.clientX-x0);
+      lbxBody.scrollTop =st-(e.clientY-y0);
+    });
+    lbxBody.addEventListener('pointerup',function(e){
+      down=false; try{ lbxBody.releasePointerCapture(e.pointerId); }catch(err){}
+    });
+  })();
+
   [].forEach.call(document.querySelectorAll('.zoomcard img'),function(im){
-    im.addEventListener('click',function(){ im.classList.toggle('big'); });
+    im.style.cursor='zoom-in';
+    im.addEventListener('click',function(){
+      var h=im.closest('.zoomcard').querySelector('h4');
+      openLB(im.src, h?h.textContent:'');
+    });
+  });
+
+  var osBtn=document.getElementById('openShot');
+  if(osBtn) osBtn.addEventListener('click',function(){
+    var on=seg.querySelector('button.on');
+    openLB(img.src, on?on.textContent.trim():'หน้าจอ Blender');
   });
 
   [].forEach.call(hots,function(h){

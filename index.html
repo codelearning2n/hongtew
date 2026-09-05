@@ -69,6 +69,17 @@ body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1
       padding:7px 14px;font-size:.88rem;font-weight:600;cursor:pointer;font-family:inherit;min-height:38px}
 .chip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
 .chip .n{opacity:.6;font-size:.76rem;margin-left:3px}
+/* ตัวกรอง/ป้าย "ออกปลายภาค" — เพิ่ม 2026-09-05 ตามที่เจ้าของสั่ง (แปะเฉพาะไฟล์ที่ออกจริง) */
+.chip.fin{border-color:var(--hot-ink);color:var(--hot-ink);background:var(--hot-bg)}
+.chip.fin.on{background:var(--hot-ink);color:var(--hot-bg);border-color:var(--hot-ink)}  /* ตัวหนังสือใช้สีพื้นอ่อน จะได้ตัดกับพื้นทั้งโหมดสว่างและมืด (โหมดมืด --hot-ink เป็นชมพูอ่อน ใส่ #fff แล้วอ่านไม่ออก) */
+a.card .fin-pill{background:var(--hot-bg);color:var(--hot-ink);border-radius:6px;padding:1px 8px;font-weight:700}
+h2.sec .when{font-size:.76rem;font-weight:700;color:var(--muted);background:var(--soft);
+  border:1px solid var(--line);border-radius:999px;padding:1px 10px;white-space:nowrap}
+.scope{font-size:.84rem;color:var(--muted);margin:-2px 0 8px 2px;line-height:1.5}
+.slot-none{font-size:.86rem;color:var(--muted);background:var(--soft);border:1px dashed var(--line);
+  border-radius:10px;padding:10px 12px}
+.fin-hint{background:var(--hot-bg);color:var(--hot-ink);border-radius:10px;padding:10px 13px;
+  margin:10px 0 2px;font-size:.87rem;font-weight:600;line-height:1.6}
 
 h2.sec{font-size:1.05rem;margin:20px 0 8px;color:var(--accent-head);display:flex;align-items:center;gap:8px}
 h2.sec .line{flex:1;height:1px;background:var(--line)}
@@ -125,6 +136,7 @@ footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:26px;lin
     <input id="q" type="text" placeholder="🔍 พิมพ์ค้นหา เช่น ฮอร์โมน, วงจรไฟฟ้า, ข้อสอบ">
   </div>
 
+  <div class="chips" id="examRow"></div>
   <div class="chips" id="kindRow">
     <button class="chip on" data-kind="all">ทั้งหมด</button>
     <button class="chip" data-kind="exam">📝 ข้อสอบ/เกมฝึก</button>
@@ -147,11 +159,30 @@ footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:26px;lin
   </footer>
 </div>
 
-<script src="catalog.js?v=202609051510"></script>
+<script src="catalog.js?v=202609052127"></script>
 <script>
 const LIST = window.CATALOG || [];
 const $ = s=>document.querySelector(s);
 let fKind='all', fSubj='all', fQ='';
+
+/* ---- ช่วงสอบ: ปลายภาค 7-10 ก.ย. 2569 ----
+   ป้ายมาจาก build.ps1 (ลิสต์ $EXAM) ไม่ได้เดาจากชื่อไฟล์ ดูเหตุผลในไฟล์นั้น */
+const EXAM  = window.EXAM || [];
+const EXMAP = {}; EXAM.forEach(e=>{ EXMAP[e.id]=e; });
+/* x.ex เก็บเป็น "id,id" ได้ เพราะหน้าเดียวอาจออกหลายวิชา (หน้า EAP ใช้สอบวิชาภาษาอังกฤษด้วย) */
+const exList  = x => (x.ex||'').split(',').filter(Boolean);
+const exFirst = x => { const l=exList(x); for(const e of EXAM) if(l.indexOf(e.id)>=0) return e; return null; };
+const nFin  = LIST.filter(x=>x.ex).length;
+/* ช่วงใกล้สอบ = เปิดมาเจอเฉพาะของที่ออกก่อน (เจ้าของสั่ง 2026-09-04: เพื่อนเปิดจากมือถือ
+   อยากรู้ว่า "ตอนนี้ต้องอ่านอะไร" ไม่ใช่ "วิชานี้มีอะไรบ้าง")
+   พ้น 10 ก.ย. ไปแล้วกลับไปโชว์ทั้งเว็บเองอัตโนมัติ ไม่ต้องมาแก้โค้ด */
+const NEAR  = nFin>0 && Date.now() < Date.parse('2026-09-11T00:00:00+07:00');
+let fExam = NEAR ? 'final' : 'all';
+if(nFin){
+  $('#examRow').innerHTML =
+    `<button class="chip fin${fExam==='final'?' on':''}" data-exam="final">🔥 ออกปลายภาค 7–10 ก.ย.<span class="n">${nFin}</span></button>`+
+    `<button class="chip${fExam==='all'?' on':''}" data-exam="all">ทุกหน้าในเว็บ<span class="n">${LIST.length}</span></button>`;
+}
 
 /* ---- ชิปวิชา ---- */
 const subjects=[...new Set(LIST.map(x=>x.subj))];
@@ -165,6 +196,7 @@ $('#stTotal').textContent = LIST.length+' หน้า';
 $('#stSubj').textContent  = subjects.length+' วิชา';
 
 function pass(x){
+  if(fExam==='final' && !x.ex) return false;
   if(fKind!=='all' && x.kind!==fKind) return false;
   if(fSubj!=='all' && x.subj!==fSubj) return false;
   if(fQ && !(x.title+' '+x.subj+' '+x.path).toLowerCase().includes(fQ)) return false;
@@ -172,18 +204,49 @@ function pass(x){
 }
 const KIND={exam:'ข้อสอบ',sim:'สื่อจำลอง',note:'สรุป'};
 
+/* การ์ด 1 ใบ — ในมุมมองปลายภาคไม่ต้องแปะป้ายซ้ำ เพราะหัวข้อบอกวันสอบอยู่แล้ว */
+const cards = g => g.map(x=>`<a class="card s-${x.key}" href="${x.path}">
+                  <div class="t">${x.title}</div>
+                  <div class="m"><span class="k">${KIND[x.kind]}</span>${
+                    (x.ex && fExam!=='final' && exFirst(x))
+                      ? `<span class="fin-pill">🔥 ออกปลายภาค ${exFirst(x).day}</span>` : ''
+                  }</div>
+                </a>`).join('');
+
+/* มุมมอง "ปลายภาค" — เรียงตามเวลาสอบจริง ไม่ใช่เรียงตามวิชา */
+function byExam(rows){
+  let html = `<div class="fin-hint">🔥 กำลังโชว์เฉพาะหน้าที่<b>ออกปลายภาค</b> เรียงตามเวลาสอบจริง —
+    อยากดูหน้าที่เหลือทั้งเว็บ กด “ทุกหน้าในเว็บ” ข้างบน</div>`;
+  for(const e of EXAM){
+    const g = rows.filter(x=>exList(x).indexOf(e.id)>=0);
+    if(!g.length && (fQ || fKind!=='all' || fSubj!=='all')) continue;  /* กรองอยู่ ไม่ต้องโชว์ช่องว่าง */
+    html += `<h2 class="sec">🗓️ ${e.day} ${e.time} · ${e.name}
+             <span class="line"></span><span class="when">${e.min} นาที</span></h2>
+             <div class="scope">ขอบเขต: ${e.scope}</div>`;
+    html += g.length ? `<div class="grid">${cards(g)}</div>`
+                     : `<div class="slot-none">ยังไม่มีหน้าเตรียมสอบวิชานี้</div>`;
+  }
+  return html;
+}
+
 function render(){
   const rows=LIST.filter(pass);
   if(!LIST.length){
     $('#list').innerHTML=`<div class="warn">ยังไม่มีรายการ — ต้องรัน <code>pwsh -File site/build.ps1</code> ก่อน
       เพื่อคัดลอกหน้าเรียนเข้ามาและสร้าง <code>catalog.js</code></div>`; return;
   }
-  if(!rows.length){ $('#list').innerHTML='<div class="empty">ไม่เจอที่ค้นหา ลองพิมพ์สั้นลง</div>'; return; }
+  if(!rows.length){
+    /* กรองปลายภาคอยู่แล้วไม่เจอ ต้องบอกด้วยว่ายังกรองอยู่ ไม่งั้นนึกว่าเว็บไม่มีของ */
+    $('#list').innerHTML = (fExam==='final')
+      ? '<div class="empty">ไม่เจอในหน้าที่ออกปลายภาค — กด “ทุกหน้าในเว็บ” ข้างบนเพื่อค้นทั้งเว็บ</div>'
+      : '<div class="empty">ไม่เจอที่ค้นหา ลองพิมพ์สั้นลง</div>';
+    return;
+  }
+  if(fExam==='final'){
+    $('#list').innerHTML = byExam(rows);
+    return;
+  }
   let html='';
-  const cards = g => g.map(x=>`<a class="card s-${x.key}" href="${x.path}">
-                  <div class="t">${x.title}</div>
-                  <div class="m"><span class="k">${KIND[x.kind]}</span></div>
-                </a>`).join('');
   for(const s of subjects){
     const g=rows.filter(x=>x.subj===s); if(!g.length) continue;
     html += `<h2 class="sec">${g[0].icon} ${s} <span class="line"></span>
@@ -206,6 +269,8 @@ function render(){
     d.addEventListener('toggle',()=>{ try{localStorage.setItem(d.dataset.k, d.open?'1':'0');}catch(e){} });
   });
 }
+$('#examRow').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;
+  fExam=b.dataset.exam; $('#examRow').querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c===b)); render();});
 $('#kindRow').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;
   fKind=b.dataset.kind; $('#kindRow').querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c===b)); render();});
 $('#subjRow').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;
@@ -214,9 +279,9 @@ $('#q').addEventListener('input',e=>{fQ=e.target.value.trim().toLowerCase();rend
 render();
 </script>
 
-<script src="tour.js?v=202609051510"></script>
-<script src="feedback.js?v=202609051510"></script>
-<script src="updates.js?v=202609051510"></script>
+<script src="tour.js?v=202609052127"></script>
+<script src="feedback.js?v=202609052127"></script>
+<script src="updates.js?v=202609052127"></script>
 <!--KIT-UI v3.7 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>
 /* =============================================================================
