@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ติวกลางภาค — ยุคปฏิวัติ (เกษตร·วิทย์·อุตสาหกรรม)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0b10; --bg2:#11131c; --card:#161924; --card2:#1d2130;
+  --line:#2a2f42; --txt:#e7eaf3; --mut:#9aa3bd; --dim:#6b7390;
+  --gold:#e8b85f; --gold2:#f3d08a; --grn:#5fd99a; --red:#ff7a85;
+  --blu:#6db4f3; --pur:#b89cf0;
+  --sh:0 8px 30px rgba(0,0,0,.45);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Sarabun','Noto Sans Thai',system-ui,sans-serif;
+  background:radial-gradient(1200px 600px at 50% -200px,#161a2b,var(--bg)) fixed;
+  color:var(--txt); line-height:1.65; padding:0 0 80px;
+}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px}
+header{padding:30px 16px 18px;text-align:center}
+h1{font-size:clamp(20px,4.5vw,30px);font-weight:700;letter-spacing:.3px}
+h1 .gd{background:linear-gradient(90deg,var(--gold),var(--gold2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--mut);font-size:14px;margin-top:6px}
+.tag{display:inline-block;font-size:11px;color:var(--dim);border:1px solid var(--line);border-radius:20px;padding:2px 10px;margin-top:10px}
+
+/* tabs */
+.tabs{display:flex;gap:8px;justify-content:center;position:sticky;top:0;z-index:20;
+  padding:12px 0;background:linear-gradient(var(--bg),rgba(10,11,16,.86));backdrop-filter:blur(8px)}
+.tab{flex:0 0 auto;cursor:pointer;border:1px solid var(--line);background:var(--card);
+  color:var(--mut);padding:9px 18px;border-radius:12px;font-size:15px;font-weight:600;transition:.15s}
+.tab.on{color:var(--bg);background:linear-gradient(90deg,var(--gold),var(--gold2));border-color:transparent;box-shadow:var(--sh)}
+.tab:hover{color:var(--txt)}
+.tab.on:hover{color:var(--bg)}
+.page{display:none;animation:fade .3s}
+.page.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+
+/* cards / content */
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin:14px 0;box-shadow:var(--sh)}
+.card h2{font-size:18px;color:var(--gold2);margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.card h2 small{color:var(--dim);font-weight:400;font-size:12px}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:10px 0;font-size:14px}
+.pill{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:5px 11px;white-space:nowrap}
+.pill b{color:var(--gold2)}
+.arrow{color:var(--gold);font-weight:700}
+
+/* timeline */
+.tl{position:relative;margin:6px 0 0;padding-left:8px}
+.tl-item{display:grid;grid-template-columns:64px 1fr;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line);cursor:pointer;transition:.15s}
+.tl-item:last-child{border-bottom:0}
+.tl-item:hover{background:var(--card2);border-radius:10px;padding-left:8px}
+.tl-yr{font-family:'JetBrains Mono',monospace;color:var(--gold);font-weight:600;font-size:14px;text-align:right;padding-top:1px}
+.tl-body b{color:var(--txt)}
+.tl-body{font-size:14.5px;color:var(--mut)}
+.tl-tag{font-size:11px;border-radius:6px;padding:1px 7px;margin-left:6px;border:1px solid var(--line);color:var(--dim)}
+.t-sci{color:var(--blu);border-color:#2c4866}
+.t-ind{color:var(--gold2);border-color:#5a4a22}
+.t-agr{color:var(--grn);border-color:#27563c}
+.t-idea{color:var(--pur);border-color:#473a6b}
+
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:8px;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+th{background:var(--card2);color:var(--gold2);white-space:nowrap}
+td b{color:var(--txt)}
+.warn{border-left:3px solid var(--red)}
+.warn td:first-child{color:var(--red)}
+
+ul.tight{margin:6px 0 0 18px}ul.tight li{margin:3px 0;font-size:14px;color:var(--mut)}
+.k{color:var(--gold2);font-weight:600}
+.trap{background:#241318;border:1px solid #5c2a32}
+.trap h2{color:var(--red)}
+
+/* quiz */
+.qbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+.chip{cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--mut);
+  padding:6px 13px;border-radius:20px;font-size:13.5px;font-weight:600;transition:.15s}
+.chip.on{color:var(--bg);background:var(--gold2);border-color:transparent}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 0}
+.stat{flex:1;min-width:90px;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:9px;text-align:center}
+.stat .n{font-size:22px;font-weight:700;font-family:'JetBrains Mono',monospace}
+.stat .l{font-size:11px;color:var(--dim)}
+#scoreN{color:var(--gold2)} #streakN{color:var(--grn)} #seenN{color:var(--blu)}
+.bar{height:7px;background:var(--card2);border-radius:6px;overflow:hidden;margin:12px 0 4px}
+.bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--grn));transition:.4s}
+
+.qcard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--sh);margin-top:8px}
+.qmeta{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--dim);margin-bottom:8px}
+.qcat{border:1px solid var(--line);border-radius:6px;padding:1px 8px;color:var(--gold2)}
+.qtext{font-size:17px;font-weight:600;margin-bottom:14px;line-height:1.5}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);background:var(--card2);
+  border-radius:12px;padding:12px 14px;cursor:pointer;font-size:15px;transition:.12s}
+.opt:hover{border-color:var(--gold);background:#20242f}
+.opt .ltr{font-weight:700;color:var(--gold2);font-family:'JetBrains Mono',monospace;flex:0 0 auto}
+.opt.correct{border-color:var(--grn);background:#13241b}
+.opt.correct .ltr{color:var(--grn)}
+.opt.wrong{border-color:var(--red);background:#241317}
+.opt.wrong .ltr{color:var(--red)}
+.opt.lock{cursor:default;pointer-events:none;opacity:.92}
+.opt.dim{opacity:.5}
+.fb{margin-top:14px;border-radius:12px;padding:13px 15px;font-size:14.5px;display:none;animation:fade .25s}
+.fb.show{display:block}
+.fb.ok{background:#13241b;border:1px solid #27563c}
+.fb.no{background:#241317;border:1px solid #5c2a32}
+.fb .h{font-weight:700;margin-bottom:3px}
+.fb.ok .h{color:var(--grn)} .fb.no .h{color:var(--red)}
+.fb .cite{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--dim);margin-top:6px}
+.nav{display:flex;gap:10px;margin-top:14px}
+.btn{flex:1;cursor:pointer;border:none;border-radius:12px;padding:13px;font-size:15px;font-weight:700;font-family:inherit;transition:.15s}
+.btn.primary{background:linear-gradient(90deg,var(--gold),var(--gold2));color:var(--bg)}
+.btn.ghost{background:var(--card2);color:var(--mut);border:1px solid var(--line)}
+.btn:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.4;cursor:default}
+.done{text-align:center;padding:30px 16px}
+.done .big{font-size:46px}
+.foot{text-align:center;color:var(--dim);font-size:12px;margin-top:24px}
+.hl{color:var(--gold2)}
+</style>
+</head>
+<body>
+<header>
+  <h1>ติว<span class="gd">กลางภาค</span> · ยุคปฏิวัติ</h1>
+  <div class="sub">เกษตรกรรม · วิทยาศาสตร์ · อุตสาหกรรม — อิงสไลด์เรียน</div>
+  <div class="tag">📄 grounded จาก 12 PDF · มีอ้างอิงหน้าทุกข้อ</div>
+</header>
+
+<div class="tabs wrap" style="max-width:920px">
+  <div class="tab on" data-p="content">📚 เนื้อหา + Timeline</div>
+  <div class="tab" data-p="quiz">🎮 ฝึกข้อสอบ (35)</div>
+</div>
+
+<!-- ===================== CONTENT ===================== -->
+<div class="wrap page on" id="content">
+
+  <div class="card">
+    <h2>🌊 ภาพใหญ่ — Toffler 3 คลื่น</h2>
+    <div class="flow">
+      <span class="pill"><b>คลื่น 1</b> เกษตรกรรม · ~10,000 ปีก่อน</span><span class="arrow">→</span>
+      <span class="pill"><b>คลื่น 2</b> อุตสาหกรรม · C18</span><span class="arrow">→</span>
+      <span class="pill"><b>คลื่น 3</b> สารสนเทศ/คอมพิวเตอร์ · หลัง WWII</span>
+    </div>
+    <div class="flow" style="margin-top:4px">
+      <span class="pill" style="border-color:#2c4866">ปฏิวัติ<b style="color:var(--blu)">วิทยาศาสตร์</b></span><span class="arrow">→</span>
+      <span class="pill" style="border-color:#473a6b">Enlightenment <span style="color:var(--pur)">ยุคเหตุผล</span></span><span class="arrow">→</span>
+      <span class="pill" style="border-color:#5a4a22">ปฏิวัติ<b>อุตสาหกรรม</b></span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>⏳ TIMELINE หลัก <small>แตะแต่ละบรรทัดเพื่อไฮไลต์ · จำลำดับ = ได้ครึ่งข้อสอบ</small></h2>
+    <div class="qbar" style="margin-bottom:4px">
+      <span class="chip on" data-f="all">ทั้งหมด</span>
+      <span class="chip" data-f="sci">🔵 วิทยาศาสตร์</span>
+      <span class="chip" data-f="agr">🟢 เกษตร</span>
+      <span class="chip" data-f="ind">🟡 อุตสาหกรรม/สิ่งทอ/คมนาคม</span>
+      <span class="chip" data-f="idea">🟣 แนวคิด</span>
+    </div>
+    <div class="tl" id="timeline"></div>
+  </div>
+
+  <div class="card">
+    <h2>🏭 3 ระยะ ปฏิวัติอุตสาหกรรม</h2>
+    <table>
+      <tr><th>ระยะ</th><th>ปี</th><th>ชื่อยุค</th><th>ผู้นำ</th><th>พลังงาน</th><th>เด่น</th></tr>
+      <tr><td><b>1</b></td><td>1760–1860</td><td>สมัยพลังงานไอน้ำ</td><td>อังกฤษ</td><td>ไอน้ำ + ถ่านหิน</td><td>สิ่งทอ, เริ่มใช้เหล็ก</td></tr>
+      <tr><td><b>2</b></td><td>1861–1914</td><td>ยุคเหล็กกล้า (Age of Steel)</td><td><b class="hl">สหรัฐฯ</b></td><td>ก๊าซ/น้ำมัน/ไฟฟ้า</td><td>steel, เคมี, รถยนต์/เครื่องบิน</td></tr>
+      <tr><td><b>3</b></td><td>1918–ปัจจุบัน</td><td>อิเล็กทรอนิกส์</td><td>—</td><td>—</td><td>คอมพิวเตอร์, นาโน, ชีวภาพ</td></tr>
+    </table>
+    <ul class="tight" style="margin-top:10px">
+      <li><span class="k">ยุคไฟฟ้า ใครทำอะไร:</span> Faraday=ไดนาโม · Edison=หลอดไฟ · Bell=โทรศัพท์(1876) · Marconi=วิทยุโทรเลข · Wright=เครื่องบิน · Benz/Daimler=รถเบนซิน</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>🔬 นักวิทยาศาสตร์ จัดตามสาขา</h2>
+    <table>
+      <tr><th>สาขา</th><th>คน + ผลงานเด่น</th></tr>
+      <tr><td><b>ดาราศาสตร์</b></td><td>Copernicus (สุริยศูนย์กลาง, ค้าน Ptolemy) · Galileo (กล้องดูดาว, พลศาสตร์) · Kepler (วงโคจร<b class="hl">วงรี</b>)</td></tr>
+      <tr><td><b>กายวิภาค</b></td><td>Vesalius — ศึกษาจากศพจริง ล้ม Galen (เชื่อมา 1,500 ปี)</td></tr>
+      <tr><td><b>เคมี</b></td><td>Robert Boyle — บิดาเคมี (สสาร > 4 ธาตุ)</td></tr>
+      <tr><td><b>จุลชีววิทยา</b></td><td>Leeuwenhoek — กล้องจุลทรรศน์ 270 เท่า</td></tr>
+      <tr><td><b>คณิต/ปรัชญา/ฟิสิกส์</b></td><td>Bacon (ทดลอง/ประจักษ์นิยม) · Descartes (เหตุผล/เรขาคณิตวิเคราะห์) · Newton (แรงโน้มถ่วง·แคลคูลัส·แสง)</td></tr>
+      <tr><td><b>เหล็ก-ถ่านหิน</b></td><td>Cort (puddling/หลอมบริสุทธิ์) · Darby (coke ถลุงเหล็ก) · Bessemer (steel 1856)</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>🇬🇧 Why England + 💡 ผล 5 ด้าน</h2>
+    <ul class="tight">
+      <li><span class="k">4 เสาหลัก:</span> ทุน · วัตถุดิบ · แรงงาน · ตลาด</li>
+      <li><span class="k">ตัวหนุน:</span> เกาะ/แม่น้ำ · guild อ่อน · Laissez faire · สิทธิบัตร · ไม่มีสงครามกลางเมือง · อาณานิคม · Adam Smith · Bill of Rights(1689) · Bank of England(1694)</li>
+      <li><span class="k">ผล 5 ด้าน:</span> เศรษฐกิจ(ทุนนิยม) · สังคม(ชนชั้นใหม่/เมืองแออัด/แรงงานเด็ก) · การเมือง(จักรวรรดินิยม/สหภาพแรงงาน) · แนวคิด(<b class="hl">Smith เสรีนิยม vs Marx สังคมนิยม</b>) · มหาอำนาจ(อังกฤษชาติอุตฯแรก)</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>⚖️ คู่เทียบที่ออกบ่อย</h2>
+    <table>
+      <tr><th>เทียบ</th><th>ฝั่งซ้าย</th><th>ฝั่งขวา</th></tr>
+      <tr><td>ระบบผลิต</td><td><b>Domestic/Putting-out</b> — ลูกจ้างเป็นเจ้าของเครื่องมือ ทำที่บ้าน</td><td><b>Factory</b> — นายทุนเป็นเจ้าของทุน/เครื่องจักร, Mass Production</td></tr>
+      <tr><td>โลหะ</td><td><b>iron</b> เปราะ</td><td><b>steel</b> แข็ง+ยืดหยุ่น (Bessemer ทำให้ถูก→รางรถไฟ)</td></tr>
+      <tr><td>การเมือง</td><td><b>ปฏิวัติ</b> = เปลี่ยนระบอบ/รื้อโครงสร้าง</td><td><b>รัฐประหาร</b> = ยึดอำนาจ ไม่เปลี่ยนระบอบ</td></tr>
+      <tr><td>แนวคิด ศก.</td><td><b>Adam Smith</b> เสรีนิยม/Laissez faire (1776)</td><td><b>Karl Marx</b> สังคมนิยม (Communist Manifesto)</td></tr>
+    </table>
+  </div>
+
+  <div class="card trap">
+    <h2>🚩 จุดสไลด์ผิด/ขัดกันเอง <small>ถ้าอาจารย์ยึดสไลด์ → ตอบตามสไลด์</small></h2>
+    <table>
+      <tr class="warn"><td>ปฏิวัติเกษตร</td><td>สไลด์ "C16" + วงเล็บ (late 1600–1700s)</td><td>จริง = <b>ปลาย C17</b></td></tr>
+      <tr class="warn"><td>Power Loom</td><td>ไฟล์หนึ่ง 1811 / อีกไฟล์ 1787</td><td>ใช้ <b>1785–1787</b></td></tr>
+      <tr class="warn"><td>Karl Benz</td><td>สไลด์ "1857" (แต่ Benz เกิด 1844)</td><td>จริง ~<b>1885–86</b></td></tr>
+      <tr class="warn"><td>กล้อง Newton</td><td>สไลด์ "หักเหแสง"</td><td>จริง = <b>สะท้อนแสง</b></td></tr>
+      <tr class="warn"><td>Kepler</td><td>สไลด์ "ปลาย C15"</td><td>จริง = <b>ต้น C17</b> (1571–1630)</td></tr>
+      <tr class="warn"><td>Water Frame</td><td>1769 / 1771</td><td>จำ <b>1769</b></td></tr>
+    </table>
+  </div>
+  <div class="foot">เปิดดูเฉลยฉบับเต็มได้ที่ <span class="hl">ข้อสอบกลางภาค_โหด_เฉลย.md</span> · ชีตย่อ <span class="hl">ชีตโกง_timeline_กลางภาค.md</span></div>
+</div>
+
+<!-- ===================== QUIZ ===================== -->
+<div class="wrap page" id="quiz">
+  <div class="card" style="padding:14px 16px">
+    <div class="qbar" id="catbar">
+      <span class="chip on" data-c="all">ทั้งหมด</span>
+      <span class="chip" data-c="เกษตร">เกษตร</span>
+      <span class="chip" data-c="วิทย์">วิทยาศาสตร์</span>
+      <span class="chip" data-c="อุตฯ">อุตสาหกรรม</span>
+      <span class="chip" data-c="สิ่งทอ/คมนาคม">สิ่งทอ/คมนาคม</span>
+      <span class="chip" data-c="แนวคิด">แนวคิด</span>
+      <span class="chip" data-c="ภาพรวม">ภาพรวม</span>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="n" id="scoreN">0</div><div class="l">คะแนน</div></div>
+      <div class="stat"><div class="n" id="streakN">0</div><div class="l">🔥 ติดต่อกัน</div></div>
+      <div class="stat"><div class="n" id="seenN">0/0</div><div class="l">ทำไปแล้ว</div></div>
+    </div>
+    <div class="bar"><i id="barFill"></i></div>
+  </div>
+  <div id="quizArea"></div>
+</div>
+
+<script>
+/* ---------- TIMELINE DATA ---------- */
+const TL=[
+ ['1448','<b>กูเตนเบิร์ก</b> — เครื่องพิมพ์ (จุดติดไฟปฏิวัติวิทย์)','sci'],
+ ['1473–1543','<b>COPERNICUS</b> ☉ สุริยศูนย์กลาง ค้าน Ptolemy · หนังสือพิมพ์ปีตาย 1543','sci'],
+ ['1514–1563','<b>VESALIUS</b> กายวิภาคจากศพจริง ล้ม Galen (1,500 ปี)','sci'],
+ ['1561–1626','<b>BACON</b> ประจักษ์นิยม "ความรู้คืออำนาจ" → Royal Society','sci'],
+ ['1564–1642','<b>GALILEO</b> หอเอนปิซา(ล้ม Aristotle), กล้องดูดาว, ไต่สวน 1633','sci'],
+ ['1571–1630','<b>KEPLER</b> วงโคจร "วงรี" (แก้วงกลมของ Copernicus)','sci'],
+ ['1596–1650','<b>DESCARTES</b> เหตุผล/เรขาคณิตวิเคราะห์ "I think therefore I am"','sci'],
+ ['1627–1692','<b>BOYLE</b> บิดาเคมี (สสาร > 4 ธาตุ)','sci'],
+ ['1632–1723','<b>LEEUWENHOEK</b> บิดาจุลชีววิทยา กล้อง 270 เท่า','sci'],
+ ['1642–1727','<b>NEWTON</b> แรงโน้มถ่วง · แคลคูลัส · กฎเคลื่อนที่ · แสงขาว=สีรุ้ง','sci'],
+ ['ปลาย C17','<b>ปฏิวัติเกษตรกรรม</b> อังกฤษ: Enclosure, Four-field, ผลผลิต +300%','agr'],
+ ['1689','<b>Bill of Rights</b> · 1694 ตั้ง Bank of England','idea'],
+ ['1701','<b>Jethro Tull</b> — Seed drill (เครื่องหว่านเมล็ด)','agr'],
+ ['1733','<b>John Kay</b> — Flying Shuttle (กี่กระตุก, เร็ว×2)','ind'],
+ ['1764','<b>Hargreaves</b> — Spinning Jenny (8 หลอด)','ind'],
+ ['1769','<b>Arkwright</b> — Water Frame (พลังน้ำ→โรงงานริมน้ำ)','ind'],
+ ['1769','<b>JAMES WATT</b> — เครื่องจักรไอน้ำ (ใช้จริง 1785, หุ้น Boulton)','ind'],
+ ['1776','<b>Adam Smith</b> — Wealth of Nations (เสรีนิยม)','idea'],
+ ['1779','<b>Crompton</b> — Spinning Mule (Jenny + Water Frame)','ind'],
+ ['1787','<b>Cartwright</b> — Power Loom (ทอเร็วเท่าคน 200)','ind'],
+ ['1793','<b>Eli Whitney</b> 🇺🇸 — Cotton Gin (แยกเมล็ดฝ้าย)','ind'],
+ ['1804','<b>Trevithick</b> — หัวรถจักรไอน้ำลากของบนราง','ind'],
+ ['1807','<b>Fulton</b> 🇺🇸 — เรือกลไฟ Clermont (แม่น้ำฮัดสัน)','ind'],
+ ['1825','<b>Stephenson</b> — รถไฟขบวนแรกของโลก (Stockton) · หัวจักร "Rocket"','ind'],
+ ['1829','<b>Stephenson</b> — เส้น Liverpool–Manchester','ind'],
+ ['1840','<b>Cunard</b> — เรือกลไฟข้ามแอตแลนติก 14 วัน','ind'],
+ ['1856','<b>Bessemer process</b> — steel แข็ง + ถูก','ind'],
+ ['1889','<b>May Day</b> วันแรงงานสากล','idea'],
+];
+const tlEl=document.getElementById('timeline');
+function renderTL(f){
+  tlEl.innerHTML=TL.filter(r=>f==='all'||r[2]===f).map(r=>{
+    const tagname={sci:'วิทย์',agr:'เกษตร',ind:'อุตฯ',idea:'แนวคิด'}[r[2]];
+    return `<div class="tl-item"><div class="tl-yr">${r[0]}</div>
+    <div class="tl-body">${r[1]}<span class="tl-tag t-${r[2]}">${tagname}</span></div></div>`;
+  }).join('');
+}
+renderTL('all');
+document.querySelectorAll('#content .chip').forEach(c=>c.onclick=()=>{
+  document.querySelectorAll('#content .chip').forEach(x=>x.classList.remove('on'));
+  c.classList.add('on'); renderTL(c.dataset.f);
+});
+
+/* ---------- QUIZ DATA (35) ---------- */
+const Q=[
+{c:'ภาพรวม',q:'ทฤษฎีคลื่นอารยธรรมของ Alvin Toffler "คลื่นลูกที่สอง" ตรงกับข้อใด และเกิดในคริสต์ศตวรรษใด',o:['ปฏิวัติเกษตรกรรม / C18','ปฏิวัติอุตสาหกรรม / C18','ปฏิวัติอุตสาหกรรม / C20','ยุคสารสนเทศ / C20'],a:1,e:'คลื่น2 = ปฏิวัติอุตสาหกรรม คริสต์ศตวรรษที่ 18 (คลื่น1=เกษตร, คลื่น3=คอมพิวเตอร์)',ci:'Overview p.5'},
+{c:'ภาพรวม',q:'ลำดับความสัมพันธ์เชิงสาเหตุของ "Age of Enlightenment" ที่ถูกต้องคือ',o:['อุตสาหกรรม → วิทยาศาสตร์ → Enlightenment','วิทยาศาสตร์ → Enlightenment → อุตสาหกรรม','Enlightenment → วิทยาศาสตร์ → อุตสาหกรรม','เกษตร → อุตสาหกรรม → วิทยาศาสตร์'],a:1,e:'ปฏิวัติวิทยาศาสตร์ → Enlightenment/ยุคเหตุผล → ปฏิวัติอุตสาหกรรม',ci:'Overview p.5 · Sci_rev_1 p.9'},
+{c:'ภาพรวม',q:'เรียงการปฏิวัติ "เก่า→ใหม่" ตามช่วงเวลาในสไลด์',o:['วิทยาศาสตร์(1500–1700) → เกษตร(ปลาย C17) → อุตสาหกรรม(กลาง C18)','เกษตร → วิทยาศาสตร์ → อุตสาหกรรม','วิทยาศาสตร์ → อุตสาหกรรม → เกษตร','เกษตร → อุตสาหกรรม → วิทยาศาสตร์'],a:0,e:'วิทย์ ≈1500–1700, เกษตรปลาย C17, อุตสาหกรรมกลาง C18',ci:'Sci_rev_1 p.3 · Agri p.13 · Indus_2 p.21'},
+{c:'เกษตร',q:'ข้อใด "ไม่ใช่" ผลของระบบ Enclosure',o:['เจ้าที่ดินรายใหญ่มีแรงจูงใจนำวิทยาการใหม่มาใช้','เกษตรกรรายย่อยถูกบีบให้เช่าที่ดินหรืออพยพเข้าเมือง','เกิดแรงงานส่วนเกินไหลเข้าโรงงานในเวลาต่อมา','รัฐยกเลิกระบบสิทธิบัตรเพื่อให้ที่ดินเป็นของส่วนรวม'],a:3,e:'รัฐไม่ได้ยกเลิกสิทธิบัตร — Enclosure ทำให้รวมที่ดิน+พัฒนา และดันคนเข้าเมือง',ci:'Agri p.5,8'},
+{c:'เกษตร',q:'บุคคลใด "จับคู่ผลงาน" ผิด',o:['Robert Bakewell — Selective breeding (คัดพันธุ์แกะ)','Jethro Tull — Seed drill','แนวคิดหมุนเวียนพืช — Four-field (เพิ่มโคลเวอร์/พืชราก)','Henry Cort — เครื่องแยกเมล็ดฝ้าย (Cotton Gin)'],a:3,e:'Cotton Gin = Eli Whitney ไม่ใช่ Henry Cort (Cort = หลอมเหล็ก)',ci:'Iron_coal p.2 · Textile p.9'},
+{c:'เกษตร',q:'Four-field ต่างจาก Three-field เดิมอย่างไรเป็นสำคัญ',o:['แบ่งนา 3 ส่วนแทน 4 ส่วน','เพิ่มพืชราก/โคลเวอร์ "ฟื้นสารอาหารดิน" แทนการพักที่ว่าง','เลิกปลูกข้าวสาลีโดยสิ้นเชิง','ใช้ปุ๋ยเคมีแทนการหมุนเวียนพืช'],a:1,e:'Four-field เพิ่มพืชราก/โคลเวอร์ฟื้นดิน แทนการปล่อยที่ว่างแบบเก่า',ci:'Agri p.6,7'},
+{c:'วิทย์',q:'ใครถือเป็น "จุดเริ่มต้นของการปฏิวัติทางวิทยาศาสตร์" และขัดกับใคร',o:['Kepler ขัด Copernicus','Copernicus (สุริยศูนย์กลาง) ขัด Ptolemy (โลกเป็นศูนย์กลาง)','Galileo ขัด Aristarchus','Newton ขัด Descartes'],a:1,e:'Copernicus = จุดเริ่มปฏิวัติวิทย์ ขัดความเชื่อ Ptolemy ที่ว่าโลกเป็นศูนย์กลาง',ci:'Sci_rev_1 p.6 · Sci_rev_2 p.4'},
+{c:'วิทย์',q:'Copernicus เชื่อทฤษฎีของนักปราชญ์กรีกคนใดว่า "ถูกต้องที่สุด"',o:['Aristotle','Ptolemy','Aristarchus แห่ง Samos','Pythagoras'],a:2,e:'เชื่อ Aristarchus แห่ง Samos (ดวงอาทิตย์เป็นศูนย์กลาง)',ci:'Sci_rev_2 p.4'},
+{c:'วิทย์',q:'ข้อบกพร่องในทฤษฎี Copernicus ที่ถูกแก้ภายหลัง คือ',o:['บอกว่าโลกแบน — Galileo แก้','บอกวงโคจร "วงกลม" — Kepler แก้เป็น "วงรี"','บอกดวงอาทิตย์โคจรรอบโลก — Newton แก้','บอกมีดาวเคราะห์ 4 ดวง — Boyle แก้'],a:1,e:'Copernicus ว่าวงโคจรเป็นวงกลม → Kepler แก้เป็นวงรี',ci:'Sci_rev_2 p.6,16'},
+{c:'วิทย์',q:'หนังสือ On the Revolution of the Celestial Spheres (เสร็จ 1530) ตีพิมพ์เมื่อใด',o:['ทันทีปีเดียวกัน','ปีที่เขาเสียชีวิต (1543)','หลังเขาตาย 100 ปี','1666 พร้อมตั้ง French Academy'],a:1,e:'ตีพิมพ์ปีที่เขาตาย 1543 (ศาสนจักรปฏิเสธต่ออีก ~100 ปี)',ci:'Sci_rev_2 p.6'},
+{c:'วิทย์',q:'การทดลองที่ "หอเอนปิซา" ของ Galileo ล้มล้างความเชื่อของใคร เรื่องอะไร',o:['Ptolemy — โลกเป็นศูนย์กลาง','Aristotle — วัตถุหนักตกถึงพื้นก่อนวัตถุเบา','Galen — กายวิภาคจากสัตว์','Descartes — เรขาคณิตวิเคราะห์'],a:1,e:'ล้ม Aristotle: วัตถุหนัก-เบาตกถึงพื้นพร้อมกัน',ci:'Sci_rev_2 p.10,13'},
+{c:'วิทย์',q:'หนังสือเล่มใดทำให้ Galileo ถูกไต่สวน "นอกรีต" ปี 1633',o:['Harmonices Mundi','Dialogue Concerning the Two Chief World Systems','Novum Organum','De humani corporis fabrica'],a:1,e:'Dialogue Concerning the Two Chief World Systems → ไต่สวน 1633',ci:'Sci_rev_2 p.11,12'},
+{c:'วิทย์',q:'ข้อใด "ไม่ใช่" ผลงานของ Galileo ตามสไลด์',o:['จุดดับบนดวงอาทิตย์ (Sun Spot)','บริวารดาวพฤหัส 4 ดวง / ทางช้างเผือก','กฎแรงโน้มถ่วงสากล (Law of Gravity)','กฎเพนดูลัม (ลูกตุ้มนาฬิกา)'],a:2,e:'กฎแรงโน้มถ่วง = Newton ไม่ใช่ Galileo',ci:'Sci_rev_2 p.13 vs p.24'},
+{c:'วิทย์',q:'จับคู่ "บิดาแห่งวิชา" ข้อใดถูกทั้งคู่',o:['Boyle=บิดาเคมี ; Leeuwenhoek=บิดาจุลชีววิทยา','Boyle=จุลชีววิทยา ; Vesalius=เคมี','Newton=เคมี ; Bacon=กายวิภาค','Leeuwenhoek=เคมี ; Boyle=กายวิภาค'],a:0,e:'Boyle=บิดาเคมี ; Leeuwenhoek=บิดาจุลชีววิทยา (กล้อง 270 เท่า)',ci:'Sci_rev_2 p.27,29'},
+{c:'วิทย์',q:'Andreas Vesalius สำคัญอย่างไรต่อวงการแพทย์',o:['ประดิษฐ์กล้องจุลทรรศน์ 270 เท่า','ศึกษากายวิภาคจาก "ร่างมนุษย์จริง" ล้ม Galen ที่เชื่อมา 1,500 ปี','ค้นพบสสารมีธาตุ > 4 ชนิด','เสนอ I think therefore I am'],a:1,e:'Vesalius ศึกษาจากศพจริง ล้มคำสอน Galen ที่เชื่อกันมา 1,500 ปี',ci:'Sci_rev_2 p.18'},
+{c:'วิทย์',q:'Robert Boyle โจมตีความเชื่อเดิมของ Aristotle ในประเด็นใด',o:['โลกเป็นศูนย์กลางจักรวาล','วัตถุหนักตกเร็วกว่าวัตถุเบา','สสารประกอบด้วยธาตุเพียง 4 ชนิด','วงโคจรของดาวเป็นวงกลม'],a:2,e:'Boyle ค้าน Aristotle: สสารมีธาตุมากกว่า 4 ชนิด',ci:'Sci_rev_2 p.27'},
+{c:'วิทย์',q:'"ความรู้คืออำนาจ" + วางรากฐานวิธีการทางวิทยาศาสตร์/ประจักษ์นิยม จนนำสู่ Royal Society เป็นของใคร',o:['René Descartes','Francis Bacon','Isaac Newton','Galileo'],a:1,e:'Francis Bacon — ประจักษ์นิยม, "ความรู้คืออำนาจ", Royal Society',ci:'Sci_rev_2 p.20'},
+{c:'วิทย์',q:'Descartes กับ Bacon เสนอวิธีสร้างความรู้ต่างกันอย่างไร',o:['Descartes เน้นทดลอง ; Bacon เน้นเหตุผล','Descartes เน้นเหตุผล/คณิต (เรขาคณิตวิเคราะห์) ; Bacon เน้นทดลอง-สังเกต','ทั้งคู่เน้นความเชื่อทางศาสนา','ทั้งคู่ปฏิเสธคณิตศาสตร์'],a:1,e:'Descartes=เหตุผล/คณิต ; Bacon=ทดลอง-สังเกต (ประจักษ์นิยม)',ci:'Sci_rev_1 p.7 · Sci_rev_2 p.20,22'},
+{c:'วิทย์',q:'ข้อใดเป็นผลงานของ Newton "ครบทั้งชุด" ตามสไลด์',o:['แรงโน้มถ่วง · แคลคูลัส · แสงขาว=แสงสีรุ้ง · กฎการเคลื่อนที่','แรงโน้มถ่วง · กล้องจุลทรรศน์ · ทฤษฎีวงรี','แคลคูลัส · กายวิภาคมนุษย์ · Sun Spot','กฎการเคลื่อนที่ · Cotton Gin · ทฤษฎีอะตอม'],a:0,e:'Newton: แรงโน้มถ่วง·แคลคูลัส·กฎเคลื่อนที่·แสงขาวเกิดจากแสงสีรุ้ง',ci:'Sci_rev_2 p.24'},
+{c:'วิทย์',q:'สถาบันวิทยาศาสตร์ข้อใด "จับคู่ปี" ตรงตามสไลด์',o:['French Academy 1666 ; ราชบัณฑิตฯ อังกฤษ 1662','Royal Society 1543 ; French Academy 1701','French Academy 1689 ; Royal Society 1694','ทั้งสองตั้งปี 1776'],a:0,e:'French Academy of Sciences 1666 ; ราชบัณฑิตฯ อังกฤษ 1662',ci:'Sci_rev_1 p.8,9'},
+{c:'อุตฯ',q:'ข้อใด "ไม่ใช่" เหตุผล Why England?',o:['ภูมิศาสตร์เป็นเกาะ + คนอยู่ในรัศมี 20 ไมล์จากแม่น้ำ','ชนชั้นกลางเข้มแข็ง + guild อ่อนแอลง','มีสงครามกลางเมืองภายในประเทศรุนแรงต่อเนื่อง','ระบบสิทธิบัตร + Bill of Rights + Bank of England'],a:2,e:'ที่ถูกคือ "ไม่มีสงครามกลางเมือง" จึงเป็นปัจจัยบวก — ข้อนี้ผิด',ci:'Indus_2 p.15'},
+{c:'อุตฯ',q:'Putting-out System ต่างจาก Factory System เรื่อง "กรรมสิทธิ์เครื่องมือ" อย่างไร',o:['Putting-out: ลูกจ้างเป็นเจ้าของเครื่องมือ ; Factory: นายทุนเป็นเจ้าของทุน/เครื่องจักรทั้งหมด','ทั้งสองนายทุนเป็นเจ้าของเครื่องมือ','Factory: คนงานเป็นเจ้าของเครื่องจักร','ทั้งสองผลิตในโรงงานเหมือนกัน'],a:0,e:'Putting-out ลูกจ้างเป็นเจ้าของเครื่องมือ ทำที่บ้าน ; Factory นายทุนคุมทุน/เครื่องจักร',ci:'Indus_2 p.16,20'},
+{c:'สิ่งทอ/คมนาคม',q:'เรียง "เครื่องจักรสิ่งทอ" ตามปีประดิษฐ์ เก่า→ใหม่',o:['Flying Shuttle(1733) → Spinning Jenny(1764) → Water Frame(1769) → Spinning Mule(1779) → Cotton Gin(1793)','Spinning Jenny → Flying Shuttle → Water Frame → Cotton Gin','Water Frame → Flying Shuttle → Spinning Mule → Jenny','Cotton Gin → Power Loom → Mule → Water Frame'],a:0,e:'1733 Kay → 1764 Hargreaves → 1769 Arkwright → 1779 Crompton → 1793 Whitney',ci:'Textile p.10,11'},
+{c:'สิ่งทอ/คมนาคม',q:'"Spinning Mule" ของ Samuel Crompton พิเศษอย่างไร',o:['เป็นเครื่องทอผ้าพลังไอน้ำเครื่องแรก','ผสาน Spinning Jenny + Water Frame → ด้ายทนทาน/ประณีตกว่ารุ่นก่อน','เป็นเครื่องแยกเมล็ดฝ้าย','ทอผ้าได้เร็วเท่าคน 200 คน'],a:1,e:'Spinning Mule = ผสานคุณสมบัติ Jenny + Water Frame',ci:'Textile p.7'},
+{c:'สิ่งทอ/คมนาคม',q:'ใครคือ "ชาวอเมริกัน" ในกลุ่มนักประดิษฐ์สิ่งทอ และผลงานคือ',o:['Edmund Cartwright — Power Loom','Richard Arkwright — Water Frame','Eli Whitney — Cotton Gin','John Kay — Flying Shuttle'],a:2,e:'Eli Whitney ชาวอเมริกัน — Cotton Gin (คนอื่นเป็นชาวอังกฤษ)',ci:'Textile p.9'},
+{c:'อุตฯ',q:'ปฏิวัติอุตสาหกรรม "ระยะที่ 1" (สมัยพลังงานไอน้ำ) มีลักษณะใด',o:['เทคโนโลยีไม่ซับซ้อน · เน้นทอผ้า · ไอน้ำ+ถ่านหิน · เริ่มใช้เหล็ก','ยุคเหล็กกล้า · ฟอสซิล+ไฟฟ้า · รถยนต์/เครื่องบิน','สมัยอิเล็กทรอนิกส์ · นาโน · คอมพิวเตอร์','ยุคจักรวรรดินิยม · สหภาพแรงงาน'],a:0,e:'ระยะ1: เทคโนโลยีง่าย เน้นสิ่งทอ พลังไอน้ำ+ถ่านหิน เริ่มใช้เหล็ก',ci:'Indus_1 p.6,13'},
+{c:'อุตฯ',q:'ระยะที่ 2 (ยุคเหล็กกล้า) ผู้นำคือใคร และใช้พลังงานใดแทนถ่านหิน',o:['อังกฤษ — ใช้ถ่านหินต่อไป','สหรัฐอเมริกา — ก๊าซธรรมชาติ/น้ำมัน/ไฟฟ้า','เยอรมนี — พลังงานไอน้ำ','ฝรั่งเศส — นิวเคลียร์'],a:1,e:'ระยะ2 ผู้นำ=สหรัฐฯ ใช้ก๊าซ/น้ำมัน/ไฟฟ้าแทนถ่านหิน',ci:'Indus_1 p.8,13'},
+{c:'อุตฯ',q:'จับคู่ผู้ประดิษฐ์ยุคเหล็กกล้า/ไฟฟ้า ข้อใด "ผิด"',o:['Michael Faraday — ไดนาโม','Thomas Edison — หลอดไฟฟ้า','Guglielmo Marconi — วิทยุโทรเลข','Wright Brothers — โทรศัพท์'],a:3,e:'Wright Brothers = เครื่องบิน ไม่ใช่โทรศัพท์ (โทรศัพท์=Bell)',ci:'Indus_1 p.8'},
+{c:'อุตฯ',q:'ในอุตสาหกรรมเหล็ก-ถ่านหิน ใครจับคู่ "ผลงาน" ถูกต้อง',o:['Henry Cort — ทำถ่านหินบริสุทธิ์/หลอมเหล็กคุณภาพดี (puddling)','Abraham Darby — ค้นพบ Bessemer 1856','Henry Bessemer — ใช้ coke ถลุงเหล็กเป็นคนแรก','Henry Cort — สร้างหัวรถจักร Rocket'],a:0,e:'Cort=puddling/หลอมบริสุทธิ์ ; Darby=coke ถลุงเหล็ก ; Bessemer=steel 1856',ci:'Iron_coal p.2,3'},
+{c:'อุตฯ',q:'"Bessemer process (1856)" สำคัญต่อระบบขนส่งอย่างไร',o:['ทำให้ steel ราคาถูก ใช้ทำรางแทน iron ที่เปราะ รองรับรถไฟเร็ว/หนัก','ทำให้ถ่านหินเผาไหม้ช้าลง','ทำให้เรือข้ามมหาสมุทรได้ 14 วัน','ทำให้ถนน McAdam ไม่จมโคลน'],a:0,e:'steel ถูกลง แทน iron ที่เปราะ → รางรถไฟรับน้ำหนัก/ความเร็วสูงได้',ci:'Iron_coal p.2'},
+{c:'สิ่งทอ/คมนาคม',q:'จับคู่ "คมนาคม–บุคคล–ปี" ข้อใดถูกต้อง',o:['เรือกลไฟ Clermont — Robert Fulton — 1807 (ฮัดสัน)','เรือข้ามแอตแลนติก 14 วัน — Trevithick — 1804','หัวรถจักร Rocket — Robert Fulton — 1825','ถนน Turnpike — George Stephenson — 1829'],a:0,e:'Fulton สร้างเรือกลไฟ Clermont 1807 บนแม่น้ำฮัดสัน',ci:'Transport p.4'},
+{c:'สิ่งทอ/คมนาคม',q:'George Stephenson มีผลงานใดตามสไลด์',o:['สร้างเรือกลไฟลำแรก','รถไฟขบวนแรกของโลก (Stockton 1825) + Liverpool–Manchester (1829) + หัวจักร Rocket','ประดิษฐ์เครื่องยนต์เบนซิน','คิดถนนลาดยาง McAdam'],a:1,e:'Stephenson: รถไฟขบวนแรก 1825, เส้น Liverpool–Manchester 1829, Rocket',ci:'Transport p.14,16'},
+{c:'แนวคิด',q:'ผล "แนวคิด/เศรษฐกิจ" แยก 2 ค่าย — จับคู่ถูกต้อง',o:['Adam Smith=เสรีนิยม/Laissez faire (Wealth of Nations 1776) ; Karl Marx=สังคมนิยม (Communist Manifesto)','Adam Smith=สังคมนิยม ; Karl Marx=ทุนนิยมเสรี','Robert Owen=เสรีนิยม ; Smith=คอมมิวนิสต์','Marx=Laissez faire ; Engels=ทุนนิยม'],a:0,e:'Smith=เสรีนิยม/Laissez faire 1776 ; Marx=สังคมนิยม Communist Manifesto',ci:'Indus_4 p.6,8'},
+{c:'แนวคิด',q:'"สายโซ่เหตุผล" จากปฏิวัติอุตสาหกรรม → จักรวรรดินิยม ที่ตรงสไลด์ที่สุด',o:['ต้องการแหล่งวัตถุดิบป้อนโรงงาน + ตลาดระบายสินค้า → ล่าอาณานิคมเอเชีย/แอฟริกา/ออสเตรเลีย','ต้องการลดประชากรในเมือง → ส่งคนไปอาณานิคม','ต้องการเผยแผ่ศาสนา → ยึดอาณานิคม','ต้องการพื้นที่ทดลองวิทยาศาสตร์ → ตั้งอาณานิคม'],a:0,e:'ต้องการวัตถุดิบ+ตลาด → ขยายจักรวรรดินิยมในเอเชีย/แอฟริกา/ออสเตรเลีย',ci:'Indus_4 p.7,9'},
+{c:'ภาพรวม',q:'"ปฏิวัติ (revolution)" ต่างจาก "รัฐประหาร (coup)" อย่างไรตามนิยามในสไลด์',o:['ปฏิวัติ=ยึดอำนาจไม่เปลี่ยนระบอบ ; รัฐประหาร=เปลี่ยนระบอบ','ปฏิวัติ=เปลี่ยน/รื้อโครงสร้าง-ระบอบเดิม ; รัฐประหาร=ยึดอำนาจไม่เปลี่ยนระบอบ','สองคำหมายเหมือนกันทุกประการ','ปฏิวัติใช้กับเศรษฐกิจ ; รัฐประหารใช้กับทหารเท่านั้น'],a:1,e:'ปฏิวัติ=เปลี่ยนระบอบ/รื้อโครงสร้าง ; รัฐประหาร=ยึดอำนาจแต่ไม่เปลี่ยนระบอบ',ci:'Indus_1 p.3'},
+];
+const LT=['ก','ข','ค','ง'];
+
+/* ---------- QUIZ ENGINE ---------- */
+let pool=[],bag=[],cur=null,score=0,streak=0,seen=0,answered=false,filter='all';
+const $=id=>document.getElementById(id);
+
+function buildPool(){
+  pool=Q.filter(x=>filter==='all'||x.c===filter);
+  bag=[]; score=0; streak=0; seen=0;
+  refill(); next();
+}
+function refill(){ bag=pool.map((_,i)=>i).sort(()=>Math.random()-0.5); }
+function next(){
+  if(!bag.length){ if(seen>=pool.length){return finish();} refill(); }
+  const idx=bag.pop(); cur=pool[idx]; answered=false;
+  render();
+}
+function render(){
+  updateStats();
+  const order=[0,1,2,3].sort(()=>Math.random()-0.5);
+  cur._order=order;
+  $('quizArea').innerHTML=`
+   <div class="qcard">
+     <div class="qmeta"><span class="qcat">${cur.c}</span><span>ข้อ ${seen+1} / ${pool.length}</span></div>
+     <div class="qtext">${cur.q}</div>
+     <div class="opts" id="opts">
+       ${order.map((oi,k)=>`<div class="opt" data-oi="${oi}"><span class="ltr">${LT[k]}</span><span>${cur.o[oi]}</span></div>`).join('')}
+     </div>
+     <div class="fb" id="fb"></div>
+     <div class="nav">
+       <button class="btn ghost" id="skipBtn">ข้าม</button>
+       <button class="btn primary" id="nextBtn" disabled>ข้อต่อไป →</button>
+     </div>
+   </div>`;
+  document.querySelectorAll('#opts .opt').forEach(el=>el.onclick=()=>choose(+el.dataset.oi,el));
+  $('skipBtn').onclick=()=>next();
+  $('nextBtn').onclick=()=>{ if(answered){seen++;next();} };
+}
+function choose(oi,el){
+  if(answered)return; answered=true;
+  const correct=oi===cur.a;
+  document.querySelectorAll('#opts .opt').forEach(o=>{
+    o.classList.add('lock');
+    const v=+o.dataset.oi;
+    if(v===cur.a)o.classList.add('correct');
+    else if(o===el)o.classList.add('wrong');
+    else o.classList.add('dim');
+  });
+  if(correct){score++;streak++;} else {streak=0;}
+  const fb=$('fb');
+  fb.className='fb show '+(correct?'ok':'no');
+  fb.innerHTML=`<div class="h">${correct?'✓ ถูกต้อง!':'✗ ยังไม่ใช่ — เฉลย: '+LT[cur._order.indexOf(cur.a)]+'. '+cur.o[cur.a]}</div>
+    <div>${cur.e}</div><div class="cite">📄 ${cur.ci}</div>`;
+  $('nextBtn').disabled=false;
+  updateStats();
+}
+function updateStats(){
+  $('scoreN').textContent=score;
+  $('streakN').textContent=streak;
+  $('seenN').textContent=seen+'/'+pool.length;
+  $('barFill').style.width=(pool.length?Math.round(seen/pool.length*100):0)+'%';
+}
+function finish(){
+  const pct=Math.round(score/pool.length*100);
+  let emo=pct>=90?'🏆':pct>=70?'🎉':pct>=50?'💪':'📚';
+  let msg=pct>=90?'เทพมาก! พร้อมสอบ':pct>=70?'เก่ง! ทบทวนจุดพลาดอีกนิด':pct>=50?'มาถูกทาง สู้ต่อ':'กลับไปอ่าน Timeline แล้วลองใหม่';
+  $('quizArea').innerHTML=`<div class="qcard done">
+    <div class="big">${emo}</div>
+    <h2 style="justify-content:center;color:var(--gold2)">จบหมวดนี้แล้ว</h2>
+    <p style="font-size:30px;font-weight:700;margin:8px 0">${score} / ${pool.length} <span style="color:var(--mut);font-size:18px">(${pct}%)</span></p>
+    <p style="color:var(--mut);margin-bottom:16px">${msg}</p>
+    <button class="btn primary" onclick="buildPool()" style="max-width:240px;margin:0 auto">เริ่มหมวดนี้ใหม่ 🔁</button>
+  </div>`;
+  updateStats();
+}
+document.querySelectorAll('#catbar .chip').forEach(c=>c.onclick=()=>{
+  document.querySelectorAll('#catbar .chip').forEach(x=>x.classList.remove('on'));
+  c.classList.add('on'); filter=c.dataset.c; buildPool();
+});
+
+/* ---------- TAB SWITCH ---------- */
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on'); $(t.dataset.p).classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+
+buildPool();
+</script>
+<!--KIT-UI v3.7 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<script>
+/* =============================================================================
+   _kit/ui-controls.js  —  KIT UI  v1.0
+   แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
+     🌙/☀️  โหมดมืด / สว่าง   (จำค่าไว้ใน localStorage)
+     A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
+     ✏️  ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
+     🧮  เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
+
+   ── วิธีใช้ ────────────────────────────────────────────────────────────────
+   ห้ามแก้โค้ดนี้ในไฟล์ widget!  แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
+       pwsh -File _kit/apply-ui.ps1
+   สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
+   (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
+
+   !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
+      เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
+
+   ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
+   ใส่แอตทริบิวต์ที่ tag body:  data-tools="pen,calc"  = บังคับเปิด
+                              data-tools="none"      = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
+   ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
+              หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
+   ============================================================================= */
+(function(){
+if(window.__KITUI__) return; window.__KITUI__='3.7';   /* 3.7 = ปุ่มถาม AI เปิดเป็น "แผงข้าง" ไม่เด้งออกจากหน้า (site/ask-panel.js) · 3.6 = แถบพื้นหลังใต้ปุ่มลอย (กันเนื้อหาไหลผ่านช่องเหนือแท็บ) · 3.5 = tour.js · 3.4 = feedback.js */   /* เดิม 3.3 = ส่ง ?from= ไปด้วย ปุ่มกลับในหน้าถามจะได้กลับหน้าเดิม ไม่ใช่หน้ารวม · 3.2 = ปุ่ม 🔎 ถาม AI · 3.1 = ขยายปุ่มกลับ */
+
+/* ---------- helper ---------- */
+const D=document, R=D.documentElement;
+const get=k=>{try{return localStorage.getItem('kitui-'+k)}catch(e){return null}};
+const set=(k,v)=>{try{localStorage.setItem('kitui-'+k,v)}catch(e){}};
+const el=(t,c,h)=>{const e=D.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
+
+/* =============================================================================
+   1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
+   ============================================================================= */
+const CSS=`
+/* ===== DARK TOKENS (คู่กับ _kit/design-tokens.css) ===== */
+:root[data-theme="dark"]{
+  --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
+  --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
+  --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
+  --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
+  --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
+}
+:root[data-theme="dark"] body{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f172a}
+:root[data-theme="dark"] body[data-subject="physics"]{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f1220}
+:root[data-theme="dark"] body[data-subject="bio"]{--accent:#4ade80;--accent-head:#bbf7d0;--accent-ink:#86efac;--accent-soft:#0f2a1a;--accent-bd:#256b41;--accent-chip:#14532d;--accent-ghost:#15803d;--bg:#0d1912}
+:root[data-theme="dark"] body[data-subject="chem"]{--accent:#fb923c;--accent-head:#fed7aa;--accent-ink:#fdba74;--accent-soft:#2b1a0c;--accent-bd:#8a3d12;--accent-chip:#6d2c10;--accent-ghost:#c2410c;--bg:#1a130c}
+:root[data-theme="dark"] body[data-subject="christ"]{--accent:#a78bfa;--accent-head:#ddd6fe;--accent-ink:#c4b5fd;--accent-soft:#241a3d;--accent-bd:#5b21b6;--accent-chip:#4c1d95;--accent-ghost:#6d28d9;--bg:#16121f}
+:root[data-theme="dark"] body[data-subject="islam"]{--accent:#2dd4bf;--accent-head:#99f6e4;--accent-ink:#5eead4;--accent-soft:#0d2b28;--accent-bd:#12615a;--accent-chip:#134e4a;--accent-ghost:#0f766e;--bg:#0c1917}
+:root[data-theme="dark"] body[data-subject="history"]{--accent:#fbbf24;--accent-head:#fde68a;--accent-ink:#fcd34d;--accent-soft:#2a1f0a;--accent-bd:#8a4b0c;--accent-chip:#6d3a0a;--accent-ghost:#b45309;--bg:#191509}
+:root[data-theme="dark"] body[data-subject="math"]{--accent:#38bdf8;--accent-head:#bae6fd;--accent-ink:#7dd3fc;--accent-soft:#0c2434;--accent-bd:#0b5a80;--accent-chip:#0c4a6e;--accent-ghost:#0369a1;--bg:#0b1620}
+:root[data-theme="dark"] body[data-subject="eng"]{--accent:#f472b6;--accent-head:#fbcfe8;--accent-ink:#f9a8d4;--accent-soft:#2e1122;--accent-bd:#8d1748;--accent-chip:#731839;--accent-ghost:#be185d;--bg:#1c0f16}
+:root[data-theme="dark"] body[data-subject="thai"]{--accent:#f87171;--accent-head:#fecaca;--accent-ink:#fca5a5;--accent-soft:#2d1414;--accent-bd:#8d2020;--accent-chip:#7f1d1d;--accent-ghost:#b91c1c;--bg:#1a0f0f}
+:root[data-theme="dark"] body[data-subject="hindu"]{--accent:#facc15;--accent-head:#fef08a;--accent-ink:#fde047;--accent-soft:#2a2408;--accent-bd:#7a6410;--accent-chip:#5c4b0c;--accent-ghost:#a16207;--bg:#191708}
+:root[data-theme="dark"] img,:root[data-theme="dark"] .svg-box{filter:brightness(.92)}
+/* ช่องกรอก/ดรอปดาวน์ที่ widget เก่ากำหนดพื้นขาวตายตัวไว้ */
+:root[data-theme="dark"] select,:root[data-theme="dark"] textarea,
+:root[data-theme="dark"] input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=color])
+{background-color:var(--soft);color:var(--ink);border-color:var(--line)}
+
+/* ===== แถบเครื่องมือลอย ===== */
+#kitui-bar{position:fixed;right:10px;bottom:10px;z-index:99990;display:flex;gap:6px;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
+#kitui-bar button{border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;
+  font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
+  align-items:center;justify-content:center;font-weight:700}
+#kitui-bar button:hover{background:var(--soft)}
+#kitui-bar button:active{transform:scale(.93)}
+#kitui-bar button.on{background:var(--accent);color:#fff}
+#kitui-bar .kitui-sep{width:1px;height:22px;background:var(--line);flex:0 0 1px}
+#kitui-bar .kitui-fs{font-size:11px;color:var(--muted);min-width:34px;text-align:center;font-weight:700}
+#kitui-bar.hidden > *:not(#kitui-grip):not(#kitui-home){display:none}
+#kitui-grip{font-size:17px}
+
+/* ===== แผงลอย (ที่ทด / เครื่องคิดเลข) ===== */
+.kitui-sheet{position:fixed;left:0;right:0;bottom:0;z-index:99991;background:var(--card);
+  border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
+  display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
+  height:52vh;max-height:92vh;min-height:180px}
+.kitui-sheet.open{display:flex}
+.kitui-sheet.full{height:100vh;border-radius:0}
+.kitui-head{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--line);
+  flex-wrap:wrap;touch-action:none;cursor:ns-resize}
+.kitui-head b{font-size:.9rem;color:var(--accent-ink);margin-right:2px;white-space:nowrap}
+.kitui-head button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;
+  padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
+.kitui-head button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.kitui-head .kitui-spacer{flex:1}
+.kitui-sw{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;min-height:0}
+.kitui-sw.on{border-color:var(--ink);transform:scale(1.12)}
+.kitui-padwrap{flex:1;position:relative;overflow:hidden;background:var(--soft)}
+.kitui-padwrap canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+:root[data-theme="dark"] .kitui-padwrap{background:#0c1220}
+
+/* ===== เครื่องคิดเลข ===== */
+#kitui-calc{height:auto;max-height:90vh}
+.kitui-disp{padding:8px 12px;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);
+  border-bottom:1px solid var(--line)}
+.kitui-disp .ex{font-size:.95rem;color:var(--muted);min-height:1.3em;word-break:break-all}
+.kitui-disp .rs{font-size:1.6rem;font-weight:700;color:var(--accent-ink);word-break:break-all}
+.kitui-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:7px}
+.kitui-keys button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:9px;
+  font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
+.kitui-keys button:active{transform:scale(.95)}
+.kitui-keys button.fn{font-size:.8rem;color:var(--accent-ink)}
+.kitui-keys button.op{background:var(--accent-soft);color:var(--accent-ink)}
+.kitui-keys button.eq{background:var(--accent);color:#fff;grid-row:span 2}
+.kitui-keys button.del{background:var(--hot-bg);color:var(--hot-ink)}
+.kitui-keys button.w3{grid-column:span 3}
+@media(max-width:420px){.kitui-keys button{font-size:.88rem;min-height:40px}.kitui-keys button.fn{font-size:.72rem}}
+@media(min-width:760px){
+  .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
+  .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
+  #kitui-pad{width:560px}
+}
+#kitui-nav{position:fixed;top:8px;left:8px;z-index:99992;display:flex;gap:8px;align-items:center}
+#kitui-ask{border:1.5px solid var(--accent);background:var(--accent);color:#fff;border-radius:999px;
+  padding:0 16px 0 13px;height:44px;font-family:inherit;font-size:15.5px;font-weight:700;cursor:pointer;
+  box-shadow:0 3px 14px rgba(15,23,42,.22);line-height:1;display:flex;align-items:center;gap:6px;
+  text-decoration:none;white-space:nowrap}
+#kitui-ask .ar{font-size:18px;line-height:1}
+#kitui-ask:active{transform:scale(.95)}
+#kitui-back{display:flex;align-items:center;gap:7px;
+  border:1.5px solid var(--accent-bd,var(--line));background:var(--card);color:var(--ink);
+  border-radius:999px;padding:0 18px 0 14px;height:44px;font-family:inherit;font-size:15.5px;
+  font-weight:700;cursor:pointer;box-shadow:0 3px 14px rgba(15,23,42,.22);line-height:1}
+#kitui-back .ar{font-size:20px;line-height:1;margin-top:-1px}
+#kitui-back{white-space:nowrap}
+#kitui-back:active{transform:scale(.95)}
+#kitui-back:hover{background:var(--soft)}
+/* แท็บเป็น sticky top:0 ถ้าไม่ดันลงมาปุ่มจะทับแท็บแรกจนกดไม่ได้
+   ตัวเลขนี้ผูกกับความสูงปุ่ม (8 บน + 44 ปุ่ม + ระยะห่าง) แก้ความสูงปุ่มต้องแก้ตรงนี้ด้วย */
+body.kitui-hasback .tabs{top:60px}
+body.kitui-hasback .wrap{padding-top:56px}
+/* พื้นหลังทึบใต้ปุ่มลอย — พอดันแท็บ sticky ลงมา 60px จะเกิดช่องว่างเหนือมัน
+   แล้วเนื้อหาที่เลื่อนผ่านช่องนั้นจะโผล่ให้เห็น ดูเหมือนมีแถบลอยซ้อนกันสองชั้น
+   ใช้ element จริงไม่ใช่ body::before เพราะหน้า Unit18 ใช้ ::before ของตัวเองอยู่แล้ว */
+#kitui-topbg{position:fixed;top:0;left:0;right:0;height:60px;background:var(--bg);
+  z-index:99988;pointer-events:none}
+@media print{#kitui-bar,.kitui-sheet,#kitui-back{display:none!important}}
+`;
+const st=el('style'); st.id='kitui-style'; st.textContent=CSS; D.head.appendChild(st);
+
+/* -----------------------------------------------------------------------------
+   1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
+   widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
+   พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
+   แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
+   เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
+----------------------------------------------------------------------------- */
+/* สีพาสเทลสว่าง -> สีเข้มที่ยังคง "เฉดเดิม" ไว้ (เขียว=ถูก / แดง=ผิด ต้องยังแยกออก)
+   ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
+function darken(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
+  /* ⚠️ ห้ามใช้ saturation ของ HSL ตรง ๆ ตัดสิน: ที่ความสว่างเกือบ 1 ตัวหารจะเล็กมาก
+     ทำให้สีที่แทบเป็นสีขาว (เช่น #fdf8f4) ได้ค่าอิ่มสีสูงลิ่ว แล้วกลายเป็นสีน้ำตาลจัดตอนกดให้เข้ม
+     ให้ดูจาก "ช่วงห่างของแม่สี" (chroma) แทน แล้วแปลงเป็นความอิ่มสีแบบไล่ระดับ */
+  const s = Math.min(.45, Math.max(.08, d*4));
+  const l = d<.02 ? .13 : .17;                       /* เทา/ขาวล้วนให้เข้มกว่าสีนิดหน่อย */
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+function darkFix(){
+  const out=[], seen=new Set();
+  const take=r=>{
+    if(!r.style || !r.selectorText) return;
+    if(r.selectorText.indexOf('kitui')>-1) return;               /* ของเราเองใช้ token อยู่แล้ว */
+    const bg=r.style.backgroundColor;
+    if(!bg || bg.indexOf('var(')>-1) return;
+    const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
+    if(!m) return;
+    if(m[4]!==undefined && +m[4]<0.6) return;                    /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
+    const cr=+m[1], cg=+m[2], cb=+m[3];
+    if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return;       /* ไม่สว่างพอ ไม่ต้องยุ่ง */
+    const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
+    const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
+    let css='background-color:'+repl;
+    /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
+    const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
+    out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
+  };
+  /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
+        ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
+  const visit=rules=>{
+    for(let i=0;i<rules.length;i++){
+      const r=rules[i];
+      if(r.selectorText) take(r);
+      if(r.cssRules && r.cssRules.length) visit(r.cssRules);     /* @media / @supports / nesting */
+    }
+  };
+  for(let i=0;i<D.styleSheets.length;i++){
+    let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; }   /* ข้ามชีตข้ามโดเมน */
+    if(rr) visit(rr);
+  }
+  if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
+  return out.length;
+}
+try{ window.__KITUI_DARKFIX__ = (D.body.getAttribute('data-kit-theme')==='off') ? 'locked' : darkFix(); }
+catch(e){ window.__KITUI_DARKFIX__='err:'+e.message; }
+
+/* darkFix ข้างบนซ่อมได้เฉพาะสีที่เขียนตายตัวในไฟล์ CSS
+   แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
+   ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
+   จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
+const rgbOf=c=>{const m=c&&c.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null;};
+const lumOf=v=>v?(0.2126*v[0]+0.7152*v[1]+0.0722*v[2])/255:null;
+/* ตรงข้ามกับ darken(): ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
+   (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
+function lighten(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  if(d<0.04) return 'var(--ink)';                    /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
+  let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
+  const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
+  const s=Math.min(.92,Math.max(.55,s0)), l=.72;
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+const SKIP={CANVAS:1,IMG:1,VIDEO:1,SVG:1,IFRAME:1,PICTURE:1,OBJECT:1};
+const OBS_OPT={childList:true,subtree:true,attributes:true,attributeFilter:['class','style']};
+let patched=[], obs=null;
+function elementFix(){
+  /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
+        ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
+  if(obs) obs.disconnect();
+  try{ elementFixCore(); } finally { if(obs) obs.observe(D.body,OBS_OPT); }
+}
+function elementFixCore(){
+  if(D.body.getAttribute('data-kit-theme')==='off') return;   /* หน้าที่ล็อกธีมไว้ ห้ามไปยุ่งสี */
+  /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
+     ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
+     จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
+  if(R.getAttribute('data-theme')!=='dark'){
+    patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
+    patched=[];
+    return;
+  }
+  /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
+     ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
+  /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
+  const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
+  for(let i=0;i<all.length;i++){
+    const e=all[i];
+    if(e.id&&e.id.indexOf('kitui')===0) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(SKIP[e.tagName]) continue;                      /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
+    const s=getComputedStyle(e);
+    const bg=rgbOf(s.backgroundColor);
+    if(!bg || bg[3]<0.6) continue;                     /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
+    if(lumOf(bg)<0.72) continue;                       /* เข้มพออยู่แล้ว */
+    /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
+    e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
+    const fg=rgbOf(s.color);
+    if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important');  /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
+    patched.push(e);
+  }
+  /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
+     ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
+  const bgCache=new Map();
+  const effBg=n=>{
+    for(let p=n;p;p=p.parentElement){
+      if(bgCache.has(p)) return bgCache.get(p);
+      const b=rgbOf(getComputedStyle(p).backgroundColor);
+      if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
+    }
+    return null;
+  };
+  for(let i=2;i<all.length;i++){
+    const e=all[i];
+    if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(e.style.color) continue;                         /* จัดการไปแล้วในรอบแรก */
+    if(!e.textContent || !e.textContent.trim()) continue;
+    const fg=rgbOf(getComputedStyle(e).color);
+    if(!fg || lumOf(fg)>=0.45) continue;                 /* ตัวอักษรสว่างอยู่แล้ว */
+    const bg=effBg(e);
+    if(!bg || lumOf(bg)>=0.5) continue;                  /* พื้นยังสว่าง อ่านออกอยู่ */
+    e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
+    patched.push(e);
+  }
+}
+let efT=0;
+const scheduleFix=()=>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
+try{
+  obs=new MutationObserver(scheduleFix);
+  obs.observe(D.body,OBS_OPT);
+}catch(e){}
+
+/* =============================================================================
+   2) ธีม + ขนาดตัวอักษร
+   ============================================================================= */
+const FS=[.85,1,1.15,1.3,1.5], FSNAME=['เล็กสุด','เล็ก','ปกติ','ใหญ่','ใหญ่สุด'];
+let fsIdx=parseInt(get('fs')); if(isNaN(fsIdx)||fsIdx<0||fsIdx>4) fsIdx=1;
+let theme=get('theme') || (matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+
+/* หน้าที่ออกแบบธีมมาเองครบแล้ว (เช่น "หนังสือทบทวน" พื้นเข้มทั้งเล่ม) ให้ปิดระบบธีมของ KIT UI
+   ไม่งั้นโทเคน --bg/--ink ของเราจะไปทับสีที่หน้านั้นตั้งไว้ แล้วหน้าเพี้ยน
+   ใส่ที่ tag body:  data-kit-theme="off"   (ปุ่มปรับขนาดตัวอักษรยังใช้ได้ตามปกติ) */
+const themeLock = D.body.getAttribute('data-kit-theme')==='off';
+
+function applyTheme(){
+  if(themeLock) return;
+  R.setAttribute('data-theme',theme);
+  R.style.colorScheme = theme==='dark'?'dark':'light';   /* ให้ select/input เป็นสีเข้มด้วย */
+  const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
+  set('theme',theme);
+  clearTimeout(efT);                                   /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
+  if(typeof elementFix==='function') elementFix();
+  /* ⚠️ ห้ามอ้างถึงตัวแปรของส่วน "ที่ทด" ตรงนี้!
+     applyTheme() ถูกเรียกก่อนที่ `let pad` ในส่วนที่ 4 จะทำงาน → ชน temporal dead zone
+     แล้ว ReferenceError จะทำให้สคริปต์ตายทั้งก้อน (ปุ่มขนาดอักษร/ที่ทด/เครื่องคิดเลขหายหมด)
+     ใช้วิธียิง event แทน ใครสนใจค่อยไปดักฟังเอง */
+  try{ D.dispatchEvent(new CustomEvent('kitui-theme')); }catch(e){}
+}
+function applyFS(){
+  R.style.fontSize=(16*FS[fsIdx])+'px';
+  const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
+  set('fs',fsIdx);
+}
+
+/* =============================================================================
+   3) แถบเครื่องมือ
+   ============================================================================= */
+const subj=(D.body.getAttribute('data-subject')||'').toLowerCase();
+/* หลาย widget ไม่ได้ใส่ data-subject ที่ <body> → เดาจากโฟลเดอร์ที่ไฟล์อยู่ด้วย */
+const inPath=/\/(physics|math|chemist)\//i.test(decodeURIComponent(location.pathname));
+const tAttr=D.body.getAttribute('data-tools');
+const wantTools = tAttr!=null ? tAttr.toLowerCase()
+                : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
+const hasPen  = wantTools.includes('pen');
+const hasCalc = wantTools.includes('calc');
+
+/* ปุ่มกลับหน้าหลัก — โผล่เฉพาะตอนเปิดจากเว็บห้องติว (พาธมี /app/ อยู่)
+   เปิดไฟล์จากเครื่องตรง ๆ จะไม่มีปุ่มนี้ เพราะไม่มีหน้าหลักให้กลับ ลิงก์จะเสียเปล่า ๆ */
+const homeHref = (()=>{
+  const attr = D.body.getAttribute('data-home');     /* หน้าไหนไม่ได้อยู่ใต้ /app/ ให้ระบุเองได้ */
+  if(attr) return attr;
+  try{
+    const p = decodeURIComponent(location.pathname);
+    const i = p.indexOf('/app/');
+    return i < 0 ? null : p.slice(0, i+1) + 'index.html';
+  }catch(e){ return null; }
+})();
+
+const bar=el('div'); bar.id='kitui-bar';
+bar.innerHTML =
+  `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
+  (homeHref ? `<button id="kitui-home" title="กลับหน้าหลัก">🏠</button><span class="kitui-sep"></span>` : '')+
+  (themeLock ? '' : `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button><span class="kitui-sep"></span>`)+
+  `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
+  `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
+  `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
+  (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
+  (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
+D.body.appendChild(bar);
+
+if(!themeLock) D.getElementById('kitui-theme').onclick=()=>{theme=theme==='dark'?'light':'dark';applyTheme();};
+D.getElementById('kitui-fsup').onclick=()=>{if(fsIdx<4){fsIdx++;applyFS();}};
+D.getElementById('kitui-fsdown').onclick=()=>{if(fsIdx>0){fsIdx--;applyFS();}};
+D.getElementById('kitui-grip').onclick=()=>bar.classList.toggle('hidden');
+if(homeHref) D.getElementById('kitui-home').onclick=()=>{ location.href=homeHref; };
+
+/* ปุ่มกลับแบบลอยมุมซ้ายบน — มีคำว่า "กลับ" เต็ม ๆ ไม่ใช่ไอคอนเปล่า
+   (ของเดิมเป็น 🏠 เล็ก ๆ ปนอยู่ในแถบมุมขวาล่าง เพื่อนหาไม่เจอเลยไม่กด) */
+if(homeHref){
+  const back=el('button'); back.id='kitui-back';
+  back.type='button'; back.title='กลับหน้ารวมวิชา';
+  back.innerHTML='<span class="ar">←</span><span>กลับ</span>';
+  back.onclick=()=>{ location.href=homeHref; };
+  const nav=el('div'); nav.id='kitui-nav';
+  nav.appendChild(back);
+
+  /* ปุ่มถาม AI — เจ้าของทักว่าไม่มีใครย้อนกลับไปหน้ารวมเพื่อกดถาม ต้องถามจากหน้าที่เรียนอยู่ได้เลย
+     ส่งวิชาของหน้านี้ไปด้วย (?s=) หน้าถามจะได้เลือกวิชาให้เอง ไม่ต้องมากดซ้ำ
+     v3.7: site/ask-panel.js จะมาดักปุ่มนี้ให้เปิดเป็น "แผงข้าง" แทนการเด้งออกจากหน้า
+     ถ้าไฟล์นั้นโหลดไม่ได้ ปุ่มก็ยังเป็นลิงก์ธรรมดาใช้ได้เหมือนเดิม (ไม่พังทั้งคู่) */
+  const onAsk = /(^|\/)ask\.html$/.test(location.pathname);
+  if(!onAsk){
+    const subj = D.body.getAttribute('data-subject') || '';
+    const a=el('a'); a.id='kitui-ask';
+    /* ส่งหน้าปัจจุบันไปด้วย หน้าถามจะได้ทำปุ่มกลับให้ย้อนมาที่หน้านี้ ไม่ใช่เด้งไปหน้ารวม */
+    const q=[];
+    if(subj) q.push('s='+encodeURIComponent(subj));
+    q.push('from='+encodeURIComponent(location.pathname));
+    a.href = homeHref.replace(/index\.html$/,'ask.html') + '?' + q.join('&');
+    a.title='ถาม AI เรื่องที่กำลังอ่านอยู่';
+    a.innerHTML='<span class="ar">🔎</span><span>ถาม AI</span>';
+    nav.appendChild(a);
+  }
+  const tb=el('div'); tb.id='kitui-topbg'; D.body.appendChild(tb);
+  D.body.appendChild(nav);
+  D.body.classList.add('kitui-hasback');
+
+  /* ปุ่ม 💬 ส่งความเห็น — เก็บโค้ดไว้ที่ site/feedback.js ไฟล์เดียว ไม่ฝังซ้ำใน 200 กว่าไฟล์
+     ⚠️ เดิมคิดจาก homeHref โดยสมมติว่าลงท้าย index.html เสมอ (ตัด 10 ตัว)
+        แต่หน้า ask.html ที่มากับ ?from= จะตั้ง data-home เป็น "พาธของหน้าที่มา" ซึ่งไม่ได้ลงท้ายแบบนั้น
+        ตัด 10 ตัวจึงได้พาธเพี้ยน กลายเป็น ".../ชื่อไฟล์.hfeedback.js" แล้วสคริปต์โหลดไม่ขึ้นเงียบ ๆ
+        (เจอ 2026-09-05 ตอนทำแผงถาม AI) → คิดรากเว็บจาก location เองแทน ไม่พึ่ง data-home */
+  const rootURL = (function(){
+    try{
+      const p = decodeURIComponent(location.pathname);
+      const i = p.indexOf('/app/');
+      if(i >= 0) return p.slice(0, i+1);            /* หน้าเรียนใต้ /app/ -> รากเว็บ */
+    }catch(e){}
+    return location.pathname.replace(/[^/]*$/, '');  /* หน้าอื่น (เช่น ask.html ที่ราก) */
+  })();
+  /* ask-panel.js ไว้หน้าสุด จะได้ผูกปุ่ม "ถาม AI" ให้เปิดแผงได้เร็วที่สุด
+     ถ้าผู้ใช้กดก่อนสคริปต์มาถึง ปุ่มก็ยังเป็นลิงก์ธรรมดา เด้งไปหน้าถามเต็มจอ ไม่พัง */
+  ['ask-panel.js','feedback.js','tour.js'].forEach(function(n){
+    const s=el('script'); s.src=rootURL+n; s.defer=true; D.body.appendChild(s);
+  });
+}
+applyTheme(); applyFS();
+
+/* ปิดแผงด้วยปุ่ม Esc */
+D.addEventListener('keydown',e=>{ if(e.key==='Escape') D.querySelectorAll('.kitui-sheet.open').forEach(s=>s.classList.remove('open')); });
+
+/* ลากหัวแผงเพื่อปรับความสูง */
+function makeResizable(sheet){
+  const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
+  head.addEventListener('pointerdown',e=>{
+    if(e.target.closest('button'))return;
+    drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect().height;head.setPointerCapture(e.pointerId);
+  });
+  head.addEventListener('pointermove',e=>{
+    if(!drag)return;
+    const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
+    sheet.classList.remove('full'); sheet.style.height=h+'px';
+    if(sheet.id==='kitui-pad') fitPad();
+  });
+  head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
+}
+
+/* =============================================================================
+   4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ  หลายหน้า  เซฟอัตโนมัติ
+   ============================================================================= */
+let pad,padCv,padCx,pages=[[]],pg=0,undone=[],histo=[];
+let tool='pen',color='#111827',width=2.4,penSeen=0;
+const COLORS=['#111827','#2563eb','#dc2626','#16a34a','#f59e0b'];
+const PADKEY='pad-'+location.pathname.split('/').pop();
+
+function buildPad(){
+  pad=el('div','kitui-sheet'); pad.id='kitui-pad';
+  pad.innerHTML=
+   `<div class="kitui-head">
+      <b>✏️ ที่ทด</b>
+      <button data-t="pen" class="on">🖊️</button>
+      <button data-t="hl">🖍️</button>
+      <button data-t="er">🧽</button>
+      ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
+      <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
+      <span class="kitui-spacer"></span>
+      <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
+      <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
+      <button id="kitui-pgadd">+ หน้า</button>
+      <button id="kitui-clear">ล้างหน้านี้</button>
+      <button id="kitui-full">⛶</button>
+      <button id="kitui-padclose">✕</button>
+    </div>
+    <div class="kitui-padwrap"><canvas></canvas></div>`;
+  D.body.appendChild(pad);
+  padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
+  makeResizable(pad);
+
+  pad.querySelector('.kitui-head').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
+  });
+  D.getElementById('kitui-undo').onclick=()=>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop(); draw(); save(); } };
+  D.getElementById('kitui-redo').onclick=()=>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop(); draw(); save(); } };
+  D.getElementById('kitui-clear').onclick=()=>{ snap(); pages[pg]=[]; draw(); save(); };
+  D.getElementById('kitui-pgadd').onclick=()=>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw(); save(); };
+  D.getElementById('kitui-pgprev').onclick=()=>{ if(pg>0){pg--;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-pgnext').onclick=()=>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-full').onclick=()=>{ pad.classList.toggle('full'); pad.style.height=''; fitPad(); };
+  D.getElementById('kitui-padclose').onclick=()=>pad.classList.remove('open');
+
+  /* ---- วาด ---- */
+  let cur=null;
+  padCv.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='pen') penSeen=Date.now();
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;   /* กันฝ่ามือแตะตอนใช้สไตลัส */
+    const p=pt(e);
+    if(tool==='er'){ snap(); erase(p); return; }
+    snap();
+    cur={c:color,w:width,hl:tool==='hl',pts:[p]};
+    pages[pg].push(cur); draw();
+    try{ padCv.setPointerCapture(e.pointerId); }catch(x){}  /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
+  });
+  padCv.addEventListener('pointermove',e=>{
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;
+    if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
+    if(!cur||!e.buttons)return;
+    /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
+    let evs=[e];
+    if(e.getCoalescedEvents){ const c=e.getCoalescedEvents(); if(c&&c.length) evs=c; }
+    evs.forEach(ev=>cur.pts.push(pt(ev)));
+    draw();
+  });
+  const end=()=>{ if(cur){cur=null;save();} };
+  padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
+  padCv.addEventListener('pointerleave',end);
+
+  addEventListener('resize',()=>{ if(pad.classList.contains('open')) fitPad(); });
+  D.addEventListener('kitui-theme',()=>draw());   /* สลับธีมแล้ววาดลายใหม่ เส้นดำ<->ขาวตามพื้น */
+  load(); fitPad();
+}
+function pt(e){
+  const r=padCv.getBoundingClientRect();
+  return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
+          p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5};   /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
+}
+function snap(){ histo.push(pages[pg].slice()); if(histo.length>60)histo.shift(); undone=[]; }
+function erase(p){
+  const r=padCv.getBoundingClientRect(), rad=18/r.width;
+  const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
+  if(keep.length!==pages[pg].length){ pages[pg]=keep; draw(); save(); }
+}
+function fitPad(){
+  const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
+  const dpr=Math.min(devicePixelRatio||1,2.5);
+  padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
+  draw();
+}
+function draw(){
+  const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
+  padCx.clearRect(0,0,W,H);
+  /* เส้นตารางจาง ๆ ให้เขียนตรง */
+  const dark=R.getAttribute('data-theme')==='dark';
+  padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
+  for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath();padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke();}
+  padCx.lineCap='round'; padCx.lineJoin='round';
+  pages[pg].forEach(s=>{
+    padCx.globalAlpha=s.hl?0.32:1;
+    padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
+    for(let i=1;i<s.pts.length;i++){
+      const a=s.pts[i-1],b=s.pts[i];
+      padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
+      padCx.beginPath(); padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke();
+    }
+    if(s.pts.length===1){ /* จุดเดียว */
+      padCx.fillStyle=padCx.strokeStyle; padCx.beginPath();
+      padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill();
+    }
+  });
+  padCx.globalAlpha=1;
+  const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
+}
+function save(){ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
+function load(){
+  try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
+}
+
+if(hasPen){
+  buildPad();
+  D.getElementById('kitui-penbtn').onclick=()=>{
+    const o=pad.classList.toggle('open');
+    D.getElementById('kitui-penbtn').classList.toggle('on',o);
+    if(o) fitPad();
+  };
+}
+
+/* =============================================================================
+   5) เครื่องคิดเลขวิทยาศาสตร์  (tokenizer → shunting-yard → RPN  ไม่ใช้ eval)
+   ============================================================================= */
+const FN={sin:1,cos:1,tan:1,asin:1,acos:1,atan:1,ln:1,log:1,sqrt:1,abs:1,exp:1};
+const PREC={'+':1,'-':1,'*':2,'/':2,'^':4,'u-':3};
+function tokenize(s){
+  s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
+  const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!()])/g; let m;
+  while((m=re.exec(s))) out.push(m[1]);
+  return out;
+}
+function toRPN(tk){
+  const out=[],op=[]; let prev=null;
+  for(let t of tk){
+    if(t==='**')t='^';
+    if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
+    else if(t==='PI'){ out.push(Math.PI); }
+    else if(t==='e'||t==='E'){ out.push(Math.E); }
+    else if(t==='ANS'){ out.push(ANS); }
+    else if(FN[t]){ op.push(t); }
+    else if(t==='('){ op.push(t); }
+    else if(t===')'){
+      while(op.length&&op[op.length-1]!=='(') out.push(op.pop());
+      if(!op.length) throw 0; op.pop();
+      if(op.length&&FN[op[op.length-1]]) out.push(op.pop());
+    }
+    else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
+    else if('+-*/^'.includes(t)){
+      let o=t;
+      const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
+      if(t==='-'&&unary) o='u-';
+      else if(t==='+'&&unary){ prev=t; continue; }
+      while(op.length){
+        const top=op[op.length-1];
+        if(top==='('||FN[top])break;
+        const rightAssoc=(o==='^'||o==='u-');
+        if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop()); else break;
+      }
+      op.push(o);
+    }
+    else throw 0;
+    prev=t;
+  }
+  while(op.length){ const o=op.pop(); if(o==='(')throw 0; out.push(o); }
+  return out;
+}
+function evalRPN(rpn,deg){
+  const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
+  const pop=()=>{ if(!st.length)throw 0; return st.pop(); };
+  for(const t of rpn){
+    if(typeof t==='number'){ st.push(t); continue; }
+    if(t==='fact'){ const n=pop(); if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
+    if(t==='pct'){ st.push(pop()/100); continue; }
+    if(t==='u-'){ st.push(-pop()); continue; }
+    if(FN[t]){
+      const a=pop();
+      st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
+             : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
+             : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
+             : t==='abs'?Math.abs(a) : Math.exp(a) );
+      continue;
+    }
+    const b=pop(),a=pop();
+    st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
+  }
+  if(st.length!==1) throw 0;
+  return st[0];
+}
+function calc(src,deg){ return evalRPN(toRPN(tokenize(src)),deg); }
+
+let ANS=0, expr='', calcSheet, isDeg=true;
+const KEYS=[
+ ['DEG','deg','fn'],['(','(',''],[')',')',''],['⌫','del','del'],['AC','ac','del'],
+ ['sin','sin(','fn'],['cos','cos(','fn'],['tan','tan(','fn'],['π','π','fn'],['÷','÷','op'],
+ ['sin⁻¹','asin(','fn'],['cos⁻¹','acos(','fn'],['tan⁻¹','atan(','fn'],['e','e','fn'],['×','×','op'],
+ ['ln','ln(','fn'],['log','log(','fn'],['√','√(','fn'],['xʸ','^','fn'],['−','−','op'],
+ ['7','7',''],['8','8',''],['9','9',''],['x!','!','fn'],['+','+','op'],
+ ['4','4',''],['5','5',''],['6','6',''],['%','%','fn'],['ANS','ANS','fn'],
+ ['1','1',''],['2','2',''],['3','3',''],['.','.',''],['=','eq','eq'],
+ ['0','0','w3'],['x²','^2','fn']
+];
+function buildCalc(){
+  calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
+  calcSheet.innerHTML=
+   `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
+      <button id="kitui-calcclose">✕</button></div>
+    <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
+    <div class="kitui-keys" id="kitui-keys">
+      ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
+    </div>`;
+  D.body.appendChild(calcSheet);
+  D.getElementById('kitui-calcclose').onclick=()=>calcSheet.classList.remove('open');
+  const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
+  const show=()=>{ ex.textContent=expr||' ';
+    try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
+    catch(e){ rs.style.opacity=.35; }
+  };
+  D.getElementById('kitui-keys').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
+    if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
+    if(k==='del'){ expr=expr.slice(0,-1); show(); return; }
+    if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show(); return; }
+    if(k==='eq'){
+      rs.style.opacity=1;
+      try{
+        const v=calc(expr,isDeg);
+        if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
+        if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
+        ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
+      }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
+      return;
+    }
+    expr+=k; show();
+  });
+}
+function fmt(v){
+  if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
+  if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
+  return String(Math.round(v*1e10)/1e10);
+}
+if(hasCalc){
+  buildCalc();
+  D.getElementById('kitui-calcbtn').onclick=()=>{
+    const o=calcSheet.classList.toggle('open');
+    D.getElementById('kitui-calcbtn').classList.toggle('on',o);
+  };
+}
+})();
+
+</script>
+<!--/KIT-UI-->
+</body>
+</html>

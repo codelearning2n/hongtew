@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ข้อสอบรวม — ยุคแห่งการปฏิวัติ (ปรนัย 75 + อัตนัย 8)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0b10; --bg2:#11131c; --card:#161924; --card2:#1d2130;
+  --line:#2a2f42; --txt:#e7eaf3; --mut:#9aa3bd; --dim:#6b7390;
+  --gold:#e8b85f; --gold2:#f3d08a; --grn:#5fd99a; --red:#ff7a85;
+  --blu:#6db4f3; --pur:#b89cf0;
+  --sh:0 8px 30px rgba(0,0,0,.45);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Sarabun','Noto Sans Thai',system-ui,sans-serif;
+  background:radial-gradient(1200px 600px at 50% -200px,#161a2b,var(--bg)) fixed;
+  color:var(--txt);line-height:1.6;padding:0 0 90px}
+.wrap{max-width:820px;margin:0 auto;padding:0 16px}
+header{padding:28px 16px 6px;text-align:center}
+h1{font-size:clamp(19px,4.4vw,28px);font-weight:700}
+h1 .gd{background:linear-gradient(90deg,var(--gold),var(--gold2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--mut);font-size:13px;margin-top:6px}
+
+.tabs{display:flex;gap:8px;justify-content:center;overflow-x:auto;position:sticky;top:0;z-index:30;
+  padding:11px 16px;margin-top:8px;background:linear-gradient(var(--bg),rgba(10,11,16,.85));backdrop-filter:blur(8px);
+  scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--mut);
+  padding:9px 16px;border-radius:12px;font-size:14px;font-weight:600;transition:.15s;white-space:nowrap}
+.tab.on{color:var(--bg);background:linear-gradient(90deg,var(--gold),var(--gold2));border-color:transparent;box-shadow:var(--sh)}
+.tab:hover{color:var(--txt)}.tab.on:hover{color:var(--bg)}
+.page{display:none;animation:fade .3s}.page.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin:14px 0;box-shadow:var(--sh)}
+.filters{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:8px;align-items:center}
+.filters .lab{font-size:12px;color:var(--dim);margin-right:2px}
+.fch{cursor:pointer;border:1px solid var(--line);background:var(--card2);color:var(--mut);
+  padding:6px 12px;border-radius:18px;font-size:13px;font-weight:600;transition:.15s}
+.fch.on{color:var(--bg);background:var(--blu);border-color:transparent}
+.fch.gold.on{background:linear-gradient(90deg,var(--gold),var(--gold2))}
+.fch:hover{color:var(--txt)}.fch.on:hover{color:var(--bg)}
+
+.statbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin:6px 0 4px}
+.statbar .s{font-size:13px;color:var(--mut)}
+.statbar .s b{font-family:'JetBrains Mono',monospace}
+.score b{color:var(--gold2)} .correct b{color:var(--grn)} .wrong b{color:var(--red)}
+.prog{height:8px;background:var(--card2);border-radius:20px;overflow:hidden;margin:8px 0 14px}
+.prog>i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));width:0;transition:width .4s}
+
+.qhead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.qnum{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--gold);font-size:15px}
+.badge{font-size:11px;border:1px solid var(--line);border-radius:7px;padding:1px 8px;color:var(--dim)}
+.badge.hard{color:var(--red);border-color:#5c2a32}
+.badge.prac{color:var(--grn);border-color:#27563c}
+.qtext{font-size:16px;font-weight:600;margin-bottom:12px;line-height:1.5}
+.opt{display:flex;align-items:flex-start;gap:10px;width:100%;text-align:left;cursor:pointer;
+  background:var(--card2);border:1.5px solid var(--line);color:var(--txt);border-radius:12px;
+  padding:12px 14px;font-size:14.5px;font-family:inherit;margin:8px 0;transition:border-color .15s,background .15s,transform .1s;line-height:1.45}
+.opt:hover:not(:disabled){border-color:var(--gold);transform:translateY(-1px)}
+.opt .k{font-weight:700;color:var(--mut);flex:0 0 auto}
+.opt.correct{border-color:var(--grn);background:rgba(95,217,154,.13)}.opt.correct .k{color:var(--grn)}
+.opt.wrong{border-color:var(--red);background:rgba(255,122,133,.13)}.opt.wrong .k{color:var(--red)}
+.opt:disabled{cursor:default}
+.fb{margin-top:12px;border-radius:12px;padding:12px 14px;font-size:14px;display:none}
+.fb.show{display:block;animation:fade .25s}
+.fb.ok{background:rgba(95,217,154,.10);border:1px solid rgba(95,217,154,.4)}
+.fb.no{background:rgba(255,122,133,.10);border:1px solid rgba(255,122,133,.4)}
+.fb .h{font-weight:700;margin-bottom:3px}.fb.ok .h{color:var(--grn)}.fb.no .h{color:var(--red)}
+.fb .ex{color:var(--mut);font-size:13.5px}
+
+.nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.btn{cursor:pointer;border:1px solid var(--line);background:var(--card2);color:var(--txt);
+  font-family:inherit;font-size:14px;font-weight:600;padding:10px 18px;border-radius:11px;transition:.15s}
+.btn:hover{border-color:var(--gold);color:var(--gold2)}
+.btn.p{background:linear-gradient(90deg,var(--gold),var(--gold2));color:var(--bg);border-color:transparent}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.jump{display:flex;flex-wrap:wrap;gap:5px;margin-top:14px}
+.dot{width:26px;height:26px;border-radius:7px;border:1px solid var(--line);background:var(--card2);
+  font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--dim);cursor:pointer;transition:.12s}
+.dot:hover{border-color:var(--gold);color:var(--txt)}
+.dot.cur{border-color:var(--gold);color:var(--gold2)}
+.dot.ok{background:rgba(95,217,154,.18);color:var(--grn);border-color:transparent}
+.dot.bad{background:rgba(255,122,133,.18);color:var(--red);border-color:transparent}
+
+.summary{text-align:center;padding:14px 8px}
+.summary .big{font-size:46px;font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--gold2)}
+.summary .pct{font-size:15px;color:var(--mut);margin-top:2px}
+.summary .msg{font-size:15px;margin:14px 0}
+
+/* written / reveal */
+.rev{border:1px solid var(--line);background:var(--card2);border-radius:13px;margin:10px 0;overflow:hidden}
+.rev>summary{cursor:pointer;list-style:none;padding:13px 15px;font-size:14.5px;font-weight:600;color:var(--txt);display:flex;gap:9px;transition:.15s}
+.rev>summary::-webkit-details-marker{display:none}
+.rev>summary:hover{background:var(--card)}
+.rev>summary .qn{font-family:'JetBrains Mono',monospace;color:var(--gold);flex:0 0 auto}
+.rev>summary::after{content:"แตะดูแนวตอบ ▸";margin-left:auto;color:var(--dim);font-size:11px;font-weight:400;white-space:nowrap}
+.rev[open]>summary::after{content:"▾"}
+.rev .body{padding:0 15px 14px 38px;font-size:13.8px;color:var(--mut);border-top:1px dashed var(--line);padding-top:11px}
+.rev .body b{color:var(--gold2)}
+
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--card2);color:var(--gold2);white-space:nowrap}
+td b{color:var(--txt)} td .w{color:var(--red)} td .r{color:var(--grn)}
+.note{font-size:12.5px;color:var(--dim);margin:10px 0}
+footer{color:var(--dim);text-align:center;font-size:12px;margin:28px 0 0;padding:0 16px}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>ข้อสอบรวม — <span class="gd">ยุคแห่งการปฏิวัติ</span></h1>
+  <div class="sub">ปรนัย 75 ข้อ (โหด 35 + ฝึก 40) · อัตนัย 8 · จุดสไลด์ผิด — กดเล่น เฉลยทันที</div>
+</header>
+
+<nav class="tabs">
+  <div class="tab on" data-p="quiz">🎯 ทำข้อสอบปรนัย</div>
+  <div class="tab" data-p="written">📝 อัตนัย (8)</div>
+  <div class="tab" data-p="traps">⚠️ จุดสไลด์ผิด</div>
+</nav>
+
+<main class="wrap">
+
+<!-- ===== QUIZ ===== -->
+<section class="page on" id="quiz">
+  <div class="card">
+    <div class="filters">
+      <span class="lab">ชุด:</span>
+      <div class="fch gold on" data-type="set" data-v="all">ทั้งหมด</div>
+      <div class="fch gold" data-type="set" data-v="โหด">โหด (35)</div>
+      <div class="fch gold" data-type="set" data-v="ฝึก">ฝึก (40)</div>
+    </div>
+    <div class="filters">
+      <span class="lab">หมวด:</span>
+      <div class="fch on" data-type="cat" data-v="all">ทั้งหมด</div>
+      <div class="fch" data-type="cat" data-v="ov">ภาพรวม</div>
+      <div class="fch" data-type="cat" data-v="sci">วิทย์</div>
+      <div class="fch" data-type="cat" data-v="agr">เกษตร</div>
+      <div class="fch" data-type="cat" data-v="ind">อุตสาหกรรม</div>
+      <div class="fch" data-type="cat" data-v="inv">สิ่งประดิษฐ์</div>
+      <div class="fch" data-type="cat" data-v="eff">ผลกระทบ</div>
+    </div>
+    <div class="filters">
+      <div class="fch" id="shufBtn" data-type="shuf">🔀 สลับข้อ: ปิด</div>
+      <div class="fch" id="resetBtn">↺ เริ่มใหม่</div>
+    </div>
+
+    <div class="statbar">
+      <span class="s">ข้อ <b id="pos">1</b> / <b id="total">75</b></span>
+      <span class="s score">คะแนน <b id="scoreN">0</b></span>
+      <span class="s correct">ถูก <b id="okN">0</b></span>
+      <span class="s wrong">ผิด <b id="noN">0</b></span>
+    </div>
+    <div class="prog"><i id="bar"></i></div>
+
+    <div id="qbox"></div>
+
+    <div class="nav">
+      <button class="btn" id="prev">‹ ก่อนหน้า</button>
+      <button class="btn p" id="next">ถัดไป ›</button>
+    </div>
+    <div class="jump" id="jump"></div>
+  </div>
+</section>
+
+<!-- ===== WRITTEN ===== -->
+<section class="page" id="written">
+  <div class="card">
+    <h1 style="font-size:17px;color:var(--gold2);margin-bottom:4px">📝 อัตนัย / วิเคราะห์ (8 ข้อ)</h1>
+    <div class="note">เป็นแนวคำตอบสำหรับฝึกเรียบเรียงเอง — แตะแต่ละข้อเพื่อดูแนวตอบ</div>
+    <div id="writtenBox"></div>
+  </div>
+</section>
+
+<!-- ===== TRAPS ===== -->
+<section class="page" id="traps">
+  <div class="card">
+    <h1 style="font-size:17px;color:var(--red);margin-bottom:6px">⚠️ จุดที่สไลด์ผิด / ขัดกันเอง</h1>
+    <div class="note">ถ้าอาจารย์ยึดสไลด์ ให้ตอบตามสไลด์ แต่รู้ความจริงไว้ด้วย — ออกสอบหลอกได้</div>
+    <table>
+      <tr><th>เรื่อง</th><th>สไลด์เขียน</th><th>ข้อเท็จจริง / ที่ขัดกัน</th></tr>
+      <tr><td><b>ปีปฏิวัติเกษตรกรรม</b></td><td>"กลาง ศ.16" กำกับ (late 1600–1700s) แต่อีกหน้า "ปลาย ศ.17"</td><td>ขัดกันเอง — ที่ถูกคือ <span class="r">ปลาย ศ.17</span></td></tr>
+      <tr><td><b>ปี Power Loom (Cartwright)</b></td><td>หน้าหนึ่ง = 1811 ; อีกหน้า = 1787</td><td>เลขที่ใช้บ่อย <span class="r">1785–1787</span></td></tr>
+      <tr><td><b>ปี Water Frame (Arkwright)</b></td><td>1769 vs 1771</td><td>จำ <span class="r">1769</span> เป็นหลัก</td></tr>
+      <tr><td><b>ปีรถยนต์เบนซิน (Karl Benz)</b></td><td>"ค.ศ. 1857" แต่ Benz เกิด 1844</td><td><span class="w">เป็นไปไม่ได้</span> — จริง ~<span class="r">1885–86</span></td></tr>
+      <tr><td><b>กล้องโทรทรรศน์ Newton</b></td><td>ชนิด "หักเหแสง (refracting)"</td><td>จริงๆ Newton สร้างกล้อง <span class="r">สะท้อนแสง (reflecting)</span></td></tr>
+      <tr><td><b>ปีระยะที่ 2 อุตสาหกรรม</b></td><td>1861–1914 vs 1861–1865</td><td>1865 พิมพ์ผิด — ใช้ <span class="r">1861–1914</span></td></tr>
+      <tr><td><b>ปี Kepler "ปลาย ศ.15"</b></td><td>ว่า Kepler ค้นพบปลาย ศ.15</td><td>Kepler 1571–1630 → ต้อง <span class="r">ต้น ศ.17</span></td></tr>
+      <tr><td><b>ปีโทรศัพท์ Bell</b></td><td>ปนกัน "1837" และ "1876"</td><td>ที่ถูก = <span class="r">1876</span></td></tr>
+    </table>
+  </div>
+</section>
+
+</main>
+
+<footer>เนื้อหาอ้างอิงจากสไลด์เรียน (ยุคปฏิวัติ) · รวมจาก ข้อสอบกลางภาค_โหด + ข้อสอบกา_ฝึก · เฉลยทุกข้ออิง Fact Sheet</footer>
+
+<script>
+/* ---------- tabs ---------- */
+document.querySelector('.tabs').addEventListener('click',e=>{
+  const t=e.target.closest('.tab');if(!t)return;
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');document.getElementById(t.dataset.p).classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+
+/* ---------- DATA ---------- */
+// s = ชุด ('โหด'/'ฝึก'), t = หมวด, c = ตัวเลือก, a = ดัชนีคำตอบ, e = คำอธิบาย
+const H='โหด', P='ฝึก';
+const Q=[
+// ===== ชุดโหด 35 =====
+{s:H,t:'ov',q:'ตามทฤษฎีคลื่นอารยธรรมของ Alvin Toffler "คลื่นลูกที่สอง" ตรงกับข้อใด และเกิดในคริสต์ศตวรรษใด',c:['ปฏิวัติเกษตรกรรม / ศ.18','ปฏิวัติอุตสาหกรรม / ศ.18','ปฏิวัติอุตสาหกรรม / ศ.20','ยุคสารสนเทศ / ศ.20'],a:1,e:'คลื่น 2 = ปฏิวัติอุตสาหกรรม (ศ.18) · คลื่น1=เกษตรกรรม คลื่น3=เทคโนโลยี'},
+{s:H,t:'ov',q:'"ยุคแห่งแสงสว่างทางปัญญา (Enlightenment)" มีลำดับเชิงสาเหตุที่ถูกต้องอย่างไร',c:['อุตสาหกรรม → วิทยาศาสตร์ → Enlightenment','วิทยาศาสตร์ → Enlightenment → อุตสาหกรรม','Enlightenment → วิทยาศาสตร์ → อุตสาหกรรม','เกษตรกรรม → อุตสาหกรรม → วิทยาศาสตร์'],a:1,e:'ปฏิวัติวิทยาศาสตร์ → Enlightenment/Age of Reason → ปฏิวัติอุตสาหกรรม'},
+{s:H,t:'ov',q:'ข้อใดเรียงเหตุการณ์การปฏิวัติทั้งสาม "เก่า→ใหม่" ถูกต้อง',c:['วิทยาศาสตร์ → เกษตรกรรม → อุตสาหกรรม','เกษตรกรรม → วิทยาศาสตร์ → อุตสาหกรรม','วิทยาศาสตร์ → อุตสาหกรรม → เกษตรกรรม','เกษตรกรรม → อุตสาหกรรม → วิทยาศาสตร์'],a:0,e:'วิทย์ ≈1500–1700 → เกษตรปลาย C17 → อุตสาหกรรมกลาง C18'},
+{s:H,t:'agr',q:'ข้อใด "ไม่ใช่" ผลของระบบ Enclosure',c:['เจ้าที่ดินรายใหญ่มีแรงจูงใจนำวิทยาการใหม่มาใช้','เกษตรกรรายย่อยถูกบีบให้เช่าที่ดินหรืออพยพเข้าเมือง','เกิดแรงงานส่วนเกินไหลเข้าโรงงาน','รัฐยกเลิกระบบสิทธิบัตรเพื่อให้ที่ดินเป็นของส่วนรวม'],a:3,e:'รัฐไม่ได้ยกเลิกสิทธิบัตร — ข้อ ง จึงไม่ใช่ผลของ Enclosure'},
+{s:H,t:'agr',q:'บุคคลใด "จับคู่ผลงาน" ผิด',c:['Robert Bakewell — คัดพันธุ์แกะ (Selective breeding)','Jethro Tull — เครื่องหว่านเมล็ด (Seed drill)','Charles Townshend — Four-field (clover/พืชราก)','Henry Cort — เครื่องแยกเมล็ดฝ้าย (Cotton Gin)'],a:3,e:'Cotton Gin เป็นของ Eli Whitney; Henry Cort = หลอมเหล็ก'},
+{s:H,t:'agr',q:'ระบบ Four-field ต่างจาก Three-field เดิมอย่างไรเป็นสำคัญ',c:['แบ่งนาเป็น 3 ส่วนแทน 4 ส่วน','เพิ่มพืชราก/โคลเวอร์ฟื้นสารอาหารดิน แทนการปล่อยที่ว่าง','เลิกปลูกข้าวสาลีโดยสิ้นเชิง','ใช้ปุ๋ยเคมีแทนการหมุนเวียนพืช'],a:1,e:'Four-field ใช้โคลเวอร์ฟื้นดิน แทนการพักที่ว่าง'},
+{s:H,t:'sci',q:'ใครคือ "จุดเริ่มต้นของการปฏิวัติวิทยาศาสตร์" และทฤษฎีขัดกับใคร',c:['Kepler ขัดกับ Copernicus','Copernicus (สุริยศูนย์กลาง) ขัดกับ Ptolemy (โลกเป็นศูนย์กลาง)','Galileo ขัดกับ Aristarchus','Newton ขัดกับ Descartes'],a:1,e:'Copernicus ขัด Ptolemy = จุดเริ่มปฏิวัติวิทยาศาสตร์'},
+{s:H,t:'sci',q:'Copernicus เชื่อทฤษฎีของนักปราชญ์กรีกคนใดว่า "ถูกที่สุด" จึงนำมาต่อยอด',c:['Aristotle','Ptolemy','Aristarchus แห่ง Samos','Pythagoras'],a:2,e:'เชื่อทฤษฎี Aristarchus แห่ง Samos'},
+{s:H,t:'sci',q:'ข้อบกพร่องของทฤษฎี Copernicus ที่ถูกแก้ภายหลังคือเรื่องใด ใครแก้',c:['บอกว่าโลกแบน — Galileo แก้','บอกวงโคจรเป็น "วงกลม" — Kepler แก้เป็น "วงรี"','บอกดวงอาทิตย์โคจรรอบโลก — Newton แก้','บอกว่ามีดาวเคราะห์ 4 ดวง — Boyle แก้'],a:1,e:'Copernicus ว่าวงกลม → Kepler แก้เป็นวงรี'},
+{s:H,t:'sci',q:'หนังสือ On the Revolution of the Celestial Spheres ของ Copernicus ตีพิมพ์เมื่อใด',c:['ทันทีในปีที่เขียนเสร็จ','ปีที่เขาเสียชีวิต (ค.ศ. 1543)','หลังเขาตาย 100 ปี','ค.ศ. 1666 พร้อมตั้ง French Academy'],a:1,e:'ตีพิมพ์ปีที่เขาตาย ค.ศ. 1543'},
+{s:H,t:'sci',q:'การทดลองที่ "หอเอนปิซา" ของ Galileo มุ่งล้มความเชื่อของใคร เรื่องอะไร',c:['Ptolemy — โลกเป็นศูนย์กลาง','Aristotle — วัตถุหนักตกถึงพื้นก่อนวัตถุเบา','Galen — กายวิภาคจากการชำแหละสัตว์','Descartes — เรขาคณิตวิเคราะห์'],a:1,e:'ล้ม Aristotle: วัตถุหนัก-เบาตกถึงพื้นพร้อมกัน'},
+{s:H,t:'sci',q:'หนังสือเล่มใดทำให้ Galileo ถูกไต่สวน "นอกรีต" ปี ค.ศ. 1633',c:['Harmonices Mundi','Dialogue Concerning the Two Chief World Systems','Novum Organum','De humani corporis fabrica'],a:1,e:'Dialogue Concerning the Two Chief World Systems → ไต่สวน 1633'},
+{s:H,t:'sci',q:'ข้อใด "ไม่ใช่" ผลงานการค้นพบของ Galileo',c:['จุดดับบนดวงอาทิตย์ (Sun Spot)','บริวารดาวพฤหัส 4 ดวง / ทางช้างเผือก','กฎแรงโน้มถ่วงสากล (Law of Gravity)','กฎเพนดูลัม (การแกว่งลูกตุ้ม)'],a:2,e:'กฎแรงโน้มถ่วงเป็นของ Newton ไม่ใช่ Galileo'},
+{s:H,t:'sci',q:'จับคู่ "บิดาแห่งวิชา" ข้อใดถูกทั้งคู่',c:['Boyle = บิดาเคมี ; Leeuwenhoek = บิดาจุลชีววิทยา','Boyle = บิดาจุลชีววิทยา ; Vesalius = บิดาเคมี','Newton = บิดาเคมี ; Bacon = บิดากายวิภาค','Leeuwenhoek = บิดาเคมี ; Boyle = บิดากายวิภาค'],a:0,e:'Boyle=บิดาเคมี · Leeuwenhoek=บิดาจุลชีววิทยา'},
+{s:H,t:'sci',q:'Andreas Vesalius สำคัญอย่างไรต่อวงการแพทย์',c:['ประดิษฐ์กล้องจุลทรรศน์ขยาย 270 เท่า','ศึกษากายวิภาคจาก "ร่างมนุษย์จริง" ล้ม Galen ที่เชื่อมา 1,500 ปี','ค้นพบว่าสสารมีธาตุมากกว่า 4 ชนิด','เสนอ "I think, therefore I am"'],a:1,e:'Vesalius ศึกษาจากร่างจริง ล้ม Galen'},
+{s:H,t:'sci',q:'Robert Boyle โจมตีความเชื่อเดิมของ Aristotle ในประเด็นใด',c:['โลกเป็นศูนย์กลางจักรวาล','วัตถุหนักตกเร็วกว่าวัตถุเบา','สสารประกอบด้วยธาตุเพียง 4 ชนิด','วงโคจรของดาวเป็นวงกลม'],a:2,e:'Boyle ค้าน Aristotle: สสารมีธาตุมากกว่า 4 ชนิด'},
+{s:H,t:'sci',q:'"ความรู้คืออำนาจ" + วิธีการทางวิทยาศาสตร์/ประจักษ์นิยม จนนำสู่ Royal Society เป็นของใคร',c:['René Descartes','Francis Bacon','Isaac Newton','Galileo'],a:1,e:'Francis Bacon — ความรู้คืออำนาจ, ประจักษ์นิยม'},
+{s:H,t:'sci',q:'Descartes กับ Bacon เน้น "วิธีสร้างความรู้" ต่างกันอย่างไร',c:['Descartes เน้นทดลอง-สังเกต ; Bacon เน้นเหตุผล-คณิต','Descartes เน้นเหตุผล/คณิต (เรขาคณิตวิเคราะห์) ; Bacon เน้นทดลอง-สังเกต','ทั้งคู่เน้นความเชื่อทางศาสนา','ทั้งคู่ปฏิเสธคณิตศาสตร์'],a:1,e:'Descartes=เหตุผล/คณิต ; Bacon=ทดลอง-สังเกต'},
+{s:H,t:'sci',q:'ข้อใดเป็นผลงานของ Newton "ครบทั้งชุด"',c:['แรงโน้มถ่วง · แคลคูลัส · แสงขาว=แสงสีรุ้ง · กฎการเคลื่อนที่','แรงโน้มถ่วง · กล้องจุลทรรศน์ · ทฤษฎีวงรี','แคลคูลัส · กายวิภาคมนุษย์ · Sun Spot','กฎการเคลื่อนที่ · Cotton Gin · ทฤษฎีอะตอม'],a:0,e:'Newton: แรงโน้มถ่วง·แคลคูลัส·กฎการเคลื่อนที่·แสง'},
+{s:H,t:'sci',q:'สถาบันวิทยาศาสตร์ข้อใด "จับคู่ปี" ตรงตามสไลด์',c:['French Academy — 1666 ; ราชบัณฑิตฯ อังกฤษ — 1662','Royal Society — 1543 ; French Academy — 1701','French Academy — 1689 ; Royal Society — 1694','ทั้งสองตั้งปี 1776 พร้อม Wealth of Nations'],a:0,e:'French Academy 1666 ; ราชบัณฑิตฯ 1662'},
+{s:H,t:'ind',q:'ปัจจัยใด "ไม่ใช่" เหตุผล Why England?',c:['เป็นเกาะ + คนอยู่ในรัศมี 20 ไมล์จากแม่น้ำ','ชนชั้นกลางเข้มแข็ง + guild อ่อนแอลง','มีสงครามกลางเมืองภายในประเทศรุนแรงต่อเนื่อง','ระบบสิทธิบัตร + Bill of Rights (1689) + Bank of England (1694)'],a:2,e:'ความจริงคือ "ไม่มีสงครามกลางเมือง" เป็นปัจจัยบวก'},
+{s:H,t:'ind',q:'Putting-out System ต่างจาก Factory System เรื่อง "กรรมสิทธิ์เครื่องมือ" อย่างไร',c:['Putting-out: ลูกจ้างเจ้าของเครื่องมือ ผลิตที่บ้าน ; Factory: นายทุนเจ้าของทุน/เครื่องจักร','ทั้งสองระบบนายทุนเป็นเจ้าของเครื่องมือ','Factory: คนงานเจ้าของเครื่อง ; Putting-out: นายทุนเจ้าของ','ทั้งสองผลิตในโรงงานเหมือนกัน'],a:0,e:'Putting-out: ลูกจ้างเจ้าของเครื่อง ; Factory: นายทุนเจ้าของทุน'},
+{s:H,t:'inv',q:'เรียง "เครื่องจักรสิ่งทอ" ตามปี เก่า→ใหม่',c:['Flying Shuttle → Spinning Jenny → Water Frame → Spinning Mule → Cotton Gin','Spinning Jenny → Flying Shuttle → Water Frame → Cotton Gin → Power Loom','Water Frame → Flying Shuttle → Spinning Mule → Spinning Jenny → Cotton Gin','Cotton Gin → Power Loom → Spinning Mule → Water Frame → Flying Shuttle'],a:0,e:'1733 → 1764 → 1769 → 1779 → 1793'},
+{s:H,t:'inv',q:'"Spinning Mule" ของ Samuel Crompton พิเศษอย่างไร',c:['เป็นเครื่องทอผ้าพลังไอน้ำเครื่องแรก','ผสาน Spinning Jenny + Water Frame ทำให้ด้ายทน/ประณีตกว่า','เป็นเครื่องแยกเมล็ดฝ้าย','ทอผ้าได้เร็วเท่าคน 200 คน'],a:1,e:'Spinning Mule = ผสาน Jenny + Water Frame'},
+{s:H,t:'inv',q:'ใครคือ "ชาวอเมริกัน" ในกลุ่มนักประดิษฐ์สิ่งทอ และผลงานคืออะไร',c:['Edmund Cartwright — Power Loom','Richard Arkwright — Water Frame','Eli Whitney — Cotton Gin','John Kay — Flying Shuttle'],a:2,e:'Eli Whitney ชาวอเมริกัน — Cotton Gin'},
+{s:H,t:'ind',q:'การปฏิวัติอุตสาหกรรม "ระยะที่ 1" มีลักษณะตรงข้อใด',c:['เทคโนโลยีไม่ซับซ้อน · เน้นทอผ้า · ไอน้ำ+ถ่านหิน · เริ่มใช้เหล็กเป็นพื้นฐาน','ยุคเหล็กกล้า · ฟอสซิล+ไฟฟ้า · รถยนต์/เครื่องบิน','สมัยอิเล็กทรอนิกส์ · นาโน · คอมพิวเตอร์','ยุคจักรวรรดินิยม · สหภาพแรงงาน'],a:0,e:'ระยะ 1: ไอน้ำ+ถ่านหิน เน้นทอผ้า'},
+{s:H,t:'ind',q:'ระยะที่ 2 (ยุคเหล็กกล้า) ผู้นำคือใคร ใช้พลังงานใดแทนถ่านหิน',c:['อังกฤษ — ใช้ถ่านหินต่อไป','สหรัฐอเมริกา — ก๊าซ/น้ำมันปิโตรเลียม/ไฟฟ้า','เยอรมนี — พลังงานไอน้ำ','ฝรั่งเศส — พลังงานนิวเคลียร์'],a:1,e:'ระยะ 2: ผู้นำ=USA ใช้ก๊าซ/น้ำมัน/ไฟฟ้า'},
+{s:H,t:'inv',q:'จับคู่ผู้ประดิษฐ์ยุคเหล็กกล้า/ไฟฟ้า ข้อใด "ผิด"',c:['Michael Faraday — ไดนาโม','Thomas Edison — หลอดไฟฟ้า','Guglielmo Marconi — วิทยุโทรเลข','Wright Brothers — โทรศัพท์'],a:3,e:'Wright Brothers = เครื่องบิน (โทรศัพท์=Bell)'},
+{s:H,t:'inv',q:'ในอุตสาหกรรมเหล็ก-ถ่านหิน ใครจับคู่ "ผลงาน" ถูกต้อง',c:['Henry Cort — ถ่านหินบริสุทธิ์/หลอมเหล็กดีขึ้น (puddling)','Abraham Darby — ค้นพบ Bessemer ปี 1856','Henry Bessemer — ใช้ coke ถลุงเหล็กคนแรก','Henry Cort — สร้างหัวรถจักร Rocket'],a:0,e:'Henry Cort — puddling หลอมเหล็กบริสุทธิ์'},
+{s:H,t:'inv',q:'"Bessemer process (1856)" สำคัญต่อระบบขนส่งอย่างไร',c:['ทำให้เหล็กกล้า (steel) ถูกลง ใช้ทำรางรถไฟแทนเหล็ก (iron) ที่เปราะ รองรับรถไฟเร็ว/หนัก','ทำให้ถ่านหินเผาไหม้ช้าลง','ทำให้เรือกลไฟข้ามมหาสมุทรใน 14 วัน','ทำให้ถนน McAdam ไม่จมโคลน'],a:0,e:'steel ถูกลง แทน iron เปราะ รองรับรถไฟ'},
+{s:H,t:'inv',q:'จับคู่ "คมนาคม–บุคคล–ปี" ข้อใดถูกต้อง',c:['เรือกลไฟ Clermont — Robert Fulton — 1807','เรือข้ามแอตแลนติก 14 วัน — Trevithick — 1804','หัวรถจักร Rocket — Robert Fulton — 1825','ถนน McAdam — George Stephenson — 1829'],a:0,e:'Fulton – Clermont – 1807'},
+{s:H,t:'inv',q:'George Stephenson มีผลงานใดตามสไลด์',c:['สร้างเรือกลไฟลำแรก','รถไฟขบวนแรกของโลก (1825) + Liverpool–Manchester + หัวรถจักร Rocket','ประดิษฐ์เครื่องยนต์เบนซิน','คิดถนนลาดยาง McAdam'],a:1,e:'Stephenson: รถไฟขบวนแรก 1825, Rocket'},
+{s:H,t:'eff',q:'ผลด้าน "แนวคิด/เศรษฐกิจ" แยก 2 ค่าย — จับคู่ถูกต้อง',c:['Adam Smith = เสรีนิยม/Laissez-faire ; Karl Marx = สังคมนิยม','Adam Smith = สังคมนิยม ; Karl Marx = ทุนนิยมเสรี','Robert Owen = เสรีนิยม ; Adam Smith = คอมมิวนิสต์','Karl Marx = Laissez-faire ; Engels = ทุนนิยม'],a:0,e:'Smith=เสรีนิยม ; Marx=สังคมนิยม'},
+{s:H,t:'eff',q:'"สายโซ่เหตุผล" จากอุตสาหกรรม → จักรวรรดินิยม ข้อใดตรงสไลด์ที่สุด',c:['ต้องการแหล่งวัตถุดิบ + ตลาดระบายสินค้า → ล่าอาณานิคมในเอเชีย/แอฟริกา/ออสเตรเลีย','ต้องการลดประชากรในเมือง → ส่งคนไปอาณานิคม','ต้องการเผยแผ่ศาสนา → ยึดอาณานิคม','ต้องการพื้นที่ทดลองวิทยาศาสตร์ → ตั้งอาณานิคม'],a:0,e:'วัตถุดิบ+ตลาด → จักรวรรดินิยม'},
+{s:H,t:'ov',q:'"การปฏิวัติ" ต่างจาก "รัฐประหาร" อย่างไรตามนิยามในสไลด์',c:['ปฏิวัติ = ยึดอำนาจไม่เปลี่ยนระบอบ ; รัฐประหาร = เปลี่ยนระบอบ','ปฏิวัติ = เปลี่ยน/รื้อระบอบเดิม ; รัฐประหาร = ยึดอำนาจไม่เปลี่ยนระบอบ','ทั้งสองคำหมายเหมือนกัน','ปฏิวัติใช้กับเศรษฐกิจเท่านั้น'],a:1,e:'ปฏิวัติ=รื้อระบอบ ; รัฐประหาร=ยึดอำนาจไม่เปลี่ยนระบอบ'},
+// ===== ชุดฝึก 40 =====
+{s:P,t:'ov',q:'อารยธรรมตะวันตก 4 ยุค เรียงลำดับถูกต้องตามข้อใด',c:['กลาง → โบราณ → ใหม่ → ปัจจุบัน','โบราณ → กลาง → ใหม่ → ปัจจุบัน','โบราณ → ใหม่ → กลาง → ปัจจุบัน','ใหม่ → กลาง → โบราณ → ปัจจุบัน'],a:1,e:'โบราณ → กลาง → ใหม่ → ปัจจุบัน'},
+{s:P,t:'ov',q:'"ยุคกลาง (Middle Ages)" มีลักษณะเด่นตามข้อใด',c:['เน้นเหตุผลและวิทยาศาสตร์','เน้นศรัทธาศาสนา ใต้ศาสนจักรและฟิวดัล','รื้อฟื้นความรุ่งเรืองกรีก-โรมัน','เริ่มการปฏิวัติอุตสาหกรรม'],a:1,e:'ยุคกลางเน้นศรัทธาศาสนา + ระบบฟิวดัล'},
+{s:P,t:'ov',q:'ยุคใหม่ (Modern) เริ่มต้นด้วยเหตุการณ์ใด',c:['การปฏิวัติอุตสาหกรรม','การปฏิวัติฝรั่งเศส','ยุคฟื้นฟูศิลปวิทยา (Renaissance)','สงครามโลกครั้งที่ 1'],a:2,e:'ยุคใหม่เริ่มจาก Renaissance'},
+{s:P,t:'ov',q:'ตามทฤษฎีคลื่นลูกที่สาม คลื่นลูกที่ 1 คือข้อใด',c:['การปฏิวัติอุตสาหกรรม','ยุคเทคโนโลยีสารสนเทศ','การปฏิวัติเกษตรกรรม','การปฏิวัติวิทยาศาสตร์'],a:2,e:'คลื่น 1 = ปฏิวัติเกษตรกรรม (~10,000 ปีก่อน)'},
+{s:P,t:'ov',q:'"คลื่นลูกที่ 3" ขยายตัวรวดเร็วในช่วงใด',c:['หลังสงครามโลกครั้งที่ 2','คริสต์ศตวรรษที่ 16','~10,000 ปีก่อน','ปลายคริสต์ศตวรรษที่ 18'],a:0,e:'คลื่น 3 (คอมพิวเตอร์) ขยายตัวหลัง WWII'},
+{s:P,t:'sci',q:'ใครเสนอ "ดวงอาทิตย์เป็นศูนย์กลาง" และเป็นจุดเริ่มการปฏิวัติวิทยาศาสตร์',c:['กาลิเลโอ','โคเปอร์นิคัส','เคปเลอร์','นิวตัน'],a:1,e:'โคเปอร์นิคัส = Heliocentric'},
+{s:P,t:'sci',q:'ความเชื่อ "โลกเป็นศูนย์กลางจักรวาล" เป็นของใคร',c:['ปโตเลมี (Ptolemy)','กาเลน (Galen)','อริสโตเติล','เบคอน'],a:0,e:'ปโตเลมีเชื่อโลกเป็นศูนย์กลาง'},
+{s:P,t:'sci',q:'เคปเลอร์แก้ทฤษฎีโคเปอร์นิคัสในประเด็นใด',c:['ดวงอาทิตย์ไม่ใช่ศูนย์กลาง','วงโคจรดาวเคราะห์เป็นวงรี ไม่ใช่วงกลม','โลกหมุนรอบตัวเอง','ดาวเคราะห์มี 8 ดวง'],a:1,e:'เคปเลอร์: วงโคจรเป็นวงรี'},
+{s:P,t:'sci',q:'กาลิเลโอถูกองค์กรใดไต่สวนฐานนอกรีต ค.ศ. 1633',c:['The Royal Society','รัฐสภาอังกฤษ','ศาลศาสนา (Inquisition)','French Academy of Sciences'],a:2,e:'ศาลศาสนา (Inquisition) ไต่สวน 1633'},
+{s:P,t:'sci',q:'เครื่องมือใดที่กาลิเลโอพัฒนาขึ้นเพื่อสังเกตดวงดาว',c:['กล้องจุลทรรศน์','กล้องโทรทรรศน์','ไดนาโม','เครื่องพิมพ์'],a:1,e:'กาลิเลโอ = กล้องโทรทรรศน์'},
+{s:P,t:'sci',q:'"ความรู้คืออำนาจ" + รากฐานวิธีการทางวิทยาศาสตร์ เป็นของใคร',c:['เรอเน เดส์การ์ตส์','ฟรานซิส เบคอน','โรเบิร์ต บอยล์','ไอแซก นิวตัน'],a:1,e:'ฟรานซิส เบคอน'},
+{s:P,t:'sci',q:'"I think, therefore I am" เป็นของใคร และเป็นบิดาของวิชาใด',c:['เบคอน — ชีววิทยา','เดส์การ์ตส์ — เรขาคณิตวิเคราะห์','นิวตัน — แคลคูลัส','บอยล์ — เคมี'],a:1,e:'เดส์การ์ตส์ — บิดาเรขาคณิตวิเคราะห์'},
+{s:P,t:'sci',q:'จับคู่ "บุคคล–ฉายา" ข้อใด "ผิด"',c:['เวซาเลียส — บิดากายวิภาคศาสตร์','บอยล์ — บิดาวิชาเคมีสมัยใหม่','เลเวินฮุก — บิดาจุลชีววิทยา','นิวตัน — บิดากายวิภาคศาสตร์'],a:3,e:'นิวตันไม่ใช่บิดากายวิภาค (=เวซาเลียส)'},
+{s:P,t:'sci',q:'เซอร์ไอแซก นิวตัน มีผลงานตามข้อใด',c:['กฎแรงโน้มถ่วง + แคลคูลัส + สมบัติของแสง','ทฤษฎีดวงอาทิตย์เป็นศูนย์กลาง','กล้องจุลทรรศน์','เครื่องหว่านเมล็ดพืช'],a:0,e:'นิวตัน: แรงโน้มถ่วง+แคลคูลัส+แสง'},
+{s:P,t:'sci',q:'Age of Enlightenment เป็นพื้นฐานของสิ่งใด',c:['ระบบฟิวดัล','ประชาธิปไตย (Democracy)','ระบบศักดินา','ลัทธิจักรวรรดินิยม'],a:1,e:'Enlightenment → พื้นฐานประชาธิปไตย'},
+{s:P,t:'agr',q:'การปฏิวัติเกษตรกรรมยุคนี้เกิดครั้งแรกที่ประเทศใด',c:['ฝรั่งเศส','อังกฤษ','เยอรมนี','สหรัฐอเมริกา'],a:1,e:'เกิดที่อังกฤษ ปลาย ศ.17'},
+{s:P,t:'agr',q:'"การปิดล้อมที่ดิน (Enclosure)" หมายถึงข้อใด',c:['รัฐยึดที่ดินทั้งหมดเป็นของส่วนรวม','เจ้าของที่ดินรายใหญ่รวมที่ดินเป็นผืนเดียวแล้วล้อมรั้ว','แบ่งที่ดินให้รายย่อยเท่า ๆ กัน','ห้ามใช้ที่ดินเพื่อการเกษตร'],a:1,e:'Enclosure = รวมที่ดินรายใหญ่ล้อมรั้ว'},
+{s:P,t:'agr',q:'ผลกระทบทางสังคมสำคัญที่สุดของ Enclosure คือข้อใด',c:['เกษตรกรรายย่อยเสียที่ดิน → อพยพเข้าเมืองเป็นแรงงานโรงงาน','ประชากรลดลงอย่างรวดเร็ว','ผลผลิตการเกษตรลดลง','ยกเลิกระบบโรงงาน'],a:0,e:'รายย่อยเสียที่ดิน → เข้าเมืองเป็นแรงงาน'},
+{s:P,t:'agr',q:'"เครื่องหว่านเมล็ดพืช (Seed Drill)" เป็นผลงานของใคร',c:['โรเบิร์ต แบคเวลล์','เจโทร ทัล (Jethro Tull)','เจมส์ วัตต์','เฮนรี คอร์ต'],a:1,e:'เจโทร ทัล = Seed Drill'},
+{s:P,t:'agr',q:'"ระบบ 4 ไร่ (Four-Field)" ดีกว่าระบบเดิมเพราะเหตุใด',c:['ลดพื้นที่เพาะปลูกลงครึ่งหนึ่ง','ปลูกโคลเวอร์ช่วยฟื้นฟูสารอาหารดิน แทนการปล่อยที่ว่าง','เลิกปลูกพืชทุกชนิดในฤดูหนาว','ใช้เครื่องจักรไอน้ำแทนแรงงาน'],a:1,e:'Four-Field ใช้โคลเวอร์ฟื้นดิน'},
+{s:P,t:'agr',q:'ผลด้านผลผลิตของการปฏิวัติเกษตรกรรม (1700–1850) คือข้อใด',c:['ผลผลิตคงที่','ผลผลิตลดลงครึ่งหนึ่ง','ผลผลิตเพิ่มขึ้นประมาณ 3 เท่า','ผลผลิตเพิ่มขึ้น 10 เท่า'],a:2,e:'ผลผลิตเพิ่ม ~3 เท่า (+300%)'},
+{s:P,t:'ind',q:'การปฏิวัติอุตสาหกรรมเริ่มที่ประเทศใด ในช่วงเวลาใด',c:['ฝรั่งเศส / ต้น ศ.17','อังกฤษ / ปลาย ศ.18','สหรัฐอเมริกา / ศ.20','เยอรมนี / กลาง ศ.19'],a:1,e:'อังกฤษ ปลายคริสต์ศตวรรษที่ 18'},
+{s:P,t:'ind',q:'"การปฏิวัติ" ต่างจาก "รัฐประหาร" อย่างไร',c:['ปฏิวัติ = เปลี่ยนแปลงครั้งใหญ่/รื้อระบบเดิม ; รัฐประหารยึดอำนาจแต่ไม่เปลี่ยนระบอบ','ปฏิวัติใช้กำลังทหารเท่านั้น','ทั้งสองคำมีความหมายเหมือนกัน','รัฐประหารคือการเปลี่ยนระบอบทั้งหมด'],a:0,e:'ปฏิวัติ=รื้อระบบ ; รัฐประหาร=ยึดอำนาจ'},
+{s:P,t:'ind',q:'ข้อใด "ไม่ใช่" เหตุผลที่อุตสาหกรรมเริ่มที่อังกฤษ',c:['มีทุน วัตถุดิบ แรงงาน ตลาดครบ','มีอาณานิคมเป็นแหล่งวัตถุดิบและตลาด','รัฐบาลห้ามการจดสิทธิบัตรเพื่อความเท่าเทียม','เป็นเกาะ มีกองทัพเรือคุ้มกันการค้า'],a:2,e:'อังกฤษมีสิทธิบัตร ไม่ใช่ห้าม — ข้อ ค ผิด'},
+{s:P,t:'ind',q:'วิวัฒนาการระบบการผลิตเรียงลำดับถูกต้องตามข้อใด',c:['Factory → Domestic → Mass Production','Domestic/Putting-Out → Factory → Mass Production','Mass Production → Factory → Domestic','Domestic → Mass Production → Factory'],a:1,e:'Domestic → Factory → Mass Production'},
+{s:P,t:'ind',q:'ระยะที่ 1 (1760–1860) ชื่อว่าอะไร ใช้พลังงานหลักใด',c:['ยุคเหล็กกล้า / ไฟฟ้า','สมัยแห่งพลังงานไอน้ำ / ไอน้ำ + ถ่านหิน','สมัยอิเล็กทรอนิกส์ / คอมพิวเตอร์','ยุคน้ำมัน / ปิโตรเลียม'],a:1,e:'ระยะ 1 = ไอน้ำ + ถ่านหิน'},
+{s:P,t:'ind',q:'ระยะที่ 2 (1861–1914) ประเทศใดเป็นผู้นำ เด่นการผลิตอะไร',c:['อังกฤษ / ทอผ้า','ฝรั่งเศส / ถ่านหิน','สหรัฐอเมริกา / เหล็กกล้า (Steel)','เยอรมนี / เครื่องจักรไอน้ำ'],a:2,e:'ระยะ 2: USA + เหล็กกล้า'},
+{s:P,t:'ind',q:'"ระบบโรงงาน (Factory System)" มีลักษณะเด่นตามข้อใด',c:['แต่ละครอบครัวรับวัตถุดิบไปผลิตที่บ้าน','นายทุนเป็นเจ้าของทุน-เครื่องจักร-วัตถุดิบ รวมการผลิตที่เดียว','ใช้แรงงานสัตว์เป็นหลัก','ผลิตทีละชิ้นตามคำสั่งซื้อ'],a:1,e:'Factory: นายทุนเจ้าของทุน รวมผลิตที่เดียว'},
+{s:P,t:'inv',q:'เครื่องทอผ้าใดประดิษฐ์ก่อน (ปีเก่าสุด)',c:['สปินนิ่งเจนนี (Spinning Jenny)','กระสวยบิน (Flying Shuttle)','เพาเวอร์ลูม (Power Loom)','วอเตอร์เฟรม (Water Frame)'],a:1,e:'Flying Shuttle 1733 เก่าสุด'},
+{s:P,t:'inv',q:'"สปินนิ่งเจนนี (Spinning Jenny)" เป็นผลงานของใคร',c:['จอห์น เคย์','เจมส์ ฮาร์กรีฟส์','ริชาร์ด อาร์คไรท์','แซมมวล ครอมป์ตัน'],a:1,e:'ฮาร์กรีฟส์ = Spinning Jenny'},
+{s:P,t:'inv',q:'"เครื่องแยกเมล็ดฝ้าย (Cotton Gin)" เป็นของใคร สัญชาติใด',c:['อีไล วิตนีย์ — อเมริกัน','เอ็ดมันด์ คาร์ตไรท์ — อังกฤษ','เจมส์ วัตต์ — สกอต','จอห์น เคย์ — อังกฤษ'],a:0,e:'อีไล วิตนีย์ (อเมริกัน) = Cotton Gin'},
+{s:P,t:'inv',q:'ผู้ปรับปรุงเครื่องจักรไอน้ำให้ขับเคลื่อนเครื่องจักรแทนพลังน้ำ คือใคร',c:['จอร์จ สตีเฟนสัน','เจมส์ วัตต์','โรเบิร์ต ฟุลตัน','เฮนรี คอร์ต'],a:1,e:'เจมส์ วัตต์ = เครื่องจักรไอน้ำ'},
+{s:P,t:'inv',q:'"รถไฟขบวนแรกของโลก" + หัวรถจักร "ร็อกเกต" เป็นของใคร',c:['ริชาร์ด เทรวิธิก','จอร์จ สตีเฟนสัน','คาร์ล เบนซ์','โรเบิร์ต ฟุลตัน'],a:1,e:'สตีเฟนสัน = รถไฟ + The Rocket'},
+{s:P,t:'inv',q:'จับคู่ "นักประดิษฐ์–สิ่งประดิษฐ์" ข้อใด "ถูกต้อง"',c:['โรเบิร์ต ฟุลตัน — โทรศัพท์','โธมัส เอดิสัน — หลอดไฟฟ้า','เกรแฮม เบลล์ — เรือกลไฟ','แซมมวล มอร์ส — เครื่องบิน'],a:1,e:'เอดิสัน = หลอดไฟ (ฟุลตัน=เรือ, เบลล์=โทรศัพท์, มอร์ส=โทรเลข)'},
+{s:P,t:'inv',q:'"เรือกลไฟลำแรก ชื่อเคลอร์มองต์ (Clermont)" เป็นของใคร',c:['แซมมวล คูนาร์ด','โรเบิร์ต ฟุลตัน','ไมเคิล ฟาราเดย์','กูกลิเอลโม มาร์โคนี'],a:1,e:'ฟุลตัน = เรือกลไฟ Clermont (1807)'},
+{s:P,t:'eff',q:'การปฏิวัติอุตสาหกรรมทำให้ "ระบบเศรษฐกิจ" ใดแพร่ทั่วโลก',c:['ระบบฟิวดัล','ระบบทุนนิยม (Capitalism)','ระบบเศรษฐกิจพอเพียง','ระบบแลกเปลี่ยนสินค้า'],a:1,e:'เกิดทุนนิยม (Capitalism)'},
+{s:P,t:'eff',q:'"ชนชั้นใหม่ 2 กลุ่ม" หลังการปฏิวัติอุตสาหกรรมคือข้อใด',c:['ขุนนาง กับ พระ','นายทุน (Capitalist) กับ กรรมาชีพ (Proletariat)','กษัตริย์ กับ ทาส','พ่อค้า กับ ชาวนา'],a:1,e:'นายทุน vs กรรมาชีพ'},
+{s:P,t:'eff',q:'ผลด้านการเมืองที่ตามมาคือข้อใด',c:['การล่าอาณานิคมและลัทธิจักรวรรดินิยม (Imperialism)','การยกเลิกระบบกษัตริย์ทั่วยุโรป','การรวมยุโรปเป็นประเทศเดียว','การยุติสงครามทั้งหมด'],a:0,e:'จักรวรรดินิยม + ล่าอาณานิคม'},
+{s:P,t:'eff',q:'แนวคิด "เสรีนิยม (Laissez-faire)" เป็นของใคร จากหนังสือเล่มใด',c:['คาร์ล มากซ์ — Communist Manifesto','อดัม สมิธ — The Wealth of Nations','โรเบิร์ต โอเวน — Das Kapital','ฟรีดริช เองเกลส์ — The Third Wave'],a:1,e:'อดัม สมิธ — The Wealth of Nations (1776)'},
+{s:P,t:'eff',q:'"สังคมนิยม" ที่ให้กรรมกรปฏิวัติโค่นทุนนิยม คู่กับข้อใด',c:['อดัม สมิธ — The Wealth of Nations','คาร์ล มากซ์ — Communist Manifesto','มงเตสกิเออ — เจตนารมณ์แห่งกฎหมาย','วอลแตร์ — Candide'],a:1,e:'คาร์ล มากซ์ — Communist Manifesto'},
+];
+const CATLABEL={ov:'ภาพรวม',sci:'วิทยาศาสตร์',agr:'เกษตรกรรม',ind:'อุตสาหกรรม',inv:'สิ่งประดิษฐ์',eff:'ผลกระทบ'};
+const KEYS=['ก','ข','ค','ง'];
+
+/* ---------- state ---------- */
+let setF='all',catF='all',shuf=false;
+let deck=[],i=0,answers={};
+
+function buildDeck(){
+  deck=Q.map((q,idx)=>idx).filter(idx=>{
+    const q=Q[idx];
+    return (setF==='all'||q.s===setF)&&(catF==='all'||q.t===catF);
+  });
+  if(shuf){for(let k=deck.length-1;k>0;k--){const j=Math.random()*(k+1)|0;[deck[k],deck[j]]=[deck[j],deck[k]];}}
+  i=0;answers={};
+  document.getElementById('total').textContent=deck.length;
+  render();
+}
+function stats(){
+  let ok=0,no=0;
+  for(const id in answers){if(answers[id]===Q[id].a)ok++;else no++;}
+  return {ok,no};
+}
+function render(){
+  const box=document.getElementById('qbox');
+  if(deck.length===0){box.innerHTML='<div style="text-align:center;color:var(--mut);padding:30px">ไม่มีข้อในเงื่อนไขนี้</div>';
+    document.getElementById('jump').innerHTML='';return;}
+  if(i>=deck.length){renderSummary();return;}
+  const id=deck[i],q=Q[id],chosen=answers[id];
+  const answered=chosen!==undefined;
+  document.getElementById('pos').textContent=i+1;
+  box.innerHTML=`
+    <div class="qhead">
+      <span class="qnum">ข้อ ${i+1}</span>
+      <span class="badge ${q.s===H?'hard':'prac'}">${q.s==='โหด'?'โหด':'ฝึก'}</span>
+      <span class="badge">${CATLABEL[q.t]}</span>
+    </div>
+    <div class="qtext">${q.q}</div>
+    <div id="opts">${q.c.map((c,k)=>{
+      let cls='';
+      if(answered){if(k===q.a)cls='correct';else if(k===chosen)cls='wrong';}
+      return `<button class="opt ${cls}" data-k="${k}" ${answered?'disabled':''}>
+        <span class="k">${KEYS[k]}.</span><span>${c}</span></button>`;
+    }).join('')}</div>
+    <div class="fb ${answered?'show':''} ${answered?(chosen===q.a?'ok':'no'):''}">
+      <div class="h">${answered?(chosen===q.a?'✓ ถูกต้อง':'✗ ยังไม่ถูก'):''}</div>
+      <div class="ex">${answered?('เฉลย: <b style="color:var(--gold2)">'+KEYS[q.a]+'.</b> '+q.c[q.a]+'<br>💡 '+q.e):''}</div>
+    </div>`;
+  if(!answered){
+    box.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>{
+      answers[id]=+b.dataset.k;render();updateStats();
+    }));
+  }
+  document.getElementById('prev').disabled=i===0;
+  document.getElementById('next').textContent = i===deck.length-1?'ดูสรุปผล ✓':'ถัดไป ›';
+  updateStats();renderJump();
+}
+function updateStats(){
+  const {ok,no}=stats();
+  document.getElementById('okN').textContent=ok;
+  document.getElementById('noN').textContent=no;
+  document.getElementById('scoreN').textContent=ok;
+  document.getElementById('bar').style.width=(deck.length?(Object.keys(answers).length/deck.length*100):0)+'%';
+}
+function renderJump(){
+  document.getElementById('jump').innerHTML=deck.map((id,k)=>{
+    let cls='';if(k===i)cls='cur';
+    if(answers[id]!==undefined)cls+=(answers[id]===Q[id].a?' ok':' bad');
+    return `<button class="dot ${cls}" data-k="${k}">${k+1}</button>`;
+  }).join('');
+  document.getElementById('jump').querySelectorAll('.dot').forEach(d=>
+    d.addEventListener('click',()=>{i=+d.dataset.k;render();}));
+}
+function renderSummary(){
+  const {ok,no}=stats();const done=ok+no;const pct=deck.length?Math.round(ok/deck.length*100):0;
+  let msg,emo;
+  if(pct>=85){msg='เยี่ยมมาก! แม่นระดับพร้อมสอบ';emo='🏆';}
+  else if(pct>=70){msg='ดีแล้ว เก็บข้อที่พลาดอีกนิด';emo='💪';}
+  else if(pct>=50){msg='พอใช้ ลองทบทวนหมวดที่ผิดบ่อย';emo='📖';}
+  else{msg='สู้ ๆ กลับไปอ่าน Fact Sheet แล้วลองใหม่';emo='🌱';}
+  document.getElementById('qbox').innerHTML=`
+    <div class="summary">
+      <div style="font-size:34px">${emo}</div>
+      <div class="big">${ok}/${deck.length}</div>
+      <div class="pct">ทำแล้ว ${done} ข้อ · ถูก ${ok} · ผิด ${no} · คิดเป็น ${pct}%</div>
+      <div class="msg">${msg}</div>
+      <button class="btn p" onclick="document.getElementById('resetBtn').click()">↺ ทำใหม่ทั้งชุด</button>
+    </div>`;
+  document.getElementById('jump').innerHTML='';
+  document.getElementById('next').textContent='ถัดไป ›';
+  document.getElementById('next').disabled=true;
+  document.getElementById('prev').disabled=false;
+}
+
+/* ---------- controls ---------- */
+document.querySelectorAll('.fch[data-type="set"]').forEach(f=>f.addEventListener('click',()=>{
+  document.querySelectorAll('.fch[data-type="set"]').forEach(x=>x.classList.remove('on'));
+  f.classList.add('on');setF=f.dataset.v;buildDeck();}));
+document.querySelectorAll('.fch[data-type="cat"]').forEach(f=>f.addEventListener('click',()=>{
+  document.querySelectorAll('.fch[data-type="cat"]').forEach(x=>x.classList.remove('on'));
+  f.classList.add('on');catF=f.dataset.v;buildDeck();}));
+document.getElementById('shufBtn').addEventListener('click',function(){
+  shuf=!shuf;this.classList.toggle('on',shuf);this.textContent='🔀 สลับข้อ: '+(shuf?'เปิด':'ปิด');buildDeck();});
+document.getElementById('resetBtn').addEventListener('click',()=>{
+  document.getElementById('next').disabled=false;buildDeck();});
+document.getElementById('prev').addEventListener('click',()=>{if(i>0){i--;render();}});
+document.getElementById('next').addEventListener('click',()=>{
+  if(i<deck.length){i++;render();}});
+
+/* ---------- written ---------- */
+const written=[
+  ['A1','อธิบาย "ลูกโซ่" ว่าการปฏิวัติวิทยาศาสตร์ส่งต่อไปสู่การปฏิวัติอุตสาหกรรมได้อย่างไร',
+   'เรอเนสซองส์ → <b>Humanism</b> (เชื่อมั่นเหตุผล/ความสามารถมนุษย์) + <b>Naturalism</b> (ศึกษาธรรมชาติแทนศาสนา) → <b>วิธีการทางวิทยาศาสตร์</b> (สังเกต-ตั้งสมมติฐาน-ทดลอง-สรุป-ประยุกต์) → นำทฤษฎีไปประดิษฐ์เครื่องจักร → ระบบโรงงาน'],
+  ['A2','เปรียบเทียบ Domestic System กับ Factory System ใน 4 มิติ',
+   'สถานที่: บ้าน ↔ โรงงาน · เครื่องมือ/ทุน: ลูกจ้าง ↔ นายทุน · ปริมาณ: รายชิ้น ↔ <b>Mass Production</b> · คุณภาพชีวิตแรงงาน: อิสระ ↔ ตกใต้นายทุน ทำงาน 12–14 ชม.'],
+  ['A3','ทำไม "อังกฤษ" จึงเป็นชาติแรกที่ปฏิวัติอุตสาหกรรม — ยก 4 เสาหลัก',
+   '<b>ทุน</b> (การค้า+ธนาคาร) · <b>วัตถุดิบ</b> (ฝ้ายจากอาณานิคมอเมริกาใต้/อินเดีย) · <b>แรงงาน</b> (ประชากรเพิ่ม+อพยพเข้าเมือง) · <b>ตลาด</b> (ในประเทศ+อาณานิคม) + นโยบายรัฐหนุนทุนนิยม (Adam Smith)'],
+  ['A4','จัดกลุ่มนักวิทยาศาสตร์ตาม "สาขา" พร้อมผลงานเด่นคนละ 1',
+   'ดาราศาสตร์: Copernicus/Galileo/Kepler · กายวิภาค: Vesalius · เคมี: Boyle · จุลชีววิทยา: Leeuwenhoek · คณิต-ปรัชญา-ฟิสิกส์: Descartes/Bacon/Newton'],
+  ['A5','สรุปผลกระทบการปฏิวัติอุตสาหกรรม 5 ด้าน ด้านละ 2 ประเด็น',
+   'เศรษฐกิจ (ทุนนิยม/นายทุน) · สังคม (ชนชั้นใหม่/เมืองแออัด-แรงงานเด็ก) · การเมือง (จักรวรรดินิยม/สหภาพแรงงาน) · แนวคิด (เสรีนิยม vs สังคมนิยม) · มหาอำนาจ (อังกฤษชาติอุตสาหกรรมแรก/ผูกขาดการค้า)'],
+  ['A6','ทำไม Toffler เรียงอารยธรรมเป็น "3 คลื่น" และแต่ละคลื่นเปลี่ยนวิถีการผลิตอย่างไร',
+   'คลื่น 1 เกษตรกรรม (~10,000 ปีก่อน, ตั้งถิ่นฐาน-เพาะปลูก) → คลื่น 2 อุตสาหกรรม (C18, เครื่องจักร-โรงงาน) → คลื่น 3 สารสนเทศ/คอมพิวเตอร์ (หลัง WWII)'],
+  ['A7','"เหล็ก (iron) vs เหล็กกล้า (steel)" + บทบาท Cort / Darby / Bessemer',
+   'iron เปราะ / steel แข็งยืดหยุ่น · <b>Darby</b> = ใช้ coke ถลุงเหล็ก · <b>Cort</b> = puddling หลอมเหล็กบริสุทธิ์ · <b>Bessemer (1856)</b> = ทำ steel แข็งราคาถูก → ใช้ทำรางรถไฟ'],
+  ['A8','"ด้านมืด" ของระบบโรงงาน นำไปสู่แนวคิด Karl Marx และ May Day อย่างไร',
+   'แรงงานเด็ก (child hurriers) · ทำงาน 12–14 ชม. · ชุมชนแออัด · มลพิษ (แม่น้ำเทมส์เน่า) → <b>Karl Marx</b> เสนอ <b>Communist Manifesto</b> + <b>May Day (1 พ.ค. 1889)</b> + วรรณกรรมสัจนิยม (Realism)'],
+];
+document.getElementById('writtenBox').innerHTML=written.map(w=>`
+  <details class="rev"><summary><span class="qn">${w[0]}</span><span>${w[1]}</span></summary>
+    <div class="body">${w[2]}</div></details>`).join('');
+
+/* init */
+buildDeck();
+</script>
+<!--KIT-UI v3.7 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<script>
+/* =============================================================================
+   _kit/ui-controls.js  —  KIT UI  v1.0
+   แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
+     🌙/☀️  โหมดมืด / สว่าง   (จำค่าไว้ใน localStorage)
+     A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
+     ✏️  ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
+     🧮  เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
+
+   ── วิธีใช้ ────────────────────────────────────────────────────────────────
+   ห้ามแก้โค้ดนี้ในไฟล์ widget!  แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
+       pwsh -File _kit/apply-ui.ps1
+   สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
+   (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
+
+   !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
+      เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
+
+   ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
+   ใส่แอตทริบิวต์ที่ tag body:  data-tools="pen,calc"  = บังคับเปิด
+                              data-tools="none"      = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
+   ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
+              หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
+   ============================================================================= */
+(function(){
+if(window.__KITUI__) return; window.__KITUI__='3.7';   /* 3.7 = ปุ่มถาม AI เปิดเป็น "แผงข้าง" ไม่เด้งออกจากหน้า (site/ask-panel.js) · 3.6 = แถบพื้นหลังใต้ปุ่มลอย (กันเนื้อหาไหลผ่านช่องเหนือแท็บ) · 3.5 = tour.js · 3.4 = feedback.js */   /* เดิม 3.3 = ส่ง ?from= ไปด้วย ปุ่มกลับในหน้าถามจะได้กลับหน้าเดิม ไม่ใช่หน้ารวม · 3.2 = ปุ่ม 🔎 ถาม AI · 3.1 = ขยายปุ่มกลับ */
+
+/* ---------- helper ---------- */
+const D=document, R=D.documentElement;
+const get=k=>{try{return localStorage.getItem('kitui-'+k)}catch(e){return null}};
+const set=(k,v)=>{try{localStorage.setItem('kitui-'+k,v)}catch(e){}};
+const el=(t,c,h)=>{const e=D.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
+
+/* =============================================================================
+   1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
+   ============================================================================= */
+const CSS=`
+/* ===== DARK TOKENS (คู่กับ _kit/design-tokens.css) ===== */
+:root[data-theme="dark"]{
+  --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
+  --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
+  --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
+  --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
+  --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
+}
+:root[data-theme="dark"] body{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f172a}
+:root[data-theme="dark"] body[data-subject="physics"]{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f1220}
+:root[data-theme="dark"] body[data-subject="bio"]{--accent:#4ade80;--accent-head:#bbf7d0;--accent-ink:#86efac;--accent-soft:#0f2a1a;--accent-bd:#256b41;--accent-chip:#14532d;--accent-ghost:#15803d;--bg:#0d1912}
+:root[data-theme="dark"] body[data-subject="chem"]{--accent:#fb923c;--accent-head:#fed7aa;--accent-ink:#fdba74;--accent-soft:#2b1a0c;--accent-bd:#8a3d12;--accent-chip:#6d2c10;--accent-ghost:#c2410c;--bg:#1a130c}
+:root[data-theme="dark"] body[data-subject="christ"]{--accent:#a78bfa;--accent-head:#ddd6fe;--accent-ink:#c4b5fd;--accent-soft:#241a3d;--accent-bd:#5b21b6;--accent-chip:#4c1d95;--accent-ghost:#6d28d9;--bg:#16121f}
+:root[data-theme="dark"] body[data-subject="islam"]{--accent:#2dd4bf;--accent-head:#99f6e4;--accent-ink:#5eead4;--accent-soft:#0d2b28;--accent-bd:#12615a;--accent-chip:#134e4a;--accent-ghost:#0f766e;--bg:#0c1917}
+:root[data-theme="dark"] body[data-subject="history"]{--accent:#fbbf24;--accent-head:#fde68a;--accent-ink:#fcd34d;--accent-soft:#2a1f0a;--accent-bd:#8a4b0c;--accent-chip:#6d3a0a;--accent-ghost:#b45309;--bg:#191509}
+:root[data-theme="dark"] body[data-subject="math"]{--accent:#38bdf8;--accent-head:#bae6fd;--accent-ink:#7dd3fc;--accent-soft:#0c2434;--accent-bd:#0b5a80;--accent-chip:#0c4a6e;--accent-ghost:#0369a1;--bg:#0b1620}
+:root[data-theme="dark"] body[data-subject="eng"]{--accent:#f472b6;--accent-head:#fbcfe8;--accent-ink:#f9a8d4;--accent-soft:#2e1122;--accent-bd:#8d1748;--accent-chip:#731839;--accent-ghost:#be185d;--bg:#1c0f16}
+:root[data-theme="dark"] body[data-subject="thai"]{--accent:#f87171;--accent-head:#fecaca;--accent-ink:#fca5a5;--accent-soft:#2d1414;--accent-bd:#8d2020;--accent-chip:#7f1d1d;--accent-ghost:#b91c1c;--bg:#1a0f0f}
+:root[data-theme="dark"] body[data-subject="hindu"]{--accent:#facc15;--accent-head:#fef08a;--accent-ink:#fde047;--accent-soft:#2a2408;--accent-bd:#7a6410;--accent-chip:#5c4b0c;--accent-ghost:#a16207;--bg:#191708}
+:root[data-theme="dark"] img,:root[data-theme="dark"] .svg-box{filter:brightness(.92)}
+/* ช่องกรอก/ดรอปดาวน์ที่ widget เก่ากำหนดพื้นขาวตายตัวไว้ */
+:root[data-theme="dark"] select,:root[data-theme="dark"] textarea,
+:root[data-theme="dark"] input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=color])
+{background-color:var(--soft);color:var(--ink);border-color:var(--line)}
+
+/* ===== แถบเครื่องมือลอย ===== */
+#kitui-bar{position:fixed;right:10px;bottom:10px;z-index:99990;display:flex;gap:6px;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
+#kitui-bar button{border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;
+  font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
+  align-items:center;justify-content:center;font-weight:700}
+#kitui-bar button:hover{background:var(--soft)}
+#kitui-bar button:active{transform:scale(.93)}
+#kitui-bar button.on{background:var(--accent);color:#fff}
+#kitui-bar .kitui-sep{width:1px;height:22px;background:var(--line);flex:0 0 1px}
+#kitui-bar .kitui-fs{font-size:11px;color:var(--muted);min-width:34px;text-align:center;font-weight:700}
+#kitui-bar.hidden > *:not(#kitui-grip):not(#kitui-home){display:none}
+#kitui-grip{font-size:17px}
+
+/* ===== แผงลอย (ที่ทด / เครื่องคิดเลข) ===== */
+.kitui-sheet{position:fixed;left:0;right:0;bottom:0;z-index:99991;background:var(--card);
+  border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
+  display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
+  height:52vh;max-height:92vh;min-height:180px}
+.kitui-sheet.open{display:flex}
+.kitui-sheet.full{height:100vh;border-radius:0}
+.kitui-head{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--line);
+  flex-wrap:wrap;touch-action:none;cursor:ns-resize}
+.kitui-head b{font-size:.9rem;color:var(--accent-ink);margin-right:2px;white-space:nowrap}
+.kitui-head button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;
+  padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
+.kitui-head button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.kitui-head .kitui-spacer{flex:1}
+.kitui-sw{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;min-height:0}
+.kitui-sw.on{border-color:var(--ink);transform:scale(1.12)}
+.kitui-padwrap{flex:1;position:relative;overflow:hidden;background:var(--soft)}
+.kitui-padwrap canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+:root[data-theme="dark"] .kitui-padwrap{background:#0c1220}
+
+/* ===== เครื่องคิดเลข ===== */
+#kitui-calc{height:auto;max-height:90vh}
+.kitui-disp{padding:8px 12px;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);
+  border-bottom:1px solid var(--line)}
+.kitui-disp .ex{font-size:.95rem;color:var(--muted);min-height:1.3em;word-break:break-all}
+.kitui-disp .rs{font-size:1.6rem;font-weight:700;color:var(--accent-ink);word-break:break-all}
+.kitui-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:7px}
+.kitui-keys button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:9px;
+  font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
+.kitui-keys button:active{transform:scale(.95)}
+.kitui-keys button.fn{font-size:.8rem;color:var(--accent-ink)}
+.kitui-keys button.op{background:var(--accent-soft);color:var(--accent-ink)}
+.kitui-keys button.eq{background:var(--accent);color:#fff;grid-row:span 2}
+.kitui-keys button.del{background:var(--hot-bg);color:var(--hot-ink)}
+.kitui-keys button.w3{grid-column:span 3}
+@media(max-width:420px){.kitui-keys button{font-size:.88rem;min-height:40px}.kitui-keys button.fn{font-size:.72rem}}
+@media(min-width:760px){
+  .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
+  .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
+  #kitui-pad{width:560px}
+}
+#kitui-nav{position:fixed;top:8px;left:8px;z-index:99992;display:flex;gap:8px;align-items:center}
+#kitui-ask{border:1.5px solid var(--accent);background:var(--accent);color:#fff;border-radius:999px;
+  padding:0 16px 0 13px;height:44px;font-family:inherit;font-size:15.5px;font-weight:700;cursor:pointer;
+  box-shadow:0 3px 14px rgba(15,23,42,.22);line-height:1;display:flex;align-items:center;gap:6px;
+  text-decoration:none;white-space:nowrap}
+#kitui-ask .ar{font-size:18px;line-height:1}
+#kitui-ask:active{transform:scale(.95)}
+#kitui-back{display:flex;align-items:center;gap:7px;
+  border:1.5px solid var(--accent-bd,var(--line));background:var(--card);color:var(--ink);
+  border-radius:999px;padding:0 18px 0 14px;height:44px;font-family:inherit;font-size:15.5px;
+  font-weight:700;cursor:pointer;box-shadow:0 3px 14px rgba(15,23,42,.22);line-height:1}
+#kitui-back .ar{font-size:20px;line-height:1;margin-top:-1px}
+#kitui-back{white-space:nowrap}
+#kitui-back:active{transform:scale(.95)}
+#kitui-back:hover{background:var(--soft)}
+/* แท็บเป็น sticky top:0 ถ้าไม่ดันลงมาปุ่มจะทับแท็บแรกจนกดไม่ได้
+   ตัวเลขนี้ผูกกับความสูงปุ่ม (8 บน + 44 ปุ่ม + ระยะห่าง) แก้ความสูงปุ่มต้องแก้ตรงนี้ด้วย */
+body.kitui-hasback .tabs{top:60px}
+body.kitui-hasback .wrap{padding-top:56px}
+/* พื้นหลังทึบใต้ปุ่มลอย — พอดันแท็บ sticky ลงมา 60px จะเกิดช่องว่างเหนือมัน
+   แล้วเนื้อหาที่เลื่อนผ่านช่องนั้นจะโผล่ให้เห็น ดูเหมือนมีแถบลอยซ้อนกันสองชั้น
+   ใช้ element จริงไม่ใช่ body::before เพราะหน้า Unit18 ใช้ ::before ของตัวเองอยู่แล้ว */
+#kitui-topbg{position:fixed;top:0;left:0;right:0;height:60px;background:var(--bg);
+  z-index:99988;pointer-events:none}
+@media print{#kitui-bar,.kitui-sheet,#kitui-back{display:none!important}}
+`;
+const st=el('style'); st.id='kitui-style'; st.textContent=CSS; D.head.appendChild(st);
+
+/* -----------------------------------------------------------------------------
+   1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
+   widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
+   พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
+   แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
+   เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
+----------------------------------------------------------------------------- */
+/* สีพาสเทลสว่าง -> สีเข้มที่ยังคง "เฉดเดิม" ไว้ (เขียว=ถูก / แดง=ผิด ต้องยังแยกออก)
+   ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
+function darken(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
+  /* ⚠️ ห้ามใช้ saturation ของ HSL ตรง ๆ ตัดสิน: ที่ความสว่างเกือบ 1 ตัวหารจะเล็กมาก
+     ทำให้สีที่แทบเป็นสีขาว (เช่น #fdf8f4) ได้ค่าอิ่มสีสูงลิ่ว แล้วกลายเป็นสีน้ำตาลจัดตอนกดให้เข้ม
+     ให้ดูจาก "ช่วงห่างของแม่สี" (chroma) แทน แล้วแปลงเป็นความอิ่มสีแบบไล่ระดับ */
+  const s = Math.min(.45, Math.max(.08, d*4));
+  const l = d<.02 ? .13 : .17;                       /* เทา/ขาวล้วนให้เข้มกว่าสีนิดหน่อย */
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+function darkFix(){
+  const out=[], seen=new Set();
+  const take=r=>{
+    if(!r.style || !r.selectorText) return;
+    if(r.selectorText.indexOf('kitui')>-1) return;               /* ของเราเองใช้ token อยู่แล้ว */
+    const bg=r.style.backgroundColor;
+    if(!bg || bg.indexOf('var(')>-1) return;
+    const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
+    if(!m) return;
+    if(m[4]!==undefined && +m[4]<0.6) return;                    /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
+    const cr=+m[1], cg=+m[2], cb=+m[3];
+    if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return;       /* ไม่สว่างพอ ไม่ต้องยุ่ง */
+    const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
+    const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
+    let css='background-color:'+repl;
+    /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
+    const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
+    out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
+  };
+  /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
+        ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
+  const visit=rules=>{
+    for(let i=0;i<rules.length;i++){
+      const r=rules[i];
+      if(r.selectorText) take(r);
+      if(r.cssRules && r.cssRules.length) visit(r.cssRules);     /* @media / @supports / nesting */
+    }
+  };
+  for(let i=0;i<D.styleSheets.length;i++){
+    let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; }   /* ข้ามชีตข้ามโดเมน */
+    if(rr) visit(rr);
+  }
+  if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
+  return out.length;
+}
+try{ window.__KITUI_DARKFIX__ = (D.body.getAttribute('data-kit-theme')==='off') ? 'locked' : darkFix(); }
+catch(e){ window.__KITUI_DARKFIX__='err:'+e.message; }
+
+/* darkFix ข้างบนซ่อมได้เฉพาะสีที่เขียนตายตัวในไฟล์ CSS
+   แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
+   ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
+   จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
+const rgbOf=c=>{const m=c&&c.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null;};
+const lumOf=v=>v?(0.2126*v[0]+0.7152*v[1]+0.0722*v[2])/255:null;
+/* ตรงข้ามกับ darken(): ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
+   (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
+function lighten(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  if(d<0.04) return 'var(--ink)';                    /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
+  let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
+  const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
+  const s=Math.min(.92,Math.max(.55,s0)), l=.72;
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+const SKIP={CANVAS:1,IMG:1,VIDEO:1,SVG:1,IFRAME:1,PICTURE:1,OBJECT:1};
+const OBS_OPT={childList:true,subtree:true,attributes:true,attributeFilter:['class','style']};
+let patched=[], obs=null;
+function elementFix(){
+  /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
+        ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
+  if(obs) obs.disconnect();
+  try{ elementFixCore(); } finally { if(obs) obs.observe(D.body,OBS_OPT); }
+}
+function elementFixCore(){
+  if(D.body.getAttribute('data-kit-theme')==='off') return;   /* หน้าที่ล็อกธีมไว้ ห้ามไปยุ่งสี */
+  /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
+     ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
+     จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
+  if(R.getAttribute('data-theme')!=='dark'){
+    patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
+    patched=[];
+    return;
+  }
+  /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
+     ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
+  /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
+  const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
+  for(let i=0;i<all.length;i++){
+    const e=all[i];
+    if(e.id&&e.id.indexOf('kitui')===0) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(SKIP[e.tagName]) continue;                      /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
+    const s=getComputedStyle(e);
+    const bg=rgbOf(s.backgroundColor);
+    if(!bg || bg[3]<0.6) continue;                     /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
+    if(lumOf(bg)<0.72) continue;                       /* เข้มพออยู่แล้ว */
+    /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
+    e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
+    const fg=rgbOf(s.color);
+    if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important');  /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
+    patched.push(e);
+  }
+  /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
+     ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
+  const bgCache=new Map();
+  const effBg=n=>{
+    for(let p=n;p;p=p.parentElement){
+      if(bgCache.has(p)) return bgCache.get(p);
+      const b=rgbOf(getComputedStyle(p).backgroundColor);
+      if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
+    }
+    return null;
+  };
+  for(let i=2;i<all.length;i++){
+    const e=all[i];
+    if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(e.style.color) continue;                         /* จัดการไปแล้วในรอบแรก */
+    if(!e.textContent || !e.textContent.trim()) continue;
+    const fg=rgbOf(getComputedStyle(e).color);
+    if(!fg || lumOf(fg)>=0.45) continue;                 /* ตัวอักษรสว่างอยู่แล้ว */
+    const bg=effBg(e);
+    if(!bg || lumOf(bg)>=0.5) continue;                  /* พื้นยังสว่าง อ่านออกอยู่ */
+    e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
+    patched.push(e);
+  }
+}
+let efT=0;
+const scheduleFix=()=>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
+try{
+  obs=new MutationObserver(scheduleFix);
+  obs.observe(D.body,OBS_OPT);
+}catch(e){}
+
+/* =============================================================================
+   2) ธีม + ขนาดตัวอักษร
+   ============================================================================= */
+const FS=[.85,1,1.15,1.3,1.5], FSNAME=['เล็กสุด','เล็ก','ปกติ','ใหญ่','ใหญ่สุด'];
+let fsIdx=parseInt(get('fs')); if(isNaN(fsIdx)||fsIdx<0||fsIdx>4) fsIdx=1;
+let theme=get('theme') || (matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+
+/* หน้าที่ออกแบบธีมมาเองครบแล้ว (เช่น "หนังสือทบทวน" พื้นเข้มทั้งเล่ม) ให้ปิดระบบธีมของ KIT UI
+   ไม่งั้นโทเคน --bg/--ink ของเราจะไปทับสีที่หน้านั้นตั้งไว้ แล้วหน้าเพี้ยน
+   ใส่ที่ tag body:  data-kit-theme="off"   (ปุ่มปรับขนาดตัวอักษรยังใช้ได้ตามปกติ) */
+const themeLock = D.body.getAttribute('data-kit-theme')==='off';
+
+function applyTheme(){
+  if(themeLock) return;
+  R.setAttribute('data-theme',theme);
+  R.style.colorScheme = theme==='dark'?'dark':'light';   /* ให้ select/input เป็นสีเข้มด้วย */
+  const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
+  set('theme',theme);
+  clearTimeout(efT);                                   /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
+  if(typeof elementFix==='function') elementFix();
+  /* ⚠️ ห้ามอ้างถึงตัวแปรของส่วน "ที่ทด" ตรงนี้!
+     applyTheme() ถูกเรียกก่อนที่ `let pad` ในส่วนที่ 4 จะทำงาน → ชน temporal dead zone
+     แล้ว ReferenceError จะทำให้สคริปต์ตายทั้งก้อน (ปุ่มขนาดอักษร/ที่ทด/เครื่องคิดเลขหายหมด)
+     ใช้วิธียิง event แทน ใครสนใจค่อยไปดักฟังเอง */
+  try{ D.dispatchEvent(new CustomEvent('kitui-theme')); }catch(e){}
+}
+function applyFS(){
+  R.style.fontSize=(16*FS[fsIdx])+'px';
+  const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
+  set('fs',fsIdx);
+}
+
+/* =============================================================================
+   3) แถบเครื่องมือ
+   ============================================================================= */
+const subj=(D.body.getAttribute('data-subject')||'').toLowerCase();
+/* หลาย widget ไม่ได้ใส่ data-subject ที่ <body> → เดาจากโฟลเดอร์ที่ไฟล์อยู่ด้วย */
+const inPath=/\/(physics|math|chemist)\//i.test(decodeURIComponent(location.pathname));
+const tAttr=D.body.getAttribute('data-tools');
+const wantTools = tAttr!=null ? tAttr.toLowerCase()
+                : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
+const hasPen  = wantTools.includes('pen');
+const hasCalc = wantTools.includes('calc');
+
+/* ปุ่มกลับหน้าหลัก — โผล่เฉพาะตอนเปิดจากเว็บห้องติว (พาธมี /app/ อยู่)
+   เปิดไฟล์จากเครื่องตรง ๆ จะไม่มีปุ่มนี้ เพราะไม่มีหน้าหลักให้กลับ ลิงก์จะเสียเปล่า ๆ */
+const homeHref = (()=>{
+  const attr = D.body.getAttribute('data-home');     /* หน้าไหนไม่ได้อยู่ใต้ /app/ ให้ระบุเองได้ */
+  if(attr) return attr;
+  try{
+    const p = decodeURIComponent(location.pathname);
+    const i = p.indexOf('/app/');
+    return i < 0 ? null : p.slice(0, i+1) + 'index.html';
+  }catch(e){ return null; }
+})();
+
+const bar=el('div'); bar.id='kitui-bar';
+bar.innerHTML =
+  `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
+  (homeHref ? `<button id="kitui-home" title="กลับหน้าหลัก">🏠</button><span class="kitui-sep"></span>` : '')+
+  (themeLock ? '' : `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button><span class="kitui-sep"></span>`)+
+  `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
+  `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
+  `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
+  (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
+  (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
+D.body.appendChild(bar);
+
+if(!themeLock) D.getElementById('kitui-theme').onclick=()=>{theme=theme==='dark'?'light':'dark';applyTheme();};
+D.getElementById('kitui-fsup').onclick=()=>{if(fsIdx<4){fsIdx++;applyFS();}};
+D.getElementById('kitui-fsdown').onclick=()=>{if(fsIdx>0){fsIdx--;applyFS();}};
+D.getElementById('kitui-grip').onclick=()=>bar.classList.toggle('hidden');
+if(homeHref) D.getElementById('kitui-home').onclick=()=>{ location.href=homeHref; };
+
+/* ปุ่มกลับแบบลอยมุมซ้ายบน — มีคำว่า "กลับ" เต็ม ๆ ไม่ใช่ไอคอนเปล่า
+   (ของเดิมเป็น 🏠 เล็ก ๆ ปนอยู่ในแถบมุมขวาล่าง เพื่อนหาไม่เจอเลยไม่กด) */
+if(homeHref){
+  const back=el('button'); back.id='kitui-back';
+  back.type='button'; back.title='กลับหน้ารวมวิชา';
+  back.innerHTML='<span class="ar">←</span><span>กลับ</span>';
+  back.onclick=()=>{ location.href=homeHref; };
+  const nav=el('div'); nav.id='kitui-nav';
+  nav.appendChild(back);
+
+  /* ปุ่มถาม AI — เจ้าของทักว่าไม่มีใครย้อนกลับไปหน้ารวมเพื่อกดถาม ต้องถามจากหน้าที่เรียนอยู่ได้เลย
+     ส่งวิชาของหน้านี้ไปด้วย (?s=) หน้าถามจะได้เลือกวิชาให้เอง ไม่ต้องมากดซ้ำ
+     v3.7: site/ask-panel.js จะมาดักปุ่มนี้ให้เปิดเป็น "แผงข้าง" แทนการเด้งออกจากหน้า
+     ถ้าไฟล์นั้นโหลดไม่ได้ ปุ่มก็ยังเป็นลิงก์ธรรมดาใช้ได้เหมือนเดิม (ไม่พังทั้งคู่) */
+  const onAsk = /(^|\/)ask\.html$/.test(location.pathname);
+  if(!onAsk){
+    const subj = D.body.getAttribute('data-subject') || '';
+    const a=el('a'); a.id='kitui-ask';
+    /* ส่งหน้าปัจจุบันไปด้วย หน้าถามจะได้ทำปุ่มกลับให้ย้อนมาที่หน้านี้ ไม่ใช่เด้งไปหน้ารวม */
+    const q=[];
+    if(subj) q.push('s='+encodeURIComponent(subj));
+    q.push('from='+encodeURIComponent(location.pathname));
+    a.href = homeHref.replace(/index\.html$/,'ask.html') + '?' + q.join('&');
+    a.title='ถาม AI เรื่องที่กำลังอ่านอยู่';
+    a.innerHTML='<span class="ar">🔎</span><span>ถาม AI</span>';
+    nav.appendChild(a);
+  }
+  const tb=el('div'); tb.id='kitui-topbg'; D.body.appendChild(tb);
+  D.body.appendChild(nav);
+  D.body.classList.add('kitui-hasback');
+
+  /* ปุ่ม 💬 ส่งความเห็น — เก็บโค้ดไว้ที่ site/feedback.js ไฟล์เดียว ไม่ฝังซ้ำใน 200 กว่าไฟล์
+     ⚠️ เดิมคิดจาก homeHref โดยสมมติว่าลงท้าย index.html เสมอ (ตัด 10 ตัว)
+        แต่หน้า ask.html ที่มากับ ?from= จะตั้ง data-home เป็น "พาธของหน้าที่มา" ซึ่งไม่ได้ลงท้ายแบบนั้น
+        ตัด 10 ตัวจึงได้พาธเพี้ยน กลายเป็น ".../ชื่อไฟล์.hfeedback.js" แล้วสคริปต์โหลดไม่ขึ้นเงียบ ๆ
+        (เจอ 2026-09-05 ตอนทำแผงถาม AI) → คิดรากเว็บจาก location เองแทน ไม่พึ่ง data-home */
+  const rootURL = (function(){
+    try{
+      const p = decodeURIComponent(location.pathname);
+      const i = p.indexOf('/app/');
+      if(i >= 0) return p.slice(0, i+1);            /* หน้าเรียนใต้ /app/ -> รากเว็บ */
+    }catch(e){}
+    return location.pathname.replace(/[^/]*$/, '');  /* หน้าอื่น (เช่น ask.html ที่ราก) */
+  })();
+  /* ask-panel.js ไว้หน้าสุด จะได้ผูกปุ่ม "ถาม AI" ให้เปิดแผงได้เร็วที่สุด
+     ถ้าผู้ใช้กดก่อนสคริปต์มาถึง ปุ่มก็ยังเป็นลิงก์ธรรมดา เด้งไปหน้าถามเต็มจอ ไม่พัง */
+  ['ask-panel.js','feedback.js','tour.js'].forEach(function(n){
+    const s=el('script'); s.src=rootURL+n; s.defer=true; D.body.appendChild(s);
+  });
+}
+applyTheme(); applyFS();
+
+/* ปิดแผงด้วยปุ่ม Esc */
+D.addEventListener('keydown',e=>{ if(e.key==='Escape') D.querySelectorAll('.kitui-sheet.open').forEach(s=>s.classList.remove('open')); });
+
+/* ลากหัวแผงเพื่อปรับความสูง */
+function makeResizable(sheet){
+  const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
+  head.addEventListener('pointerdown',e=>{
+    if(e.target.closest('button'))return;
+    drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect().height;head.setPointerCapture(e.pointerId);
+  });
+  head.addEventListener('pointermove',e=>{
+    if(!drag)return;
+    const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
+    sheet.classList.remove('full'); sheet.style.height=h+'px';
+    if(sheet.id==='kitui-pad') fitPad();
+  });
+  head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
+}
+
+/* =============================================================================
+   4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ  หลายหน้า  เซฟอัตโนมัติ
+   ============================================================================= */
+let pad,padCv,padCx,pages=[[]],pg=0,undone=[],histo=[];
+let tool='pen',color='#111827',width=2.4,penSeen=0;
+const COLORS=['#111827','#2563eb','#dc2626','#16a34a','#f59e0b'];
+const PADKEY='pad-'+location.pathname.split('/').pop();
+
+function buildPad(){
+  pad=el('div','kitui-sheet'); pad.id='kitui-pad';
+  pad.innerHTML=
+   `<div class="kitui-head">
+      <b>✏️ ที่ทด</b>
+      <button data-t="pen" class="on">🖊️</button>
+      <button data-t="hl">🖍️</button>
+      <button data-t="er">🧽</button>
+      ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
+      <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
+      <span class="kitui-spacer"></span>
+      <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
+      <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
+      <button id="kitui-pgadd">+ หน้า</button>
+      <button id="kitui-clear">ล้างหน้านี้</button>
+      <button id="kitui-full">⛶</button>
+      <button id="kitui-padclose">✕</button>
+    </div>
+    <div class="kitui-padwrap"><canvas></canvas></div>`;
+  D.body.appendChild(pad);
+  padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
+  makeResizable(pad);
+
+  pad.querySelector('.kitui-head').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
+  });
+  D.getElementById('kitui-undo').onclick=()=>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop(); draw(); save(); } };
+  D.getElementById('kitui-redo').onclick=()=>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop(); draw(); save(); } };
+  D.getElementById('kitui-clear').onclick=()=>{ snap(); pages[pg]=[]; draw(); save(); };
+  D.getElementById('kitui-pgadd').onclick=()=>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw(); save(); };
+  D.getElementById('kitui-pgprev').onclick=()=>{ if(pg>0){pg--;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-pgnext').onclick=()=>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-full').onclick=()=>{ pad.classList.toggle('full'); pad.style.height=''; fitPad(); };
+  D.getElementById('kitui-padclose').onclick=()=>pad.classList.remove('open');
+
+  /* ---- วาด ---- */
+  let cur=null;
+  padCv.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='pen') penSeen=Date.now();
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;   /* กันฝ่ามือแตะตอนใช้สไตลัส */
+    const p=pt(e);
+    if(tool==='er'){ snap(); erase(p); return; }
+    snap();
+    cur={c:color,w:width,hl:tool==='hl',pts:[p]};
+    pages[pg].push(cur); draw();
+    try{ padCv.setPointerCapture(e.pointerId); }catch(x){}  /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
+  });
+  padCv.addEventListener('pointermove',e=>{
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;
+    if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
+    if(!cur||!e.buttons)return;
+    /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
+    let evs=[e];
+    if(e.getCoalescedEvents){ const c=e.getCoalescedEvents(); if(c&&c.length) evs=c; }
+    evs.forEach(ev=>cur.pts.push(pt(ev)));
+    draw();
+  });
+  const end=()=>{ if(cur){cur=null;save();} };
+  padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
+  padCv.addEventListener('pointerleave',end);
+
+  addEventListener('resize',()=>{ if(pad.classList.contains('open')) fitPad(); });
+  D.addEventListener('kitui-theme',()=>draw());   /* สลับธีมแล้ววาดลายใหม่ เส้นดำ<->ขาวตามพื้น */
+  load(); fitPad();
+}
+function pt(e){
+  const r=padCv.getBoundingClientRect();
+  return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
+          p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5};   /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
+}
+function snap(){ histo.push(pages[pg].slice()); if(histo.length>60)histo.shift(); undone=[]; }
+function erase(p){
+  const r=padCv.getBoundingClientRect(), rad=18/r.width;
+  const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
+  if(keep.length!==pages[pg].length){ pages[pg]=keep; draw(); save(); }
+}
+function fitPad(){
+  const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
+  const dpr=Math.min(devicePixelRatio||1,2.5);
+  padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
+  draw();
+}
+function draw(){
+  const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
+  padCx.clearRect(0,0,W,H);
+  /* เส้นตารางจาง ๆ ให้เขียนตรง */
+  const dark=R.getAttribute('data-theme')==='dark';
+  padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
+  for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath();padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke();}
+  padCx.lineCap='round'; padCx.lineJoin='round';
+  pages[pg].forEach(s=>{
+    padCx.globalAlpha=s.hl?0.32:1;
+    padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
+    for(let i=1;i<s.pts.length;i++){
+      const a=s.pts[i-1],b=s.pts[i];
+      padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
+      padCx.beginPath(); padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke();
+    }
+    if(s.pts.length===1){ /* จุดเดียว */
+      padCx.fillStyle=padCx.strokeStyle; padCx.beginPath();
+      padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill();
+    }
+  });
+  padCx.globalAlpha=1;
+  const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
+}
+function save(){ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
+function load(){
+  try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
+}
+
+if(hasPen){
+  buildPad();
+  D.getElementById('kitui-penbtn').onclick=()=>{
+    const o=pad.classList.toggle('open');
+    D.getElementById('kitui-penbtn').classList.toggle('on',o);
+    if(o) fitPad();
+  };
+}
+
+/* =============================================================================
+   5) เครื่องคิดเลขวิทยาศาสตร์  (tokenizer → shunting-yard → RPN  ไม่ใช้ eval)
+   ============================================================================= */
+const FN={sin:1,cos:1,tan:1,asin:1,acos:1,atan:1,ln:1,log:1,sqrt:1,abs:1,exp:1};
+const PREC={'+':1,'-':1,'*':2,'/':2,'^':4,'u-':3};
+function tokenize(s){
+  s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
+  const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!()])/g; let m;
+  while((m=re.exec(s))) out.push(m[1]);
+  return out;
+}
+function toRPN(tk){
+  const out=[],op=[]; let prev=null;
+  for(let t of tk){
+    if(t==='**')t='^';
+    if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
+    else if(t==='PI'){ out.push(Math.PI); }
+    else if(t==='e'||t==='E'){ out.push(Math.E); }
+    else if(t==='ANS'){ out.push(ANS); }
+    else if(FN[t]){ op.push(t); }
+    else if(t==='('){ op.push(t); }
+    else if(t===')'){
+      while(op.length&&op[op.length-1]!=='(') out.push(op.pop());
+      if(!op.length) throw 0; op.pop();
+      if(op.length&&FN[op[op.length-1]]) out.push(op.pop());
+    }
+    else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
+    else if('+-*/^'.includes(t)){
+      let o=t;
+      const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
+      if(t==='-'&&unary) o='u-';
+      else if(t==='+'&&unary){ prev=t; continue; }
+      while(op.length){
+        const top=op[op.length-1];
+        if(top==='('||FN[top])break;
+        const rightAssoc=(o==='^'||o==='u-');
+        if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop()); else break;
+      }
+      op.push(o);
+    }
+    else throw 0;
+    prev=t;
+  }
+  while(op.length){ const o=op.pop(); if(o==='(')throw 0; out.push(o); }
+  return out;
+}
+function evalRPN(rpn,deg){
+  const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
+  const pop=()=>{ if(!st.length)throw 0; return st.pop(); };
+  for(const t of rpn){
+    if(typeof t==='number'){ st.push(t); continue; }
+    if(t==='fact'){ const n=pop(); if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
+    if(t==='pct'){ st.push(pop()/100); continue; }
+    if(t==='u-'){ st.push(-pop()); continue; }
+    if(FN[t]){
+      const a=pop();
+      st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
+             : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
+             : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
+             : t==='abs'?Math.abs(a) : Math.exp(a) );
+      continue;
+    }
+    const b=pop(),a=pop();
+    st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
+  }
+  if(st.length!==1) throw 0;
+  return st[0];
+}
+function calc(src,deg){ return evalRPN(toRPN(tokenize(src)),deg); }
+
+let ANS=0, expr='', calcSheet, isDeg=true;
+const KEYS=[
+ ['DEG','deg','fn'],['(','(',''],[')',')',''],['⌫','del','del'],['AC','ac','del'],
+ ['sin','sin(','fn'],['cos','cos(','fn'],['tan','tan(','fn'],['π','π','fn'],['÷','÷','op'],
+ ['sin⁻¹','asin(','fn'],['cos⁻¹','acos(','fn'],['tan⁻¹','atan(','fn'],['e','e','fn'],['×','×','op'],
+ ['ln','ln(','fn'],['log','log(','fn'],['√','√(','fn'],['xʸ','^','fn'],['−','−','op'],
+ ['7','7',''],['8','8',''],['9','9',''],['x!','!','fn'],['+','+','op'],
+ ['4','4',''],['5','5',''],['6','6',''],['%','%','fn'],['ANS','ANS','fn'],
+ ['1','1',''],['2','2',''],['3','3',''],['.','.',''],['=','eq','eq'],
+ ['0','0','w3'],['x²','^2','fn']
+];
+function buildCalc(){
+  calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
+  calcSheet.innerHTML=
+   `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
+      <button id="kitui-calcclose">✕</button></div>
+    <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
+    <div class="kitui-keys" id="kitui-keys">
+      ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
+    </div>`;
+  D.body.appendChild(calcSheet);
+  D.getElementById('kitui-calcclose').onclick=()=>calcSheet.classList.remove('open');
+  const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
+  const show=()=>{ ex.textContent=expr||' ';
+    try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
+    catch(e){ rs.style.opacity=.35; }
+  };
+  D.getElementById('kitui-keys').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
+    if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
+    if(k==='del'){ expr=expr.slice(0,-1); show(); return; }
+    if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show(); return; }
+    if(k==='eq'){
+      rs.style.opacity=1;
+      try{
+        const v=calc(expr,isDeg);
+        if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
+        if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
+        ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
+      }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
+      return;
+    }
+    expr+=k; show();
+  });
+}
+function fmt(v){
+  if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
+  if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
+  return String(Math.round(v*1e10)/1e10);
+}
+if(hasCalc){
+  buildCalc();
+  D.getElementById('kitui-calcbtn').onclick=()=>{
+    const o=calcSheet.classList.toggle('open');
+    D.getElementById('kitui-calcbtn').classList.toggle('on',o);
+  };
+}
+})();
+
+</script>
+<!--/KIT-UI-->
+</body>
+</html>

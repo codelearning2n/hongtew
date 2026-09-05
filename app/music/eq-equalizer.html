@@ -414,7 +414,7 @@ function draw(){
   }
 }
 </script>
-<!--KIT-UI v3.6 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<!--KIT-UI v3.7 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>
 /* =============================================================================
    _kit/ui-controls.js  —  KIT UI  v1.0
@@ -440,7 +440,7 @@ function draw(){
               หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
    ============================================================================= */
 (function(){
-if(window.__KITUI__) return; window.__KITUI__='3.6';   /* 3.6 = แถบพื้นหลังใต้ปุ่มลอย (กันเนื้อหาไหลผ่านช่องเหนือแท็บ) · 3.5 = tour.js · 3.4 = feedback.js */   /* เดิม 3.3 = ส่ง ?from= ไปด้วย ปุ่มกลับในหน้าถามจะได้กลับหน้าเดิม ไม่ใช่หน้ารวม · 3.2 = ปุ่ม 🔎 ถาม AI · 3.1 = ขยายปุ่มกลับ */
+if(window.__KITUI__) return; window.__KITUI__='3.7';   /* 3.7 = ปุ่มถาม AI เปิดเป็น "แผงข้าง" ไม่เด้งออกจากหน้า (site/ask-panel.js) · 3.6 = แถบพื้นหลังใต้ปุ่มลอย (กันเนื้อหาไหลผ่านช่องเหนือแท็บ) · 3.5 = tour.js · 3.4 = feedback.js */   /* เดิม 3.3 = ส่ง ?from= ไปด้วย ปุ่มกลับในหน้าถามจะได้กลับหน้าเดิม ไม่ใช่หน้ารวม · 3.2 = ปุ่ม 🔎 ถาม AI · 3.1 = ขยายปุ่มกลับ */
 
 /* ---------- helper ---------- */
 const D=document, R=D.documentElement;
@@ -800,7 +800,9 @@ if(homeHref){
   nav.appendChild(back);
 
   /* ปุ่มถาม AI — เจ้าของทักว่าไม่มีใครย้อนกลับไปหน้ารวมเพื่อกดถาม ต้องถามจากหน้าที่เรียนอยู่ได้เลย
-     ส่งวิชาของหน้านี้ไปด้วย (?s=) หน้าถามจะได้เลือกวิชาให้เอง ไม่ต้องมากดซ้ำ */
+     ส่งวิชาของหน้านี้ไปด้วย (?s=) หน้าถามจะได้เลือกวิชาให้เอง ไม่ต้องมากดซ้ำ
+     v3.7: site/ask-panel.js จะมาดักปุ่มนี้ให้เปิดเป็น "แผงข้าง" แทนการเด้งออกจากหน้า
+     ถ้าไฟล์นั้นโหลดไม่ได้ ปุ่มก็ยังเป็นลิงก์ธรรมดาใช้ได้เหมือนเดิม (ไม่พังทั้งคู่) */
   const onAsk = /(^|\/)ask\.html$/.test(location.pathname);
   if(!onAsk){
     const subj = D.body.getAttribute('data-subject') || '';
@@ -819,9 +821,21 @@ if(homeHref){
   D.body.classList.add('kitui-hasback');
 
   /* ปุ่ม 💬 ส่งความเห็น — เก็บโค้ดไว้ที่ site/feedback.js ไฟล์เดียว ไม่ฝังซ้ำใน 200 กว่าไฟล์
-     homeHref ลงท้ายด้วย index.html เสมอ (ยาว 10 ตัว) ตัดออกแล้วต่อชื่อไฟล์ใหม่ */
-  const rootURL = homeHref.slice(0, homeHref.length-10);
-  ['feedback.js','tour.js'].forEach(function(n){
+     ⚠️ เดิมคิดจาก homeHref โดยสมมติว่าลงท้าย index.html เสมอ (ตัด 10 ตัว)
+        แต่หน้า ask.html ที่มากับ ?from= จะตั้ง data-home เป็น "พาธของหน้าที่มา" ซึ่งไม่ได้ลงท้ายแบบนั้น
+        ตัด 10 ตัวจึงได้พาธเพี้ยน กลายเป็น ".../ชื่อไฟล์.hfeedback.js" แล้วสคริปต์โหลดไม่ขึ้นเงียบ ๆ
+        (เจอ 2026-09-05 ตอนทำแผงถาม AI) → คิดรากเว็บจาก location เองแทน ไม่พึ่ง data-home */
+  const rootURL = (function(){
+    try{
+      const p = decodeURIComponent(location.pathname);
+      const i = p.indexOf('/app/');
+      if(i >= 0) return p.slice(0, i+1);            /* หน้าเรียนใต้ /app/ -> รากเว็บ */
+    }catch(e){}
+    return location.pathname.replace(/[^/]*$/, '');  /* หน้าอื่น (เช่น ask.html ที่ราก) */
+  })();
+  /* ask-panel.js ไว้หน้าสุด จะได้ผูกปุ่ม "ถาม AI" ให้เปิดแผงได้เร็วที่สุด
+     ถ้าผู้ใช้กดก่อนสคริปต์มาถึง ปุ่มก็ยังเป็นลิงก์ธรรมดา เด้งไปหน้าถามเต็มจอ ไม่พัง */
+  ['ask-panel.js','feedback.js','tour.js'].forEach(function(n){
     const s=el('script'); s.src=rootURL+n; s.defer=true; D.body.appendChild(s);
   });
 }

@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ชีวะ บท 22 พฤติกรรมสัตว์ — ฝึกก่อนสอบปลายภาค</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- สร้างจาก _kit/widget-template.html ตามกฎ _kit/DESIGN.md
+     โจทย์ทั้ง 60 ข้อคัดจาก Unit22_แยกประเภทพฤติกรรม_คลังข้อสอบอาจารย์.md
+     ซึ่งเป็นคลังข้อสอบในสไลด์ของอาจารย์เอง น.72-84 เฉลยเปิดภาพหน้าจริงจับคู่มาแล้วทุกข้อ -->
+<style>
+/* ===== TOKENS (สำเนาจาก design-tokens.css — ดูคำอธิบายเต็มที่ไฟล์นั้น) ===== */
+:root{
+  --font:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
+  --bg:#eef2f7;--ink:#1e293b;--muted:#64748b;--line:#e2e8f0;--card:#fff;--soft:#f8fafc;
+  --shadow:0 1px 4px rgba(15,23,42,.08);
+  --ok:#059669;--bad:#dc2626;
+  --warn-bg:#fff7ed;--warn-bd:#f97316;--tip-bg:#ecfdf5;--tip-bd:#10b981;
+  --info-bg:#eff6ff;--info-bd:#3b82f6;--steps-bg:#fffbeb;--steps-bd:#fcd34d;--steps-dash:#fde68a;
+  --hot-bg:#fee2e2;--hot-ink:#b91c1c;--badge-bg:#fef9c3;--badge-ink:#854d0e;
+  --radius:14px;--radius-sm:10px;--radius-pill:999px;
+  --accent:#4f46e5;--accent-head:#312e81;--accent-ink:#3730a3;--accent-soft:#eef2ff;
+  --accent-bd:#c7d2fe;--accent-chip:#e0e7ff;--accent-ghost:#a5b4fc;
+}
+body[data-subject="physics"]{--accent:#4f46e5;--accent-head:#312e81;--accent-ink:#3730a3;--accent-soft:#eef2ff;--accent-bd:#c7d2fe;--accent-chip:#e0e7ff;--accent-ghost:#a5b4fc;--bg:#eef2f7}
+body[data-subject="bio"]{--accent:#16a34a;--accent-head:#14532d;--accent-ink:#166534;--accent-soft:#f0fdf4;--accent-bd:#bbf7d0;--accent-chip:#dcfce7;--accent-ghost:#86efac;--bg:#f0f4ef}
+body[data-subject="chem"]{--accent:#ea7317;--accent-head:#7c3a06;--accent-ink:#c2560c;--accent-soft:#fff7ed;--accent-bd:#fed7aa;--accent-chip:#ffedd5;--accent-ghost:#fdba74;--bg:#f6f2ec}
+body[data-subject="christ"]{--accent:#7c3aed;--accent-head:#4c1d95;--accent-ink:#6d28d9;--accent-soft:#f5f3ff;--accent-bd:#ddd6fe;--accent-chip:#ede9fe;--accent-ghost:#c4b5fd;--bg:#f2eff7}
+body[data-subject="islam"]{--accent:#0d9488;--accent-head:#134e4a;--accent-ink:#0f766e;--accent-soft:#f0fdfa;--accent-bd:#99f6e4;--accent-chip:#ccfbf1;--accent-ghost:#5eead4;--bg:#eef4f2}
+body[data-subject="history"]{--accent:#b45309;--accent-head:#78350f;--accent-ink:#92400e;--accent-soft:#fffbeb;--accent-bd:#fde68a;--accent-chip:#fef3c7;--accent-ghost:#fcd34d;--bg:#f5f1e8}
+body[data-subject="math"]{--accent:#0284c7;--accent-head:#0c4a6e;--accent-ink:#0369a1;--accent-soft:#f0f9ff;--accent-bd:#bae6fd;--accent-chip:#e0f2fe;--accent-ghost:#7dd3fc;--bg:#edf3f7}
+body[data-subject="eng"]{--accent:#db2777;--accent-head:#831843;--accent-ink:#be185d;--accent-soft:#fdf2f8;--accent-bd:#fbcfe8;--accent-chip:#fce7f3;--accent-ghost:#f9a8d4;--bg:#f7eef3}
+body[data-subject="thai"]{--accent:#dc2626;--accent-head:#7f1d1d;--accent-ink:#b91c1c;--accent-soft:#fef2f2;--accent-bd:#fecaca;--accent-chip:#fee2e2;--accent-ghost:#fca5a5;--bg:#f7efef}
+body[data-subject="hindu"]{--accent:#ca8a04;--accent-head:#713f12;--accent-ink:#a16207;--accent-soft:#fefce8;--accent-bd:#fef08a;--accent-chip:#fef9c3;--accent-ghost:#fde047;--bg:#f6f4e8}
+
+/* ===== COMPONENTS ===== */
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.6}
+.wrap{max-width:860px;margin:0 auto;padding:10px 12px 60px}
+header{padding:18px 4px 6px}
+header h1{font-size:1.35rem;color:var(--accent-head)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{background:var(--accent-chip);color:var(--accent-ink);border-radius:var(--radius-pill);padding:3px 12px;font-size:.82rem;font-weight:600}
+.chip.hot{background:var(--hot-bg);color:var(--hot-ink)}
+.badge{display:inline-block;background:var(--badge-bg);color:var(--badge-ink);border-radius:6px;padding:1px 8px;font-size:.78rem;font-weight:700;vertical-align:middle}
+.tabs{display:flex;gap:8px;overflow-x:auto;position:sticky;top:0;background:var(--bg);padding:10px 2px;z-index:10;-webkit-overflow-scrolling:touch}
+.tab-btn{white-space:nowrap;padding:8px 14px;border-radius:var(--radius-pill);border:1.5px solid var(--accent-bd);background:#fff;color:var(--accent-ink);cursor:pointer;font-size:.92rem;font-family:inherit;font-weight:600;flex-shrink:0}
+.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tab{display:none}
+.tab.show{display:block;animation:fade .25s}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.card{background:var(--card);border-radius:var(--radius);padding:16px;margin:12px 0;box-shadow:var(--shadow)}
+.card h2{font-size:1.15rem;color:var(--accent-head);margin-bottom:2px}
+.card h3{font-size:1.05rem;color:var(--ink);margin-bottom:6px}
+.sub{color:var(--muted);font-size:.85rem;margin-bottom:10px}
+details.concept{border:1px solid var(--line);border-radius:var(--radius-sm);margin:8px 0;overflow:hidden}
+details.concept summary{padding:10px 14px;cursor:pointer;font-weight:600;background:var(--soft);list-style:none}
+details.concept summary::before{content:"▸ ";color:var(--accent)}
+details.concept[open] summary::before{content:"▾ "}
+details.concept .body{padding:10px 14px;border-top:1px solid var(--line);font-size:.95rem}
+.formula{background:var(--accent-soft);border-radius:8px;padding:6px 12px;display:inline-block;margin:4px 4px 4px 0;font-weight:600;color:var(--accent-ink)}
+.warn{background:var(--warn-bg);border-left:4px solid var(--warn-bd);border-radius:8px;padding:10px 12px;margin:10px 0;font-size:.92rem}
+.tip{background:var(--tip-bg);border-left:4px solid var(--tip-bd);border-radius:8px;padding:10px 12px;margin:10px 0;font-size:.92rem}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:var(--radius-sm);padding:10px 16px;font-size:.95rem;cursor:pointer;font-family:inherit;font-weight:600}
+.btn:active{transform:scale(.97)}
+.btn.ghost{background:#fff;color:var(--accent);border:1.5px solid var(--accent-ghost)}
+.btn.small{padding:6px 12px;font-size:.85rem}
+.btn.green{background:var(--ok)}.btn.red{background:var(--bad)}
+.seg{display:inline-flex;border:1.5px solid var(--accent-bd);border-radius:var(--radius-sm);overflow:hidden;margin:4px 0;flex-wrap:wrap}
+.seg button{border:0;background:#fff;padding:8px 12px;cursor:pointer;font-family:inherit;font-size:.9rem;color:var(--accent-ink)}
+.seg button.on{background:var(--accent);color:#fff}
+input[type=range]{width:100%;accent-color:var(--accent);height:28px}
+.slider-row{margin:8px 0}.slider-row label{font-size:.92rem;font-weight:600}
+.slider-val{color:var(--accent);font-weight:700}
+.big-val{font-size:1.3rem;font-weight:700;color:var(--accent);margin:6px 0}
+.q-text,.tf-q{font-size:1rem;background:var(--soft);border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:6px}
+.ans-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:10px 0 4px}
+.ans-in{flex:1;min-width:120px;padding:10px 12px;border:2px solid #cbd5e1;border-radius:var(--radius-sm);font-size:1rem;font-family:inherit}
+.ans-in:focus{outline:none;border-color:var(--accent)}
+.ans-unit{font-weight:700;color:#475569;min-width:24px}
+.fb{margin:6px 0;font-weight:600;min-height:1.2em}
+.fb.ok{color:var(--ok)}.fb.bad{color:var(--bad)}
+.hint-box div{background:var(--info-bg);border-left:4px solid var(--info-bd);padding:8px 12px;margin:6px 0;border-radius:6px;font-size:.93rem}
+.drill-btns,.tf-btns{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.tf-btns .btn{flex:1;max-width:140px}
+.score{margin-top:8px;color:var(--muted);font-size:.88rem}
+.steps{background:var(--steps-bg);border:1px solid var(--steps-bd);border-radius:var(--radius-sm);padding:12px 14px;margin:8px 0;display:none;font-size:.95rem}
+.steps.show{display:block}
+.steps .st{padding:4px 0;border-bottom:1px dashed var(--steps-dash)}
+.steps .st:last-child{border-bottom:0}
+table.ref{border-collapse:collapse;width:100%;font-size:.9rem;margin:8px 0}
+table.ref th,table.ref td{border:1px solid var(--line);padding:6px 10px;text-align:center}
+table.ref th{background:var(--accent-soft);color:var(--accent-ink)}
+svg{max-width:100%;height:auto;display:block}
+.svg-box{background:var(--soft);border:1px solid var(--line);border-radius:var(--radius-sm);padding:8px;margin:8px 0}
+select{padding:8px;border:1.5px solid #cbd5e1;border-radius:8px;font-family:inherit;font-size:.9rem;background:#fff}
+sup,sub{font-size:.72em}
+@media(max-width:480px){.card{padding:12px}header h1{font-size:1.15rem}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ===== เฉพาะหน้านี้: Blender ===== */
+.qhead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.qno{font-weight:700;color:var(--accent);font-size:1.05rem}
+.pill{background:var(--accent-chip);color:var(--accent-ink);border-radius:999px;padding:2px 11px;font-size:.78rem;font-weight:700}
+.pill.old{background:var(--badge-bg);color:var(--badge-ink)}
+.choice{display:block;width:100%;text-align:left;margin:6px 0;padding:11px 14px;border-radius:var(--radius-sm);
+  border:1.5px solid var(--accent-bd);background:var(--card);color:var(--ink);cursor:pointer;
+  font-family:inherit;font-size:1rem;line-height:1.55}
+.choice:hover{border-color:var(--accent)}
+.choice.ok{background:var(--tip-bg);border:2px solid var(--ok);font-weight:600}
+.choice.bad{background:var(--hot-bg);border:2px solid var(--bad)}
+.choice .k{font-weight:700;color:var(--accent-ink);margin-right:8px}
+.wr{background:var(--steps-bg);border:1px solid var(--steps-bd);border-radius:var(--radius-sm);
+  padding:12px 14px;margin:10px 0;font-size:.95rem;line-height:1.85;display:none}
+.wr.show{display:block}
+.stat{display:flex;gap:14px;flex-wrap:wrap;font-size:.9rem;color:var(--muted);margin-top:8px;align-items:center}
+.stat b{color:var(--accent);font-size:1.1rem}
+.bar{height:9px;background:var(--line);border-radius:999px;overflow:hidden;margin:8px 0}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:999px;transition:width .3s}
+kbd{background:var(--ink);color:var(--card);border-radius:6px;padding:2px 9px;font-family:ui-monospace,Menlo,Consolas,monospace;
+  font-size:.9em;font-weight:700;box-shadow:0 2px 0 rgba(0,0,0,.25)}
+.kcard{border:1.5px solid var(--accent-bd);border-radius:var(--radius);padding:22px 16px;text-align:center;
+  background:var(--card);margin:10px 0;cursor:pointer;min-height:9rem;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:12px}
+.kcard .front{font-size:1.5rem;font-weight:700;color:var(--accent-head)}
+.kcard .back{font-size:1.02rem;line-height:1.7;display:none}
+.kcard.flip .back{display:block}
+.kcard .hint{font-size:.85rem;color:var(--muted)}
+.kcard.flip .hint{display:none}
+
+
+
+.flow{counter-reset:fl;margin:6px 0}
+.flow .fs{position:relative;padding:11px 13px 11px 44px;margin:8px 0;background:var(--soft);
+  border:1px solid var(--line);border-radius:var(--radius-sm);font-size:.95rem;line-height:1.85}
+.flow .fs::before{counter-increment:fl;content:counter(fl);position:absolute;left:12px;top:11px;
+  width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;
+  font-size:.82rem;display:flex;align-items:center;justify-content:center}
+
+/* ===== การ์ดนำทางสำหรับคนที่ยังไม่ได้อ่านสไลด์ (START-HERE) ===== */
+.sh{border:2px solid var(--accent-bd);background:var(--accent-soft)}
+.sh h3{margin-top:0}
+.sh ol{margin:.5rem 0 .7rem 1.25rem;padding:0;line-height:2}
+.sh ol li{margin:.3rem 0}
+.sh .go{display:inline-block;margin-left:.35rem;padding:2px 10px;border-radius:999px;
+  border:1.5px solid var(--accent-bd);background:var(--card);color:var(--accent-ink);
+  font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer}
+.sh .go:hover{background:var(--accent-chip)}
+.sh .mins{color:var(--muted);font-size:.9rem}
+</style>
+</head>
+
+<body data-subject="bio">
+<div class="wrap">
+
+  <header>
+    <h1>🐦 ชีวะ บท 22 พฤติกรรมสัตว์ — ฝึกก่อนสอบ</h1>
+    <div class="chips">
+      <span class="chip hot">ปลายภาค · ออกบทนี้บทเดียว · 60 นาที</span>
+      <span class="chip">คลังข้อสอบของอาจารย์ 60 ข้อ</span>
+      <span class="chip">เฉลยยืนยันจากภาพสไลด์แล้ว</span>
+    </div>
+  </header>
+
+    <!-- START-HERE — การ์ดนำทางสำหรับคนที่ยังไม่ได้อ่านสไลด์ -->
+    <div class="card sh">
+      <h3>🚦 ยังไม่ได้อ่านสไลด์? เริ่มตรงนี้</h3>
+      <p class="sub">ทำตามลำดับนี้ <span class="mins">ประมาณ 25–35 นาที</span> แล้วค่อยลงข้อสอบ จะได้ไม่ใช่การเดา</p>
+      <ol>
+        <li>เปิด <b>🧭 ผังตัดสินใจ</b> ก่อน — ไล่ 2 คำถามก็รู้ว่าเป็นประเภทไหน พร้อม 4 คู่ที่สับสนกันมากสุด <button class="go" data-go="t4">เปิดแท็บนี้</button></li>
+        <li>อ่าน <b>🌀 taxis / kinesis</b> — ตัวที่ออกบ่อยที่สุด 13 จาก 60 ข้อ <button class="go" data-go="t2">เปิดแท็บนี้</button></li>
+        <li>กวาด <b>✍️ กับดักสะกด</b> — อาจารย์ทำตัวเลือกเป็นภาษาอังกฤษ ตัวลวงคือคำที่สะกดเพี้ยนนิดเดียว <button class="go" data-go="t3">เปิดแท็บนี้</button></li>
+        <li>ค่อยลง <b>🎯 ทายประเภท</b> — 60 สถานการณ์จากคลังข้อสอบของอาจารย์เอง <button class="go" data-go="t1">เปิดแท็บนี้</button></li>
+      </ol>
+      <div class="warn"><b>จุดที่คนไม่ได้อ่านสไลด์พลาดบ่อยที่สุด</b><br>• <b>chain of reflexes vs fixed action pattern</b> — โจทย์ระบุ <b>จุด/สี/รูปร่างเฉพาะ</b> ที่ไปกระตุ้น = FAP · เป็นงานทำเป็นขั้น ๆ จนเสร็จ = chain<br>• <b>habituation vs trial and error</b> — ไม่มีรางวัลหรือโทษเลยแต่เลิกตอบสนอง = habituation · มีรางวัล/โทษชัดเจน = trial and error<br>• <b>classical vs trial and error</b> — สัตว์แค่รับสิ่งเร้าสองอย่างซ้ำ ๆ = classical · สัตว์ต้อง<b>ลงมือทำก่อน</b>แล้วจึงได้ผล = trial and error<br>• สไลด์ น.30 เขียนว่ารวม taxis กับ kinesis เป็น orientation โดยไม่แบ่งแยก ⇒ <b>ถ้าตัวเลือกมีคำว่า orientation ให้กา orientation</b></div>
+    </div>
+
+
+  <nav class="tabs" id="tabs">
+    <button class="tab-btn" data-tab="t1">🎯 ทายประเภท</button>
+    <button class="tab-btn" data-tab="t2">🌀 taxis / kinesis</button>
+    <button class="tab-btn" data-tab="t3">✍️ กับดักสะกด</button>
+    <button class="tab-btn" data-tab="t4">🧭 ผังตัดสินใจ</button>
+  </nav>
+
+  <!-- ============ ทายประเภท ============ -->
+  <section id="t1" class="tab">
+    <div class="card" data-tour="ทายประเภทพฤติกรรม|โจทย์ทั้งหมดเป็นสถานการณ์จริงจากสไลด์ของอาจารย์ 60 ข้อ เฉลยเปิดภาพจับคู่มาแล้วทุกข้อ">
+      <h2>🎯 อ่านสถานการณ์แล้วเลือกประเภทพฤติกรรม</h2>
+      <p class="sub">ทุกข้อมาจาก<b>คลังข้อสอบในสไลด์ของอาจารย์เอง</b> โอกาสออกซ้ำหรือดัดแปลงสูงมาก</p>
+      <div class="seg" id="filt">
+        <button data-k="all" class="on">ทั้งหมด 60 ข้อ</button>
+        <button data-k="innate">เฉพาะพฤติกรรมโดยกำเนิด</button>
+        <button data-k="learn">เฉพาะพฤติกรรมเรียนรู้</button>
+      </div>
+      <div class="stat"><span>ข้อ <b id="qn">1</b>/<b id="qt">0</b></span><span>ถูก <b id="sc">0</b></span>
+        <span id="pct"></span><button class="btn ghost small" id="reset" style="margin-left:auto">เริ่มใหม่</button></div>
+      <div class="bar"><i id="barI" style="width:0"></i></div>
+    </div>
+    <div class="card" id="qbox"></div>
+  </section>
+
+  <!-- ============ taxis/kinesis ============ -->
+  <section id="t2" class="tab">
+    <div class="card">
+      <h2>🌀 orientation — แบบ taxis หรือ kinesis</h2>
+      <div class="warn">⚠️ <b>อ่านก่อนตอบ</b> — สไลด์ `น.30` เขียนว่า
+        “เรียกรวมพฤติกรรมทั้ง 2 แบบให้อยู่ในพฤติกรรมแบบ orientation โดยไม่แบ่งแยกกัน”<br>
+        <b>ถ้าในข้อสอบ ก ข ค ง มีคำว่า orientation ให้กา orientation</b> — แท็บนี้ไว้ฝึกเผื่ออาจารย์ให้แยกจริง</div>
+      <table class="ref">
+        <tr><th></th><th>taxis</th><th>kinesis</th></tr>
+        <tr><td><b>ทิศทาง</b></td><td><b>มีทิศ</b>สัมพันธ์กับสิ่งเร้า</td><td><b>ไม่มีทิศ</b></td></tr>
+        <tr><td><b>ลักษณะ</b></td><td>มุ่ง<b>เข้าหา</b>หรือ<b>หนีออก</b>ตรง ๆ</td><td>เปลี่ยน<b>ความเร็ว</b>หรือ<b>สุ่มทิศ</b>จนพ้นไปเอง</td></tr>
+        <tr><td><b>คำสัญญาณ</b></td><td>“เข้าหา…” “ออกจาก…”</td><td>“เร็วขึ้น/ช้าลง” “เบี่ยงไปเรื่อย ๆ จนพ้น”</td></tr>
+      </table>
+      <div class="stat"><span>ข้อ <b id="tn">1</b>/<b id="tt">0</b></span><span>ถูก <b id="ts">0</b></span>
+        <button class="btn ghost small" id="tReset" style="margin-left:auto">เริ่มใหม่</button></div>
+    </div>
+    <div class="card" id="tbox"></div>
+  </section>
+
+  <!-- ============ สะกด ============ -->
+  <section id="t3" class="tab">
+    <div class="card">
+      <h2>✍️ กับดักการสะกดในตัวเลือก ก ข ค ง</h2>
+      <p class="sub">อาจารย์ทำตัวเลือกเป็นภาษาอังกฤษ ตัวลวงหลายตัวคือ<b>คำที่สะกดเพี้ยนไปนิดเดียว</b></p>
+      <div class="stat"><span>ข้อ <b id="sn">1</b>/<b id="st">0</b></span><span>ถูก <b id="ss">0</b></span>
+        <button class="btn ghost small" id="sReset" style="margin-left:auto">เริ่มใหม่</button></div>
+    </div>
+    <div class="card" id="sbox"></div>
+    <div class="card">
+      <h3>ตารางคำที่สะกดผิดบ่อย</h3>
+      <table class="ref" id="sptab"></table>
+    </div>
+  </section>
+
+  <!-- ============ ผัง ============ -->
+  <section id="t4" class="tab">
+    <div class="card">
+      <h2>🧭 ผังตัดสินใจ — ใช้ได้ใน 10 วินาที</h2>
+      <div class="flow">
+        <div class="fs"><b>ถามก่อนเลย: สัตว์ทำได้ตั้งแต่เกิดโดยไม่ต้องเรียนรู้ไหม</b><br>
+          ตอบได้ปุ๊บ<b>ตัดตัวเลือกไปครึ่งหนึ่งทันที</b></div>
+        <div class="fs"><b>ถ้าเป็นพฤติกรรมโดยกำเนิด (innate)</b><br>
+          ตอบสนอง<b>ปัจจัยทางกายภาพ</b> (แสง อุณหภูมิ ความชื้น สารเคมี) → <b>orientation</b><br>
+          ตอบสนอง<b>ทันที ครั้งเดียวจบ</b> → <b>reflex</b><br>
+          ทำเป็น<b>ขั้น ๆ ต่อกันจนงานสำเร็จ</b> → <b>chain of reflexes</b><br>
+          มี<b>สิ่งเร้าที่เป็นเครื่องหมาย</b> แล้วทำจนจบแม้สิ่งเร้าหายไป → <b>fixed action pattern</b></div>
+        <div class="fs"><b>ถ้าเป็นพฤติกรรมเรียนรู้ (learned)</b><br>
+          <b>เลิกตอบสนอง</b>เพราะสิ่งเร้านั้นไม่มีผลอะไร → <b>habituation</b><br>
+          เกิด<b>ช่วงแรกของชีวิต จำสิ่งแรกที่เจอ</b> → <b>imprinting</b><br>
+          เชื่อม<b>สิ่งเร้า ↔ สิ่งเร้า</b> → <b>classical conditioning</b><br>
+          เชื่อม<b>การกระทำ ↔ ผลที่ได้</b> (รางวัล/โทษ) → <b>trial and error</b><br>
+          <b>ไม่เคยเจอ ไม่เคยฝึก แต่แก้ปัญหาได้เลย</b> → <b>reasoning</b></div>
+      </div>
+
+      <h3 class="mt2">⚡ 4 คู่ที่สับสนกันมากที่สุด</h3>
+      <table class="ref">
+        <tr><th>คู่</th><th>ตัวชี้ขาด</th></tr>
+        <tr><td><b>chain of reflexes</b> vs <b>fixed action pattern</b></td>
+            <td>โจทย์ระบุ<b>จุด สี หรือรูปร่างเฉพาะ</b>ที่ไปกระตุ้นไหม → <b>FAP</b><br>
+                เป็น<b>งานที่ทำเป็นขั้น ๆ จนเสร็จ</b> (สร้างรัง ชักใย ดูดนม) → <b>chain</b></td></tr>
+        <tr><td><b>habituation</b> vs <b>trial and error</b></td>
+            <td><b>มีรางวัลหรือโทษไหม</b> — ไม่มีเลยแต่เลิกตอบสนอง → <b>habituation</b><br>
+                มีรางวัล/โทษชัดเจน → <b>trial and error</b></td></tr>
+        <tr><td><b>classical conditioning</b> vs <b>trial and error</b></td>
+            <td>สัตว์<b>ไม่ได้ทำอะไร</b> แค่รับสิ่งเร้าสองอย่างซ้ำ ๆ → <b>classical</b><br>
+                สัตว์<b>ต้องลงมือทำก่อน</b>แล้วจึงได้ผล → <b>trial and error</b></td></tr>
+        <tr><td><b>taxis</b> vs <b>kinesis</b></td>
+            <td>“เข้าหา/ออกจาก” ตรง ๆ → <b>taxis</b> · “เร็วขึ้น/ช้าลง/เบี่ยงจนพ้น” → <b>kinesis</b></td></tr>
+      </table>
+
+      <h3 class="mt2">📊 ประเภทไหนออกบ่อยสุดในคลังของอาจารย์</h3>
+      <table class="ref" id="stattab"></table>
+      <div class="tip">⭐ <b>ถ้าเวลาน้อย ให้แม่น orientation ก่อน</b> — ออกบ่อยที่สุด 13 จาก 60 ข้อ (22%)
+        และเป็นตัวที่มีลูกย่อย taxis/kinesis ไว้หลอกด้วย</div>
+
+      <h3 class="mt2">⚠️ ข้อที่ค้านสัญชาตญาณ ต้องจำตามอาจารย์</h3>
+      <div class="warn">
+        <b>① เสือชีตาห์เรียนรู้วิธีล่าจากการสังเกตแม่</b> — ตำราสากลมักจัดเป็น observational learning
+        แต่<b>อาจารย์เฉลยว่า reasoning</b><br>
+        <b>② สุนัขเห็นสัญญาณมือแล้วนั่งลง</b> `น.78` อาจารย์ตอบ <b>classical conditioning</b>
+        แต่ <b>สัตว์เลี้ยงแสดงพฤติกรรมที่ถูกฝึกเพื่อขออาหาร</b> `น.79` ตอบ <b>trial and error</b><br>
+        → โจทย์เน้น <b>“เห็นสัญญาณแล้วทำ”</b> = classical · เน้น <b>“ทำเพื่อให้ได้ของ”</b> = trial and error<br>
+        <b>③ สไลด์พิมพ์ผิดเป็น reflax</b> ตัวสะกดที่ถูกคือ <b>reflex</b>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+/* =============================================================================
+   ชีวะ บท 22 พฤติกรรมสัตว์ — ฝึกก่อนสอบปลายภาค
+   โจทย์ทั้ง 60 ข้อคัดจาก Bio/Unit 22 - Animal behavior/Unit22_แยกประเภทพฤติกรรม_คลังข้อสอบอาจารย์.md
+   ซึ่งเป็นคลังข้อสอบในสไลด์ของอาจารย์เอง น.72–84 และเฉลยเปิดภาพหน้าจริงจับคู่มาแล้วทุกข้อ
+   (ห้ามเชื่อลำดับเฉลยจากการดึงข้อความ PDF — น.74 76 77 79 เพี้ยน)
+   ========================================================================== */
+var CATS={
+ ori:['โอเรียนเทชัน (orientation)','innate'],
+ ref:['รีเฟล็กซ์ (reflex)','innate'],
+ chn:['พฤติกรรมรีเฟล็กซ์ต่อเนื่อง (chain of reflexes)','innate'],
+ fap:['พฤติกรรมแบบมีแบบแผน (fixed action pattern)','innate'],
+ hab:['ความเคยชิน (habituation)','learn'],
+ imp:['การฝังใจ (imprinting)','learn'],
+ ccd:['การเรียนรู้แบบมีเงื่อนไข (classical conditioning)','learn'],
+ tae:['การลองผิดลองถูก (trial and error)','learn'],
+ rea:['การใช้เหตุผล (reasoning)','learn']
+};
+/* คู่ที่สับสนกัน ใช้เลือกตัวลวงให้โจทย์ยากสมจริง */
+var CONFUSE={ori:['ref','chn','fap'],ref:['ori','chn','fap'],chn:['fap','ref','ori'],fap:['chn','ref','ori'],
+  hab:['tae','ccd','imp'],imp:['hab','ccd','rea'],ccd:['tae','hab','imp'],tae:['ccd','hab','rea'],rea:['tae','ccd','imp']};
+
+var ITEMS=[
+/* ── orientation 13 ── */
+{s:'แมลงเม่าบินเข้าหาดวงไฟ',a:'ori',p:72},
+{s:'พารามีเซียมเคลื่อนที่ออกจากสารละลายโซเดียมคลอไรด์',a:'ori',p:73},
+{s:'พารามีเซียมเคลื่อนที่เข้าหาสารละลายกรดอ่อน ๆ',a:'ori',p:74},
+{s:'พารามีเซียมถอยห่างจากฟองแก๊ส CO₂ โดยเบี่ยงท้ายเซลล์ซ้ำ ๆ จนพ้น',a:'ori',p:75,sub:'kinesis'},
+{s:'การเคลื่อนที่ของแมลงสาบเข้าหาที่มืดและแคบ',a:'ori',p:76},
+{s:'พลานาเรียเคลื่อนที่ออกจากบริเวณที่มีแสงจ้า',a:'ori',p:77},
+{s:'นกอพยพเพื่อหนีหนาว',a:'ori',p:81},
+{s:'แมลงเม่าบินเข้าหาแสง',a:'ori',p:79,sub:'taxis'},
+{s:'ค้างคาวใช้คลื่นเสียงโซนาร์สะท้อนบินเข้าหาอาหาร',a:'ori',p:80,sub:'taxis'},
+{s:'กุ้งเต้นเมื่ออยู่ที่แห้งจะกระโดด แต่ที่ชื้นจะอยู่นิ่ง',a:'ori',p:78,sub:'kinesis'},
+{s:'พารามีเซียมเคลื่อนที่หนีออกจากฟองแก๊ส',a:'ori',p:81,sub:'kinesis'},
+{s:'พลานาเรียว่ายเร็วในที่สว่าง แต่ช้าในที่มืด',a:'ori',p:82,sub:'kinesis'},
+{s:'แมลงสาบหยุดวิ่งเมื่อวิ่งชนโต๊ะกับข้าว',a:'ori',p:83,sub:'kinesis'},
+/* ── chain of reflexes 8 ── */
+{s:'การผสมพันธุ์ของปลากัด — โบกหาง โอบรัด ปล่อยสเปิร์ม แล้วอมไข่ขึ้นหวอด',a:'chn',p:73},
+{s:'การรำแพนหางของนกยูงจนเพศเมียยอมผสมพันธุ์',a:'chn',p:75},
+{s:'แม่ไก่ฟักไข่และเลี้ยงลูกเจี๊ยบ',a:'chn',p:80},
+{s:'เด็กทารกดูดนมแม่',a:'chn',p:80},
+{s:'การสร้างรังของนกนางแอ่น',a:'chn',p:81},
+{s:'แมงมุมชักใยและจับเหยื่อ',a:'chn',p:81},
+{s:'กระรอกแทะมะพร้าว',a:'chn',p:83},
+{s:'ปลากัดเกี้ยวพาราสีแล้วจึงผสมพันธุ์',a:'chn',p:83},
+/* ── reflex 1 ── */
+{s:'เข่าของลิงกระตุกเมื่อกล่องหล่นใส่',a:'ref',p:83},
+/* ── fixed action pattern 4 ── */
+{s:'แม่นกนางนวลป้อนอาหารเมื่อลูกจิกจุดสีแดงที่ปลายปาก',a:'fap',p:21,sign:'จุดสีแดงที่ปลายปาก'},
+{s:'แม่ห่านใช้ปากเขี่ยไข่ที่อยู่นอกรังกลับเข้ารัง',a:'fap',p:22,sign:'ไข่ที่อยู่นอกรัง'},
+{s:'ปลาหลังหนามเพศผู้ก้าวร้าวต่อวัตถุที่มีสีแดงด้านล่าง',a:'fap',p:24,sign:'สีแดงใต้ท้อง'},
+{s:'ผีเสื้อกลางคืนหุบปีกตกลงพื้นทันทีเมื่อได้ยินคลื่นเสียงความถี่สูงของค้างคาว',a:'fap',p:89,sign:'คลื่นเสียงความถี่สูงของค้างคาว'},
+/* ── habituation 8 ── */
+{s:'สุนัขเห่าคนแปลกหน้าน้อยลงจนหยุดเห่า เมื่อคนเดิมมาบ่อยและเจ้าของต้อนรับ',a:'hab',p:72},
+{s:'นกทำรังใกล้ถนน เลิกบินหนีเสียงรถที่ไม่เป็นอันตราย',a:'hab',p:76},
+{s:'นกติ๊ดสีน้ำเงินในเมืองลดการระวังภัย และกินอาหารบนมือมนุษย์',a:'hab',p:77},
+{s:'อีกาไม่กลัวหุ่นไล่กาอีกต่อไป',a:'hab',p:80},
+{s:'ลูกหมาเลิกเห่าเครื่องบินที่บินผ่าน',a:'hab',p:82},
+{s:'ชาวบ้านไม่เชื่อเด็กเลี้ยงแกะ แกะเลยถูกหมาป่ากิน',a:'hab',p:82},
+{s:'นักเรียนทำตัวผิดระเบียบเพราะฝ่ายปกครองไม่ลงโทษ',a:'hab',p:84},
+{s:'นกติ๊ดวิลโลวส์ตัวเต็มวัยตอบสนองต่อเสียงเตือนน้อยกว่านกวัยอ่อน',a:'hab',p:97},
+/* ── imprinting 8 ── */
+{s:'ลูกปลาแซลมอนจำกลิ่นน้ำแหล่งกำเนิด แล้วกลับมาวางไข่ที่เดิม',a:'imp',p:72},
+{s:'ลูกนกนางนวลโตขึ้นเลือกผสมพันธุ์กับนกที่มีสีรอบดวงตาแบบเดียวกับพ่อแม่',a:'imp',p:74},
+{s:'นกคู้ตอเมริกันเพศเมียแยกลูกตัวแรกที่ฟักออกมาจากลูกนกกาฝากได้ทันที',a:'imp',p:75},
+{s:'ปลาแซลมอนว่ายทวนน้ำมายังที่เกิด',a:'imp',p:80},
+{s:'แมลงหวี่จำกลิ่นต้นไม้ที่มันเกิด แล้วกลับมาวางไข่',a:'imp',p:82},
+{s:'ลูกเป็ดเดินตามแม่เป็ด',a:'imp',p:84},
+{s:'ลูกห่านเดินตามสิ่งมีชีวิตชนิดแรกที่เห็น (การทดลองของ Konrad Lorenz)',a:'imp',p:39},
+{s:'นกเพนกวินจักรพรรดิเพศผู้จำเสียงร้องลูกตัวเองได้',a:'imp',p:40},
+/* ── classical conditioning 6 ── */
+{s:'ปลาว่ายมารวมกันเมื่อเคาะตู้ แม้ไม่ให้อาหาร',a:'ccd',p:77},
+{s:'สุนัขเห็นสัญญาณมือแล้วนั่งลง',a:'ccd',p:78},
+{s:'เด็กชายเห็นเครื่องหมายพระเกี้ยว แล้วรู้ว่าหมายถึงจุฬาฯ',a:'ccd',p:81},
+{s:'แม่เก็บผ้าเมื่อเห็นเมฆตั้งเค้า แม้ต่อมาแดดออก',a:'ccd',p:84},
+{s:'พลานาเรียหดตัวเมื่อให้แสง หลังถูกฝึกด้วยแสงพร้อมไฟฟ้าซ้ำ ๆ',a:'ccd',p:89},
+{s:'สุนัขน้ำลายไหลเมื่อได้ยินเสียงกระดิ่ง (การทดลองของพาฟลอฟ)',a:'ccd',p:44},
+/* ── trial and error 8 ── */
+{s:'หนูใช้เวลาน้อยลงในการเดินไปกินอาหารในเส้นทางวกวน',a:'tae',p:73},
+{s:'นกจิกป้ายสัญลักษณ์ถูกได้อาหาร ผิดไม่ได้ ต่อมาเลือกจิกเฉพาะป้ายถูก',a:'tae',p:79},
+{s:'สัตว์เลี้ยงแสดงพฤติกรรมที่เจ้าของฝึกเพื่อขออาหาร',a:'tae',p:79},
+{s:'คางคกไม่กินผึ้งชนิด A เพราะเคยกินผึ้งชนิด B ที่คล้ายกันแล้วโดนต่อย',a:'tae',p:82},
+{s:'ให้หนูวิ่งในเขาวงกตที่ทางออกมีอาหาร แล้วจับเวลาแต่ละรอบ',a:'tae',p:84},
+{s:'พลานาเรียเลี่ยงข้างที่มีกระแสไฟฟ้าในกล่องรูปตัว T',a:'tae',p:90},
+{s:'เต่าตีนแดงเลือกแผ่นพลาสติกสีที่เชื่อมกับอาหารคุณภาพสูง',a:'tae',p:49,note:'อาจารย์เฉลยกว้าง ๆ ว่า associative learning'},
+{s:'หนูกดแป้นในกล่องสกินเนอร์เพื่อให้อาหารตกลงมา',a:'tae',p:46},
+/* ── reasoning 4 ── */
+{s:'เสือชีตาห์เรียนรู้วิธีล่าจากการสังเกตแม่ แล้วปรับให้มีประสิทธิภาพขึ้น',a:'rea',p:74,note:'⚠️ ตำราสากลมักจัดเป็น observational learning แต่อาจารย์เฉลยว่า reasoning'},
+{s:'อีกาที่ไม่เคยถูกฝึก ดึงเชือกเอาเนื้อที่ห้อยอยู่ขึ้นมากินได้',a:'rea',p:76},
+{s:'อุรังอุตัง ชิมแปนซี กอริลลา อมน้ำพ่นใส่กระบอกให้ถั่วลอยขึ้นมา',a:'rea',p:78},
+{s:'ลิงปีนกล่องขึ้นไปเก็บกล้วย ทั้งที่ไม่เคยทำมาก่อน',a:'rea',p:83}
+];
+
+var WHY={
+ ori:'ตอบสนองต่อ<b>ปัจจัยทางกายภาพ</b> (แสง อุณหภูมิ ความชื้น สารเคมี) ด้วยการ<b>เคลื่อนที่ทั้งตัว</b> — เป็นพฤติกรรมโดยกำเนิด',
+ ref:'ตอบสนอง<b>ทันทีทันใด ครั้งเดียวจบ</b> ไม่ผ่านการคิดของสมอง',
+ chn:'เป็น<b>งานที่ทำเป็นขั้นตอนต่อเนื่องจนสำเร็จ</b> — พฤติกรรมย่อยแต่ละขั้นเป็นสิ่งเร้าให้ขั้นถัดไป',
+ fap:'มี<b>สิ่งเร้าที่เป็นเครื่องหมาย (sign stimulus)</b> มากระตุ้น แล้วสัตว์จะทำจนจบชุดแม้สิ่งเร้าหายไปกลางคัน',
+ hab:'เคยตอบสนอง แล้ว<b>เลิกตอบสนอง</b>เพราะสิ่งเร้านั้น<b>ไม่มีผลอะไรเลย ไม่ดีไม่ร้าย</b>',
+ imp:'<b>จำสิ่งที่พบตอนแรกเกิดหรือแรกฟัก</b> แล้วเอาไปใช้ตอนโต — มีระยะวิกฤต',
+ ccd:'เชื่อมโยง<b>สิ่งเร้า ↔ สิ่งเร้า</b> เข้าด้วยกัน สัตว์<b>ไม่ได้ลงมือทำ</b> แค่รับสิ่งเร้าสองอย่างพร้อมกันซ้ำ ๆ',
+ tae:'เชื่อมโยง<b>การกระทำ ↔ ผลที่ได้</b> — สัตว์<b>ต้องลงมือทำก่อน</b> แล้วจึงได้รางวัลหรือโทษ',
+ rea:'<b>ไม่เคยฝึก ไม่เคยเจอปัญหานี้มาก่อน แต่แก้ได้ตั้งแต่ครั้งแรก</b>'
+};
+var SPELL=[
+['fixed action pattern',['fix action pattern','fixed active pattern','fixed action patten']],
+['orientation',['orientaion','oriental','orentation']],
+['taxis',['taxes','taxi','taxsis']],
+['kinesis',['kinetic','kinesia','kinesthesis']],
+['reflex',['reflax','reflux','refelx']],
+['chain of reflexes',['chain of reflex','chains of reflex','chain of reflexs']],
+['habituation',['habitation','habitat','habituion']],
+['imprinting',['imprint','inprinting','printing']],
+['associative learning',['associated learning','assosiative learning','associative learn']],
+['classical conditioning',['classic conditioning','classical condition','classicle conditioning']],
+['operant conditioning',['operate conditioning','operative conditioning','operant condition']],
+['trial and error',['trail and error','trial and eror','trials and error']],
+['reasoning',['reason','resoning','reasonning']],
+['innate behavior',['inmate behavior','inate behavior','innate behaviour ']],
+['sign stimulus',['sing stimulus','signal stimulus','sign stimulis']]
+];
+var STATS=[['orientation (รวม taxis/kinesis)',13,'22%'],['imprinting',8,'13%'],['habituation',8,'13%'],
+['chain of reflexes',8,'13%'],['trial and error',8,'13%'],['classical conditioning',6,'10%'],
+['reasoning',4,'7%'],['fixed action pattern',4,'7%'],['reflex (เดี่ยว)',1,'2%']];
+
+/* ---------- แท็บ ---------- */
+var tabs=document.getElementById('tabs');
+function openTab(id){
+  var t=document.querySelectorAll('.tab'), b=document.querySelectorAll('.tab-btn'), i;
+  for(i=0;i<t.length;i++) t[i].classList.toggle('show',t[i].id===id);
+  for(i=0;i<b.length;i++) b[i].classList.toggle('active',b[i].dataset.tab===id);
+}
+tabs.addEventListener('click',function(e){var b=e.target.closest('.tab-btn'); if(b) openTab(b.dataset.tab);});
+openTab('t1');
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+document.getElementById('stattab').innerHTML='<tr><th>ประเภท</th><th>จำนวนข้อ</th><th>สัดส่วน</th></tr>'+
+  STATS.map(function(s){return '<tr><td style="text-align:left">'+s[0]+'</td><td>'+s[1]+'</td><td>'+s[2]+'</td></tr>';}).join('');
+document.getElementById('sptab').innerHTML='<tr><th>✅ สะกดถูก</th><th>❌ ตัวลวงที่เจอบ่อย</th></tr>'+
+  SPELL.map(function(s){return '<tr><td style="text-align:left"><b>'+s[0]+'</b></td><td style="text-align:left">'+s[1].join(' · ')+'</td></tr>';}).join('');
+
+/* ---------- ทายประเภท ---------- */
+function mkChoices(ans){
+  var wrong=shuffle((CONFUSE[ans]||[]).slice()).slice(0,3);
+  var keys=Object.keys(CATS);
+  while(wrong.length<3){ var k=keys[Math.floor(Math.random()*keys.length)];
+    if(k!==ans && wrong.indexOf(k)<0) wrong.push(k); }
+  return shuffle([ans].concat(wrong));
+}
+var filt='all', pool=[], idx=0, score=0, answered=false, curCh=[];
+function loadQ(){
+  pool=shuffle(ITEMS.filter(function(it){
+    if(filt==='all') return true;
+    return CATS[it.a][1]===filt;
+  }));
+  idx=0; score=0;
+  document.getElementById('sc').textContent='0'; document.getElementById('pct').textContent='';
+  document.getElementById('qt').textContent=pool.length; showQ();
+}
+function showQ(){
+  var box=document.getElementById('qbox');
+  if(idx>=pool.length){
+    box.innerHTML='<h3>🏁 จบชุดแล้ว</h3><div class="big-val">ได้ '+score+'/'+pool.length+'</div>'+
+      '<button class="btn" onclick="loadQ()">เล่นอีกรอบ</button>'; return; }
+  var q=pool[idx]; answered=false; curCh=mkChoices(q.a);
+  box.innerHTML='<div class="qhead"><span class="qno">ข้อ '+(idx+1)+'</span></div>'+
+    /* ไม่โชว์ป้ายโดยกำเนิด/เรียนรู้ — ป้ายตัดตัวเลือกทิ้งได้ครึ่งหนึ่งทันที · ปุ่มกรองด้านบนยังใช้ได้ */
+    '<div class="q-text">'+q.s+'</div><div id="ch">'+
+    curCh.map(function(c,i){return '<button class="choice" data-i="'+i+'"><span class="k">'+'กขคง'.charAt(i)+'.</span>'+CATS[c][0]+'</button>';}).join('')+
+    '</div><div class="wr" id="wr"></div>'+
+    '<div class="drill-btns" id="nx" style="display:none"><button class="btn" id="nb">ข้อถัดไป →</button></div>';
+  document.getElementById('qn').textContent=idx+1;
+  document.getElementById('barI').style.width=((idx+1)/pool.length*100)+'%';
+  document.getElementById('ch').addEventListener('click',function(e){
+    var b=e.target.closest('.choice'); if(!b||answered) return;
+    answered=true;
+    var got=+b.dataset.i, ai=curCh.indexOf(q.a), all=this.querySelectorAll('.choice');
+    all[ai].classList.add('ok');
+    if(got!==ai) b.classList.add('bad'); else score++;
+    document.getElementById('sc').textContent=score;
+    document.getElementById('pct').textContent='('+Math.round(score/(idx+1)*100)+'%)';
+    var w='<div class="st">เฉลย: <b>'+CATS[q.a][0]+'</b>'+(q.sub?' แบบ <b>'+q.sub+'</b>':'')+'</div>'+
+          '<div class="st">'+WHY[q.a]+'</div>'+
+          (q.sign?'<div class="st">สิ่งเร้าที่เป็นเครื่องหมาย = <b>'+q.sign+'</b></div>':'')+
+          (q.note?'<div class="st">'+q.note+'</div>':'')+
+          '<div class="st" style="color:var(--muted);font-size:.9em">อยู่ในสไลด์หน้า '+q.p+'</div>';
+    var wr=document.getElementById('wr'); wr.innerHTML=w; wr.classList.add('show');
+    document.getElementById('nx').style.display='flex';
+  });
+  document.getElementById('nb').addEventListener('click',function(){ idx++; showQ(); window.scrollTo({top:0,behavior:'smooth'}); });
+}
+document.getElementById('filt').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b) return;
+  var all=this.querySelectorAll('button');
+  for(var i=0;i<all.length;i++) all[i].classList.toggle('on',all[i]===b);
+  filt=b.dataset.k; loadQ();
+});
+document.getElementById('reset').addEventListener('click',loadQ);
+loadQ();
+
+/* ---------- taxis / kinesis ---------- */
+var TK=ITEMS.filter(function(it){return it.sub;});
+var tPool=[], tI=0, tS=0, tAns=false;
+function tLoad(){ tPool=shuffle(TK.slice()); tI=0; tS=0;
+  document.getElementById('ts').textContent='0'; document.getElementById('tt').textContent=tPool.length; tShow(); }
+function tShow(){
+  var box=document.getElementById('tbox');
+  if(tI>=tPool.length){ box.innerHTML='<h3>🏁 จบแล้ว</h3><div class="big-val">ได้ '+tS+'/'+tPool.length+'</div>'+
+    '<button class="btn" onclick="tLoad()">เล่นอีกรอบ</button>'; return; }
+  var q=tPool[tI]; tAns=false;
+  box.innerHTML='<div class="qhead"><span class="qno">ข้อ '+(tI+1)+'</span></div>'+
+    '<div class="q-text">'+q.s+'</div>'+
+    '<div id="tch"><button class="choice" data-v="taxis"><span class="k">ก.</span>orientation แบบ <b>taxis</b> (มีทิศทาง)</button>'+
+    '<button class="choice" data-v="kinesis"><span class="k">ข.</span>orientation แบบ <b>kinesis</b> (ไม่มีทิศทาง)</button></div>'+
+    '<div class="wr" id="twr"></div>'+
+    '<div class="drill-btns" id="tnx" style="display:none"><button class="btn" id="tnb">ข้อถัดไป →</button></div>';
+  document.getElementById('tn').textContent=tI+1;
+  document.getElementById('tch').addEventListener('click',function(e){
+    var b=e.target.closest('.choice'); if(!b||tAns) return;
+    tAns=true;
+    var all=this.querySelectorAll('.choice');
+    [].forEach.call(all,function(x){ if(x.dataset.v===q.sub) x.classList.add('ok'); });
+    if(b.dataset.v!==q.sub) b.classList.add('bad'); else tS++;
+    document.getElementById('ts').textContent=tS;
+    var wr=document.getElementById('twr');
+    wr.innerHTML='<div class="st">เฉลย: <b>orientation แบบ '+q.sub+'</b> (สไลด์หน้า '+q.p+')</div>'+
+      '<div class="st">'+(q.sub==='taxis'
+        ? '<b>taxis</b> = เคลื่อนที่<b>มีทิศทางสัมพันธ์กับสิ่งเร้า</b> มุ่งเข้าหาหรือหนีออกตรง ๆ'
+        : '<b>kinesis</b> = <b>ไม่มีทิศทางแน่นอน</b> เปลี่ยนความเร็วหรือสุ่มทิศไปเรื่อย ๆ จนพ้นสิ่งเร้า')+'</div>'+
+      '<div class="st" style="color:var(--muted);font-size:.9em">⚠️ ถ้าข้อสอบจริงมีตัวเลือก orientation เฉย ๆ ให้กา orientation ตามที่สไลด์หน้า 30 กำหนด</div>';
+    wr.classList.add('show');
+    document.getElementById('tnx').style.display='flex';
+  });
+  document.getElementById('tnb').addEventListener('click',function(){ tI++; tShow(); });
+}
+document.getElementById('tReset').addEventListener('click',tLoad);
+tLoad();
+
+/* ---------- กับดักสะกด ---------- */
+var sPool=[], sI=0, sS=0, sAns=false, sCh=[];
+function sLoad(){ sPool=shuffle(SPELL.slice()); sI=0; sS=0;
+  document.getElementById('ss').textContent='0'; document.getElementById('st').textContent=sPool.length; sShow(); }
+function sShow(){
+  var box=document.getElementById('sbox');
+  if(sI>=sPool.length){ box.innerHTML='<h3>🏁 จบแล้ว</h3><div class="big-val">ได้ '+sS+'/'+sPool.length+'</div>'+
+    '<button class="btn" onclick="sLoad()">เล่นอีกรอบ</button>'; return; }
+  var q=sPool[sI]; sAns=false; sCh=shuffle([q[0]].concat(q[1]));
+  box.innerHTML='<div class="qhead"><span class="qno">ข้อ '+(sI+1)+'</span></div>'+
+    '<div class="q-text">ข้อใดสะกดถูกต้อง</div><div id="sch">'+
+    sCh.map(function(c,i){return '<button class="choice" data-i="'+i+'"><span class="k">'+'กขคง'.charAt(i)+'.</span>'+c+'</button>';}).join('')+
+    '</div><div class="wr" id="swr"></div>'+
+    '<div class="drill-btns" id="snx" style="display:none"><button class="btn" id="snb">ข้อถัดไป →</button></div>';
+  document.getElementById('sn').textContent=sI+1;
+  document.getElementById('sch').addEventListener('click',function(e){
+    var b=e.target.closest('.choice'); if(!b||sAns) return;
+    sAns=true;
+    var ai=sCh.indexOf(q[0]), all=this.querySelectorAll('.choice');
+    all[ai].classList.add('ok');
+    if(+b.dataset.i!==ai) b.classList.add('bad'); else sS++;
+    document.getElementById('ss').textContent=sS;
+    var wr=document.getElementById('swr');
+    wr.innerHTML='<div class="st">สะกดถูกคือ <b>'+q[0]+'</b></div>'+
+      '<div class="st">ตัวลวง: '+q[1].join(' · ')+'</div>';
+    wr.classList.add('show');
+    document.getElementById('snx').style.display='flex';
+  });
+  document.getElementById('snb').addEventListener('click',function(){ sI++; sShow(); });
+}
+document.getElementById('sReset').addEventListener('click',sLoad);
+sLoad();
+
+/* ---------- ปุ่มในการ์ด START-HERE: กระโดดไปแท็บที่บอก ---------- */
+document.addEventListener('click',function(e){
+  var b=e.target.closest('.sh .go'); if(!b) return;
+  var t=document.querySelector('[data-tab="'+b.getAttribute('data-go')+'"]');
+  if(t){ t.click(); window.scrollTo({top:0,behavior:'smooth'}); }
+});
+</script>
+<!--KIT-UI v3.7 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<script>
+/* =============================================================================
+   _kit/ui-controls.js  —  KIT UI  v1.0
+   แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
+     🌙/☀️  โหมดมืด / สว่าง   (จำค่าไว้ใน localStorage)
+     A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
+     ✏️  ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
+     🧮  เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
+
+   ── วิธีใช้ ────────────────────────────────────────────────────────────────
+   ห้ามแก้โค้ดนี้ในไฟล์ widget!  แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
+       pwsh -File _kit/apply-ui.ps1
+   สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
+   (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
+
+   !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
+      เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
+
+   ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
+   ใส่แอตทริบิวต์ที่ tag body:  data-tools="pen,calc"  = บังคับเปิด
+                              data-tools="none"      = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
+   ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
+              หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
+   ============================================================================= */
+(function(){
+if(window.__KITUI__) return; window.__KITUI__='3.7';   /* 3.7 = ปุ่มถาม AI เปิดเป็น "แผงข้าง" ไม่เด้งออกจากหน้า (site/ask-panel.js) · 3.6 = แถบพื้นหลังใต้ปุ่มลอย (กันเนื้อหาไหลผ่านช่องเหนือแท็บ) · 3.5 = tour.js · 3.4 = feedback.js */   /* เดิม 3.3 = ส่ง ?from= ไปด้วย ปุ่มกลับในหน้าถามจะได้กลับหน้าเดิม ไม่ใช่หน้ารวม · 3.2 = ปุ่ม 🔎 ถาม AI · 3.1 = ขยายปุ่มกลับ */
+
+/* ---------- helper ---------- */
+const D=document, R=D.documentElement;
+const get=k=>{try{return localStorage.getItem('kitui-'+k)}catch(e){return null}};
+const set=(k,v)=>{try{localStorage.setItem('kitui-'+k,v)}catch(e){}};
+const el=(t,c,h)=>{const e=D.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
+
+/* =============================================================================
+   1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
+   ============================================================================= */
+const CSS=`
+/* ===== DARK TOKENS (คู่กับ _kit/design-tokens.css) ===== */
+:root[data-theme="dark"]{
+  --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
+  --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
+  --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
+  --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
+  --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
+}
+:root[data-theme="dark"] body{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f172a}
+:root[data-theme="dark"] body[data-subject="physics"]{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f1220}
+:root[data-theme="dark"] body[data-subject="bio"]{--accent:#4ade80;--accent-head:#bbf7d0;--accent-ink:#86efac;--accent-soft:#0f2a1a;--accent-bd:#256b41;--accent-chip:#14532d;--accent-ghost:#15803d;--bg:#0d1912}
+:root[data-theme="dark"] body[data-subject="chem"]{--accent:#fb923c;--accent-head:#fed7aa;--accent-ink:#fdba74;--accent-soft:#2b1a0c;--accent-bd:#8a3d12;--accent-chip:#6d2c10;--accent-ghost:#c2410c;--bg:#1a130c}
+:root[data-theme="dark"] body[data-subject="christ"]{--accent:#a78bfa;--accent-head:#ddd6fe;--accent-ink:#c4b5fd;--accent-soft:#241a3d;--accent-bd:#5b21b6;--accent-chip:#4c1d95;--accent-ghost:#6d28d9;--bg:#16121f}
+:root[data-theme="dark"] body[data-subject="islam"]{--accent:#2dd4bf;--accent-head:#99f6e4;--accent-ink:#5eead4;--accent-soft:#0d2b28;--accent-bd:#12615a;--accent-chip:#134e4a;--accent-ghost:#0f766e;--bg:#0c1917}
+:root[data-theme="dark"] body[data-subject="history"]{--accent:#fbbf24;--accent-head:#fde68a;--accent-ink:#fcd34d;--accent-soft:#2a1f0a;--accent-bd:#8a4b0c;--accent-chip:#6d3a0a;--accent-ghost:#b45309;--bg:#191509}
+:root[data-theme="dark"] body[data-subject="math"]{--accent:#38bdf8;--accent-head:#bae6fd;--accent-ink:#7dd3fc;--accent-soft:#0c2434;--accent-bd:#0b5a80;--accent-chip:#0c4a6e;--accent-ghost:#0369a1;--bg:#0b1620}
+:root[data-theme="dark"] body[data-subject="eng"]{--accent:#f472b6;--accent-head:#fbcfe8;--accent-ink:#f9a8d4;--accent-soft:#2e1122;--accent-bd:#8d1748;--accent-chip:#731839;--accent-ghost:#be185d;--bg:#1c0f16}
+:root[data-theme="dark"] body[data-subject="thai"]{--accent:#f87171;--accent-head:#fecaca;--accent-ink:#fca5a5;--accent-soft:#2d1414;--accent-bd:#8d2020;--accent-chip:#7f1d1d;--accent-ghost:#b91c1c;--bg:#1a0f0f}
+:root[data-theme="dark"] body[data-subject="hindu"]{--accent:#facc15;--accent-head:#fef08a;--accent-ink:#fde047;--accent-soft:#2a2408;--accent-bd:#7a6410;--accent-chip:#5c4b0c;--accent-ghost:#a16207;--bg:#191708}
+:root[data-theme="dark"] img,:root[data-theme="dark"] .svg-box{filter:brightness(.92)}
+/* ช่องกรอก/ดรอปดาวน์ที่ widget เก่ากำหนดพื้นขาวตายตัวไว้ */
+:root[data-theme="dark"] select,:root[data-theme="dark"] textarea,
+:root[data-theme="dark"] input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=color])
+{background-color:var(--soft);color:var(--ink);border-color:var(--line)}
+
+/* ===== แถบเครื่องมือลอย ===== */
+#kitui-bar{position:fixed;right:10px;bottom:10px;z-index:99990;display:flex;gap:6px;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
+#kitui-bar button{border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;
+  font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
+  align-items:center;justify-content:center;font-weight:700}
+#kitui-bar button:hover{background:var(--soft)}
+#kitui-bar button:active{transform:scale(.93)}
+#kitui-bar button.on{background:var(--accent);color:#fff}
+#kitui-bar .kitui-sep{width:1px;height:22px;background:var(--line);flex:0 0 1px}
+#kitui-bar .kitui-fs{font-size:11px;color:var(--muted);min-width:34px;text-align:center;font-weight:700}
+#kitui-bar.hidden > *:not(#kitui-grip):not(#kitui-home){display:none}
+#kitui-grip{font-size:17px}
+
+/* ===== แผงลอย (ที่ทด / เครื่องคิดเลข) ===== */
+.kitui-sheet{position:fixed;left:0;right:0;bottom:0;z-index:99991;background:var(--card);
+  border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
+  display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
+  height:52vh;max-height:92vh;min-height:180px}
+.kitui-sheet.open{display:flex}
+.kitui-sheet.full{height:100vh;border-radius:0}
+.kitui-head{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--line);
+  flex-wrap:wrap;touch-action:none;cursor:ns-resize}
+.kitui-head b{font-size:.9rem;color:var(--accent-ink);margin-right:2px;white-space:nowrap}
+.kitui-head button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;
+  padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
+.kitui-head button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.kitui-head .kitui-spacer{flex:1}
+.kitui-sw{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;min-height:0}
+.kitui-sw.on{border-color:var(--ink);transform:scale(1.12)}
+.kitui-padwrap{flex:1;position:relative;overflow:hidden;background:var(--soft)}
+.kitui-padwrap canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+:root[data-theme="dark"] .kitui-padwrap{background:#0c1220}
+
+/* ===== เครื่องคิดเลข ===== */
+#kitui-calc{height:auto;max-height:90vh}
+.kitui-disp{padding:8px 12px;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);
+  border-bottom:1px solid var(--line)}
+.kitui-disp .ex{font-size:.95rem;color:var(--muted);min-height:1.3em;word-break:break-all}
+.kitui-disp .rs{font-size:1.6rem;font-weight:700;color:var(--accent-ink);word-break:break-all}
+.kitui-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:7px}
+.kitui-keys button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:9px;
+  font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
+.kitui-keys button:active{transform:scale(.95)}
+.kitui-keys button.fn{font-size:.8rem;color:var(--accent-ink)}
+.kitui-keys button.op{background:var(--accent-soft);color:var(--accent-ink)}
+.kitui-keys button.eq{background:var(--accent);color:#fff;grid-row:span 2}
+.kitui-keys button.del{background:var(--hot-bg);color:var(--hot-ink)}
+.kitui-keys button.w3{grid-column:span 3}
+@media(max-width:420px){.kitui-keys button{font-size:.88rem;min-height:40px}.kitui-keys button.fn{font-size:.72rem}}
+@media(min-width:760px){
+  .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
+  .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
+  #kitui-pad{width:560px}
+}
+#kitui-nav{position:fixed;top:8px;left:8px;z-index:99992;display:flex;gap:8px;align-items:center}
+#kitui-ask{border:1.5px solid var(--accent);background:var(--accent);color:#fff;border-radius:999px;
+  padding:0 16px 0 13px;height:44px;font-family:inherit;font-size:15.5px;font-weight:700;cursor:pointer;
+  box-shadow:0 3px 14px rgba(15,23,42,.22);line-height:1;display:flex;align-items:center;gap:6px;
+  text-decoration:none;white-space:nowrap}
+#kitui-ask .ar{font-size:18px;line-height:1}
+#kitui-ask:active{transform:scale(.95)}
+#kitui-back{display:flex;align-items:center;gap:7px;
+  border:1.5px solid var(--accent-bd,var(--line));background:var(--card);color:var(--ink);
+  border-radius:999px;padding:0 18px 0 14px;height:44px;font-family:inherit;font-size:15.5px;
+  font-weight:700;cursor:pointer;box-shadow:0 3px 14px rgba(15,23,42,.22);line-height:1}
+#kitui-back .ar{font-size:20px;line-height:1;margin-top:-1px}
+#kitui-back{white-space:nowrap}
+#kitui-back:active{transform:scale(.95)}
+#kitui-back:hover{background:var(--soft)}
+/* แท็บเป็น sticky top:0 ถ้าไม่ดันลงมาปุ่มจะทับแท็บแรกจนกดไม่ได้
+   ตัวเลขนี้ผูกกับความสูงปุ่ม (8 บน + 44 ปุ่ม + ระยะห่าง) แก้ความสูงปุ่มต้องแก้ตรงนี้ด้วย */
+body.kitui-hasback .tabs{top:60px}
+body.kitui-hasback .wrap{padding-top:56px}
+/* พื้นหลังทึบใต้ปุ่มลอย — พอดันแท็บ sticky ลงมา 60px จะเกิดช่องว่างเหนือมัน
+   แล้วเนื้อหาที่เลื่อนผ่านช่องนั้นจะโผล่ให้เห็น ดูเหมือนมีแถบลอยซ้อนกันสองชั้น
+   ใช้ element จริงไม่ใช่ body::before เพราะหน้า Unit18 ใช้ ::before ของตัวเองอยู่แล้ว */
+#kitui-topbg{position:fixed;top:0;left:0;right:0;height:60px;background:var(--bg);
+  z-index:99988;pointer-events:none}
+@media print{#kitui-bar,.kitui-sheet,#kitui-back{display:none!important}}
+`;
+const st=el('style'); st.id='kitui-style'; st.textContent=CSS; D.head.appendChild(st);
+
+/* -----------------------------------------------------------------------------
+   1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
+   widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
+   พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
+   แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
+   เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
+----------------------------------------------------------------------------- */
+/* สีพาสเทลสว่าง -> สีเข้มที่ยังคง "เฉดเดิม" ไว้ (เขียว=ถูก / แดง=ผิด ต้องยังแยกออก)
+   ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
+function darken(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
+  /* ⚠️ ห้ามใช้ saturation ของ HSL ตรง ๆ ตัดสิน: ที่ความสว่างเกือบ 1 ตัวหารจะเล็กมาก
+     ทำให้สีที่แทบเป็นสีขาว (เช่น #fdf8f4) ได้ค่าอิ่มสีสูงลิ่ว แล้วกลายเป็นสีน้ำตาลจัดตอนกดให้เข้ม
+     ให้ดูจาก "ช่วงห่างของแม่สี" (chroma) แทน แล้วแปลงเป็นความอิ่มสีแบบไล่ระดับ */
+  const s = Math.min(.45, Math.max(.08, d*4));
+  const l = d<.02 ? .13 : .17;                       /* เทา/ขาวล้วนให้เข้มกว่าสีนิดหน่อย */
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+function darkFix(){
+  const out=[], seen=new Set();
+  const take=r=>{
+    if(!r.style || !r.selectorText) return;
+    if(r.selectorText.indexOf('kitui')>-1) return;               /* ของเราเองใช้ token อยู่แล้ว */
+    const bg=r.style.backgroundColor;
+    if(!bg || bg.indexOf('var(')>-1) return;
+    const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
+    if(!m) return;
+    if(m[4]!==undefined && +m[4]<0.6) return;                    /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
+    const cr=+m[1], cg=+m[2], cb=+m[3];
+    if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return;       /* ไม่สว่างพอ ไม่ต้องยุ่ง */
+    const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
+    const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
+    let css='background-color:'+repl;
+    /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
+    const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
+    out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
+  };
+  /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
+        ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
+  const visit=rules=>{
+    for(let i=0;i<rules.length;i++){
+      const r=rules[i];
+      if(r.selectorText) take(r);
+      if(r.cssRules && r.cssRules.length) visit(r.cssRules);     /* @media / @supports / nesting */
+    }
+  };
+  for(let i=0;i<D.styleSheets.length;i++){
+    let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; }   /* ข้ามชีตข้ามโดเมน */
+    if(rr) visit(rr);
+  }
+  if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
+  return out.length;
+}
+try{ window.__KITUI_DARKFIX__ = (D.body.getAttribute('data-kit-theme')==='off') ? 'locked' : darkFix(); }
+catch(e){ window.__KITUI_DARKFIX__='err:'+e.message; }
+
+/* darkFix ข้างบนซ่อมได้เฉพาะสีที่เขียนตายตัวในไฟล์ CSS
+   แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
+   ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
+   จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
+const rgbOf=c=>{const m=c&&c.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null;};
+const lumOf=v=>v?(0.2126*v[0]+0.7152*v[1]+0.0722*v[2])/255:null;
+/* ตรงข้ามกับ darken(): ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
+   (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
+function lighten(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  if(d<0.04) return 'var(--ink)';                    /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
+  let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
+  const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
+  const s=Math.min(.92,Math.max(.55,s0)), l=.72;
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+const SKIP={CANVAS:1,IMG:1,VIDEO:1,SVG:1,IFRAME:1,PICTURE:1,OBJECT:1};
+const OBS_OPT={childList:true,subtree:true,attributes:true,attributeFilter:['class','style']};
+let patched=[], obs=null;
+function elementFix(){
+  /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
+        ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
+  if(obs) obs.disconnect();
+  try{ elementFixCore(); } finally { if(obs) obs.observe(D.body,OBS_OPT); }
+}
+function elementFixCore(){
+  if(D.body.getAttribute('data-kit-theme')==='off') return;   /* หน้าที่ล็อกธีมไว้ ห้ามไปยุ่งสี */
+  /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
+     ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
+     จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
+  if(R.getAttribute('data-theme')!=='dark'){
+    patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
+    patched=[];
+    return;
+  }
+  /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
+     ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
+  /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
+  const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
+  for(let i=0;i<all.length;i++){
+    const e=all[i];
+    if(e.id&&e.id.indexOf('kitui')===0) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(SKIP[e.tagName]) continue;                      /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
+    const s=getComputedStyle(e);
+    const bg=rgbOf(s.backgroundColor);
+    if(!bg || bg[3]<0.6) continue;                     /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
+    if(lumOf(bg)<0.72) continue;                       /* เข้มพออยู่แล้ว */
+    /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
+    e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
+    const fg=rgbOf(s.color);
+    if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important');  /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
+    patched.push(e);
+  }
+  /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
+     ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
+  const bgCache=new Map();
+  const effBg=n=>{
+    for(let p=n;p;p=p.parentElement){
+      if(bgCache.has(p)) return bgCache.get(p);
+      const b=rgbOf(getComputedStyle(p).backgroundColor);
+      if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
+    }
+    return null;
+  };
+  for(let i=2;i<all.length;i++){
+    const e=all[i];
+    if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(e.style.color) continue;                         /* จัดการไปแล้วในรอบแรก */
+    if(!e.textContent || !e.textContent.trim()) continue;
+    const fg=rgbOf(getComputedStyle(e).color);
+    if(!fg || lumOf(fg)>=0.45) continue;                 /* ตัวอักษรสว่างอยู่แล้ว */
+    const bg=effBg(e);
+    if(!bg || lumOf(bg)>=0.5) continue;                  /* พื้นยังสว่าง อ่านออกอยู่ */
+    e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
+    patched.push(e);
+  }
+}
+let efT=0;
+const scheduleFix=()=>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
+try{
+  obs=new MutationObserver(scheduleFix);
+  obs.observe(D.body,OBS_OPT);
+}catch(e){}
+
+/* =============================================================================
+   2) ธีม + ขนาดตัวอักษร
+   ============================================================================= */
+const FS=[.85,1,1.15,1.3,1.5], FSNAME=['เล็กสุด','เล็ก','ปกติ','ใหญ่','ใหญ่สุด'];
+let fsIdx=parseInt(get('fs')); if(isNaN(fsIdx)||fsIdx<0||fsIdx>4) fsIdx=1;
+let theme=get('theme') || (matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+
+/* หน้าที่ออกแบบธีมมาเองครบแล้ว (เช่น "หนังสือทบทวน" พื้นเข้มทั้งเล่ม) ให้ปิดระบบธีมของ KIT UI
+   ไม่งั้นโทเคน --bg/--ink ของเราจะไปทับสีที่หน้านั้นตั้งไว้ แล้วหน้าเพี้ยน
+   ใส่ที่ tag body:  data-kit-theme="off"   (ปุ่มปรับขนาดตัวอักษรยังใช้ได้ตามปกติ) */
+const themeLock = D.body.getAttribute('data-kit-theme')==='off';
+
+function applyTheme(){
+  if(themeLock) return;
+  R.setAttribute('data-theme',theme);
+  R.style.colorScheme = theme==='dark'?'dark':'light';   /* ให้ select/input เป็นสีเข้มด้วย */
+  const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
+  set('theme',theme);
+  clearTimeout(efT);                                   /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
+  if(typeof elementFix==='function') elementFix();
+  /* ⚠️ ห้ามอ้างถึงตัวแปรของส่วน "ที่ทด" ตรงนี้!
+     applyTheme() ถูกเรียกก่อนที่ `let pad` ในส่วนที่ 4 จะทำงาน → ชน temporal dead zone
+     แล้ว ReferenceError จะทำให้สคริปต์ตายทั้งก้อน (ปุ่มขนาดอักษร/ที่ทด/เครื่องคิดเลขหายหมด)
+     ใช้วิธียิง event แทน ใครสนใจค่อยไปดักฟังเอง */
+  try{ D.dispatchEvent(new CustomEvent('kitui-theme')); }catch(e){}
+}
+function applyFS(){
+  R.style.fontSize=(16*FS[fsIdx])+'px';
+  const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
+  set('fs',fsIdx);
+}
+
+/* =============================================================================
+   3) แถบเครื่องมือ
+   ============================================================================= */
+const subj=(D.body.getAttribute('data-subject')||'').toLowerCase();
+/* หลาย widget ไม่ได้ใส่ data-subject ที่ <body> → เดาจากโฟลเดอร์ที่ไฟล์อยู่ด้วย */
+const inPath=/\/(physics|math|chemist)\//i.test(decodeURIComponent(location.pathname));
+const tAttr=D.body.getAttribute('data-tools');
+const wantTools = tAttr!=null ? tAttr.toLowerCase()
+                : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
+const hasPen  = wantTools.includes('pen');
+const hasCalc = wantTools.includes('calc');
+
+/* ปุ่มกลับหน้าหลัก — โผล่เฉพาะตอนเปิดจากเว็บห้องติว (พาธมี /app/ อยู่)
+   เปิดไฟล์จากเครื่องตรง ๆ จะไม่มีปุ่มนี้ เพราะไม่มีหน้าหลักให้กลับ ลิงก์จะเสียเปล่า ๆ */
+const homeHref = (()=>{
+  const attr = D.body.getAttribute('data-home');     /* หน้าไหนไม่ได้อยู่ใต้ /app/ ให้ระบุเองได้ */
+  if(attr) return attr;
+  try{
+    const p = decodeURIComponent(location.pathname);
+    const i = p.indexOf('/app/');
+    return i < 0 ? null : p.slice(0, i+1) + 'index.html';
+  }catch(e){ return null; }
+})();
+
+const bar=el('div'); bar.id='kitui-bar';
+bar.innerHTML =
+  `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
+  (homeHref ? `<button id="kitui-home" title="กลับหน้าหลัก">🏠</button><span class="kitui-sep"></span>` : '')+
+  (themeLock ? '' : `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button><span class="kitui-sep"></span>`)+
+  `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
+  `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
+  `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
+  (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
+  (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
+D.body.appendChild(bar);
+
+if(!themeLock) D.getElementById('kitui-theme').onclick=()=>{theme=theme==='dark'?'light':'dark';applyTheme();};
+D.getElementById('kitui-fsup').onclick=()=>{if(fsIdx<4){fsIdx++;applyFS();}};
+D.getElementById('kitui-fsdown').onclick=()=>{if(fsIdx>0){fsIdx--;applyFS();}};
+D.getElementById('kitui-grip').onclick=()=>bar.classList.toggle('hidden');
+if(homeHref) D.getElementById('kitui-home').onclick=()=>{ location.href=homeHref; };
+
+/* ปุ่มกลับแบบลอยมุมซ้ายบน — มีคำว่า "กลับ" เต็ม ๆ ไม่ใช่ไอคอนเปล่า
+   (ของเดิมเป็น 🏠 เล็ก ๆ ปนอยู่ในแถบมุมขวาล่าง เพื่อนหาไม่เจอเลยไม่กด) */
+if(homeHref){
+  const back=el('button'); back.id='kitui-back';
+  back.type='button'; back.title='กลับหน้ารวมวิชา';
+  back.innerHTML='<span class="ar">←</span><span>กลับ</span>';
+  back.onclick=()=>{ location.href=homeHref; };
+  const nav=el('div'); nav.id='kitui-nav';
+  nav.appendChild(back);
+
+  /* ปุ่มถาม AI — เจ้าของทักว่าไม่มีใครย้อนกลับไปหน้ารวมเพื่อกดถาม ต้องถามจากหน้าที่เรียนอยู่ได้เลย
+     ส่งวิชาของหน้านี้ไปด้วย (?s=) หน้าถามจะได้เลือกวิชาให้เอง ไม่ต้องมากดซ้ำ
+     v3.7: site/ask-panel.js จะมาดักปุ่มนี้ให้เปิดเป็น "แผงข้าง" แทนการเด้งออกจากหน้า
+     ถ้าไฟล์นั้นโหลดไม่ได้ ปุ่มก็ยังเป็นลิงก์ธรรมดาใช้ได้เหมือนเดิม (ไม่พังทั้งคู่) */
+  const onAsk = /(^|\/)ask\.html$/.test(location.pathname);
+  if(!onAsk){
+    const subj = D.body.getAttribute('data-subject') || '';
+    const a=el('a'); a.id='kitui-ask';
+    /* ส่งหน้าปัจจุบันไปด้วย หน้าถามจะได้ทำปุ่มกลับให้ย้อนมาที่หน้านี้ ไม่ใช่เด้งไปหน้ารวม */
+    const q=[];
+    if(subj) q.push('s='+encodeURIComponent(subj));
+    q.push('from='+encodeURIComponent(location.pathname));
+    a.href = homeHref.replace(/index\.html$/,'ask.html') + '?' + q.join('&');
+    a.title='ถาม AI เรื่องที่กำลังอ่านอยู่';
+    a.innerHTML='<span class="ar">🔎</span><span>ถาม AI</span>';
+    nav.appendChild(a);
+  }
+  const tb=el('div'); tb.id='kitui-topbg'; D.body.appendChild(tb);
+  D.body.appendChild(nav);
+  D.body.classList.add('kitui-hasback');
+
+  /* ปุ่ม 💬 ส่งความเห็น — เก็บโค้ดไว้ที่ site/feedback.js ไฟล์เดียว ไม่ฝังซ้ำใน 200 กว่าไฟล์
+     ⚠️ เดิมคิดจาก homeHref โดยสมมติว่าลงท้าย index.html เสมอ (ตัด 10 ตัว)
+        แต่หน้า ask.html ที่มากับ ?from= จะตั้ง data-home เป็น "พาธของหน้าที่มา" ซึ่งไม่ได้ลงท้ายแบบนั้น
+        ตัด 10 ตัวจึงได้พาธเพี้ยน กลายเป็น ".../ชื่อไฟล์.hfeedback.js" แล้วสคริปต์โหลดไม่ขึ้นเงียบ ๆ
+        (เจอ 2026-09-05 ตอนทำแผงถาม AI) → คิดรากเว็บจาก location เองแทน ไม่พึ่ง data-home */
+  const rootURL = (function(){
+    try{
+      const p = decodeURIComponent(location.pathname);
+      const i = p.indexOf('/app/');
+      if(i >= 0) return p.slice(0, i+1);            /* หน้าเรียนใต้ /app/ -> รากเว็บ */
+    }catch(e){}
+    return location.pathname.replace(/[^/]*$/, '');  /* หน้าอื่น (เช่น ask.html ที่ราก) */
+  })();
+  /* ask-panel.js ไว้หน้าสุด จะได้ผูกปุ่ม "ถาม AI" ให้เปิดแผงได้เร็วที่สุด
+     ถ้าผู้ใช้กดก่อนสคริปต์มาถึง ปุ่มก็ยังเป็นลิงก์ธรรมดา เด้งไปหน้าถามเต็มจอ ไม่พัง */
+  ['ask-panel.js','feedback.js','tour.js'].forEach(function(n){
+    const s=el('script'); s.src=rootURL+n; s.defer=true; D.body.appendChild(s);
+  });
+}
+applyTheme(); applyFS();
+
+/* ปิดแผงด้วยปุ่ม Esc */
+D.addEventListener('keydown',e=>{ if(e.key==='Escape') D.querySelectorAll('.kitui-sheet.open').forEach(s=>s.classList.remove('open')); });
+
+/* ลากหัวแผงเพื่อปรับความสูง */
+function makeResizable(sheet){
+  const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
+  head.addEventListener('pointerdown',e=>{
+    if(e.target.closest('button'))return;
+    drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect().height;head.setPointerCapture(e.pointerId);
+  });
+  head.addEventListener('pointermove',e=>{
+    if(!drag)return;
+    const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
+    sheet.classList.remove('full'); sheet.style.height=h+'px';
+    if(sheet.id==='kitui-pad') fitPad();
+  });
+  head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
+}
+
+/* =============================================================================
+   4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ  หลายหน้า  เซฟอัตโนมัติ
+   ============================================================================= */
+let pad,padCv,padCx,pages=[[]],pg=0,undone=[],histo=[];
+let tool='pen',color='#111827',width=2.4,penSeen=0;
+const COLORS=['#111827','#2563eb','#dc2626','#16a34a','#f59e0b'];
+const PADKEY='pad-'+location.pathname.split('/').pop();
+
+function buildPad(){
+  pad=el('div','kitui-sheet'); pad.id='kitui-pad';
+  pad.innerHTML=
+   `<div class="kitui-head">
+      <b>✏️ ที่ทด</b>
+      <button data-t="pen" class="on">🖊️</button>
+      <button data-t="hl">🖍️</button>
+      <button data-t="er">🧽</button>
+      ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
+      <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
+      <span class="kitui-spacer"></span>
+      <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
+      <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
+      <button id="kitui-pgadd">+ หน้า</button>
+      <button id="kitui-clear">ล้างหน้านี้</button>
+      <button id="kitui-full">⛶</button>
+      <button id="kitui-padclose">✕</button>
+    </div>
+    <div class="kitui-padwrap"><canvas></canvas></div>`;
+  D.body.appendChild(pad);
+  padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
+  makeResizable(pad);
+
+  pad.querySelector('.kitui-head').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
+  });
+  D.getElementById('kitui-undo').onclick=()=>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop(); draw(); save(); } };
+  D.getElementById('kitui-redo').onclick=()=>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop(); draw(); save(); } };
+  D.getElementById('kitui-clear').onclick=()=>{ snap(); pages[pg]=[]; draw(); save(); };
+  D.getElementById('kitui-pgadd').onclick=()=>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw(); save(); };
+  D.getElementById('kitui-pgprev').onclick=()=>{ if(pg>0){pg--;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-pgnext').onclick=()=>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-full').onclick=()=>{ pad.classList.toggle('full'); pad.style.height=''; fitPad(); };
+  D.getElementById('kitui-padclose').onclick=()=>pad.classList.remove('open');
+
+  /* ---- วาด ---- */
+  let cur=null;
+  padCv.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='pen') penSeen=Date.now();
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;   /* กันฝ่ามือแตะตอนใช้สไตลัส */
+    const p=pt(e);
+    if(tool==='er'){ snap(); erase(p); return; }
+    snap();
+    cur={c:color,w:width,hl:tool==='hl',pts:[p]};
+    pages[pg].push(cur); draw();
+    try{ padCv.setPointerCapture(e.pointerId); }catch(x){}  /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
+  });
+  padCv.addEventListener('pointermove',e=>{
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;
+    if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
+    if(!cur||!e.buttons)return;
+    /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
+    let evs=[e];
+    if(e.getCoalescedEvents){ const c=e.getCoalescedEvents(); if(c&&c.length) evs=c; }
+    evs.forEach(ev=>cur.pts.push(pt(ev)));
+    draw();
+  });
+  const end=()=>{ if(cur){cur=null;save();} };
+  padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
+  padCv.addEventListener('pointerleave',end);
+
+  addEventListener('resize',()=>{ if(pad.classList.contains('open')) fitPad(); });
+  D.addEventListener('kitui-theme',()=>draw());   /* สลับธีมแล้ววาดลายใหม่ เส้นดำ<->ขาวตามพื้น */
+  load(); fitPad();
+}
+function pt(e){
+  const r=padCv.getBoundingClientRect();
+  return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
+          p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5};   /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
+}
+function snap(){ histo.push(pages[pg].slice()); if(histo.length>60)histo.shift(); undone=[]; }
+function erase(p){
+  const r=padCv.getBoundingClientRect(), rad=18/r.width;
+  const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
+  if(keep.length!==pages[pg].length){ pages[pg]=keep; draw(); save(); }
+}
+function fitPad(){
+  const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
+  const dpr=Math.min(devicePixelRatio||1,2.5);
+  padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
+  draw();
+}
+function draw(){
+  const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
+  padCx.clearRect(0,0,W,H);
+  /* เส้นตารางจาง ๆ ให้เขียนตรง */
+  const dark=R.getAttribute('data-theme')==='dark';
+  padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
+  for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath();padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke();}
+  padCx.lineCap='round'; padCx.lineJoin='round';
+  pages[pg].forEach(s=>{
+    padCx.globalAlpha=s.hl?0.32:1;
+    padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
+    for(let i=1;i<s.pts.length;i++){
+      const a=s.pts[i-1],b=s.pts[i];
+      padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
+      padCx.beginPath(); padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke();
+    }
+    if(s.pts.length===1){ /* จุดเดียว */
+      padCx.fillStyle=padCx.strokeStyle; padCx.beginPath();
+      padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill();
+    }
+  });
+  padCx.globalAlpha=1;
+  const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
+}
+function save(){ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
+function load(){
+  try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
+}
+
+if(hasPen){
+  buildPad();
+  D.getElementById('kitui-penbtn').onclick=()=>{
+    const o=pad.classList.toggle('open');
+    D.getElementById('kitui-penbtn').classList.toggle('on',o);
+    if(o) fitPad();
+  };
+}
+
+/* =============================================================================
+   5) เครื่องคิดเลขวิทยาศาสตร์  (tokenizer → shunting-yard → RPN  ไม่ใช้ eval)
+   ============================================================================= */
+const FN={sin:1,cos:1,tan:1,asin:1,acos:1,atan:1,ln:1,log:1,sqrt:1,abs:1,exp:1};
+const PREC={'+':1,'-':1,'*':2,'/':2,'^':4,'u-':3};
+function tokenize(s){
+  s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
+  const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!()])/g; let m;
+  while((m=re.exec(s))) out.push(m[1]);
+  return out;
+}
+function toRPN(tk){
+  const out=[],op=[]; let prev=null;
+  for(let t of tk){
+    if(t==='**')t='^';
+    if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
+    else if(t==='PI'){ out.push(Math.PI); }
+    else if(t==='e'||t==='E'){ out.push(Math.E); }
+    else if(t==='ANS'){ out.push(ANS); }
+    else if(FN[t]){ op.push(t); }
+    else if(t==='('){ op.push(t); }
+    else if(t===')'){
+      while(op.length&&op[op.length-1]!=='(') out.push(op.pop());
+      if(!op.length) throw 0; op.pop();
+      if(op.length&&FN[op[op.length-1]]) out.push(op.pop());
+    }
+    else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
+    else if('+-*/^'.includes(t)){
+      let o=t;
+      const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
+      if(t==='-'&&unary) o='u-';
+      else if(t==='+'&&unary){ prev=t; continue; }
+      while(op.length){
+        const top=op[op.length-1];
+        if(top==='('||FN[top])break;
+        const rightAssoc=(o==='^'||o==='u-');
+        if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop()); else break;
+      }
+      op.push(o);
+    }
+    else throw 0;
+    prev=t;
+  }
+  while(op.length){ const o=op.pop(); if(o==='(')throw 0; out.push(o); }
+  return out;
+}
+function evalRPN(rpn,deg){
+  const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
+  const pop=()=>{ if(!st.length)throw 0; return st.pop(); };
+  for(const t of rpn){
+    if(typeof t==='number'){ st.push(t); continue; }
+    if(t==='fact'){ const n=pop(); if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
+    if(t==='pct'){ st.push(pop()/100); continue; }
+    if(t==='u-'){ st.push(-pop()); continue; }
+    if(FN[t]){
+      const a=pop();
+      st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
+             : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
+             : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
+             : t==='abs'?Math.abs(a) : Math.exp(a) );
+      continue;
+    }
+    const b=pop(),a=pop();
+    st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
+  }
+  if(st.length!==1) throw 0;
+  return st[0];
+}
+function calc(src,deg){ return evalRPN(toRPN(tokenize(src)),deg); }
+
+let ANS=0, expr='', calcSheet, isDeg=true;
+const KEYS=[
+ ['DEG','deg','fn'],['(','(',''],[')',')',''],['⌫','del','del'],['AC','ac','del'],
+ ['sin','sin(','fn'],['cos','cos(','fn'],['tan','tan(','fn'],['π','π','fn'],['÷','÷','op'],
+ ['sin⁻¹','asin(','fn'],['cos⁻¹','acos(','fn'],['tan⁻¹','atan(','fn'],['e','e','fn'],['×','×','op'],
+ ['ln','ln(','fn'],['log','log(','fn'],['√','√(','fn'],['xʸ','^','fn'],['−','−','op'],
+ ['7','7',''],['8','8',''],['9','9',''],['x!','!','fn'],['+','+','op'],
+ ['4','4',''],['5','5',''],['6','6',''],['%','%','fn'],['ANS','ANS','fn'],
+ ['1','1',''],['2','2',''],['3','3',''],['.','.',''],['=','eq','eq'],
+ ['0','0','w3'],['x²','^2','fn']
+];
+function buildCalc(){
+  calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
+  calcSheet.innerHTML=
+   `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
+      <button id="kitui-calcclose">✕</button></div>
+    <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
+    <div class="kitui-keys" id="kitui-keys">
+      ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
+    </div>`;
+  D.body.appendChild(calcSheet);
+  D.getElementById('kitui-calcclose').onclick=()=>calcSheet.classList.remove('open');
+  const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
+  const show=()=>{ ex.textContent=expr||' ';
+    try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
+    catch(e){ rs.style.opacity=.35; }
+  };
+  D.getElementById('kitui-keys').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
+    if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
+    if(k==='del'){ expr=expr.slice(0,-1); show(); return; }
+    if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show(); return; }
+    if(k==='eq'){
+      rs.style.opacity=1;
+      try{
+        const v=calc(expr,isDeg);
+        if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
+        if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
+        ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
+      }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
+      return;
+    }
+    expr+=k; show();
+  });
+}
+function fmt(v){
+  if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
+  if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
+  return String(Math.round(v*1e10)/1e10);
+}
+if(hasCalc){
+  buildCalc();
+  D.getElementById('kitui-calcbtn').onclick=()=>{
+    const o=calcSheet.classList.toggle('open');
+    D.getElementById('kitui-calcbtn').classList.toggle('on',o);
+  };
+}
+})();
+
+</script>
+<!--/KIT-UI-->
+</body>
+</html>

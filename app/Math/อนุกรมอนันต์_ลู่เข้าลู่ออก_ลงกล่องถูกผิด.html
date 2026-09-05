@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>อนุกรมอนันต์ ลู่เข้า/ลู่ออก — ฝึกลงกล่องถูกผิด</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- สร้างจาก _kit/widget-template.html ตามกฎ _kit/DESIGN.md
+     ฝึกตรงรูปแบบข้อสอบปลายภาค คณิตศาสตร์เพิ่มเติม: ให้ 10 บรรทัด แล้วเอาเลขข้อไปใส่กล่อง ถูก/ผิด -->
+<style>
+/* ===== TOKENS (สำเนาจาก design-tokens.css — ดูคำอธิบายเต็มที่ไฟล์นั้น) ===== */
+:root{
+  --font:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
+  --bg:#eef2f7;--ink:#1e293b;--muted:#64748b;--line:#e2e8f0;--card:#fff;--soft:#f8fafc;
+  --shadow:0 1px 4px rgba(15,23,42,.08);
+  --ok:#059669;--bad:#dc2626;
+  --warn-bg:#fff7ed;--warn-bd:#f97316;--tip-bg:#ecfdf5;--tip-bd:#10b981;
+  --info-bg:#eff6ff;--info-bd:#3b82f6;--steps-bg:#fffbeb;--steps-bd:#fcd34d;--steps-dash:#fde68a;
+  --hot-bg:#fee2e2;--hot-ink:#b91c1c;--badge-bg:#fef9c3;--badge-ink:#854d0e;
+  --radius:14px;--radius-sm:10px;--radius-pill:999px;
+  --accent:#4f46e5;--accent-head:#312e81;--accent-ink:#3730a3;--accent-soft:#eef2ff;
+  --accent-bd:#c7d2fe;--accent-chip:#e0e7ff;--accent-ghost:#a5b4fc;
+}
+body[data-subject="physics"]{--accent:#4f46e5;--accent-head:#312e81;--accent-ink:#3730a3;--accent-soft:#eef2ff;--accent-bd:#c7d2fe;--accent-chip:#e0e7ff;--accent-ghost:#a5b4fc;--bg:#eef2f7}
+body[data-subject="bio"]{--accent:#16a34a;--accent-head:#14532d;--accent-ink:#166534;--accent-soft:#f0fdf4;--accent-bd:#bbf7d0;--accent-chip:#dcfce7;--accent-ghost:#86efac;--bg:#f0f4ef}
+body[data-subject="chem"]{--accent:#ea7317;--accent-head:#7c3a06;--accent-ink:#c2560c;--accent-soft:#fff7ed;--accent-bd:#fed7aa;--accent-chip:#ffedd5;--accent-ghost:#fdba74;--bg:#f6f2ec}
+body[data-subject="christ"]{--accent:#7c3aed;--accent-head:#4c1d95;--accent-ink:#6d28d9;--accent-soft:#f5f3ff;--accent-bd:#ddd6fe;--accent-chip:#ede9fe;--accent-ghost:#c4b5fd;--bg:#f2eff7}
+body[data-subject="islam"]{--accent:#0d9488;--accent-head:#134e4a;--accent-ink:#0f766e;--accent-soft:#f0fdfa;--accent-bd:#99f6e4;--accent-chip:#ccfbf1;--accent-ghost:#5eead4;--bg:#eef4f2}
+body[data-subject="history"]{--accent:#b45309;--accent-head:#78350f;--accent-ink:#92400e;--accent-soft:#fffbeb;--accent-bd:#fde68a;--accent-chip:#fef3c7;--accent-ghost:#fcd34d;--bg:#f5f1e8}
+body[data-subject="math"]{--accent:#0284c7;--accent-head:#0c4a6e;--accent-ink:#0369a1;--accent-soft:#f0f9ff;--accent-bd:#bae6fd;--accent-chip:#e0f2fe;--accent-ghost:#7dd3fc;--bg:#edf3f7}
+body[data-subject="eng"]{--accent:#db2777;--accent-head:#831843;--accent-ink:#be185d;--accent-soft:#fdf2f8;--accent-bd:#fbcfe8;--accent-chip:#fce7f3;--accent-ghost:#f9a8d4;--bg:#f7eef3}
+body[data-subject="thai"]{--accent:#dc2626;--accent-head:#7f1d1d;--accent-ink:#b91c1c;--accent-soft:#fef2f2;--accent-bd:#fecaca;--accent-chip:#fee2e2;--accent-ghost:#fca5a5;--bg:#f7efef}
+body[data-subject="hindu"]{--accent:#ca8a04;--accent-head:#713f12;--accent-ink:#a16207;--accent-soft:#fefce8;--accent-bd:#fef08a;--accent-chip:#fef9c3;--accent-ghost:#fde047;--bg:#f6f4e8}
+
+/* ===== COMPONENTS ===== */
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.6}
+.wrap{max-width:860px;margin:0 auto;padding:10px 12px 60px}
+header{padding:18px 4px 6px}
+header h1{font-size:1.35rem;color:var(--accent-head)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{background:var(--accent-chip);color:var(--accent-ink);border-radius:var(--radius-pill);padding:3px 12px;font-size:.82rem;font-weight:600}
+.chip.hot{background:var(--hot-bg);color:var(--hot-ink)}
+.badge{display:inline-block;background:var(--badge-bg);color:var(--badge-ink);border-radius:6px;padding:1px 8px;font-size:.78rem;font-weight:700;vertical-align:middle}
+.tabs{display:flex;gap:8px;overflow-x:auto;position:sticky;top:0;background:var(--bg);padding:10px 2px;z-index:10;-webkit-overflow-scrolling:touch}
+.tab-btn{white-space:nowrap;padding:8px 14px;border-radius:var(--radius-pill);border:1.5px solid var(--accent-bd);background:#fff;color:var(--accent-ink);cursor:pointer;font-size:.92rem;font-family:inherit;font-weight:600;flex-shrink:0}
+.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tab{display:none}
+.tab.show{display:block;animation:fade .25s}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.card{background:var(--card);border-radius:var(--radius);padding:16px;margin:12px 0;box-shadow:var(--shadow)}
+.card h2{font-size:1.15rem;color:var(--accent-head);margin-bottom:2px}
+.card h3{font-size:1.05rem;color:var(--ink);margin-bottom:6px}
+.sub{color:var(--muted);font-size:.85rem;margin-bottom:10px}
+details.concept{border:1px solid var(--line);border-radius:var(--radius-sm);margin:8px 0;overflow:hidden}
+details.concept summary{padding:10px 14px;cursor:pointer;font-weight:600;background:var(--soft);list-style:none}
+details.concept summary::before{content:"▸ ";color:var(--accent)}
+details.concept[open] summary::before{content:"▾ "}
+details.concept .body{padding:10px 14px;border-top:1px solid var(--line);font-size:.95rem}
+.formula{background:var(--accent-soft);border-radius:8px;padding:6px 12px;display:inline-block;margin:4px 4px 4px 0;font-weight:600;color:var(--accent-ink)}
+.warn{background:var(--warn-bg);border-left:4px solid var(--warn-bd);border-radius:8px;padding:10px 12px;margin:10px 0;font-size:.92rem}
+.tip{background:var(--tip-bg);border-left:4px solid var(--tip-bd);border-radius:8px;padding:10px 12px;margin:10px 0;font-size:.92rem}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:var(--radius-sm);padding:10px 16px;font-size:.95rem;cursor:pointer;font-family:inherit;font-weight:600}
+.btn:active{transform:scale(.97)}
+.btn.ghost{background:#fff;color:var(--accent);border:1.5px solid var(--accent-ghost)}
+.btn.small{padding:6px 12px;font-size:.85rem}
+.btn.green{background:var(--ok)}.btn.red{background:var(--bad)}
+.seg{display:inline-flex;border:1.5px solid var(--accent-bd);border-radius:var(--radius-sm);overflow:hidden;margin:4px 0;flex-wrap:wrap}
+.seg button{border:0;background:#fff;padding:8px 12px;cursor:pointer;font-family:inherit;font-size:.9rem;color:var(--accent-ink)}
+.seg button.on{background:var(--accent);color:#fff}
+input[type=range]{width:100%;accent-color:var(--accent);height:28px}
+.slider-row{margin:8px 0}.slider-row label{font-size:.92rem;font-weight:600}
+.slider-val{color:var(--accent);font-weight:700}
+.big-val{font-size:1.3rem;font-weight:700;color:var(--accent);margin:6px 0}
+.q-text,.tf-q{font-size:1rem;background:var(--soft);border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:6px}
+.ans-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:10px 0 4px}
+.ans-in{flex:1;min-width:120px;padding:10px 12px;border:2px solid #cbd5e1;border-radius:var(--radius-sm);font-size:1rem;font-family:inherit}
+.ans-in:focus{outline:none;border-color:var(--accent)}
+.ans-unit{font-weight:700;color:#475569;min-width:24px}
+.fb{margin:6px 0;font-weight:600;min-height:1.2em}
+.fb.ok{color:var(--ok)}.fb.bad{color:var(--bad)}
+.hint-box div{background:var(--info-bg);border-left:4px solid var(--info-bd);padding:8px 12px;margin:6px 0;border-radius:6px;font-size:.93rem}
+.drill-btns,.tf-btns{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.tf-btns .btn{flex:1;max-width:140px}
+.score{margin-top:8px;color:var(--muted);font-size:.88rem}
+.steps{background:var(--steps-bg);border:1px solid var(--steps-bd);border-radius:var(--radius-sm);padding:12px 14px;margin:8px 0;display:none;font-size:.95rem}
+.steps.show{display:block}
+.steps .st{padding:4px 0;border-bottom:1px dashed var(--steps-dash)}
+.steps .st:last-child{border-bottom:0}
+table.ref{border-collapse:collapse;width:100%;font-size:.9rem;margin:8px 0}
+table.ref th,table.ref td{border:1px solid var(--line);padding:6px 10px;text-align:center}
+table.ref th{background:var(--accent-soft);color:var(--accent-ink)}
+svg{max-width:100%;height:auto;display:block}
+.svg-box{background:var(--soft);border:1px solid var(--line);border-radius:var(--radius-sm);padding:8px;margin:8px 0}
+select{padding:8px;border:1.5px solid #cbd5e1;border-radius:8px;font-family:inherit;font-size:.9rem;background:#fff}
+sup,sub{font-size:.72em}
+@media(max-width:480px){.card{padding:12px}header h1{font-size:1.15rem}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ===== เฉพาะหน้านี้ (สร้างบน token กลาง ไม่ตั้งสีใหม่เอง) ===== */
+/* ซิกมาแบบมีขอบเขตบน-ล่าง กับเศษส่วนซ้อน — ให้หน้าตาเหมือนในข้อสอบจริง */
+.sig{display:inline-flex;flex-direction:column;align-items:center;line-height:1;vertical-align:middle;margin-right:.2em}
+.sig .u,.sig .d{font-size:.56em;color:var(--muted)}
+.sig .m{font-size:1.45em;font-weight:600}
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 .18em;line-height:1.2}
+.fr .n{border-bottom:1.6px solid currentColor;padding:0 .32em}
+.fr .d{padding:0 .32em}
+.expr{white-space:nowrap;font-size:1.02rem}
+
+/* แถวโจทย์ + ปุ่มเลือก ถูก/ผิด */
+.item{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 12px;margin:7px 0;
+  border:1.5px solid var(--line);border-radius:var(--radius-sm);background:var(--card)}
+.item .no{font-weight:700;color:var(--accent);min-width:1.6rem;font-size:1rem}
+.item .cl{flex:1;min-width:180px;font-size:.97rem}
+.item .cl .verb{font-weight:700;color:var(--accent-ink)}
+.pk{display:flex;gap:6px;margin-left:auto}
+.pk button{border:1.5px solid var(--accent-bd);background:var(--card);color:var(--ink);border-radius:8px;
+  padding:7px 14px;font-family:inherit;font-size:.92rem;font-weight:700;cursor:pointer}
+.pk button.on{color:#fff}
+.pk button.t.on{background:var(--ok);border-color:var(--ok)}
+.pk button.f.on{background:var(--bad);border-color:var(--bad)}
+.item.ok{border-color:var(--ok);background:var(--tip-bg)}
+.item.bad{border-color:var(--bad);background:var(--hot-bg)}
+.why{flex-basis:100%;font-size:.9rem;line-height:1.6;border-top:1px dashed var(--line);
+  padding-top:7px;margin-top:3px;display:none}
+.item.done .why{display:block}
+.why b{color:var(--accent-ink)}
+
+/* กล่องถูก/ผิด — เลียนแบบกล่องในกระดาษข้อสอบ */
+.boxes{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.box{border:2px dashed var(--accent-ghost);border-radius:var(--radius);padding:10px;min-height:6rem;background:var(--soft)}
+.box h4{font-size:.95rem;text-align:center;margin-bottom:8px}
+.box.t h4{color:var(--ok)}
+.box.f h4{color:var(--bad)}
+.slot{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.nchip{display:inline-flex;align-items:center;justify-content:center;min-width:2.1rem;height:2.1rem;
+  border-radius:8px;font-weight:700;font-size:.95rem;color:#fff;border:0;cursor:pointer;font-family:inherit}
+.box.t .nchip{background:var(--ok)}
+.box.f .nchip{background:var(--bad)}
+.slot .empty{color:var(--muted);font-size:.85rem}
+
+/* แถบคะแนน + ตารางผลบวกย่อย */
+.stat{display:flex;gap:14px;flex-wrap:wrap;font-size:.9rem;color:var(--muted);margin-top:8px;align-items:center}
+.stat b{color:var(--accent);font-size:1.1rem}
+.flow{counter-reset:fl;margin:6px 0}
+.flow .fs{position:relative;padding:10px 12px 10px 44px;margin:8px 0;background:var(--soft);
+  border:1px solid var(--line);border-radius:var(--radius-sm);font-size:.95rem}
+.flow .fs::before{counter-increment:fl;content:counter(fl);position:absolute;left:12px;top:10px;
+  width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;
+  font-size:.82rem;display:flex;align-items:center;justify-content:center}
+
+/* ===== การ์ดนำทางสำหรับคนที่ยังไม่ได้อ่านสไลด์ (START-HERE) ===== */
+.sh{border:2px solid var(--accent-bd);background:var(--accent-soft)}
+.sh h3{margin-top:0}
+.sh ol{margin:.5rem 0 .7rem 1.25rem;padding:0;line-height:2}
+.sh ol li{margin:.3rem 0}
+.sh .go{display:inline-block;margin-left:.35rem;padding:2px 10px;border-radius:999px;
+  border:1.5px solid var(--accent-bd);background:var(--card);color:var(--accent-ink);
+  font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer}
+.sh .go:hover{background:var(--accent-chip)}
+.sh .mins{color:var(--muted);font-size:.9rem}
+</style>
+</head>
+
+<body data-subject="math">
+<div class="wrap">
+
+  <header>
+    <h1>📐 อนุกรมอนันต์ — ลู่เข้า หรือ ลู่ออก</h1>
+    <div class="chips">
+      <span class="chip hot">ปลายภาค · ตอนนี้ 10 ข้อ 5 คะแนน</span>
+      <span class="chip">ให้ 10 บรรทัด → เอาเลขข้อไปใส่กล่อง ถูก/ผิด</span>
+      <span class="chip">คณิตศาสตร์เพิ่มเติม</span>
+    </div>
+  </header>
+
+    <!-- START-HERE — การ์ดนำทางสำหรับคนที่ยังไม่ได้อ่านสไลด์ -->
+    <div class="card sh">
+      <h3>🚦 ยังไม่ได้อ่านสไลด์? เริ่มตรงนี้</h3>
+      <p class="sub">ทำตามลำดับนี้ <span class="mins">ประมาณ 20–30 นาที</span> แล้วค่อยลงข้อสอบ จะได้ไม่ใช่การเดา</p>
+      <ol>
+        <li>อ่าน <b>🧭 วิธีตัดสิน</b> ก่อนเลย — ทุกข้อในหน้านี้ตัดสินได้ด้วย 3 ขั้นเท่านั้น <button class="go" data-go="t2">เปิดแท็บนี้</button></li>
+        <li>เล่น <b>🔬 ดูมันวิ่ง</b> ให้เห็นกับตาว่าผลบวกสะสมมันนิ่งหรือพุ่ง <button class="go" data-go="t3">เปิดแท็บนี้</button></li>
+        <li>ลง <b>🎯 ลงกล่อง</b> — รูปแบบเดียวกับข้อสอบจริง 10 บรรทัด ลงกล่องถูก/ผิด <button class="go" data-go="t1">เปิดแท็บนี้</button></li>
+        <li>อยากดูทีละข้อพร้อมเหตุผล เปิด <b>📚 คลังข้อ</b> <button class="go" data-go="t4">เปิดแท็บนี้</button></li>
+      </ol>
+      <div class="warn"><b>จุดที่คนไม่ได้อ่านสไลด์พลาดบ่อยที่สุด</b><br>• <b>a<sub>i</sub> → 0 ไม่ได้แปลว่าลู่เข้า</b> — Σ1/i ก็มี a<sub>i</sub>→0 แต่ลู่ออก · ขั้นแรกใช้ <u>ปฏิเสธ</u> ได้อย่างเดียว<br>• <b>อนุกรม p</b> (Σ1/i<sup>p</sup>) ลู่เข้าเมื่อ <b>p &gt; 1</b> เท่านั้น · p = 1 คือฮาร์มอนิก ลู่ออก<br>• <b>เศษส่วนพหุนาม</b> ใช้ <b>ดีกรีล่าง − ดีกรีบน &gt; 1 → ลู่เข้า</b> · ไม่เกิน 1 → ลู่ออก</div>
+    </div>
+
+
+  <nav class="tabs" id="tabs">
+    <button class="tab-btn" data-tab="t1">🎯 ลงกล่อง</button>
+    <button class="tab-btn" data-tab="t2">🧭 วิธีตัดสิน</button>
+    <button class="tab-btn" data-tab="t3">🔬 ดูมันวิ่ง</button>
+    <button class="tab-btn" data-tab="t4">📚 คลังข้อ</button>
+  </nav>
+
+  <!-- ================= แท็บ 1 : เลียนแบบข้อสอบจริง ================= -->
+  <section id="t1" class="tab">
+    <div class="card" data-tour="ลงกล่องถูกผิด|ตรงนี้เลียนแบบข้อสอบจริง — อ่านทีละบรรทัด กด ถูก หรือ ผิด แล้วเลขข้อจะวิ่งไปอยู่ในกล่องข้างล่างเอง">
+      <h2>🎯 ตัดสินทีละบรรทัด แล้วเลขจะลงกล่องเอง</h2>
+      <p class="sub">เหมือนในกระดาษข้อสอบ — กดผิดกดใหม่ได้ หรือกดเลขในกล่องเพื่อเอาออก</p>
+      <div class="drill-btns">
+        <button class="btn" id="newSet">🎲 สุ่มชุดใหม่</button>
+        <button class="btn ghost small" id="check">ตรวจคำตอบ</button>
+        <button class="btn ghost small" id="revealAll">เฉลยทั้งหมด</button>
+      </div>
+      <div class="stat"><span>ชุดที่ <b id="round">1</b></span><span>ตอบแล้ว <b id="picked">0</b>/10</span><span id="scoreLine"></span></div>
+      <div class="bar" style="height:9px;background:var(--line);border-radius:999px;overflow:hidden;margin:8px 0"><i id="barI" style="display:block;height:100%;width:0;background:var(--accent);border-radius:999px;transition:width .3s"></i></div>
+    </div>
+
+    <div class="card">
+      <div id="list"></div>
+    </div>
+
+    <div class="card" data-tour="กล่องคำตอบ|กล่องนี้คือกล่องเดียวกับในข้อสอบ เลขที่คิดว่าถูกอยู่ซ้าย เลขที่คิดว่าผิดอยู่ขวา">
+      <h3>กล่องคำตอบ</h3>
+      <div class="boxes">
+        <div class="box t"><h4>✓ ถูก</h4><div class="slot" id="boxT"><span class="empty">ยังว่าง</span></div></div>
+        <div class="box f"><h4>✗ ผิด</h4><div class="slot" id="boxF"><span class="empty">ยังว่าง</span></div></div>
+      </div>
+      <div class="fb" id="fb"></div>
+    </div>
+  </section>
+
+  <!-- ================= แท็บ 2 : วิธีตัดสิน ================= -->
+  <section id="t2" class="tab">
+    <div class="card">
+      <h2>🧭 เจอโจทย์แล้วทำยังไง — ไล่ตามนี้ 3 ขั้น</h2>
+      <p class="sub">ทุกข้อในคลังนี้ตัดสินได้ด้วย 3 ขั้นนี้เท่านั้น</p>
+      <div class="flow">
+        <div class="fs"><b>ดู a<sub>i</sub> ก่อน ว่ามันเข้าใกล้ 0 ไหม</b><br>
+          ถ้า <span class="formula">lim a<sub>i</sub> ≠ 0</span> → <b style="color:var(--bad)">ลู่ออกทันที</b> จบเลย ไม่ต้องคิดต่อ</div>
+        <div class="fs"><b>ถ้า a<sub>i</sub> → 0 แล้ว ยังตอบไม่ได้</b> ต้องดูว่ามันเป็นแบบไหน<br>
+          <span class="formula">เรขาคณิต Σar<sup>i</sup></span> → |r| &lt; 1 ลู่เข้า · |r| ≥ 1 ลู่ออก<br>
+          <span class="formula">อนุกรม p คือ Σ 1/i<sup>p</sup></span> → p &gt; 1 ลู่เข้า · p ≤ 1 ลู่ออก</div>
+        <div class="fs"><b>เป็นเศษส่วนของพหุนาม → เทียบดีกรี</b><br>
+          <span class="formula">ดีกรีข้างล่าง − ดีกรีข้างบน &gt; 1 → ลู่เข้า</span><br>
+          ไม่เกิน 1 → ลู่ออก (เพราะมันเหลือพฤติกรรมเหมือน 1/i<sup>p</sup> ตัวนั้นพอดี)</div>
+      </div>
+      <div class="tip">💡 <b>ทำไมกฎเทียบดีกรีถึงใช้ได้:</b> ตัวใหญ่สุดชนะเสมอ เช่น
+        <span class="expr"><span class="fr"><span class="n">i<sup>3</sup></span><span class="d">i<sup>4</sup>+1</span></span></span>
+        พอ i โตมาก ๆ ก็เหลือ i<sup>3</sup>/i<sup>4</sup> = 1/i → เป็นอนุกรม p ที่ p = 1 → ลู่ออก</div>
+      <div class="warn">⚠️ <b>กับดักที่ออกสอบบ่อยที่สุด:</b> a<sub>i</sub> → 0 <b>ไม่ได้แปลว่าลู่เข้า</b> —
+        Σ 1/i ก็มี a<sub>i</sub> → 0 แต่ลู่ออก · ข้อ 1 ใช้ปฏิเสธได้อย่างเดียว ใช้ยืนยันไม่ได้</div>
+    </div>
+
+    <div class="card">
+      <h3>ตัวอย่างที่อาจารย์ยกให้ดู</h3>
+      <table class="ref">
+        <tr><th>ข้อความ</th><th>จริง ๆ แล้ว</th><th>เพราะ</th></tr>
+        <tr><td><span class="expr"><span class="sig"><span class="u">∞</span><span class="m">Σ</span><span class="d">i=1</span></span>i<sup>2</sup></span> เป็นอนุกรมลู่ออก</td>
+            <td style="color:var(--ok);font-weight:700">ถูก</td><td>a<sub>i</sub> = i<sup>2</sup> → ∞ ไม่ใช่ 0</td></tr>
+        <tr><td><span class="expr"><span class="sig"><span class="u">∞</span><span class="m">Σ</span><span class="d">i=1</span></span><span class="fr"><span class="n">i<sup>3</sup></span><span class="d">i<sup>4</sup>+1</span></span></span> เป็นอนุกรมลู่เข้า</td>
+            <td style="color:var(--bad);font-weight:700">ผิด</td><td>4 − 3 = 1 ไม่เกิน 1 → ลู่ออก</td></tr>
+      </table>
+      <p class="sub" style="margin-top:8px">สองข้อนี้คือสองแบบที่ออกจริง: ข้อแรกวัดว่ารู้จักทดสอบพจน์ที่ n ไหม ข้อสองวัดว่าหลงกับดัก a<sub>i</sub> → 0 หรือเปล่า</p>
+    </div>
+
+    <div class="card">
+      <h3>สูตรที่ต้องมีติดหัว</h3>
+      <table class="ref">
+        <tr><th>รูปแบบ</th><th>ลู่เข้าเมื่อ</th><th>ผลบวก</th></tr>
+        <tr><td>เรขาคณิต a + ar + ar<sup>2</sup> + …</td><td>|r| &lt; 1</td><td>a / (1 − r)</td></tr>
+        <tr><td>Σ 1/i<sup>p</sup> (อนุกรม p)</td><td>p &gt; 1</td><td>—</td></tr>
+        <tr><td>Σ 1/i (ฮาร์มอนิก)</td><td>ไม่เคยลู่เข้า</td><td>—</td></tr>
+        <tr><td>Σ (1/i − 1/(i+1))</td><td>ลู่เข้าเสมอ (หักกลบ)</td><td>1</td></tr>
+      </table>
+      <div class="tip">💡 <b>กฎบวกลบ:</b> ลู่เข้า + ลู่เข้า = ลู่เข้า · ลู่เข้า + ลู่ออก = <b>ลู่ออก</b> ·
+        ลู่ออก + ลู่ออก = ตอบไม่ได้ ต้องดูเป็นราย ๆ</div>
+    </div>
+  </section>
+
+  <!-- ================= แท็บ 3 : ดูผลบวกย่อยวิ่ง ================= -->
+  <section id="t3" class="tab">
+    <div class="card" data-tour="ดูมันวิ่ง|เลือกอนุกรมแล้วดูว่าผลบวกสะสมนิ่งอยู่กับที่ (ลู่เข้า) หรือไต่ขึ้นไปเรื่อย ๆ ไม่หยุด (ลู่ออก)">
+      <h2>🔬 ลู่เข้า/ลู่ออก หน้าตาเป็นยังไง</h2>
+      <p class="sub">บวกไปเรื่อย ๆ แล้วดูว่า S<sub>n</sub> นิ่งไหม — ลู่ออกบางตัวโตช้ามากจนดูเหมือนนิ่ง ระวังตรงนี้</p>
+      <select id="pickSer" style="width:100%;max-width:420px"></select>
+      <div class="svg-box"><svg id="plot" viewBox="0 0 620 220" preserveAspectRatio="xMidYMid meet"></svg></div>
+      <div class="big-val" id="verdict"></div>
+      <table class="ref" id="sumT"></table>
+      <div class="warn" id="serNote"></div>
+    </div>
+  </section>
+
+  <!-- ================= แท็บ 4 : คลังข้อทั้งหมด ================= -->
+  <section id="t4" class="tab">
+    <div class="card">
+      <h2>📚 คลังข้อทั้งหมด พร้อมเหตุผล</h2>
+      <p class="sub">ตรงนี้เขียนเป็น "ความจริง" ของแต่ละอนุกรม ไม่ใช่ข้อความถูก/ผิด — ในข้อสอบเขาจะพลิกให้เป็นข้อความแล้วให้เราตัดสิน</p>
+      <div class="seg" id="filt">
+        <button data-k="all" class="on">ทั้งหมด</button>
+        <button data-k="n">พจน์ที่ n</button>
+        <button data-k="g">เรขาคณิต</button>
+        <button data-k="p">อนุกรม p</button>
+        <button data-k="d">เทียบดีกรี</button>
+        <button data-k="x">กับดัก</button>
+      </div>
+      <div id="bankList"></div>
+    </div>
+  </section>
+
+</div>
+<script>
+/* =============================================================================
+   ฝึกตัดสิน "อนุกรมอนันต์ ลู่เข้า/ลู่ออก" ตามรูปแบบข้อสอบปลายภาค
+   โจทย์ 10 บรรทัด → กด ถูก/ผิด → เลขข้อวิ่งไปลงกล่อง เหมือนเขียนในกระดาษ
+   คลังข้อเก็บเป็น "ความจริง" (v=1 ลู่เข้า, v=0 ลู่ออก) แล้วค่อยสุ่มพลิกเป็นข้อความ
+   จะได้ไม่ต้องเขียนข้อซ้ำสองรอบ และได้ทั้งข้อถูกข้อผิดจากข้อเดียวกัน
+   ========================================================================== */
+
+/* ---- ตัวช่วยวาดสูตรให้หน้าตาเหมือนในข้อสอบ ---- */
+function F(a,b){return '<span class="fr"><span class="n">'+a+'</span><span class="d">'+b+'</span></span>';}
+var SIG='<span class="sig"><span class="u">∞</span><span class="m">Σ</span><span class="d">i=1</span></span>';
+function E(t){return '<span class="expr">'+SIG+t+'</span>';}
+
+/* ---- คลังข้อ: k=กลุ่มวิธีคิด, t=พจน์, v=1 ลู่เข้า / 0 ลู่ออก, w=เหตุผล ---- */
+var BANK=[
+/* กลุ่ม n — ทดสอบพจน์ที่ n: a(i) ไม่เข้า 0 → ลู่ออกทันที */
+{k:'n',t:'i<sup>2</sup>',v:0,w:'a<sub>i</sub> = i<sup>2</sup> → ∞ ไม่ใช่ 0 → <b>ลู่ออก</b> ตามการทดสอบพจน์ที่ n'},
+{k:'n',t:'2i+1',v:0,w:'a<sub>i</sub> = 2i+1 → ∞ ไม่ใช่ 0 → <b>ลู่ออก</b>'},
+{k:'n',t:F('i','i+1'),v:0,w:'a<sub>i</sub> → 1 ไม่ใช่ 0 → <b>ลู่ออก</b> (บวกเลขใกล้ ๆ 1 ไปเรื่อย ๆ ยังไงก็ไม่หยุด)'},
+{k:'n',t:F('2i+1','3i+5'),v:0,w:'ดีกรีบน-ล่างเท่ากัน → a<sub>i</sub> → 2/3 ไม่ใช่ 0 → <b>ลู่ออก</b>'},
+{k:'n',t:F('i<sup>2</sup>+1','2i<sup>2</sup>+i'),v:0,w:'ดีกรีบน-ล่างเท่ากัน → a<sub>i</sub> → 1/2 ไม่ใช่ 0 → <b>ลู่ออก</b>'},
+{k:'n',t:F('3i<sup>2</sup>','i<sup>2</sup>+4'),v:0,w:'a<sub>i</sub> → 3 ไม่ใช่ 0 → <b>ลู่ออก</b>'},
+{k:'n',t:'5',v:0,w:'บวก 5 ไปเรื่อย ๆ ได้ S<sub>n</sub> = 5n → ∞ → <b>ลู่ออก</b>'},
+{k:'n',t:'(−1)<sup>i</sup>',v:0,w:'a<sub>i</sub> สลับ −1 กับ 1 ไม่เข้าใกล้ค่าไหนเลย → <b>ลู่ออก</b>'},
+{k:'n',t:F('i+2','i+1'),v:0,w:'a<sub>i</sub> → 1 ไม่ใช่ 0 → <b>ลู่ออก</b>'},
+/* กลุ่ม g — เรขาคณิต: |r| < 1 เท่านั้นถึงลู่เข้า */
+{k:'g',t:'(1/2)<sup>i</sup>',v:1,w:'r = 1/2 , |r| &lt; 1 → <b>ลู่เข้า</b> ผลบวก = (1/2)/(1−1/2) = 1'},
+{k:'g',t:'(3/2)<sup>i</sup>',v:0,w:'r = 3/2 , |r| ≥ 1 → <b>ลู่ออก</b>'},
+{k:'g',t:'(−2/3)<sup>i</sup>',v:1,w:'|r| = 2/3 &lt; 1 → <b>ลู่เข้า</b> (ติดลบไม่เกี่ยว ดูค่าสัมบูรณ์อย่างเดียว)'},
+{k:'g',t:'(−5/4)<sup>i</sup>',v:0,w:'|r| = 5/4 ≥ 1 → <b>ลู่ออก</b>'},
+{k:'g',t:F('2<sup>i</sup>','3<sup>i</sup>'),v:1,w:'จัดรูปได้ (2/3)<sup>i</sup> → |r| &lt; 1 → <b>ลู่เข้า</b>'},
+{k:'g',t:F('3<sup>i</sup>','2<sup>i</sup>'),v:0,w:'จัดรูปได้ (3/2)<sup>i</sup> → |r| ≥ 1 → <b>ลู่ออก</b>'},
+{k:'g',t:'(0.99)<sup>i</sup>',v:1,w:'ใกล้ 1 มากก็จริง แต่ |r| &lt; 1 → <b>ลู่เข้า</b>'},
+{k:'g',t:'(1.01)<sup>i</sup>',v:0,w:'เกิน 1 แค่นิดเดียวก็ |r| &gt; 1 → <b>ลู่ออก</b>'},
+{k:'g',t:F('7','2<sup>i</sup>'),v:1,w:'= 7(1/2)<sup>i</sup> → <b>ลู่เข้า</b> ผลบวก = 7'},
+{k:'g',t:F('4<sup>i</sup>','5<sup>i+1</sup>'),v:1,w:'= (1/5)(4/5)<sup>i</sup> → |r| = 4/5 &lt; 1 → <b>ลู่เข้า</b>'},
+{k:'g',t:F('5<sup>i</sup>','4<sup>i−1</sup>'),v:0,w:'= 4(5/4)<sup>i</sup> → |r| &gt; 1 → <b>ลู่ออก</b>'},
+{k:'g',t:'(−1/2)<sup>i</sup>',v:1,w:'|r| = 1/2 &lt; 1 → <b>ลู่เข้า</b>'},
+/* กลุ่ม p — อนุกรม p: Σ 1/i^p ลู่เข้าเมื่อ p > 1 */
+{k:'p',t:F('1','i'),v:0,w:'อนุกรมฮาร์มอนิก = อนุกรม p ที่ p = 1 → <b>ลู่ออก</b> ทั้งที่ a<sub>i</sub> → 0 (ข้อหลอกคลาสสิก)'},
+{k:'p',t:F('1','i<sup>2</sup>'),v:1,w:'อนุกรม p ที่ p = 2 &gt; 1 → <b>ลู่เข้า</b>'},
+{k:'p',t:F('1','√i'),v:0,w:'= 1/i<sup>1/2</sup> → p = 1/2 ไม่เกิน 1 → <b>ลู่ออก</b>'},
+{k:'p',t:F('1','i<sup>3</sup>'),v:1,w:'p = 3 &gt; 1 → <b>ลู่เข้า</b>'},
+{k:'p',t:F('1','i<sup>4/3</sup>'),v:1,w:'p = 4/3 &gt; 1 (เกิน 1 นิดเดียวก็พอ) → <b>ลู่เข้า</b>'},
+{k:'p',t:F('1000','i<sup>2</sup>'),v:1,w:'ค่าคงที่ตัวใหญ่แค่ไหนก็ไม่เปลี่ยนผล ยังเป็น p = 2 → <b>ลู่เข้า</b>'},
+{k:'p',t:F('1','i+1000'),v:0,w:'บวกค่าคงที่ในตัวส่วนไม่ช่วยอะไร พฤติกรรมยังเป็น 1/i → <b>ลู่ออก</b>'},
+{k:'p',t:F('1','i<sup>0.9</sup>'),v:0,w:'p = 0.9 ไม่เกิน 1 → <b>ลู่ออก</b>'},
+/* กลุ่ม d — เศษส่วนพหุนาม: ดีกรีล่าง − ดีกรีบน > 1 จึงลู่เข้า */
+{k:'d',t:F('i<sup>3</sup>','i<sup>4</sup>+1'),v:0,w:'ล่าง − บน = 4 − 3 = 1 ไม่เกิน 1 → <b>ลู่ออก</b> (พฤติกรรมเหมือน 1/i)'},
+{k:'d',t:F('i','i<sup>3</sup>+2'),v:1,w:'3 − 1 = 2 &gt; 1 → <b>ลู่เข้า</b> (เหมือน 1/i<sup>2</sup>)'},
+{k:'d',t:F('1','i<sup>2</sup>+1'),v:1,w:'2 − 0 = 2 &gt; 1 → <b>ลู่เข้า</b>'},
+{k:'d',t:F('i+1','i<sup>2</sup>+3'),v:0,w:'2 − 1 = 1 ไม่เกิน 1 → <b>ลู่ออก</b>'},
+{k:'d',t:F('2i+5','i<sup>3</sup>+i'),v:1,w:'3 − 1 = 2 &gt; 1 → <b>ลู่เข้า</b>'},
+{k:'d',t:F('1','2i+1'),v:0,w:'1 − 0 = 1 → <b>ลู่ออก</b> (เป็นครึ่งหนึ่งของฮาร์มอนิก)'},
+{k:'d',t:F('i<sup>2</sup>','i<sup>3</sup>+4'),v:0,w:'3 − 2 = 1 → <b>ลู่ออก</b>'},
+{k:'d',t:F('√i','i<sup>2</sup>+1'),v:1,w:'2 − 0.5 = 1.5 &gt; 1 → <b>ลู่เข้า</b> (√i นับเป็นดีกรี 0.5)'},
+{k:'d',t:F('i<sup>3</sup>+1','i<sup>4</sup>+i<sup>2</sup>'),v:0,w:'4 − 3 = 1 → <b>ลู่ออก</b>'},
+{k:'d',t:F('i<sup>2</sup>+3','i<sup>5</sup>+1'),v:1,w:'5 − 2 = 3 &gt; 1 → <b>ลู่เข้า</b>'},
+{k:'d',t:F('1','3i−2'),v:0,w:'1 − 0 = 1 → <b>ลู่ออก</b>'},
+{k:'d',t:F('2i','i<sup>2</sup>+1'),v:0,w:'2 − 1 = 1 → <b>ลู่ออก</b>'},
+{k:'d',t:F('1','i<sup>2</sup>−i+5'),v:1,w:'2 − 0 = 2 &gt; 1 → <b>ลู่เข้า</b>'},
+/* กลุ่ม x — หักกลบ / รวมอนุกรม / กับดัก */
+{k:'x',t:F('1','i(i+1)'),v:1,w:'แตกเป็น 1/i − 1/(i+1) แล้วหักกลบ เหลือ S<sub>n</sub> = 1 − 1/(n+1) → 1 → <b>ลู่เข้า</b>'},
+{k:'x',t:'(√(i+1) − √i)',v:0,w:'a<sub>i</sub> → 0 ก็จริง แต่หักกลบแล้วได้ S<sub>n</sub> = √(n+1) − 1 → ∞ → <b>ลู่ออก</b> ⚠️ ข้อหลอกตัวจริง'},
+{k:'x',t:'(1/i − 1/(i+1))',v:1,w:'หักกลบหมด เหลือ S<sub>n</sub> = 1 − 1/(n+1) → 1 → <b>ลู่เข้า</b>'},
+{k:'x',t:'(1/i + 1/i<sup>2</sup>)',v:0,w:'ลู่ออก + ลู่เข้า = <b>ลู่ออก</b> เสมอ'},
+{k:'x',t:'(1/i<sup>2</sup> − 1/i<sup>3</sup>)',v:1,w:'ลู่เข้าทั้งสองก้อน → <b>ลู่เข้า</b>'},
+{k:'x',t:'((1/2)<sup>i</sup> + (1/3)<sup>i</sup>)',v:1,w:'เรขาคณิตลู่เข้าทั้งคู่ → <b>ลู่เข้า</b> ผลบวก = 1 + 1/2 = 1.5'},
+{k:'x',t:'((1/2)<sup>i</sup> + 1)',v:0,w:'a<sub>i</sub> → 1 ไม่ใช่ 0 → <b>ลู่ออก</b> (ก้อนที่ลู่เข้าช่วยไม่ได้)'},
+{k:'x',t:F('i','2<sup>i</sup>'),v:1,w:'เลขชี้กำลังโตชนะพหุนามเสมอ พจน์ยุบเร็วมาก → <b>ลู่เข้า</b> (ผลบวก = 2)'},
+{k:'x',t:F('1','i·2<sup>i</sup>'),v:1,w:'ทุกพจน์เล็กกว่า (1/2)<sup>i</sup> ซึ่งลู่เข้าอยู่แล้ว → <b>ลู่เข้า</b>'}
+];
+
+/* ---- สลับแท็บ ---- */
+var tabs=document.getElementById('tabs');
+function openTab(id){
+  var i,t=document.querySelectorAll('.tab'),b=document.querySelectorAll('.tab-btn');
+  for(i=0;i<t.length;i++) t[i].classList.toggle('show',t[i].id===id);
+  for(i=0;i<b.length;i++) b[i].classList.toggle('active',b[i].dataset.tab===id);
+}
+tabs.addEventListener('click',function(e){var b=e.target.closest('.tab-btn'); if(b) openTab(b.dataset.tab);});
+openTab('t1');
+
+/* ---- สุ่มชุด 10 ข้อ โดยกันไม่ให้ซ้ำกับรอบก่อนหน้า ---- */
+var WANT={n:2,g:2,p:2,d:3,x:1};          /* รวม 10 ข้อ กระจายทุกวิธีคิด */
+var REC='seqInfRecent', cur=[], round=0, done=false;
+
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+function sample(){
+  var rec=[]; try{rec=JSON.parse(localStorage.getItem(REC)||'[]')||[];}catch(e){rec=[];}
+  var pick=[],k,i;
+  for(k in WANT){
+    var pool=[],all=[];
+    for(i=0;i<BANK.length;i++) if(BANK[i].k===k){ all.push(i); if(rec.indexOf(i)<0) pool.push(i); }
+    if(pool.length<WANT[k]) pool=all.slice();     /* ข้อไม่พอแล้วค่อยยอมให้ซ้ำ */
+    shuffle(pool);
+    pick=pick.concat(pool.slice(0,WANT[k]));
+  }
+  shuffle(pick);
+  rec=pick.concat(rec).slice(0,24);
+  try{localStorage.setItem(REC,JSON.stringify(rec));}catch(e){}
+
+  /* คุมให้มีทั้งข้อถูกและข้อผิด 4-6 ข้อ จะได้ไม่เดาว่า "ลงกล่องเดียวหมด" */
+  var nTrue=4+Math.floor(Math.random()*3), ord=[];
+  for(i=0;i<pick.length;i++) ord.push(i);
+  shuffle(ord);
+  var isTrue={}; for(i=0;i<nTrue;i++) isTrue[ord[i]]=1;
+
+  return pick.map(function(bi,idx){
+    var conv=(BANK[bi].v===1);
+    return {b:bi, claim: isTrue[idx]?conv:!conv, ans:!!isTrue[idx], pick:null};
+  });
+}
+
+function render(){
+  var h='';
+  cur.forEach(function(s,i){
+    var q=BANK[s.b];
+    h+='<div class="item" id="it'+i+'">'+
+       '<span class="no">'+(i+1)+'.</span>'+
+       '<span class="cl">'+E(q.t)+' <span class="verb">เป็นอนุกรม'+(s.claim?'ลู่เข้า':'ลู่ออก')+'</span></span>'+
+       '<span class="pk"><button class="t" data-i="'+i+'" data-v="1">ถูก</button>'+
+       '<button class="f" data-i="'+i+'" data-v="0">ผิด</button></span>'+
+       '<span class="why">'+q.w+'</span></div>';
+  });
+  document.getElementById('list').innerHTML=h;
+  paint();
+}
+
+function fill(id,arr){
+  var el=document.getElementById(id);
+  el.innerHTML = arr.length
+    ? arr.map(function(i){return '<button class="nchip" data-r="'+i+'">'+(i+1)+'</button>';}).join('')
+    : '<span class="empty">ยังว่าง</span>';
+}
+function paint(){
+  var nT=[],nF=[],n=0;
+  cur.forEach(function(s,i){
+    var it=document.getElementById('it'+i); if(!it) return;
+    var bs=it.querySelectorAll('.pk button');
+    bs[0].classList.toggle('on',s.pick===1);
+    bs[1].classList.toggle('on',s.pick===0);
+    if(s.pick!==null){ n++; (s.pick===1?nT:nF).push(i); }
+  });
+  fill('boxT',nT); fill('boxF',nF);
+  document.getElementById('picked').textContent=n;
+  document.getElementById('barI').style.width=(n*10)+'%';
+}
+
+document.getElementById('list').addEventListener('click',function(e){
+  var b=e.target.closest('.pk button'); if(!b||done) return;
+  var i=+b.dataset.i, v=+b.dataset.v;
+  cur[i].pick = (cur[i].pick===v) ? null : v;   /* กดซ้ำ = ยกเลิก */
+  paint();
+  document.getElementById('fb').textContent='';
+});
+document.querySelector('.boxes').addEventListener('click',function(e){
+  var b=e.target.closest('.nchip'); if(!b||done) return;
+  cur[+b.dataset.r].pick=null; paint();        /* กดเลขในกล่อง = เอาออก */
+});
+
+function grade(){
+  var sc=0, tList=[], fList=[];
+  cur.forEach(function(s,i){
+    var it=document.getElementById('it'+i);
+    it.classList.add('done');
+    (s.ans?tList:fList).push(i+1);
+    if(s.pick===(s.ans?1:0)){ it.classList.add('ok'); sc++; }
+    else it.classList.add('bad');
+  });
+  done=true;
+  document.getElementById('scoreLine').innerHTML='ได้ <b>'+sc+'</b>/10 ≈ '+(sc/2).toFixed(1)+' / 5 คะแนน';
+  var fb=document.getElementById('fb');
+  fb.className='fb '+(sc>=8?'ok':'bad');
+  fb.innerHTML='เฉลย: กล่อง <b>ถูก</b> = '+(tList.join(', ')||'—')+
+               ' · กล่อง <b>ผิด</b> = '+(fList.join(', ')||'—')+
+               (sc===10?' 🎉 เต็ม!':(sc>=8?' เกือบเต็มแล้ว':' เลื่อนขึ้นไปอ่านเหตุผลใต้ข้อที่แดง'));
+}
+
+document.getElementById('check').addEventListener('click',function(){
+  if(done) return;
+  var left=cur.filter(function(s){return s.pick===null;}).length;
+  if(left){ var fb=document.getElementById('fb'); fb.className='fb bad';
+            fb.textContent='ยังเหลืออีก '+left+' ข้อที่ยังไม่ได้ลงกล่อง'; return; }
+  grade();
+});
+document.getElementById('revealAll').addEventListener('click',function(){ if(!done) grade(); });
+document.getElementById('newSet').addEventListener('click',function(){
+  done=false; round++; cur=sample(); render();
+  document.getElementById('round').textContent=round;
+  document.getElementById('scoreLine').textContent='';
+  var fb=document.getElementById('fb'); fb.textContent=''; fb.className='fb';
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+round=1; cur=sample(); render();
+
+/* ================= แท็บ 3 : ผลบวกย่อยวิ่งยังไง ================= */
+var SERS=[
+ {n:'Σ 1/i  (ฮาร์มอนิก)', f:function(i){return 1/i;}, c:0,
+  m:'โตช้ามากจนดูเหมือนจะนิ่ง แต่ไม่มีเพดาน — ที่ n = 10,000 ยังไต่ขึ้นเรื่อย ๆ นี่คือเหตุผลที่ดู a<sub>i</sub> → 0 อย่างเดียวไม่พอ'},
+ {n:'Σ 1/i^2', f:function(i){return 1/(i*i);}, c:1,
+  m:'นิ่งเร็วมาก เข้าใกล้ประมาณ 1.6449 (คือ π<sup>2</sup>/6)'},
+ {n:'Σ (1/2)^i', f:function(i){return Math.pow(0.5,i);}, c:1,
+  m:'เรขาคณิต |r| < 1 → เข้าหา 1 พอดี'},
+ {n:'Σ 1/√i', f:function(i){return 1/Math.sqrt(i);}, c:0,
+  m:'อนุกรม p ที่ p = 1/2 → ลู่ออก และโตเร็วกว่าฮาร์มอนิกอีก'},
+ {n:'Σ i^3/(i^4+1)  ← ตัวอย่างในกระดาษ', f:function(i){return i*i*i/(i*i*i*i+1);}, c:0,
+  m:'ดีกรีต่างกัน 1 พอดี → ทำตัวเหมือน 1/i → ลู่ออก ข้อนี้คือข้อที่ยกมาเป็นตัวอย่างแล้วบอกว่า "ลู่เข้า" ซึ่งเป็นข้อผิด'},
+ {n:'Σ i/(i^3+2)', f:function(i){return i/(i*i*i+2);}, c:1,
+  m:'ดีกรีต่างกัน 2 → เหมือน 1/i<sup>2</sup> → ลู่เข้า'},
+ {n:'Σ (√(i+1) − √i)', f:function(i){return Math.sqrt(i+1)-Math.sqrt(i);}, c:0,
+  m:'พจน์เล็กลงเข้าใกล้ 0 แต่หักกลบแล้วได้ √(n+1) − 1 ซึ่งโตไม่หยุด → ลู่ออก'},
+ {n:'Σ 1/(i(i+1))', f:function(i){return 1/(i*(i+1));}, c:1,
+  m:'หักกลบเหลือ 1 − 1/(n+1) → เข้าหา 1'}
+];
+var sel=document.getElementById('pickSer');
+sel.innerHTML=SERS.map(function(s,i){return '<option value="'+i+'">'+s.n+'</option>';}).join('');
+
+function runSer(){
+  var s=SERS[+sel.value], N=10000, S=0, next=1, pts=[], marks=[1,10,100,1000,10000], tab=[];
+  for(var i=1;i<=N;i++){
+    S+=s.f(i);
+    if(i>=next){ pts.push([i,S]); next*=1.12; }
+    if(marks.indexOf(i)>=0) tab.push([i,S]);
+  }
+  pts.push([N,S]);
+  var W=620,H=220,L=44,R=14,T=14,B=30, ymax=S||1;
+  var x=function(n){ return L + (Math.log(n)/Math.log(N)) * (W-L-R); };
+  var y=function(v){ return H-B - (v/ymax) * (H-B-T); };
+  var d=pts.map(function(p){return x(p[0]).toFixed(1)+','+y(p[1]).toFixed(1);}).join(' ');
+  var g='<line x1="'+L+'" y1="'+(H-B)+'" x2="'+(W-R)+'" y2="'+(H-B)+'" stroke="var(--line)" stroke-width="1.5"/>'+
+        '<line x1="'+L+'" y1="'+T+'" x2="'+L+'" y2="'+(H-B)+'" stroke="var(--line)" stroke-width="1.5"/>';
+  marks.forEach(function(n){
+    g+='<text x="'+x(n).toFixed(1)+'" y="'+(H-10)+'" font-size="11" fill="var(--muted)" text-anchor="middle">'+n+'</text>';
+  });
+  g+='<text x="4" y="'+(T+10)+'" font-size="11" fill="var(--muted)">'+ymax.toFixed(2)+'</text>'+
+     '<text x="4" y="'+(H-B)+'" font-size="11" fill="var(--muted)">0</text>';
+  if(s.c) g+='<line x1="'+L+'" y1="'+y(ymax).toFixed(1)+'" x2="'+(W-R)+'" y2="'+y(ymax).toFixed(1)+
+             '" stroke="var(--ok)" stroke-width="1.2" stroke-dasharray="5 4"/>';
+  g+='<polyline points="'+d+'" fill="none" stroke="'+(s.c?'var(--ok)':'var(--bad)')+'" stroke-width="2.5"/>';
+  document.getElementById('plot').innerHTML=g;
+
+  document.getElementById('verdict').innerHTML = s.c
+    ? '<span style="color:var(--ok)">ลู่เข้า</span> — เส้นแบนลงจนเกือบนิ่ง'
+    : '<span style="color:var(--bad)">ลู่ออก</span> — เส้นยังไต่ขึ้นเรื่อย ๆ ไม่มีเพดาน';
+  document.getElementById('sumT').innerHTML=
+    '<tr><th>n</th>'+tab.map(function(r){return '<th>'+r[0]+'</th>';}).join('')+'</tr>'+
+    '<tr><td>S<sub>n</sub></td>'+tab.map(function(r){return '<td>'+r[1].toFixed(4)+'</td>';}).join('')+'</tr>';
+  document.getElementById('serNote').innerHTML='📌 '+s.m;
+}
+sel.addEventListener('change',runSer);
+runSer();
+
+/* ================= แท็บ 4 : คลังข้อ ================= */
+function bankList(k){
+  var h='';
+  BANK.forEach(function(q){
+    if(k!=='all' && q.k!==k) return;
+    h+='<div class="item done"><span class="cl">'+E(q.t)+' &nbsp;→&nbsp; <b style="color:'+
+       (q.v?'var(--ok)':'var(--bad)')+'">'+(q.v?'ลู่เข้า':'ลู่ออก')+'</b></span>'+
+       '<span class="why">'+q.w+'</span></div>';
+  });
+  document.getElementById('bankList').innerHTML=h;
+}
+document.getElementById('filt').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b) return;
+  var all=this.querySelectorAll('button');
+  for(var i=0;i<all.length;i++) all[i].classList.toggle('on',all[i]===b);
+  bankList(b.dataset.k);
+});
+bankList('all');
+
+/* ---------- ปุ่มในการ์ด START-HERE: กระโดดไปแท็บที่บอก ---------- */
+document.addEventListener('click',function(e){
+  var b=e.target.closest('.sh .go'); if(!b) return;
+  var t=document.querySelector('[data-tab="'+b.getAttribute('data-go')+'"]');
+  if(t){ t.click(); window.scrollTo({top:0,behavior:'smooth'}); }
+});
+</script>
+<!--KIT-UI v3.7 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<script>
+/* =============================================================================
+   _kit/ui-controls.js  —  KIT UI  v1.0
+   แถบเครื่องมือกลางของ widget ทุกตัวในวอลต์
+     🌙/☀️  โหมดมืด / สว่าง   (จำค่าไว้ใน localStorage)
+     A- / A+ ปรับขนาดตัวหนังสือ 5 ระดับ (จำค่าไว้)
+     ✏️  ที่ทด — เขียนด้วยปากกา/สไตลัส แบบ GoodNotes (หลายหน้า, undo, เซฟอัตโนมัติ)
+     🧮  เครื่องคิดเลขวิทยาศาสตร์ (parser จริง ไม่ใช้ eval)
+
+   ── วิธีใช้ ────────────────────────────────────────────────────────────────
+   ห้ามแก้โค้ดนี้ในไฟล์ widget!  แก้ที่ไฟล์นี้ไฟล์เดียว แล้วสั่ง:
+       pwsh -File _kit/apply-ui.ps1
+   สคริปต์จะฝัง/อัปเดตบล็อก KIT-UI (คั่นด้วย HTML comment) ในทุก widget ให้เอง
+   (ฝังแบบ inline เพื่อให้ยังเป็น "ไฟล์เดียวจบ" ส่งเพื่อนทางไลน์/เปิดออฟไลน์ได้)
+
+   !! ห้ามพิมพ์ลำดับอักขระเปิด-HTML-comment หรือ ปิด-script-tag ลงในไฟล์นี้เด็ดขาด
+      เพราะจะทำให้ตัวแยกวิเคราะห์ HTML หลุดออกจากบล็อก script แล้วหน้าเว็บพัง
+
+   ── เปิด/ปิดเครื่องมือรายไฟล์ ─────────────────────────────────────────────
+   ใส่แอตทริบิวต์ที่ tag body:  data-tools="pen,calc"  = บังคับเปิด
+                              data-tools="none"      = ปิดทั้งคู่ (เหลือธีม+ขนาดอักษร)
+   ไม่ใส่เลย = เปิดอัตโนมัติเมื่อ data-subject เป็น math / physics / chem
+              หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
+   ============================================================================= */
+(function(){
+if(window.__KITUI__) return; window.__KITUI__='3.7';   /* 3.7 = ปุ่มถาม AI เปิดเป็น "แผงข้าง" ไม่เด้งออกจากหน้า (site/ask-panel.js) · 3.6 = แถบพื้นหลังใต้ปุ่มลอย (กันเนื้อหาไหลผ่านช่องเหนือแท็บ) · 3.5 = tour.js · 3.4 = feedback.js */   /* เดิม 3.3 = ส่ง ?from= ไปด้วย ปุ่มกลับในหน้าถามจะได้กลับหน้าเดิม ไม่ใช่หน้ารวม · 3.2 = ปุ่ม 🔎 ถาม AI · 3.1 = ขยายปุ่มกลับ */
+
+/* ---------- helper ---------- */
+const D=document, R=D.documentElement;
+const get=k=>{try{return localStorage.getItem('kitui-'+k)}catch(e){return null}};
+const set=(k,v)=>{try{localStorage.setItem('kitui-'+k,v)}catch(e){}};
+const el=(t,c,h)=>{const e=D.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
+
+/* =============================================================================
+   1) สไตล์: โทเคนโหมดมืด + หน้าตาแถบเครื่องมือ/แผง
+   ============================================================================= */
+const CSS=`
+/* ===== DARK TOKENS (คู่กับ _kit/design-tokens.css) ===== */
+:root[data-theme="dark"]{
+  --bg:#0f172a;--ink:#e5e9f0;--muted:#94a3b8;--line:#334155;--card:#1b2536;--soft:#151e2e;
+  --shadow:0 1px 4px rgba(0,0,0,.45);--ok:#34d399;--bad:#f87171;
+  --warn-bg:#33230f;--warn-bd:#f97316;--tip-bg:#0f2b22;--tip-bd:#10b981;
+  --info-bg:#132840;--info-bd:#60a5fa;--steps-bg:#2a2410;--steps-bd:#a16207;--steps-dash:#4d4218;
+  --hot-bg:#45191c;--hot-ink:#fca5a5;--badge-bg:#3c3512;--badge-ink:#fde68a;
+}
+:root[data-theme="dark"] body{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f172a}
+:root[data-theme="dark"] body[data-subject="physics"]{--accent:#818cf8;--accent-head:#c7d2fe;--accent-ink:#a5b4fc;--accent-soft:#1e1b4b;--accent-bd:#3f3a8f;--accent-chip:#2b2870;--accent-ghost:#4f46e5;--bg:#0f1220}
+:root[data-theme="dark"] body[data-subject="bio"]{--accent:#4ade80;--accent-head:#bbf7d0;--accent-ink:#86efac;--accent-soft:#0f2a1a;--accent-bd:#256b41;--accent-chip:#14532d;--accent-ghost:#15803d;--bg:#0d1912}
+:root[data-theme="dark"] body[data-subject="chem"]{--accent:#fb923c;--accent-head:#fed7aa;--accent-ink:#fdba74;--accent-soft:#2b1a0c;--accent-bd:#8a3d12;--accent-chip:#6d2c10;--accent-ghost:#c2410c;--bg:#1a130c}
+:root[data-theme="dark"] body[data-subject="christ"]{--accent:#a78bfa;--accent-head:#ddd6fe;--accent-ink:#c4b5fd;--accent-soft:#241a3d;--accent-bd:#5b21b6;--accent-chip:#4c1d95;--accent-ghost:#6d28d9;--bg:#16121f}
+:root[data-theme="dark"] body[data-subject="islam"]{--accent:#2dd4bf;--accent-head:#99f6e4;--accent-ink:#5eead4;--accent-soft:#0d2b28;--accent-bd:#12615a;--accent-chip:#134e4a;--accent-ghost:#0f766e;--bg:#0c1917}
+:root[data-theme="dark"] body[data-subject="history"]{--accent:#fbbf24;--accent-head:#fde68a;--accent-ink:#fcd34d;--accent-soft:#2a1f0a;--accent-bd:#8a4b0c;--accent-chip:#6d3a0a;--accent-ghost:#b45309;--bg:#191509}
+:root[data-theme="dark"] body[data-subject="math"]{--accent:#38bdf8;--accent-head:#bae6fd;--accent-ink:#7dd3fc;--accent-soft:#0c2434;--accent-bd:#0b5a80;--accent-chip:#0c4a6e;--accent-ghost:#0369a1;--bg:#0b1620}
+:root[data-theme="dark"] body[data-subject="eng"]{--accent:#f472b6;--accent-head:#fbcfe8;--accent-ink:#f9a8d4;--accent-soft:#2e1122;--accent-bd:#8d1748;--accent-chip:#731839;--accent-ghost:#be185d;--bg:#1c0f16}
+:root[data-theme="dark"] body[data-subject="thai"]{--accent:#f87171;--accent-head:#fecaca;--accent-ink:#fca5a5;--accent-soft:#2d1414;--accent-bd:#8d2020;--accent-chip:#7f1d1d;--accent-ghost:#b91c1c;--bg:#1a0f0f}
+:root[data-theme="dark"] body[data-subject="hindu"]{--accent:#facc15;--accent-head:#fef08a;--accent-ink:#fde047;--accent-soft:#2a2408;--accent-bd:#7a6410;--accent-chip:#5c4b0c;--accent-ghost:#a16207;--bg:#191708}
+:root[data-theme="dark"] img,:root[data-theme="dark"] .svg-box{filter:brightness(.92)}
+/* ช่องกรอก/ดรอปดาวน์ที่ widget เก่ากำหนดพื้นขาวตายตัวไว้ */
+:root[data-theme="dark"] select,:root[data-theme="dark"] textarea,
+:root[data-theme="dark"] input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=color])
+{background-color:var(--soft);color:var(--ink);border-color:var(--line)}
+
+/* ===== แถบเครื่องมือลอย ===== */
+#kitui-bar{position:fixed;right:10px;bottom:10px;z-index:99990;display:flex;gap:6px;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);font-family:var(--font,system-ui);max-width:calc(100vw - 20px)}
+#kitui-bar button{border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;
+  font-size:15px;line-height:1;padding:8px;border-radius:999px;min-width:38px;min-height:38px;display:flex;
+  align-items:center;justify-content:center;font-weight:700}
+#kitui-bar button:hover{background:var(--soft)}
+#kitui-bar button:active{transform:scale(.93)}
+#kitui-bar button.on{background:var(--accent);color:#fff}
+#kitui-bar .kitui-sep{width:1px;height:22px;background:var(--line);flex:0 0 1px}
+#kitui-bar .kitui-fs{font-size:11px;color:var(--muted);min-width:34px;text-align:center;font-weight:700}
+#kitui-bar.hidden > *:not(#kitui-grip):not(#kitui-home){display:none}
+#kitui-grip{font-size:17px}
+
+/* ===== แผงลอย (ที่ทด / เครื่องคิดเลข) ===== */
+.kitui-sheet{position:fixed;left:0;right:0;bottom:0;z-index:99991;background:var(--card);
+  border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -6px 26px rgba(0,0,0,.22);
+  display:none;flex-direction:column;font-family:var(--font,system-ui);color:var(--ink);
+  height:52vh;max-height:92vh;min-height:180px}
+.kitui-sheet.open{display:flex}
+.kitui-sheet.full{height:100vh;border-radius:0}
+.kitui-head{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--line);
+  flex-wrap:wrap;touch-action:none;cursor:ns-resize}
+.kitui-head b{font-size:.9rem;color:var(--accent-ink);margin-right:2px;white-space:nowrap}
+.kitui-head button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:8px;
+  padding:6px 9px;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:34px;font-weight:600}
+.kitui-head button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.kitui-head .kitui-spacer{flex:1}
+.kitui-sw{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;min-height:0}
+.kitui-sw.on{border-color:var(--ink);transform:scale(1.12)}
+.kitui-padwrap{flex:1;position:relative;overflow:hidden;background:var(--soft)}
+.kitui-padwrap canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+:root[data-theme="dark"] .kitui-padwrap{background:#0c1220}
+
+/* ===== เครื่องคิดเลข ===== */
+#kitui-calc{height:auto;max-height:90vh}
+.kitui-disp{padding:8px 12px;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);
+  border-bottom:1px solid var(--line)}
+.kitui-disp .ex{font-size:.95rem;color:var(--muted);min-height:1.3em;word-break:break-all}
+.kitui-disp .rs{font-size:1.6rem;font-weight:700;color:var(--accent-ink);word-break:break-all}
+.kitui-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:7px}
+.kitui-keys button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:9px;
+  font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:44px;padding:2px}
+.kitui-keys button:active{transform:scale(.95)}
+.kitui-keys button.fn{font-size:.8rem;color:var(--accent-ink)}
+.kitui-keys button.op{background:var(--accent-soft);color:var(--accent-ink)}
+.kitui-keys button.eq{background:var(--accent);color:#fff;grid-row:span 2}
+.kitui-keys button.del{background:var(--hot-bg);color:var(--hot-ink)}
+.kitui-keys button.w3{grid-column:span 3}
+@media(max-width:420px){.kitui-keys button{font-size:.88rem;min-height:40px}.kitui-keys button.fn{font-size:.72rem}}
+@media(min-width:760px){
+  .kitui-sheet{left:auto;right:12px;bottom:12px;width:430px;border-radius:16px;border:1px solid var(--line)}
+  .kitui-sheet.full{left:0;right:0;width:auto;height:100vh;border-radius:0}
+  #kitui-pad{width:560px}
+}
+#kitui-nav{position:fixed;top:8px;left:8px;z-index:99992;display:flex;gap:8px;align-items:center}
+#kitui-ask{border:1.5px solid var(--accent);background:var(--accent);color:#fff;border-radius:999px;
+  padding:0 16px 0 13px;height:44px;font-family:inherit;font-size:15.5px;font-weight:700;cursor:pointer;
+  box-shadow:0 3px 14px rgba(15,23,42,.22);line-height:1;display:flex;align-items:center;gap:6px;
+  text-decoration:none;white-space:nowrap}
+#kitui-ask .ar{font-size:18px;line-height:1}
+#kitui-ask:active{transform:scale(.95)}
+#kitui-back{display:flex;align-items:center;gap:7px;
+  border:1.5px solid var(--accent-bd,var(--line));background:var(--card);color:var(--ink);
+  border-radius:999px;padding:0 18px 0 14px;height:44px;font-family:inherit;font-size:15.5px;
+  font-weight:700;cursor:pointer;box-shadow:0 3px 14px rgba(15,23,42,.22);line-height:1}
+#kitui-back .ar{font-size:20px;line-height:1;margin-top:-1px}
+#kitui-back{white-space:nowrap}
+#kitui-back:active{transform:scale(.95)}
+#kitui-back:hover{background:var(--soft)}
+/* แท็บเป็น sticky top:0 ถ้าไม่ดันลงมาปุ่มจะทับแท็บแรกจนกดไม่ได้
+   ตัวเลขนี้ผูกกับความสูงปุ่ม (8 บน + 44 ปุ่ม + ระยะห่าง) แก้ความสูงปุ่มต้องแก้ตรงนี้ด้วย */
+body.kitui-hasback .tabs{top:60px}
+body.kitui-hasback .wrap{padding-top:56px}
+/* พื้นหลังทึบใต้ปุ่มลอย — พอดันแท็บ sticky ลงมา 60px จะเกิดช่องว่างเหนือมัน
+   แล้วเนื้อหาที่เลื่อนผ่านช่องนั้นจะโผล่ให้เห็น ดูเหมือนมีแถบลอยซ้อนกันสองชั้น
+   ใช้ element จริงไม่ใช่ body::before เพราะหน้า Unit18 ใช้ ::before ของตัวเองอยู่แล้ว */
+#kitui-topbg{position:fixed;top:0;left:0;right:0;height:60px;background:var(--bg);
+  z-index:99988;pointer-events:none}
+@media print{#kitui-bar,.kitui-sheet,#kitui-back{display:none!important}}
+`;
+const st=el('style'); st.id='kitui-style'; st.textContent=CSS; D.head.appendChild(st);
+
+/* -----------------------------------------------------------------------------
+   1.5) ซ่อมโหมดมืดให้ widget รุ่นเก่า
+   widget หลายไฟล์เขียนสีพื้นตายตัวไว้ (background:#fff, #ecfdf5, #fef2f2 ฯลฯ)
+   พอสลับเป็นโหมดมืด ตัวหนังสือจะกลายเป็นสีอ่อนบนพื้นอ่อน = อ่านไม่ออก
+   แก้แบบทั่วไป: ไล่อ่านทุกกฎ CSS ในหน้า หากพื้นหลัง "สว่างมาก" ให้สร้างกฎทับ
+   เฉพาะตอนโหมดมืด โดยคงเฉดสีเดิมไว้แต่ทำให้เข้ม (ไม่ต้องไปแก้ทีละไฟล์)
+----------------------------------------------------------------------------- */
+/* สีพาสเทลสว่าง -> สีเข้มที่ยังคง "เฉดเดิม" ไว้ (เขียว=ถูก / แดง=ผิด ต้องยังแยกออก)
+   ทำผ่าน HSL: คง H, ดัน S ขึ้นให้ยังเห็นสี, กด L ลงให้เข้ม */
+function darken(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  let h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; }
+  /* ⚠️ ห้ามใช้ saturation ของ HSL ตรง ๆ ตัดสิน: ที่ความสว่างเกือบ 1 ตัวหารจะเล็กมาก
+     ทำให้สีที่แทบเป็นสีขาว (เช่น #fdf8f4) ได้ค่าอิ่มสีสูงลิ่ว แล้วกลายเป็นสีน้ำตาลจัดตอนกดให้เข้ม
+     ให้ดูจาก "ช่วงห่างของแม่สี" (chroma) แทน แล้วแปลงเป็นความอิ่มสีแบบไล่ระดับ */
+  const s = Math.min(.45, Math.max(.08, d*4));
+  const l = d<.02 ? .13 : .17;                       /* เทา/ขาวล้วนให้เข้มกว่าสีนิดหน่อย */
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+function darkFix(){
+  const out=[], seen=new Set();
+  const take=r=>{
+    if(!r.style || !r.selectorText) return;
+    if(r.selectorText.indexOf('kitui')>-1) return;               /* ของเราเองใช้ token อยู่แล้ว */
+    const bg=r.style.backgroundColor;
+    if(!bg || bg.indexOf('var(')>-1) return;
+    const m=bg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
+    if(!m) return;
+    if(m[4]!==undefined && +m[4]<0.6) return;                    /* โปร่งใสอยู่แล้ว ปล่อยไว้ */
+    const cr=+m[1], cg=+m[2], cb=+m[3];
+    if((0.2126*cr+0.7152*cg+0.0722*cb)/255 < 0.82) return;       /* ไม่สว่างพอ ไม่ต้องยุ่ง */
+    const key=r.selectorText+'|'+bg; if(seen.has(key)) return; seen.add(key);
+    const repl = (cr>250&&cg>250&&cb>250) ? 'var(--card)' : darken(cr,cg,cb);
+    let css='background-color:'+repl;
+    /* ถ้ากฎนั้นกำหนดสีตัวอักษรเข้มไว้ด้วย ต้องพลิกเป็นสีอ่อน ไม่งั้นดำบนดำ */
+    const fg=r.style.color, fm=fg&&fg.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if(fm && (0.2126*+fm[1]+0.7152*+fm[2]+0.0722*+fm[3])/255 < 0.5) css+=';color:var(--ink)';
+    out.push(':root[data-theme="dark"] '+r.selectorText+'{'+css+'}');
+  };
+  /* ⚠️ กฎธรรมดาก็มี .cssRules เป็น list "ว่าง" ได้ (รองรับ CSS nesting)
+        ห้ามใช้ if(r.cssRules) แล้ว continue ไม่งั้นข้ามทุกกฎ */
+  const visit=rules=>{
+    for(let i=0;i<rules.length;i++){
+      const r=rules[i];
+      if(r.selectorText) take(r);
+      if(r.cssRules && r.cssRules.length) visit(r.cssRules);     /* @media / @supports / nesting */
+    }
+  };
+  for(let i=0;i<D.styleSheets.length;i++){
+    let rr; try{ rr=D.styleSheets[i].cssRules; }catch(e){ continue; }   /* ข้ามชีตข้ามโดเมน */
+    if(rr) visit(rr);
+  }
+  if(out.length){ const s=el('style'); s.id='kitui-darkfix'; s.textContent=out.join('\n'); D.head.appendChild(s); }
+  return out.length;
+}
+try{ window.__KITUI_DARKFIX__ = (D.body.getAttribute('data-kit-theme')==='off') ? 'locked' : darkFix(); }
+catch(e){ window.__KITUI_DARKFIX__='err:'+e.message; }
+
+/* darkFix ข้างบนซ่อมได้เฉพาะสีที่เขียนตายตัวในไฟล์ CSS
+   แต่ยังมีอีกกรณี: widget ใช้ตัวแปรธีมเป็น "พื้นหลัง" เช่น background:var(--accent-head)
+   ซึ่งในโหมดมืดตัวแปรนั้นกลายเป็นสีอ่อน (เพราะปกติใช้เป็นสีหัวข้อ) -> อ่อนบนอ่อน
+   จับกรณีนี้ตอนรันจริง: ถ้าพื้นหลัง "สว่าง" และตัวหนังสือก็ "สว่าง" = อ่านไม่ออกแน่นอน ให้กดพื้นให้เข้ม */
+const rgbOf=c=>{const m=c&&c.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null;};
+const lumOf=v=>v?(0.2126*v[0]+0.7152*v[1]+0.0722*v[2])/255:null;
+/* ตรงข้ามกับ darken(): ดึงสีตัวอักษรเข้ม ๆ ให้สว่างขึ้นแต่คงเฉดเดิม
+   (เช่น สูตรสีน้ำเงินเข้ม -> ฟ้าอ่อน ไม่ใช่กลายเป็นขาวหมดจนแยกไม่ออก) */
+function lighten(cr,cg,cb){
+  const r=cr/255,g=cg/255,b=cb/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  if(d<0.04) return 'var(--ink)';                    /* เทา/ดำล้วน -> ใช้สีตัวอักษรของธีม */
+  let h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60;
+  const l0=(mx+mn)/2, s0=d/(1-Math.abs(2*l0-1));
+  const s=Math.min(.92,Math.max(.55,s0)), l=.72;
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m2=l-c/2;
+  let rr,gg,bb;
+  if(h<60){rr=c;gg=x;bb=0}else if(h<120){rr=x;gg=c;bb=0}else if(h<180){rr=0;gg=c;bb=x}
+  else if(h<240){rr=0;gg=x;bb=c}else if(h<300){rr=x;gg=0;bb=c}else{rr=c;gg=0;bb=x}
+  return 'rgb('+Math.round((rr+m2)*255)+','+Math.round((gg+m2)*255)+','+Math.round((bb+m2)*255)+')';
+}
+const SKIP={CANVAS:1,IMG:1,VIDEO:1,SVG:1,IFRAME:1,PICTURE:1,OBJECT:1};
+const OBS_OPT={childList:true,subtree:true,attributes:true,attributeFilter:['class','style']};
+let patched=[], obs=null;
+function elementFix(){
+  /* ⚠️ ตัวเราเองแก้ inline style => MutationObserver จะเด้งกลับมาเรียกซ้ำไม่รู้จบ (กินแบตมือถือ)
+        ต้องปลดการเฝ้าดูระหว่างทำงาน แล้วค่อยต่อกลับ */
+  if(obs) obs.disconnect();
+  try{ elementFixCore(); } finally { if(obs) obs.observe(D.body,OBS_OPT); }
+}
+function elementFixCore(){
+  if(D.body.getAttribute('data-kit-theme')==='off') return;   /* หน้าที่ล็อกธีมไว้ ห้ามไปยุ่งสี */
+  /* ⚠️ ห้ามลบสีเดิมทิ้งทุกครั้งที่สแกน! หน้าที่มี transition จะเริ่มไล่สีใหม่ทุกๆ รอบ = กะพริบไม่หยุด
+     ตอนอยู่โหมดมืดให้ "ทาเฉพาะตัวที่ยังสว่าง" เท่านั้น ตัวที่ทาไปแล้วจะคำนวณได้ค่าเข้ม -> ถูกข้ามเอง
+     จะลบสีที่เราทาไว้ ก็ต่อเมื่อสลับกลับเป็นโหมดสว่างเท่านั้น */
+  if(R.getAttribute('data-theme')!=='dark'){
+    patched.forEach(e=>{ e.style.removeProperty('background-color'); e.style.removeProperty('color'); });
+    patched=[];
+    return;
+  }
+  /* ไล่ทั้งหน้า: อะไรที่พื้นยัง "สว่าง" อยู่ในโหมดมืด ให้กดให้เข้ม (คงเฉดสีเดิม)
+     ครอบคลุมทั้งกรณีสีเขียนตายตัว, สีจากตัวแปรธีม, และไฟล์ CSS แยกที่อ่านกฎไม่ได้ */
+  /* ต้องรวม html/body ด้วย บาง widget ตั้งพื้นหลังหน้าไว้ที่สองตัวนี้ (querySelectorAll ไม่นับ) */
+  const all=[R, D.body].concat([].slice.call(D.body.querySelectorAll('*')));
+  for(let i=0;i<all.length;i++){
+    const e=all[i];
+    if(e.id&&e.id.indexOf('kitui')===0) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(SKIP[e.tagName]) continue;                      /* พื้นที่วาดภาพ/สื่อ อย่าไปยุ่ง */
+    const s=getComputedStyle(e);
+    const bg=rgbOf(s.backgroundColor);
+    if(!bg || bg[3]<0.6) continue;                     /* โปร่งใส = เห็นพื้นข้างหลังอยู่แล้ว */
+    if(lumOf(bg)<0.72) continue;                       /* เข้มพออยู่แล้ว */
+    /* ต้องใส่ important เพราะบาง widget ประกาศ background ... !important ไว้ ซึ่งชนะ inline ธรรมดา */
+    e.style.setProperty('background-color', darken(bg[0],bg[1],bg[2]), 'important');
+    const fg=rgbOf(s.color);
+    if(fg && lumOf(fg)<0.5) e.style.setProperty('color','var(--ink)','important');  /* ตัวหนังสือเข้ม -> พลิกเป็นอ่อน */
+    patched.push(e);
+  }
+  /* รอบสอง: ตัวอักษรสีเข้มที่ "ตกอยู่บนพื้นเข้ม" (พื้นมาจาก element แม่ที่เพิ่งถูกกดให้มืด)
+     ถ้าไม่พลิกด้วย จะกลายเป็นเข้มบนเข้ม อ่านไม่ออก — คงเฉดสีเดิมไว้ให้ยังแยกความหมายได้ */
+  const bgCache=new Map();
+  const effBg=n=>{
+    for(let p=n;p;p=p.parentElement){
+      if(bgCache.has(p)) return bgCache.get(p);
+      const b=rgbOf(getComputedStyle(p).backgroundColor);
+      if(b && b[3]>0.5){ bgCache.set(n,b); return b; }
+    }
+    return null;
+  };
+  for(let i=2;i<all.length;i++){
+    const e=all[i];
+    if(SKIP[e.tagName] || (e.id&&e.id.indexOf('kitui')===0)) continue;
+    if(e.closest&&(e.closest('#kitui-bar')||e.closest('.kitui-sheet'))) continue;
+    if(e.style.color) continue;                         /* จัดการไปแล้วในรอบแรก */
+    if(!e.textContent || !e.textContent.trim()) continue;
+    const fg=rgbOf(getComputedStyle(e).color);
+    if(!fg || lumOf(fg)>=0.45) continue;                 /* ตัวอักษรสว่างอยู่แล้ว */
+    const bg=effBg(e);
+    if(!bg || lumOf(bg)>=0.5) continue;                  /* พื้นยังสว่าง อ่านออกอยู่ */
+    e.style.setProperty('color', lighten(fg[0],fg[1],fg[2]), 'important');
+    patched.push(e);
+  }
+}
+let efT=0;
+const scheduleFix=()=>{ clearTimeout(efT); efT=setTimeout(elementFix,220); };
+try{
+  obs=new MutationObserver(scheduleFix);
+  obs.observe(D.body,OBS_OPT);
+}catch(e){}
+
+/* =============================================================================
+   2) ธีม + ขนาดตัวอักษร
+   ============================================================================= */
+const FS=[.85,1,1.15,1.3,1.5], FSNAME=['เล็กสุด','เล็ก','ปกติ','ใหญ่','ใหญ่สุด'];
+let fsIdx=parseInt(get('fs')); if(isNaN(fsIdx)||fsIdx<0||fsIdx>4) fsIdx=1;
+let theme=get('theme') || (matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+
+/* หน้าที่ออกแบบธีมมาเองครบแล้ว (เช่น "หนังสือทบทวน" พื้นเข้มทั้งเล่ม) ให้ปิดระบบธีมของ KIT UI
+   ไม่งั้นโทเคน --bg/--ink ของเราจะไปทับสีที่หน้านั้นตั้งไว้ แล้วหน้าเพี้ยน
+   ใส่ที่ tag body:  data-kit-theme="off"   (ปุ่มปรับขนาดตัวอักษรยังใช้ได้ตามปกติ) */
+const themeLock = D.body.getAttribute('data-kit-theme')==='off';
+
+function applyTheme(){
+  if(themeLock) return;
+  R.setAttribute('data-theme',theme);
+  R.style.colorScheme = theme==='dark'?'dark':'light';   /* ให้ select/input เป็นสีเข้มด้วย */
+  const b=D.getElementById('kitui-theme'); if(b){b.textContent=theme==='dark'?'☀️':'🌙';b.title=theme==='dark'?'สลับเป็นโหมดสว่าง':'สลับเป็นโหมดมืด';}
+  set('theme',theme);
+  clearTimeout(efT);                                   /* ยกเลิกคิวเก่าที่ค้างจากธีมก่อนหน้า */
+  if(typeof elementFix==='function') elementFix();
+  /* ⚠️ ห้ามอ้างถึงตัวแปรของส่วน "ที่ทด" ตรงนี้!
+     applyTheme() ถูกเรียกก่อนที่ `let pad` ในส่วนที่ 4 จะทำงาน → ชน temporal dead zone
+     แล้ว ReferenceError จะทำให้สคริปต์ตายทั้งก้อน (ปุ่มขนาดอักษร/ที่ทด/เครื่องคิดเลขหายหมด)
+     ใช้วิธียิง event แทน ใครสนใจค่อยไปดักฟังเอง */
+  try{ D.dispatchEvent(new CustomEvent('kitui-theme')); }catch(e){}
+}
+function applyFS(){
+  R.style.fontSize=(16*FS[fsIdx])+'px';
+  const l=D.getElementById('kitui-fslabel'); if(l)l.textContent=FSNAME[fsIdx];
+  set('fs',fsIdx);
+}
+
+/* =============================================================================
+   3) แถบเครื่องมือ
+   ============================================================================= */
+const subj=(D.body.getAttribute('data-subject')||'').toLowerCase();
+/* หลาย widget ไม่ได้ใส่ data-subject ที่ <body> → เดาจากโฟลเดอร์ที่ไฟล์อยู่ด้วย */
+const inPath=/\/(physics|math|chemist)\//i.test(decodeURIComponent(location.pathname));
+const tAttr=D.body.getAttribute('data-tools');
+const wantTools = tAttr!=null ? tAttr.toLowerCase()
+                : ((['math','physics','chem'].includes(subj) || inPath) ? 'pen,calc' : '');
+const hasPen  = wantTools.includes('pen');
+const hasCalc = wantTools.includes('calc');
+
+/* ปุ่มกลับหน้าหลัก — โผล่เฉพาะตอนเปิดจากเว็บห้องติว (พาธมี /app/ อยู่)
+   เปิดไฟล์จากเครื่องตรง ๆ จะไม่มีปุ่มนี้ เพราะไม่มีหน้าหลักให้กลับ ลิงก์จะเสียเปล่า ๆ */
+const homeHref = (()=>{
+  const attr = D.body.getAttribute('data-home');     /* หน้าไหนไม่ได้อยู่ใต้ /app/ ให้ระบุเองได้ */
+  if(attr) return attr;
+  try{
+    const p = decodeURIComponent(location.pathname);
+    const i = p.indexOf('/app/');
+    return i < 0 ? null : p.slice(0, i+1) + 'index.html';
+  }catch(e){ return null; }
+})();
+
+const bar=el('div'); bar.id='kitui-bar';
+bar.innerHTML =
+  `<button id="kitui-grip" title="ย่อ/ขยายแถบเครื่องมือ">⚙️</button>`+
+  (homeHref ? `<button id="kitui-home" title="กลับหน้าหลัก">🏠</button><span class="kitui-sep"></span>` : '')+
+  (themeLock ? '' : `<button id="kitui-theme" title="สลับโหมดมืด/สว่าง">🌙</button><span class="kitui-sep"></span>`)+
+  `<button id="kitui-fsdown" title="ตัวหนังสือเล็กลง">A−</button>`+
+  `<span class="kitui-fs" id="kitui-fslabel">ปกติ</span>`+
+  `<button id="kitui-fsup" title="ตัวหนังสือใหญ่ขึ้น">A+</button>`+
+  (hasPen ? `<span class="kitui-sep"></span><button id="kitui-penbtn" title="ที่ทด (เขียนด้วยปากกา)">✏️</button>`:'')+
+  (hasCalc? `<button id="kitui-calcbtn" title="เครื่องคิดเลขวิทยาศาสตร์">🧮</button>`:'');
+D.body.appendChild(bar);
+
+if(!themeLock) D.getElementById('kitui-theme').onclick=()=>{theme=theme==='dark'?'light':'dark';applyTheme();};
+D.getElementById('kitui-fsup').onclick=()=>{if(fsIdx<4){fsIdx++;applyFS();}};
+D.getElementById('kitui-fsdown').onclick=()=>{if(fsIdx>0){fsIdx--;applyFS();}};
+D.getElementById('kitui-grip').onclick=()=>bar.classList.toggle('hidden');
+if(homeHref) D.getElementById('kitui-home').onclick=()=>{ location.href=homeHref; };
+
+/* ปุ่มกลับแบบลอยมุมซ้ายบน — มีคำว่า "กลับ" เต็ม ๆ ไม่ใช่ไอคอนเปล่า
+   (ของเดิมเป็น 🏠 เล็ก ๆ ปนอยู่ในแถบมุมขวาล่าง เพื่อนหาไม่เจอเลยไม่กด) */
+if(homeHref){
+  const back=el('button'); back.id='kitui-back';
+  back.type='button'; back.title='กลับหน้ารวมวิชา';
+  back.innerHTML='<span class="ar">←</span><span>กลับ</span>';
+  back.onclick=()=>{ location.href=homeHref; };
+  const nav=el('div'); nav.id='kitui-nav';
+  nav.appendChild(back);
+
+  /* ปุ่มถาม AI — เจ้าของทักว่าไม่มีใครย้อนกลับไปหน้ารวมเพื่อกดถาม ต้องถามจากหน้าที่เรียนอยู่ได้เลย
+     ส่งวิชาของหน้านี้ไปด้วย (?s=) หน้าถามจะได้เลือกวิชาให้เอง ไม่ต้องมากดซ้ำ
+     v3.7: site/ask-panel.js จะมาดักปุ่มนี้ให้เปิดเป็น "แผงข้าง" แทนการเด้งออกจากหน้า
+     ถ้าไฟล์นั้นโหลดไม่ได้ ปุ่มก็ยังเป็นลิงก์ธรรมดาใช้ได้เหมือนเดิม (ไม่พังทั้งคู่) */
+  const onAsk = /(^|\/)ask\.html$/.test(location.pathname);
+  if(!onAsk){
+    const subj = D.body.getAttribute('data-subject') || '';
+    const a=el('a'); a.id='kitui-ask';
+    /* ส่งหน้าปัจจุบันไปด้วย หน้าถามจะได้ทำปุ่มกลับให้ย้อนมาที่หน้านี้ ไม่ใช่เด้งไปหน้ารวม */
+    const q=[];
+    if(subj) q.push('s='+encodeURIComponent(subj));
+    q.push('from='+encodeURIComponent(location.pathname));
+    a.href = homeHref.replace(/index\.html$/,'ask.html') + '?' + q.join('&');
+    a.title='ถาม AI เรื่องที่กำลังอ่านอยู่';
+    a.innerHTML='<span class="ar">🔎</span><span>ถาม AI</span>';
+    nav.appendChild(a);
+  }
+  const tb=el('div'); tb.id='kitui-topbg'; D.body.appendChild(tb);
+  D.body.appendChild(nav);
+  D.body.classList.add('kitui-hasback');
+
+  /* ปุ่ม 💬 ส่งความเห็น — เก็บโค้ดไว้ที่ site/feedback.js ไฟล์เดียว ไม่ฝังซ้ำใน 200 กว่าไฟล์
+     ⚠️ เดิมคิดจาก homeHref โดยสมมติว่าลงท้าย index.html เสมอ (ตัด 10 ตัว)
+        แต่หน้า ask.html ที่มากับ ?from= จะตั้ง data-home เป็น "พาธของหน้าที่มา" ซึ่งไม่ได้ลงท้ายแบบนั้น
+        ตัด 10 ตัวจึงได้พาธเพี้ยน กลายเป็น ".../ชื่อไฟล์.hfeedback.js" แล้วสคริปต์โหลดไม่ขึ้นเงียบ ๆ
+        (เจอ 2026-09-05 ตอนทำแผงถาม AI) → คิดรากเว็บจาก location เองแทน ไม่พึ่ง data-home */
+  const rootURL = (function(){
+    try{
+      const p = decodeURIComponent(location.pathname);
+      const i = p.indexOf('/app/');
+      if(i >= 0) return p.slice(0, i+1);            /* หน้าเรียนใต้ /app/ -> รากเว็บ */
+    }catch(e){}
+    return location.pathname.replace(/[^/]*$/, '');  /* หน้าอื่น (เช่น ask.html ที่ราก) */
+  })();
+  /* ask-panel.js ไว้หน้าสุด จะได้ผูกปุ่ม "ถาม AI" ให้เปิดแผงได้เร็วที่สุด
+     ถ้าผู้ใช้กดก่อนสคริปต์มาถึง ปุ่มก็ยังเป็นลิงก์ธรรมดา เด้งไปหน้าถามเต็มจอ ไม่พัง */
+  ['ask-panel.js','feedback.js','tour.js'].forEach(function(n){
+    const s=el('script'); s.src=rootURL+n; s.defer=true; D.body.appendChild(s);
+  });
+}
+applyTheme(); applyFS();
+
+/* ปิดแผงด้วยปุ่ม Esc */
+D.addEventListener('keydown',e=>{ if(e.key==='Escape') D.querySelectorAll('.kitui-sheet.open').forEach(s=>s.classList.remove('open')); });
+
+/* ลากหัวแผงเพื่อปรับความสูง */
+function makeResizable(sheet){
+  const head=sheet.querySelector('.kitui-head'); let y0=0,h0=0,drag=false;
+  head.addEventListener('pointerdown',e=>{
+    if(e.target.closest('button'))return;
+    drag=true;y0=e.clientY;h0=sheet.getBoundingClientRect().height;head.setPointerCapture(e.pointerId);
+  });
+  head.addEventListener('pointermove',e=>{
+    if(!drag)return;
+    const h=Math.min(innerHeight*.95,Math.max(180,h0+(y0-e.clientY)));
+    sheet.classList.remove('full'); sheet.style.height=h+'px';
+    if(sheet.id==='kitui-pad') fitPad();
+  });
+  head.addEventListener('pointerup',e=>{drag=false;try{head.releasePointerCapture(e.pointerId)}catch(x){}});
+}
+
+/* =============================================================================
+   4) ที่ทด — ปากกา / ปากกาเน้น / ยางลบ  หลายหน้า  เซฟอัตโนมัติ
+   ============================================================================= */
+let pad,padCv,padCx,pages=[[]],pg=0,undone=[],histo=[];
+let tool='pen',color='#111827',width=2.4,penSeen=0;
+const COLORS=['#111827','#2563eb','#dc2626','#16a34a','#f59e0b'];
+const PADKEY='pad-'+location.pathname.split('/').pop();
+
+function buildPad(){
+  pad=el('div','kitui-sheet'); pad.id='kitui-pad';
+  pad.innerHTML=
+   `<div class="kitui-head">
+      <b>✏️ ที่ทด</b>
+      <button data-t="pen" class="on">🖊️</button>
+      <button data-t="hl">🖍️</button>
+      <button data-t="er">🧽</button>
+      ${COLORS.map((c,i)=>`<button class="kitui-sw${i===0?' on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}
+      <button data-w="1.2">เส้นบาง</button><button data-w="2.4" class="on">กลาง</button><button data-w="4.5">หนา</button>
+      <span class="kitui-spacer"></span>
+      <button id="kitui-undo">↶</button><button id="kitui-redo">↷</button>
+      <button id="kitui-pgprev">‹</button><span id="kitui-pgnum" style="font-size:.82rem;font-weight:700">1/1</span><button id="kitui-pgnext">›</button>
+      <button id="kitui-pgadd">+ หน้า</button>
+      <button id="kitui-clear">ล้างหน้านี้</button>
+      <button id="kitui-full">⛶</button>
+      <button id="kitui-padclose">✕</button>
+    </div>
+    <div class="kitui-padwrap"><canvas></canvas></div>`;
+  D.body.appendChild(pad);
+  padCv=pad.querySelector('canvas'); padCx=padCv.getContext('2d');
+  makeResizable(pad);
+
+  pad.querySelector('.kitui-head').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    if(b.dataset.t){tool=b.dataset.t;pad.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.c){color=b.dataset.c;pad.querySelectorAll('[data-c]').forEach(x=>x.classList.toggle('on',x===b));}
+    if(b.dataset.w){width=+b.dataset.w;pad.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b));}
+  });
+  D.getElementById('kitui-undo').onclick=()=>{ if(histo.length){ undone.push(pages[pg]); pages[pg]=histo.pop(); draw(); save(); } };
+  D.getElementById('kitui-redo').onclick=()=>{ if(undone.length){ histo.push(pages[pg]); pages[pg]=undone.pop(); draw(); save(); } };
+  D.getElementById('kitui-clear').onclick=()=>{ snap(); pages[pg]=[]; draw(); save(); };
+  D.getElementById('kitui-pgadd').onclick=()=>{ pages.splice(pg+1,0,[]); pg++; histo=[];undone=[]; draw(); save(); };
+  D.getElementById('kitui-pgprev').onclick=()=>{ if(pg>0){pg--;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-pgnext').onclick=()=>{ if(pg<pages.length-1){pg++;histo=[];undone=[];draw();} };
+  D.getElementById('kitui-full').onclick=()=>{ pad.classList.toggle('full'); pad.style.height=''; fitPad(); };
+  D.getElementById('kitui-padclose').onclick=()=>pad.classList.remove('open');
+
+  /* ---- วาด ---- */
+  let cur=null;
+  padCv.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='pen') penSeen=Date.now();
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;   /* กันฝ่ามือแตะตอนใช้สไตลัส */
+    const p=pt(e);
+    if(tool==='er'){ snap(); erase(p); return; }
+    snap();
+    cur={c:color,w:width,hl:tool==='hl',pts:[p]};
+    pages[pg].push(cur); draw();
+    try{ padCv.setPointerCapture(e.pointerId); }catch(x){}  /* บางเบราว์เซอร์/ปากกาโยน error ตรงนี้ ห้ามให้ล้มทั้งเส้น */
+  });
+  padCv.addEventListener('pointermove',e=>{
+    if(e.pointerType==='touch' && Date.now()-penSeen<1500) return;
+    if(tool==='er'&&e.buttons){ erase(pt(e)); return; }
+    if(!cur||!e.buttons)return;
+    /* getCoalescedEvents ให้ลายลื่นขึ้นตอนลากเร็ว แต่บางกรณีคืนอาร์เรย์ว่าง → ต้อง fallback ไม่งั้นเส้นหาย */
+    let evs=[e];
+    if(e.getCoalescedEvents){ const c=e.getCoalescedEvents(); if(c&&c.length) evs=c; }
+    evs.forEach(ev=>cur.pts.push(pt(ev)));
+    draw();
+  });
+  const end=()=>{ if(cur){cur=null;save();} };
+  padCv.addEventListener('pointerup',end); padCv.addEventListener('pointercancel',end);
+  padCv.addEventListener('pointerleave',end);
+
+  addEventListener('resize',()=>{ if(pad.classList.contains('open')) fitPad(); });
+  D.addEventListener('kitui-theme',()=>draw());   /* สลับธีมแล้ววาดลายใหม่ เส้นดำ<->ขาวตามพื้น */
+  load(); fitPad();
+}
+function pt(e){
+  const r=padCv.getBoundingClientRect();
+  return {x:(e.clientX-r.left)/r.width, y:(e.clientY-r.top)/r.height,
+          p:(e.pointerType==='pen'&&e.pressure>0)?e.pressure:0.5};   /* เก็บเป็นสัดส่วน 0-1 → resize แล้วลายไม่เพี้ยน */
+}
+function snap(){ histo.push(pages[pg].slice()); if(histo.length>60)histo.shift(); undone=[]; }
+function erase(p){
+  const r=padCv.getBoundingClientRect(), rad=18/r.width;
+  const keep=pages[pg].filter(s=>!s.pts.some(q=>Math.hypot(q.x-p.x,(q.y-p.y)*(r.height/r.width))<rad));
+  if(keep.length!==pages[pg].length){ pages[pg]=keep; draw(); save(); }
+}
+function fitPad(){
+  const w=pad.querySelector('.kitui-padwrap').clientWidth, h=pad.querySelector('.kitui-padwrap').clientHeight;
+  const dpr=Math.min(devicePixelRatio||1,2.5);
+  padCv.width=Math.max(1,w*dpr); padCv.height=Math.max(1,h*dpr);
+  draw();
+}
+function draw(){
+  const W=padCv.width,H=padCv.height,dpr=Math.min(devicePixelRatio||1,2.5);
+  padCx.clearRect(0,0,W,H);
+  /* เส้นตารางจาง ๆ ให้เขียนตรง */
+  const dark=R.getAttribute('data-theme')==='dark';
+  padCx.strokeStyle=dark?'rgba(148,163,184,.14)':'rgba(100,116,139,.13)'; padCx.lineWidth=1;
+  for(let y=28*dpr;y<H;y+=28*dpr){padCx.beginPath();padCx.moveTo(0,y);padCx.lineTo(W,y);padCx.stroke();}
+  padCx.lineCap='round'; padCx.lineJoin='round';
+  pages[pg].forEach(s=>{
+    padCx.globalAlpha=s.hl?0.32:1;
+    padCx.strokeStyle=(dark&&s.c==='#111827')?'#e5e9f0':s.c;
+    for(let i=1;i<s.pts.length;i++){
+      const a=s.pts[i-1],b=s.pts[i];
+      padCx.lineWidth=(s.hl?s.w*4:s.w*(0.55+b.p))*dpr;
+      padCx.beginPath(); padCx.moveTo(a.x*W,a.y*H); padCx.lineTo(b.x*W,b.y*H); padCx.stroke();
+    }
+    if(s.pts.length===1){ /* จุดเดียว */
+      padCx.fillStyle=padCx.strokeStyle; padCx.beginPath();
+      padCx.arc(s.pts[0].x*W,s.pts[0].y*H,(s.hl?s.w*2:s.w)*dpr,0,7); padCx.fill();
+    }
+  });
+  padCx.globalAlpha=1;
+  const n=D.getElementById('kitui-pgnum'); if(n)n.textContent=(pg+1)+'/'+pages.length;
+}
+function save(){ try{ localStorage.setItem('kitui-'+PADKEY, JSON.stringify(pages)); }catch(e){} }
+function load(){
+  try{ const j=JSON.parse(localStorage.getItem('kitui-'+PADKEY)); if(Array.isArray(j)&&j.length){pages=j;pg=0;} }catch(e){}
+}
+
+if(hasPen){
+  buildPad();
+  D.getElementById('kitui-penbtn').onclick=()=>{
+    const o=pad.classList.toggle('open');
+    D.getElementById('kitui-penbtn').classList.toggle('on',o);
+    if(o) fitPad();
+  };
+}
+
+/* =============================================================================
+   5) เครื่องคิดเลขวิทยาศาสตร์  (tokenizer → shunting-yard → RPN  ไม่ใช้ eval)
+   ============================================================================= */
+const FN={sin:1,cos:1,tan:1,asin:1,acos:1,atan:1,ln:1,log:1,sqrt:1,abs:1,exp:1};
+const PREC={'+':1,'-':1,'*':2,'/':2,'^':4,'u-':3};
+function tokenize(s){
+  s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/√/g,'sqrt').replace(/π/g,'PI');
+  const out=[]; const re=/(\d+\.?\d*|\.\d+|[A-Za-z]+|\*\*|[+\-*/^%!()])/g; let m;
+  while((m=re.exec(s))) out.push(m[1]);
+  return out;
+}
+function toRPN(tk){
+  const out=[],op=[]; let prev=null;
+  for(let t of tk){
+    if(t==='**')t='^';
+    if(/^[\d.]+$/.test(t)){ out.push(parseFloat(t)); }
+    else if(t==='PI'){ out.push(Math.PI); }
+    else if(t==='e'||t==='E'){ out.push(Math.E); }
+    else if(t==='ANS'){ out.push(ANS); }
+    else if(FN[t]){ op.push(t); }
+    else if(t==='('){ op.push(t); }
+    else if(t===')'){
+      while(op.length&&op[op.length-1]!=='(') out.push(op.pop());
+      if(!op.length) throw 0; op.pop();
+      if(op.length&&FN[op[op.length-1]]) out.push(op.pop());
+    }
+    else if(t==='!'||t==='%'){ out.push(t==='!'?'fact':'pct'); }
+    else if('+-*/^'.includes(t)){
+      let o=t;
+      const unary = (prev===null||prev==='('||'+-*/^'.includes(prev));
+      if(t==='-'&&unary) o='u-';
+      else if(t==='+'&&unary){ prev=t; continue; }
+      while(op.length){
+        const top=op[op.length-1];
+        if(top==='('||FN[top])break;
+        const rightAssoc=(o==='^'||o==='u-');
+        if(PREC[top]>PREC[o] || (PREC[top]===PREC[o]&&!rightAssoc)) out.push(op.pop()); else break;
+      }
+      op.push(o);
+    }
+    else throw 0;
+    prev=t;
+  }
+  while(op.length){ const o=op.pop(); if(o==='(')throw 0; out.push(o); }
+  return out;
+}
+function evalRPN(rpn,deg){
+  const st=[], D2R=deg?Math.PI/180:1, R2D=deg?180/Math.PI:1;
+  const pop=()=>{ if(!st.length)throw 0; return st.pop(); };
+  for(const t of rpn){
+    if(typeof t==='number'){ st.push(t); continue; }
+    if(t==='fact'){ const n=pop(); if(n<0||n>170||n!==Math.floor(n))throw 0; let r=1; for(let i=2;i<=n;i++)r*=i; st.push(r); continue; }
+    if(t==='pct'){ st.push(pop()/100); continue; }
+    if(t==='u-'){ st.push(-pop()); continue; }
+    if(FN[t]){
+      const a=pop();
+      st.push( t==='sin'?Math.sin(a*D2R) : t==='cos'?Math.cos(a*D2R) : t==='tan'?Math.tan(a*D2R)
+             : t==='asin'?Math.asin(a)*R2D : t==='acos'?Math.acos(a)*R2D : t==='atan'?Math.atan(a)*R2D
+             : t==='ln'?Math.log(a) : t==='log'?Math.log10(a) : t==='sqrt'?Math.sqrt(a)
+             : t==='abs'?Math.abs(a) : Math.exp(a) );
+      continue;
+    }
+    const b=pop(),a=pop();
+    st.push( t==='+'?a+b : t==='-'?a-b : t==='*'?a*b : t==='/'?a/b : Math.pow(a,b) );
+  }
+  if(st.length!==1) throw 0;
+  return st[0];
+}
+function calc(src,deg){ return evalRPN(toRPN(tokenize(src)),deg); }
+
+let ANS=0, expr='', calcSheet, isDeg=true;
+const KEYS=[
+ ['DEG','deg','fn'],['(','(',''],[')',')',''],['⌫','del','del'],['AC','ac','del'],
+ ['sin','sin(','fn'],['cos','cos(','fn'],['tan','tan(','fn'],['π','π','fn'],['÷','÷','op'],
+ ['sin⁻¹','asin(','fn'],['cos⁻¹','acos(','fn'],['tan⁻¹','atan(','fn'],['e','e','fn'],['×','×','op'],
+ ['ln','ln(','fn'],['log','log(','fn'],['√','√(','fn'],['xʸ','^','fn'],['−','−','op'],
+ ['7','7',''],['8','8',''],['9','9',''],['x!','!','fn'],['+','+','op'],
+ ['4','4',''],['5','5',''],['6','6',''],['%','%','fn'],['ANS','ANS','fn'],
+ ['1','1',''],['2','2',''],['3','3',''],['.','.',''],['=','eq','eq'],
+ ['0','0','w3'],['x²','^2','fn']
+];
+function buildCalc(){
+  calcSheet=el('div','kitui-sheet'); calcSheet.id='kitui-calc';
+  calcSheet.innerHTML=
+   `<div class="kitui-head"><b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b><span class="kitui-spacer"></span>
+      <button id="kitui-calcclose">✕</button></div>
+    <div class="kitui-disp"><div class="ex" id="kitui-ex">&nbsp;</div><div class="rs" id="kitui-rs">0</div></div>
+    <div class="kitui-keys" id="kitui-keys">
+      ${KEYS.map(k=>`<button class="${k[2]}" data-k="${k[1].replace(/"/g,'&quot;')}">${k[0]}</button>`).join('')}
+    </div>`;
+  D.body.appendChild(calcSheet);
+  D.getElementById('kitui-calcclose').onclick=()=>calcSheet.classList.remove('open');
+  const ex=D.getElementById('kitui-ex'), rs=D.getElementById('kitui-rs');
+  const show=()=>{ ex.textContent=expr||' ';
+    try{ rs.textContent = expr? fmt(calc(expr,isDeg)) : '0'; rs.style.opacity=.62; }
+    catch(e){ rs.style.opacity=.35; }
+  };
+  D.getElementById('kitui-keys').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return; const k=b.dataset.k;
+    if(k==='ac'){ expr=''; rs.textContent='0'; ex.textContent=' '; return; }
+    if(k==='del'){ expr=expr.slice(0,-1); show(); return; }
+    if(k==='deg'){ isDeg=!isDeg; b.textContent=isDeg?'DEG':'RAD'; b.classList.toggle('on',!isDeg); show(); return; }
+    if(k==='eq'){
+      rs.style.opacity=1;
+      try{
+        const v=calc(expr,isDeg);
+        if(Number.isNaN(v)){ rs.textContent='ไม่นิยาม (โดเมนไม่ถูก)'; return; }
+        if(!isFinite(v)){ rs.textContent='หารด้วย 0 ไม่ได้'; return; }
+        ANS=v; ex.textContent=expr+' ='; rs.textContent=fmt(v); expr=String(v);
+      }catch(err){ rs.textContent='รูปแบบไม่ถูกต้อง'; }
+      return;
+    }
+    expr+=k; show();
+  });
+}
+function fmt(v){
+  if(!isFinite(v)) return v>0?'∞':(v<0?'-∞':'ไม่นิยาม');
+  if(Math.abs(v)>=1e12||(Math.abs(v)<1e-9&&v!==0)) return v.toExponential(8).replace(/e/,'×10^');
+  return String(Math.round(v*1e10)/1e10);
+}
+if(hasCalc){
+  buildCalc();
+  D.getElementById('kitui-calcbtn').onclick=()=>{
+    const o=calcSheet.classList.toggle('open');
+    D.getElementById('kitui-calcbtn').classList.toggle('on',o);
+  };
+}
+})();
+
+</script>
+<!--/KIT-UI-->
+</body>
+</html>
