@@ -554,7 +554,11 @@ function pal(){return{
   acc:cssv('--accent','#4f46e5'), E:'#e11d48', B:'#2563eb', ok:cssv('--ok','#059669')
 };}
 function setup(cv){
-  const r=Math.min(devicePixelRatio||1,2), w=cv.clientWidth||cv.width, h=cv.height*(w/cv.width);
+  const r=Math.min(devicePixelRatio||1,2), w=cv.clientWidth||cv.width;
+  /* จอแคบ: ย่อตามอัตราส่วนเดิมแล้วภาพเตี้ยมาก (820x330 -> 327x131) อ่านคลื่นไม่ออก
+     บังคับความสูงขั้นต่ำบนมือถือ (เจอตอนตรวจมือถือ 2026-09-06) */
+  let h=cv.height*(w/cv.width);
+  if (w < 560) h = Math.max(h, Math.min(320, Math.round(innerHeight*0.40)));
   if(cv._w!==w){cv.width=w*r;cv.height=h*r;cv.style.height=h+'px';cv._w=w;cv._h=h;}
   const x=cv.getContext('2d'); x.setTransform(r,0,0,r,0,0);
   x.clearRect(0,0,cv._w,cv._h); return [x,cv._w,cv._h];

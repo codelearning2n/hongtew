@@ -141,13 +141,21 @@
   }
   function start(){
     steps=build();
-    if(!steps.length) return;
+    if(!steps.length){ tourIdle(); return; }
+    window.__TOUR_ACTIVE__=true;
     skim.classList.add('on'); hole.classList.add('on');
     show(0);
   }
   function stop(){
     skim.classList.remove('on'); hole.classList.remove('on'); tip.classList.remove('on');
     try{ localStorage.setItem('tourDone:'+kindKey,'1'); }catch(e){}
+    tourIdle();
+  }
+  /* บอกสคริปต์อื่นว่าทัวร์ว่างแล้ว — updates.js รอสัญญาณนี้ก่อนเด้งกล่อง "มีอะไรใหม่"
+     (เจอ 2026-09-06: เข้าเว็บครั้งแรกแล้วทัวร์กับกล่องมีอะไรใหม่เด้งทับกัน อ่านไม่ออกทั้งคู่) */
+  function tourIdle(){
+    window.__TOUR_ACTIVE__=false; window.__TOUR_PENDING__=false;
+    try{ dispatchEvent(new Event('tour-end')); }catch(e){}
   }
 
   D.getElementById('tourNext').onclick=function(){ (idx>=steps.length-1) ? stop() : show(idx+1); };
@@ -161,11 +169,17 @@
   addEventListener('resize',function(){ if(hole.classList.contains('on')) place(); });
   fab.onclick=start;
 
+  /* จองคิวไว้ตั้งแต่ตอนโหลด ว่า "เดี๋ยวทัวร์จะเด้ง" เพื่อให้ updates.js รู้ทันก่อนที่ fetch จะเสร็จ */
+  (function(){
+    var done=null; try{ done=localStorage.getItem('tourDone:'+kindKey); }catch(e){}
+    if(!done) window.__TOUR_PENDING__=true;
+  })();
+
   /* เด้งเองครั้งแรกของหน้าแต่ละแบบ — รอให้ปุ่มลอยอื่น ๆ ถูกสร้างเสร็จก่อน */
   setTimeout(function(){
     steps=build();
-    if(!steps.length) return;
     var done=null; try{ done=localStorage.getItem('tourDone:'+kindKey); }catch(e){}
-    if(!done) start();
+    if(!steps.length || done){ tourIdle(); return; }   /* ไม่ได้เด้ง = ต้องปลดล็อกให้ updates เด้งได้ */
+    start();
   },900);
 })();

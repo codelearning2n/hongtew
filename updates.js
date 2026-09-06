@@ -105,6 +105,17 @@
     fab.classList.add('new');
     var i=d.findIndex(function(u){return u.id===last;});
     var fresh=(last===null||i<0) ? d.slice(0,3) : d.slice(0,i);  /* เข้าครั้งแรก โชว์ 3 อันล่าสุดพอ */
-    if(fresh.length) open_(fresh,d.length);
+    if(!fresh.length) return;
+    /* ⚠️ เข้าเว็บครั้งแรก ทัวร์แนะนำปุ่มก็เด้งเหมือนกัน ถ้าเปิดพร้อมกันจะทับกันจนอ่านไม่ออกทั้งคู่
+       (เจ้าของแคปหน้าจอมาให้ดู 2026-09-06) -> ให้ทัวร์เล่นก่อน แล้วค่อยเด้งกล่องนี้ตามหลัง
+       คนที่เคยดูทัวร์แล้ว __TOUR_PENDING__ จะเป็น false ตั้งแต่ต้น กล่องนี้จึงเด้งทันทีเหมือนเดิม */
+    if(window.__TOUR_PENDING__ || window.__TOUR_ACTIVE__){
+      var fired=false;
+      var go=function(){ if(fired) return; fired=true; open_(fresh,d.length); };
+      addEventListener('tour-end', function(){ setTimeout(go, 400); });
+      setTimeout(go, 45000);        /* กันเหนียว: ถ้าไม่มีสัญญาณจากทัวร์เลย ก็ยังได้เห็นอยู่ดี */
+      return;
+    }
+    open_(fresh,d.length);
   }).catch(function(){ fab.style.display='none'; });
 })();
