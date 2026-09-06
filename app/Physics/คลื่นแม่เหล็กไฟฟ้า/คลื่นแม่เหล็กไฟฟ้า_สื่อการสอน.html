@@ -119,6 +119,16 @@ canvas{width:100%;height:auto;display:block;border-radius:var(--radius-sm)}
     <button class="tab-btn" data-tab="t7">🎯 ข้อสอบเก่า</button>
   </nav>
 
+  <!-- แถบนี้โผล่เฉพาะเครื่องที่ตั้ง "ลดการเคลื่อนไหว" ไว้ (Windows: การช่วยการเข้าถึง > เอฟเฟกต์ภาพ)
+       เพราะเครื่องแบบนั้นภาพจะนิ่งสนิทจนนึกว่าหน้าเว็บพัง -->
+  <div id="motionBar" style="display:none;background:var(--warn-bg,#fff7ed);
+       border-left:4px solid var(--warn-bd,#f97316);border-radius:10px;padding:12px 14px;
+       margin:10px 0;font-size:.92rem;line-height:1.7">
+    <b>ภาพนิ่งอยู่เพราะเครื่องตั้ง "ลดการเคลื่อนไหว" ไว้</b><br>
+    หน้านี้อธิบายด้วยภาพที่ขยับ ถ้าไม่ขยับจะดูไม่รู้เรื่อง —
+    <button id="motionGo" class="btn" style="margin-top:8px">▶ เปิดการเคลื่อนไหวในหน้านี้</button>
+  </div>
+
   <!-- ═══════════ แท็บ 1 : คลื่น E–B ═══════════ -->
   <section id="t1" class="tab">
     <div class="card">
@@ -131,6 +141,7 @@ canvas{width:100%;height:auto;display:block;border-radius:var(--radius-sm)}
         <button id="wB" class="on">แสดง B</button>
         <button id="wArr" class="on">ลูกศร</button>
       </div>
+      <div class="tip" style="margin-top:10px"><b>🧊 ดูเป็น 3 มิติจะเห็นชัดกว่านี้เยอะ</b><br>ภาพในหน้านี้เป็นภาพด้านข้าง 2 มิติ ซึ่งแสดงคำว่า "ตั้งฉากกัน" กับ "ระนาบการสั่น" ได้ไม่ครบ<br><a class="btn" style="display:inline-block;margin-top:8px;text-decoration:none" href="คลื่นแม่เหล็กไฟฟ้า_3มิติ_เห็นภาพ.html">🧊 เปิดหน้า 3 มิติ — ลากหมุนดูได้</a></div>
       <div class="slider-row">
         <label>ความถี่ (จำนวนลูกคลื่นบนจอ) = <span class="slider-val" id="wfV">3</span></label>
         <input type="range" id="wf" min="1" max="8" step="0.5" value="3">
@@ -232,6 +243,7 @@ canvas{width:100%;height:auto;display:block;border-radius:var(--radius-sm)}
         <button class="polq" data-a="45">45°</button>
         <button class="polq" data-a="90">90°</button>
       </div>
+      <div class="tip" style="margin-top:10px"><b>🧊 ดูเป็น 3 มิติจะเห็นชัดกว่านี้เยอะ</b><br>ภาพในหน้านี้เป็นภาพด้านข้าง 2 มิติ ซึ่งแสดงคำว่า "ตั้งฉากกัน" กับ "ระนาบการสั่น" ได้ไม่ครบ<br><a class="btn" style="display:inline-block;margin-top:8px;text-decoration:none" href="คลื่นแม่เหล็กไฟฟ้า_3มิติ_เห็นภาพ.html">🧊 เปิดหน้า 3 มิติ — ลากหมุนดูได้</a></div>
       <div class="tip">💡 <b>ลองหมุนไป 90° ดูสิ</b> — จะมืดสนิท เพราะสนามไฟฟ้าที่ผ่านแผ่นแรกมา
         <b>ตั้งฉาก</b>กับแนวโพลาไรส์ของแผ่นที่สองพอดี จึง<b>ถูกดูดกลืนหมด</b> <span class="badge">น.34</span></div>
       <div class="warn">⚠️ <b>ที่สไลด์เขียนไว้ตรง ๆ</b> <span class="badge">น.34</span> —
@@ -521,6 +533,19 @@ openTab('t1');
 
 /* ═══════════ ตัวช่วยวาด ═══════════ */
 const REDUCED = matchMedia('(prefers-reduced-motion:reduce)').matches;
+/* ⚠️ บั๊กที่เจ้าของเจอ 2026-09-06: "ปุ่มเล่นไม่เห็นมีอะไรเกิดขึ้น"
+   เดิม REDUCED (เครื่องตั้ง "ลดการเคลื่อนไหว" ไว้) ล็อกความเร็วแอนิเมชันเป็น 0 ตายตัว
+   -> ทุกแท็บนิ่งสนิท ปุ่มเล่นกดแล้วเปลี่ยนแค่ข้อความ ภาพไม่ขยับ ทั้งที่หน้านี้ทั้งหน้า
+      มีคุณค่าอยู่ที่ "ภาพที่เคลื่อนไหว"
+   แก้: เคารพค่าของระบบเป็น "ค่าเริ่มต้น" เท่านั้น แต่ถ้าผู้ใช้ "สั่งเอง" ให้เล่นได้เสมอ */
+let motionOK = !REDUCED;
+function turnMotionOn(){
+  motionOK = true;
+  const bar = document.getElementById('motionBar');
+  if (bar) bar.style.display = 'none';
+  const wp = document.getElementById('wPlay');
+  if (wp && !W.play){ W.play = true; wp.classList.add('on'); wp.textContent = '⏸ หยุด'; }
+}
 function cssv(n,f){const v=getComputedStyle(document.body).getPropertyValue(n).trim();return v||f;}
 /* สีชุดนี้อ่านจากตัวแปร CSS ทุกเฟรม โหมดมืดของ KIT UI จึงมีผลกับ canvas ด้วย */
 function pal(){return{
@@ -551,7 +576,7 @@ function label(x,t,px,py,col,sz,al){
 /* ═══════════ 1) คลื่น E–B ═══════════ */
 const cw=document.getElementById('cwave');
 const W={play:true,E:true,B:true,arr:true,f:3,a:60,t:0};
-document.getElementById('wPlay').onclick=e=>{W.play=!W.play;e.target.classList.toggle('on',W.play);e.target.textContent=W.play?'⏸ หยุด':'▶ เล่น';};
+document.getElementById('wPlay').onclick=e=>{W.play=!W.play;if(W.play)motionOK=true;const b=document.getElementById('motionBar');if(b&&W.play)b.style.display='none';e.target.classList.toggle('on',W.play);e.target.textContent=W.play?'⏸ หยุด':'▶ เล่น';};
 document.getElementById('wE').onclick=e=>{W.E=!W.E;e.target.classList.toggle('on',W.E);};
 document.getElementById('wB').onclick=e=>{W.B=!W.B;e.target.classList.toggle('on',W.B);};
 document.getElementById('wArr').onclick=e=>{W.arr=!W.arr;e.target.classList.toggle('on',W.arr);};
@@ -893,7 +918,7 @@ let specT=0, polT=0, modT=0, sigT=0, last=performance.now();
 function shown(id){const e=document.getElementById(id);return e&&e.classList.contains('show');}
 function loop(now){
   const dt=Math.min(.05,(now-last)/1000); last=now;
-  const k = REDUCED ? 0 : dt;
+  const k = motionOK ? dt : 0;      /* ผู้ใช้กดเล่นเองแล้วต้องขยับ ถึงระบบจะตั้งลดการเคลื่อนไหวไว้ */
   if(shown('t1')){ if(W.play)W.t+=k*3.4; antT+=k; drawWave(); drawAnt(); }
   if(shown('t2')){ specT+=k; drawSpec(); }
   if(shown('t3')){ polT+=k; drawPol(); }
@@ -901,6 +926,17 @@ function loop(now){
   requestAnimationFrame(loop);
 }
 requestAnimationFrame(loop);
+/* ระบบตั้งลดการเคลื่อนไหวไว้ -> โชว์แถบให้กดเปิดเอง และตั้งปุ่มเล่นให้ตรงกับความจริง (ยังไม่เล่น) */
+if (REDUCED){
+  const bar = document.getElementById('motionBar');
+  if (bar){
+    bar.style.display = 'block';
+    document.getElementById('motionGo').onclick = turnMotionOn;
+  }
+  W.play = false;
+  const wp = document.getElementById('wPlay');
+  if (wp){ wp.classList.remove('on'); wp.textContent = '▶ เล่น'; }
+}
 addEventListener('resize',()=>{[cw,ca,cs,cp,cm,cg].forEach(c=>c._w=null);});
 
 /* ═══════════ 6) ฝึกทำ ═══════════ */

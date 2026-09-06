@@ -2,286 +2,752 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>ห้องติว ม.6 — เลือกวิชาที่จะฝึก</title>
-<meta name="description" content="รวมข้อสอบฝึก สื่อการสอน และสรุปทุกวิชา ม.6 เปิดในเบราว์เซอร์ได้เลย">
-<meta name="theme-color" content="#4f46e5">
-<!-- ไม่ให้เสิร์ชเอนจินเก็บไปทำดัชนี = คนแปลกหน้าค้นหาไม่เจอ (คู่กับ robots.txt)
-     ย้ำ: กันการ "ค้นเจอ" เท่านั้น ใครได้ลิงก์ไปแล้วยังเปิดได้อยู่ดี -->
-<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>คลื่นแม่เหล็กไฟฟ้า 3 มิติ — E กับ B และ โพลาไรซ์</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- ============================================================
+     ทำไมต้องมีไฟล์นี้ (2026-09-06)
+     เจ้าของบอกว่า "โพลาไรซ์ ถ้า 2D คงไม่เข้าใจ อาจต้อง 3D" และ "E กับ B ด้วย"
+     + "ต้องเป็นคำอธิบายแบบเห็นภาพ แบบว่าประถมเข้าใจ"
+
+     หน้าเดิม (คลื่นแม่เหล็กไฟฟ้า_สื่อการสอน.html) วาดเป็นภาพด้านข้าง 2 มิติ
+     ซึ่งอธิบาย "ตั้งฉากกัน" กับ "ระนาบการสั่น" ไม่ได้จริง เพราะมันเป็นเรื่องของ
+     ทิศทางในอวกาศ 3 ทิศ พอฉายลงระนาบเดียวข้อมูลก็หายไปหนึ่งมิติพอดี
+
+     ไฟล์นี้จึงวาด 3 มิติเอง (ไม่ใช้ไลบรารี — ไฟล์เดียวจบ เปิดออฟไลน์ได้)
+     แกนตั้งตามที่สไลด์ใช้: คลื่นวิ่งตามแกน x · E อยู่แกน y · B อยู่แกน z
+     ============================================================ -->
 <style>
 :root{
   --font:'Sarabun','Noto Sans Thai',system-ui,-apple-system,sans-serif;
   --bg:#eef2f7;--ink:#1e293b;--muted:#64748b;--line:#e2e8f0;--card:#fff;--soft:#f8fafc;
   --shadow:0 1px 4px rgba(15,23,42,.08);--ok:#059669;--bad:#dc2626;
   --warn-bg:#fff7ed;--warn-bd:#f97316;--tip-bg:#ecfdf5;--tip-bd:#10b981;
-  --info-bg:#eff6ff;--info-bd:#3b82f6;--hot-bg:#fee2e2;--hot-ink:#b91c1c;
-  --badge-bg:#fef9c3;--badge-ink:#854d0e;
+  --info-bg:#eff6ff;--info-bd:#3b82f6;
+  --hot-bg:#fee2e2;--hot-ink:#b91c1c;--badge-bg:#fef9c3;--badge-ink:#854d0e;
   --radius:14px;--radius-sm:10px;--radius-pill:999px;
   --accent:#4f46e5;--accent-head:#312e81;--accent-ink:#3730a3;--accent-soft:#eef2ff;
   --accent-bd:#c7d2fe;--accent-chip:#e0e7ff;--accent-ghost:#a5b4fc;
+  --eColor:#e11d48;--bColor:#2563eb;
 }
-/* สีประจำวิชา — ใช้ตอนวาดการ์ด */
-.s-bio    {--c:#16a34a;--cs:#f0fdf4;--cb:#bbf7d0}
-.s-physics{--c:#4f46e5;--cs:#eef2ff;--cb:#c7d2fe}
-.s-math   {--c:#0284c7;--cs:#f0f9ff;--cb:#bae6fd}
-.s-chem   {--c:#ea7317;--cs:#fff7ed;--cb:#fed7aa}
-.s-christ {--c:#7c3aed;--cs:#f5f3ff;--cb:#ddd6fe}
-.s-islam  {--c:#0d9488;--cs:#f0fdfa;--cb:#99f6e4}
-.s-history{--c:#b45309;--cs:#fffbeb;--cb:#fde68a}
-.s-music{--c:#4d7c0f;--cs:#f7fee7;--cb:#bef264}
-.s-eng    {--c:#db2777;--cs:#fdf2f8;--cb:#fbcfe8}
-.s-thai   {--c:#dc2626;--cs:#fef2f2;--cb:#fecaca}
-.s-hindu  {--c:#ca8a04;--cs:#fefce8;--cb:#fef08a}
-.s-tsam   {--c:#475569;--cs:#f4f6f8;--cb:#cbd5e1}
-:root[data-theme="dark"] .s-bio{--cs:#0f2a1a;--cb:#256b41;--c:#4ade80}
-:root[data-theme="dark"] .s-physics{--cs:#1e1b4b;--cb:#3f3a8f;--c:#818cf8}
-:root[data-theme="dark"] .s-math{--cs:#0c2434;--cb:#0b5a80;--c:#38bdf8}
-:root[data-theme="dark"] .s-chem{--cs:#2b1a0c;--cb:#8a3d12;--c:#fb923c}
-:root[data-theme="dark"] .s-christ{--cs:#241a3d;--cb:#5b21b6;--c:#a78bfa}
-:root[data-theme="dark"] .s-islam{--cs:#0d2b28;--cb:#12615a;--c:#2dd4bf}
-:root[data-theme="dark"] .s-history{--cs:#2a1f0a;--cb:#8a4b0c;--c:#fbbf24}
-:root[data-theme="dark"] .s-eng{--cs:#2e1122;--cb:#8d1748;--c:#f472b6}
-:root[data-theme="dark"] .s-thai{--cs:#2d1414;--cb:#8d2020;--c:#f87171}
-:root[data-theme="dark"] .s-hindu{--cs:#2a2408;--cb:#7a6410;--c:#facc15}
-:root[data-theme="dark"] .s-tsam{--cs:#171d26;--cb:#41506a;--c:#a9b8cc}
-:root[data-theme="dark"] .s-music{--cs:#1a2610;--cb:#4d7c0f;--c:#a3e635}
-
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.6;
-     padding-bottom:calc(64px + env(safe-area-inset-bottom))}
-.wrap{max-width:940px;margin:0 auto;padding:14px 14px 30px}
-
-.hero{background:linear-gradient(135deg,var(--accent) 0%,#7c3aed 100%);color:#fff;border-radius:18px;
-      padding:22px 20px;margin-bottom:14px;box-shadow:var(--shadow)}
-.hero h1{font-size:1.5rem;line-height:1.35;margin-bottom:4px}
-.hero p{opacity:.92;font-size:.95rem}
-.hero .stat{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:.85rem;font-weight:600}
-.hero .stat span{background:rgba(255,255,255,.2);padding:4px 12px;border-radius:999px;backdrop-filter:blur(4px)}
-
-.tools{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 6px}
-#q{flex:1;min-width:190px;padding:12px 14px;border:1.5px solid var(--line);border-radius:var(--radius-sm);
-   font-family:inherit;font-size:1rem;background:var(--card);color:var(--ink)}
-#q:focus{outline:none;border-color:var(--accent)}
-.chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 4px}
-.chip{border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:var(--radius-pill);
-      padding:7px 14px;font-size:.88rem;font-weight:600;cursor:pointer;font-family:inherit;min-height:38px}
-.chip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
-.chip .n{opacity:.6;font-size:.76rem;margin-left:3px}
-/* ตัวกรอง/ป้าย "ออกปลายภาค" — เพิ่ม 2026-09-05 ตามที่เจ้าของสั่ง (แปะเฉพาะไฟล์ที่ออกจริง) */
-.chip.fin{border-color:var(--hot-ink);color:var(--hot-ink);background:var(--hot-bg)}
-.chip.fin.on{background:var(--hot-ink);color:var(--hot-bg);border-color:var(--hot-ink)}  /* ตัวหนังสือใช้สีพื้นอ่อน จะได้ตัดกับพื้นทั้งโหมดสว่างและมืด (โหมดมืด --hot-ink เป็นชมพูอ่อน ใส่ #fff แล้วอ่านไม่ออก) */
-a.card .fin-pill{background:var(--hot-bg);color:var(--hot-ink);border-radius:6px;padding:1px 8px;font-weight:700}
-h2.sec .when{font-size:.76rem;font-weight:700;color:var(--muted);background:var(--soft);
-  border:1px solid var(--line);border-radius:999px;padding:1px 10px;white-space:nowrap}
-.scope{font-size:.84rem;color:var(--muted);margin:-2px 0 8px 2px;line-height:1.5}
-.slot-none{font-size:.86rem;color:var(--muted);background:var(--soft);border:1px dashed var(--line);
-  border-radius:10px;padding:10px 12px}
-.fin-hint{background:var(--hot-bg);color:var(--hot-ink);border-radius:10px;padding:10px 13px;
-  margin:10px 0 2px;font-size:.87rem;font-weight:600;line-height:1.6}
-
-h2.sec{font-size:1.05rem;margin:20px 0 8px;color:var(--accent-head);display:flex;align-items:center;gap:8px}
-h2.sec .line{flex:1;height:1px;background:var(--line)}
-
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
-/* กลุ่มตามบท — เพิ่ม 2026-08-31 เพราะชีววิทยา 33 หน้าเรียงเรียบเป็นแถวเดียวแล้วรก */
-details.chap{border:1px solid var(--line);border-radius:10px;margin:8px 0;background:var(--soft);overflow:hidden}
-details.chap>summary{padding:10px 14px;cursor:pointer;font-weight:600;font-size:.95rem;color:var(--accent-ink);
-  list-style:none;display:flex;align-items:center;gap:8px}
-details.chap>summary::-webkit-details-marker{display:none}
-details.chap>summary::before{content:"▸";color:var(--accent);font-size:.9rem}
-details.chap[open]>summary::before{content:"▾"}
-details.chap>summary .n{margin-left:auto;font-size:.8rem;font-weight:700;color:var(--muted);
-  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:1px 9px}
-details.chap>summary:hover{background:var(--card)}
-details.chap>.grid{padding:0 12px 12px}
-a.card{display:flex;flex-direction:column;gap:5px;background:var(--card);border:1px solid var(--line);
-  border-left:5px solid var(--c,var(--accent));border-radius:var(--radius);padding:13px 14px;
-  text-decoration:none;color:inherit;box-shadow:var(--shadow);min-height:86px}
-a.card:hover{border-color:var(--c);transform:translateY(-2px);transition:.15s}
-a.card:active{transform:scale(.985)}
-a.card .t{font-weight:600;font-size:.97rem;line-height:1.4}
-a.card .m{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:.76rem;color:var(--muted);margin-top:auto}
-a.card .k{background:var(--cs);color:var(--c);border-radius:6px;padding:1px 8px;font-weight:700}
-
-.note{background:var(--info-bg);border-left:4px solid var(--info-bd);border-radius:10px;padding:12px 14px;
-      margin:16px 0;font-size:.9rem}
-.warn{background:var(--warn-bg);border-left:4px solid var(--warn-bd);border-radius:10px;padding:12px 14px;
-      margin:16px 0;font-size:.9rem}
-.empty{text-align:center;color:var(--muted);padding:40px 12px}
-footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:26px;line-height:1.8}
-@media(max-width:480px){.wrap{padding:10px 10px 24px}.hero{padding:18px 16px}.hero h1{font-size:1.25rem}
-  .grid{grid-template-columns:1fr}}
+body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.6}
+.wrap{max-width:900px;margin:0 auto;padding:10px 12px 60px}
+header{padding:18px 4px 6px}
+header h1{font-size:1.35rem;color:var(--accent-head)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{background:var(--accent-chip);color:var(--accent-ink);border-radius:var(--radius-pill);padding:3px 12px;font-size:.82rem;font-weight:600}
+.chip.hot{background:var(--hot-bg);color:var(--hot-ink)}
+.tabs{display:flex;gap:8px;overflow-x:auto;position:sticky;top:0;background:var(--bg);padding:10px 2px;z-index:10;-webkit-overflow-scrolling:touch}
+.tab-btn{white-space:nowrap;padding:8px 14px;border-radius:var(--radius-pill);border:1.5px solid var(--accent-bd);background:#fff;color:var(--accent-ink);cursor:pointer;font-size:.92rem;font-family:inherit;font-weight:600;flex-shrink:0}
+.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tab{display:none}
+.tab.show{display:block;animation:fade .25s}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.card{background:var(--card);border-radius:var(--radius);padding:16px;margin:12px 0;box-shadow:var(--shadow)}
+.card h2{font-size:1.15rem;color:var(--accent-head);margin-bottom:2px}
+.card h3{font-size:1.05rem;color:var(--ink);margin-bottom:6px}
+.sub{color:var(--muted);font-size:.88rem;margin-bottom:10px}
+canvas{display:block;width:100%;height:auto;background:#0f1220;border-radius:var(--radius-sm);
+  touch-action:none;cursor:grab}
+canvas:active{cursor:grabbing}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:var(--radius-sm);padding:9px 15px;
+  font-size:.94rem;cursor:pointer;font-family:inherit;font-weight:600}
+.btn:active{transform:scale(.97)}
+.btn.ghost{background:var(--card);color:var(--accent-ink);border:1.5px solid var(--accent-bd)}
+.btn.ghost.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn.small{padding:6px 12px;font-size:.86rem}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0}
+.big{background:var(--accent-soft);border:1.5px solid var(--accent-bd);border-radius:var(--radius-sm);
+  padding:12px 14px;margin:10px 0;font-size:1.02rem;line-height:1.8}
+.big b{color:var(--accent-head)}
+.tip{background:var(--tip-bg);border-left:4px solid var(--tip-bd);border-radius:10px;padding:11px 13px;margin:9px 0;font-size:.93rem}
+.warn{background:var(--warn-bg);border-left:4px solid var(--warn-bd);border-radius:10px;padding:11px 13px;margin:9px 0;font-size:.93rem}
+.info{background:var(--info-bg);border-left:4px solid var(--info-bd);border-radius:10px;padding:11px 13px;margin:9px 0;font-size:.93rem}
+label.sl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0;font-size:.94rem;font-weight:600}
+input[type=range]{flex:1;min-width:170px;accent-color:var(--accent)}
+.val{font-weight:700;color:var(--accent-ink);min-width:4.5rem;text-align:right}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.9rem;font-weight:600;margin:8px 0}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:5px}
+.meter{height:16px;background:var(--line);border-radius:999px;overflow:hidden;margin:6px 0}
+.meter>i{display:block;height:100%;background:linear-gradient(90deg,#f59e0b,#fde047);transition:width .25s}
+table.ref{width:100%;border-collapse:collapse;font-size:.92rem;margin:8px 0}
+table.ref th,table.ref td{border:1px solid var(--line);padding:7px 10px;text-align:left}
+table.ref th{background:var(--accent-soft);color:var(--accent-ink)}
+.steps{counter-reset:s;list-style:none;margin:6px 0}
+.steps li{position:relative;padding:6px 0 6px 34px;line-height:1.75}
+.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:7px;
+  width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;
+  font-size:.8rem;font-weight:700;display:flex;align-items:center;justify-content:center}
+@media(max-width:480px){.card{padding:12px}header h1{font-size:1.15rem}}
 </style>
 </head>
-<body data-subject="physics" data-tools="none">
+<body data-subject="physics">
 <div class="wrap">
 
-  <div class="hero">
-    <h1>📚 ห้องติว ม.6</h1>
-    <p>ข้อสอบฝึก · สื่อจำลอง · สรุป — กดเข้าได้เลย ไม่ต้องล็อกอิน ไม่ต้องติดตั้ง</p>
-    <div class="stat">
-      <span id="stTotal">— หน้า</span>
-      <span id="stSubj">— วิชา</span>
-      <span>เล่นบนมือถือได้</span>
+  <header>
+    <h1>🧊 คลื่นแม่เหล็กไฟฟ้า 3 มิติ — ลากหมุนดูได้</h1>
+    <div class="chips">
+      <span class="chip hot">ทำเพราะภาพ 2 มิติอธิบายไม่ได้</span>
+      <span class="chip">E กับ B ตั้งฉากกัน</span>
+      <span class="chip">โพลาไรซ์</span>
+      <span class="chip">ลากนิ้ว/เมาส์เพื่อหมุน</span>
     </div>
-    <a href="ask.html" style="display:inline-block;margin-top:12px;background:rgba(255,255,255,.18);
-       border:1px solid rgba(255,255,255,.45);border-radius:999px;padding:8px 16px;color:#fff;
-       text-decoration:none;font-weight:700;font-size:.92rem">🔎 ถามเนื้อหา — ค้นจากสรุปทุกวิชา แล้วให้ AI ตอบ</a>
-    <div><button id="updLink">🆕 ดูว่ามีอะไรใหม่บ้าง</button></div>
+  </header>
+
+  <div class="card" style="border-left:5px solid var(--accent)">
+    <h3>🚦 อ่านตรงนี้ก่อน 20 วินาที</h3>
+    <p>ภาพในหนังสือเป็น <b>ภาพแบน 2 มิติ</b> ซึ่งอธิบายคำว่า <b>"ตั้งฉากกัน"</b> กับ <b>"ระนาบการสั่น"</b> ไม่ได้จริง
+      เพราะสองเรื่องนี้เป็นเรื่องของ <b>ทิศทางในอวกาศ 3 ทิศ</b> พอวาดลงกระดาษแบน ๆ ก็หายไปหนึ่งทิศพอดี</p>
+    <p class="sub" style="margin-top:8px">หน้านี้เลยวาดเป็น 3 มิติจริง <b>ลากด้วยนิ้วหรือเมาส์เพื่อหมุนดูรอบด้าน</b>
+      แล้วกดปุ่มมุมมองสำเร็จรูปด้านล่างภาพได้</p>
   </div>
 
-  <div class="tools">
-    <input id="q" type="text" placeholder="🔍 พิมพ์ค้นหา เช่น ฮอร์โมน, วงจรไฟฟ้า, ข้อสอบ">
+  <!-- เครื่องที่ตั้ง "ลดการเคลื่อนไหว" ไว้จะเห็นภาพนิ่งสนิทจนนึกว่าหน้าพัง — ต้องบอกและให้กดเปิดเองได้
+       (บทเรียนจากบั๊กเดียวกันในหน้าสื่อการสอน 2026-09-06) -->
+  <div id="motionBar" style="display:none;background:var(--warn-bg);border-left:4px solid var(--warn-bd);
+       border-radius:10px;padding:12px 14px;margin:10px 0;font-size:.93rem;line-height:1.75">
+    <b>ตอนนี้ภาพยังไม่ขยับ เพราะเครื่องตั้ง "ลดการเคลื่อนไหว" ไว้</b><br>
+    หน้านี้ต้องดูตอนคลื่นวิ่งถึงจะเข้าใจ —
+    <button class="btn" id="motionGo" style="margin-top:8px">▶ เปิดการเคลื่อนไหวในหน้านี้</button>
   </div>
 
-  <div class="chips" id="examRow"></div>
-  <div class="chips" id="kindRow">
-    <button class="chip on" data-kind="all">ทั้งหมด</button>
-    <button class="chip" data-kind="exam">📝 ข้อสอบ/เกมฝึก</button>
-    <button class="chip" data-kind="sim">🔬 สื่อจำลอง/3D</button>
-    <button class="chip" data-kind="note">📄 สรุป/ชีต</button>
+  <nav class="tabs" id="tabs">
+    <button class="tab-btn" data-tab="t1">🌊 E กับ B ตั้งฉากกัน</button>
+    <button class="tab-btn" data-tab="t2">🪢 โพลาไรซ์ — เชือกกับรั้ว</button>
+    <button class="tab-btn" data-tab="t3">🕶️ โพลาไรซ์ — แสงกับแว่น</button>
+  </nav>
+
+  <!-- ═══════════════ แท็บ 1 : E กับ B ═══════════════ -->
+  <section id="t1" class="tab">
+    <div class="card">
+      <h2>🌊 คลื่นแม่เหล็กไฟฟ้า = เชือก 2 เส้นสะบัดพร้อมกัน คนละแนว</h2>
+      <p class="sub">เส้นแดงสะบัด <b>ขึ้น-ลง</b> · เส้นน้ำเงินสะบัด <b>ซ้าย-ขวา</b> · ทั้งคู่วิ่งไปทางเดียวกัน</p>
+
+      <canvas id="cEB" width="880" height="440"></canvas>
+
+      <div class="row">
+        <button class="btn ghost" id="ebSide">🙂 มองจากข้าง</button>
+        <button class="btn ghost" id="ebTop">🕊️ มองจากบน</button>
+        <button class="btn" id="ebFront">⭐ มองตรงหน้าคลื่น</button>
+        <button class="btn ghost small" id="ebReset">↺ มุมเริ่มต้น</button>
+      </div>
+      <div class="row">
+        <button class="btn ghost on small" id="ebE">แดง = สนามไฟฟ้า E</button>
+        <button class="btn ghost on small" id="ebB">น้ำเงิน = สนามแม่เหล็ก B</button>
+        <button class="btn ghost on small" id="ebArr">ลูกศร</button>
+        <button class="btn ghost on small" id="ebPlay">⏸ หยุด</button>
+      </div>
+
+      <div class="big" id="ebMsg"></div>
+
+      <div class="tip">
+        <b>🧒 อธิบายแบบง่ายที่สุด</b><br>
+        ลองนึกถึง <b>เชือกกระโดด 2 เส้นมัดติดกัน</b> วิ่งไปข้างหน้าพร้อมกัน<br>
+        • เส้นแดงมีคนสะบัด <b>ขึ้น-ลง</b><br>
+        • เส้นน้ำเงินมีคนสะบัด <b>ซ้าย-ขวา</b><br>
+        สองแนวนี้ทำมุม <b>90°</b> กัน = สิ่งที่หนังสือเรียกว่า <b>"ตั้งฉากกัน"</b><br>
+        และทั้งคู่ <b>ขึ้นสุด-ลงสุดพร้อมกันเป๊ะ</b> (เฟสตรงกัน) ไม่มีเส้นไหนช้ากว่ากัน
+      </div>
+
+      <div class="warn">
+        <b>⭐ กดปุ่ม "มองตรงหน้าคลื่น" ให้ได้ก่อนสอบ</b><br>
+        เป็นมุมที่ยืนอยู่ตรงหน้าคลื่นแล้วมองย้อนกลับไป จะเห็นเป็น <b>เครื่องหมายบวก +</b>
+        คือขีดแดงตั้ง กับขีดน้ำเงินนอน ตัดกันตรงกลาง<br>
+        <b>มุมนี้แหละที่พิสูจน์ว่าตั้งฉากกันจริง</b> — ภาพ 2 มิติในหนังสือแสดงมุมนี้ไม่ได้
+      </div>
+
+      <h3 style="margin-top:14px">📐 ชื่อแกนตามที่สไลด์ใช้</h3>
+      <table class="ref">
+        <tr><th>สิ่งที่ถาม</th><th>คำตอบ</th><th>ในภาพนี้คือ</th></tr>
+        <tr><td>คลื่นวิ่งไปตามแกนใด</td><td><b>แกน x</b></td><td>ทิศที่ลูกศรขาวชี้</td></tr>
+        <tr><td>สนามไฟฟ้า E เปลี่ยนแปลงในแนวแกนใด</td><td><b>แกน y</b></td><td>เส้นแดง ขึ้น-ลง</td></tr>
+        <tr><td>สนามแม่เหล็ก B เปลี่ยนแปลงในแนวแกนใด</td><td><b>แกน z</b></td><td>เส้นน้ำเงิน ซ้าย-ขวา</td></tr>
+        <tr><td>E เปลี่ยนแปลงในระนาบใด กี่ระนาบ</td><td><b>ระนาบ xy · 1 ระนาบ</b></td><td>แผ่นแดงบาง ๆ ที่เห็นตอนหมุน</td></tr>
+      </table>
+      <div class="info">
+        เปลี่ยนแปลงใน <b>ระนาบเดียว</b> = <b>โพลาไรส์เชิงเส้น</b> ·
+        ถ้าเปลี่ยนแปลง <b>หลายระนาบ</b> = <b>แสงไม่โพลาไรส์</b> (แสงอาทิตย์ หลอดไฟ) → ดูต่อที่แท็บถัดไป
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ แท็บ 2 : เชือกกับรั้ว ═══════════════ -->
+  <section id="t2" class="tab">
+    <div class="card">
+      <h2>🪢 เชือกกับรั้ว — เรื่องเดียวกับโพลาไรซ์ แต่จับต้องได้</h2>
+      <p class="sub">รั้วมีช่อง <b>ตั้ง</b> · ลากหมุนดูรอบด้านได้ · เลื่อนแถบเพื่อเปลี่ยนแนวสะบัดเชือก</p>
+
+      <canvas id="cRope" width="880" height="420"></canvas>
+
+      <label class="sl">แนวที่มือสะบัดเชือก
+        <input type="range" id="ropeAng" min="0" max="90" step="1" value="0">
+        <span class="val" id="ropeAngV">ขึ้น-ลง (0°)</span>
+      </label>
+      <div class="row">
+        <button class="btn ghost" id="ropeUp">↕ สะบัดขึ้น-ลง</button>
+        <button class="btn ghost" id="ropeMid">↗ สะบัดเฉียง 45°</button>
+        <button class="btn ghost" id="ropeSide">↔ สะบัดซ้าย-ขวา</button>
+        <button class="btn ghost small" id="ropeReset">↺ มุมเริ่มต้น</button>
+      </div>
+
+      <div class="big" id="ropeMsg"></div>
+
+      <div class="tip">
+        <b>🧒 อธิบายแบบง่ายที่สุด</b>
+        <ol class="steps">
+          <li>รั้วมีช่องเป็น <b>แนวตั้ง</b> เหมือนซี่ลูกกรงหน้าต่าง</li>
+          <li>สะบัดเชือก <b>ขึ้น-ลง</b> → เชือกขยับไปตามช่อง <b>ผ่านได้เต็มที่</b></li>
+          <li>สะบัดเชือก <b>ซ้าย-ขวา</b> → เชือกไปชนซี่รั้ว <b>ผ่านไม่ได้เลย</b></li>
+          <li>สะบัด <b>เฉียง ๆ</b> → ผ่านได้แค่ส่วนที่เป็นแนวตั้ง <b>เหลือนิดเดียว</b></li>
+        </ol>
+        <b>แสงก็เหมือนกันเป๊ะ</b> — แค่เปลี่ยนจาก "เชือก" เป็น "สนามไฟฟ้า E"
+        และเปลี่ยนจาก "รั้ว" เป็น "แผ่นโพลารอยด์"
+      </div>
+
+      <div class="warn">
+        <b>จุดที่คนสับสนบ่อย</b><br>
+        รั้วช่อง <b>ตั้ง</b> ให้ผ่านการสะบัดแนว <b>ตั้ง</b> — ไม่ใช่กลับกัน<br>
+        (นึกภาพเอาแผ่นกระดาษยัดเข้าช่องแคบ ๆ ต้องหันแผ่นให้ตรงกับช่อง ถึงจะเข้าไปได้)
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ แท็บ 3 : แสงกับแว่น ═══════════════ -->
+  <section id="t3" class="tab">
+    <div class="card">
+      <h2>🕶️ แสงจริง ๆ กับแผ่นโพลารอยด์ 2 แผ่น</h2>
+      <p class="sub">แสงจากหลอดไฟสั่นทุกแนว → แผ่นที่ 1 คัดเหลือแนวเดียว → แผ่นที่ 2 หมุนได้</p>
+
+      <canvas id="cPol" width="880" height="430"></canvas>
+
+      <label class="sl">หมุนแผ่นที่ 2 ไป
+        <input type="range" id="polAng" min="0" max="90" step="1" value="0">
+        <span class="val" id="polAngV">0°</span>
+      </label>
+      <div class="row">
+        <button class="btn ghost" id="pol0">0° (ตรงกัน)</button>
+        <button class="btn ghost" id="pol45">45°</button>
+        <button class="btn ghost" id="pol90">90° (มืดสนิท)</button>
+        <button class="btn ghost small" id="polReset">↺ มุมเริ่มต้น</button>
+      </div>
+
+      <div style="font-weight:700;margin-top:6px">ความสว่างที่ออกมาท้ายสุด: <span id="polPct" style="color:var(--accent-ink)">100%</span></div>
+      <div class="meter"><i id="polBar" style="width:100%"></i></div>
+
+      <div class="big" id="polMsg"></div>
+
+      <div class="tip">
+        <b>🧒 เทียบกับแท็บที่แล้ว</b><br>
+        <b>แสงจากหลอดไฟ = คนสะบัดเชือกมั่ว ๆ ทุกแนวพร้อมกัน</b> (นั่นคือคำว่า "แสงไม่โพลาไรส์")<br>
+        <b>แผ่นที่ 1 = รั้วอันแรก</b> คัดให้เหลือแนวเดียว → หลังจากนี้แสงเป็น "โพลาไรส์เชิงเส้น"<br>
+        <b>แผ่นที่ 2 = รั้วอันที่สอง</b> ถ้าช่องหันตรงกับแผ่นแรกก็ผ่านหมด ถ้าหันขวาง 90° ก็ตัน
+      </div>
+
+      <div class="warn">
+        <b>⚠️ ตรงกับที่สไลด์เขียนไว้ (น.34)</b><br>
+        สนามไฟฟ้าที่ <b>ตั้งฉาก</b> กับแนวโพลาไรส์ → <b>ถูกดูดกลืน</b> ·
+        ที่ <b>ขนาน</b> กับแนวโพลาไรส์ → <b>ผ่านได้</b><br>
+        ผลรวมคือ <b>ความสว่างลดลง</b> เมื่อเทียบกับตอนไม่มีแผ่นกั้น
+      </div>
+
+      <div class="info">
+        <b>📌 นอกสไลด์</b> — ตัวเลข % ในหน้านี้คำนวณจาก <b>I = I₀ cos²θ</b> (กฎของมาลูส)
+        สไลด์บทนี้ <b>ไม่ได้ให้สูตรนี้</b> ให้แค่คำอธิบายเชิงคุณภาพ<br>
+        ใส่ไว้เพื่อให้เห็นภาพว่าทำไม 45° ถึงเหลือครึ่งเดียว — <b>ถ้าข้อสอบไม่ได้ให้สูตร อย่าเผลอไปใช้</b>
+      </div>
+
+      <div class="tip">
+        <b>🕶️ ของจริงรอบตัว</b><br>
+        แว่นกันแดดโพลาไรซ์ตัด <b>แสงสะท้อนจากถนน/ผิวน้ำ</b> ได้ เพราะแสงสะท้อนจากพื้นราบ
+        จะสั่นในแนว <b>นอน</b> เป็นส่วนใหญ่ แว่นเลยทำช่องเป็นแนว <b>ตั้ง</b> เพื่อกันมันไว้<br>
+        ลองเอาแว่นโพลาไรซ์ 2 อันมาซ้อนกันแล้วหมุน — จะเห็นมันมืดลงจนดำสนิทตอน 90° เหมือนในภาพนี้เลย
+      </div>
+    </div>
+  </section>
+
+  <div class="card">
+    <h3>🔗 กลับไปหน้าอื่นของบทนี้</h3>
+    <p class="sub">หน้านี้ทำมาเสริมเรื่อง "เห็นภาพ" อย่างเดียว ส่วนข้อสอบฝึกกับทฤษฎีเต็มอยู่หน้าอื่น</p>
+    <div class="row">
+      <a class="btn ghost" href="คลื่นแม่เหล็กไฟฟ้า_สื่อการสอน.html">📖 สื่อการสอน (สเปกตรัม · AM/FM · ทฤษฎี)</a>
+      <a class="btn ghost" href="คลื่นแม่เหล็กไฟฟ้า_ฝึกก่อนสอบ.html">📝 ข้อสอบฝึก</a>
+    </div>
   </div>
-  <div class="chips" id="subjRow"></div>
-
-  <div id="list"></div>
-
-  <div class="note" id="hintTools">
-    💡 <b>ในหน้าเรียนทุกหน้ามีปุ่ม ⚙️ มุมขวาล่าง</b> — กดเพื่อ <b>สลับโหมดมืด/สว่าง</b> และ <b>ปรับขนาดตัวหนังสือ</b><br>
-    หน้าของ <b>คณิต · ฟิสิกส์ · เคมี</b> จะมีเพิ่มอีก 2 ปุ่ม: <b>✏️ ที่ทด</b> (เขียนด้วยนิ้ว/ปากกา มีหลายหน้า เซฟให้อัตโนมัติ)
-    และ <b>🧮 เครื่องคิดเลขวิทยาศาสตร์</b>
-  </div>
-
-  <footer>
-    ทำไว้ใช้เองและแบ่งเพื่อน · เนื้อหาสรุปจากคาบเรียน ม.6<br>
-    เจอตรงไหนผิดบอกได้ จะได้แก้
-  </footer>
 </div>
 
-<script src="catalog.js?v=202609062038"></script>
 <script>
-const LIST = window.CATALOG || [];
-const $ = s=>document.querySelector(s);
-let fKind='all', fSubj='all', fQ='';
-
-/* ---- ช่วงสอบ: ปลายภาค 7-10 ก.ย. 2569 ----
-   ป้ายมาจาก build.ps1 (ลิสต์ $EXAM) ไม่ได้เดาจากชื่อไฟล์ ดูเหตุผลในไฟล์นั้น */
-const EXAM  = window.EXAM || [];
-const EXMAP = {}; EXAM.forEach(e=>{ EXMAP[e.id]=e; });
-/* x.ex เก็บเป็น "id,id" ได้ เพราะหน้าเดียวอาจออกหลายวิชา (หน้า EAP ใช้สอบวิชาภาษาอังกฤษด้วย) */
-const exList  = x => (x.ex||'').split(',').filter(Boolean);
-const exFirst = x => { const l=exList(x); for(const e of EXAM) if(l.indexOf(e.id)>=0) return e; return null; };
-const nFin  = LIST.filter(x=>x.ex).length;
-/* ช่วงใกล้สอบ = เปิดมาเจอเฉพาะของที่ออกก่อน (เจ้าของสั่ง 2026-09-04: เพื่อนเปิดจากมือถือ
-   อยากรู้ว่า "ตอนนี้ต้องอ่านอะไร" ไม่ใช่ "วิชานี้มีอะไรบ้าง")
-   พ้น 10 ก.ย. ไปแล้วกลับไปโชว์ทั้งเว็บเองอัตโนมัติ ไม่ต้องมาแก้โค้ด */
-const NEAR  = nFin>0 && Date.now() < Date.parse('2026-09-11T00:00:00+07:00');
-let fExam = NEAR ? 'final' : 'all';
-if(nFin){
-  $('#examRow').innerHTML =
-    `<button class="chip fin${fExam==='final'?' on':''}" data-exam="final">🔥 ออกปลายภาค 7–10 ก.ย.<span class="n">${nFin}</span></button>`+
-    `<button class="chip${fExam==='all'?' on':''}" data-exam="all">ทุกหน้าในเว็บ<span class="n">${LIST.length}</span></button>`;
+/* ═══════════════════ เครื่องมือวาด 3 มิติเล็ก ๆ (ไม่ใช้ไลบรารี) ═══════════════════
+   ทำไมเขียนเอง: กฎวอลต์คือ widget ต้อง "ไฟล์เดียวจบ เปิดออฟไลน์ได้"
+   ฉากในหน้านี้มีแค่เส้นกับแผ่นไม่กี่ชิ้น เขียน projection เองพอ ไม่ต้องลาก three.js 600KB มา */
+function rotate(p, yaw, pitch){
+  var x=p[0], y=p[1], z=p[2];
+  var cy=Math.cos(yaw), sy=Math.sin(yaw);
+  var x1 = cy*x + sy*z, z1 = -sy*x + cy*z;
+  var cp=Math.cos(pitch), sp=Math.sin(pitch);
+  var y1 = cp*y - sp*z1, z2 = sp*y + cp*z1;
+  return [x1, y1, z2];
+}
+function makeCam(yaw, pitch, dist, scale){ return {yaw:yaw, pitch:pitch, dist:dist, scale:scale}; }
+function project(p, cam, w, h){
+  var r = rotate(p, cam.yaw, cam.pitch);
+  var f = cam.dist / Math.max(0.15, cam.dist - r[2]);
+  return [w/2 + r[0]*f*cam.scale, h/2 - r[1]*f*cam.scale, r[2]];
+}
+/* ลาก/ปัดเพื่อหมุน — ใช้ pointer event ตัวเดียวได้ทั้งเมาส์และนิ้ว */
+function orbit(canvas, cam, onChange){
+  var drag=false, lx=0, ly=0;
+  canvas.addEventListener('pointerdown', function(e){
+    drag=true; lx=e.clientX; ly=e.clientY;
+    canvas.setPointerCapture(e.pointerId); e.preventDefault();
+  });
+  canvas.addEventListener('pointermove', function(e){
+    if(!drag) return;
+    cam.yaw   += (e.clientX-lx)*0.011;
+    cam.pitch += (e.clientY-ly)*0.011;
+    cam.pitch = Math.max(-1.35, Math.min(1.35, cam.pitch));
+    lx=e.clientX; ly=e.clientY;
+    if(onChange) onChange();
+  });
+  function up(e){ if(!drag) return; drag=false; try{canvas.releasePointerCapture(e.pointerId);}catch(err){} }
+  canvas.addEventListener('pointerup', up);
+  canvas.addEventListener('pointercancel', up);
+}
+/* ค่อย ๆ เลื่อนกล้องไปมุมที่กด แทนการกระโดดทันที จะได้ไม่งงว่าภาพหมุนไปไหน */
+function glide(cam, yaw, pitch){
+  cam.tYaw = yaw; cam.tPitch = pitch;
+}
+function stepCam(cam){
+  if(cam.tYaw===undefined) return;
+  cam.yaw   += (cam.tYaw   - cam.yaw)   * 0.15;
+  cam.pitch += (cam.tPitch - cam.pitch) * 0.15;
+  if(Math.abs(cam.tYaw-cam.yaw)<0.002 && Math.abs(cam.tPitch-cam.pitch)<0.002){
+    cam.yaw=cam.tYaw; cam.pitch=cam.tPitch; cam.tYaw=undefined;
+  }
+}
+function fitCanvas(cv){
+  var r = cv.getBoundingClientRect();
+  var dpr = Math.min(2, window.devicePixelRatio||1);
+  var w = Math.round(r.width), h = Math.round(r.width * (cv.height/cv.width || .5));
+  if(cv._w===w && cv._dpr===dpr) return;
+  cv._w=w; cv._dpr=dpr;
+  cv._cssH=h;
+  cv.style.height = h+'px';
+  cv.width = Math.round(w*dpr); cv.height = Math.round(h*dpr);
+  var x=cv.getContext('2d'); x.setTransform(dpr,0,0,dpr,0,0);
+}
+function line(x, a, b, color, width){
+  x.strokeStyle=color; x.lineWidth=width||2;
+  x.beginPath(); x.moveTo(a[0],a[1]); x.lineTo(b[0],b[1]); x.stroke();
+}
+function text(x, t, px, py, color, size, align){
+  x.fillStyle=color; x.font='700 '+(size||13)+'px Sarabun,sans-serif';
+  x.textAlign=align||'left'; x.textBaseline='middle'; x.fillText(t,px,py); x.textAlign='left';
+}
+function arrowHead(x, from, to, color, size){
+  var dx=to[0]-from[0], dy=to[1]-from[1], L=Math.hypot(dx,dy);
+  if(L<1) return;
+  dx/=L; dy/=L; var s=size||8;
+  x.fillStyle=color; x.beginPath();
+  x.moveTo(to[0],to[1]);
+  x.lineTo(to[0]-dx*s-dy*s*0.55, to[1]-dy*s+dx*s*0.55);
+  x.lineTo(to[0]-dx*s+dy*s*0.55, to[1]-dy*s-dx*s*0.55);
+  x.closePath(); x.fill();
 }
 
-/* ---- ชิปวิชา ---- */
-const subjects=[...new Set(LIST.map(x=>x.subj))];
-$('#subjRow').innerHTML = `<button class="chip on" data-subj="all">ทุกวิชา</button>` +
-  subjects.map(s=>{
-    const one=LIST.find(x=>x.subj===s);
-    return `<button class="chip" data-subj="${s}">${one.icon} ${s}<span class="n">${LIST.filter(x=>x.subj===s).length}</span></button>`;
-  }).join('');
-
-$('#stTotal').textContent = LIST.length+' หน้า';
-$('#stSubj').textContent  = subjects.length+' วิชา';
-
-function pass(x){
-  if(fExam==='final' && !x.ex) return false;
-  if(fKind!=='all' && x.kind!==fKind) return false;
-  if(fSubj!=='all' && x.subj!==fSubj) return false;
-  if(fQ && !(x.title+' '+x.subj+' '+x.path).toLowerCase().includes(fQ)) return false;
-  return true;
+/* ═══════════════════ แท็บ ═══════════════════ */
+var tabs=document.getElementById('tabs');
+function openTab(id){
+  var t=document.querySelectorAll('.tab'), b=document.querySelectorAll('.tab-btn'), i;
+  for(i=0;i<t.length;i++) t[i].classList.toggle('show', t[i].id===id);
+  for(i=0;i<b.length;i++) b[i].classList.toggle('active', b[i].dataset.tab===id);
 }
-const KIND={exam:'ข้อสอบ',sim:'สื่อจำลอง',note:'สรุป'};
+tabs.addEventListener('click', function(e){
+  var b=e.target.closest('.tab-btn'); if(b) openTab(b.dataset.tab);
+});
+openTab('t1');
 
-/* การ์ด 1 ใบ — ในมุมมองปลายภาคไม่ต้องแปะป้ายซ้ำ เพราะหัวข้อบอกวันสอบอยู่แล้ว */
-const cards = g => g.map(x=>`<a class="card s-${x.key}" href="${x.path}">
-                  <div class="t">${x.title}</div>
-                  <div class="m"><span class="k">${KIND[x.kind]}</span>${
-                    (x.ex && fExam!=='final' && exFirst(x))
-                      ? `<span class="fin-pill">🔥 ออกปลายภาค ${exFirst(x).day}</span>` : ''
-                  }</div>
-                </a>`).join('');
+var REDUCED = matchMedia('(prefers-reduced-motion:reduce)').matches;
+/* บทเรียนจาก 2026-09-06: ห้ามให้ค่าของระบบ "ล็อกตาย" จนกดปุ่มแล้วไม่มีอะไรเกิดขึ้น
+   ที่นี่จึงใช้เป็นแค่ค่าเริ่มต้น แล้วให้ปุ่มเล่นสั่งทับได้เสมอ */
+var playing = !REDUCED;
 
-/* มุมมอง "ปลายภาค" — เรียงตามเวลาสอบจริง ไม่ใช่เรียงตามวิชา */
-function byExam(rows){
-  let html = `<div class="fin-hint">🔥 กำลังโชว์เฉพาะหน้าที่<b>ออกปลายภาค</b> เรียงตามเวลาสอบจริง —
-    อยากดูหน้าที่เหลือทั้งเว็บ กด “ทุกหน้าในเว็บ” ข้างบน</div>`;
-  for(const e of EXAM){
-    const g = rows.filter(x=>exList(x).indexOf(e.id)>=0);
-    if(!g.length && (fQ || fKind!=='all' || fSubj!=='all')) continue;  /* กรองอยู่ ไม่ต้องโชว์ช่องว่าง */
-    html += `<h2 class="sec">🗓️ ${e.day} ${e.time} · ${e.name}
-             <span class="line"></span><span class="when">${e.min} นาที</span></h2>
-             <div class="scope">ขอบเขต: ${e.scope}</div>`;
-    html += g.length ? `<div class="grid">${cards(g)}</div>`
-                     : `<div class="slot-none">ยังไม่มีหน้าเตรียมสอบวิชานี้</div>`;
+/* ═══════════════════ ฉาก 1 : E กับ B ═══════════════════ */
+var cEB=document.getElementById('cEB'), xEB=cEB.getContext('2d');
+var camEB = makeCam(-0.62, 0.34, 6.4, 62);
+var EB = {t:0, E:true, B:true, arr:true};
+var EB_HOME = [-0.62, 0.34];
+orbit(cEB, camEB, function(){ camEB.tYaw=undefined; });
+
+function ebMsgUpdate(){
+  var m=document.getElementById('ebMsg');
+  var yaw = ((camEB.yaw % (Math.PI*2)) + Math.PI*2) % (Math.PI*2);
+  var front = Math.min(Math.abs(yaw - Math.PI/2), Math.abs(yaw - Math.PI/2 - Math.PI*2)) < 0.35
+              && Math.abs(camEB.pitch) < 0.3;
+  var top = Math.abs(camEB.pitch) > 1.05;
+  if(front){
+    m.innerHTML = '⭐ <b>นี่คือมุมสำคัญที่สุด</b> — กำลังมองย้อนตรงหน้าคลื่นอยู่<br>'+
+      'เห็นเป็น <b>เครื่องหมายบวก +</b> ขีดแดงตั้ง ขีดน้ำเงินนอน = <b>ตั้งฉากกัน 90° จริง ๆ</b>';
+  } else if(top){
+    m.innerHTML = '🕊️ <b>มองจากข้างบนลงมา</b> — ตอนนี้จะเห็นเส้นน้ำเงิน (B) สะบัดซ้าย-ขวาชัด '+
+      'ส่วนเส้นแดง (E) แบนราบจนเกือบเป็นเส้นตรง เพราะมันสะบัดขึ้น-ลงซึ่งเรามองจากด้านบนพอดี';
+  } else {
+    m.innerHTML = '🙂 <b>ลากภาพเพื่อหมุนดูรอบด้าน</b> — สังเกตว่าไม่ว่าหมุนไปมุมไหน '+
+      'เส้นแดงกับเส้นน้ำเงินก็ยัง <b>ทำมุม 90° กันเสมอ</b> และ <b>ขึ้นสุด-ลงสุดพร้อมกัน</b>';
   }
-  return html;
 }
 
-function render(){
-  const rows=LIST.filter(pass);
-  if(!LIST.length){
-    $('#list').innerHTML=`<div class="warn">ยังไม่มีรายการ — ต้องรัน <code>pwsh -File site/build.ps1</code> ก่อน
-      เพื่อคัดลอกหน้าเรียนเข้ามาและสร้าง <code>catalog.js</code></div>`; return;
+function drawEB(){
+  fitCanvas(cEB);
+  var W=cEB._w, H=cEB._cssH, x=xEB;
+  x.clearRect(0,0,W,H);
+  stepCam(camEB);
+  /* ข้อความใต้ภาพต้องตรงกับมุมที่เห็นจริงเสมอ — เช็คตอนกล้องขยับ ไม่ใช่ตั้งเวลาเดา */
+  if(camEB._ly===undefined || Math.abs(camEB.yaw-camEB._ly)>0.001 || Math.abs(camEB.pitch-camEB._lp)>0.001){
+    camEB._ly=camEB.yaw; camEB._lp=camEB.pitch; ebMsgUpdate();
   }
-  if(!rows.length){
-    /* กรองปลายภาคอยู่แล้วไม่เจอ ต้องบอกด้วยว่ายังกรองอยู่ ไม่งั้นนึกว่าเว็บไม่มีของ */
-    $('#list').innerHTML = (fExam==='final')
-      ? '<div class="empty">ไม่เจอในหน้าที่ออกปลายภาค — กด “ทุกหน้าในเว็บ” ข้างบนเพื่อค้นทั้งเว็บ</div>'
-      : '<div class="empty">ไม่เจอที่ค้นหา ลองพิมพ์สั้นลง</div>';
-    return;
+  var cam=camEB; cam.scale = Math.min(W,H*1.9)/14.2;
+
+  var X0=-4.2, X1=4.2, N=150, i, p;
+  function P(px,py,pz){ return project([px,py,pz], cam, W, H); }
+
+  /* ระนาบอ้างอิงบาง ๆ ให้รู้ว่าอันไหนหน้า-หลัง */
+  x.fillStyle='rgba(255,255,255,.045)';
+  var q=[P(X0,0,-2.6),P(X1,0,-2.6),P(X1,0,2.6),P(X0,0,2.6)];
+  x.beginPath(); x.moveTo(q[0][0],q[0][1]); for(i=1;i<4;i++)x.lineTo(q[i][0],q[i][1]); x.closePath(); x.fill();
+
+  /* แกนหลัก = ทิศที่คลื่นวิ่ง */
+  var a0=P(X0,0,0), a1=P(X1+0.9,0,0);
+  line(x,a0,a1,'rgba(255,255,255,.55)',2);
+  arrowHead(x,a0,a1,'rgba(255,255,255,.75)',10);
+  text(x,'ทิศที่คลื่นวิ่งไป (แกน x)', a1[0]-8, a1[1]-16, 'rgba(255,255,255,.8)', 13, 'right');
+
+  /* แกน y และ z ที่จุดเริ่ม เพื่อให้เห็นว่าอันไหนคือ ขึ้น-ลง อันไหน ซ้าย-ขวา */
+  line(x,P(X0,-1.9,0),P(X0,1.9,0),'rgba(225,29,72,.35)',1.5);
+  line(x,P(X0,0,-1.9),P(X0,0,1.9),'rgba(37,99,235,.35)',1.5);
+
+  var amp=1.55, k=1.55, w=2.5;
+  var ptsE=[], ptsB=[];
+  for(i=0;i<=N;i++){
+    var px = X0 + (X1-X0)*i/N;
+    var s = Math.sin(k*px - EB.t*w);
+    ptsE.push(P(px, amp*s, 0));
+    ptsB.push(P(px, 0, amp*s));
   }
-  if(fExam==='final'){
-    $('#list').innerHTML = byExam(rows);
-    return;
+  function poly(pts, color, width){
+    x.strokeStyle=color; x.lineWidth=width; x.beginPath();
+    x.moveTo(pts[0][0],pts[0][1]);
+    for(var j=1;j<pts.length;j++) x.lineTo(pts[j][0],pts[j][1]);
+    x.stroke();
   }
-  let html='';
-  for(const s of subjects){
-    const g=rows.filter(x=>x.subj===s); if(!g.length) continue;
-    html += `<h2 class="sec">${g[0].icon} ${s} <span class="line"></span>
-             <span style="font-size:.8rem;font-weight:600;color:var(--muted)">${g.length}</span></h2>`;
-    /* จัดกลุ่มตามบท (grp) — วิชาที่ไม่มีโฟลเดอร์ย่อยจะได้กลุ่มเดียวชื่อว่าง แสดงเรียบเหมือนเดิม */
-    const groups=[...new Set(g.map(x=>x.grp||''))];
-    if(groups.length<=1){ html += `<div class="grid">${cards(g)}</div>`; continue; }
-    for(const gr of groups){
-      const gg=g.filter(x=>(x.grp||'')===gr); if(!gg.length) continue;
-      /* ค้นหาอยู่ = กางทุกบทให้เห็นผลลัพธ์ · ปกติ = จำสถานะที่ผู้ใช้เปิดไว้ */
-      let open;
-      try{ open = fQ ? true : (localStorage.getItem('grp:'+s+':'+gr)==='1'); }catch(e){ open=!!fQ; }
-      html += `<details class="chap"${open?' open':''} data-k="grp:${s}:${gr}">
-        <summary>${gr||'อื่น ๆ'}<span class="n">${gg.length}</span></summary>
-        <div class="grid">${cards(gg)}</div></details>`;
+  /* แผ่นบาง ๆ ใต้เส้น ช่วยให้เห็น "ระนาบการสั่น" ซึ่งเป็นคำที่ข้อสอบใช้ */
+  function sheet(pts, color){
+    x.fillStyle=color; x.beginPath();
+    x.moveTo(pts[0][0],pts[0][1]);
+    for(var j=1;j<pts.length;j++) x.lineTo(pts[j][0],pts[j][1]);
+    for(var j2=pts.length-1;j2>=0;j2--){
+      var px = X0 + (X1-X0)*j2/N;
+      var b = P(px,0,0); x.lineTo(b[0],b[1]);
+    }
+    x.closePath(); x.fill();
+  }
+  if(EB.B){ sheet(ptsB,'rgba(37,99,235,.16)'); }
+  if(EB.E){ sheet(ptsE,'rgba(225,29,72,.16)'); }
+
+  /* ลูกศรทีละช่วง ให้เห็นว่ามันคือ "สนาม" ที่ชี้ขึ้น-ลง / ซ้าย-ขวา */
+  if(EB.arr){
+    for(i=0;i<=12;i++){
+      var px2 = X0 + (X1-X0)*i/12;
+      var s2 = Math.sin(k*px2 - EB.t*w);
+      if(EB.E){ var e0=P(px2,0,0), e1=P(px2,amp*s2,0);
+        line(x,e0,e1,'rgba(225,29,72,.75)',2); arrowHead(x,e0,e1,'rgba(225,29,72,.9)',6); }
+      if(EB.B){ var b0=P(px2,0,0), b1=P(px2,0,amp*s2);
+        line(x,b0,b1,'rgba(37,99,235,.75)',2); arrowHead(x,b0,b1,'rgba(37,99,235,.9)',6); }
     }
   }
-  $('#list').innerHTML=html;
-  $('#list').querySelectorAll('details.chap').forEach(d=>{
-    d.addEventListener('toggle',()=>{ try{localStorage.setItem(d.dataset.k, d.open?'1':'0');}catch(e){} });
-  });
-}
-$('#examRow').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;
-  fExam=b.dataset.exam; $('#examRow').querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c===b)); render();});
-$('#kindRow').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;
-  fKind=b.dataset.kind; $('#kindRow').querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c===b)); render();});
-$('#subjRow').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;
-  fSubj=b.dataset.subj; $('#subjRow').querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c===b)); render();});
-$('#q').addEventListener('input',e=>{fQ=e.target.value.trim().toLowerCase();render();});
-render();
-</script>
+  if(EB.B) poly(ptsB, '#60a5fa', 3);
+  if(EB.E) poly(ptsE, '#fb7185', 3);
 
-<script src="tour.js?v=202609062038"></script>
-<script src="feedback.js?v=202609062038"></script>
-<script src="updates.js?v=202609062038"></script>
+  text(x,'E', P(X1,amp,0)[0]+10, P(X1,amp,0)[1], '#fb7185', 16);
+  text(x,'B', P(X1,0,amp)[0]+10, P(X1,0,amp)[1], '#60a5fa', 16);
+  text(x,'ขึ้น-ลง', P(X0,1.9,0)[0], P(X0,1.9,0)[1]-13, 'rgba(251,113,133,.85)', 12, 'center');
+  text(x,'ซ้าย-ขวา', P(X0,0,1.9)[0], P(X0,0,1.9)[1]+14, 'rgba(96,165,250,.85)', 12, 'center');
+  text(x,'ลากเพื่อหมุน', 12, H-14, 'rgba(255,255,255,.4)', 12);
+}
+
+document.getElementById('ebE').onclick=function(){ EB.E=!EB.E; this.classList.toggle('on',EB.E); };
+document.getElementById('ebB').onclick=function(){ EB.B=!EB.B; this.classList.toggle('on',EB.B); };
+document.getElementById('ebArr').onclick=function(){ EB.arr=!EB.arr; this.classList.toggle('on',EB.arr); };
+function turnMotionOn(){
+  playing=true;
+  var bar=document.getElementById('motionBar'); if(bar) bar.style.display='none';
+  var pb=document.getElementById('ebPlay');
+  if(pb){ pb.classList.add('on'); pb.textContent='⏸ หยุด'; }
+}
+document.getElementById('ebPlay').onclick=function(){
+  playing=!playing; this.classList.toggle('on',playing);
+  this.textContent = playing ? '⏸ หยุด' : '▶ เล่น';
+  var bar=document.getElementById('motionBar');
+  if(bar && playing) bar.style.display='none';
+};
+document.getElementById('ebSide').onclick =function(){ glide(camEB, 0, 0); };
+document.getElementById('ebTop').onclick  =function(){ glide(camEB, 0, 1.32); };
+document.getElementById('ebFront').onclick=function(){ glide(camEB, Math.PI/2, 0); };
+document.getElementById('ebReset').onclick=function(){ glide(camEB, EB_HOME[0], EB_HOME[1]); };
+
+/* ═══════════════════ ฉาก 2 : เชือกกับรั้ว ═══════════════════ */
+var cR=document.getElementById('cRope'), xR=cR.getContext('2d');
+var camR = makeCam(-0.75, 0.30, 6.6, 60);
+var R_HOME=[-0.75,0.30];
+var ROPE = {t:0, ang:0};
+orbit(cR, camR, function(){ camR.tYaw=undefined; });
+
+function ropeMsg(){
+  var a=ROPE.ang, m=document.getElementById('ropeMsg');
+  var pass=Math.round(Math.cos(a*Math.PI/180)*100);
+  if(a<=8){
+    m.innerHTML='✅ สะบัด <b>ขึ้น-ลง</b> ตรงกับช่องรั้วพอดี → <b>ผ่านได้เต็มที่</b> (เหลือ '+pass+'%)';
+  } else if(a>=82){
+    m.innerHTML='⛔ สะบัด <b>ซ้าย-ขวา</b> ขวางกับช่องรั้ว → <b>ผ่านไม่ได้เลย</b> เชือกหลังรั้วนิ่งสนิท (เหลือ '+pass+'%)';
+  } else {
+    m.innerHTML='↗ สะบัด <b>เฉียง '+a+'°</b> → ผ่านได้แค่ <b>ส่วนที่เป็นแนวตั้ง</b> เหลือความแรง <b>'+pass+'%</b><br>'+
+      'ที่เหลือไปชนซี่รั้วหมด — นี่คือเหตุผลว่าทำไมเฉียงแล้วเบาลง';
+  }
+}
+
+function drawRope(){
+  fitCanvas(cR);
+  var W=cR._w, H=cR._cssH, x=xR;
+  x.clearRect(0,0,W,H);
+  stepCam(camR);
+  var cam=camR; cam.scale=Math.min(W,H*1.9)/14.5;
+  function P(px,py,pz){ return project([px,py,pz], cam, W, H); }
+
+  var X0=-4.3, X1=4.3, N=140, i;
+  var a = ROPE.ang*Math.PI/180;
+  var amp=1.3, k=1.7, w=2.6;
+
+  /* รั้ว: ซี่แนวตั้งเรียงกันตามแกน z ที่ x=0 -> ช่องว่างเป็นแนวตั้ง */
+  var barsFront=[], barsBack=[];
+  for(i=-3;i<=3;i++){
+    var z=i*0.42;
+    var p0=P(0,-1.75,z), p1=P(0,1.75,z);
+    (p0[2] < 0 ? barsBack : barsFront).push([p0,p1]);
+  }
+  function drawBars(list){
+    for(var j=0;j<list.length;j++) line(x, list[j][0], list[j][1], 'rgba(148,163,184,.85)', 5);
+  }
+  /* กรอบรั้ว */
+  function frame(){
+    var f=[P(0,-1.9,-1.5),P(0,1.9,-1.5),P(0,1.9,1.5),P(0,-1.9,1.5)];
+    x.strokeStyle='rgba(203,213,225,.55)'; x.lineWidth=2;
+    x.beginPath(); x.moveTo(f[0][0],f[0][1]);
+    for(var j=1;j<4;j++) x.lineTo(f[j][0],f[j][1]);
+    x.closePath(); x.stroke();
+    x.fillStyle='rgba(148,163,184,.10)'; x.fill();
+  }
+
+  drawBars(barsBack);
+
+  /* เชือก: ก่อนรั้วสะบัดตามมุมที่เลือก · หลังรั้วเหลือเฉพาะส่วนแนวตั้ง */
+  var pts=[];
+  for(i=0;i<=N;i++){
+    var px = X0 + (X1-X0)*i/N;
+    var s = Math.sin(k*px - ROPE.t*w);
+    var dy, dz;
+    if(px < 0){ dy = amp*s*Math.cos(a); dz = amp*s*Math.sin(a); }
+    else      { dy = amp*s*Math.cos(a); dz = 0; }   /* ซี่รั้วกินส่วนแนวนอนไปหมด */
+    pts.push({p:P(px,dy,dz), before:px<0});
+  }
+  function seg(filterBefore, color, width){
+    x.strokeStyle=color; x.lineWidth=width; x.beginPath();
+    var started=false;
+    for(var j=0;j<pts.length;j++){
+      if(pts[j].before!==filterBefore){ started=false; continue; }
+      if(!started){ x.moveTo(pts[j].p[0],pts[j].p[1]); started=true; }
+      else x.lineTo(pts[j].p[0],pts[j].p[1]);
+    }
+    x.stroke();
+  }
+  /* เส้นแกนกลางให้เห็นว่าเชือกนิ่งหรือไม่นิ่ง */
+  line(x,P(X0,0,0),P(X1,0,0),'rgba(255,255,255,.18)',1.5);
+
+  seg(true, '#fbbf24', 3.5);                       /* ก่อนรั้ว = สีเหลือง */
+  var passAmt=Math.cos(a);
+  seg(false, Math.abs(passAmt)<0.06 ? 'rgba(148,163,184,.6)' : '#34d399', 3.5);  /* หลังรั้ว = เขียว */
+
+  frame();
+  drawBars(barsFront);
+
+  /* มือที่สะบัด */
+  var hs=P(X0,0,0);
+  x.fillStyle='#fbbf24'; x.beginPath(); x.arc(hs[0],hs[1],7,0,7); x.fill();
+  text(x,'มือสะบัด', hs[0], hs[1]-18, '#fbbf24', 12, 'center');
+
+  var fp=P(0,2.15,0);
+  text(x,'รั้วช่องตั้ง', fp[0], fp[1]-8, 'rgba(226,232,240,.9)', 13, 'center');
+  var ep=P(X1,0,0);
+  text(x, Math.abs(passAmt)<0.06 ? 'เชือกนิ่ง — ไม่ผ่าน' : 'ผ่านมาได้', ep[0]-6, ep[1]-20,
+       Math.abs(passAmt)<0.06 ? 'rgba(148,163,184,.9)' : '#34d399', 13, 'right');
+  text(x,'ลากเพื่อหมุน', 12, H-14, 'rgba(255,255,255,.4)', 12);
+}
+
+var ropeAng=document.getElementById('ropeAng');
+function setRope(v){
+  ROPE.ang=+v; ropeAng.value=v;
+  var lbl = v==0 ? 'ขึ้น-ลง (0°)' : (v==90 ? 'ซ้าย-ขวา (90°)' : 'เฉียง '+v+'°');
+  document.getElementById('ropeAngV').textContent=lbl;
+  ropeMsg();
+}
+ropeAng.addEventListener('input', function(){ setRope(this.value); });
+document.getElementById('ropeUp').onclick   =function(){ setRope(0); };
+document.getElementById('ropeMid').onclick  =function(){ setRope(45); };
+document.getElementById('ropeSide').onclick =function(){ setRope(90); };
+document.getElementById('ropeReset').onclick=function(){ glide(camR, R_HOME[0], R_HOME[1]); };
+
+/* ═══════════════════ ฉาก 3 : แสงกับแผ่นโพลารอยด์ ═══════════════════ */
+var cP=document.getElementById('cPol'), xP=cP.getContext('2d');
+var camP = makeCam(-0.80, 0.28, 7.0, 58);
+var P_HOME=[-0.80,0.28];
+var POL={t:0, ang:0};
+orbit(cP, camP, function(){ camP.tYaw=undefined; });
+
+var UNPOL_ANGLES=[0,25,52,78,104,131,157];   /* แสงหลอดไฟ = สั่นหลายแนวพร้อมกัน */
+
+function polMsg(){
+  var a=POL.ang, m=document.getElementById('polMsg');
+  var pct=Math.round(Math.cos(a*Math.PI/180)*Math.cos(a*Math.PI/180)*100);
+  document.getElementById('polPct').textContent=pct+'%';
+  document.getElementById('polBar').style.width=pct+'%';
+  if(a<=6){
+    m.innerHTML='✅ แผ่นที่ 2 หัน <b>ตรงกับ</b> แผ่นที่ 1 → แสงที่รอดจากแผ่นแรกมา <b>ผ่านได้หมด</b>';
+  } else if(a>=84){
+    m.innerHTML='⛔ แผ่นที่ 2 หัน <b>ขวาง 90°</b> กับแผ่นที่ 1 → สนามไฟฟ้าตั้งฉากกับแนวโพลาไรส์พอดี '+
+      '<b>ถูกดูดกลืนหมด มืดสนิท</b> (ตรงกับสไลด์ น.34)';
+  } else {
+    m.innerHTML='↗ หมุนไป <b>'+a+'°</b> → ผ่านได้แค่ส่วนที่ขนานกับช่องของแผ่นที่ 2 เหลือ <b>'+pct+'%</b>';
+  }
+}
+
+function drawPol(){
+  fitCanvas(cP);
+  var W=cP._w, H=cP._cssH, x=xP;
+  x.clearRect(0,0,W,H);
+  stepCam(camP);
+  var cam=camP; cam.scale=Math.min(W,H*1.9)/15.5;
+  function P(px,py,pz){ return project([px,py,pz], cam, W, H); }
+
+  var X0=-4.6, XA=-1.5, XB=1.5, X1=4.6;
+  var amp=1.05, k=1.9, w=2.7;
+  var a2=POL.ang*Math.PI/180;
+
+  line(x,P(X0,0,0),P(X1,0,0),'rgba(255,255,255,.16)',1.5);
+
+  /* ── ช่วงที่ 1: แสงไม่โพลาไรส์ = หลายระนาบพร้อมกัน ── */
+  for(var m2=0;m2<UNPOL_ANGLES.length;m2++){
+    var ang=UNPOL_ANGLES[m2]*Math.PI/180;
+    x.strokeStyle='rgba(250,204,21,.55)'; x.lineWidth=1.6;
+    x.beginPath();
+    for(var i=0;i<=60;i++){
+      var px=X0+(XA-X0)*i/60;
+      var s=Math.sin(k*px - POL.t*w + m2);
+      var p=P(px, amp*s*Math.cos(ang), amp*s*Math.sin(ang));
+      i?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1]);
+    }
+    x.stroke();
+  }
+
+  /* ── แผ่นที่ 1 (ช่องแนวตั้ง) ── */
+  function plate(px, angDeg, label, color){
+    var f=[P(px,-1.8,-1.8),P(px,1.8,-1.8),P(px,1.8,1.8),P(px,-1.8,1.8)];
+    x.fillStyle='rgba(148,163,184,.12)';
+    x.beginPath(); x.moveTo(f[0][0],f[0][1]);
+    for(var j=1;j<4;j++) x.lineTo(f[j][0],f[j][1]);
+    x.closePath(); x.fill();
+    x.strokeStyle='rgba(203,213,225,.6)'; x.lineWidth=2; x.stroke();
+    /* ซี่ = แนวที่ "ผ่านได้" ตามมุมของแผ่น */
+    var ar=angDeg*Math.PI/180;
+    for(var t2=-3;t2<=3;t2++){
+      var off=t2*0.45;
+      var d0=[px, -1.6*Math.cos(ar) + off*Math.sin(ar), -1.6*Math.sin(ar) - off*Math.cos(ar)];
+      var d1=[px,  1.6*Math.cos(ar) + off*Math.sin(ar),  1.6*Math.sin(ar) - off*Math.cos(ar)];
+      line(x, P(d0[0],d0[1],d0[2]), P(d1[0],d1[1],d1[2]), color, 3);
+    }
+    var lp=P(px,2.05,0);
+    text(x,label, lp[0], lp[1]-6, 'rgba(226,232,240,.92)', 13, 'center');
+  }
+
+  /* ── ช่วงที่ 2: หลังแผ่น 1 เหลือระนาบเดียว (แนวตั้ง) ── */
+  x.strokeStyle='#f472b6'; x.lineWidth=3;
+  x.beginPath();
+  for(var i2=0;i2<=90;i2++){
+    var px2=XA+(XB-XA)*i2/90;
+    var s2=Math.sin(k*px2 - POL.t*w);
+    var p2=P(px2, amp*s2, 0);
+    i2?x.lineTo(p2[0],p2[1]):x.moveTo(p2[0],p2[1]);
+  }
+  x.stroke();
+
+  /* ── ช่วงที่ 3: หลังแผ่น 2 เหลือตามมุม ── */
+  var amp3 = amp*Math.cos(a2);
+  var dead = Math.abs(Math.cos(a2))<0.06;
+  x.strokeStyle = dead ? 'rgba(148,163,184,.5)' : '#34d399'; x.lineWidth=3;
+  x.beginPath();
+  for(var i3=0;i3<=90;i3++){
+    var px3=XB+(X1-XB)*i3/90;
+    var s3=Math.sin(k*px3 - POL.t*w);
+    var p3=P(px3, amp3*s3*Math.cos(a2), amp3*s3*Math.sin(a2));
+    i3?x.lineTo(p3[0],p3[1]):x.moveTo(p3[0],p3[1]);
+  }
+  x.stroke();
+
+  plate(XA, 0, 'แผ่นที่ 1', 'rgba(244,114,182,.9)');
+  plate(XB, POL.ang, 'แผ่นที่ 2 (หมุนได้)', dead ? 'rgba(148,163,184,.9)' : 'rgba(52,211,153,.9)');
+
+  /* ป้ายกำกับวางด้วยพิกัดจอ ไม่ใช่พิกัด 3 มิติ — กันชนกับป้ายแผ่นเวลาหมุนกล้อง */
+  text(x,'① แสงหลอดไฟ — สั่นทุกแนว', 12, 20, 'rgba(250,204,21,.95)', 13);
+  text(x,'② หลังแผ่นที่ 1 เหลือแนวเดียว', 12, 40, '#f472b6', 13);
+  text(x, dead ? '③ หลังแผ่นที่ 2 — มืดสนิท' : '③ หลังแผ่นที่ 2 — ที่ตาเรามองเห็น', 12, 60,
+       dead ? 'rgba(148,163,184,.95)' : '#34d399', 13);
+  text(x,'ลากเพื่อหมุน', 12, H-14, 'rgba(255,255,255,.4)', 12);
+}
+
+var polAng=document.getElementById('polAng');
+function setPol(v){
+  POL.ang=+v; polAng.value=v;
+  document.getElementById('polAngV').textContent=v+'°';
+  polMsg();
+}
+polAng.addEventListener('input', function(){ setPol(this.value); });
+document.getElementById('pol0').onclick =function(){ setPol(0); };
+document.getElementById('pol45').onclick=function(){ setPol(45); };
+document.getElementById('pol90').onclick=function(){ setPol(90); };
+document.getElementById('polReset').onclick=function(){ glide(camP, P_HOME[0], P_HOME[1]); };
+
+/* ═══════════════════ ลูปเดียว วาดเฉพาะแท็บที่เปิด ═══════════════════ */
+var last=performance.now();
+function shown(id){ var e=document.getElementById(id); return e && e.classList.contains('show'); }
+function loop(now){
+  var dt=Math.min(.05,(now-last)/1000); last=now;
+  var k = playing ? dt : 0;
+  if(shown('t1')){ EB.t   += k; drawEB(); }
+  if(shown('t2')){ ROPE.t += k; drawRope(); }
+  if(shown('t3')){ POL.t  += k; drawPol(); }
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+addEventListener('resize', function(){ [cEB,cR,cP].forEach(function(c){ c._w=null; }); });
+
+/* ตั้งค่าเริ่มต้นของข้อความ */
+if(REDUCED){
+  var pb=document.getElementById('ebPlay');
+  pb.classList.remove('on'); pb.textContent='▶ เล่น';
+  var bar=document.getElementById('motionBar');
+  if(bar){ bar.style.display='block';
+    document.getElementById('motionGo').onclick=turnMotionOn; }
+}
+ebMsgUpdate(); setRope(0); setPol(0);
+</script>
 <!--KIT-UI v3.7 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>
 /* =============================================================================
