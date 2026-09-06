@@ -282,8 +282,15 @@ function mkPick(n){
 function mcq(pool,ids,st){
   let q=null,lock=false;
   const rpick=mkPick(pool.length);
+  /* ปุ่ม "ข้อต่อไป" — เดิมเด้งไปข้อถัดไปเองใน 1–2.6 วินาที อ่านเฉลยไม่ทัน
+     (เจ้าของแจ้ง 2026-09-06) เปลี่ยนเป็น "กดเอง" ทุกข้อ · สร้างปุ่มครั้งเดียวต่อชุด */
+  const nb=document.createElement('button');
+  nb.type='button'; nb.className='btn nextq'; nb.textContent='ข้อต่อไป →';
+  nb.style.cssText='display:none;margin-top:10px';
+  nb.onclick=function(){ next(); };
+  (function(){ const bx=$(ids.c); bx.parentNode.insertBefore(nb,bx.nextSibling); })();
   function next(){
-    q=pool[rpick()]; lock=false;
+    q=pool[rpick()]; lock=false; nb.style.display='none';
     $(ids.q).innerHTML=q.q; $(ids.fb).textContent=''; if(ids.w)$(ids.w).innerHTML='';
     const box=$(ids.c); box.innerHTML='';
     sh(q.c.slice()).forEach((o,i)=>{
@@ -297,7 +304,7 @@ function mcq(pool,ids,st){
         if(ids.w&&q.w)$(ids.w).innerHTML='<div>💡 '+q.w+'</div>';
         $(ids.ok).textContent=st.ok; $(ids.N).textContent=st.n;
         if(ids.pct)$(ids.pct).textContent=Math.round(st.ok/st.n*100)+'%';
-        setTimeout(next,o===q.a?1000:2600);
+        nb.style.display='inline-block';
       };
       box.appendChild(b);
     });

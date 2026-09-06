@@ -978,11 +978,17 @@ function newBand(){
       if(n===bAns){bScore[0]++;fb.textContent='✓ ถูกต้อง — '+bAns;fb.className='fb ok';}
       else{fb.textContent='✗ ไม่ใช่ '+n+' · คำตอบคือ '+bAns;fb.className='fb bad';}
       document.getElementById('bandScore').textContent='ตอบถูก '+bScore[0]+' จาก '+bScore[1]+' ข้อ';
-      setTimeout(newBand,1400);
+      bandNext.style.display='inline-block';          /* กดเอง ไม่เด้งเอง */
     };
     box.appendChild(btn);
   });
 }
+/* ปุ่ม "ข้อต่อไป" — เดิมเด้งเองใน 1.4 วินาที อ่านเฉลยไม่ทัน (เจ้าของแจ้ง 2026-09-06) */
+var bandNext=document.createElement('button');
+bandNext.type='button'; bandNext.className='btn'; bandNext.textContent='ข้อต่อไป →';
+bandNext.style.cssText='display:none;margin-top:10px';
+bandNext.onclick=function(){ bandNext.style.display='none'; newBand(); };
+(function(){ var bx=document.getElementById('bandBtns'); bx.parentNode.insertBefore(bandNext,bx.nextSibling); })();
 newBand();
 
 /* ถูก/ผิด */
@@ -1014,8 +1020,14 @@ function ansTF(v){
   tScore[1]++; if(v===it[1])tScore[0]++;
   fb.innerHTML=(v===it[1]?'✓ ':'✗ ')+it[2]; fb.className='fb '+(v===it[1]?'ok':'bad');
   document.getElementById('tfScore').textContent='ตอบถูก '+tScore[0]+' จาก '+tScore[1]+' ข้อ';
-  tIdx++; setTimeout(newTF,2200);
+  tIdx++; tfNext.style.display='inline-block';        /* กดเอง ไม่เด้งเอง */
 }
+/* ปุ่ม "ข้อต่อไป" — เดิมเด้งเองใน 2.2 วินาที (เจ้าของแจ้ง 2026-09-06) */
+var tfNext=document.createElement('button');
+tfNext.type='button'; tfNext.className='btn'; tfNext.textContent='ข้อต่อไป →';
+tfNext.style.cssText='display:none;margin-top:10px';
+tfNext.onclick=function(){ tfNext.style.display='none'; newTF(); };
+(function(){ var fb=document.getElementById('tfFb'); fb.parentNode.insertBefore(tfNext,fb.nextSibling); })();
 document.getElementById('tfT').onclick=()=>ansTF(true);
 document.getElementById('tfF').onclick=()=>ansTF(false);
 newTF();
