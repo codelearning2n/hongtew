@@ -647,7 +647,7 @@ document.getElementById('kNext').addEventListener('click',function(){
 showK();
 
 /* ---------- ข้อสอบ ---------- */
-var mode='all', pool=[], idx=0, score=0, answered=false;
+var mode='all', pool=[], idx=0, score=0, answered=false, ansAt=0;
 function loadQ(){
   pool=shuffle(BANK.filter(function(q){
     if(mode==='old') return q.old===1;
@@ -664,10 +664,16 @@ function showQ(){
     box.innerHTML='<h3>🏁 จบชุดแล้ว</h3><div class="big-val">ได้ '+score+'/'+pool.length+'</div>'+
       '<button class="btn" onclick="loadQ()">เล่นอีกรอบ</button>'; return; }
   var q=pool[idx]; answered=false;
+  /* ⚠️ สลับตัวเลือกทุกครั้งที่แสดงข้อ — ห้ามโชว์ตามลำดับในคลัง
+     (ตรวจเจอ 2026-09-07 ด้วยกฎ R8: เฉลยกองอยู่ช่อง B ครึ่งหนึ่งของข้อที่เราตั้งเอง)
+     สลับตอนรัน = **ไม่แตะถ้อยคำของข้อจากใบแนวอาจารย์**สักตัว (กฎ R4 ยังอยู่ครบ) */
+  var ord=shuffle(q.ch.map(function(_,i){return i;}));
+  ansAt=ord.indexOf(q.a);
+
   box.innerHTML='<div class="qhead"><span class="qno">ข้อ '+(idx+1)+'</span>'+
     (q.old?'<span class="pill old">ข้อจากใบแนวของอาจารย์</span>':'<span class="pill">ข้อฝึกเพิ่ม</span>')+'</div>'+
     '<div class="q-text">'+q.q+'</div><div id="ch">'+
-    q.ch.map(function(c,i){return '<button class="choice" data-i="'+i+'"><span class="k">'+'ABCD'.charAt(i)+')</span>'+c+'</button>';}).join('')+
+    ord.map(function(src,i){return '<button class="choice" data-i="'+i+'"><span class="k">'+'ABCD'.charAt(i)+')</span>'+q.ch[src]+'</button>';}).join('')+
     '</div><div class="wr" id="wr">'+q.w+'</div>'+
     '<div class="drill-btns" id="nx" style="display:none"><button class="btn" id="nb">ข้อถัดไป →</button></div>';
   document.getElementById('qn').textContent=idx+1;
@@ -676,8 +682,8 @@ function showQ(){
     var b=e.target.closest('.choice'); if(!b||answered) return;
     answered=true;
     var got=+b.dataset.i, all=this.querySelectorAll('.choice');
-    all[q.a].classList.add('ok');
-    if(got!==q.a) b.classList.add('bad'); else score++;
+    all[ansAt].classList.add('ok');
+    if(got!==ansAt) b.classList.add('bad'); else score++;
     document.getElementById('sc').textContent=score;
     document.getElementById('pct').textContent='('+Math.round(score/(idx+1)*100)+'%)';
     document.getElementById('wr').classList.add('show');

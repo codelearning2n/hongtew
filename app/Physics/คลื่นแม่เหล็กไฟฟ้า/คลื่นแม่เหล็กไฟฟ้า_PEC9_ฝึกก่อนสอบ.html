@@ -565,7 +565,7 @@ var BANK=[
 
 /* ═══════════ เครื่องเล่นข้อสอบ ═══════════ */
 function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
-var pool=[], idx=0, score=0, answered=false;
+var pool=[], idx=0, score=0, answered=false, ansAt=0;
 function load(){
   pool=shuffle(BANK.slice()); idx=0; score=0; answered=false;
   document.getElementById('sc').textContent='0';
@@ -582,10 +582,23 @@ function show(){
     return;
   }
   var q=pool[idx]; answered=false;
-  box.innerHTML='<div class="qhead"><span class="qno">'+q.src+'</span><span class="pill">ข้อสอบจริงจาก PEC9</span></div>'+
+
+  /* ⚠️ ต้องสลับตัวเลือกทุกครั้งที่แสดงข้อ — ห้ามเอาลำดับใน BANK มาโชว์ตรง ๆ
+     (ตรวจเจอ 2026-09-07: ตอนตั้งข้อเผลอวางเฉลยไว้ช่องแรก 31 จาก 40 ข้อ
+      กาช่องแรกรวดได้ 77% โดยไม่ต้องอ่านโจทย์เลย)
+     สลับตอนรันแบบนี้ปลอดภัยกว่าไล่สลับในคลัง เพราะข้อที่ตั้งเพิ่มทีหลัง
+     ก็โดนสลับด้วยอัตโนมัติ และ**ไม่แตะถ้อยคำของข้อสอบจริง**สักตัว */
+  var ord=shuffle(q.ch.map(function(_,i){return i;}));
+  ansAt=ord.indexOf(q.a);          /* เฉลยไปอยู่ช่องไหนหลังสลับ */
+
+  /* ป้ายบอกที่มาต้องตรงความจริง: 11 ข้อแรกคือของจริงจากเอกสาร
+     ที่เหลือเราตั้งเพิ่มเองจากเนื้อความในบทเดียวกัน ห้ามเหมาว่า "ข้อสอบจริง" ทั้งชุด */
+  var real = /^ข้อ\s*\d/.test(q.src||'');
+  box.innerHTML='<div class="qhead"><span class="qno">'+q.src+'</span><span class="pill">'+
+      (real ? 'ข้อสอบจริงจาก PEC9' : 'ตั้งเพิ่มจากเนื้อหาในบท')+'</span></div>'+
     '<div class="q-text">'+q.q+'</div>'+
-    '<div id="ch">'+q.ch.map(function(c,i){
-      return '<button class="choice" data-i="'+i+'"><span class="k">'+'กขคง'.charAt(i)+'.</span>'+c+'</button>';
+    '<div id="ch">'+ord.map(function(src,i){
+      return '<button class="choice" data-i="'+i+'"><span class="k">'+'กขคง'.charAt(i)+'.</span>'+q.ch[src]+'</button>';
     }).join('')+'</div>'+
     '<div class="wr" id="wr">'+q.w+'</div>'+
     '<div class="nx" id="nx"><button class="btn" id="nextB">ข้อต่อไป →</button></div>';
@@ -597,9 +610,9 @@ function show(){
 function pick(e){
   var b=e.target.closest('.choice'); if(!b||answered) return;
   answered=true;
-  var q=pool[idx], got=+b.dataset.i, all=this.querySelectorAll('.choice');
-  all[q.a].classList.add('ok');
-  if(got!==q.a) b.classList.add('bad'); else score++;
+  var got=+b.dataset.i, all=this.querySelectorAll('.choice');
+  all[ansAt].classList.add('ok');      /* ← ตำแหน่งหลังสลับ ไม่ใช่ q.a */
+  if(got!==ansAt) b.classList.add('bad'); else score++;
   document.getElementById('sc').textContent=score;
   document.getElementById('pct').textContent='('+Math.round(score/(idx+1)*100)+'%)';
   document.getElementById('wr').classList.add('show');
