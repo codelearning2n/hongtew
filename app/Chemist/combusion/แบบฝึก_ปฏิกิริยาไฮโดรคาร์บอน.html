@@ -864,7 +864,7 @@ const MIX=[
 [1,2].forEach(upd);
 openTab('t0');
 </script>
-<!--KIT-UI v3.7 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<!--KIT-UI v3.8 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>
 /* =============================================================================
    _kit/ui-controls.js  —  KIT UI  v1.0
@@ -890,7 +890,7 @@ openTab('t0');
               หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
    ============================================================================= */
 (function(){
-if(window.__KITUI__) return; window.__KITUI__='3.7';   /* 3.7 = ปุ่มถาม AI เปิดเป็น "แผงข้าง" ไม่เด้งออกจากหน้า (site/ask-panel.js) · 3.6 = แถบพื้นหลังใต้ปุ่มลอย (กันเนื้อหาไหลผ่านช่องเหนือแท็บ) · 3.5 = tour.js · 3.4 = feedback.js */   /* เดิม 3.3 = ส่ง ?from= ไปด้วย ปุ่มกลับในหน้าถามจะได้กลับหน้าเดิม ไม่ใช่หน้ารวม · 3.2 = ปุ่ม 🔎 ถาม AI · 3.1 = ขยายปุ่มกลับ */
+if(window.__KITUI__) return; window.__KITUI__='3.8';   /* 3.8 = เลื่อนปุ่ม "ข้อต่อไป" ที่เพิ่งโผล่มาให้เห็น (เพื่อนกดตอบแล้วนึกว่าเว็บค้าง) */   /* 3.7 = ปุ่มถาม AI เปิดเป็น "แผงข้าง" ไม่เด้งออกจากหน้า (site/ask-panel.js) · 3.6 = แถบพื้นหลังใต้ปุ่มลอย (กันเนื้อหาไหลผ่านช่องเหนือแท็บ) · 3.5 = tour.js · 3.4 = feedback.js */   /* เดิม 3.3 = ส่ง ?from= ไปด้วย ปุ่มกลับในหน้าถามจะได้กลับหน้าเดิม ไม่ใช่หน้ารวม · 3.2 = ปุ่ม 🔎 ถาม AI · 3.1 = ขยายปุ่มกลับ */
 
 /* ---------- helper ---------- */
 const D=document, R=D.documentElement;
@@ -1568,6 +1568,59 @@ if(hasCalc){
     D.getElementById('kitui-calcbtn').classList.toggle('on',o);
   };
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ปุ่ม "ข้อต่อไป" ที่เพิ่งโผล่ ต้องเลื่อนมาให้เห็นเอง
+   ---------------------------------------------------------------------------
+   เจอ 2026-09-07: เจ้าของแจ้งว่า **เพื่อนหลายคนทำข้อสอบไทยในเว็บไม่ได้ทั้งชุด**
+   อาการ "กดตอบแล้วไม่ไป"
+
+   ต้นเหตุ (วัดจริงบนจอ 360x640 ซึ่งเป็นขนาดมือถือที่พบบ่อย):
+     พอกดตัวเลือก คำอธิบายเฉลยยาว ~200px ถูกแทรกเข้ามา ดันปุ่ม "ข้อถัดไป →"
+     ลงไปอยู่ที่ y=711 ขณะที่จอสูงแค่ 640  ->  **ปุ่มอยู่นอกจอสนิท**
+     ผู้ใช้เห็นแค่เฉลยโผล่มา ไม่มีอะไรบอกว่ายังมีปุ่มอยู่ข้างล่าง เลยนึกว่าเว็บค้าง
+     (ยิ่งเมื่อวานเปลี่ยนจาก "เด้งเอง" เป็น "กดเอง" อาการนี้ยิ่งชัด)
+
+   แก้ที่นี่ที่เดียวเพราะหน้าข้อสอบแต่ละหน้าเขียนคนละแบบ ตามแก้ทีละไฟล์แล้วหลุดแน่
+   ทำงานกับปุ่ม/ลิงก์ที่ข้อความมีคำว่า "ข้อต่อไป" หรือ "ข้อถัดไป" เท่านั้น
+   และจะเลื่อน **หลังผู้ใช้แตะหน้าจอแล้วเท่านั้น** จะได้ไม่มีการเลื่อนเองตอนเปิดหน้า
+   ═══════════════════════════════════════════════════════════════════════════ */
+(function(){
+  const NEXT_RE = /ข้อ\s*(ต่อ|ถัด)ไป/;
+  let interacted = false;
+  const seen = new WeakSet();
+
+  function isVisible(el){
+    return el.offsetParent !== null && el.getBoundingClientRect().height > 0;
+  }
+  function bringIntoView(el){
+    const r = el.getBoundingClientRect();
+    const bar = D.getElementById('kitui-bar');
+    /* กันไม่ให้ปุ่มไปหลบอยู่ใต้แถบเครื่องมือลอยด้านล่าง */
+    const barH = bar ? bar.getBoundingClientRect().height + 14 : 14;
+    if (r.top >= 0 && r.bottom <= innerHeight - barH) return;   /* เห็นอยู่แล้ว ไม่ต้องขยับ */
+    try { el.scrollIntoView({block:'center', behavior:'smooth'}); }
+    catch(e){ try{ el.scrollIntoView(); }catch(e2){} }
+  }
+  function scan(){
+    D.querySelectorAll('button,a').forEach(function(el){
+      if(!NEXT_RE.test(el.textContent || '')) return;
+      if(!isVisible(el)){ seen.delete(el); return; }   /* ซ่อนแล้ว -> รอบหน้าถือว่า "เพิ่งโผล่" */
+      if(seen.has(el)) return;
+      seen.add(el);
+      if(interacted) bringIntoView(el);
+    });
+  }
+  let t = 0;
+  const mo = new MutationObserver(function(){ clearTimeout(t); t = setTimeout(scan, 90); });
+  try{
+    mo.observe(D.body, {childList:true, subtree:true, attributes:true,
+                        attributeFilter:['style','class','hidden']});
+  }catch(e){}
+  D.addEventListener('click', function(){ interacted = true; setTimeout(scan, 140); }, true);
+  setTimeout(scan, 600);      /* จับสถานะตั้งต้น แต่ยังไม่เลื่อน เพราะ interacted ยัง false */
+})();
+
 })();
 
 </script>
