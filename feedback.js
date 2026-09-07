@@ -99,6 +99,10 @@
   '.fbShot button{position:absolute;top:2px;right:2px;width:22px;height:22px;border:0;border-radius:50%;',
   '  background:rgba(0,0,0,.65);color:#fff;font-size:13px;line-height:1;cursor:pointer}',
   '.fbSend{background:var(--ok,#059669)}',
+  '@media(max-width:640px){#fbFab{width:40px;min-width:40px;height:40px;padding:0;justify-content:center}',
+  '  #fbFab .lb{display:none!important}}',
+  '#fbFab{transition:transform .22s ease,opacity .22s ease}',
+  '#fbFab.tuck{transform:translateX(-130%);opacity:0;pointer-events:none}',
   '@media print{#fbFab,#fbBack{display:none!important}}'
   ].join('\n');
   D.head.appendChild(css);
@@ -308,6 +312,21 @@
   }
   function close_(){ back.classList.remove('open'); }
   wireShots();
+
+  /* ปุ่มลอยมุมซ้ายเคยไปทับปุ่มของหน้า (เจ้าของแคปมาให้ดู 2026-09-07: มันบัง
+     ปุ่ม "เปิดภาพเต็มจอ" ของหน้า Blender จนกดไม่ได้)
+     -> เลื่อนลงเมื่อไรให้หลบไปก่อน พอหยุดเลื่อนหรือเลื่อนขึ้นค่อยกลับมา */
+  (function(){
+    var last=scrollY, t=0;
+    addEventListener('scroll', function(){
+      var y=scrollY, down = y>last+6;
+      last=y;
+      if(down && y>120) fab.classList.add('tuck');
+      else fab.classList.remove('tuck');
+      clearTimeout(t);
+      t=setTimeout(function(){ fab.classList.remove('tuck'); }, 900);
+    }, {passive:true});
+  })();
   fab.onclick=open_;
   D.getElementById('fbX').onclick=close_;
   back.onclick=function(e){ if(e.target===back) close_(); };

@@ -217,6 +217,20 @@ kbd{background:var(--ink);color:var(--card);border-radius:6px;padding:2px 9px;fo
   .zoomcard{padding-left:14px;padding-right:14px}
 }
 @media(max-width:640px){ .zoomrow{gap:18px} }
+
+/* ===== มือถือ: จุดกดบนภาพต้องเล็กลงและห้ามล้นขอบภาพ =====
+   เจ้าของแคปหน้าจอมาให้ดู 2026-09-07: ที่จอ 360px ภาพถูกย่อเหลือสูง ~205px
+   แต่จุดยังใหญ่ 26px -> จุดเบียดกันเต็มภาพ และจุดที่อยู่ริมสุด (5) โผล่ออกนอกกรอบ
+   จนโดน overflow ตัดครึ่ง กดไม่ถูก */
+@media(max-width:640px){
+  .hot .dot{width:19px;height:19px;font-size:11px}
+  .hot.tall .dot{top:7px}
+  /* จุดที่ชิดขอบซ้าย/ขวาของภาพ ให้ดันเข้ามาข้างในแทนการวางกึ่งกลาง */
+  .hot.edgeL .dot{left:0;transform:translate(2px,-50%)}
+  .hot.edgeR .dot{left:auto;right:0;transform:translate(-2px,-50%)}
+  .hot.edgeT .dot{top:0;transform:translate(-50%,3px)}
+  .hot.tall.edgeL .dot{left:0;transform:translate(2px,0)}
+}
 </style>
 </head>
 
@@ -363,16 +377,16 @@ kbd{background:var(--ink);color:var(--card);border-radius:6px;padding:2px 9px;fo
       <div class="shotwrap" id="shotWrap">
         <img class="shot" id="shotImg" alt="หน้าจอโปรแกรม Blender">
         <!-- จุดกด: ตำแหน่งเป็น % ของภาพ จึงยืดหดตามจอได้ -->
-        <button class="hot" data-z="1"  style="left:1.7%;top:1.7%;width:10.6%;height:2.8%"><span class="dot">1</span></button>
-        <button class="hot" data-z="2"  style="left:13.3%;top:1.7%;width:41%;height:2.8%"><span class="dot">2</span></button>
+        <button class="hot edgeT" data-z="1"  style="left:1.7%;top:1.7%;width:10.6%;height:2.8%"><span class="dot">1</span></button>
+        <button class="hot edgeT" data-z="2"  style="left:13.3%;top:1.7%;width:41%;height:2.8%"><span class="dot">2</span></button>
         <button class="hot" data-z="3"  style="left:2.4%;top:4.5%;width:9.2%;height:2.5%"><span class="dot">3</span></button>
         <button class="hot" data-z="4"  style="left:12.1%;top:4.5%;width:16%;height:2.5%"><span class="dot">4</span></button>
-        <button class="hot tall" data-z="5" style="left:0.4%;top:7.6%;width:2.1%;height:70.5%"><span class="dot">5</span></button>
+        <button class="hot tall edgeL" data-z="5" style="left:0.4%;top:7.6%;width:2.1%;height:70.5%"><span class="dot">5</span></button>
         <button class="hot" data-z="6"  style="left:36%;top:38.5%;width:10.5%;height:17.5%"><span class="dot">6</span></button>
         <button class="hot" data-z="7"  style="left:82.8%;top:4.3%;width:17%;height:30.4%"><span class="dot">7</span></button>
         <button class="hot tall" data-z="8" style="left:82.8%;top:37%;width:1.7%;height:43%"><span class="dot">8</span></button>
-        <button class="hot" data-z="9"  style="left:84.6%;top:35%;width:15.3%;height:57.5%"><span class="dot">9</span></button>
-        <button class="hot" data-z="10" style="left:0.2%;top:91.6%;width:82.4%;height:5.9%"><span class="dot">10</span></button>
+        <button class="hot edgeR" data-z="9"  style="left:84.6%;top:35%;width:15.3%;height:57.5%"><span class="dot">9</span></button>
+        <button class="hot edgeL" data-z="10" style="left:0.2%;top:91.6%;width:82.4%;height:5.9%"><span class="dot">10</span></button>
       </div>
 
       <button class="zoomopen" id="openShot" type="button">🔍 เปิดภาพเต็มจอ — เลื่อนดู/ซูมได้</button>
@@ -883,7 +897,7 @@ var ZONE={
   });
 })();
 </script>
-<!--KIT-UI v3.9 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<!--KIT-UI v4.1 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>
 /* =============================================================================
    _kit/ui-controls.js  —  KIT UI  v1.0
@@ -909,7 +923,8 @@ var ZONE={
               หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
    ============================================================================= */
 (function(){
-if(window.__KITUI__) return; window.__KITUI__='3.9';   /* 3.8 = เลื่อนปุ่ม "ข้อต่อไป" ที่เพิ่งโผล่มาให้เห็น (เพื่อนกดตอบแล้วนึกว่าเว็บค้าง) */   /* 3.7 = ปุ่มถาม AI เปิดเป็น "แผงข้าง" ไม่เด้งออกจากหน้า (site/ask-panel.js) · 3.6 = แถบพื้นหลังใต้ปุ่มลอย (กันเนื้อหาไหลผ่านช่องเหนือแท็บ) · 3.5 = tour.js · 3.4 = feedback.js */   /* เดิม 3.3 = ส่ง ?from= ไปด้วย ปุ่มกลับในหน้าถามจะได้กลับหน้าเดิม ไม่ใช่หน้ารวม · 3.2 = ปุ่ม 🔎 ถาม AI · 3.1 = ขยายปุ่มกลับ */
+if(window.__KITUI__) return; window.__KITUI__='4.1';   /* ⚠️ เลขนี้ถูกใช้เป็น ?v= ของ ask-panel/feedback/tour ด้วย
+   -> แก้ไฟล์ลูกเมื่อไร **ต้องขยับเลขนี้ทุกครั้ง** ไม่งั้นเบราว์เซอร์เสิร์ฟของเก่าจากแคช */   /* 3.8 = เลื่อนปุ่ม "ข้อต่อไป" ที่เพิ่งโผล่มาให้เห็น (เพื่อนกดตอบแล้วนึกว่าเว็บค้าง) */   /* 3.7 = ปุ่มถาม AI เปิดเป็น "แผงข้าง" ไม่เด้งออกจากหน้า (site/ask-panel.js) · 3.6 = แถบพื้นหลังใต้ปุ่มลอย (กันเนื้อหาไหลผ่านช่องเหนือแท็บ) · 3.5 = tour.js · 3.4 = feedback.js */   /* เดิม 3.3 = ส่ง ?from= ไปด้วย ปุ่มกลับในหน้าถามจะได้กลับหน้าเดิม ไม่ใช่หน้ารวม · 3.2 = ปุ่ม 🔎 ถาม AI · 3.1 = ขยายปุ่มกลับ */
 
 /* ---------- helper ---------- */
 const D=document, R=D.documentElement;

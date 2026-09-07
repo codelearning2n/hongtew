@@ -18,6 +18,10 @@
   '  background:var(--card,#fff);color:var(--ink,#1e293b);border-radius:999px;height:44px;min-width:44px;',
   '  padding:0 13px;font-size:19px;line-height:1;cursor:pointer;font-family:inherit;',
   '  box-shadow:0 3px 14px rgba(15,23,42,.22);display:flex;align-items:center;gap:6px}',
+  '@media(max-width:640px){#tourFab{width:40px;min-width:40px;height:40px;padding:0;justify-content:center}',
+  '  #tourFab .lb{display:none!important}}',
+  '#tourFab{transition:transform .22s ease,opacity .22s ease}',
+  '#tourFab.tuck{transform:translateX(-130%);opacity:0;pointer-events:none}',
   '#tourFab:active{transform:scale(.95)}',
   '#tourFab .lb{font-size:14px;font-weight:700;display:none}',
   '@media(min-width:560px){#tourFab .lb{display:inline}}',
@@ -167,6 +171,21 @@
     if(e.key==='ArrowRight'||e.key===' ') { e.preventDefault(); D.getElementById('tourNext').click(); }
   });
   addEventListener('resize',function(){ if(hole.classList.contains('on')) place(); });
+
+  /* ปุ่มลอยมุมซ้ายเคยไปทับปุ่มของหน้า (เจ้าของแคปมาให้ดู 2026-09-07: มันบัง
+     ปุ่ม "เปิดภาพเต็มจอ" ของหน้า Blender จนกดไม่ได้)
+     -> เลื่อนลงเมื่อไรให้หลบไปก่อน พอหยุดเลื่อนหรือเลื่อนขึ้นค่อยกลับมา */
+  (function(){
+    var last=scrollY, t=0;
+    addEventListener('scroll', function(){
+      var y=scrollY, down = y>last+6;
+      last=y;
+      if(down && y>120) fab.classList.add('tuck');
+      else fab.classList.remove('tuck');
+      clearTimeout(t);
+      t=setTimeout(function(){ fab.classList.remove('tuck'); }, 900);
+    }, {passive:true});
+  })();
   fab.onclick=start;
 
   /* จองคิวไว้ตั้งแต่ตอนโหลด ว่า "เดี๋ยวทัวร์จะเด้ง" เพื่อให้ updates.js รู้ทันก่อนที่ fetch จะเสร็จ */

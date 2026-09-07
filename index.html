@@ -159,7 +159,7 @@ footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:26px;lin
   </footer>
 </div>
 
-<script src="catalog.js?v=202609071548"></script>
+<script src="catalog.js?v=202609071632"></script>
 <script>
 const LIST = window.CATALOG || [];
 const $ = s=>document.querySelector(s);
@@ -279,10 +279,10 @@ $('#q').addEventListener('input',e=>{fQ=e.target.value.trim().toLowerCase();rend
 render();
 </script>
 
-<script src="tour.js?v=202609071548"></script>
-<script src="feedback.js?v=202609071548"></script>
-<script src="updates.js?v=202609071548"></script>
-<!--KIT-UI v3.9 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
+<script src="tour.js?v=202609071632"></script>
+<script src="feedback.js?v=202609071632"></script>
+<script src="updates.js?v=202609071632"></script>
+<!--KIT-UI v4.1 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>
 /* =============================================================================
    _kit/ui-controls.js  —  KIT UI  v1.0
@@ -308,7 +308,8 @@ render();
               หรือไฟล์อยู่ในโฟลเดอร์ Physics / Math / Chemist
    ============================================================================= */
 (function(){
-if(window.__KITUI__) return; window.__KITUI__='3.9';   /* 3.8 = เลื่อนปุ่ม "ข้อต่อไป" ที่เพิ่งโผล่มาให้เห็น (เพื่อนกดตอบแล้วนึกว่าเว็บค้าง) */   /* 3.7 = ปุ่มถาม AI เปิดเป็น "แผงข้าง" ไม่เด้งออกจากหน้า (site/ask-panel.js) · 3.6 = แถบพื้นหลังใต้ปุ่มลอย (กันเนื้อหาไหลผ่านช่องเหนือแท็บ) · 3.5 = tour.js · 3.4 = feedback.js */   /* เดิม 3.3 = ส่ง ?from= ไปด้วย ปุ่มกลับในหน้าถามจะได้กลับหน้าเดิม ไม่ใช่หน้ารวม · 3.2 = ปุ่ม 🔎 ถาม AI · 3.1 = ขยายปุ่มกลับ */
+if(window.__KITUI__) return; window.__KITUI__='4.1';   /* ⚠️ เลขนี้ถูกใช้เป็น ?v= ของ ask-panel/feedback/tour ด้วย
+   -> แก้ไฟล์ลูกเมื่อไร **ต้องขยับเลขนี้ทุกครั้ง** ไม่งั้นเบราว์เซอร์เสิร์ฟของเก่าจากแคช */   /* 3.8 = เลื่อนปุ่ม "ข้อต่อไป" ที่เพิ่งโผล่มาให้เห็น (เพื่อนกดตอบแล้วนึกว่าเว็บค้าง) */   /* 3.7 = ปุ่มถาม AI เปิดเป็น "แผงข้าง" ไม่เด้งออกจากหน้า (site/ask-panel.js) · 3.6 = แถบพื้นหลังใต้ปุ่มลอย (กันเนื้อหาไหลผ่านช่องเหนือแท็บ) · 3.5 = tour.js · 3.4 = feedback.js */   /* เดิม 3.3 = ส่ง ?from= ไปด้วย ปุ่มกลับในหน้าถามจะได้กลับหน้าเดิม ไม่ใช่หน้ารวม · 3.2 = ปุ่ม 🔎 ถาม AI · 3.1 = ขยายปุ่มกลับ */
 
 /* ---------- helper ---------- */
 const D=document, R=D.documentElement;
