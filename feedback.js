@@ -8,7 +8,7 @@
    อยากให้ส่งเข้าอีเมล/ฟอร์มโดยตรง: ใส่ค่าที่ CONFIG ข้างล่าง แล้วปุ่มจะโผล่เอง
    ========================================================================== */
 (function(){
-  if(window.__FB__) return; window.__FB__='2.0';
+  if(window.__FB__) return; window.__FB__='2.1';
 
   /* ═══ ปลายทางของความเห็น ═══════════════════════════════════════════════
      เจ้าของถาม 2026-09-07: "ปุ่ม feedback ไม่ได้ส่งตรงมาที่ repo หรอ
@@ -26,9 +26,21 @@
      ⚠️ ห้ามใส่อีเมลส่วนตัวของเจ้าของตรง ๆ (กฎวอลต์) — ใช้ endpoint/form แทน
      ═══════════════════════════════════════════════════════════════════════ */
   var CONFIG = {
-    repo:     'codelearning2n/hongtew',   /* เปิด issue ได้ทันที ไม่ต้องตั้งค่า */
-    endpoint: '',                          /* ใส่ URL รับฟอร์มแล้วปุ่ม "ส่งเลย" จะทำงาน */
-    form:     '',                          /* ลิงก์ Google Form (ถ้ามี) */
+    /* Google Form ของเจ้าของ — ตอบได้โดย **ไม่ต้องล็อกอิน ไม่ต้องบอกว่าเป็นใคร**
+       ตรวจแล้ว 2026-09-07 ด้วย curl ที่ไม่มีคุกกี้เลย: HTTP 200 ไม่เด้งหน้าล็อกอิน
+       และฟอร์มไม่ได้เปิด "รวบรวมอีเมล" ไว้
+       ⚠️ ต้องเป็นลิงก์ตอบ (forms.gle / viewform) เท่านั้น **ห้ามใช้ลิงก์ /edit เด็ดขาด** */
+    form:     'https://forms.gle/LhJLqVUEFhSS6WAz6',
+    /* กรอกให้ล่วงหน้า — จะได้ไม่ต้องพิมพ์ซ้ำและไม่ต้องก๊อปวางเอง
+       entry id ดึงมาจาก FB_PUBLIC_LOAD_DATA_ ของตัวฟอร์มเอง */
+    formPre: {
+      base: 'https://docs.google.com/forms/d/e/1FAIpQLSc_duWR8XRySzYuh7pGAZyQhHXdEYtLFRUbhpM1D9wcRATT9g/viewform?usp=pp_url',
+      kind: 'entry.1996136531',
+      text: 'entry.873845099',
+      map:  { bug:'เจอบั๊ก', want:'อยากได้เพิ่ม', hard:'ตรงนี้งงไม่เข้าใจ' }
+    },
+    repo:     'codelearning2n/hongtew',   /* ทางสำรองสำหรับคนที่มีบัญชี GitHub */
+    endpoint: '',                          /* ถ้าวันหลังมีบริการรับฟอร์ม ปุ่ม "ส่งเลย" จะโผล่เอง */
     mail:     ''                           /* เว้นว่างไว้เสมอ กันอีเมลส่วนตัวขึ้นเว็บ */
   };
 
@@ -225,11 +237,25 @@
   function buttons(){
     var h='';
     if(CONFIG.endpoint) h+='<button class="fbBtn fbSend" id="fbSend" type="button">📨 ส่งเลย</button>';
-    if(CONFIG.form)     h+='<a class="fbBtn ghost" href="'+CONFIG.form+'" target="_blank" rel="noopener">📝 เปิดฟอร์ม</a>';
+    if(CONFIG.form)     h+='<button class="fbBtn fbSend" id="fbForm" type="button">📝 ส่งแบบไม่บอกชื่อ</button>';
     if(CONFIG.repo)     h+='<button class="fbBtn ghost" id="fbGh" type="button">🐙 ส่งผ่าน GitHub</button>';
     h+='<button class="fbBtn ghost" id="fbCopy" type="button">📋 คัดลอกข้อความ</button>';
     if(CONFIG.mail) h+='<a class="fbBtn ghost" id="fbMail" href="#">✉️ ส่งเมล</a>';
     D.getElementById('fbBtns').innerHTML=h;
+
+    var ff=D.getElementById('fbForm');
+    if(ff) ff.onclick=function(){
+      var url=CONFIG.form, pre=CONFIG.formPre;
+      if(pre && pre.base){
+        /* ยัดข้อความที่พิมพ์ไว้ + ข้อมูลหน้า เข้าไปในฟอร์มให้เลย เหลือแค่กด "ส่ง" */
+        var body=(D.getElementById('fbText').value.trim()||'')+'\n\n--- ข้อมูลประกอบ ---\n'+ctx()+
+                 (shots.length? '\n(มีรูป '+shots.length+' รูป ส่งตามมาทางแชทได้)':'');
+        url=pre.base+'&'+pre.text+'='+encodeURIComponent(body);
+        if(pre.map[kind]) url+='&'+pre.kind+'='+encodeURIComponent(pre.map[kind]);
+      }
+      window.open(url,'_blank','noopener');
+      try{ localStorage.removeItem(LAST); }catch(e){}
+    };
 
     var sd=D.getElementById('fbSend');
     if(sd) sd.onclick=function(){ sendNow(this); };
@@ -265,7 +291,10 @@
 
   function noteText(){
     if(CONFIG.endpoint) return '📨 กด "ส่งเลย" แล้วข้อความกับรูปจะถึงเจ้าของเว็บทันที ไม่ต้องมีแอปอะไรเลย';
-    if(CONFIG.form)     return '📝 กด "เปิดฟอร์ม" แล้วกรอกส่งได้เลย ไม่ต้องสมัครอะไร';
+    if(CONFIG.form) return '📝 <b>ส่งแบบไม่บอกชื่อ</b> — ไม่ต้องล็อกอิน ไม่ต้องบอกว่าเป็นใคร '+
+      'กดแล้วฟอร์มจะกรอกข้อความกับหน้าที่กำลังเปิดให้เสร็จ เหลือแค่กด "ส่ง"<br>'+
+      '🖼️ <b>รูปที่แนบไว้ส่งผ่านฟอร์มไม่ได้</b> (ถ้าให้แนบรูป Google จะบังคับล็อกอิน) '+
+      'ถ้าอยากส่งรูปด้วย ใช้ปุ่ม GitHub หรือคัดลอกไปส่งทางแชท';
     return '🐙 มีบัญชี GitHub กด "ส่งผ่าน GitHub" ได้เลย (กรอกข้อความให้แล้ว ลากรูปเข้าไปวางได้)<br>'+
            '📋 ไม่มีบัญชี ให้กด "คัดลอกข้อความ" แล้ววางในแชทที่คุยกับเจ้าของเว็บ พร้อมส่งรูปตามไป';
   }
