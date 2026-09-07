@@ -8,11 +8,28 @@
    อยากให้ส่งเข้าอีเมล/ฟอร์มโดยตรง: ใส่ค่าที่ CONFIG ข้างล่าง แล้วปุ่มจะโผล่เอง
    ========================================================================== */
 (function(){
-  if(window.__FB__) return; window.__FB__='1.0';
+  if(window.__FB__) return; window.__FB__='2.0';
 
+  /* ═══ ปลายทางของความเห็น ═══════════════════════════════════════════════
+     เจ้าของถาม 2026-09-07: "ปุ่ม feedback ไม่ได้ส่งตรงมาที่ repo หรอ
+     บางคนไม่มี contact เรานะ มีปุ่มส่งไหม"
+     -> เว็บนี้เป็นหน้านิ่งบน GitHub Pages ไม่มีเซิร์ฟเวอร์ของตัวเอง
+        การ "ส่ง" จึงต้องมีปลายทางสักที่ ตัวเลือกที่ปลอดภัย:
+
+     A) repo  — เปิดหน้าสร้าง issue ของ GitHub ให้เลย พร้อมกรอกข้อความให้แล้ว
+                ✅ ไม่ต้องตั้งอะไรเลย · ❌ คนส่งต้องมีบัญชี GitHub
+     B) endpoint — บริการรับฟอร์มฟรี (เช่น Web3Forms / Formspree) วางคีย์ที่นี่
+                ✅ คนส่งไม่ต้องมีบัญชีอะไรเลย ส่งรูปไปด้วยได้
+                ❌ เจ้าของต้องไปขอคีย์ก่อน (ใช้เวลาแป๊บเดียว ฟรี)
+     C) form  — ลิงก์ Google Form ธรรมดา ✅ ไม่ต้องมีบัญชี
+
+     ⚠️ ห้ามใส่อีเมลส่วนตัวของเจ้าของตรง ๆ (กฎวอลต์) — ใช้ endpoint/form แทน
+     ═══════════════════════════════════════════════════════════════════════ */
   var CONFIG = {
-    mail: '',      /* อีเมลปลายทาง — เว้นว่างไว้ = ไม่โชว์ปุ่มส่งเมล (กันอีเมลส่วนตัวขึ้นเว็บสาธารณะ) */
-    form: ''       /* ลิงก์ Google Form — ใส่แล้วจะมีปุ่ม "เปิดฟอร์ม" ให้ */
+    repo:     'codelearning2n/hongtew',   /* เปิด issue ได้ทันที ไม่ต้องตั้งค่า */
+    endpoint: '',                          /* ใส่ URL รับฟอร์มแล้วปุ่ม "ส่งเลย" จะทำงาน */
+    form:     '',                          /* ลิงก์ Google Form (ถ้ามี) */
+    mail:     ''                           /* เว้นว่างไว้เสมอ กันอีเมลส่วนตัวขึ้นเว็บ */
   };
 
   var D=document, LAST='fbDraft';
@@ -60,6 +77,16 @@
   '.fbBtn:disabled{opacity:.5;cursor:default}',
   '.fbNote{font-size:.85rem;line-height:1.6;margin-top:.7rem;border-radius:8px;padding:.6rem .7rem;',
   '  background:var(--tip-bg,#ecfdf5);border-left:4px solid var(--tip-bd,#10b981)}',
+  '.fbDrop{border:1.5px dashed var(--accent-ghost,#a5b4fc);border-radius:10px;padding:.7rem;',
+  '  text-align:center;font-size:.9rem;color:var(--muted,#64748b);cursor:pointer;margin-top:.3rem}',
+  '.fbDrop.over{background:var(--accent-soft,#eef2ff);border-color:var(--accent,#4f46e5)}',
+  '.fbShots{display:flex;gap:8px;flex-wrap:wrap;margin-top:.5rem}',
+  '.fbShot{position:relative;width:84px;height:84px;border-radius:8px;overflow:hidden;',
+  '  border:1px solid var(--line,#e2e8f0);background:#111}',
+  '.fbShot img{width:100%;height:100%;object-fit:cover;display:block}',
+  '.fbShot button{position:absolute;top:2px;right:2px;width:22px;height:22px;border:0;border-radius:50%;',
+  '  background:rgba(0,0,0,.65);color:#fff;font-size:13px;line-height:1;cursor:pointer}',
+  '.fbSend{background:var(--ok,#059669)}',
   '@media print{#fbFab,#fbBack{display:none!important}}'
   ].join('\n');
   D.head.appendChild(css);
@@ -84,10 +111,13 @@
           '" type="button" data-k="'+k[0]+'">'+k[1]+'</button>'; }).join('')+'</div>'+
       '<span class="fbLbl">เล่าให้ฟังหน่อย</span>'+
       '<textarea id="fbText" placeholder="เช่น กดปุ่มนี้แล้วไม่มีอะไรเกิดขึ้น / อยากให้มีสรุปเรื่อง..."></textarea>'+
+      '<span class="fbLbl">แนบรูปหน้าจอ (ไม่ใส่ก็ได้)</span>'+
+      '<div class="fbDrop" id="fbDrop">📷 กดเพื่อเลือกรูป · หรือลากรูปมาวาง · หรือกด Ctrl+V วางรูปที่ก๊อปไว้</div>'+
+      '<input type="file" id="fbFile" accept="image/*" multiple style="display:none">'+
+      '<div class="fbShots" id="fbShots"></div>'+
       '<div class="fbCtx" id="fbCtx"></div>'+
       '<div class="fbBtns" id="fbBtns"></div>'+
-      '<div class="fbNote" id="fbNote">📋 กดคัดลอกแล้วเอาไปวางในแชทที่คุยกันอยู่ได้เลย '+
-        'ข้อมูลหน้าที่กำลังเปิดกับขนาดจอจะถูกแนบไปด้วย จะได้ตามแก้ถูกจุด</div>'+
+      '<div class="fbNote" id="fbNote"></div>'+
     '</div></div>';
   D.body.appendChild(back);
 
@@ -117,11 +147,101 @@
   try{ ta.value=localStorage.getItem(LAST)||''; }catch(e){}
   ta.addEventListener('input',function(){ try{ localStorage.setItem(LAST,ta.value); }catch(e){} });
 
+  /* ═══ แนบรูป — ย่อก่อนเสมอ รูปจากมือถือใบเดียวมี 3-5 MB ส่งไม่ผ่านและกินเน็ตเปล่า ═══ */
+  var shots = [];                    /* เก็บเป็น dataURL ย่อแล้ว */
+  var MAXSHOT = 3;
+  function compress(file, cb){
+    var fr = new FileReader();
+    fr.onload = function(){
+      var im = new Image();
+      im.onload = function(){
+        var w = im.width, h = im.height, MAX = 1280;
+        if (w > MAX || h > MAX){ var k = Math.min(MAX/w, MAX/h); w = Math.round(w*k); h = Math.round(h*k); }
+        var cv = D.createElement('canvas'); cv.width = w; cv.height = h;
+        cv.getContext('2d').drawImage(im, 0, 0, w, h);
+        try { cb(cv.toDataURL('image/jpeg', 0.72)); } catch(e){ cb(fr.result); }
+      };
+      im.onerror = function(){ cb(null); };
+      im.src = fr.result;
+    };
+    fr.onerror = function(){ cb(null); };
+    fr.readAsDataURL(file);
+  }
+  function drawShots(){
+    D.getElementById('fbShots').innerHTML = shots.map(function(src,i){
+      return '<div class="fbShot"><img src="'+src+'" alt="รูปแนบ '+(i+1)+'">'+
+             '<button type="button" data-rm="'+i+'" title="เอาออก">✕</button></div>';
+    }).join('');
+  }
+  function addFiles(list){
+    [].slice.call(list).forEach(function(f){
+      if(!f || !/^image\//.test(f.type)) return;
+      if(shots.length >= MAXSHOT) return;
+      compress(f, function(src){ if(src){ shots.push(src); drawShots(); } });
+    });
+  }
+  function wireShots(){
+    var drop = D.getElementById('fbDrop'), inp = D.getElementById('fbFile');
+    drop.onclick = function(){ inp.click(); };
+    inp.onchange = function(){ addFiles(inp.files); inp.value=''; };
+    ['dragenter','dragover'].forEach(function(ev){
+      drop.addEventListener(ev, function(e){ e.preventDefault(); drop.classList.add('over'); });
+    });
+    ['dragleave','drop'].forEach(function(ev){
+      drop.addEventListener(ev, function(e){ e.preventDefault(); drop.classList.remove('over'); });
+    });
+    drop.addEventListener('drop', function(e){ if(e.dataTransfer) addFiles(e.dataTransfer.files); });
+    D.getElementById('fbShots').onclick = function(e){
+      var b = e.target.closest('[data-rm]'); if(!b) return;
+      shots.splice(+b.dataset.rm, 1); drawShots();
+    };
+    /* วางรูปด้วย Ctrl+V ตอนแผงเปิดอยู่ */
+    D.addEventListener('paste', function(e){
+      if(!back.classList.contains('open')) return;
+      if(e.clipboardData && e.clipboardData.files && e.clipboardData.files.length) addFiles(e.clipboardData.files);
+    });
+  }
+
+  /* ═══ ส่งจริงไปยัง endpoint (ถ้าตั้งไว้) ═══ */
+  function sendNow(btn){
+    var body = new FormData();
+    body.append('subject', '[ห้องติว] ' + label(kind));
+    body.append('message', report());
+    body.append('page', D.title);
+    shots.forEach(function(src,i){ body.append('shot'+(i+1), src); });
+    btn.disabled = true; btn.textContent = 'กำลังส่ง…';
+    fetch(CONFIG.endpoint, {method:'POST', body:body})
+      .then(function(r){
+        if(!r.ok) throw 0;
+        btn.textContent = '✓ ส่งแล้ว ขอบคุณมาก';
+        try{ localStorage.removeItem(LAST); }catch(e){}
+        D.getElementById('fbText').value=''; shots=[]; drawShots();
+      })
+      .catch(function(){
+        btn.disabled = false; btn.textContent = 'ส่งไม่สำเร็จ — ลองกดคัดลอกข้อความแทน';
+      });
+  }
+
   function buttons(){
-    var h='<button class="fbBtn" id="fbCopy" type="button">📋 คัดลอกข้อความ</button>';
+    var h='';
+    if(CONFIG.endpoint) h+='<button class="fbBtn fbSend" id="fbSend" type="button">📨 ส่งเลย</button>';
+    if(CONFIG.form)     h+='<a class="fbBtn ghost" href="'+CONFIG.form+'" target="_blank" rel="noopener">📝 เปิดฟอร์ม</a>';
+    if(CONFIG.repo)     h+='<button class="fbBtn ghost" id="fbGh" type="button">🐙 ส่งผ่าน GitHub</button>';
+    h+='<button class="fbBtn ghost" id="fbCopy" type="button">📋 คัดลอกข้อความ</button>';
     if(CONFIG.mail) h+='<a class="fbBtn ghost" id="fbMail" href="#">✉️ ส่งเมล</a>';
-    if(CONFIG.form) h+='<a class="fbBtn ghost" href="'+CONFIG.form+'" target="_blank" rel="noopener">📝 เปิดฟอร์ม</a>';
     D.getElementById('fbBtns').innerHTML=h;
+
+    var sd=D.getElementById('fbSend');
+    if(sd) sd.onclick=function(){ sendNow(this); };
+
+    var gh=D.getElementById('fbGh');
+    if(gh) gh.onclick=function(){
+      /* GitHub กรอกรูปให้ล่วงหน้าไม่ได้ ต้องลากรูปเข้าไปเองในหน้า issue */
+      var url='https://github.com/'+CONFIG.repo+'/issues/new'+
+              '?title='+encodeURIComponent('['+label(kind)+'] '+(D.title||'ห้องติว'))+
+              '&body='+encodeURIComponent(report()+(shots.length?'\n\n(มีรูปแนบ '+shots.length+' รูป — ลากรูปมาวางในช่องนี้ได้เลย)':''));
+      window.open(url,'_blank','noopener');
+    };
 
     D.getElementById('fbCopy').onclick=async function(){
       var t=report(), btn=this;
@@ -143,13 +263,22 @@
     };
   }
 
+  function noteText(){
+    if(CONFIG.endpoint) return '📨 กด "ส่งเลย" แล้วข้อความกับรูปจะถึงเจ้าของเว็บทันที ไม่ต้องมีแอปอะไรเลย';
+    if(CONFIG.form)     return '📝 กด "เปิดฟอร์ม" แล้วกรอกส่งได้เลย ไม่ต้องสมัครอะไร';
+    return '🐙 มีบัญชี GitHub กด "ส่งผ่าน GitHub" ได้เลย (กรอกข้อความให้แล้ว ลากรูปเข้าไปวางได้)<br>'+
+           '📋 ไม่มีบัญชี ให้กด "คัดลอกข้อความ" แล้ววางในแชทที่คุยกับเจ้าของเว็บ พร้อมส่งรูปตามไป';
+  }
   function open_(){
     D.getElementById('fbCtx').textContent=ctx();
+    D.getElementById('fbNote').innerHTML=noteText();
     buttons();
+    drawShots();
     back.classList.add('open');
     setTimeout(function(){ ta.focus(); },50);
   }
   function close_(){ back.classList.remove('open'); }
+  wireShots();
   fab.onclick=open_;
   D.getElementById('fbX').onclick=close_;
   back.onclick=function(e){ if(e.target===back) close_(); };
