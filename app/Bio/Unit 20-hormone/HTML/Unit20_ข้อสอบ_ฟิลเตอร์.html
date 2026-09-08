@@ -896,7 +896,7 @@ $('#btnReset').addEventListener('click',()=>{
   document.querySelectorAll('[data-quick]').forEach(x=>x.classList.remove('on'));
   cur=0; render();
 });
-$('#prevBtn').addEventListener('click',()=>{if(cur>0){cur--;render();window.scrollTo({top:0,behavior:'smooth'});}});
+$('#prevBtn').addEventListener('click',()=>{if(cur>0){cur--;render();toQuestionEl($('#list'));}});  /* ปุ่มย้อนกลับก็เด้งขึ้นหัวเว็บเหมือนกัน แก้คู่กับปุ่มถัดไป */
 $('#nextBtn').addEventListener('click',()=>{const v=visible();if(cur<v.length-1){cur++;render();toQuestionEl($('#list'));}});
 
 buildChips(); render();
