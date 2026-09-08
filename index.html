@@ -146,6 +146,19 @@ h2.sec .xtag{font-size:.72rem;font-weight:700;border-radius:999px;padding:2px 9p
 h2.sec.past{opacity:.5}
 h2.sec.past .xtag{background:var(--soft);color:var(--muted)}
 
+/* แถวปุ่มตั้งเตือนก่อนสอบ 5 นาที (เจ้าของขอ 2026-09-08) */
+.xalert{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 14px}
+.xalert button{border:1px solid var(--line);background:var(--card);color:inherit;font:inherit;
+  font-size:.86rem;font-weight:600;border-radius:999px;padding:8px 14px;cursor:pointer}
+.xalert button:hover{border-color:var(--accent)}
+.xalert button.on{background:var(--tip-bg);border-color:var(--tip-bd);color:inherit}
+/* ⚠️ ข้อความนี้อยู่บนพื้นหน้าเว็บ (ไม่ใช่บนการ์ดสีขาว) ถ้าใช้ --muted เฉย ๆ
+   ค่าความต่างสีจะเหลือ 4.23 ต่ำกว่าเกณฑ์ AA (4.5) — ใช้สีตัวหนังสือหลักหรี่ลงแทน
+   หมายเหตุ: --muted บนการ์ดทั่วเว็บได้ 4.41 ซึ่งก็เฉียด ๆ อยู่ แต่เป็นของเดิมทั้งเว็บ
+   ไม่แก้ในนี้ เพราะแตะโทเคนกลางแล้วหน้าตาเปลี่ยนทั้งเว็บ (จดไว้ใน log แล้ว) */
+.xalert .xhint{font-size:.8rem;color:var(--ink);opacity:.82;flex:1 1 100%;line-height:1.6}
+@media(max-width:480px){.xalert button{flex:1 1 100%;text-align:center}}
+
 .empty{text-align:center;color:var(--muted);padding:40px 12px}
 footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:26px;line-height:1.8}
 @media(max-width:480px){.wrap{padding:10px 10px 24px}.hero{padding:18px 16px}.hero h1{font-size:1.25rem}
@@ -170,6 +183,7 @@ footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:26px;lin
   </div>
 
   <div id="examNow" hidden></div>
+  <div class="xalert" id="examAlert" hidden></div>
 
   <div class="tools">
     <input id="q" type="text" placeholder="🔍 พิมพ์ค้นหา เช่น ฮอร์โมน, วงจรไฟฟ้า, ข้อสอบ">
@@ -198,7 +212,7 @@ footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:26px;lin
   </footer>
 </div>
 
-<script src="catalog.js?v=202609080943"></script>
+<script src="catalog.js?v=202609081437"></script>
 <script>
 const LIST = window.CATALOG || [];
 const $ = s=>document.querySelector(s);
@@ -417,7 +431,177 @@ function drawExamNow(){
 }
 
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   เตือนก่อนสอบ 5 นาที — เจ้าของขอ 2026-09-08 ("เตือนก่อนสอบ 5 นาทีแบบเด้งได้ไหม")
+
+   ทำไว้ 2 ทาง เพราะทางเดียวเอาไม่อยู่:
+
+   ① แจ้งเตือนของเบราว์เซอร์ (Notification API)
+      เด้งได้จริง แม้สลับไปแท็บอื่น **แต่ต้องเปิดหน้านี้ค้างไว้**
+      ปิดแท็บ/ปิดเบราว์เซอร์เมื่อไร = ไม่เด้ง
+      (จะเด้งตอนปิดเบราว์เซอร์ได้ต้องมี push server ซึ่งเว็บนี้เป็นไฟล์นิ่งบน GitHub Pages ทำไม่ได้)
+
+   ② ใส่ลงปฏิทินของเครื่อง (ไฟล์ .ics)
+      **อันนี้เด้งแน่นอนแม้ปิดเว็บไปแล้ว** เพราะเป็นแอปปฏิทินของเครื่องเตือนเอง
+      ใส่ VALARM -PT5M ให้ทุกวิชา ตั้งครั้งเดียวจบ -> แนะนำอันนี้เป็นหลัก
+
+   ⚠️ ห้ามใส่ชื่ออาจารย์/ชื่อโรงเรียน/รหัสวิชา/เลขห้องสอบ ลงไฟล์ .ics
+      เพราะไฟล์นี้ถูกส่งต่อได้ง่าย (กฎเดิมของวอลต์)
+   ═══════════════════════════════════════════════════════════════════════════ */
+const ALERT_MIN = 5;                       /* เตือนล่วงหน้ากี่นาที */
+const AKEY = 'examAlert5';                 /* จำว่าเปิดเตือนไว้ */
+const FKEY = 'examAlertFired';             /* จำว่าเตือนวิชาไหนไปแล้ว กันเด้งซ้ำตอนรีโหลด */
+
+const lsGet = k => { try{ return localStorage.getItem(k); }catch(e){ return null; } };
+const lsSet = (k,v) => { try{ localStorage.setItem(k,v); }catch(e){} };
+
+function firedSet(){
+  try{ return new Set(JSON.parse(lsGet(FKEY)||'[]')); }catch(e){ return new Set(); }
+}
+function markFired(id){
+  const f = firedSet(); f.add(id); lsSet(FKEY, JSON.stringify([...f]));
+}
+function alertOn(){
+  return lsGet(AKEY)==='1' && ('Notification' in window) && Notification.permission==='granted';
+}
+
+/* ── ① แจ้งเตือนเบราว์เซอร์ ─────────────────────────────────────────────── */
+function checkAlerts(){
+  if(!alertOn()) return;
+  const now = new Date(), fired = firedSet();
+  EXAM.filter(xStart).forEach(function(e){
+    const left = xStart(e) - now;
+    /* อยู่ในช่วง "เหลือ 0-5 นาที" และยังไม่เคยเตือนวิชานี้ */
+    if(left > 0 && left <= ALERT_MIN*60000 && !fired.has(e.id)){
+      markFired(e.id);
+      try{
+        new Notification('อีก '+Math.max(1,Math.round(left/60000))+' นาที สอบ'+e.name, {
+          body: e.time+' น. · '+e.min+' นาที' + (e.scope ? '\n'+e.scope : ''),
+          tag: 'exam-'+e.id
+        });
+      }catch(err){}
+    }
+  });
+}
+
+/* ── ② ไฟล์ปฏิทิน .ics ─────────────────────────────────────────────────── */
+function icsTime(d){                        /* -> 20260909T040000Z (เวลา UTC) */
+  const p = n => String(n).padStart(2,'0');
+  return d.getUTCFullYear()+p(d.getUTCMonth()+1)+p(d.getUTCDate())+'T'+
+         p(d.getUTCHours())+p(d.getUTCMinutes())+p(d.getUTCSeconds())+'Z';
+}
+/* ปฏิทินตัดบรรทัดที่ 75 ไบต์ ถ้าไม่พับเองบางแอปจะอ่านไฟล์ไม่ออก
+   ภาษาไทยตัวละ 3 ไบต์ จึงต้องวัดเป็นไบต์ ไม่ใช่จำนวนตัวอักษร */
+function icsFold(line){
+  const enc = new TextEncoder();
+  if(enc.encode(line).length <= 74) return line;
+  let out = '', cur = '';
+  for(const ch of line){
+    if(enc.encode(cur+ch).length > 72){ out += cur + '\r\n '; cur = ''; }
+    cur += ch;
+  }
+  return out + cur;
+}
+function icsEsc(t){
+  return String(t).replace(/\\/g, '\\\\')
+                  .replace(/;/g, '\\;')
+                  .replace(/,/g, '\\,')
+                  .replace(/\n/g, '\\n');
+}
+function buildICS(){
+  const now = new Date();
+  const L = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//hongtew//exam//TH','CALSCALE:GREGORIAN'];
+  EXAM.filter(xStart).forEach(function(e){
+    L.push('BEGIN:VEVENT');
+    L.push('UID:'+e.id+'-'+icsTime(xStart(e))+'@hongtew');
+    L.push('DTSTAMP:'+icsTime(now));
+    L.push('DTSTART:'+icsTime(xStart(e)));
+    L.push('DTEND:'+icsTime(xEnd(e)));
+    L.push(icsFold('SUMMARY:'+icsEsc('สอบ '+e.name)));
+    L.push(icsFold('DESCRIPTION:'+icsEsc((e.scope||'')+'\nหน้าติว: '+location.origin+location.pathname)));
+    L.push('BEGIN:VALARM');
+    L.push('TRIGGER:-PT'+ALERT_MIN+'M');
+    L.push('ACTION:DISPLAY');
+    L.push(icsFold('DESCRIPTION:'+icsEsc('อีก '+ALERT_MIN+' นาที สอบ'+e.name)));
+    L.push('END:VALARM');
+    L.push('END:VEVENT');
+  });
+  L.push('END:VCALENDAR');
+  return L.join('\r\n');
+}
+function downloadICS(){
+  const blob = new Blob([buildICS()], {type:'text/calendar;charset=utf-8'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = 'ตารางสอบปลายภาค.ics';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
+}
+
+/* ── แถวปุ่ม ─────────────────────────────────────────────────────────────── */
+function drawAlertRow(){
+  const box = document.getElementById('examAlert');
+  if(!box || !EXAM.length) return;
+  /* สอบครบทุกวิชาแล้วไม่ต้องโชว์ */
+  if(!EXAM.filter(xStart).some(function(e){ return xEnd(e) > new Date(); })){
+    box.hidden = true; return;
+  }
+  const supported = ('Notification' in window);
+  const on = alertOn();
+  let h = '';
+  if(supported){
+    h += '<button type="button" id="bNoti" class="'+(on?'on':'')+'">'+
+         (on ? '🔔 เตือนก่อนสอบ 5 นาที · เปิดอยู่' : '🔔 เตือนก่อนสอบ 5 นาที')+'</button>';
+  }
+  h += '<button type="button" id="bIcs">📅 ใส่ลงปฏิทินมือถือ (เตือนให้เอง)</button>';
+  h += '<div class="xhint" id="xhint"></div>';
+  box.hidden = false;
+  box.innerHTML = h;
+
+  const hint = document.getElementById('xhint');
+  function say(t){ hint.innerHTML = t; }
+  if(!supported){
+    say('เบราว์เซอร์นี้ไม่รองรับการเด้งแจ้งเตือน — ใช้ปุ่ม <b>ใส่ลงปฏิทิน</b> แทน เตือนแน่นอนกว่า');
+  }else if(on){
+    say('✅ จะเด้งเตือนก่อนสอบ 5 นาที <b>ตราบใดที่ยังเปิดหน้านี้ค้างไว้</b> (สลับไปแท็บอื่นได้) — '+
+        'ถ้าปิดเบราว์เซอร์จะไม่เด้ง อยากให้ชัวร์กว่านี้กด <b>ใส่ลงปฏิทิน</b> ด้วย');
+  }else if(Notification.permission==='denied'){
+    say('⚠️ เคยกด "ไม่อนุญาต" ไว้ ต้องไปเปิดสิทธิ์แจ้งเตือนของเว็บนี้ในตั้งค่าเบราว์เซอร์เอง — '+
+        'หรือใช้ปุ่ม <b>ใส่ลงปฏิทิน</b> แทน ง่ายกว่า');
+  }else{
+    say('📅 <b>แนะนำปุ่มปฏิทิน</b> — เตือนได้แม้ปิดเว็บไปแล้ว เพราะเป็นแอปปฏิทินของเครื่องเตือนเอง · '+
+        '🔔 ส่วนปุ่มกระดิ่งเด้งได้เฉพาะตอนเปิดหน้านี้ค้างไว้');
+  }
+
+  const bN = document.getElementById('bNoti');
+  if(bN) bN.onclick = function(){
+    if(alertOn()){ lsSet(AKEY,'0'); drawAlertRow(); return; }   /* กดซ้ำ = ปิด */
+    Notification.requestPermission().then(function(p){
+      if(p==='granted'){
+        lsSet(AKEY,'1');
+        /* กันเตือนย้อนหลัง: วิชาที่เลยหน้าต่าง 5 นาทีไปแล้วถือว่าเตือนแล้ว */
+        const now = new Date();
+        EXAM.filter(xStart).forEach(function(e){
+          if(xStart(e) - now <= ALERT_MIN*60000) markFired(e.id);
+        });
+        try{ new Notification('ตั้งเตือนแล้ว', {body:'จะเตือนก่อนสอบแต่ละวิชา 5 นาที'}); }catch(e){}
+      }
+      drawAlertRow();
+    });
+  };
+  document.getElementById('bIcs').onclick = function(){
+    downloadICS();
+    say('📥 โหลดไฟล์แล้ว — <b>เปิดไฟล์ที่โหลดมา</b> แล้วกดเพิ่มลงปฏิทิน จะได้ครบทั้ง '+
+        EXAM.filter(xStart).length+' วิชา พร้อมเตือนล่วงหน้า 5 นาทีทุกวิชา');
+  };
+}
+
 render();
+
+
+drawAlertRow();
+checkAlerts();
+setInterval(checkAlerts, 20000);   /* เช็คทุก 20 วิ - พลาดหน้าต่าง 5 นาทีไม่ได้ */
 
 drawExamNow();
 /* ใกล้สอบให้เดินทุก 10 วินาที (ตัวเลขนาทีจะได้ไม่ค้าง) ไกลแล้วเดินทุก 5 นาทีพอ
@@ -437,9 +621,9 @@ drawExamNow();
 
 </script>
 
-<script src="tour.js?v=202609080943"></script>
-<script src="feedback.js?v=202609080943"></script>
-<script src="updates.js?v=202609080943"></script>
+<script src="tour.js?v=202609081437"></script>
+<script src="feedback.js?v=202609081437"></script>
+<script src="updates.js?v=202609081437"></script>
 <!--KIT-UI v4.1 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>
 /* =============================================================================
