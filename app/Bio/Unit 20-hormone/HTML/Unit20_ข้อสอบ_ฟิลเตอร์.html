@@ -742,6 +742,18 @@ function qHTML(q,no){
     ${q.t!=='open'?`<div class="exp ${q.state?'show':''}"><b>อธิบาย:</b> ${q.e}</div>`:''}
   </div>`;
 }
+
+/* เลื่อนไปหากล่องโจทย์ข้อใหม่ ไม่ใช่เลื่อนขึ้นบนสุดของหน้า
+   (เจ้าของแจ้ง 2026-09-08 จากหน้าอังกฤษ: กดข้อถัดไปแล้วเด้งไปหัวเว็บ ต้องเลื่อนลงมาใหม่ทุกข้อ
+    ไล่ทั้งวอลต์แล้วเจอหน้าที่เขียนแบบเดียวกันอีก 3 หน้า แก้พร้อมกันทีเดียว) */
+function toQuestionEl(el){
+  if(!el) return;
+  var r = el.getBoundingClientRect();
+  if(r.top >= 0 && r.top < innerHeight * 0.5) return;   /* เห็นอยู่แล้ว ไม่ต้องขยับให้เวียนหัว */
+  try{ el.scrollIntoView({block:'start', behavior:'smooth'}); }
+  catch(e){ try{ el.scrollIntoView(); }catch(e2){} }
+}
+
 function answerText(q){
   if(q.t==='tf')return q.a?'ถูก':'ผิด';
   if(q.t==='mc')return KEY[q.a]+'. '+q.o[q.a];
@@ -885,7 +897,7 @@ $('#btnReset').addEventListener('click',()=>{
   cur=0; render();
 });
 $('#prevBtn').addEventListener('click',()=>{if(cur>0){cur--;render();window.scrollTo({top:0,behavior:'smooth'});}});
-$('#nextBtn').addEventListener('click',()=>{const v=visible();if(cur<v.length-1){cur++;render();window.scrollTo({top:0,behavior:'smooth'});}});
+$('#nextBtn').addEventListener('click',()=>{const v=visible();if(cur<v.length-1){cur++;render();toQuestionEl($('#list'));}});
 
 buildChips(); render();
 </script>

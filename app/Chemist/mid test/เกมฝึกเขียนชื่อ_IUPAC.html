@@ -482,6 +482,18 @@ function examStart(){
   $('filters').style.display='none';$('examBar').style.display='none';$('practiceCard').style.display='none';
   $('examWrap').style.display='';examRender();window.scrollTo(0,0);
 }
+
+/* เลื่อนไปหากล่องโจทย์ข้อใหม่ ไม่ใช่เลื่อนขึ้นบนสุดของหน้า
+   (เจ้าของแจ้ง 2026-09-08 จากหน้าอังกฤษ: กดข้อถัดไปแล้วเด้งไปหัวเว็บ ต้องเลื่อนลงมาใหม่ทุกข้อ
+    ไล่ทั้งวอลต์แล้วเจอหน้าที่เขียนแบบเดียวกันอีก 3 หน้า แก้พร้อมกันทีเดียว) */
+function toQuestionEl(el){
+  if(!el) return;
+  var r = el.getBoundingClientRect();
+  if(r.top >= 0 && r.top < innerHeight * 0.5) return;   /* เห็นอยู่แล้ว ไม่ต้องขยับให้เวียนหัว */
+  try{ el.scrollIntoView({block:'start', behavior:'smooth'}); }
+  catch(e){ try{ el.scrollIntoView(); }catch(e2){} }
+}
+
 function examQuit(){
   EX=null;
   $('filters').style.display='';$('examBar').style.display='';$('practiceCard').style.display='';
@@ -544,7 +556,7 @@ function examSelf(ok){
   if(EX.ans[EX.idx]!==null)return;EX.ans[EX.idx]=ok;if(ok)EX.score.draw++;
   $('exYes').disabled=true;$('exNo').disabled=true;$('exNext').style.display='';
 }
-function examNext(){EX.idx++;examRender();window.scrollTo(0,0);}
+function examNext(){EX.idx++;examRender();toQuestionEl($('examWrap'));}
 function examSummary(){
   const s=EX.score,tot=s.name+s.draw+s.func,pct=Math.round(tot/EX.list.length*100);
   const grade=pct>=80?'🏆 ยอดเยี่ยม!':pct>=60?'👍 ผ่านสบาย':pct>=50?'🙂 พอไหว ทบทวนอีกนิด':'📚 ลุยทบทวนต่อ!';

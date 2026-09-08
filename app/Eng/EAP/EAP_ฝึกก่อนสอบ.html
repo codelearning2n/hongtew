@@ -552,6 +552,19 @@ document.getElementById('vlist').innerHTML=VOCAB.map(function(v){
 var ePool=[], eI=0, eS=0, eA=false, eCh=[];
 function eLoad(){ ePool=shuffle(EQ.slice()); eI=0; eS=0;
   document.getElementById('es').textContent='0'; document.getElementById('et').textContent=ePool.length; eShow(); }
+
+/* เลื่อนไปหา "กล่องโจทย์ข้อใหม่" ไม่ใช่เลื่อนขึ้นบนสุดของหน้า
+   (เจ้าของแจ้ง 2026-09-08: กดข้อถัดไปแล้วเด้งไป top ของเว็บ ต้องเลื่อนลงมาใหม่ทุกข้อ)
+   เผื่อที่ให้แถบเครื่องมือลอยด้านล่างของ KIT UI ด้วย */
+function toQuestion(boxId){
+  var el = document.getElementById(boxId);
+  if(!el) return;
+  var r = el.getBoundingClientRect();
+  if(r.top >= 0 && r.top < innerHeight * 0.5) return;   /* เห็นอยู่แล้ว ไม่ต้องขยับให้เวียนหัว */
+  try{ el.scrollIntoView({block:'start', behavior:'smooth'}); }
+  catch(e){ try{ el.scrollIntoView(); }catch(e2){} }
+}
+
 function eShow(){
   var box=document.getElementById('ebox');
   if(eI>=ePool.length){ box.innerHTML='<h3>🏁 จบแล้ว</h3><div class="big-val">ได้ '+eS+'/'+ePool.length+'</div>'+
@@ -577,7 +590,7 @@ function eShow(){
     document.getElementById('ewr').classList.add('show');
     document.getElementById('enx').style.display='flex';
   });
-  document.getElementById('enb').addEventListener('click',function(){ eI++; eShow(); window.scrollTo({top:0,behavior:'smooth'}); });
+  document.getElementById('enb').addEventListener('click',function(){ eI++; eShow(); toQuestion('ebox'); });
 }
 document.getElementById('eReset').addEventListener('click',eLoad);
 eLoad();
@@ -658,7 +671,7 @@ function vShow(){
     wr.classList.add('show');
     document.getElementById('vnx').style.display='flex';
   });
-  document.getElementById('vnb').addEventListener('click',function(){ vI++; vShow(); });
+  document.getElementById('vnb').addEventListener('click',function(){ vI++; vShow(); toQuestion('vbox'); });
 }
 document.getElementById('vMode').addEventListener('click',function(e){
   var b=e.target.closest('button'); if(!b) return;
@@ -774,7 +787,7 @@ function rShow(){
     document.getElementById('rwr').classList.add('show');
     document.getElementById('rnx').style.display='flex';
   });
-  document.getElementById('rnb').addEventListener('click',function(){ rI++; rShow(); window.scrollTo({top:0,behavior:'smooth'}); });
+  document.getElementById('rnb').addEventListener('click',function(){ rI++; rShow(); toQuestion('rbox'); });
 }
 document.getElementById('rMode').addEventListener('click',function(e){
   var b=e.target.closest('button'); if(!b) return;
