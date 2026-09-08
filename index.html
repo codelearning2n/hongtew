@@ -109,6 +109,43 @@ a.card .k{background:var(--cs);color:var(--c);border-radius:6px;padding:1px 8px;
       margin:16px 0;font-size:.9rem}
 .warn{background:var(--warn-bg);border-left:4px solid var(--warn-bd);border-radius:10px;padding:12px 14px;
       margin:16px 0;font-size:.9rem}
+/* ── แถบนับถอยหลังก่อนสอบ ──────────────────────────────────────────────
+   เจ้าของขอ 2026-09-08: "ทำแจ้งเตือนในเว็ปตอนใกล้สอบแต่ละวิชาได้ไหม"
+   ใช้เวลาเริ่มสอบแบบ ISO ที่ build.ps1 ใส่มาให้ (ช่อง start) จึงไม่ต้องแกะเดือนไทยในนี้ */
+.xnow{border-radius:14px;padding:14px 16px;margin:0 0 14px;border:1px solid var(--line);
+      background:var(--card);box-shadow:var(--shadow);display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.xnow .xleft{flex:1 1 260px;min-width:0}
+.xnow .xlab{font-size:.8rem;font-weight:700;letter-spacing:.02em;opacity:.85}
+.xnow .xsub{font-size:1.15rem;font-weight:800;line-height:1.35;margin:2px 0 4px}
+.xnow .xtime{font-size:.86rem;color:var(--muted)}
+.xnow .xscope{font-size:.82rem;color:var(--muted);margin-top:5px;line-height:1.55}
+.xnow .xcount{font-size:1.5rem;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.15;white-space:nowrap}
+.xnow .xgo{border:0;border-radius:999px;padding:9px 16px;font:inherit;font-weight:700;font-size:.9rem;
+           cursor:pointer;background:var(--accent);color:var(--accent-soft)}
+/* ⚠️ ห้ามใช้ #fff เป็นสีตัวหนังสือบนพื้น --accent —
+   โหมดมืด --accent เป็นสีอ่อน (#818cf8) ขาวบนนั้นค่าความต่างสีแค่ 2.98 อ่านไม่ออก
+   ใช้ --accent-soft แทน จะกลับด้านให้เองทั้งสองโหมด (สว่าง=เกือบขาว มืด=น้ำเงินเข้ม) */
+.xnow .xgo:active{transform:scale(.97)}
+/* ระดับความใกล้ — ยิ่งใกล้ยิ่งแรง */
+.xnow.soon{background:var(--hot-bg);border-color:var(--hot-ink)}
+.xnow.soon .xcount,.xnow.soon .xlab,.xnow.soon .xsub{color:var(--hot-ink)}
+.xnow.soon .xgo{background:var(--hot-ink);color:var(--hot-bg)}
+.xnow.today{background:var(--warn-bg);border-color:var(--warn-bd)}
+/* ⚠️ กับดักเดิมของไฟล์นี้ (มีคอมเมนต์เตือนไว้ที่ .chip.fin.on แล้ว):
+   โหมดมืด --hot-ink เป็น "ชมพูอ่อน" ใส่ตัวหนังสือขาวทับแล้วอ่านไม่ออก (ค่าความต่างสี 1.90)
+   จึงใช้ --hot-bg เป็นสีตัวหนังสือ ซึ่งสลับด้านให้เองทั้งสองโหมด */
+.xnow.live{background:var(--hot-ink);border-color:var(--hot-ink);color:var(--hot-bg)}
+.xnow.live .xtime,.xnow.live .xscope{color:var(--hot-bg);opacity:.85}
+.xnow.live .xgo{background:var(--hot-bg);color:var(--hot-ink);border:0}
+.xnow.done{background:var(--info-bg);border-color:var(--info-bd)}
+@media(max-width:480px){.xnow{padding:12px 13px}.xnow .xcount{font-size:1.25rem}
+  .xnow .xsub{font-size:1.05rem}.xnow .xgo{width:100%;text-align:center}}
+/* ป้ายบอกสถานะบนหัวข้อแต่ละช่วงสอบในมุมมองปลายภาค */
+h2.sec .xtag{font-size:.72rem;font-weight:700;border-radius:999px;padding:2px 9px;margin-left:8px;
+             background:var(--hot-bg);color:var(--hot-ink)}
+h2.sec.past{opacity:.5}
+h2.sec.past .xtag{background:var(--soft);color:var(--muted)}
+
 .empty{text-align:center;color:var(--muted);padding:40px 12px}
 footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:26px;line-height:1.8}
 @media(max-width:480px){.wrap{padding:10px 10px 24px}.hero{padding:18px 16px}.hero h1{font-size:1.25rem}
@@ -131,6 +168,8 @@ footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:26px;lin
        text-decoration:none;font-weight:700;font-size:.92rem">🔎 ถามเนื้อหา — ค้นจากสรุปทุกวิชา แล้วให้ AI ตอบ</a>
     <div><button id="updLink">🆕 ดูว่ามีอะไรใหม่บ้าง</button></div>
   </div>
+
+  <div id="examNow" hidden></div>
 
   <div class="tools">
     <input id="q" type="text" placeholder="🔍 พิมพ์ค้นหา เช่น ฮอร์โมน, วงจรไฟฟ้า, ข้อสอบ">
@@ -159,7 +198,7 @@ footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:26px;lin
   </footer>
 </div>
 
-<script src="catalog.js?v=202609071703"></script>
+<script src="catalog.js?v=202609080943"></script>
 <script>
 const LIST = window.CATALOG || [];
 const $ = s=>document.querySelector(s);
@@ -220,7 +259,11 @@ function byExam(rows){
   for(const e of EXAM){
     const g = rows.filter(x=>exList(x).indexOf(e.id)>=0);
     if(!g.length && (fQ || fKind!=='all' || fSubj!=='all')) continue;  /* กรองอยู่ ไม่ต้องโชว์ช่องว่าง */
-    html += `<h2 class="sec">🗓️ ${e.day} ${e.time} · ${e.name}
+    const st = examStateTagged(e);
+    html += `<h2 class="sec${st.k==='past'?' past':''}" id="ex-${e.id}">🗓️ ${e.day} ${e.time} · ${e.name}${
+             st.k==='past' ? '<span class="xtag">สอบไปแล้ว</span>'
+           : st.k==='live' ? '<span class="xtag">กำลังสอบอยู่</span>'
+           : st.next       ? '<span class="xtag">⏰ วิชาถัดไป</span>' : ''}
              <span class="line"></span><span class="when">${e.min} นาที</span></h2>
              <div class="scope">ขอบเขต: ${e.scope}</div>`;
     html += g.length ? `<div class="grid">${cards(g)}</div>`
@@ -276,12 +319,127 @@ $('#kindRow').addEventListener('click',e=>{const b=e.target.closest('.chip');if(
 $('#subjRow').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;
   fSubj=b.dataset.subj; $('#subjRow').querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c===b)); render();});
 $('#q').addEventListener('input',e=>{fQ=e.target.value.trim().toLowerCase();render();});
+/* ═══════════════════════════════════════════════════════════════════════════
+   แถบนับถอยหลังก่อนสอบ  (เจ้าของขอ 2026-09-08)
+   อ่านเวลาเริ่มสอบจากช่อง start ที่ build.ps1 ใส่มาให้ เป็น ISO พร้อม +07:00
+   -> เครื่องที่ตั้งโซนเวลาอื่นก็ยังนับถูก ไม่ต้องเดาว่าเครื่องผู้ใช้ตั้งเวลาไทยไว้
+   ⚠️ ทำงานเฉพาะตอนเปิดหน้าเว็บอยู่ ไม่ใช่การเตือนแบบเด้งขึ้นมาเองตอนปิดเว็บ
+   ═══════════════════════════════════════════════════════════════════════════ */
+const xStart = e => e.start ? new Date(e.start) : null;
+const xEnd   = e => { const s=xStart(e); return s ? new Date(s.getTime()+(e.min||60)*60000) : null; };
+
+/* สถานะของช่วงสอบหนึ่ง ๆ เทียบกับเวลาปัจจุบัน */
+function examState(e, now){
+  now = now || new Date();
+  const s = xStart(e), en = xEnd(e);
+  if(!s) return {k:'unknown'};
+  if(now >= en)  return {k:'past'};
+  if(now >= s)   return {k:'live', left: en - now};
+  return {k:'future', in: s - now};
+}
+/* วิชาที่กำลังสอบ ถ้าไม่มีก็วิชาถัดไป */
+function examFocus(now){
+  now = now || new Date();
+  const withTime = EXAM.filter(xStart);
+  const live = withTime.find(e => { const st=examState(e,now); return st.k==='live'; });
+  if(live) return {e:live, st:examState(live,now)};
+  const next = withTime.filter(e => xStart(e) > now).sort((a,b)=>xStart(a)-xStart(b))[0];
+  return next ? {e:next, st:examState(next,now)} : null;
+}
+/* ใช้ตอนวาดหัวข้อ — บอกว่าอันไหนคือ "วิชาถัดไป"
+   หมายเหตุ: ถ้ากำลังสอบวิชาหนึ่งอยู่ examFocus() จะคืนวิชาที่สอบอยู่
+   แต่หัวข้อยังควรชี้ให้เห็นว่า "วิชาถัดไป" คืออันไหน จึงหาแยกต่างหาก */
+function examStateTagged(e){
+  const st = examState(e);
+  const now = new Date();
+  const upcoming = EXAM.filter(xStart).filter(x => xStart(x) > now)
+                       .sort((a,b)=>xStart(a)-xStart(b))[0];
+  st.next = !!(upcoming && upcoming.id===e.id);
+  return st;
+}
+
+function fmtLeft(ms){
+  const m = Math.max(0, Math.round(ms/60000));
+  const d = Math.floor(m/1440), h = Math.floor((m%1440)/60), mi = m%60;
+  if(d>0) return d+' วัน '+h+' ชม.';
+  if(h>0) return h+' ชม. '+mi+' นาที';
+  return mi+' นาที';
+}
+
+function drawExamNow(){
+  const box = document.getElementById('examNow');
+  if(!box || !EXAM.length) return;
+  const now = new Date();
+  const f = examFocus(now);
+
+  if(!f){                                  /* สอบครบทุกวิชาแล้ว */
+    box.hidden = false;
+    box.className = 'xnow done';
+    box.innerHTML = '<div class="xleft"><div class="xsub">🎉 สอบครบทุกวิชาแล้ว</div>'+
+      '<div class="xtime">หน้าเว็บยังอยู่ครบ กลับมาทบทวนได้ตลอด</div></div>';
+    return;
+  }
+
+  const e = f.e, st = f.st;
+  let cls='xnow', lab='', count='', go='เปิดหน้าติวของวิชานี้';
+  if(st.k==='live'){
+    cls+=' live'; lab='📝 กำลังสอบอยู่ตอนนี้';
+    count='เหลือ '+fmtLeft(st.left);
+    go='ดูหน้าติวไว้ทวนหลังออกจากห้อง';
+  }else{
+    const hrs = st.in/3600000;
+    lab='⏰ วิชาถัดไป';
+    count='อีก '+fmtLeft(st.in);
+    if(hrs <= 2)       { cls+=' soon';  lab='🔥 ใกล้สอบมากแล้ว'; }
+    else if(hrs <= 14) { cls+=' today'; lab='⏰ สอบเร็ว ๆ นี้'; }
+  }
+  box.hidden = false;
+  box.className = cls;
+  box.innerHTML =
+    '<div class="xleft">'+
+      '<div class="xlab">'+lab+'</div>'+
+      '<div class="xsub">'+e.name+'</div>'+
+      '<div class="xtime">'+e.day+' '+e.time+' น. · '+e.min+' นาที</div>'+
+      (e.scope? '<div class="xscope">ขอบเขต: '+e.scope+'</div>' : '')+
+    '</div>'+
+    '<div class="xcount">'+count+'</div>'+
+    '<button class="xgo" type="button">'+go+'</button>';
+
+  box.querySelector('.xgo').onclick = function(){
+    /* สลับไปมุมมองปลายภาคก่อน แล้วค่อยเลื่อนไปหาหัวข้อของวิชานั้น */
+    const chip = document.querySelector('#examRow .chip[data-exam="final"]');
+    if(chip && !chip.classList.contains('on')) chip.click();
+    setTimeout(function(){
+      const h = document.getElementById('ex-'+e.id);
+      if(h) h.scrollIntoView({block:'start', behavior:'smooth'});
+    }, 60);
+  };
+}
+
+
 render();
+
+drawExamNow();
+/* ใกล้สอบให้เดินทุก 10 วินาที (ตัวเลขนาทีจะได้ไม่ค้าง) ไกลแล้วเดินทุก 5 นาทีพอ
+   ต้องวาดหัวข้อใหม่ด้วยตอนข้ามช่วงสอบ ป้าย "สอบไปแล้ว" จะได้ขยับตาม */
+(function tick(){
+  const f = examFocus();
+  const near = f && (f.st.k==='live' || f.st.in < 2*3600000);
+  setTimeout(function(){
+    const before = f ? f.e.id+'|'+(f.st.k) : 'none';
+    drawExamNow();
+    const g = examFocus();
+    const after = g ? g.e.id+'|'+(g.st.k) : 'none';
+    if(before !== after && typeof render === 'function') render();   /* ข้ามช่วงสอบแล้ว วาดรายการใหม่ */
+    tick();
+  }, near ? 10000 : 300000);
+})();
+
 </script>
 
-<script src="tour.js?v=202609071703"></script>
-<script src="feedback.js?v=202609071703"></script>
-<script src="updates.js?v=202609071703"></script>
+<script src="tour.js?v=202609080943"></script>
+<script src="feedback.js?v=202609080943"></script>
+<script src="updates.js?v=202609080943"></script>
 <!--KIT-UI v4.1 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>
 /* =============================================================================
