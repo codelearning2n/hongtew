@@ -108,6 +108,21 @@ sup,sub{font-size:.72em}
 <!-- ▼▼ เปลี่ยน data-subject ให้ตรงวิชา = สีเปลี่ยนทั้งหน้า ▼▼ -->
 
 <style>
+/* ⚠️ 3 คลาสนี้หน้าอื่นนิยามไว้ในไฟล์ตัวเอง แต่ **เทมเพลตกลางไม่มี**
+   หน้านี้สร้างจากเทมเพลต + CSS เพิ่มของตัวเอง เลยลืมไป -> ปุ่ม "เปิดแท็บนี้"
+   ตกไปใช้สไตล์ดีฟอลต์ของเบราว์เซอร์ (border:2px outset พื้นเทา ไม่มี padding)
+   เจ้าของแคปมาให้ดู 2026-09-09 ว่า "อักษรลอย"
+   คัดนิยามมาจากหน้าอื่นในวอลต์ให้หน้าตาตรงกันทั้งเว็บ */
+.card.sh{border:2px solid var(--accent-bd);background:var(--accent-soft)}
+.sh h3{margin-top:0}
+.sh ol{margin:.5rem 0 .7rem 1.25rem;padding:0;line-height:2}
+.sh ol li{margin:.3rem 0}
+.sh .go{display:inline-block;margin-left:.35rem;padding:2px 10px;border-radius:999px;
+  border:1.5px solid var(--accent-bd);background:var(--card);color:var(--accent-ink);
+  font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer}
+.sh .go:hover{background:var(--accent-chip)}
+.mins{color:var(--muted);font-size:.9rem}
+
 /* เพิ่มเฉพาะที่เทมเพลตยังไม่มี — ที่เหลือใช้คลาสกลางทั้งหมดตามกฎ _kit/DESIGN.md */
 .qhead-row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 .src{font-size:.84rem;color:var(--muted);background:var(--soft);border-radius:10px;
