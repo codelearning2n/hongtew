@@ -144,6 +144,14 @@ a.card .k{background:var(--cs);color:var(--c);border-radius:6px;padding:1px 8px;
 h2.sec .xtag{font-size:.72rem;font-weight:700;border-radius:999px;padding:2px 9px;margin-left:8px;
              background:var(--hot-bg);color:var(--hot-ink)}
 h2.sec.past{opacity:.5}
+/* กล่องรวมวิชาที่สอบไปแล้ว (2026-09-09) — ยุบให้จบในบรรทัดเดียวเวลายังไม่กด */
+details.chap.done{margin-top:18px}
+details.chap.done>summary{color:var(--muted)}
+.pastwrap{padding:0 12px 10px}
+.pastwrap h2.sec{margin-top:14px}
+.pastwrap h2.sec:first-child{margin-top:4px}
+.fin-done{background:var(--tip-bg);border-left:4px solid var(--tip-bd);border-radius:8px;
+  padding:11px 13px;margin:14px 0;font-size:.92rem;line-height:1.6}
 h2.sec.past .xtag{background:var(--soft);color:var(--muted)}
 
 /* แถวปุ่มตั้งเตือนก่อนสอบ 5 นาที (เจ้าของขอ 2026-09-08) */
@@ -212,7 +220,7 @@ footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:26px;lin
   </footer>
 </div>
 
-<script src="catalog.js?v=202609091450"></script>
+<script src="catalog.js?v=202609091744"></script>
 <script>
 const LIST = window.CATALOG || [];
 const $ = s=>document.querySelector(s);
@@ -266,22 +274,51 @@ const cards = g => g.map(x=>`<a class="card s-${x.key}" href="${x.path}">
                   }</div>
                 </a>`).join('');
 
-/* มุมมอง "ปลายภาค" — เรียงตามเวลาสอบจริง ไม่ใช่เรียงตามวิชา */
-function byExam(rows){
-  let html = `<div class="fin-hint">🔥 กำลังโชว์เฉพาะหน้าที่<b>ออกปลายภาค</b> เรียงตามเวลาสอบจริง —
-    อยากดูหน้าที่เหลือทั้งเว็บ กด “ทุกหน้าในเว็บ” ข้างบน</div>`;
-  for(const e of EXAM){
-    const g = rows.filter(x=>exList(x).indexOf(e.id)>=0);
-    if(!g.length && (fQ || fKind!=='all' || fSubj!=='all')) continue;  /* กรองอยู่ ไม่ต้องโชว์ช่องว่าง */
-    const st = examStateTagged(e);
-    html += `<h2 class="sec${st.k==='past'?' past':''}" id="ex-${e.id}">🗓️ ${e.day} ${e.time} · ${e.name}${
+/* มุมมอง "ปลายภาค" — เรียงตามเวลาสอบจริง ไม่ใช่เรียงตามวิชา
+   2026-09-09 เจ้าของขอให้ "รวบวิชาที่สอบแล้วเป็นหมวดเดียว จะได้ไม่รกเว็บ"
+   -> ที่ยังไม่สอบอยู่ข้างบนกางไว้ · ที่สอบแล้วยุบลงกล่องเดียวปิดอยู่ กดเปิดย้อนดูได้ */
+
+/* วาดหนึ่งช่วงสอบ (หัวข้อ + ขอบเขต + การ์ด) */
+function examBlock(e, rows){
+  const g = rows.filter(x=>exList(x).indexOf(e.id)>=0);
+  const st = examStateTagged(e);
+  let h = `<h2 class="sec${st.k==='past'?' past':''}" id="ex-${e.id}">🗓️ ${e.day} ${e.time} · ${e.name}${
              st.k==='past' ? '<span class="xtag">สอบไปแล้ว</span>'
            : st.k==='live' ? '<span class="xtag">กำลังสอบอยู่</span>'
            : st.next       ? '<span class="xtag">⏰ วิชาถัดไป</span>' : ''}
              <span class="line"></span><span class="when">${e.min} นาที</span></h2>
              <div class="scope">ขอบเขต: ${e.scope}</div>`;
-    html += g.length ? `<div class="grid">${cards(g)}</div>`
-                     : `<div class="slot-none">ยังไม่มีหน้าเตรียมสอบวิชานี้</div>`;
+  h += g.length ? `<div class="grid">${cards(g)}</div>`
+                : `<div class="slot-none">ยังไม่มีหน้าเตรียมสอบวิชานี้</div>`;
+  return {html:h, n:g.length};
+}
+
+function byExam(rows){
+  const filtering = !!(fQ || fKind!=='all' || fSubj!=='all');
+  let html = `<div class="fin-hint">🔥 กำลังโชว์เฉพาะหน้าที่<b>ออกปลายภาค</b> เรียงตามเวลาสอบจริง —
+    อยากดูหน้าที่เหลือทั้งเว็บ กด “ทุกหน้าในเว็บ” ข้างบน</div>`;
+
+  let live = '', past = '', nPast = 0, nLeft = 0;
+  for(const e of EXAM){
+    const b = examBlock(e, rows);
+    if(!b.n && filtering) continue;              /* กรองอยู่ ไม่ต้องโชว์ช่องว่าง */
+    if(examStateTagged(e).k === 'past'){ past += b.html; nPast++; }
+    else { live += b.html; nLeft++; }
+  }
+
+  html += live;
+  if(!nLeft && !filtering)
+    html += `<div class="fin-done">🎉 <b>สอบครบทุกวิชาแล้ว</b> — ของทั้งหมดเก็บไว้ในกล่องข้างล่าง
+             เปิดทบทวนย้อนหลังได้ตลอด</div>`;
+
+  if(nPast){
+    /* ค้นหาอยู่ = กางให้เห็นผลลัพธ์ · ปกติ = จำสถานะที่ผู้ใช้เปิดไว้ (ค่าตั้งต้น = ปิด) */
+    let open;
+    try{ open = filtering ? true : (localStorage.getItem('grp:past-final')==='1'); }
+    catch(err){ open = filtering; }
+    html += `<details class="chap done"${open?' open':''} data-k="grp:past-final">
+      <summary>📦 ปลายภาค เทอม 1 · สอบไปแล้ว<span class="n">${nPast} วิชา</span></summary>
+      <div class="pastwrap">${past}</div></details>`;
   }
   return html;
 }
@@ -301,6 +338,7 @@ function render(){
   }
   if(fExam==='final'){
     $('#list').innerHTML = byExam(rows);
+    bindChapMemory();
     return;
   }
   let html='';
@@ -322,7 +360,12 @@ function render(){
     }
   }
   $('#list').innerHTML=html;
+  bindChapMemory();
+}
+/* จำสถานะเปิด/ปิดของทุกกล่องพับ — ใช้ทั้งมุมมองรายวิชาและกล่อง "สอบไปแล้ว" */
+function bindChapMemory(){
   $('#list').querySelectorAll('details.chap').forEach(d=>{
+    if(d.dataset.bound) return; d.dataset.bound='1';
     d.addEventListener('toggle',()=>{ try{localStorage.setItem(d.dataset.k, d.open?'1':'0');}catch(e){} });
   });
 }
@@ -621,9 +664,9 @@ drawExamNow();
 
 </script>
 
-<script src="tour.js?v=202609091450"></script>
-<script src="feedback.js?v=202609091450"></script>
-<script src="updates.js?v=202609091450"></script>
+<script src="tour.js?v=202609091744"></script>
+<script src="feedback.js?v=202609091744"></script>
+<script src="updates.js?v=202609091744"></script>
 <!--KIT-UI v4.3 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>
 /* =============================================================================
