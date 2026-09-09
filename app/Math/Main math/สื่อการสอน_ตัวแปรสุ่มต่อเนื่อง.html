@@ -303,10 +303,27 @@ document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
 });
 
 /* ---------- canvas helper ---------- */
-function setup(c){ const dpr=window.devicePixelRatio||1; const w=c.clientWidth||600;
-  c.width=w*dpr; c.height=parseInt(c.getAttribute('height'))*dpr;
-  const ctx=c.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0);
-  return {ctx,W:w,H:parseInt(c.getAttribute('height'))}; }
+/* ⚠️ บั๊กที่เจอ 2026-09-09 (เจ้าของแจ้งว่าบน iOS เห็นแต่พื้นเปล่า กดได้แต่ไม่เห็นกราฟ)
+   โค้ดเดิมอ่าน c.getAttribute('height') มาใช้เป็น "ความสูงตั้งต้น"
+   แต่บรรทัดก่อนหน้าเพิ่ง **เขียนทับ** attribute นั้นไปด้วย H*dpr
+   -> รอบถัดไปจึงอ่านค่าที่บวมแล้วมาคูณ dpr ซ้ำอีก ทบทวีคูณทุกครั้งที่วาดใหม่
+      dpr2: 240 -> 480 -> 960 ...   dpr3 (iPhone): 240 -> 720 -> 2160 ...
+   และ redrawAll() ถูกเรียกทุกครั้งที่สลับแท็บและลากสไลเดอร์ กราฟเลยถูกดันจนหลุดจอ
+
+   แก้ 3 อย่าง:
+   ① จำความสูงตั้งต้นไว้ใน data-h ครั้งเดียว แล้วอ่านจากตรงนั้นตลอด ไม่อ่านค่าที่ตัวเองเขียน
+   ② ตรึงความสูงที่ "แสดงผล" ด้วย style.height ไม่ให้ dpr ไปเปลี่ยนเลย์เอาต์
+   ③ จำกัด dpr ไม่เกิน 2 — iOS มีเพดานหน่วยความจำ canvas ถ้าใหญ่เกินจะวาดไม่ออกเลย */
+function setup(c){
+  if(!c.dataset.h) c.dataset.h = c.getAttribute('height') || 240;
+  const H = parseInt(c.dataset.h);
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const w = c.clientWidth || 600;
+  c.style.height = H + 'px';
+  c.width  = Math.round(w * dpr);
+  c.height = Math.round(H * dpr);
+  const ctx = c.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0);
+  return {ctx, W:w, H}; }
 function axes(ctx,W,H){ ctx.strokeStyle='#2a3860'; ctx.lineWidth=1;
   ctx.beginPath(); ctx.moveTo(0,H-24); ctx.lineTo(W,H-24); ctx.stroke(); }
 function curvePath(ctx,W,H,m,s,x0,x1,yscale){
