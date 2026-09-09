@@ -42,8 +42,11 @@
   '.updItem li{margin-bottom:3px}',
   '#updOk{width:100%;background:var(--accent,#4f46e5);color:#fff;border:0;border-radius:10px;',
   '  padding:11px;font-family:inherit;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:4px}',
-  '#updLink{background:none;border:0;color:#fff;font-family:inherit;font-size:.88rem;font-weight:600;',
-  '  cursor:pointer;text-decoration:underline;opacity:.92;padding:0;margin-top:10px;display:inline-block}',
+  /* ⚠️ ห้ามตั้ง color:#fff ตายตัว — ปุ่มนี้เคยอยู่บนแถบไล่สีม่วง พอหน้าแรกเปลี่ยนเป็นพื้นเรียบ
+     (2026-09-09) ขาวบนขาววัดได้ 1.05 อ่านไม่ออกเลย · ใช้ตัวแปรธีมจะพลิกตามโหมดเอง
+     ปล่อยให้หน้าที่ฝังปุ่มกำหนดพื้นหลัง/กรอบเองได้ (หน้าแรกใช้คลาส .hbtn.ghost) */
+  '#updLink{background:none;border:0;color:var(--muted,#64748b);font-family:inherit;font-size:.88rem;',
+  '  font-weight:600;cursor:pointer;padding:0;margin-top:10px;display:inline-block}',
   /* ปุ่มลอยเปิดดูย้อนหลัง — วางมุมขวาบน คู่กับปุ่มกลับที่อยู่มุมซ้ายบน */
   '#updFab{position:fixed;top:8px;right:8px;z-index:99992;border:1.5px solid var(--accent-bd,#e2e8f0);',
   '  background:var(--card,#fff);color:var(--ink,#1e293b);border-radius:999px;height:44px;',
