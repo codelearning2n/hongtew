@@ -689,7 +689,7 @@ function showQ(){
     document.getElementById('wr').classList.add('show');
     document.getElementById('nx').style.display='flex';
   });
-  document.getElementById('nb').addEventListener('click',function(){ idx++; showQ(); window.scrollTo({top:0,behavior:'smooth'}); });
+  document.getElementById('nb').addEventListener('click',function(){ idx++; showQ(); toQuestionBox('qbox'); });
 }
 document.getElementById('mode').addEventListener('click',function(e){
   var b=e.target.closest('button'); if(!b) return;
@@ -902,6 +902,16 @@ var ZONE={
     });
   });
 })();
+
+/* เลื่อนไปหากล่องโจทย์ ไม่ใช่หัวเว็บ — เจ้าของแจ้ง 2026-09-09
+   (รอบแรกกวาดไม่ครบเพราะตัวกวาดมองหาแค่คำว่า "Show()" หน้าที่เขียน showQ()/render() จึงหลุด) */
+function toQuestionBox(id){
+  var el = document.getElementById(id); if(!el) return;
+  var r = el.getBoundingClientRect();
+  if(r.top >= 0 && r.top < innerHeight * 0.5) return;   /* เห็นอยู่แล้ว ไม่ต้องขยับ */
+  try{ el.scrollIntoView({block:'start', behavior:'smooth'}); }
+  catch(e){ try{ el.scrollIntoView(); }catch(e2){} }
+}
 </script>
 <!--KIT-UI v4.2 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>

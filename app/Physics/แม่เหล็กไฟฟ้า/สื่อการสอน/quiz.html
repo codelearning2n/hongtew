@@ -380,7 +380,7 @@ function showHint(n){
 function next(){
   if(idx===BANK.length-1){ finish(); return; }
   idx++; render();
-  window.scrollTo({top:0,behavior:'smooth'});
+  toQuestionBox('qtext');
 }
 
 function finish(){
@@ -396,6 +396,16 @@ function finish(){
   else msg='ไม่เป็นไร ทุกคนเริ่มจากตรงนี้ เปิดสรุปเต็มทบทวนสูตรก่อนแล้วลองอีกครั้ง 🌱';
   document.getElementById('finalmsg').textContent=msg;
   window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* เลื่อนไปหากล่องโจทย์ ไม่ใช่หัวเว็บ — เจ้าของแจ้ง 2026-09-09
+   (รอบแรก 8 ก.ย. กวาดไม่ครบ เพราะตัวกวาดมองหาแค่คำว่า "Show()") */
+function toQuestionBox(id){
+  var el = document.getElementById(id); if(!el) return;
+  var r = el.getBoundingClientRect();
+  if(r.top >= 0 && r.top < innerHeight * 0.5) return;
+  try{ el.scrollIntoView({block:'start', behavior:'smooth'}); }
+  catch(e){ try{ el.scrollIntoView(); }catch(e2){} }
 }
 </script>
 <!--KIT-UI v4.2 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->

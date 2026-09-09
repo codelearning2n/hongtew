@@ -466,7 +466,7 @@ function mkMC(box,pool,ids,onDone){
   }
   document.body.addEventListener('click',function(e){
     var n=e.target.closest('[data-next="'+box+'"]'), a=e.target.closest('[data-again="'+box+'"]');
-    if(n){ st.i++; show(); window.scrollTo({top:0,behavior:'smooth'}); }
+    if(n){ st.i++; show(); toQuestionBox(box); }   /* box = id ที่ mkMC รับมา */
     if(a) load();
   });
   return {load:load};
@@ -734,6 +734,16 @@ document.addEventListener('click',function(e){
   var t=document.querySelector('[data-tab="'+b.getAttribute('data-go')+'"]');
   if(t){ t.click(); window.scrollTo({top:0,behavior:'smooth'}); }
 });
+
+/* เลื่อนไปหากล่องโจทย์ ไม่ใช่หัวเว็บ — เจ้าของแจ้ง 2026-09-09
+   (รอบแรก 8 ก.ย. กวาดไม่ครบ เพราะตัวกวาดมองหาแค่คำว่า "Show()") */
+function toQuestionBox(id){
+  var el = document.getElementById(id); if(!el) return;
+  var r = el.getBoundingClientRect();
+  if(r.top >= 0 && r.top < innerHeight * 0.5) return;
+  try{ el.scrollIntoView({block:'start', behavior:'smooth'}); }
+  catch(e){ try{ el.scrollIntoView(); }catch(e2){} }
+}
 </script>
 <!--KIT-UI v4.2 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>

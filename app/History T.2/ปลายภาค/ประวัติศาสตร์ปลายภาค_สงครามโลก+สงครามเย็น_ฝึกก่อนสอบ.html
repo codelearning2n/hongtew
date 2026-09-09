@@ -616,7 +616,17 @@ function showQ(){
     document.getElementById('wr').classList.add('show');
     document.getElementById('nx').style.display='flex';
   });
-  document.getElementById('nb').addEventListener('click',function(){ idx++; showQ(); window.scrollTo({top:0,behavior:'smooth'}); });
+  /* เลื่อนไปหากล่องโจทย์ ไม่ใช่หัวเว็บ (เจ้าของแจ้ง 2026-09-09 เช้าวันสอบ)
+     ⚠️ ตอนกวาดบั๊กนี้ทั้งวอลต์เมื่อ 8 ก.ย. หน้านี้หลุดไป เพราะตัวกวาดมองหาคำว่า
+        "Show()" แต่หน้านี้เขียน "showQ()" ตัว Q ต่อท้ายทำให้ไม่แมตช์
+        -> รอบนี้กวาดใหม่ด้วยแพตเทิร์นที่กว้างกว่า */
+  function toQuestionBox(){
+    var el=document.getElementById('qbox'); if(!el) return;
+    var r=el.getBoundingClientRect();
+    if(r.top>=0 && r.top<innerHeight*0.5) return;   /* เห็นอยู่แล้ว ไม่ต้องขยับ */
+    try{ el.scrollIntoView({block:'start',behavior:'smooth'}); }catch(e){ el.scrollIntoView(); }
+  }
+  document.getElementById('nb').addEventListener('click',function(){ idx++; showQ(); toQuestionBox(); });
 }
 document.getElementById('qFilt').addEventListener('click',function(e){
   var b=e.target.closest('button'); if(!b) return;
