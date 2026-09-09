@@ -195,6 +195,7 @@ sup,sub{font-size:.72em}
     <button class="tab-btn" data-tab="t2">📝 Part 2 · ศัพท์ 15 คำ</button>
     <button class="tab-btn" data-tab="t5">📚 Part 3 · กลยุทธ์ + Resume</button>
     <button class="tab-btn" data-tab="t6">🔤 Part 4 · Cloze เทคโนโลยี</button>
+    <button class="tab-btn" data-tab="t7">🎯 ควิซรวม 38 ข้อ</button>
   </nav>
 
 
@@ -285,13 +286,39 @@ sup,sub{font-size:.72em}
   </section>
 
 
+  <!-- ═══ ควิซรวม ═══ -->
+  <section id="t7" class="tab">
+    <div class="card">
+      <div class="qhead-row">
+        <h2>🎯 ควิซรวม — ทุกอย่างในคู่มือ</h2>
+        <button class="btn small ghost" id="qReset">สลับข้อใหม่</button>
+      </div>
+      <p class="sub">38 ข้อ ออกจากคู่มือทบทวน 3 หน้าเท่านั้น ·
+        <b>โจทย์เป็นภาษาอังกฤษล้วนเหมือนข้อสอบจริง</b> เฉลยอธิบายเป็นไทย ·
+        ลำดับข้อและตัวเลือกสลับใหม่ทุกครั้ง จำตำแหน่งเฉลยไม่ได้</p>
+      <div class="stat"><span>ข้อ <b id="qn">1</b>/<b id="qt">38</b></span>
+        <span>ถูก <b id="qs">0</b></span><span id="qpct" class="mins"></span></div>
+      <div id="qbox"></div>
+    </div>
+  </section>
+
 </div>
 <script>
+
+/* เลื่อนไปหากล่องโจทย์ ไม่ใช่หัวเว็บ — เจ้าของแจ้งบั๊กนี้ไว้ 2026-09-08/09
+   และไม่ขยับถ้าโจทย์อยู่ในจออยู่แล้ว (กันจอกระตุกทุกข้อ) */
+function toQuestion(id){
+  var el=document.getElementById(id); if(!el) return;
+  var r=el.getBoundingClientRect();
+  if(r.top>=0 && r.top<innerHeight*0.5) return;
+  try{ el.scrollIntoView({block:'start',behavior:'smooth'}); }
+  catch(e){ try{ el.scrollIntoView(); }catch(e2){} }
+}
 
 var tabs=document.getElementById('tabs');
 tabs.addEventListener('click',function(e){
   var b=e.target.closest('.tab-btn'); if(!b) return;
-  tabs.querySelectorAll('.tab-btn').forEach(function(x){x.classList.toggle('on',x===b);});
+  tabs.querySelectorAll('.tab-btn').forEach(function(x){x.classList.toggle('active',x===b); x.classList.toggle('on',x===b);});
   document.querySelectorAll('section.tab').forEach(function(s){
     s.classList.toggle('show', s.id===b.dataset.tab);});
 });
@@ -368,6 +395,223 @@ vLoad();
 /* ตารางศัพท์เต็ม */
 $('vtab').innerHTML='<tr><th>คำ</th><th>ชนิด</th><th>ความหมาย</th></tr>'+
   VOCAB.map(function(v){return '<tr><td><b>'+v[0]+'</b></td><td>'+v[1]+'</td><td style="text-align:left">'+v[2]+'</td></tr>';}).join('');
+
+
+/* ═══════════ ⑤ ควิซรวม — ทุกข้อจากคู่มือทบทวน 3 หน้า ═══════════
+   โจทย์+ตัวเลือกภาษาอังกฤษล้วน (ข้อสอบจริงเป็นอังกฤษล้วน) เฉลยอธิบายเป็นไทย
+   ตัวเลือกสลับตอนรัน (กฎ R8) → เฉลยไม่กองช่องเดิม จำตำแหน่งไม่ได้ */
+var QUIZ=[
+/* ---------- Part 2 · นิยาม -> คำ (นิยามคัดจากคู่มือ) ---------- */
+["Abilities or skills that can be used and applied across many different jobs, subjects, or situations.",
+ ["transferable skills","adaptability","foundation","informed decision"],0,
+ "<b>transferable skills</b> = ทักษะที่ <i>ย้าย</i> ไปใช้ที่อื่นได้<br>⚠️ <b>adaptability</b> คือความสามารถ <i>ปรับตัว</i> คนละเรื่องกัน"],
+
+["To work together with other people or groups to achieve a shared goal.",
+ ["collaborate","contribute","compromise","evaluate"],0,
+ "⭐ <b>คู่กับดักที่ออกบ่อยที่สุด</b><br><b>collaborate</b> = ทำงาน <i>ร่วมกัน</i><br><b>contribute</b> = <i>ลงแรง/ให้บางอย่าง</i> เข้ากลุ่ม (คนเดียวก็ทำได้)"],
+
+["A serious disagreement or argument between people or groups with opposing ideas.",
+ ["conflict","compromise","collaboration","contribution"],0,
+ "<b>conflict</b> = ตัวปัญหา · <b>compromise</b> = ทางออกของปัญหานั้น อย่าสลับกัน"],
+
+["An agreement in which both sides accept less than what they originally wanted.",
+ ["compromise","conflict","collaboration","adaptability"],0,
+ "<b>compromise</b> = ประนีประนอม เป็นได้ทั้งคำนามและคำกริยา"],
+
+["To examine something carefully and in detail in order to understand or explain it.",
+ ["analyze","evaluate","contribute","collaborate"],0,
+ "⚠️ <b>analyze</b> = แยกส่วนดูให้ <i>เข้าใจ</i><br><b>evaluate</b> = <i>ตัดสิน</i> ว่าดีหรือไม่ดี คุ้มหรือไม่คุ้ม"],
+
+["To judge or assess the quality, value, or importance of something.",
+ ["evaluate","analyze","compromise","contribute"],0,
+ "<b>evaluate</b> มีการ <i>ให้ค่า</i> อยู่ในตัว · analyze แค่แยกส่วนดูเฉย ๆ"],
+
+["The quality of being able to change or adjust easily to new conditions or tasks.",
+ ["adaptability","self-discipline","foundation","compromise"],0,
+ "<b>adaptability</b> เป็นคำนาม (ตัวคุณศัพท์คือ adaptable)"],
+
+["The ability to control yourself and complete tasks without needing someone to direct you.",
+ ["self-discipline","adaptability","foundation","compromise"],0,
+ "<b>self-discipline</b> = วินัยในตัวเอง · คู่มือใช้กับการอ่านหนังสือสอบโดยไม่ผัดวันประกันพรุ่ง"],
+
+["Able to change or be modified easily to deal with unexpected situations or demands.",
+ ["flexible","essential","independent","efficient"],0,
+ "ทั้ง 4 ตัวเป็นคำคุณศัพท์หมด ต้องดูความหมาย ไม่ใช่ดูรูปคำ<br><b>flexible</b> = ยืดหยุ่น"],
+
+["An underlying basis or set of core skills upon which future success is built.",
+ ["foundation","adaptability","compromise","self-discipline"],0,
+ "<b>foundation</b> = รากฐาน · ประโยคในคู่มือ: ไวยากรณ์พื้นฐานเป็น foundation ของงานเขียนเชิงวิชาการ"],
+
+["Completely necessary or extremely important in a particular situation.",
+ ["essential","flexible","independent","efficient"],0,
+ "<b>essential</b> = ขาดไม่ได้ · แรงกว่า important ทั่วไป"],
+
+["Working in a well-organized way without wasting time, energy, or resources.",
+ ["efficiently","essentially","independently","flexibly"],0,
+ "ทั้ง 4 ตัวลงท้าย -ly เหมือนกันหมด → ต้องดูความหมายล้วน ๆ<br><b>efficiently</b> = อย่างมีประสิทธิภาพ"],
+
+["To give or add ideas, effort, or time to help achieve a common goal.",
+ ["contribute","collaborate","compromise","evaluate"],0,
+ "<b>contribute</b> = ลงแรงให้ · ประโยคในคู่มือ: ทุกคนในกลุ่มควร contribute เท่า ๆ กัน"],
+
+["Able to think, work, or decide by yourself without depending on constant guidance.",
+ ["independent","flexible","essential","efficient"],0,
+ "<b>independent</b> = เป็นอิสระ · คู่มือใช้กับวลี independent learners"],
+
+["A choice made based on good information, facts, and careful consideration.",
+ ["informed decision","transferable skills","self-discipline","adaptability"],0,
+ "<b>informed</b> ตรงนี้ไม่ได้แปลว่า “ถูกบอก” แต่แปลว่า <i>มีข้อมูลรองรับ</i>"],
+
+/* ---------- Part 2 · เติมคำในประโยคตัวอย่างของคู่มือเอง ---------- */
+["Problem-solving and teamwork are essential ______ for university graduates.",
+ ["transferable skills","informed decisions","compromises","foundations"],0,
+ "ประโยคตัวอย่างของคู่มือเอง — แก้ปัญหาและทำงานเป็นทีมคือ <b>transferable skills</b>"],
+
+["Studying for exams without procrastinating requires high ______.",
+ ["self-discipline","adaptability","collaboration","compromise"],0,
+ "อ่านหนังสือสอบโดยไม่ผัดวันประกันพรุ่ง = ต้องใช้ <b>self-discipline</b>"],
+
+["Setting clear goals helps teams complete their assignments ______.",
+ ["efficiently","efficient","efficiency","more efficient"],0,
+ "⭐ ข้อนี้คือกลยุทธ์ Part 4 มาใช้จริง — ข้างหน้าช่องว่างคือกริยาวลี <i>complete their assignments</i> จบแล้ว → ต้องเติม<b>คำวิเศษณ์</b> ไม่ใช่คำนามหรือคำคุณศัพท์"],
+
+["Mastering basic grammar provides a strong ______ for academic writing.",
+ ["foundation","adaptability","compromise","conflict"],0,
+ "⭐ ข้างหน้าเป็น <i>a strong</i> (a + คำคุณศัพท์) → ช่องว่างต้องเป็น<b>คำนาม</b> · ความหมายคือรากฐาน = foundation"],
+
+["Evaluating all available options allows managers to make an ______.",
+ ["informed decision","independent decision","informed evaluation","transferable skill"],0,
+ "⚠️ ตัวลวงแรงมาก — <b>make an informed decision</b> เป็นวลีตายตัว · <i>independent decision</i> แปลได้แต่ไม่ใช่สำนวนที่คู่มือให้"],
+
+["Clear communication helps teams resolve ______ before it ruins a project.",
+ ["conflict","compromise","foundation","adaptability"],0,
+ "<b>resolve conflict</b> = คลี่คลายความขัดแย้ง<br>⚠️ ถ้าเป็น compromise ต้องใช้ <i>reach / find a compromise</i> ไม่ใช่ resolve"],
+
+["Technology changes quickly, so workplace ______ is highly valued by employers.",
+ ["adaptability","self-discipline","collaboration","foundation"],0,
+ "เทคโนโลยีเปลี่ยนเร็ว → นายจ้างให้ค่ากับ <b>adaptability</b> (ความสามารถปรับตัว)"],
+
+/* ---------- Part 3 · กลยุทธ์อ่าน-ฟัง ---------- */
+["Reading a text quickly to get the main idea, without stopping to translate difficult words.",
+ ["Skimming","Scanning","Pre-listening","Note-taking"],0,
+ "<b>Skimming</b> = กวาดหา <i>ใจความรวม</i> · คู่มือย้ำว่า <b>ห้ามหยุดอ่านทุกคำหรือหยุดแปลศัพท์ยาก</b>"],
+
+["You must locate a phone number inside a long article as fast as possible. Which strategy fits?",
+ ["Scanning","Skimming","Topic sentence","Active listening"],0,
+ "⭐ <b>ข้อสอบชอบให้แยกสองอันนี้</b> — skim หา “เรื่องอะไร” · <b>scan</b> หา “ข้อมูลตัวไหน” เช่น เบอร์โทร ชื่อ วันที่ ตัวเลขสถิติ"],
+
+["According to the guide, where is the topic sentence usually located?",
+ ["At or near the beginning of the paragraph","Always at the end of the paragraph","Always in the middle of the paragraph","Spread evenly across every sentence"],0,
+ "คู่มือเขียนว่า <i>usually located at or near the beginning</i> — คำว่า <b>usually</b> แปลว่าไม่เสมอไป แต่ให้เดาต้นย่อหน้าก่อน"],
+
+["What does the guide tell you to do BEFORE the audio track starts?",
+ ["Read the questions and answer choices first","Write down difficult words you expect to hear","Finish reading the whole passage first","Guess and write your answers in advance"],0,
+ "<b>Pre-listening strategy</b> — อ่านคำถาม+ตัวเลือกก่อน จะได้รู้ว่าต้องฟังหาอะไร และเดาเนื้อหาล่วงหน้าได้"],
+
+["If a listening passage is fast or difficult, what does the guide recommend?",
+ ["Focus on content keywords and overall context clues","Try to translate every single word in time","Skip the item and guess it later","Write down every word, then sort it out afterwards"],0,
+ "คู่มือใช้คำว่า <i>content keywords and overall context clues</i> — เก็บใจความ ไม่ใช่เก็บทุกคำ"],
+
+["Which habit does the guide recommend for long-term listening improvement?",
+ ["Watching English media while following transcripts, regularly","Memorising fifty new words every single day","Listening to everything at double speed","Reading aloud after a native speaker daily"],0,
+ "<b>Long-Term Listening Improvement</b> — ดูสื่ออังกฤษ <i>พร้อม transcript</i> อย่างสม่ำเสมอ ช่วยทั้งจำศัพท์และฟังทัน"],
+
+["According to the guide, good note-taking during audio should be:",
+ ["Short and structured, recording names, numbers, key points","A complete record of every sentence you hear","Only the words whose meaning you do not know","Unnecessary — just listen carefully instead"],0,
+ "<i>short, structured notes</i> — จดไว้ตอบคำถามหลังฟังจบได้แม่นขึ้น"],
+
+["Which of these should a professional resume AVOID, according to the guide?",
+ ["Your personal opinions about the company","Skills relevant to the position","Previous work experience","A clear, readable layout"],0,
+ "คู่มือห้าม 4 อย่าง: <b>เรื่องส่วนตัวยาว ๆ · ความเห็นส่วนตัว · คำสแลง · อีโมจิ</b><br>ที่ควรมีคือทักษะ/ประสบการณ์ที่เกี่ยวข้อง + เลย์เอาต์ชัดเจน"],
+
+["What does active listening in a Q&A session mean?",
+ ["Listening to the speaker's actual points before answering","Reading every line of your prepared script","Saving all questions to answer at the very end","Interrupting as soon as a point comes to mind"],0,
+ "คู่มือเขียนตรง ๆ ว่า <i>rather than simply reading from a prepared script without looking up</i> — ห้ามก้มอ่านสคริปต์"],
+
+/* ---------- Part 4 · Cloze ---------- */
+["The school introduced a new online ______ for students. What part of speech is needed?",
+ ["a noun","a verb","an adjective","an adverb"],0,
+ "⭐ ข้างหน้าช่องว่างเป็น <i>a new online</i> = a + คำคุณศัพท์ → ต้องปิดท้ายด้วย<b>คำนาม</b>"],
+
+["The new security system is very ______. What part of speech is needed?",
+ ["an adjective","a noun","a verb","an adverb"],0,
+ "⭐ หลัง <b>is / seem / become</b> ตามด้วย<b>คำคุณศัพท์</b> เสมอ"],
+
+["The app works ______ even on slow connections. What part of speech is needed?",
+ ["an adverb","an adjective","a noun","a verb"],0,
+ "⭐ ขยาย<b>คำกริยา</b> (works) → ต้องใช้<b>คำวิเศษณ์</b> เช่น efficiently"],
+
+["Many banks now require two-factor ______ when you log in.",
+ ["security","secure","securely","securing"],0,
+ "<b>two-factor security</b> เป็น collocation ที่คู่มือยกมาเอง · หลัง two-factor (คำขยาย) ต้องเป็นคำนาม"],
+
+["The company invested in digital ______ to stay competitive.",
+ ["innovation","innovative","innovate","innovatively"],0,
+ "<b>digital innovation</b> เป็น collocation ที่คู่มือยกมาเอง · หลัง digital ต้องเป็นคำนาม"],
+
+["Students now attend their classes through online ______.",
+ ["platforms","classrooms","meetings","channels"],0,
+ "⚠️ ทุกตัวแปลเข้าเค้าหมด แต่คู่มือยกวลี <b>online platforms</b> มาเอง — cloze วัด collocation ให้จำเป็น<b>วลี</b> ไม่ใช่แปลทีละคำ"],
+
+["Which topic does the guide say the cloze passage will be about?",
+ ["Digital Technology in Modern Life","Transferable Skills at University","Teamwork and Conflict Resolution","Academic Writing Strategies"],0,
+ "คู่มือบอกหัวข้อไว้เลย — <b>Digital Technology in Modern Life</b><br>ครอบคลุม: เรียนออนไลน์ · จองทริปผ่านมือถือ · ความปลอดภัยไซเบอร์ · เวลาหน้าจอ · นวัตกรรม"]
+];
+
+function qShuf(a){a=a.slice();
+  for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}
+  return a;}
+
+var qOrder=[], qI=0, qScore=0, qDone=false, qOrd=null, qAt=0;
+
+function qStart(){
+  qOrder=qShuf(QUIZ.map(function(_,i){return i;}));
+  qI=0; qScore=0; $('qt').textContent=QUIZ.length; qShow();
+}
+function qShow(){
+  var q=QUIZ[qOrder[qI]];
+  qOrd=qShuf(q[1].map(function(_,i){return i;}));   /* สลับตัวเลือกตอนรัน (R8) */
+  qAt=qOrd.indexOf(q[2]);                           /* เฉลยย้ายไปอยู่ช่องไหนแล้ว */
+  qDone=false;
+  $('qn').textContent=qI+1; $('qs').textContent=qScore;
+  $('qpct').textContent = qI>0 ? ('แม่น '+Math.round(qScore*100/qI)+'%') : '';
+  var K=['A','B','C','D'], h='<div class="q-text">'+q[0]+'</div>';
+  qOrd.forEach(function(oi,pos){
+    h+='<button class="choice" data-p="'+pos+'"><span class="k">'+K[pos]+'</span>'+q[1][oi]+'</button>';
+  });
+  h+='<div class="wr" id="qwr"></div>'+
+     '<div class="nx" id="qnx"><button class="btn" id="qnext">ข้อถัดไป →</button></div>';
+  $('qbox').innerHTML=h;
+}
+$('qbox').addEventListener('click',function(e){
+  var b=e.target.closest('.choice'); if(!b||qDone) return;
+  qDone=true;
+  var picked=+b.dataset.p, q=QUIZ[qOrder[qI]];
+  $('qbox').querySelectorAll('.choice').forEach(function(c){
+    var p=+c.dataset.p;
+    if(p===qAt) c.classList.add('ok');
+    else if(p===picked) c.classList.add('bad');
+  });
+  if(picked===qAt){ qScore++; $('qs').textContent=qScore; }
+  var wr=$('qwr');
+  wr.innerHTML=(picked===qAt?'✅ <b>ถูกต้อง</b><br>':'❌ <b>ยังไม่ใช่</b><br>')+q[3];
+  wr.classList.add('show');
+  /* R7 — ไม่เด้งไปข้อถัดไปเอง ต้องกดเอง */
+  $('qnx').classList.add('show');
+});
+$('qbox').addEventListener('click',function(e){
+  if(!e.target.closest('#qnext')) return;
+  if(qI+1>=QUIZ.length){
+    $('qbox').innerHTML='<div class="tip">🎉 <b>ครบ '+QUIZ.length+' ข้อแล้ว</b> — ถูก <b>'+
+      qScore+'/'+QUIZ.length+'</b> ('+Math.round(qScore*100/QUIZ.length)+'%)<br>'+
+      'กด “สลับข้อใหม่” เพื่อวนอีกรอบ ลำดับข้อและตัวเลือกจะเปลี่ยนใหม่ทั้งหมด</div>';
+    $('qn').textContent=QUIZ.length; $('qpct').textContent='แม่น '+Math.round(qScore*100/QUIZ.length)+'%';
+    return;
+  }
+  qI++; qShow(); toQuestion('qbox');
+});
+$('qReset').addEventListener('click',qStart);
+qStart();
 
 /* ═══════════ ปุ่มในการ์ด START-HERE ═══════════ */
 document.addEventListener('click',function(e){
