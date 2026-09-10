@@ -278,13 +278,32 @@ table.ref td.mid{text-align:center}
     <div class="card">
       <h2>🔥 ① ปฏิกิริยาเผาไหม้ (Combustion)</h2>
       <div class="eq">C<sub>x</sub>H<sub>y</sub> + O<sub>2</sub> → CO<sub>2</sub> + H<sub>2</sub>O</div>
+      <!-- เดิมเขียน <sup>y</sup>⁄<sub>4</sub> ตัว y ตัวจิ๋วอยู่บนเลข 4 พอย่อขนาดแล้วอ่านเป็น "¼"
+           เจ้าของทักว่า "สูตรขัดกัน" กับหน้าแบบฝึก 2026-09-10 -> เขียนตัวเต็มให้อ่านออก -->
       <div class="formula" style="display:block">ดุลได้เป็น &nbsp; C<sub>x</sub>H<sub>y</sub> +
-        (x + <sup>y</sup>⁄<sub>4</sub>) O<sub>2</sub> → x CO<sub>2</sub> + <sup>y</sup>⁄<sub>2</sub> H<sub>2</sub>O</div>
+        (x + y/4) O<sub>2</sub> → x CO<sub>2</sub> + (y/2) H<sub>2</sub>O</div>
+
+      <div class="tip">✅ <b>สูตรลัดที่ใช้จริงเวลาทำข้อสอบ</b> — เป็นสูตรเดียวกับข้างบน
+        แค่แทนค่า x, y ของแต่ละชนิดไว้ให้แล้ว<br>
+        <b>แอลเคน</b> C<sub>n</sub>H<sub>2n+2</sub> + <b>(3n+1)/2</b> O<sub>2</sub> →
+        n CO<sub>2</sub> + (n+1) H<sub>2</sub>O<br>
+        <b>แอลคีน</b> C<sub>n</sub>H<sub>2n</sub> + <b>3n/2</b> O<sub>2</sub> →
+        n CO<sub>2</sub> + n H<sub>2</sub>O<br>
+        <b>แอลไคน์</b> C<sub>n</sub>H<sub>2n−2</sub> + <b>(3n−1)/2</b> O<sub>2</sub> →
+        n CO<sub>2</sub> + (n−1) H<sub>2</sub>O<br>
+        <span class="mins">ถ้าได้เศษครึ่ง ให้คูณทั้งสมการด้วย 2 · ตัวอย่างในเอกสาร
+        2C<sub>4</sub>H<sub>10</sub> + 13 O<sub>2</sub> → 8 CO<sub>2</sub> + 10 H<sub>2</sub>O
+        ตรงกับ (3n+1)/2 ที่ n=4 พอดี</span></div>
       <table class="ref">
         <tr><th>แบบ</th><th>ผลิตภัณฑ์</th><th>เมื่อไร</th></tr>
         <tr><td><b>สมบูรณ์</b></td><td>CO<sub>2</sub> + H<sub>2</sub>O</td><td>ออกซิเจนเพียงพอ</td></tr>
-        <tr><td><b>ไม่สมบูรณ์</b></td><td><b>CO</b> หรือ <b>C (เขม่า)</b> + H<sub>2</sub>O</td><td>ออกซิเจนไม่พอ</td></tr>
+        <tr><td><b>ไม่สมบูรณ์</b></td><td><b>CO</b> · <b>formaldehyde</b> · <b>acetic acid</b></td><td>ออกซิเจนไม่พอ</td></tr>
       </table>
+      <div class="warn">📄 <b>ผลิตภัณฑ์ตอนไม่สมบูรณ์ ยึดตามเอกสารของวิชานี้</b> —
+        เขียนไว้ว่าได้ <b>แก๊ส CO · formaldehyde · acetic acid</b><br>
+        <span class="mins">ส่วน "เขม่า (C)" เป็นสิ่งที่<b>สังเกตเห็น</b>ตอนเผา ไม่ใช่ตัวที่เอกสารระบุเป็นผลิตภัณฑ์
+        — ใช้แยกชนิดสารได้ (ดูข้างล่าง) แต่ถ้าโจทย์ถามว่า "ได้ผลิตภัณฑ์อะไร" ให้ตอบตามเอกสาร</span></div>
+
       <div class="tip">💡 <b>เขม่าบอกชนิดได้</b> — สารที่มี<b>สัดส่วนคาร์บอนสูง</b>จะเผาไหม้ไม่สมบูรณ์ง่ายกว่า<br>
         <b>alkane</b> เปลวไฟสว่าง <b>แทบไม่มีเขม่า</b> · <b>alkene/alkyne</b> มีเขม่า ·
         <b>aromatic เขม่ามากที่สุด</b> (ควันดำโขมง)</div>
@@ -548,7 +567,7 @@ var RQ=[
 {q:'เมื่อเติม HBr ลงใน propene (CH<sub>3</sub>–CH=CH<sub>2</sub>) ผลิตภัณฑ์หลักคือข้อใด',ch:['CH<sub>3</sub>–CHBr–CH<sub>3</sub>','CH<sub>3</sub>–CH<sub>2</sub>–CH<sub>2</sub>Br','CH<sub>2</sub>Br–CH<sub>2</sub>–CH<sub>3</sub>','CH<sub>3</sub>–CBr<sub>2</sub>–CH<sub>3</sub>'],a:0,
  w:'ตาม<b>กฎมาร์คอฟนิคอฟ</b> — <b>H เข้าหาคาร์บอนที่มี H มากกว่า</b><br>CH<sub>2</sub> ปลายมี H 2 ตัว ส่วน CH กลางมี 1 ตัว → H ไปเกาะ CH<sub>2</sub> ปลาย · <b>Br ไปเกาะ C กลาง</b>',tag:'เติม'},
 {q:'การเผาไหม้แบบสมบูรณ์ของไฮโดรคาร์บอนได้ผลิตภัณฑ์ใด',ch:['CO<sub>2</sub> และ H<sub>2</sub>O','CO และ H<sub>2</sub>O','C และ H<sub>2</sub>','CO<sub>2</sub> และ H<sub>2</sub>'],a:0,
- w:'<b>สมบูรณ์ = ออกซิเจนพอ → CO<sub>2</sub> + H<sub>2</sub>O</b><br><b>ไม่สมบูรณ์ = ออกซิเจนไม่พอ → CO หรือ C (เขม่า) + H<sub>2</sub>O</b>',tag:'เผาไหม้'},
+ w:'<b>สมบูรณ์ = ออกซิเจนพอ → CO<sub>2</sub> + H<sub>2</sub>O</b><br><b>ไม่สมบูรณ์ = ออกซิเจนไม่พอ → CO · formaldehyde · acetic acid</b> (ตามเอกสารของวิชานี้)',tag:'เผาไหม้'},
 {q:'สารใดเผาไหม้แล้วเกิดเขม่ามากที่สุด',ch:['เบนซีน (aromatic)','มีเทน (alkane)','อีเทน (alkane)','โพรเพน (alkane)'],a:0,
  w:'<b>สัดส่วนคาร์บอนยิ่งสูง ยิ่งเผาไหม้ไม่สมบูรณ์ง่าย เขม่ายิ่งมาก</b><br>เรียงเขม่าจากน้อยไปมาก: <b>alkane → alkene/alkyne → aromatic</b>',tag:'เผาไหม้'},
 {q:'ปฏิกิริยาแทนที่ของแอลเคนได้ผลิตภัณฑ์ข้างเคียงเป็นสารใดเสมอ',ch:['กรดไฮโดรฮาลิก','น้ำ','คาร์บอนไดออกไซด์','ไฮโดรเจน'],a:0,
