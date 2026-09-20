@@ -225,6 +225,7 @@ footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:26px;lin
     <input id="q" type="text" placeholder="🔍 พิมพ์ค้นหา เช่น ฮอร์โมน, วงจรไฟฟ้า, ข้อสอบ">
   </div>
 
+  <div class="chips" id="termRow"></div>
   <div class="chips" id="examRow"></div>
   <div class="chips" id="kindRow">
     <button class="chip on" data-kind="all">ทั้งหมด</button>
@@ -251,7 +252,7 @@ footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:26px;lin
   </footer>
 </div>
 
-<script src="catalog.js?v=202609101742"></script>
+<script src="catalog.js?v=202609202007"></script>
 <script>
 const LIST = window.CATALOG || [];
 const $ = s=>document.querySelector(s);
@@ -270,6 +271,23 @@ const nFin  = LIST.filter(x=>x.ex).length;
    พ้น 10 ก.ย. ไปแล้วกลับไปโชว์ทั้งเว็บเองอัตโนมัติ ไม่ต้องมาแก้โค้ด */
 const NEAR  = nFin>0 && Date.now() < Date.parse('2026-09-11T00:00:00+07:00');
 let fExam = NEAR ? 'final' : 'all';
+
+/* ---- เทอม ----
+   build.ps1 ติดช่อง term ให้ทุกหน้า (1 = ของเดิมตอนจบเทอม 1 · 2 = หน้าที่ทำหลังจากนั้น)
+   เจ้าของสั่ง 2026-09-20 ให้แยกหมวด เพราะเทอม 2 กำลังจะเริ่ม
+   แถวนี้จะ "ไม่โผล่" ถ้ายังไม่มีหน้าเทอม 2 — มีตัวเลือกเดียวให้กดก็รกเปล่า ๆ */
+const nT1 = LIST.filter(x=>x.term!==2).length;
+const nT2 = LIST.filter(x=>x.term===2).length;
+/* พอเริ่มมีของเทอม 2 ให้เปิดมาเจอเทอม 2 ก่อน = ของที่กำลังเรียนอยู่ */
+let fTerm = nT2 ? 2 : 'all';
+function drawTermRow(){
+  const row = $('#termRow'); if(!row) return;
+  if(!nT2){ row.innerHTML=''; row.style.display='none'; return; }
+  row.style.display='';
+  const c = (v,label,n)=>`<button class="chip${fTerm===v?' on':''}" data-term="${v}">${label}<span class="n">${n}</span></button>`;
+  row.innerHTML = c(2,'เทอม 2',nT2) + c(1,'เทอม 1',nT1) + c('all','ทั้งสองเทอม',LIST.length);
+}
+drawTermRow();
 if(nFin){
   $('#examRow').innerHTML =
     `<button class="chip fin${fExam==='final'?' on':''}" data-exam="final">🔥 ออกปลายภาค 7–10 ก.ย.<span class="n">${nFin}</span></button>`+
@@ -292,6 +310,8 @@ function pass(x){
   if(fKind!=='all' && x.kind!==fKind) return false;
   if(fSubj!=='all' && x.subj!==fSubj) return false;
   if(fQ && !(x.title+' '+x.subj+' '+x.path).toLowerCase().includes(fQ)) return false;
+  /* term ของหน้าเก่าที่ยังไม่ได้ build ใหม่จะเป็น undefined -> นับเป็นเทอม 1 */
+  if(fTerm!=='all' && (x.term===2?2:1)!==fTerm) return false;
   return true;
 }
 const KIND={exam:'ข้อสอบ',sim:'สื่อจำลอง',note:'สรุป'};
@@ -400,6 +420,9 @@ function bindChapMemory(){
     d.addEventListener('toggle',()=>{ try{localStorage.setItem(d.dataset.k, d.open?'1':'0');}catch(e){} });
   });
 }
+$('#termRow').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;
+  const v=b.dataset.term; fTerm = (v==='all') ? 'all' : +v;
+  drawTermRow(); render();});
 $('#examRow').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;
   fExam=b.dataset.exam; $('#examRow').querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c===b)); render();});
 $('#kindRow').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;
@@ -698,9 +721,9 @@ drawExamNow();
 
 </script>
 
-<script src="tour.js?v=202609101742"></script>
-<script src="feedback.js?v=202609101742"></script>
-<script src="updates.js?v=202609101742"></script>
+<script src="tour.js?v=202609202007"></script>
+<script src="feedback.js?v=202609202007"></script>
+<script src="updates.js?v=202609202007"></script>
 <!--KIT-UI v5.0 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>
 /* =============================================================================
