@@ -88,6 +88,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1
    (ไฟล์นี้เตือนเรื่องเดียวกันไว้ที่ .chip.fin.on อยู่แล้ว แต่ตัวนี้ยังพลาด — แก้ 2026-09-09) */
 .chip.on{background:var(--accent-chip);color:var(--accent-head);border-color:var(--accent)}
 .chip .n{opacity:.6;font-size:.76rem;margin-left:3px}
+/* ชิปหมวดที่ยังไม่มีเนื้อหา — หรี่ลงให้รู้ว่ายังว่าง แต่ยังกดได้ (กดแล้วมีข้อความอธิบาย) */
+.chip.empty-cat{opacity:.55;border-style:dashed}
+.term-note{font-size:.8rem;color:var(--muted);margin:2px 0 0 2px}
 /* ตัวกรอง/ป้าย "ออกปลายภาค" — เพิ่ม 2026-09-05 ตามที่เจ้าของสั่ง (แปะเฉพาะไฟล์ที่ออกจริง) */
 .chip.fin{border-color:var(--hot-ink);color:var(--hot-ink);background:var(--hot-bg)}
 .chip.fin.on{background:var(--hot-ink);color:var(--hot-bg);border-color:var(--hot-ink)}  /* ตัวหนังสือใช้สีพื้นอ่อน จะได้ตัดกับพื้นทั้งโหมดสว่างและมืด (โหมดมืด --hot-ink เป็นชมพูอ่อน ใส่ #fff แล้วอ่านไม่ออก) */
@@ -226,6 +229,7 @@ footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:26px;lin
   </div>
 
   <div class="chips" id="termRow"></div>
+  <div class="term-note" id="termNote"></div>
   <div class="chips" id="examRow"></div>
   <div class="chips" id="kindRow">
     <button class="chip on" data-kind="all">ทั้งหมด</button>
@@ -252,7 +256,7 @@ footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:26px;lin
   </footer>
 </div>
 
-<script src="catalog.js?v=202609202007"></script>
+<script src="catalog.js?v=202609211025"></script>
 <script>
 const LIST = window.CATALOG || [];
 const $ = s=>document.querySelector(s);
@@ -282,10 +286,12 @@ const nT2 = LIST.filter(x=>x.term===2).length;
 let fTerm = nT2 ? 2 : 'all';
 function drawTermRow(){
   const row = $('#termRow'); if(!row) return;
-  if(!nT2){ row.innerHTML=''; row.style.display='none'; return; }
-  row.style.display='';
-  const c = (v,label,n)=>`<button class="chip${fTerm===v?' on':''}" data-term="${v}">${label}<span class="n">${n}</span></button>`;
-  row.innerHTML = c(2,'เทอม 2',nT2) + c(1,'เทอม 1',nT1) + c('all','ทั้งสองเทอม',LIST.length);
+  /* 2026-09-21 เจ้าของสั่งให้โผล่ตั้งแต่ตอนนี้ แม้เทอม 2 จะยังว่าง
+     (เดิมซ่อนไว้เพราะมีตัวเลือกเดียวให้กด) -> โชว์เสมอ แต่บอกให้ชัดว่ายังไม่มีของ */
+  const c = (v,label,n,dim)=>`<button class="chip${fTerm===v?' on':''}${dim?' empty-cat':''}" data-term="${v}">${label}<span class="n">${n}</span></button>`;
+  row.innerHTML = c(2,'เทอม 2',nT2,!nT2) + c(1,'เทอม 1',nT1,!nT1) + c('all','ทั้งสองเทอม',LIST.length);
+  const note = $('#termNote');
+  if(note) note.textContent = nT2 ? '' : 'เทอม 2 ยังไม่มีเนื้อหา — จะทยอยเพิ่มระหว่างเทอม';
 }
 drawTermRow();
 if(nFin){
@@ -381,6 +387,13 @@ function render(){
       เพื่อคัดลอกหน้าเรียนเข้ามาและสร้าง <code>catalog.js</code></div>`; return;
   }
   if(!rows.length){
+    /* เลือกหมวดเทอมที่ยังไม่มีของ — ต้องอธิบาย ไม่ใช่ปล่อยหน้าโล่งให้นึกว่าเว็บพัง */
+    if(fTerm===2 && !nT2){
+      $('#list').innerHTML = '<div class="empty">📚 <b>เทอม 2 ยังไม่มีเนื้อหา</b><br>'+
+        'เพิ่งเปิดเทอม หน้าติวจะทยอยเพิ่มเข้ามาเรื่อย ๆ<br>'+
+        'ระหว่างนี้กด <b>เทอม 1</b> ข้างบนเพื่อดูของเดิมทั้ง '+nT1+' หน้าได้</div>';
+      return;
+    }
     /* กรองปลายภาคอยู่แล้วไม่เจอ ต้องบอกด้วยว่ายังกรองอยู่ ไม่งั้นนึกว่าเว็บไม่มีของ */
     $('#list').innerHTML = (fExam==='final')
       ? '<div class="empty">ไม่เจอในหน้าที่ออกปลายภาค — กด “ทุกหน้าในเว็บ” ข้างบนเพื่อค้นทั้งเว็บ</div>'
@@ -721,9 +734,9 @@ drawExamNow();
 
 </script>
 
-<script src="tour.js?v=202609202007"></script>
-<script src="feedback.js?v=202609202007"></script>
-<script src="updates.js?v=202609202007"></script>
+<script src="tour.js?v=202609211025"></script>
+<script src="feedback.js?v=202609211025"></script>
+<script src="updates.js?v=202609211025"></script>
 <!--KIT-UI v5.0 | แหล่งจริง: _kit/ui-controls.js — อย่าแก้ตรงนี้ ให้แก้ไฟล์นั้นแล้วรัน _kit/apply-ui.ps1-->
 <script>
 /* =============================================================================
